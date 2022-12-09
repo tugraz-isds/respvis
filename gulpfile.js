@@ -28,7 +28,6 @@ const path = require('path');
 async function bundleJS() {
   const bundle = await rollup.rollup({
     input: 'src/lib/index.ts',
-    external: ['d3'],
     plugins: [rollupNodeResolve({ browser: true }), rollupCommonJs(), rollupTypescript()],
   });
 
@@ -49,12 +48,6 @@ async function bundleJS() {
         file: `dist/respvis.${c.extension}`,
         format: c.format,
         name: 'respVis',
-        globals: {
-          d3: 'd3',
-        },
-        paths: {
-          d3: 'https://cdn.skypack.dev/d3@7',
-        },
         plugins: c.plugins,
         sourcemap: true,
       })
