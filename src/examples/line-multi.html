@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <title>RespVis - Multi-Line Chart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../respvis.css" />
+    <style>
+        #chart {
+            width: 100%;
+            height: 75vh;
+            min-height: 25rem;
+        }
+
+        .label {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .point, .axis-x .tick {
+                display: none;
+            }
+            .point:nth-of-type(5n), .axis-x .tick:nth-of-type(5n) {
+                display: block;
+            }
+        }
+
+        @media (min-width: 700px) {
+            .point, .axis-x .tick {
+                display: none;
+            }
+            .point:nth-of-type(2n), .axis-x .tick:nth-of-type(2n) {
+                display: block;
+            }
+        }
+
+        body {
+            background-color: floralwhite;
+        }
+    </style>
+</head>
+<body>
+<h1>Mutli-Line Chart</h1>
+<div id="chart"></div>
+<script type="module">
+    import { select, format} from './vendor/d3-7.6.0/d3.js'
+    import {
+        chartWindowLineData,
+        chartWindowLineRender,
+        chartWindowLineAutoResize,
+    } from '../respvis.mjs'
+
+    import data from './data/electric-power-consumption/electricPowerConsumption.js'
+
+    console.log(data)
+    const usaData = data.filter(obj => obj["Country Name"] === "United States")[0]
+    const europeData = data.filter(obj => obj["Country Name"] === "European Union")[0]
+    const asiaData = data.filter(obj => obj["Country Name"] === "East Asia & Pacific")[0]
+
+    const xValues = Array.from({length: 2014 - 1971 + 1}, (value, index) => (1971 + index).toString())
+    // console.log(usaData)
+    const yUSA = xValues.map(year => usaData[year])
+    const yEurope = xValues.map(year => europeData[year])
+    const yAsia= xValues.map(year => asiaData[year])
+
+    // console.table(xValues)
+    // console.table(yUSA)
+    // console.table(yAsia)
+    // console.table(yEurope)
+
+
+        // const chartWindowData = {
+    //     categoryEntity: 'Cities',
+    //     categories: data.cities,
+    //     values: data.populations,
+    //     tooltips: (_, { category, value }) => `City: ${category}<br/>Population: ${value}`,
+    //     xAxis: { title: 'City' },
+    //     yAxis: { title: 'Population', configureAxis: (axis) => axis.tickFormat(d3.format('.2s')) },
+    //     labels: {},
+    // };
+
+    const chartData = {
+        xValues: xValues,
+        yValues: [yUSA, yEurope, yAsia],
+        xAxis: { title: 'Years' },
+        yAxis: { title: 'Consumption' },
+        keys: ['Line 1', 'Line 2'],
+    }
+
+    const chart = select('#chart')
+        .append('div')
+        .datum(chartWindowLineData(chartData))
+        .call(chartWindowLineRender)
+        .call(chartWindowLineAutoResize)
+        .on('resize', () => {
+            const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
+            const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
+
+            chartData.title = mediumWidth ? "Electric power consumption (kWh per capita)" : 'Power Consumption (kWh)';
+
+            const priceTickFormat = largeWidth ? format(',') : format('.2s');
+            chartData.yAxis.configureAxis = (axis) => axis.tickFormat(priceTickFormat);
+            console.log(largeWidth)
+            const yearTickFormat = largeWidth ? (v) => v : (v) => `'${v.slice(-2)}`;
+            chartData.xAxis.configureAxis = (axis) => axis.tickFormat(yearTickFormat);
+
+            chart.datum(chartWindowLineData(chartData)).call(chartWindowLineRender);
+        })
+</script>
+</body>
+</html>

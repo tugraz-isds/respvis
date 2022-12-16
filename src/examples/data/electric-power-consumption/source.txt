@@ -1,0 +1,2 @@
+Source: https://data.worldbank.org/indicator/EG.USE.ELEC.KH.PC?locations=Z4&view=chart
+Terms and Conditions: https://www.iea.org/terms
