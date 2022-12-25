@@ -42,8 +42,13 @@ async function bundleJS() {
     { extension: 'min.mjs', format: 'es', plugins: gzPlugins },
   ];
 
-  return Promise.all(
-    writeConfigurations.map((c) =>
+  const writeConfigurationsModuleInJs = [
+    { extension: 'js', format: 'es', plugins: [] },
+    { extension: 'min.js', format: 'es', plugins: minPlugins },
+    { extension: 'min.js', format: 'es', plugins: gzPlugins },
+  ]
+
+  const standardOutput = writeConfigurations.map((c) =>
       bundle.write({
         file: `dist/respvis.${c.extension}`,
         format: c.format,
@@ -51,7 +56,20 @@ async function bundleJS() {
         plugins: c.plugins,
         sourcemap: true,
       })
-    )
+  )
+
+  const moduleInJsOutput = writeConfigurationsModuleInJs.map((c) =>
+      bundle.write({
+        file: `dist/moduleInJs/respvis.${c.extension}`,
+        format: c.format,
+        name: 'respVis',
+        plugins: c.plugins,
+        sourcemap: true,
+      })
+  )
+
+  return Promise.all(
+      [...standardOutput, moduleInJsOutput]
   );
 }
 
