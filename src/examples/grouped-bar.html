@@ -45,7 +45,6 @@
     <h1>Grouped Bar Chart</h1>
 
     <div id="chart"></div>
-    <script src="./vendor/d3.v7.js"></script>
     <script type="module">
       import {
         chartWindowBarGroupedData,
@@ -55,6 +54,7 @@
       } from '../moduleInJs/respvis.js';
 
       import { sites, revenues, years } from './data/company.js';
+      import * as d3 from './vendor/d3-7.6.0/d3.js'
 
       const data = {
         categoryEntity: 'Sites',

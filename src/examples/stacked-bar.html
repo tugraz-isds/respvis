@@ -39,7 +39,6 @@
     <h1>Stacked Bar Chart</h1>
 
     <div id="chart"></div>
-    <script src="./vendor/d3.v7.js"></script>
     <script type="module">
       import {
         chartWindowBarStackedData,
@@ -48,6 +47,7 @@
         chartWindowBarStackedAutoFilterSubcategories,
       } from '../moduleInJs/respvis.js';
       import { years, desktop, phone, tablet, platforms } from './data/desktop-phone-tablet.js';
+      import * as d3 from './vendor/d3-7.6.0/d3.js'
 
       const shares = desktop.map((d, i) => [desktop[i], phone[i], tablet[i]]);
 

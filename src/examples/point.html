@@ -34,10 +34,11 @@
   <body>
     <h1>Point Chart</h1>
     <div id="chart"></div>
-    <script src="./vendor/d3.v7.js"></script>
     <script type="module">
       import { chartWindowPointData, chartWindowPointRender, rectFromString } from '../moduleInJs/respvis.js';
       import { areas, prices } from './data/houses.js';
+      import * as d3 from './vendor/d3-7.6.0/d3.js'
+
 
       const areaScale = d3
         .scaleLinear()

@@ -12,7 +12,7 @@
             min-height: 25rem;
         }
 
-        .label {
+        .series-label .label {
             display: none;
         }
 
@@ -52,7 +52,6 @@
 
     import data from './data/electric-power-consumption/electricPowerConsumption.js'
 
-    console.log(data)
     const usaData = data.filter(obj => obj["Country Name"] === "United States")[0]
     const europeData = data.filter(obj => obj["Country Name"] === "European Union")[0]
     const asiaData = data.filter(obj => obj["Country Name"] === "East Asia & Pacific")[0]
@@ -69,22 +68,27 @@
     // console.table(yEurope)
 
 
-        // const chartWindowData = {
-    //     categoryEntity: 'Cities',
-    //     categories: data.cities,
-    //     values: data.populations,
-    //     tooltips: (_, { category, value }) => `City: ${category}<br/>Population: ${value}`,
-    //     xAxis: { title: 'City' },
-    //     yAxis: { title: 'Population', configureAxis: (axis) => axis.tickFormat(d3.format('.2s')) },
-    //     labels: {},
-    // };
+        const chartWindowData = {
+        categoryEntity: 'Cities',
+        categories: data.cities,
+        values: data.populations,
+        tooltips: (_, { category, value }) => `City: ${category}<br/>Population: ${value}`,
+        xAxis: { title: 'City' },
+        yAxis: { title: 'Population', configureAxis: (axis) => axis.tickFormat(d3.format('.2s')) },
+        labels: {},
+    };
 
     const chartData = {
         xValues: xValues,
-        yValues: [yUSA, yEurope, yAsia],
+        yValues: [yAsia, yUSA, yEurope],
         xAxis: { title: 'Years' },
         yAxis: { title: 'Consumption' },
-        keys: ['Line 1', 'Line 2'],
+        legend: {
+            title: 'Legend',
+            keys: ['East Asia', 'USA', 'Europe'],
+            labels: ['East Asia', 'USA', 'Europe']
+        }
+
     }
 
     const chart = select('#chart')
