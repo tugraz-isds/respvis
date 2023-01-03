@@ -1,0 +1,52 @@
+.chart-container {
+  width: 100%;
+  height: 25rem;
+}
+
+body {
+  background-color: floralwhite;
+  margin: 3rem auto 0 auto;
+  padding: 0 1rem;
+}
+
+h1 {
+  text-align: center;
+}
+
+.grid-article {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-flow: dense;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.article {
+  padding: 1rem;
+  border-right: 1px solid #DADCE0;
+  border-bottom: 1px solid #DADCE0;
+}
+
+@media (min-width: 750px) {
+  .grid-article {
+    grid-template-columns: minmax(450px, 1.5fr) repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+.chart {
+  padding-top: 0;
+}
+
+@media (max-width: 40rem) {
+  .chart {
+    grid-template: auto auto 1fr auto/auto 1fr;
+    grid-template-areas: "header header" ". legend" "axis-left draw-area" ". axis-bottom";
+  }
+  .legend .items {
+    flex-direction: row;
+  }
+  .axis-y .tick:nth-of-type(2n) {
+    display: none;
+  }
+}
+
+/*# sourceMappingURL=styles.css.map */
