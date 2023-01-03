@@ -1,0 +1,19 @@
+@media (max-width: 40rem) {
+  #market-shares-chart .chart {
+    grid-template: auto auto 1fr auto/auto 1fr;
+    grid-template-areas: "header header" ". legend" "axis-left draw-area" ". axis-bottom";
+  }
+  #market-shares-chart .legend .items {
+    flex-direction: row;
+  }
+  #market-shares-chart .axis-y .tick:nth-of-type(2n) {
+    display: none;
+  }
+}
+@media (max-width: 400px) {
+  #market-shares-chart .point, #market-shares-chart .axis {
+    display: none;
+  }
+}
+
+/*# sourceMappingURL=market-shares.css.map */
