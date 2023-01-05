@@ -16,11 +16,15 @@
             display: none;
         }
 
+        .legend {
+            margin-left: 2rem;
+        }
+
         .legend-item {
             margin-top: 1rem;
         }
 
-        @media (max-width: 400px) {
+        @media (max-width: 25em) {
             .point, .axis {
                 display: none;
             }
@@ -30,7 +34,7 @@
             }
         }
 
-        @media (max-width: 700px) {
+        @media (max-width: 43.75em) {
             .chart {
                 grid-template: auto auto 1fr auto / auto 1fr auto;
                 grid-template-areas: 'header  header  header' 'legend legend legend' 'axis-left draw-area draw-area' ' . axis-bottom . ';
@@ -38,6 +42,8 @@
 
             .legend {
                 width: 100%;
+                margin-bottom: 2rem;
+                margin-left: 0.5rem;
             }
             .legend .items {
                 flex-direction: row;
@@ -46,7 +52,7 @@
             }
         }
 
-        @media (max-width: 700px) and (min-width: 400px) {
+        @media (max-width: 43.75em) and (min-width: 25em) {
             .point, .axis-x .tick {
                 display: none;
             }
@@ -56,7 +62,7 @@
 
         }
 
-        @media (min-width: 700px) {
+        @media (min-width: 43.75em) {
             .point, .axis-x .tick {
                 display: none;
             }
@@ -130,16 +136,16 @@
         .call(chartWindowLineRender)
         .call(chartWindowLineAutoResize)
         .on('resize', () => {
-            const mediumWidth = window.matchMedia('(min-width: 400px)').matches && window.matchMedia('(min-width: 400px)').matches;
-            const largeWidth = window.matchMedia('(min-width: 700px)').matches;
-            const minWidth = window.matchMedia('(max-width: 400px)').matches;
+            const mediumWidth = window.matchMedia('(min-width: 25em)').matches;
+            const largeWidth = window.matchMedia('(min-width: 43.5em)').matches;
+            const minWidth = window.matchMedia('(max-width: 25em)').matches;
 
             chartData.title = largeWidth ? "Electric power consumption (kWh per capita)" : 'Power Consumption (kWh)';
             chartData.title = mediumWidth ? chartData.title : 'Pow. Cons. (kWh)'
 
             const priceTickFormat = largeWidth ? format(',') : format('.2s');
             chartData.yAxis.configureAxis = (axis) => axis.tickFormat(priceTickFormat);
-            const yearTickFormat = window.matchMedia('(min-width: 900px)').matches ? (v) => v : (v) => `'${v.slice(-2)}`;
+            const yearTickFormat = window.matchMedia('(min-width: 56.25em)').matches ? (v) => v : (v) => `'${v.slice(-2)}`;
             chartData.xAxis.configureAxis = (axis) => axis.tickFormat(yearTickFormat);
 
             chart.datum(chartWindowLineData(chartData)).call(chartWindowLineRender);

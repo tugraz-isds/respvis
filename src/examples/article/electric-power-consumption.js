@@ -40,9 +40,9 @@ const chart = select('#electric-power-consumption')
     .call(chartWindowLineAutoResize)
     .on('resize', () => {
 
-        const mediumWidth = window.matchMedia('(min-width: 400px)').matches && window.matchMedia('(min-width: 400px)').matches;
-        const largeWidth = window.matchMedia('(min-width: 700px)').matches;
-        const minWidth = window.matchMedia('(max-width: 400px)').matches;
+        const mediumWidth = window.matchMedia('(min-width: 25em)').matches && window.matchMedia('(min-width: 25em)').matches;
+        const largeWidth = window.matchMedia('(min-width: 43.5em)').matches;
+        const minWidth = window.matchMedia('(max-width: 25em)').matches;
 
         chartData.title = chooseTitle()
 
@@ -57,8 +57,8 @@ const chooseTitle = () => {
     const smallTitle = 'Pow. Cons.'
     const middleTitle = 'Power Consumption (kWh)'
     const largeTitle = 'Electric power consumption (kWh per capita)'
-    if (window.matchMedia('(max-width: 440px)').matches ||
-        window.matchMedia('(min-width: 1100px)').matches) return smallTitle
+    if (window.matchMedia('(max-width: 27.5em)').matches ||
+        window.matchMedia('(min-width: 68.75em)').matches) return smallTitle
     // if (window.matchMedia('(min-width: 600px)').matches) return largeTitle
     return middleTitle
 }

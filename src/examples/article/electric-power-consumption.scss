@@ -13,16 +13,6 @@
     margin-top: 1rem;
   }
 
-  @media (max-width: 400px) {
-    .point, .axis {
-      display: none;
-    }
-
-    .point:first-of-type, .point:last-of-type {
-      display: block;
-    }
-  }
-
   .chart {
     grid-template: auto auto 1fr auto / auto 1fr auto;
     grid-template-areas: 'header  header  header' 'legend legend legend' 'axis-left draw-area draw-area' ' . axis-bottom . ';
@@ -30,20 +20,35 @@
 
   .legend {
     width: 100%;
+    margin-bottom: 1rem;
+    margin-left: 0.5rem;
   }
   .legend .items {
     flex-direction: row;
     width: 100%;
     justify-content: space-evenly;
   }
+}
 
-  @media (min-width: 400px) {
+@media (min-width: 25em) {
+  #electric-power-consumption {
     .point, .axis-x .tick, .axis-y .tick {
       display: none;
     }
     .point:nth-of-type(5n), .axis-x .tick:nth-of-type(5n), .axis-y .tick:nth-of-type(2n) {
       display: block;
     }
+  }
+}
 
+@media (max-width: 25em) {
+  #electric-power-consumption {
+    .point, .axis {
+      display: none;
+    }
+
+    .point:first-of-type, .point:last-of-type {
+      display: block;
+    }
   }
 }
