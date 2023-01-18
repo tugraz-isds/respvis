@@ -102,7 +102,7 @@
           const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
           const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
 
-          data.title = mediumWidth ? 'Average Open Prices of Google Stock' : 'Google Stock Prices';
+          data.title = mediumWidth ? 'Average Opening Price of Google Stock' : 'Google Stock Prices';
 
           const priceTickFormat = largeWidth ? d3.format(',') : d3.format('.2s');
           data.yAxis.configureAxis = (axis) => axis.tickFormat(priceTickFormat);
