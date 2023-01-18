@@ -1,9 +1,9 @@
-import { select, format} from '../vendor/d3-7.6.0/d3.js'
+import { select, format} from '../libs/d3-7.6.0/d3.js'
 import {
     chartWindowLineData,
     chartWindowLineRender,
     chartWindowLineAutoResize,
-} from '../../moduleInJs/respvis.js'
+} from '../libs/respvis/respvis.js';
 
 import data from '../data/electric-power-consumption/electricPowerConsumption.js'
 

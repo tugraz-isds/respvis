@@ -33,44 +33,29 @@ async function bundleJS() {
 
   const minPlugins = [rollupTerser()];
   const gzPlugins = [rollupTerser(), rollupGzip()];
-  const writeConfigurations = [
-    { extension: 'js', format: 'iife', plugins: [] },
-    { extension: 'min.js', format: 'iife', plugins: minPlugins },
-    { extension: 'min.js', format: 'iife', plugins: gzPlugins },
-    { extension: 'mjs', format: 'es', plugins: [] },
-    { extension: 'min.mjs', format: 'es', plugins: minPlugins },
-    { extension: 'min.mjs', format: 'es', plugins: gzPlugins },
-  ];
 
-  const writeConfigurationsModuleInJs = [
-    { extension: 'js', format: 'es', plugins: [] },
-    { extension: 'min.js', format: 'es', plugins: minPlugins },
-    { extension: 'min.js', format: 'es', plugins: gzPlugins },
-  ]
+  function write(props) {
+      const {format, location = `dist/respvis/${format}`} = props
+      const writeConfigurationsIIFE = [
+          { extension: 'js', plugins: [] },
+          { extension: 'min.js', plugins: minPlugins },
+          { extension: 'min.js', plugins: gzPlugins },
+      ];
+      return writeConfigurationsIIFE.map((c) =>
+          bundle.write({
+              file:`${location}/respvis.${c.extension}`,
+              format: c.format,
+              name: 'respVis',
+              plugins: c.plugins,
+              sourcemap: true,
+          })
+      )
+  }
 
-  const standardOutput = writeConfigurations.map((c) =>
-      bundle.write({
-        file: `dist/respvis.${c.extension}`,
-        format: c.format,
-        name: 'respVis',
-        plugins: c.plugins,
-        sourcemap: true,
-      })
-  )
-
-  const moduleInJsOutput = writeConfigurationsModuleInJs.map((c) =>
-      bundle.write({
-        file: `dist/moduleInJs/respvis.${c.extension}`,
-        format: c.format,
-        name: 'respVis',
-        plugins: c.plugins,
-        sourcemap: true,
-      })
-  )
-
-  return Promise.all(
-      [...standardOutput, moduleInJsOutput]
-  );
+  return Promise.all([
+      write({format: 'iife'}), write({format: 'es'}),
+      write({format: 'cjs'}), write({format: 'es', location: `dist/examples/libs/respvis`})
+  ]);
 }
 
 function bundleCSS() {

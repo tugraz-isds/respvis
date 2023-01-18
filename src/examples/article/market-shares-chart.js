@@ -3,9 +3,9 @@ import {
     chartWindowBarStackedRender,
     chartWindowBarStackedAutoFilterCategories,
     chartWindowBarStackedAutoFilterSubcategories,
-} from '../../moduleInJs/respvis.js';
+} from '../libs/respvis/respvis.js';
 import { years, desktop, phone, tablet, platforms } from '../data/desktop-phone-tablet.js';
-import * as d3 from '../vendor/d3-7.6.0/d3.js'
+import * as d3 from '../libs/d3-7.6.0/d3.js'
 
 const shares = desktop.map((d, i) => [desktop[i], phone[i], tablet[i]]);
 

@@ -80,12 +80,12 @@
 <h1>Mutli-Line Chart</h1>
 <div id="chart"></div>
 <script type="module">
-    import { select, format} from './vendor/d3-7.6.0/d3.js'
+    import { select, format} from './libs/d3-7.6.0/d3.js'
     import {
         chartWindowLineData,
         chartWindowLineRender,
         chartWindowLineAutoResize,
-    } from '../moduleInJs/respvis.js'
+    } from './libs/respvis/respvis.js';
 
     import data from './data/electric-power-consumption/electricPowerConsumption.js'
 
