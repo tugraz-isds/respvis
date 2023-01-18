@@ -19,16 +19,16 @@ const yAsia= xValues.map(year => asiaData[year])
 
 const chartData = {
     xValues: xValues,
-    yValues: [yAsia, yUSA, yEurope],
-    xAxis: { title: 'Years' },
+    yValues: [yUSA, yEurope, yAsia],
+    xAxis: { title: 'Year' },
     yAxis: { title: 'Consumption' },
     markerTooltips: {
         tooltips: (_, { xValue, yValue }) => `Year: ${xValue}<br/>Pow. Consumption: ${yValue}kWh`
     },
     legend: {
         title: 'Legend',
-        keys: ['East Asia', 'USA', 'Europe'],
-        labels: ['East Asia', 'USA', 'Europe'],
+        keys: ['USA', 'Europe', 'East Asia'],
+        labels: ['USA', 'Europe', 'East Asia'],
     }
 
 }
@@ -40,9 +40,9 @@ const chart = select('#electric-power-consumption')
     .call(chartWindowLineAutoResize)
     .on('resize', () => {
 
-        const mediumWidth = window.matchMedia('(min-width: 25em)').matches && window.matchMedia('(min-width: 25em)').matches;
-        const largeWidth = window.matchMedia('(min-width: 43.5em)').matches;
-        const minWidth = window.matchMedia('(max-width: 25em)').matches;
+        const mediumWidth = window.matchMedia('(min-width: 25rem)').matches && window.matchMedia('(min-width: 25rem)').matches;
+        const largeWidth = window.matchMedia('(min-width: 43.5rem)').matches;
+        const minWidth = window.matchMedia('(max-width: 25rem)').matches;
 
         chartData.title = chooseTitle()
 
@@ -57,14 +57,14 @@ const chooseTitle = () => {
     const smallTitle = 'Pow. Cons.'
     const middleTitle = 'Power Consumption (kWh)'
     const largeTitle = 'Electric power consumption (kWh per capita)'
-    if (window.matchMedia('(max-width: 27.5em)').matches ||
-        window.matchMedia('(min-width: 68.75em)').matches) return smallTitle
-    // if (window.matchMedia('(min-width: 600px)').matches) return largeTitle
+    if (window.matchMedia('(max-width: 27.5rem)').matches ||
+        window.matchMedia('(min-width: 77rem)').matches) return smallTitle
     return middleTitle
 }
 
 const chooseXTickFormat = () => {
-    if (window.matchMedia('(min-width: 550px)').matches &&
-        window.matchMedia('(max-width: 700px)').matches) return (v) => v
-    return (v) => `'${v.slice(-2)}`
+    const firstChange = window.matchMedia('(max-width: 56.25rem)').matches && window.matchMedia('(min-width: 52rem)').matches
+    const secondChange = window.matchMedia('(max-width: 30rem)').matches
+    if (firstChange || secondChange) return (v) => `'${v.slice(-2)}`
+    return (v) => v
 }

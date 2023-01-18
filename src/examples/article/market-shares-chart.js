@@ -41,9 +41,9 @@ const chartWindow = d3
     .call(chartWindowBarStackedAutoFilterCategories(data))
     .call(chartWindowBarStackedAutoFilterSubcategories(data))
     .on('resize', function (e, d) {
-        const hasSmallTitle = window.matchMedia('(max-width: 27.5em)').matches
-        const mediumWidth = window.matchMedia('(min-width: 40em)').matches;
-        const largeWidth = window.matchMedia('(min-width: 60em)').matches;
+        const hasSmallTitle = window.matchMedia('(max-width: 27.5rem)').matches
+        const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
+        const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
 
         data.flipped = chooseDataFlipped()
         data.legend.title = mediumWidth ? 'Platforms' : ''
@@ -55,8 +55,9 @@ const chartWindow = d3
     });
 
 const chooseDataFlipped = () => {
-    // if (window.matchMedia('(min-width: 25em)').matches &&
-    //     window.matchMedia('(max-width: 37.5em)').matches) return true
-    if (window.matchMedia('(max-width: 31.25em)').matches ) return true
+    // if (window.matchMedia('(min-width: 25rem)').matches &&
+    //     window.matchMedia('(max-width: 37.5rem)').matches) return true
+    const firstChange = window.matchMedia('(min-width: 77rrem)').matches
+    if (firstChange || window.matchMedia('(max-width: 31.25rem)').matches ) return true
     return false
 }

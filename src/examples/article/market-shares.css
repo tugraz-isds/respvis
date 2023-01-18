@@ -10,7 +10,7 @@
     display: none;
   }
 }
-@media (max-width: 25em) {
+@media (max-width: 25rem) {
   #market-shares-chart .point, #market-shares-chart .axis {
     display: none;
   }
