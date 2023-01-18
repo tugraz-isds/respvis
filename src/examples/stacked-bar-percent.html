@@ -28,7 +28,7 @@
         chartWindowBarStackedAutoFilterCategories,
         chartWindowBarStackedAutoFilterSubcategories,
         chartWindowBarStackedAutoResize,
-      } from './libs/respvis/respvis.js';;
+      } from './libs/respvis/respvis.js';
 
       select('#chart')
         .append('div')
@@ -44,7 +44,7 @@
             valuesAsRatios: true,
             xAxis: { title: 'Category' },
             yAxis: { title: 'Percent' },
-            legend: { title: 'Subcategories' },
+            legend: { title: 'Subcategories', reverse: true },
           })
         )
         .call(chartWindowBarStackedRender)

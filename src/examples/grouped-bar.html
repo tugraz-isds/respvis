@@ -63,7 +63,7 @@
         subcategories: years,
         values: revenues,
         labels: { labels: revenues.flat().map((r) => d3.format('.2s')(r)) },
-        legend: { title: 'Years' },
+        legend: { title: 'Year' },
         tooltips: (e, { category, subcategory, value }) =>
           `Site: ${category}<br/>Year: ${subcategory}<br/>Revenue: $${d3.format(',')(value)}`,
         xAxis: {

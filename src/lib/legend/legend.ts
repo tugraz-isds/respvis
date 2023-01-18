@@ -21,6 +21,7 @@ export interface Legend {
     | ((symbol: SVGPathElement, size: Size) => void)
     | ((symbol: SVGPathElement, size: Size) => void)[];
   styleClasses: string | string[];
+  reverse?: boolean;
   keys?: string[];
 }
 
@@ -29,6 +30,7 @@ export function legendData(data: Partial<Legend>): Legend {
   return {
     title: data.title || '',
     labels,
+    reverse: data.reverse,
     styleClasses: data.styleClasses || labels.map((l, i) => `categorical-${i}`),
     symbols: data.symbols || ((e, s) => pathRect(e, rectFromSize(s))),
     keys: data.keys,
@@ -36,9 +38,8 @@ export function legendData(data: Partial<Legend>): Legend {
 }
 
 export function legendCreateItems(legendData: Legend): LegendItem[] {
-  const { labels, styleClasses, symbols, keys } = legendData;
-
-  return labels.map((l, i) => {
+  const { labels, styleClasses, symbols, keys, reverse } = legendData;
+  const items = labels.map((l, i) => {
     return {
       label: l,
       styleClass: arrayIs(styleClasses) ? styleClasses[i] : styleClasses,
@@ -46,6 +47,7 @@ export function legendCreateItems(legendData: Legend): LegendItem[] {
       key: keys === undefined ? l : keys[i],
     };
   });
+  return reverse ? items.reverse() : items
 }
 
 export function legendRender(selection: Selection<Element, Legend>): void {
