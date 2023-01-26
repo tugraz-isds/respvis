@@ -1,11 +1,11 @@
-import { select, format} from '../libs/d3-7.6.0/d3.js'
+import { select, format} from '../../libs/d3-7.6.0/d3.js'
 import {
     chartWindowLineData,
     chartWindowLineRender,
     chartWindowLineAutoResize,
-} from '../libs/respvis/respvis.js';
+} from '../../libs/respvis/respvis.js';
 
-import data from '../data/electric-power-consumption/electricPowerConsumption.js'
+import data from '../../data/electric-power-consumption/electricPowerConsumption.js'
 
 const usaData = data.filter(obj => obj["Country Name"] === "United States")[0]
 const europeData = data.filter(obj => obj["Country Name"] === "European Union")[0]

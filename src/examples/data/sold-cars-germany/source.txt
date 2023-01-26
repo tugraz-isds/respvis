@@ -1,0 +1,6 @@
+Source: https://www.kaggle.com/datasets/ander289386/cars-germany?resource=download
+License: https://creativecommons.org/publicdomain/zero/1.0/
+
+Edits:
+
+Filtered out randomly 500 cars from 46 405 cars.

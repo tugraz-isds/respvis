@@ -1,0 +1,501 @@
+mileage,make,model,fuel,gear,offerType,price,hp,year
+11800,Skoda,Scala,Gasoline,Automatic,Demonstration,19780,150,2019
+50,Mercedes-Benz,E 220,Diesel,Automatic,Pre-registered,55950,194,2021
+41149,Mercedes-Benz,A 200,Gasoline,Automatic,Used,22750,156,2016
+2500,Renault,Twingo,Gasoline,Manual,Demonstration,9990,73,2020
+64100,Ford,B-Max,Gasoline,Manual,Used,11500,125,2017
+40206,Volkswagen,Golf Plus,Gasoline,Manual,Used,8000,122,2013
+4290,BMW,420,Gasoline,Automatic,Used,32950,184,2020
+91000,Dacia,Lodgy,Diesel,Manual,Used,6800,107,2012
+28500,Audi,A3,Gasoline,Manual,Used,15200,140,2014
+200000,Skoda,Superb,Diesel,Automatic,Used,11200,140,2012
+176000,Suzuki,Swift,Diesel,Manual,Used,4200,75,2011
+21162,Volkswagen,Polo,Gasoline,Manual,Used,10794,75,2016
+32000,smart,forTwo,Electric,,Used,8200,48,2015
+79785,Volkswagen,Golf,Gasoline,Automatic,Used,21890,179,2018
+50200,Hyundai,i20,Gasoline,Manual,Used,9450,75,2019
+241000,Audi,A3,Gasoline,Manual,Used,4500,125,2011
+134602,Opel,Astra,Diesel,Manual,Used,7750,136,2016
+11990,MINI,John Cooper Works,Gasoline,Automatic,Used,36940,231,2020
+10,Fiat,Panda,Gasoline,Manual,Pre-registered,9220,69,2020
+58747,Opel,Astra,Diesel,Manual,Used,12580,110,2019
+105778,Opel,Astra,Gasoline,Manual,Used,8300,140,2013
+102442,Hyundai,i30,Diesel,Manual,Used,10950,110,2016
+26011,smart,forFour,Gasoline,Automatic,Used,13250,90,2019
+12300,Ford,C-Max,Gasoline,Manual,Used,20990,150,2019
+10,Dacia,Duster,LPG,Manual,Pre-registered,16350,101,2021
+166825,Dodge,RAM,LPG,Automatic,Used,34999,401,2015
+23200,Volkswagen,up!,Gasoline,Manual,Used,10790,60,2019
+136400,Volkswagen,Arteon,Diesel,Automatic,Used,28500,239,2018
+81104,Jaguar,XF,Diesel,Automatic,Used,29975,300,2018
+2264,Ford,Fiesta,Gasoline,Manual,Employee's car,21450,155,2020
+5870,Fiat,500C,Gasoline,Manual,Used,11980,69,2019
+46328,Toyota,Auris,Gasoline,Manual,Used,9990,132,2013
+64500,Mercedes-Benz,SL 500,Gasoline,Automatic,Used,56950,435,2014
+168055,Ford,C-Max,Gasoline,Manual,Used,5950,105,2012
+29830,Ford,Fiesta,Gasoline,Manual,Used,9500,60,2017
+76108,Volkswagen,,Diesel,Manual,Used,26900,102,2016
+125343,Mercedes-Benz,,Electric/Gasoline,Automatic,Used,29990,211,2017
+215334,Opel,Insignia,Diesel,Manual,Used,6880,120,2016
+94217,Volkswagen,Sharan,Diesel,Manual,Used,21400,184,2017
+18950,Fiat,500C,Gasoline,Manual,Used,9890,86,2016
+17061,smart,forTwo,Electric,Automatic,Used,12678,56,2019
+134000,Skoda,Octavia,Diesel,Automatic,Used,11980,150,2013
+10,Citroen,C1,Gasoline,Manual,Pre-registered,11349,72,2021
+4000,Renault,Twingo,Gasoline,Manual,Demonstration,12260,65,2021
+81700,Volkswagen,Tiguan,Diesel,Automatic,Used,19380,150,2017
+129000,Opel,Zafira,Diesel,Manual,Used,6000,110,2012
+34138,BMW,118,Gasoline,Automatic,Used,14950,136,2015
+51826,Volkswagen,Golf Variant,Diesel,Automatic,Used,17450,116,2019
+50142,Hyundai,i10,Gasoline,Manual,Used,7490,87,2015
+57000,Renault,Clio,Gasoline,Manual,Used,7400,73,2015
+96000,Audi,A3,Gasoline,Manual,Used,9999,105,2012
+13756,Nissan,Micra,Gasoline,Manual,Used,13480,71,2019
+74000,Renault,Megane,Diesel,Manual,Used,8480,110,2015
+22300,Alfa,Romeo Stelvio,Gasoline,Automatic,Used,36450,280,2018
+124000,BMW,120,Diesel,Manual,Used,9999,184,2013
+4120,Mercedes-Benz,C 200,Gasoline,Automatic,Demonstration,39670,184,2021
+33000,Fiat,500C,Gasoline,Manual,Used,9000,69,2014
+85095,Volkswagen,Golf Variant,Gasoline,Manual,Used,13970,125,2015
+25000,Mercedes-Benz,GLA 180,Gasoline,Manual,Used,22880,122,2020
+39998,SEAT,Mii,Gasoline,Manual,Used,6443,60,2017
+27351,Skoda,Superb,Diesel,Automatic,Used,28969,190,2020
+20000,Ford,Fiesta,Gasoline,Manual,Used,8995,71,2019
+39851,Volkswagen,Touran,Gasoline,Automatic,Used,22449,150,2019
+56000,Volkswagen,up!,Gasoline,Manual,Used,6450,60,2016
+31850,Hyundai,i20,Gasoline,Manual,Used,9790,75,2018
+3800,Opel,Adam,Gasoline,Manual,Used,9990,69,2018
+180000,Opel,Astra,Diesel,Manual,Used,5750,165,2012
+180936,Opel,Astra,Diesel,Manual,Used,6280,110,2017
+55608,Skoda,Rapid/Spaceback,Gasoline,Manual,Used,6500,86,2013
+40327,Ford,C-Max,Gasoline,Manual,Used,15899,125,2019
+79956,Opel,Mokka,Gasoline,Manual,Used,11350,116,2014
+9682,BMW,220,Diesel,Automatic,Used,29440,190,2019
+119500,Volkswagen,Golf,Gasoline,Manual,Used,7550,122,2012
+142600,Peugeot,508,Diesel,Manual,Used,6440,140,2012
+21000,smart,forTwo,Gasoline,Automatic,Used,12665,90,2019
+23800,Audi,A8,Diesel,Automatic,Used,39650,262,2017
+56770,BMW,X1,Gasoline,Automatic,Used,23860,140,2018
+54068,Renault,ZOE,Electric,Automatic,Used,7990,92,2015
+125550,BMW,116,Gasoline,Manual,Used,8900,136,2013
+88204,Ford,Focus,Gasoline,Manual,Used,8740,86,2017
+54894,Mercedes-Benz,C 200,Gasoline,Automatic,Used,19650,184,2014
+157607,Skoda,Superb,Gasoline,Manual,Used,6990,125,2011
+185051,Mercedes-Benz,E 200,Diesel,Manual,Used,9700,136,2011
+64390,SEAT,Ibiza,Gasoline,Manual,Used,8930,90,2015
+15736,Ford,S-Max,Diesel,Automatic,Employee's car,34669,190,2020
+47000,Dacia,Sandero,Gasoline,Manual,Used,6999,73,2019
+81122,Skoda,Octavia,Gasoline,Manual,Used,10800,140,2015
+62514,smart,forTwo,Gasoline,Automatic,Used,6358,71,2014
+23500,MINI,One,Gasoline,Manual,Used,13350,102,2018
+79450,BMW,330,Gasoline,Automatic,Used,25449,252,2017
+31862,Volkswagen,Golf,Gasoline,Automatic,Used,20975,220,2017
+55600,Mercedes-Benz,SLK 200,Gasoline,Manual,Used,17990,184,2011
+63210,Mercedes-Benz,C 250,Gasoline,Automatic,Used,16990,204,2011
+12987,Kia,Venga,Gasoline,Manual,Used,8390,125,2013
+117660,Citroen,C4,Gasoline,Manual,Used,7980,131,2015
+21700,Ford,Ka/Ka+,Gasoline,Manual,Used,4800,69,2012
+25632,BMW,Z4,Gasoline,Automatic,Used,39440,197,2020
+10,Volkswagen,Caddy,Diesel,Automatic,Used,39990,122,2021
+99900,Mercedes-Benz,A 180,Gasoline,Manual,Used,11870,122,2012
+9700,smart,forTwo,Gasoline,Automatic,Used,12500,84,2015
+36000,Opel,Corsa,Gasoline,Manual,Used,8999,90,2015
+79957,Alfa,Romeo Giulietta,Gasoline,Manual,Used,12990,120,2017
+100,Renault,Twingo,Gasoline,Manual,Demonstration,12480,65,2021
+25979,Volkswagen,Golf Sportsvan,Gasoline,Automatic,Used,18690,110,2018
+85000,BMW,116,Diesel,Automatic,Used,15500,116,2014
+4500,Hyundai,i30,Gasoline,Automatic,Demonstration,29690,159,2020
+151000,BMW,325,Diesel,Automatic,Used,13999,204,2011
+57830,Hyundai,i20,Gasoline,Automatic,Used,7990,86,2014
+10,Opel,Corsa,Gasoline,Manual,Pre-registered,15487,75,2021
+204000,Hyundai,Santa Fe,Diesel,Manual,Used,11300,197,2012
+54980,Volkswagen,Golf Sportsvan,Gasoline,Manual,Used,13490,110,2015
+13000,Ford,Focus,Gasoline,Manual,Used,28990,280,2020
+93500,Mazda,2,Gasoline,Manual,Used,6950,75,2015
+63900,Suzuki,Swift,Gasoline,Manual,Used,6980,94,2015
+25860,Mitsubishi,Outlander,Diesel,Automatic,Demonstration,26980,150,2017
+72376,Volkswagen,Polo,Gasoline,Manual,Used,10950,90,2017
+39500,Opel,Adam,Gasoline,Manual,Used,7400,69,2016
+29990,Ford,Edge,Diesel,Automatic,Used,29950,209,2018
+123000,Ford,Mondeo,Gasoline,Manual,Used,7990,160,2012
+107900,Volkswagen,Tiguan,Diesel,Manual,Used,21240,150,2019
+30000,Ford,B-Max,Gasoline,Manual,Used,11399,101,2017
+118867,Volkswagen,Golf,Gasoline,Manual,Used,6250,105,2011
+31500,Volkswagen,Tiguan,Gasoline,Manual,Used,19750,150,2016
+124746,Volvo,V40,Diesel,Automatic,Used,9990,150,2013
+167000,Volkswagen,Jetta,Gasoline,Manual,Used,5800,105,2011
+37908,Volkswagen,Golf,Gasoline,Manual,Used,13455,86,2017
+110702,Volkswagen,Golf,Gasoline,Manual,Used,8350,86,2014
+107772,Volkswagen,Polo,Gasoline,Manual,Used,6900,60,2014
+61979,Volkswagen,Touareg,Diesel,Automatic,Used,33422,262,2017
+16285,Audi,RS5,Gasoline,Automatic,Used,72990,450,2018
+172097,Hyundai,i30,Diesel,Manual,Used,7490,110,2014
+125000,Ford,Focus,Diesel,Manual,Used,6460,116,2014
+99305,Mercedes-Benz,CLA 220,Diesel,Automatic,Used,25900,177,2018
+28000,Kia,Stonic,Gasoline,Manual,Used,13950,101,2018
+112400,Audi,A1,Gasoline,Manual,Used,9890,95,2015
+89999,Toyota,Aygo,Gasoline,Manual,Used,5500,69,2015
+131990,Audi,A5,Diesel,Automatic,Used,18990,190,2015
+10,Toyota,Aygo,Gasoline,Manual,Pre-registered,10990,72,2021
+59150,Ford,Ka/Ka+,Gasoline,Manual,Used,4850,69,2012
+1000,Polestar,2,Electric,Automatic,Used,59980,408,2021
+128680,Mercedes-Benz,C 220,Diesel,Automatic,Used,21700,170,2016
+41500,Fiat,Tipo,Gasoline,Manual,Used,8500,95,2016
+160000,Ford,Mondeo,Diesel,Manual,Used,8900,163,2014
+115900,Opel,Astra,Diesel,Manual,Used,6750,110,2015
+64000,Ford,Focus,Gasoline,Manual,Used,8950,125,2014
+98407,Renault,Clio,Gasoline,Manual,Used,6800,90,2014
+18459,Volkswagen,Golf GTI,Gasoline,Automatic,Used,28960,245,2018
+50,Kia,Picanto,Gasoline,Manual,Pre-registered,14250,67,2021
+244400,Ford,C-Max,Gasoline,Manual,Used,3900,125,2015
+21000,SEAT,Leon,Gasoline,Automatic,Used,29450,300,2019
+37600,BMW,550,Diesel,Automatic,Used,53700,400,2018
+15988,Ford,Focus,Gasoline,Manual,Used,17450,101,2020
+82849,SEAT,Leon,Gasoline,Manual,Used,10990,110,2016
+94000,SEAT,Leon,Diesel,Automatic,Used,8950,105,2013
+60891,Dacia,Sandero,Gasoline,Manual,Used,4290,75,2013
+367000,Toyota,Auris,Electric/Gasoline,Automatic,Used,7300,99,2015
+61821,Dacia,Sandero,Gasoline,Manual,Used,5300,75,2016
+49500,Opel,Corsa,Gasoline,Manual,Used,5950,69,2013
+43873,Audi,A3,Gasoline,Automatic,Used,25990,190,2017
+68686,Renault,Megane,Gasoline,Manual,Used,6900,101,2016
+42000,Skoda,Citigo,Gasoline,Manual,Used,5390,75,2014
+100,Citroen,C4,Gasoline,Automatic,Used,34995,155,2021
+49000,Ford,Fiesta,Gasoline,Manual,Used,6800,60,2017
+7400,Mercedes-Benz,C 180,Gasoline,Automatic,Employee's car,39790,156,2020
+3500,Porsche,Taycan,Electric,Automatic,Demonstration,134500,489,2021
+269000,Volkswagen,Caddy,Diesel,Manual,Used,7400,102,2015
+43733,Kia,Picanto,Gasoline,Manual,Used,7800,84,2015
+128000,Opel,Astra,Diesel,Manual,Used,6999,110,2015
+111700,Mercedes-Benz,A 160,Gasoline,Manual,Used,6750,95,2011
+61770,Opel,Corsa,Gasoline,Manual,Used,9750,90,2017
+5000,Skoda,Kamiq,Gasoline,Automatic,Demonstration,28590,150,2021
+800,Renault,Twingo,Gasoline,Manual,Demonstration,10590,65,2021
+226735,Volkswagen,Touran,Diesel,Automatic,Used,5990,140,2011
+16990,Renault,Koleos,Diesel,Automatic,Demonstration,35580,190,2020
+225000,Citroen,C3,Diesel,Manual,Used,2900,68,2012
+60582,Opel,Corsa,Gasoline,Manual,Used,7990,69,2015
+148401,Renault,Megane,Diesel,Manual,Used,5990,106,2012
+209000,Ford,Tourneo Connect,Gasoline,Manual,Used,5900,101,2015
+76342,Audi,A4,Diesel,Automatic,Used,18970,150,2018
+41824,Volkswagen,Passat Variant,Gasoline,Automatic,Used,21450,150,2019
+4900,Volkswagen,Golf Sportsvan,Gasoline,Automatic,Employee's car,22789,150,2020
+79072,Ford,C-Max,Diesel,Automatic,Used,8690,140,2012
+93427,Renault,Twingo,Gasoline,Manual,Used,3350,58,2011
+45914,Ford,Focus,Gasoline,Manual,Used,11990,125,2015
+27622,Audi,Q2,Gasoline,Manual,Used,17400,116,2018
+16287,Fiat,500C,Gasoline,Automatic,Used,13980,69,2019
+9948,Volvo,V40,Gasoline,Manual,Used,19890,122,2019
+120000,Skoda,Octavia,Gasoline,Manual,Used,6800,105,2013
+2100,Volkswagen,Tiguan,Gasoline,Automatic,Used,38900,150,2021
+101000,Ford,Focus,Gasoline,Manual,Used,8800,150,2014
+187193,Opel,Zafira Tourer,Diesel,Automatic,Used,8990,131,2016
+109000,Volkswagen,up!,Gasoline,Manual,Used,4100,60,2013
+42000,Dacia,Sandero,Gasoline,Manual,Used,9500,90,2017
+184000,Mazda,3,Diesel,Manual,Used,4690,116,2012
+134000,Ford,Mondeo,Gasoline,Manual,Used,12499,160,2017
+119475,Opel,Insignia,Diesel,Manual,Used,11000,163,2014
+112500,Ford,C-Max,Gasoline,Manual,Used,7200,125,2014
+4,Skoda,Octavia,Gasoline,Manual,Used,24499,150,2021
+57596,Nissan,Pulsar,Gasoline,Manual,Used,9440,116,2015
+99000,Skoda,Fabia,Gasoline,Manual,Used,5495,60,2014
+244000,Audi,A1,Diesel,Manual,Used,4999,90,2011
+5000,Mercedes-Benz,GLB 200,Diesel,Automatic,Demonstration,43670,150,2021
+24852,Nissan,Pulsar,Gasoline,Manual,Used,10999,116,2017
+136100,Toyota,Aygo,Gasoline,Manual,Used,2799,68,2011
+74800,Volkswagen,Polo,Diesel,Manual,Used,8299,75,2016
+52736,Volkswagen,Tiguan,Diesel,Automatic,Used,24425,150,2017
+108614,SEAT,Altea XL,Diesel,Manual,Used,5999,105,2012
+196000,Fiat,Ducato,Diesel,Manual,Used,8490,131,2014
+4700,smart,forFour,Electric,Automatic,Demonstration,13480,82,2019
+13287,Peugeot,2008,Gasoline,Manual,Demonstration,14990,110,2019
+92000,Skoda,Fabia,Gasoline,Manual,Used,5000,69,2012
+27999,Toyota,Yaris,Electric/Gasoline,Automatic,Used,10499,75,2014
+24470,Ford,Transit Custom,Diesel,Automatic,Used,26850,131,2020
+123814,Volkswagen,Passat,Diesel,Manual,Used,8990,105,2012
+58100,Toyota,Avensis,Gasoline,Manual,Used,12690,147,2012
+110608,Skoda,Superb,Diesel,Manual,Used,10801,140,2013
+96450,BMW,550,Diesel,Automatic,Used,47989,400,2018
+150000,Opel,Meriva,Gasoline,Manual,Used,4990,120,2013
+50000,Fiat,Tipo,Gasoline,Manual,Used,9000,95,2016
+29893,Opel,Corsa,Gasoline,Manual,Used,8390,69,2017
+19,SEAT,Leon,Diesel,Automatic,Demonstration,30650,150,2020
+300907,Volkswagen,T5 Transporter,Diesel,Manual,Used,10999,102,2012
+21800,Microcar,Due,Diesel,Automatic,Used,8490,5,2017
+17000,Audi,Q3,Gasoline,Automatic,Used,34950,190,2019
+25,Hyundai,i10,Gasoline,Manual,Pre-registered,12990,67,2021
+35399,Hyundai,i10,Gasoline,Manual,Used,7990,87,2016
+240000,Volkswagen,Passat Variant,Diesel,Automatic,Used,5500,140,2011
+140000,Opel,Zafira Tourer,Diesel,Manual,Used,8500,136,2014
+86300,Ford,EcoSport,Diesel,Manual,Demonstration,10480,90,2014
+30,Volkswagen,T-Cross,Gasoline,Automatic,Used,23990,110,2021
+19632,Opel,Grandland X,Gasoline,Automatic,Used,18951,131,2019
+169986,Renault,Clio,Gasoline,Manual,Used,2350,75,2011
+27337,Mercedes-Benz,GLE 350,Diesel,Automatic,Used,55890,258,2017
+36000,Fiat,500,Gasoline,Manual,Used,7300,69,2015
+65200,Volkswagen,Golf,Gasoline,Manual,Used,11950,110,2016
+88807,Audi,A4,Diesel,Automatic,Used,22430,190,2018
+39000,smart,forFour,Gasoline,Manual,Used,8399,71,2019
+29000,Opel,Meriva,Gasoline,Manual,Used,11480,120,2016
+98870,Toyota,Aygo,Gasoline,Manual,Used,5180,69,2016
+14000,Dacia,Sandero,Gasoline,Manual,Used,11990,90,2018
+70277,Volkswagen,up!,Gasoline,Manual,Used,5500,60,2015
+83910,Opel,Astra,Diesel,Automatic,Used,11480,136,2017
+211000,Renault,Trafic,Diesel,Manual,Used,4800,90,2011
+182000,Skoda,Fabia,Gasoline,Manual,Used,5699,90,2015
+52100,Volkswagen,Golf,Gasoline,Manual,Used,9800,86,2015
+19878,Renault,Captur,Gasoline,Manual,Used,13950,90,2019
+20735,Renault,Clio,Gasoline,Manual,Used,14990,101,2020
+103115,Skoda,Fabia,Gasoline,Manual,Used,3500,60,2011
+24255,Dacia,Sandero,Gasoline,Manual,Used,9000,73,2019
+78000,Toyota,iQ,Gasoline,Manual,Used,6490,68,2013
+119000,Hyundai,i20,Gasoline,Manual,Used,4399,86,2013
+16098,Volkswagen,Touran,Diesel,Automatic,Used,36969,150,2019
+142503,Ford,Mondeo,Diesel,Automatic,Used,11999,150,2016
+118200,Mercedes-Benz,C 200,Diesel,Automatic,Used,11050,136,2011
+48744,Porsche,Panamera,Gasoline,Automatic,Used,89500,549,2017
+190000,Renault,Megane,Diesel,Automatic,Used,6000,110,2016
+74957,Volkswagen,up!,Gasoline,Manual,Used,7450,75,2015
+103414,Volkswagen,up!,Gasoline,Manual,Used,3800,60,2012
+86000,BMW,120,Diesel,Automatic,Used,14990,184,2015
+41130,Skoda,Kodiaq,Diesel,Automatic,Used,28940,150,2019
+66000,Ford,Focus,Gasoline,Manual,Used,12950,101,2018
+84500,Toyota,Aygo,Gasoline,Manual,Used,3999,68,2011
+38211,Skoda,Citigo,Gasoline,Manual,Used,6650,60,2017
+18000,smart,forTwo,Gasoline,Automatic,Used,10280,71,2019
+161000,Mercedes-Benz,Sprinter,Diesel,Manual,Used,11000,95,2015
+245000,Opel,Zafira Tourer,Diesel,Manual,Used,6650,136,2014
+85000,smart,forTwo,Gasoline,Automatic,Used,5290,71,2011
+50000,Opel,Corsa,Gasoline,Manual,Used,4970,87,2012
+10,Cupra,Ateca,Gasoline,Automatic,Demonstration,39780,300,2021
+36957,Opel,Adam,Gasoline,Manual,Used,11390,116,2016
+113789,SEAT,Ibiza,Diesel,Manual,Used,5790,75,2013
+110193,Fiat,500,Gasoline,Manual,Used,4600,86,2011
+96300,Mercedes-Benz,ML 350,Diesel,Automatic,Used,30999,258,2014
+41830,Hyundai,Santa Fe,Diesel,Automatic,Used,24500,200,2016
+3000,Fiat,Tipo,Gasoline,Manual,Used,14990,120,2019
+40000,MINI,Cooper Cabrio,Gasoline,Automatic,Used,24790,136,2018
+76000,SsangYong,Tivoli,Gasoline,Manual,Used,10490,128,2016
+10,Fiat,500,Gasoline,Manual,Pre-registered,12700,69,2021
+216000,Citroen,C5,Diesel,Manual,Used,5700,163,2013
+110113,Peugeot,107,Gasoline,Manual,Used,2999,68,2012
+37600,Skoda,Fabia,Gasoline,Manual,Used,10349,90,2016
+34000,smart,forFour,Gasoline,Automatic,Used,10990,90,2017
+138922,Opel,Mokka,Diesel,Manual,Used,8980,131,2014
+63711,Volkswagen,Tiguan,Gasoline,Manual,Used,11500,122,2012
+38500,Renault,Twingo,Gasoline,Manual,Used,7700,71,2016
+119000,BMW,318,Gasoline,Manual,Used,8499,143,2012
+37383,Toyota,Yaris,Gasoline,Manual,Used,7390,69,2017
+9000,Citroen,C1,Gasoline,Manual,Used,8100,72,2018
+4800,Bentley,Bentayga,Gasoline,Automatic,Used,235900,635,2020
+43654,Volvo,XC90,Diesel,Automatic,Used,44990,235,2018
+23941,Ford,Fiesta,Gasoline,Manual,Used,8740,71,2018
+24920,Ford,Galaxy,Gasoline,Manual,Employee's car,22990,160,2019
+68904,Toyota,Auris,Electric/Gasoline,Automatic,Used,11860,136,2013
+54000,Ford,Fiesta,Gasoline,Manual,Used,13300,219,2015
+36500,Opel,Astra,Diesel,Manual,Used,10950,95,2017
+28900,Opel,Mokka X,Gasoline,Manual,Used,14990,140,2017
+55479,SEAT,Leon,Diesel,Manual,Used,14580,116,2019
+3000,Suzuki,Swift,Gasoline,Manual,Demonstration,15950,83,2021
+170000,Audi,TT,Diesel,Manual,Used,9800,170,2011
+37755,Mercedes-Benz,S 400,Gasoline,Automatic,Used,41850,333,2016
+116274,BMW,,Diesel,Automatic,Used,19990,190,2015
+157900,BMW,116,Gasoline,Manual,Used,7590,136,2012
+18370,Land,Rover Discovery Sport,Diesel,Automatic,Used,46900,241,2019
+28500,Ford,Fiesta,Gasoline,Manual,Used,10750,86,2019
+163305,Peugeot,208,Diesel,Manual,Used,6795,99,2015
+79000,SEAT,Ibiza,Gasoline,Manual,Used,6800,69,2013
+124694,Citroen,C5,Gasoline,Manual,Used,5692,156,2011
+81206,Mazda,CX-5,Diesel,Manual,Used,20870,150,2019
+95650,Audi,Q3,Diesel,Manual,Used,14950,140,2013
+42117,Kia,Sportage,Diesel,Automatic,Used,20990,185,2016
+57000,Mercedes-Benz,C 180,Gasoline,Automatic,Used,15699,156,2012
+103100,Skoda,Fabia,Gasoline,Manual,Used,7980,110,2016
+1850,Renault,Twingo,Electric,Automatic,Demonstration,26330,42,2020
+173990,Peugeot,208,Gasoline,Manual,Used,5990,82,2015
+10950,BMW,320,Gasoline,Automatic,Used,34900,184,2020
+96938,Skoda,Kodiaq,Diesel,Automatic,Used,24970,190,2017
+112054,Audi,A3,Gasoline,Manual,Used,11250,122,2013
+67000,Renault,Twingo,Gasoline,Manual,Used,3590,75,2011
+3000,Mercedes-Benz,V 300,Diesel,Automatic,Demonstration,57990,237,2021
+31700,Citroen,C3,Gasoline,Manual,Used,9790,82,2017
+139173,smart,forTwo,Gasoline,Automatic,Used,5499,61,2011
+190000,Opel,Insignia,Diesel,Automatic,Used,5500,160,2011
+138000,Hyundai,i20,Diesel,Manual,Used,4390,75,2012
+159000,Volkswagen,Golf,Diesel,Automatic,Used,7990,140,2012
+116000,Chevrolet,Cruze,Gasoline,Manual,Used,5990,140,2013
+147945,Renault,Kangoo,Diesel,Manual,Used,9890,110,2017
+9000,Toyota,Aygo,Gasoline,Automatic,Used,6000,68,2013
+3000,Volvo,XC40,Gasoline,Automatic,Demonstration,44890,197,2021
+10780,Audi,Q2,Gasoline,Automatic,Used,30884,150,2020
+64000,Opel,Insignia,Gasoline,Manual,Used,12990,140,2016
+44050,Kia,Picanto,Gasoline,Manual,Used,6750,86,2013
+40576,Kia,Venga,Diesel,Manual,Used,11444,128,2018
+215000,BMW,520,Diesel,Automatic,Used,7999,184,2011
+14176,Volkswagen,up!,Gasoline,Manual,Used,10695,75,2019
+183000,Renault,Trafic,Diesel,Manual,Used,10710,125,2018
+67000,Opel,Astra,Gasoline,Manual,Used,8300,140,2012
+30349,Jaguar,F-Type,Gasoline,Automatic,Demonstration,69890,551,2018
+43924,Fiat,500,Gasoline,Manual,Used,5600,69,2013
+15912,Opel,Karl,Gasoline,Manual,Used,5900,73,2015
+26300,Volkswagen,Tiguan,Gasoline,Automatic,Used,30450,150,2019
+33703,Kia,Stonic,Gasoline,Manual,Used,11330,84,2019
+17920,Skoda,Scala,Gasoline,Manual,Employee's car,20990,150,2020
+11,SEAT,Tarraco,Gasoline,Automatic,Pre-registered,34790,150,2021
+83183,Audi,A3,Gasoline,Manual,Used,13900,140,2013
+85000,Nissan,Micra,Gasoline,Manual,Used,4100,80,2011
+54000,Volkswagen,Polo,Gasoline,Manual,Used,8900,90,2014
+114000,Suzuki,Swift,Gasoline,Manual,Used,4800,94,2013
+96749,Volvo,XC90,Diesel,Automatic,Used,35750,235,2018
+159000,BMW,316,Diesel,Automatic,Used,12699,116,2015
+135110,Volvo,V90,Diesel,Manual,Used,21880,190,2017
+92342,Opel,Adam,Gasoline,Manual,Used,6890,101,2013
+51273,Ford,Fiesta,Gasoline,Manual,Used,9990,125,2015
+68279,MINI,One,Gasoline,Manual,Used,10888,102,2014
+40779,Ford,Grand C-Max,Gasoline,Manual,Used,9485,105,2012
+28336,Renault,Clio,Gasoline,Manual,Used,7795,73,2016
+70000,Skoda,Fabia,Gasoline,Manual,Used,6880,86,2012
+74000,Renault,Megane,Diesel,Automatic,Used,9749,110,2015
+92800,SEAT,Ibiza,Gasoline,Manual,Used,6599,105,2013
+11200,Mitsubishi,Space Star,Gasoline,Manual,Used,7900,71,2019
+28821,Fiat,500,Gasoline,Manual,Used,7990,69,2015
+80000,Toyota,Yaris,Gasoline,Manual,Used,6900,69,2015
+1000,Peugeot,208,Gasoline,Manual,Demonstration,15490,75,2021
+79942,Mercedes-Benz,C 250,Gasoline,Automatic,Used,24500,211,2017
+25135,Nissan,E-NV200,Electric,Automatic,Used,16988,109,2016
+43467,Volkswagen,Touran,Gasoline,Automatic,Used,23099,150,2019
+32000,Mercedes-Benz,Citan,Diesel,Manual,Used,13690,90,2018
+189990,Audi,A4,Diesel,Automatic,Used,11880,177,2012
+199000,Ford,B-Max,Gasoline,Manual,Used,4750,101,2013
+62200,BMW,320,Gasoline,Automatic,Used,25200,184,2019
+12847,Skoda,Kamiq,Gasoline,Manual,Used,19380,116,2019
+45000,Honda,Jazz,Gasoline,Manual,Used,11790,102,2016
+54742,Ford,Fiesta,Gasoline,Manual,Used,5750,60,2015
+203200,Volkswagen,Crafter,Diesel,Manual,Used,9900,143,2012
+142579,Kia,Sorento,Diesel,Automatic,Used,17979,200,2015
+116900,Opel,Corsa,Gasoline,Manual,Used,6199,101,2013
+141493,Renault,Grand Scenic,Gasoline,Manual,Used,6990,131,2011
+150628,Opel,Insignia,Diesel,Automatic,Used,12580,170,2015
+62090,Chevrolet,Aveo,Gasoline,Manual,Used,5000,86,2011
+10,Fiat,500,Gasoline,Manual,Pre-registered,14200,69,2021
+99300,BMW,116,Gasoline,Manual,Used,11980,136,2013
+66300,Ford,Fiesta,Gasoline,Manual,Used,8990,82,2017
+182941,Ford,S-Max,Diesel,Automatic,Used,11490,150,2016
+39730,SEAT,Mii,Gasoline,Manual,Used,6880,60,2015
+99000,Volkswagen,Golf Variant,Diesel,Automatic,Used,11340,110,2015
+131719,Volkswagen,T5 Kombi,Diesel,Manual,Used,17999,102,2013
+46500,Opel,Astra,Diesel,Manual,Used,10100,110,2016
+97000,Suzuki,Splash,Gasoline,Automatic,Used,6950,94,2013
+22478,BMW,530,Electric/Gasoline,Automatic,Used,31500,252,2019
+22470,Volkswagen,Tiguan,Diesel,Automatic,Employee's car,33220,150,2020
+40000,Peugeot,207,Gasoline,Automatic,Used,9999,120,2011
+149000,BMW,118,Diesel,Manual,Used,7900,143,2013
+94500,Mercedes-Benz,C 180,Gasoline,Manual,Used,12890,156,2013
+15754,Audi,Q3,Gasoline,Manual,Used,33450,150,2020
+112516,Opel,Astra,Gasoline,Manual,Used,8980,105,2016
+99800,BMW,318,Diesel,Automatic,Used,13950,143,2014
+89000,Audi,Q3,Gasoline,Manual,Used,14299,170,2012
+100,Skoda,Fabia,Gasoline,Manual,Pre-registered,11990,60,2021
+95500,BMW,118,Gasoline,Manual,Used,6500,143,2011
+19008,Dacia,Duster,Diesel,Manual,Used,17990,116,2020
+17416,Opel,Astra,Gasoline,Manual,Used,11660,101,2017
+55350,SEAT,Leon,Gasoline,Automatic,Used,13650,110,2016
+46634,Skoda,Rapid/Spaceback,Gasoline,Manual,Used,9490,95,2019
+19000,Toyota,Aygo,Gasoline,Manual,Used,10280,72,2019
+82260,Opel,Astra,Diesel,Manual,Used,8490,131,2013
+164000,Fiat,Doblo,Diesel,Manual,Used,4250,90,2012
+15750,Volkswagen,Caddy,Diesel,Automatic,Demonstration,28750,150,2020
+17725,Audi,A4,Gasoline,Automatic,Used,31350,150,2020
+183450,Ford,Ka/Ka+,Gasoline,Manual,Used,2490,69,2011
+33890,Peugeot,208,Gasoline,Manual,Used,8485,68,2016
+9984,Opel,Astra,Gasoline,Manual,Used,13580,105,2019
+22500,Fiat,500L,Gasoline,Manual,Used,8888,69,2016
+20,Skoda,Fabia,Gasoline,Manual,Employee's car,13400,75,2019
+47679,BMW,114,Gasoline,Manual,Used,9480,102,2013
+29800,Volvo,XC40,Gasoline,Automatic,Used,33890,190,2018
+85750,Volkswagen,Sharan,Diesel,Manual,Used,21449,150,2018
+94682,Fiat,Panda,Gasoline,Manual,Used,4990,69,2013
+107517,Hyundai,i10,Gasoline,Manual,Used,3950,67,2011
+250000,Volvo,V50,Diesel,Manual,Used,4999,114,2012
+159800,Mercedes-Benz,B 200,Diesel,Automatic,Used,12900,136,2014
+12000,SEAT,Leon,Gasoline,Automatic,Demonstration,41990,300,2019
+95770,Opel,Corsa,Gasoline,Manual,Used,5499,69,2015
+182452,Audi,A8,Diesel,Automatic,Used,49990,286,2018
+25385,Mercedes-Benz,S 350,Diesel,Automatic,Used,67399,286,2019
+18654,Ford,Fiesta,Gasoline,Manual,Employee's car,16490,125,2020
+149000,Ford,Tourneo Connect,Diesel,Manual,Used,9990,116,2014
+20355,Ford,Fiesta,Gasoline,Manual,Used,8770,86,2018
+5,Fiat,500,Gasoline,Manual,Pre-registered,11289,69,2020
+85300,Citroen,DS3,Diesel,Manual,Used,6300,92,2013
+368000,Hyundai,iX20,Diesel,Manual,Used,3790,90,2011
+127507,Audi,A6,Diesel,Automatic,Used,29960,320,2018
+126400,Nissan,Juke,Gasoline,Manual,Used,7990,117,2013
+93210,Chevrolet,Orlando,Gasoline,Manual,Used,9990,140,2014
+42800,Renault,Twingo,Gasoline,Manual,Used,7280,69,2018
+10,Hyundai,i10,Gasoline,Manual,Pre-registered,10290,67,2019
+89829,Ford,EcoSport,Gasoline,Manual,Used,8690,125,2014
+50,Fiat,500,Gasoline,Manual,Pre-registered,12790,71,2020
+136940,Porsche,Macan,Gasoline,Automatic,Used,39500,340,2014
+4900,Volkswagen,Tiguan,Gasoline,Automatic,Demonstration,64980,320,2021
+100800,Ford,C-Max,Diesel,Automatic,Used,11990,150,2015
+1600,Hyundai,i20,Gasoline,Automatic,Demonstration,22995,120,2021
+40569,Opel,Mokka X,Gasoline,Manual,Used,12440,120,2018
+9985,Renault,ZOE,Electric,Automatic,Demonstration,13575,109,2019
+117000,Volkswagen,up!,Gasoline,Manual,Used,4500,75,2012
+100,Volkswagen,Polo,Gasoline,Manual,Demonstration,15950,80,2021
+27840,smart,forFour,Gasoline,Automatic,Used,15790,90,2019
+85310,Volkswagen,Tiguan,Gasoline,Automatic,Used,26999,220,2017
+11072,Renault,Kangoo,Diesel,Manual,Used,17791,116,2020
+138409,Mercedes-Benz,E 200,Diesel,Automatic,Used,23400,150,2017
+173000,Ford,Fiesta,Gasoline,Manual,Used,2500,60,2011
+51833,Ford,Focus,Diesel,Manual,Used,9440,95,2015
+132550,Dacia,Sandero,Gasoline,Manual,Used,3990,84,2011
+110513,SEAT,Leon,Diesel,Manual,Used,9980,150,2016
+97450,Volkswagen,Golf,Gasoline,Manual,Used,7490,105,2011
+16569,Opel,Adam,Gasoline,Manual,Used,12597,87,2019
+1263,Cupra,Leon,Electric/Gasoline,Automatic,Demonstration,42790,245,2021
+92328,Dacia,Sandero,Diesel,Manual,Used,6699,90,2014
+68053,Opel,Astra,Gasoline,Manual,Used,8850,140,2011
+99800,Mercedes-Benz,C 220,Diesel,Automatic,Used,14950,170,2011
+95000,Volkswagen,up!,Gasoline,Manual,Used,4300,60,2013
+120000,Skoda,Yeti,Gasoline,Manual,Used,12980,160,2015
+84229,Toyota,RAV 4,Electric/Gasoline,Automatic,Used,23970,197,2018
+164000,Audi,A3,Gasoline,Manual,Used,6500,125,2011
+7990,smart,forFour,Gasoline,Automatic,Used,12444,71,2019
+57900,Fiat,500,Gasoline,Manual,Used,7999,69,2014
+113500,Mercedes-Benz,A 180,Gasoline,Manual,Used,10400,122,2012
+5000,Renault,Talisman,Gasoline,Automatic,Demonstration,38950,224,2021
+22400,Volkswagen,Golf,Gasoline,Manual,Used,22950,150,2020
+98000,Ford,Fiesta,Gasoline,Manual,Used,4999,60,2014
+24335,Audi,A5,Diesel,Automatic,Used,37405,190,2017
+118427,Skoda,Octavia,Diesel,Manual,Used,11980,110,2017
+38070,Audi,A5,Gasoline,Automatic,Used,33880,190,2018
+57000,BMW,225,Gasoline,Automatic,Used,22500,231,2015
+129358,Skoda,Kodiaq,Diesel,Manual,Used,24785,150,2018
+75998,Opel,Zafira,Gasoline,Manual,Used,7950,140,2013
+73318,Renault,Koleos,Diesel,Manual,Used,9280,150,2013
+358000,Hyundai,iX35,LPG,Automatic,Used,7590,163,2013
+50,Hyundai,i30,Gasoline,Automatic,Used,18990,120,2021
+49000,Subaru,Forester,Gasoline,Automatic,Used,18998,150,2013
+1000,Kia,Picanto,Gasoline,Automatic,Demonstration,12800,67,2021
+59500,Opel,Corsa,Gasoline,Manual,Used,8500,69,2017
+166791,Opel,Meriva,Diesel,Automatic,Used,5990,101,2012
+187800,Opel,Astra,Diesel,Manual,Used,5250,131,2014
+13799,smart,forFour,Gasoline,Manual,Used,8990,71,2017
+88456,Opel,Astra,Diesel,Manual,Used,5499,110,2014
+138290,Ford,Focus,Gasoline,Manual,Used,6490,150,2012
+150000,Hyundai,i30,Diesel,Manual,Used,8500,110,2017
+54990,Opel,Karl,Gasoline,Manual,Used,8390,73,2018
+20,Ford,Galaxy,Diesel,Automatic,Pre-registered,33990,150,2020
+14975,Jaguar,XF,Diesel,Automatic,Used,44900,300,2020
+70000,Fiat,Panda,Gasoline,Manual,Used,5800,69,2016
+32597,Volkswagen,Polo,Gasoline,Manual,Used,12850,110,2015
+44262,Volkswagen,Golf,Gasoline,Manual,Used,13980,86,2019
+31021,Volvo,V90 Cross Country,Diesel,Automatic,Used,31995,190,2018
+20144,Renault,Grand Scenic,Diesel,Automatic,Used,23980,120,2019
+99,Fiat,500,Electric/Gasoline,Manual,Pre-registered,14490,71,2021
+194766,Opel,Zafira Tourer,Diesel,Manual,Used,7990,136,2015
+85488,Ford,Ka/Ka+,Gasoline,Manual,Used,2550,69,2012
+130000,Audi,A6,Diesel,Automatic,Used,39499,286,2019
+23053,Suzuki,Swift,Gasoline,Manual,Used,9550,136,2016
+135550,Hyundai,iX35,Gasoline,Manual,Used,8690,163,2011

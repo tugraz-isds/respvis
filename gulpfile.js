@@ -111,7 +111,7 @@ exports.serve = function serve() {
   gulp.watch(
     './src/examples/**/*',
     watchOptions,
-    gulp.series(copyExamples, copyExamplesRedirect, reloadBrowser)
+    gulp.series(copyExamples, bundleJS, copyExamplesRedirect, reloadBrowser)
   );
 };
 
