@@ -105,3 +105,6 @@ dist
 
 # VS Code
 *.code-workspace
+
+# File for enabling intellisense with example files
+src/examples/libs/respvis/

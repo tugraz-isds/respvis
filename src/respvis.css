@@ -406,6 +406,7 @@ text.highlight {
 
 .chart-window {
   display: grid;
+  position: relative;
   grid-template: min-content 1fr / 1fr;
   grid-template-areas:
     'toolbar'
@@ -417,9 +418,16 @@ text.highlight {
 
 .chart-window .toolbar {
   grid-area: toolbar;
-  display: flex;
+  display: none;
   flex-direction: row;
   justify-content: flex-end;
+}
+
+.chart-window:hover .toolbar, .chart-window:active .toolbar {
+  display: flex;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .chart-window .layouter {

@@ -95,7 +95,8 @@ exports.cleanAll = gulp.series([cleanDist, cleanNodeModules]);
 
 exports.build = gulp.series([
   exports.clean,
-  gulp.parallel([bundleJS, bundleCSS, copyExamples, copyExamplesRedirect]),
+  copyExamples, // must be done before bundleJS to replace proxy respvis.js in src/examples/libs/respvis/respvis.js
+  gulp.parallel([bundleJS, bundleCSS, copyExamplesRedirect]),
 ]);
 
 exports.serve = function serve() {
