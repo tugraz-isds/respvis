@@ -26,7 +26,6 @@ const chartData = {
         tooltips: (_, { xValue, yValue }) => `Year: ${xValue}<br/>Pow. Consumption: ${yValue}kWh`
     },
     legend: {
-        title: 'Legend',
         keys: ['USA', 'Europe', 'East Asia'],
         labels: ['USA', 'Europe', 'East Asia'],
     }

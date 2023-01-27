@@ -1,0 +1,9 @@
+#sold-cars-germany {
+  width: 100%;
+  .axis-x .tick {
+    display: none;
+  }
+  .axis-x .tick:nth-of-type(2n) {
+    display: block;
+  }
+}

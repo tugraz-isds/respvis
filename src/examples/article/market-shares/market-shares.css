@@ -1,4 +1,8 @@
+#market-shares-chart {
+  width: 100%;
+}
 #market-shares-chart .chart {
+  width: 100%;
   grid-template: auto auto 1fr auto/auto 1fr auto;
   grid-template-areas: "header  header  header" "legend legend legend" "axis-left draw-area draw-area" " . axis-bottom . ";
 }
