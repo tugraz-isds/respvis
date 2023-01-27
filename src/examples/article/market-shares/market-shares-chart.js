@@ -33,6 +33,12 @@ const data = {
     },
 };
 
+function chooseTickFormat() {
+    if (window.matchMedia('(min-width: 60rem)').matches) return (v) => v
+    if (window.matchMedia('(max-width: 51.9375rem)').matches && window.matchMedia('(min-width: 43.75rem)').matches) return (v) => v
+    return (v) => `'${v.slice(-2)}`
+}
+
 const chartWindow = d3
     .select('#market-shares-chart')
     .append('div')
@@ -47,7 +53,7 @@ const chartWindow = d3
 
         data.flipped = chooseDataFlipped()
         data.legend.title = mediumWidth ? 'Platforms' : ''
-        const xTickFormat = largeWidth ? (v) => v : (v) => `'${v.slice(-2)}`;
+        const xTickFormat = chooseTickFormat()
         data.xAxis.configureAxis = (a) => a.tickFormat(xTickFormat);
         data.title = hasSmallTitle ? "M.S. Browsers" : "Market Shares of Browsers"
 
@@ -57,7 +63,7 @@ const chartWindow = d3
 const chooseDataFlipped = () => {
     // if (window.matchMedia('(min-width: 25rem)').matches &&
     //     window.matchMedia('(max-width: 37.5rem)').matches) return true
-    const firstChange = window.matchMedia('(min-width: 77rrem)').matches
+    const firstChange = window.matchMedia('(min-width: 77rem)').matches
     if (firstChange || window.matchMedia('(max-width: 31.25rem)').matches ) return true
     return false
 }
