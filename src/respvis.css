@@ -78,7 +78,7 @@
 .highlight .point,
 .highlight.point {
   filter: brightness(var(--highlight-brightness));
-  stroke-width: 2px;
+  stroke-width: 1.2;
 }
 
 .legend {
@@ -399,11 +399,6 @@ text.title {
   margin-left: 100%;
 }
 
-.highlight text,
-text.highlight {
-  font-weight: bold;
-}
-
 .chart-window {
   display: grid;
   position: relative;
@@ -514,12 +509,12 @@ text.highlight {
 
 path.line {
   fill: none;
-  stroke-width: 2.5px;
+  stroke-width: 2;
 }
 
 .highlight path.line,
 path.line.highlight {
-  stroke-width: 5px;
+  stroke-width: 4;
 }
 
 .chart-line[data-flipped='false'] .layout.series-label {
