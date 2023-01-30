@@ -22,6 +22,7 @@
       @media (max-width: 40rem) {
         .chart {
           grid-template:
+            'header header'
             'axis-left draw-area' 1fr
             '. axis-bottom' auto
             '. legend' auto / auto 1fr;
@@ -56,24 +57,39 @@
       import { sites, revenues, years } from './data/company.js';
       import * as d3 from './libs/d3-7.6.0/d3.js'
 
-      const data = {
-        categoryEntity: 'Sites',
-        categories: sites,
-        subcategoryEntity: 'Years',
-        subcategories: years,
-        values: revenues,
-        labels: { labels: revenues.flat().map((r) => d3.format('.2s')(r)) },
-        legend: { title: 'Year' },
-        tooltips: (e, { category, subcategory, value }) =>
-          `Site: ${category}<br/>Year: ${subcategory}<br/>Revenue: $${d3.format(',')(value)}`,
-        xAxis: {
-          title: 'Site',
-        },
-        yAxis: {
-          title: 'Revenue',
-          subtitle: '[USD]',
-        },
-      };
+      const calcData = () => {
+        const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
+        const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
+
+        const relativePositions = !mediumWidth ? { x: 1, y: 0.5 } : { x: 0.5, y: 0 };
+        const yTickFormat = largeWidth ? d3.format(',') : d3.format('.1s');
+        const yConfigureAxis = (a) => a.tickFormat(yTickFormat);
+        const title = (!mediumWidth && !largeWidth) ? "Eur. Cap. Revenues" : "Revenues of European Capitals"
+
+        return {
+          flipped: !mediumWidth,
+          categoryEntity: 'Sites',
+          categories: sites,
+          subcategoryEntity: 'Years',
+          subcategories: years,
+          values: revenues,
+          labels: { labels: revenues.flat().map((r) => d3.format('.2s')(r)), relativePositions},
+          legend: { title: 'Year' },
+          tooltips: (e, { category, subcategory, value }) =>
+                  `Site: ${category}<br/>Year: ${subcategory}<br/>Revenue: $${d3.format(',')(value)}`,
+          xAxis: {
+            title: 'Site',
+          },
+          yAxis: {
+            title: 'Revenue',
+            subtitle: '[USD]',
+            configureAxis: yConfigureAxis
+          },
+          title
+        };
+      }
+
+      const data = calcData()
 
       const chartWindow = d3
         .select('#chart')
@@ -83,14 +99,7 @@
         .call(chartWindowBarGroupedAutoFilterCategories(data))
         .call(chartWindowBarGroupedAutoFilterSubcategories(data))
         .on('resize', function (e, d) {
-          const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
-          const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
-
-          data.flipped = !mediumWidth;
-          data.labels.relativePositions = !mediumWidth ? { x: 1, y: 0.5 } : { x: 0.5, y: 0 };
-          const yTickFormat = largeWidth ? d3.format(',') : d3.format('.1s');
-          data.yAxis.configureAxis = (a) => a.tickFormat(yTickFormat);
-
+          const data = calcData()
           chartWindow.datum(chartWindowBarGroupedData(data)).call(chartWindowBarGroupedRender);
         });
     </script>

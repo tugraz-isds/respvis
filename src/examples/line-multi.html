@@ -27,7 +27,7 @@
             margin-top: 1rem;
         }
 
-        @media (max-width: 25em) {
+        @media (max-width: 25rem) {
             .point, .axis {
                 display: none;
             }
@@ -37,7 +37,7 @@
             }
         }
 
-        @media (max-width: 43.75em) {
+        @media (max-width: 43.75rem) {
             .chart {
                 grid-template: auto auto 1fr auto / auto 1fr auto;
                 grid-template-areas: 'header  header  header' 'legend legend legend' 'axis-left draw-area draw-area' ' . axis-bottom . ';
@@ -55,7 +55,7 @@
             }
         }
 
-        @media (max-width: 43.75em) and (min-width: 25em) {
+        @media (max-width: 43.75rem) and (min-width: 25rem) {
             .point, .axis-x .tick {
                 display: none;
             }
@@ -65,7 +65,7 @@
 
         }
 
-        @media (min-width: 43.75em) {
+        @media (min-width: 43.75rem) {
             .point, .axis-x .tick {
                 display: none;
             }
@@ -92,38 +92,49 @@
 
     import data from './data/electric-power-consumption/electricPowerConsumption.js'
 
-    const usaData = data.filter(obj => obj["Country Name"] === "United States")[0]
-    const europeData = data.filter(obj => obj["Country Name"] === "European Union")[0]
-    const asiaData = data.filter(obj => obj["Country Name"] === "East Asia & Pacific")[0]
+    function mapPowerConsumptionData() {
+        const usaData = data.filter(obj => obj["Country Name"] === "United States")[0]
+        const europeData = data.filter(obj => obj["Country Name"] === "European Union")[0]
+        const asiaData = data.filter(obj => obj["Country Name"] === "East Asia & Pacific")[0]
 
-    const xValues = Array.from({length: 2014 - 1971 + 1}, (value, index) => (1971 + index).toString())
-    // console.log(usaData)
-    const yUSA = xValues.map(year => usaData[year])
-    const yEurope = xValues.map(year => europeData[year])
-    const yAsia= xValues.map(year => asiaData[year])
-    console.log(yAsia, yUSA, yEurope)
+        const years = Array.from({length: 2014 - 1971 + 1}, (value, index) => (1971 + index).toString())
 
-    // console.table(xValues)
-    // console.table(yUSA)
-    // console.table(yAsia)
-    // console.table(yEurope)
-
-
-    const chartData = {
-        xValues: xValues,
-        yValues: [yUSA, yEurope, yAsia],
-        xAxis: { title: 'Year' },
-        yAxis: { title: 'Consumption' },
-        markerTooltips: {
-            tooltips: (_, { xValue, yValue }) => `Year: ${xValue}<br/>Pow. Consumption: ${yValue}kWh`
-        },
-        legend: {
-            title: 'Legend',
-            keys: ['USA', 'Europe', 'East Asia'],
-            labels: ['USA', 'Europe', 'East Asia'],
-        }
-
+        const yUSA = years.map(year => usaData[year])
+        const yEurope = years.map(year => europeData[year])
+        const yAsia= years.map(year => asiaData[year])
+        return {yUSA, yEurope, yAsia, years}
     }
+
+    const { yUSA, yEurope, yAsia, years } = mapPowerConsumptionData()
+
+    const calcData = () => {
+        const mediumWidth = window.matchMedia('(min-width: 25rem)').matches;
+        const largeWidth = window.matchMedia('(min-width: 43.5rem)').matches;
+
+        let title = largeWidth ? "Electric Power Consumption (kWh per Capita)" : mediumWidth ?
+            'Power Consumption (kWh)' : 'Pow. Cons. (kWh)';
+
+        const priceTickFormat = largeWidth ? format(',') : format('.2s');
+        const yearTickFormat = window.matchMedia('(min-width: 56.25rem)').matches ? (v) => v : (v) => `'${v.slice(-2)}`;
+
+        return {
+            xValues: years,
+            yValues: [yUSA, yEurope, yAsia],
+            xAxis: { title: 'Year', configureAxis: (axis) => axis.tickFormat(yearTickFormat) },
+            yAxis: { title: 'Consumption', configureAxis: (axis) => axis.tickFormat(priceTickFormat) },
+            markerTooltips: {
+                tooltips: (_, { xValue, yValue }) => `Year: ${xValue}<br/>Pow. Consumption: ${yValue}kWh`
+            },
+            legend: {
+                title: 'Legend',
+                keys: ['USA', 'Europe', 'East Asia'],
+                labels: ['USA', 'Europe', 'East Asia'],
+            },
+            title
+        }
+    }
+
+    const chartData = calcData()
 
     const chart = select('#chart')
         .append('div')
@@ -131,19 +142,7 @@
         .call(chartWindowLineRender)
         .call(chartWindowLineAutoResize)
         .on('resize', () => {
-            const mediumWidth = window.matchMedia('(min-width: 25em)').matches;
-            const largeWidth = window.matchMedia('(min-width: 43.5em)').matches;
-            const minWidth = window.matchMedia('(max-width: 25em)').matches;
-
-            chartData.title = largeWidth ? "Electric Power Consumption (kWh per Capita)" : 'Power Consumption (kWh)';
-            chartData.title = mediumWidth ? chartData.title : 'Pow. Cons. (kWh)'
-
-            const priceTickFormat = largeWidth ? format(',') : format('.2s');
-            chartData.yAxis.configureAxis = (axis) => axis.tickFormat(priceTickFormat);
-            const yearTickFormat = window.matchMedia('(min-width: 56.25em)').matches ? (v) => v : (v) => `'${v.slice(-2)}`;
-            chartData.xAxis.configureAxis = (axis) => axis.tickFormat(yearTickFormat);
-
-            chart.datum(chartWindowLineData(chartData)).call(chartWindowLineRender);
+            chart.datum(chartWindowLineData(calcData())).call(chartWindowLineRender);
         })
 </script>
 </body>

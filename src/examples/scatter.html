@@ -32,42 +32,50 @@
     </style>
   </head>
   <body>
-    <h1>Point Chart</h1>
+    <h1>Scatter Plot</h1>
     <div id="chart"></div>
     <script type="module">
       import { chartWindowPointData, chartWindowPointRender, rectFromString } from './libs/respvis/respvis.js';;
       import { areas, prices } from './data/houses.js';
       import * as d3 from './libs/d3-7.6.0/d3.js'
 
+      const baseScaleX = d3.scaleLinear()
+              .domain([0, Math.max(...areas)])
+              .nice()
+      const baseScaleY = d3.scaleLinear()
+              .domain([0, Math.max(...prices)])
+              .nice()
 
-      const areaScale = d3
-        .scaleLinear()
-        .domain([0, Math.max(...areas)])
-        .nice();
-      const priceScale = d3
-        .scaleLinear()
-        .domain([0, Math.max(...prices)])
-        .nice();
+      const scales = {
+        xScale: baseScaleX,
+        yScale: baseScaleY
+      }
 
-      const data = {
-        xValues: areas,
-        xScale: areaScale,
-        yValues: prices,
-        yScale: priceScale,
-        xAxis: { title: 'Area', subtitle: '[ft²]' },
-        yAxis: { title: 'Price', subtitle: '[USD]' },
-      };
+      const calcData = () => {
+        const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
+        const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
+        const numberFormat = !mediumWidth ? d3.format('.2s') : d3.format(',');
+        return {
+          xValues: areas,
+          xScale: scales.xScale,
+          yValues: prices,
+          yScale: scales.yScale,
+          xAxis: { title: 'Area', subtitle: '[ft²]', configureAxis: (a) => a.tickFormat(numberFormat) },
+          yAxis: { title: 'Price', subtitle: '[USD]', configureAxis: (a) => a.tickFormat(numberFormat) },
+          radiuses: !mediumWidth ? 3 : !largeWidth ? 5 : 7
+        };
+      }
 
-      const render = (cW) => cW.datum(chartWindowPointData(data)).call(chartWindowPointRender);
+      const render = (cW) => cW.datum(chartWindowPointData(calcData())).call(chartWindowPointRender);
 
       const chartWindow = d3.select('#chart').append('div').call(render);
 
       const zoom = d3.zoom();
       const drawArea = chartWindow.selectAll('.draw-area').call(
         zoom.scaleExtent([1, 20]).on('zoom', function (e, d) {
-          data.xScale = e.transform.rescaleX(areaScale);
-          data.yScale = e.transform.rescaleY(priceScale);
-          chartWindow.call(render);
+          scales.xScale = e.transform.rescaleX(baseScaleX)
+          scales.yScale = e.transform.rescaleY(baseScaleY)
+          chartWindow.call(render)
         })
       );
 
@@ -78,12 +86,6 @@
           [width, height],
         ];
         zoom.extent(extent).translateExtent(extent);
-
-        const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
-        const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
-        const numberFormat = !mediumWidth ? d3.format('.2s') : d3.format(',');
-        data.xAxis.configureAxis = data.yAxis.configureAxis = (a) => a.tickFormat(numberFormat);
-        data.radiuses = !mediumWidth ? 3 : !largeWidth ? 5 : 7;
         chartWindow.call(render);
       });
     </script>
