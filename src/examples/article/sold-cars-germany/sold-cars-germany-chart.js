@@ -59,8 +59,8 @@ const data = {
     yScale: hpScale,
     xAxis: { title: 'Price [EU]' },
     yAxis: { title: 'Horse Power [PS]' },
-    title: "Sold Cars in Germany",
-    subtitle: "Sample from 2011 to 2021"
+    title: "Cars Sold in Germany",
+    subtitle: "From 2011 to 2021"
 };
 
 const render = (cW) => cW.datum(chartWindowPointData(data))

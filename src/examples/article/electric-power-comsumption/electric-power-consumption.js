@@ -56,8 +56,9 @@ const chooseTitle = () => {
     const smallTitle = 'Pow. Cons.'
     const middleTitle = 'Power Consumption (kWh)'
     const largeTitle = 'Electric power consumption (kWh per capita)'
-    if (window.matchMedia('(max-width: 27.5rem)').matches ||
-        window.matchMedia('(min-width: 77rem)').matches) return smallTitle
+    if (window.matchMedia('(max-width: 27.5rem)').matches) return smallTitle
+    if (window.matchMedia('(max-width: 51.938rem)').matches &&
+        window.matchMedia('(min-width: 44.375rem)').matches) return largeTitle
     return middleTitle
 }
 
