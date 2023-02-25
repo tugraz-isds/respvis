@@ -1,13 +1,7 @@
-import { easeCubicOut, extent as d3Extent, scalePoint } from 'd3';
-import { scaleLinear } from 'd3';
-import { select, Selection } from 'd3';
-import {
-  SeriesConfigTooltips,
-  seriesConfigTooltipsData,
-  seriesConfigTooltipsHandleEvents,
-} from '../tooltip';
-import { arrayIs, Circle, circleMinimized, circleToAttrs, rectFromString, ScaleAny } from '../core';
-import { Size } from '../core/utilities/size';
+import {easeCubicOut, scaleLinear, scalePoint, select, Selection} from 'd3';
+import {SeriesConfigTooltips, seriesConfigTooltipsData, seriesConfigTooltipsHandleEvents,} from '../tooltip';
+import {arrayIs, Circle, circleMinimized, circleToAttrs, rectFromString, ScaleAny} from '../core';
+import {Size} from '../core/utilities/size';
 
 export interface Point extends Circle {
   xValue: any;
@@ -23,7 +17,7 @@ export interface SeriesPoint extends SeriesConfigTooltips<SVGCircleElement, Poin
   yScale: ScaleAny<any, number, number>;
   radiuses: number[] | number;
   styleClasses: string | string[];
-  keys?: string[];
+  keys: string[];
   bounds: Size;
   flipped: boolean;
 }
@@ -56,6 +50,8 @@ export function seriesPointData(data: Partial<SeriesPoint>): SeriesPoint {
     }
   }
 
+  const keys = data.keys || yValues.map((c, i) => i.toString());
+
   return {
     xValues,
     xScale,
@@ -63,7 +59,7 @@ export function seriesPointData(data: Partial<SeriesPoint>): SeriesPoint {
     yScale,
     radiuses: data.radiuses || 5,
     styleClasses: data.styleClasses || 'categorical-0',
-    keys: data.keys,
+    keys,
     bounds: data.bounds || { width: 600, height: 400 },
     flipped: data.flipped || false,
     ...seriesConfigTooltipsData(data),

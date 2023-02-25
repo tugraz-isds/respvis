@@ -35,7 +35,7 @@
     <h1>Scatter Plot</h1>
     <div id="chart"></div>
     <script type="module">
-      import { chartWindowPointData, chartWindowPointRender, rectFromString } from './libs/respvis/respvis.js';;
+      import { chartWindowPointData, chartWindowPointRender, rectFromString } from './libs/respvis/respvis.js';
       import { areas, prices } from './data/houses.js';
       import * as d3 from './libs/d3-7.6.0/d3.js'
 
@@ -55,14 +55,21 @@
         const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
         const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
         const numberFormat = !mediumWidth ? d3.format('.2s') : d3.format(',');
+        const areasGrouped = [areas.slice(0, 10), areas.slice(10, 20), areas.slice(20)]
+        const pricesGrouped = [prices.slice(0, 10), prices.slice(10, 20), prices.slice(20)]
         return {
-          xValues: areas,
+          xValues: areasGrouped,
           xScale: scales.xScale,
-          yValues: prices,
+          yValues: pricesGrouped,
           yScale: scales.yScale,
           xAxis: { title: 'Area', subtitle: '[ft²]', configureAxis: (a) => a.tickFormat(numberFormat) },
           yAxis: { title: 'Price', subtitle: '[USD]', configureAxis: (a) => a.tickFormat(numberFormat) },
-          radiuses: !mediumWidth ? 3 : !largeWidth ? 5 : 7
+          radiuses: !mediumWidth ? 3 : !largeWidth ? 5 : 7,
+          legend: {
+            title: 'Legend',
+            keys: ['Group1', 'Group2', 'Group3'],
+            labels: ['Group1', 'Group2', 'Group3'],
+          },
         };
       }
 
