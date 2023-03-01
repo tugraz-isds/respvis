@@ -1,6 +1,6 @@
-import {easeCubicOut, scaleLinear, scalePoint, select, Selection} from 'd3';
+import {easeCubicOut, select, Selection} from 'd3';
 import {SeriesConfigTooltips, seriesConfigTooltipsData, seriesConfigTooltipsHandleEvents,} from '../tooltip';
-import {arrayIs, Circle, circleMinimized, circleToAttrs, rectFromString, ScaleAny} from '../core';
+import {arrayIs, calcDefaultScale, Circle, circleMinimized, circleToAttrs, rectFromString, ScaleAny} from '../core';
 import {Size} from '../core/utilities/size';
 
 export interface Point extends Circle {
@@ -15,7 +15,10 @@ export interface SeriesPoint extends SeriesConfigTooltips<SVGCircleElement, Poin
   xScale: ScaleAny<any, number, number>;
   yValues: any[];
   yScale: ScaleAny<any, number, number>;
-  radiuses: number[] | number;
+  radiuses: number | {
+    radiusDim: number[],
+    scale: ScaleAny<any, number, number>
+  };
   styleClasses: string | string[];
   keys: string[];
   bounds: Size;
@@ -26,29 +29,8 @@ export function seriesPointData(data: Partial<SeriesPoint>): SeriesPoint {
   const xValues = data.xValues || [];
   const yValues = data.yValues || [];
 
-  let xScale = data.xScale || scaleLinear().domain([0, 1]);
-  if (!data.xScale && xValues.length > 0) {
-    if (typeof xValues[0] === 'number') {
-      const extent = [Math.min(...xValues), Math.max(...xValues)];
-      const range = extent[1] - extent[0];
-      const domain = [extent[0] - range * 0.05, extent[1] + range * 0.05];
-      xScale = scaleLinear().domain(domain).nice();
-    } else {
-      xScale = scalePoint().domain(xValues);
-    }
-  }
-
-  let yScale = data.yScale || scaleLinear().domain([0, 1]);
-  if (!data.yScale && yValues.length > 0) {
-    if (typeof yValues[0] === 'number') {
-      const extent = [Math.min(...yValues), Math.max(...yValues)];
-      const range = extent[1] - extent[0];
-      const domain = [extent[0] - range * 0.05, extent[1] + range * 0.05];
-      yScale = scaleLinear().domain(domain).nice();
-    } else {
-      yScale = scalePoint().domain(yValues);
-    }
-  }
+  let xScale = data.xScale || calcDefaultScale(xValues)
+  let yScale = data.yScale || calcDefaultScale(xValues)
 
   const keys = data.keys || yValues.map((c, i) => i.toString());
 
@@ -75,9 +57,9 @@ export function seriesPointCreatePoints(seriesData: SeriesPoint): Point[] {
   const data: Point[] = [];
 
   for (let i = 0; i < xValues.length; ++i) {
-    const x = xValues[i],
-      y = yValues[i],
-      r = Array.isArray(radiuses) ? radiuses[i] : radiuses;
+    const x = xValues[i]
+    const y = yValues[i]
+    const r = typeof radiuses === "number" ? radiuses : radiuses.scale(radiuses.radiusDim[i]);
     data.push({
       styleClass: arrayIs(styleClasses) ? styleClasses[i] : styleClasses,
       key: keys?.[i] || i.toString(),
@@ -85,7 +67,7 @@ export function seriesPointCreatePoints(seriesData: SeriesPoint): Point[] {
         x: flipped ? yScale(y)! : xScale(x)!,
         y: flipped ? xScale(x)! : yScale(y)!,
       },
-      radius: r,
+      radius: r ?? 5,
       xValue: x,
       yValue: y,
     });

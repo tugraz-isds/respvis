@@ -1,5 +1,5 @@
-import { AxisScale, scaleLinear, ScaleLinear, scalePoint, select, Selection, style } from 'd3';
-import { Position, ScaleAny, rectFromString, arrayIs, pathLine } from '../core';
+import {scaleLinear, scalePoint, select, Selection} from 'd3';
+import {arrayIs, pathLine, Position, rectFromString, ScaleAny} from '../core';
 
 export interface Line {
   positions: Position[];
@@ -14,7 +14,7 @@ export interface SeriesLine {
   yScale: ScaleAny<any, number, number>;
   styleClasses: string | string[];
   keys: string[];
-  flipped: boolean;
+  flipped?: boolean;
 }
 
 export function seriesLineData(data: Partial<SeriesLine>): SeriesLine {

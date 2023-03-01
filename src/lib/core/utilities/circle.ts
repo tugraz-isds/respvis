@@ -30,10 +30,9 @@ export function circleFromString(str: string): Circle {
 }
 
 export function circleToAttrs(selectionOrTransition: SelectionOrTransition, circle: Circle): void {
-  selectionOrTransition
-    .attr('cx', circle.center.x)
-    .attr('cy', circle.center.y)
-    .attr('r', circle.radius);
+  selectionOrTransition.attr('cx', circle.center.x) //Typescript Problem on chaining?
+  selectionOrTransition.attr('cy', circle.center.y)
+  selectionOrTransition.attr('r', circle.radius)
 }
 
 export function circleFromAttrs(selectionOrTransition: SelectionOrTransition): Circle {

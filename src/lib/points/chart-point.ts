@@ -1,30 +1,11 @@
 import {select, Selection} from 'd3';
-import {arrayIs, rectFromString} from '../core';
-import {
-  ChartCartesian,
-  chartCartesianAxesRender,
-  chartCartesianData,
-  chartCartesianRender,
-} from '../core/chart-cartesian';
+import {rectFromString} from '../core';
+import {chartCartesianAxesRender, chartCartesianRender,} from '../core/chart-cartesian';
 import {SeriesPoint, seriesPointData, seriesPointRender} from './series-point';
-import {Legend, legendData, legendRender} from "../legend";
+import {Legend, legendRender} from "../legend";
+import {ChartPointData} from "./chart-point-data";
 
-export interface ChartPoint extends SeriesPoint, ChartCartesian {
-  legend: Partial<Legend>;
-}
-
-export function chartPointData(data: Partial<ChartPoint>): ChartPoint {
-  const yValues = data.yValues ?? []
-  const styleClasses = data.styleClasses || yValues.map((_, i) => `categorical-${i}`);
-  return {
-    ...seriesPointData(data),
-    legend: data.legend ?? {},
-    styleClasses,
-    ...chartCartesianData(data),
-  };
-}
-
-export type ChartPointSelection = Selection<SVGSVGElement | SVGGElement, ChartPoint>;
+export type ChartPointSelection = Selection<SVGSVGElement | SVGGElement, ChartPointData>;
 
 export function chartPointRender(selection: ChartPointSelection): void {
   selection
@@ -33,22 +14,21 @@ export function chartPointRender(selection: ChartPointSelection): void {
     .each((chartD, i, g) => {
       const drawAreaS = select(g[i]).selectAll('.draw-area');
       const drawAreaBounds = rectFromString(drawAreaS.attr('bounds') || '0, 0, 600, 400');
-      const { xScale, yScale, flipped, keys, styleClasses, xValues, yValues } = chartD;
+      const { flipped, legend, pointSeries, xScale, yScale } = chartD;
 
       xScale.range(flipped ? [drawAreaBounds.height, 0] : [0, drawAreaBounds.width]);
       yScale.range(flipped ? [0, drawAreaBounds.width] : [drawAreaBounds.height, 0]);
 
         drawAreaS
-        .selectAll<SVGSVGElement, ChartPoint>('.series-point').data<SeriesPoint>(
-            keys.map((k, lineI) =>
+        .selectAll<SVGSVGElement, ChartPointData>('.series-point').data<SeriesPoint>(
+            pointSeries.map((p) =>
                 seriesPointData({
-                    styleClasses: arrayIs(styleClasses) ? styleClasses[lineI] : styleClasses,
-                    keys: yValues[lineI].map((_, markerI) => `${k}-${markerI}`),
-                    xValues: xValues[lineI],
-                    yValues: yValues[lineI],
-                    xScale,
-                    yScale,
-                    flipped,
+                  styleClasses: p.styleClasses,
+                  keys: p.keys,
+                  xValues: p.xValues,
+                  yValues: p.yValues,
+                  radiuses: p.radiuses,
+                  xScale, yScale, flipped
                 })
         )).join('svg')
             .call((s) => seriesPointRender(s))
@@ -56,14 +36,9 @@ export function chartPointRender(selection: ChartPointSelection): void {
         // .join('svg')
         // .call((s) => seriesPointRender(s));
 
-      const { legend: legendD } = chartD;
       selection
         .selectAll<SVGGElement, Legend>('.legend')
-        .data(
-          arrayIs(styleClasses) && styleClasses.length > 1
-            ? [legendData({ styleClasses, labels: keys, ...legendD, keys })]
-            : []
-        )
+        .data([legend])
         .join('g')
         .call((s) => legendRender(s))
         // .on('pointerover.chartlinehighlight pointerout.chartlinehighlight', (e) => { //TODO: Hover
@@ -73,7 +48,6 @@ export function chartPointRender(selection: ChartPointSelection): void {
         //     e.type.endsWith('over')
         //   );
         // });
-
 
 
       chartD.xAxis.scale = chartD.xScale;

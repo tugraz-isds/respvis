@@ -1,21 +1,17 @@
-import { scaleBand, ScaleBand, ScaleContinuousNumeric, scaleLinear } from 'd3';
-import { select, Selection, style } from 'd3';
-import { arrayIs } from '../core';
 import {
-  Rect,
-  rectFitStroke,
-  rectFromString,
-  rectMinimized,
-  rectToAttrs,
-} from '../core/utilities/rect';
-import { Transition } from 'd3';
-import { easeCubicOut } from 'd3';
-import { Size } from '../core/utilities/size';
-import {
-  SeriesConfigTooltips,
-  seriesConfigTooltipsData,
-  seriesConfigTooltipsHandleEvents,
-} from '../tooltip';
+  easeCubicOut,
+  ScaleBand,
+  scaleBand,
+  ScaleContinuousNumeric,
+  scaleLinear,
+  select,
+  Selection,
+  Transition
+} from 'd3';
+import {arrayIs} from '../core';
+import {Rect, rectFitStroke, rectFromString, rectMinimized, rectToAttrs,} from '../core/utilities/rect';
+import {Size} from '../core/utilities/size';
+import {SeriesConfigTooltips, seriesConfigTooltipsData, seriesConfigTooltipsHandleEvents,} from '../tooltip';
 import toPX from 'to-px';
 
 export interface Bar extends Rect {
@@ -32,7 +28,7 @@ export interface SeriesBar extends SeriesConfigTooltips<SVGRectElement, Bar> {
   valueScale: ScaleContinuousNumeric<number, number>;
   keys: string[];
   styleClasses: string | string[];
-  flipped: boolean;
+  flipped?: boolean;
   bounds: Size;
 }
 

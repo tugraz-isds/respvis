@@ -1,4 +1,4 @@
-export default [
+export const carData = [
  {
   "mileage": "11800",
   "make": "Skoda",
@@ -5500,3 +5500,47 @@ export default [
   "year": "2011"
  }
 ]
+
+function getUsedMakesSorted() {
+ const usedMakes = carData.reduce((makes, car) => {
+  const makeIndex = makes.findIndex(make => make.name === car.make)
+  if (makeIndex === -1) {
+   makes.push({name: car.make, count: 1})
+   return makes
+  }
+  makes[makeIndex].count++
+  return makes
+ }, [])
+
+ return usedMakes.sort((make1, make2) => {
+  return make1.count > make2.count ? -1 : 1
+ })
+}
+
+export function getTopMakes(numberMakes) {
+ const usedMakesSorted = getUsedMakesSorted()
+ return usedMakesSorted.slice(0, numberMakes).map(topMake => topMake.name)
+}
+
+export function getTopMakesData(numberTopMakes) {
+ const topMakesNames = getTopMakes(numberTopMakes)
+ const prices = [[]]
+ const horsePower = [[]]
+ const mileages = [[]]
+
+ topMakesNames.forEach(() => {
+  prices.push([])
+  horsePower.push([])
+  mileages.push([])
+ })
+
+ carData.forEach(entry => {
+  let index = topMakesNames.findIndex((value) => value === entry.make)
+  if (index === -1) index = 5
+  prices[index].push(entry.price)
+  horsePower[index].push(entry.hp)
+  mileages[index].push(entry.mileage)
+ })
+ return {prices, horsePower, mileages, topMakesNames}
+}
+

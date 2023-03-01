@@ -1,33 +1,10 @@
-import {
-    chartWindowPointAutoResize,
-    chartWindowPointData,
-    chartWindowPointRender,
-    rectFromString
-} from '../../libs/respvis/respvis.js'
-import carData from '../../data/sold-cars-germany/sold-cars-germany.js';
+import {chartWindowPointAutoResize, chartWindowPointData, chartWindowPointRender} from '../../libs/respvis/respvis.js'
+import {carData, getTopMakes} from '../../data/sold-cars-germany/sold-cars-germany.js';
 import * as d3 from '../../libs/d3-7.6.0/d3.js'
 
 const prices = carData.map(car => car.price)
 const horsePower = carData.map(car => car.hp)
-
-function getUsedMakesSorted() {
-    const usedMakes = carData.reduce((makes, car) => {
-        const makeIndex = makes.findIndex(make => make.name === car.make)
-        if (makeIndex === -1) {
-            makes.push({name: car.make, count: 1})
-            return makes
-        }
-        makes[makeIndex].count++
-        return makes
-    }, [])
-
-    return usedMakes.sort((make1, make2) => {
-        return make1.count > make2.count ? -1 : 1
-    })
-}
-
-const usedMakesSorted = getUsedMakesSorted()
-const topMakesNames = usedMakesSorted.slice(0, 5).map(topMake => topMake.name)
+const topMakesNames = getTopMakes(5)
 
 
 // const carsSorted = topMakesNames.map(topMake => {
@@ -53,9 +30,9 @@ const priceScale = d3
 
 
 const data = {
-    xValues: prices,
+    xValues: [prices],
     xScale: priceScale,
-    yValues: horsePower,
+    yValues: [horsePower],
     yScale: hpScale,
     xAxis: { title: 'Price [EU]' },
     yAxis: { title: 'Horse Power [PS]' },

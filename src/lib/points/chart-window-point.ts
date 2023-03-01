@@ -1,26 +1,18 @@
-import { select, Selection } from 'd3';
-import {
-  chartWindowRender,
-  ToolFilterNominal,
-  toolFilterNominalData,
-  toolDownloadSVGRender,
-  toolFilterNominalRender,
-  layouterCompute,
-} from '../core';
-import { arrayIs } from '../core';
-import { chartPointRender, ChartPoint, chartPointData } from './chart-point';
+import {select, Selection} from 'd3';
+import {chartWindowRender, layouterCompute, toolDownloadSVGRender,} from '../core';
+import {chartPointRender} from './chart-point';
+import {ChartPointArgs, ChartPointData, chartPointData} from "./chart-point-data";
 
-export interface ChartWindowPoint extends ChartPoint {}
+export interface ChartWindowPoint extends ChartPointArgs {}
 
-export function chartWindowPointData(data: Partial<ChartWindowPoint>): ChartWindowPoint {
+export function chartWindowPointData(data: ChartPointArgs): ChartPointData {
   const chartData = chartPointData(data);
-
   return {
     ...chartData,
   };
 }
 
-export type ChartWindowPointSelection = Selection<HTMLDivElement, ChartWindowPoint>;
+export type ChartWindowPointSelection = Selection<HTMLDivElement, ChartPointData>;
 
 export function chartWindowPointRender(selection: ChartWindowPointSelection): void {
   selection
@@ -40,8 +32,8 @@ export function chartWindowPointRender(selection: ChartWindowPointSelection): vo
 
       // chart
       const chartS = layouterS
-        .selectAll<SVGSVGElement, ChartPoint>('svg.chart-point')
-        .data([chartPointData(chartWindowD)])
+        .selectAll<SVGSVGElement, ChartPointData>('svg.chart-point')
+        .data([chartWindowD])
         .join('svg')
         .call((s) => chartPointRender(s));
 
@@ -53,6 +45,6 @@ export function chartWindowPointRender(selection: ChartWindowPointSelection): vo
 
 export function chartWindowPointAutoResize(selection: ChartWindowPointSelection): void {
   selection.on('resize', function () {
-    select<HTMLDivElement, ChartWindowPoint>(this).call((s) => chartWindowPointRender(s));
+    select<HTMLDivElement, ChartPointData>(this).call((s) => chartWindowPointRender(s));
   });
 }

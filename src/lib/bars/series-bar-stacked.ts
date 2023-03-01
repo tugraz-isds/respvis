@@ -19,7 +19,7 @@ export interface SeriesBarStacked extends SeriesConfigTooltips<SVGRectElement, B
   subcategories: string[];
   styleClasses: string | string[] | string[][];
   keys?: string[][];
-  flipped: boolean;
+  flipped?: boolean;
   bounds: Size;
 }
 

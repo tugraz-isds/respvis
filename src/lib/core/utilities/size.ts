@@ -28,8 +28,9 @@ export function sizeFromString(str: string): Size {
 }
 
 export function sizeToAttrs(selectionOrTransition: SelectionOrTransition, size: Size): void {
-  size = sizeRound(size);
-  selectionOrTransition.attr('width', size.width).attr('height', size.height);
+  size = sizeRound(size)
+  selectionOrTransition.attr('width', size.width) //Typescript Problem on chaining?
+  selectionOrTransition.attr('height', size.height)
 }
 
 export function sizeFromAttrs(selectionOrTransition: SelectionOrTransition): Size {

@@ -1,15 +1,9 @@
-import { range } from 'd3';
-import { scaleBand, ScaleBand, ScaleContinuousNumeric, scaleLinear } from 'd3';
-import { BaseType, select, Selection, ValueFn } from 'd3';
-import { JoinEvent } from '.';
-import { arrayIs, arrayIs2D, Rect, rectFromString } from '../core';
-import { Size } from '../core/utilities/size';
-import {
-  SeriesConfigTooltips,
-  seriesConfigTooltipsData,
-  seriesConfigTooltipsHandleEvents,
-} from '../tooltip';
-import { Bar, seriesBarJoin } from './series-bar';
+import {range, scaleBand, ScaleBand, ScaleContinuousNumeric, scaleLinear, select, Selection} from 'd3';
+import {JoinEvent} from '.';
+import {arrayIs, arrayIs2D, Rect, rectFromString} from '../core';
+import {Size} from '../core/utilities/size';
+import {SeriesConfigTooltips, seriesConfigTooltipsData, seriesConfigTooltipsHandleEvents,} from '../tooltip';
+import {Bar, seriesBarJoin} from './series-bar';
 
 export interface BarGrouped extends Bar {
   subcategory: string;
@@ -24,7 +18,7 @@ export interface SeriesBarGrouped extends SeriesConfigTooltips<SVGRectElement, B
   valueScale: ScaleContinuousNumeric<number, number>;
   styleClasses: string | string[] | string[][];
   keys: string[][];
-  flipped: boolean;
+  flipped?: boolean;
   bounds: Size;
 }
 

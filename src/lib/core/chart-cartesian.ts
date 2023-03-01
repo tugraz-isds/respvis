@@ -3,11 +3,11 @@ import { axisBottomRender, axisLeftRender, Axis, axisData } from './axis';
 import { chartRender } from './chart';
 
 export interface ChartCartesian {
-  title: string;
-  subtitle: string;
+  title?: string;
+  subtitle?: string;
   xAxis: Axis;
   yAxis: Axis;
-  flipped: boolean;
+  flipped?: boolean;
 }
 
 export function chartCartesianData(
@@ -48,7 +48,7 @@ export function chartCartesianRender(selection: ChartCartesianSelection): void {
 
   header
     .selectAll('.title')
-    .data((d) => [d.title])
+    .data((d) => [d.title ? d.title : ""])
     .join('g')
     .classed('title', true)
     .attr('data-ignore-layout-children', true)
@@ -59,7 +59,7 @@ export function chartCartesianRender(selection: ChartCartesianSelection): void {
 
   header
     .selectAll('.subtitle')
-    .data((d) => [d.subtitle])
+    .data((d) => [d.subtitle ? d.subtitle : ""])
     .join('g')
     .classed('subtitle', true)
     .attr('data-ignore-layout-children', true)
@@ -73,12 +73,13 @@ export function chartCartesianAxesRender(selection: ChartCartesianSelection): vo
   selection
     .each(function ({ flipped, xAxis, yAxis }, i, g) {
       const s = <ChartCartesianSelection>select(g[i]);
+      const flippedBool = flipped ? flipped : false
 
       s.selectAll<SVGGElement, Axis>('.axis-left')
         .data([flipped ? xAxis : yAxis])
         .join('g')
         .call((s) => axisLeftRender(s))
-        .classed('axis-x', flipped)
+        .classed('axis-x', flippedBool)
         .classed('axis-y', !flipped);
 
       s.selectAll<SVGGElement, Axis>('.axis-bottom')
@@ -86,9 +87,9 @@ export function chartCartesianAxesRender(selection: ChartCartesianSelection): vo
         .join('g')
         .call((s) => axisBottomRender(s))
         .classed('axis-x', !flipped)
-        .classed('axis-y', flipped);
+        .classed('axis-y', flippedBool);
     })
-    .attr('data-flipped', (d) => d.flipped);
+    .attr('data-flipped', (d) => d.flipped ? d.flipped : false);
 }
 
 export enum LegendPosition {

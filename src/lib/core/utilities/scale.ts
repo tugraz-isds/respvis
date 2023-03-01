@@ -1,11 +1,10 @@
 import {
   ScaleBand,
   ScaleContinuousNumeric,
-  ScaleLinear,
-  ScaleLogarithmic,
+  scaleLinear,
   ScaleOrdinal,
+  scalePoint,
   ScalePoint,
-  ScalePower,
   ScaleQuantile,
   ScaleQuantize,
   ScaleThreshold,
@@ -27,3 +26,18 @@ export type ScaleAny<TDomain extends string | number | Date, TRange, TOutput> =
   | ScaleOrdinal<TDomain, TRange>
   | ScaleBand<TDomain>
   | ScalePoint<TDomain>;
+
+export function calcDefaultScale(values: any[]) {
+  let scale : ScaleAny<any, number, number> = scaleLinear().domain([0, 1]);
+  if (values.length > 0) {
+    if (typeof values[0] === 'number') {
+      const extent = [Math.min(...values), Math.max(...values)];
+      const range = extent[1] - extent[0];
+      const domain = [extent[0] - range * 0.05, extent[1] + range * 0.05];
+      scale = scaleLinear().domain(domain).nice();
+    } else {
+      scale = scalePoint().domain(values);
+    }
+  }
+  return scale
+}
