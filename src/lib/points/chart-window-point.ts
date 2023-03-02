@@ -1,5 +1,5 @@
 import {select, Selection} from 'd3';
-import {chartWindowRender, layouterCompute, toolDownloadSVGRender,} from '../core';
+import {chartWindowRender, layouterCompute, rectFromString, toolDownloadSVGRender,} from '../core';
 import {chartPointRender} from './chart-point';
 import {ChartPointArgs, ChartPointData, chartPointData} from "./chart-point-data";
 
@@ -14,37 +14,84 @@ export function chartWindowPointData(data: ChartPointArgs): ChartPointData {
 
 export type ChartWindowPointSelection = Selection<HTMLDivElement, ChartPointData>;
 
-export function chartWindowPointRender(selection: ChartWindowPointSelection): void {
-  selection
-    .classed('chart-window-point', true)
-    .call((s) => chartWindowRender(s))
-    .each((chartWindowD, i, g) => {
-      const chartWindowS = select<HTMLDivElement, ChartWindowPoint>(g[i]),
-        menuItemsS = chartWindowS.selectAll('.menu-tools > .items'),
-        layouterS = chartWindowS.selectAll<HTMLDivElement, any>('.layouter');
+export class PointChartRenderer {
+  didRender = false
+  constructor() {
+  }
 
-      // download svg
-      menuItemsS
-        .selectAll<HTMLLIElement, any>('.tool-download-svg')
-        .data([null])
-        .join('li')
-        .call((s) => toolDownloadSVGRender(s));
+  buildWindowPointChart(selection: ChartWindowPointSelection) {
+    this.renderWindow(selection)
+    this.setListeners(selection)
+  }
 
-      // chart
-      const chartS = layouterS
-        .selectAll<SVGSVGElement, ChartPointData>('svg.chart-point')
-        .data([chartWindowD])
-        .join('svg')
-        .call((s) => chartPointRender(s));
+  renderWindow(selection: ChartWindowPointSelection): void {
+    selection
+      .classed('chart-window-point', true)
+      .call((s) => chartWindowRender(s))
+      .each((chartWindowD, i, g) => {
+        const chartWindowS = select<HTMLDivElement, ChartWindowPoint>(g[i])
+        const menuItemsS = chartWindowS.selectAll('.menu-tools > .items')
+        const layouterS = chartWindowS.selectAll<HTMLDivElement, any>('.layouter');
 
-      layouterS
-        .on('boundschange.chartwindowpoint', () => chartPointRender(chartS))
-        .call((s) => layouterCompute(s));
+        // download svg
+        menuItemsS
+          .selectAll<HTMLLIElement, any>('.tool-download-svg')
+          .data([null])
+          .join('li')
+          .call((s) => toolDownloadSVGRender(s));
+
+        // chart
+        const chartS = layouterS
+          .selectAll<SVGSVGElement, ChartPointData>('svg.chart-point')
+          .data([chartWindowD])
+          .join('svg')
+          .call((s) => chartPointRender(s));
+
+        layouterS
+          .on('boundschange.chartwindowpoint', () => chartPointRender(chartS))
+          .call((s) => layouterCompute(s));
+      });
+  }
+
+  private setListeners(selection: ChartWindowPointSelection) {
+    if (this.didRender) return
+    const renderer = this
+    const drawArea = selection.selectAll('.draw-area');
+
+    selection
+      .each((chartWindowD, i, g) => {
+        const chartWindowS = select<HTMLDivElement, ChartWindowPoint>(g[i])
+        const {xScale, yScale, zoom} = chartWindowD
+        if (!zoom) return
+        drawArea.call(
+          zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom', function (e, d) {
+            const newData = {
+              ...chartWindowD,
+              xScale: e.transform.rescaleX(xScale),
+              yScale: e.transform.rescaleY(yScale)
+            }
+            renderer.renderWindow(selection.datum(newData))
+          })
+        )
+
+        chartWindowS.on('resize', () => {
+          const { width, height } = rectFromString(drawArea.attr('bounds') ?? "");
+          const extent: [[number, number], [number, number]] = [
+            [0, 0],
+            [width, height],
+          ];
+          zoom.behaviour.extent(extent).translateExtent(extent);
+          renderer.renderWindow(selection.datum(chartWindowD))
+        });
+      })
+    this.didRender = true
+  }
+
+  chartWindowPointAutoResize(selection: ChartWindowPointSelection): void {
+    const instance = this
+    selection.on('resize', () => {
+      instance.renderWindow(selection)
     });
+  }
 }
 
-export function chartWindowPointAutoResize(selection: ChartWindowPointSelection): void {
-  selection.on('resize', function () {
-    select<HTMLDivElement, ChartPointData>(this).call((s) => chartWindowPointRender(s));
-  });
-}

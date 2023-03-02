@@ -35,7 +35,7 @@
     <h1>Scatter Plot</h1>
     <div id="chart"></div>
     <script type="module">
-      import { chartWindowPointData, chartWindowPointRender, rectFromString } from './libs/respvis/respvis.js';
+      import { chartWindowPointData, PointChartRenderer } from './libs/respvis/respvis.js';
       import * as d3 from './libs/d3-7.6.0/d3.js'
       import {getTopMakesData, carData} from "./data/sold-cars-germany/sold-cars-germany.js";
 
@@ -80,31 +80,17 @@
             keys: [...topMakesNames, "Other"],
             labels: [...topMakesNames, "Other"]
           },
+          zoom: {
+            in: 20,
+            out: 1
+          }
         };
       }
 
-      const render = (cW) => cW.datum(chartWindowPointData(calcData())).call(chartWindowPointRender);
+      const renderer = new PointChartRenderer()
+      const selection = d3.select('#chart').append('div').datum(chartWindowPointData(calcData()))
 
-      const chartWindow = d3.select('#chart').append('div').call(render);
-
-      const zoom = d3.zoom();
-      const drawArea = chartWindow.selectAll('.draw-area').call(
-        zoom.scaleExtent([1, 20]).on('zoom', function (e, d) {
-          scales.xScale = e.transform.rescaleX(baseScaleX)
-          scales.yScale = e.transform.rescaleY(baseScaleY)
-          chartWindow.call(render)
-        })
-      );
-
-      chartWindow.on('resize', function () {
-        const { width, height } = rectFromString(drawArea.attr('bounds'));
-        const extent = [
-          [0, 0],
-          [width, height],
-        ];
-        zoom.extent(extent).translateExtent(extent);
-        chartWindow.call(render);
-      });
+      renderer.buildWindowPointChart(selection)
     </script>
   </body>
 </html>

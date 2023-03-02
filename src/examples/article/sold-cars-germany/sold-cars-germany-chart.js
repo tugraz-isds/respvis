@@ -1,4 +1,4 @@
-import {chartWindowPointAutoResize, chartWindowPointData, chartWindowPointRender} from '../../libs/respvis/respvis.js'
+import {chartWindowPointData, PointChartRenderer} from '../../libs/respvis/respvis.js'
 import {carData, getTopMakes} from '../../data/sold-cars-germany/sold-cars-germany.js';
 import * as d3 from '../../libs/d3-7.6.0/d3.js'
 
@@ -40,11 +40,9 @@ const data = {
     subtitle: "From 2011 to 2021"
 };
 
-const render = (cW) => cW.datum(chartWindowPointData(data))
-    .call(chartWindowPointRender)
-    .call(chartWindowPointAutoResize);
-
-const chartWindow = d3.select('#sold-cars-germany').append('div').call(render);
+const chartWindow = d3.select('#sold-cars-germany').append('div').datum(chartWindowPointData(data))
+const renderer = new PointChartRenderer()
+renderer.buildWindowPointChart(chartWindow)
 
 chartWindow.on('resize', function () {
     const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
@@ -52,5 +50,7 @@ chartWindow.on('resize', function () {
     const numberFormat = !mediumWidth ? d3.format('.2s') : d3.format(',');
     data.xAxis.configureAxis = data.yAxis.configureAxis = (a) => a.tickFormat(numberFormat);
     data.radiuses = !mediumWidth ? 3 : !largeWidth ? 5 : 7;
-    chartWindow.call(render);
+    const sel = chartWindow.datum(chartWindowPointData(data))
+    renderer.buildWindowPointChart(sel)
+    //TODO: fix updating data in combination with PointChartRenderer and Listeners
 });
