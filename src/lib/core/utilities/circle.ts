@@ -5,6 +5,7 @@ import { Rect, rectCenter } from './rect';
 export interface Circle {
   center: Position;
   radius: number;
+  color?: string;
 }
 
 export function circleRound(circle: Circle, decimals: number = 0): Circle {
@@ -33,6 +34,7 @@ export function circleToAttrs(selectionOrTransition: SelectionOrTransition, circ
   selectionOrTransition.attr('cx', circle.center.x) //Typescript Problem on chaining?
   selectionOrTransition.attr('cy', circle.center.y)
   selectionOrTransition.attr('r', circle.radius)
+  selectionOrTransition.attr('fill', circle.color ? circle.color : null)
 }
 
 export function circleFromAttrs(selectionOrTransition: SelectionOrTransition): Circle {

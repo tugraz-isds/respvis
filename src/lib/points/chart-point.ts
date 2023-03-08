@@ -43,6 +43,7 @@ export function chartPointRender(selection: ChartPointSelection): void {
           xValues: p.xValues,
           yValues: p.yValues,
           radiuses: p.radiuses,
+          color: p.color,
           xScale, yScale, flipped
         })
       )).join('svg')

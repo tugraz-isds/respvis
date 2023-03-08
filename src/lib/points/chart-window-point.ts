@@ -16,12 +16,14 @@ export type ChartWindowPointSelection = Selection<HTMLDivElement, ChartPointData
 
 export class PointChartRenderer {
   didRender = false
-  constructor() {
+  selection: ChartWindowPointSelection
+  constructor(selection: ChartWindowPointSelection) {
+    this.selection = selection
   }
 
-  buildWindowPointChart(selection: ChartWindowPointSelection) {
-    this.renderWindow(selection)
-    this.setListeners(selection)
+  buildWindowPointChart() {
+    this.renderWindow(this.selection)
+    this.setListeners(this.selection)
   }
 
   renderWindow(selection: ChartWindowPointSelection): void {

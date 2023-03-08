@@ -1,4 +1,4 @@
-import {calcDefaultScale, ChartCartesian, chartCartesianData, ScaleAny} from "../core";
+import {calcDefaultScale, ChartCartesian, chartCartesianData, ScaleAny, ScaleContinuous} from "../core";
 import {Legend, legendData} from "../legend";
 import {SeriesPoint, seriesPointData} from "./series-point";
 import {zoom, ZoomBehavior} from "d3";
@@ -9,15 +9,19 @@ export interface ChartPointArgs extends ChartCartesian {
   xValues: number[][]; //TODO: add strings/dates, also for y
   xScale?: ScaleAny<any, number, number>;
   yValues: number[][];
+  yScale?: ScaleAny<any, number, number>;
   radiuses?: number | {
     radiusDim: number[][],
     scale: ScaleAny<any, number, number>
+  }
+  color?: {
+    colorDim: number[],
+    colorScale: ScaleContinuous<any, string>
   }
   zoom?: {
     in: number,
     out: number
   };
-  yScale?: ScaleAny<any, number, number>;
   styleClasses?: string[];
   legend?: Legend;
 }
@@ -35,7 +39,7 @@ export interface ChartPointData extends ChartCartesian {
 }
 
 export function chartPointData(data: ChartPointArgs): ChartPointData {
-  const {xValues, yValues, xScale, yScale, legend, styleClasses, flipped, radiuses, zoom : zoomData} = data
+  const {xValues, yValues, xScale, yScale, legend, styleClasses, flipped, radiuses, zoom : zoomData, color} = data
 
   const lowerLength = xValues.length < yValues.length ? xValues.length : yValues.length
   const xVals = xValues.slice(0, lowerLength)
@@ -55,6 +59,7 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
       xValues: xVals[index],
       yValues: yVals[index],
       radiuses: radiusesValid,
+      color,
       xScale: xScaleValid,
       yScale: yScaleValid,
     })
@@ -66,7 +71,7 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
     xScale: xScaleValid,
     yScale: yScaleValid,
     pointSeries: points,
-    legend: legendData(legend ? legend : { styleClasses, labels }),
+    legend: legendData(legend ? legend : { }),
     ...chartCartesianData(data),
     zoom: zoomData ? {
       ...zoomData,

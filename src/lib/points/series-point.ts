@@ -1,6 +1,15 @@
 import {easeCubicOut, select, Selection} from 'd3';
 import {SeriesConfigTooltips, seriesConfigTooltipsData, seriesConfigTooltipsHandleEvents,} from '../tooltip';
-import {arrayIs, calcDefaultScale, Circle, circleMinimized, circleToAttrs, rectFromString, ScaleAny} from '../core';
+import {
+  arrayIs,
+  calcDefaultScale,
+  Circle,
+  circleMinimized,
+  circleToAttrs,
+  rectFromString,
+  ScaleAny,
+  ScaleContinuous
+} from '../core';
 import {Size} from '../core/utilities/size';
 
 export interface Point extends Circle {
@@ -18,6 +27,10 @@ export interface SeriesPoint extends SeriesConfigTooltips<SVGCircleElement, Poin
   radiuses: number | {
     radiusDim: number[],
     scale: ScaleAny<any, number, number>
+  };
+  color?: {
+    colorDim: number[],
+    colorScale: ScaleContinuous<any, string>
   };
   styleClasses: string | string[];
   keys: string[];
@@ -40,6 +53,7 @@ export function seriesPointData(data: Partial<SeriesPoint>): SeriesPoint {
     yValues,
     yScale,
     radiuses: data.radiuses || 5,
+    color: data.color,
     styleClasses: data.styleClasses || 'categorical-0',
     keys,
     bounds: data.bounds || { width: 600, height: 400 },
@@ -51,7 +65,7 @@ export function seriesPointData(data: Partial<SeriesPoint>): SeriesPoint {
 }
 
 export function seriesPointCreatePoints(seriesData: SeriesPoint): Point[] {
-  const { xScale, yScale, xValues, yValues, radiuses, bounds, keys, styleClasses, flipped } =
+  const { xScale, yScale, xValues, yValues, radiuses, bounds, keys, styleClasses, flipped, color } =
     seriesData;
 
   const data: Point[] = [];
@@ -70,6 +84,7 @@ export function seriesPointCreatePoints(seriesData: SeriesPoint): Point[] {
       radius: r ?? 5,
       xValue: x,
       yValue: y,
+      color: color?.colorScale(color.colorDim[i])
     });
   }
 
@@ -128,7 +143,7 @@ export function seriesPointJoin(
         .ease(easeCubicOut)
         .each((d, i, g) => circleToAttrs(select(g[i]), d))
     )
-    .attr('data-style', (d) => d.styleClass)
+    .attr('data-style', (d) => !d.color ? d.styleClass : null)
     .attr('data-key', (d) => d.key)
     .call((s) => seriesSelection.dispatch('update', { detail: { selection: s } }));
 }

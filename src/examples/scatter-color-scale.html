@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
-    <title>RespVis - Point Chart</title>
+    <title>RespVis - Scatter Plot</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="../respvis.css" />
@@ -32,14 +32,13 @@
     </style>
   </head>
   <body>
-    <h1>Scatter Plot</h1>
+    <h1>Scatter Plot Colored</h1>
     <div id="chart"></div>
     <script type="module">
       import { chartWindowPointData, PointChartRenderer } from './libs/respvis/respvis.js';
       import * as d3 from './libs/d3-7.6.0/d3.js'
-      import {getTopMakesData, carData} from "./data/sold-cars-germany/sold-cars-germany.js";
+      import {carData} from "./data/sold-cars-germany/sold-cars-germany.js";
 
-      const {topMakesNames, mileages, horsePower, prices} = getTopMakesData(5)
       const allHorsePower = carData.map(entry => entry.hp)
       const allPrices = carData.map(entry => entry.price)
       const allMileages = carData.map(entry => entry.mileage)
@@ -50,14 +49,14 @@
       const baseScaleY = d3.scaleLinear()
               .domain([0, Math.max(...allPrices)])
               .nice()
-      const radiusScale = d3.scaleLinear()
+      const colorScale = d3.scaleSequential()
               .domain([0, Math.max(...allMileages)])
-              .range([5, 20])
+              .interpolator(d3.interpolateYlGnBu)
 
       const scales = {
         xScale: baseScaleX,
         yScale: baseScaleY,
-        radiusScale
+        colorScale
       }
 
       const calcData = () => {
@@ -65,20 +64,20 @@
         const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
         const numberFormat = !mediumWidth ? d3.format('.2s') : d3.format(',');
         return {
-          xValues: horsePower,
+          xValues: [allHorsePower],
           xScale: scales.xScale,
-          yValues: prices,
+          yValues: [allPrices],
           yScale: scales.yScale,
           xAxis: { title: 'Horse Power', subtitle: '[PS]', configureAxis: (a) => a.tickFormat(numberFormat) },
           yAxis: { title: 'Price', subtitle: '[EU]', configureAxis: (a) => a.tickFormat(numberFormat) },
-          radiuses: {
-            radiusDim: mileages,
-            scale: scales.radiusScale
+          color: {
+            colorDim: allMileages,
+            colorScale: scales.colorScale
           },
           legend: {
             title: 'Legend',
-            keys: [...topMakesNames, "Other"],
-            labels: [...topMakesNames, "Other"]
+            keys: ["Low Mileage", "High Mileage"],
+            labels: ["Low Mileage", "High Mileage"]
           },
           zoom: {
             in: 20,
