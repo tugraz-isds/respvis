@@ -15,19 +15,29 @@ export function chartWindowPointData(data: ChartPointArgs): ChartPointData {
 export type ChartWindowPointSelection = Selection<HTMLDivElement, ChartPointData>;
 
 export class PointChartRenderer {
-  didRender = false
-  selection: ChartWindowPointSelection
-  constructor(selection: ChartWindowPointSelection) {
-    this.selection = selection
+  addedListeners = false
+  data: ChartPointData
+  constructor(public selection: ChartWindowPointSelection, data: ChartPointArgs) {
+    this.data = chartWindowPointData(data)
+  }
+
+  /**
+   * Adds custom event listener. Be sure to add custom event listeners before calling {@link buildWindowPointChart}
+   * as the method also adds listeners and the order matters.
+   */
+  addCustomListener(name: string, callback: (selection: ChartWindowPointSelection, data: ChartPointData) => void) {
+    this.selection.on(name, callback)
   }
 
   buildWindowPointChart() {
-    this.renderWindow(this.selection)
-    this.setListeners(this.selection)
+    this.renderWindow()
+    this.addBuiltInListeners()
+    this.addedListeners = true
   }
 
-  renderWindow(selection: ChartWindowPointSelection): void {
-    selection
+  private renderWindow(): void {
+    this.selection
+      .datum(this.data)
       .classed('chart-window-point', true)
       .call((s) => chartWindowRender(s))
       .each((chartWindowD, i, g) => {
@@ -55,45 +65,46 @@ export class PointChartRenderer {
       });
   }
 
-  private setListeners(selection: ChartWindowPointSelection) {
-    if (this.didRender) return
-    const renderer = this
-    const drawArea = selection.selectAll('.draw-area');
+  private addBuiltInListeners() {
+    if (this.addedListeners) return
+    this.addZoomListeners()
+    this.addFinalListeners()
+  }
 
-    selection
+  private addZoomListeners() {
+    const renderer = this
+    const drawArea = this.selection.selectAll('.draw-area');
+
+    this.selection
       .each((chartWindowD, i, g) => {
         const chartWindowS = select<HTMLDivElement, ChartWindowPoint>(g[i])
         const {xScale, yScale, zoom} = chartWindowD
         if (!zoom) return
         drawArea.call(
-          zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom', function (e, d) {
-            const newData = {
+          zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom.autozoom', function (e, d) {
+            renderer.data = {
               ...chartWindowD,
               xScale: e.transform.rescaleX(xScale),
               yScale: e.transform.rescaleY(yScale)
             }
-            renderer.renderWindow(selection.datum(newData))
           })
         )
 
-        chartWindowS.on('resize', () => {
+        chartWindowS.on('resize.autozoom', () => {
           const { width, height } = rectFromString(drawArea.attr('bounds') ?? "");
           const extent: [[number, number], [number, number]] = [
             [0, 0],
             [width, height],
           ];
           zoom.behaviour.extent(extent).translateExtent(extent);
-          renderer.renderWindow(selection.datum(chartWindowD))
         });
       })
-    this.didRender = true
   }
 
-  chartWindowPointAutoResize(selection: ChartWindowPointSelection): void {
+  private addFinalListeners() {
     const instance = this
-    selection.on('resize', () => {
-      instance.renderWindow(selection)
-    });
+    this.selection.on('resize.final', () => {instance.renderWindow()});
+    this.data.zoom?.behaviour.on('zoom.final', () => { instance.renderWindow()})
   }
 }
 

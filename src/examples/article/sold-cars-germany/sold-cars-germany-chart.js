@@ -1,56 +1,64 @@
-import {chartWindowPointData, PointChartRenderer} from '../../libs/respvis/respvis.js'
-import {carData, getTopMakes} from '../../data/sold-cars-germany/sold-cars-germany.js';
+import {PointChartRenderer} from '../../libs/respvis/respvis.js'
+import {carData, getTopMakesData} from '../../data/sold-cars-germany/sold-cars-germany.js';
 import * as d3 from '../../libs/d3-7.6.0/d3.js'
 
-const prices = carData.map(car => car.price)
-const horsePower = carData.map(car => car.hp)
-const topMakesNames = getTopMakes(5)
+const {topMakesNames, mileages, horsePower, prices} = getTopMakesData(5)
+const allHorsePower = carData.map(entry => entry.hp)
+const allPrices = carData.map(entry => entry.price)
+const allMileages = carData.map(entry => entry.mileage)
 
+const baseScaleX = d3.scaleLinear()
+    .domain([0, Math.max(...allHorsePower)])
+    .nice()
+const baseScaleY = d3.scaleLinear()
+    .domain([0, Math.max(...allPrices)])
+    .nice()
+const radiusScale = d3.scaleLinear()
+    .domain([0, Math.max(...allMileages)])
+    .range([5, 20])
 
-// const carsSorted = topMakesNames.map(topMake => {
-//     return carData.filter(car => car.make === topMake)
-// })
-// carsSorted.push(carData.filter(car => !topMakesNames.includes(car.make)))
-// const prices = carsSorted.map(carsOfMake => {
-//     return carsOfMake.map(carOfMake => carOfMake.price)
-// })
-// const horsePowers = carsSorted.map(carsOfMake => {
-//     return carsOfMake.map(carOfMake => carOfMake.hp)
-// }) TODO: use these variables when respvis supports multiple categories for scatter plot
-
-const hpScale = d3
-    .scaleLinear()
-    .domain([0, Math.max(...horsePower)])
-    .nice();
-
-const priceScale = d3
-    .scaleLinear()
-    .domain([0, Math.max(...prices)])
-    .nice();
+const scales = {
+    xScale: baseScaleX,
+    yScale: baseScaleY,
+    radiusScale
+}
 
 
 const data = {
-    xValues: [prices],
-    xScale: priceScale,
-    yValues: [horsePower],
-    yScale: hpScale,
+    xValues: horsePower,
+    xScale: scales.xScale,
+    yValues: prices,
+    yScale: scales.yScale,
     xAxis: { title: 'Price [EU]' },
     yAxis: { title: 'Horse Power [PS]' },
     title: "Cars Sold in Germany",
-    subtitle: "From 2011 to 2021"
+    subtitle: "From 2011 to 2021",
+    radiuses: {
+        radiusDim: mileages,
+        scale: scales.radiusScale
+    },
+    legend: {
+        title: 'Legend',
+        keys: [...topMakesNames, "Other"],
+        labels: [...topMakesNames, "Other"]
+    },
+    zoom: {
+        in: 20,
+        out: 1
+    }
 };
 
-const chartWindow = d3.select('#sold-cars-germany').append('div').datum(chartWindowPointData(data))
-const renderer = new PointChartRenderer()
-renderer.buildWindowPointChart(chartWindow)
-
-chartWindow.on('resize', function () {
+const chartWindow = d3.select('#sold-cars-germany').append('div')
+const renderer = new PointChartRenderer(chartWindow, data)
+renderer.addCustomListener('resize.custom', (selection, data) => {
     const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
     const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
     const numberFormat = !mediumWidth ? d3.format('.2s') : d3.format(',');
-    data.xAxis.configureAxis = data.yAxis.configureAxis = (a) => a.tickFormat(numberFormat);
-    data.radiuses = !mediumWidth ? 3 : !largeWidth ? 5 : 7;
-    const sel = chartWindow.datum(chartWindowPointData(data))
-    renderer.buildWindowPointChart(sel)
-    //TODO: fix updating data in combination with PointChartRenderer and Listeners
-});
+    data.xAxis.configureAxis = (a) => a.tickFormat(numberFormat);
+    data.yAxis.configureAxis = (a) => a.tickFormat(numberFormat);
+    renderer.data = data
+})
+
+renderer.buildWindowPointChart()
+
+

@@ -87,8 +87,8 @@
         };
       }
 
-      const selection = d3.select('#chart').append('div').datum(chartWindowPointData(calcData()))
-      const renderer = new PointChartRenderer(selection)
+      const chartWindow = d3.select('#chart').append('div')
+      const renderer = new PointChartRenderer(chartWindow, calcData())
       renderer.buildWindowPointChart()
     </script>
   </body>
