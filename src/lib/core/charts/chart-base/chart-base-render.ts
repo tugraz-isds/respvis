@@ -1,7 +1,6 @@
-import { Selection } from 'd3';
-import {IWindowChartBaseData} from "./IWindowChartBaseData";
+import {Selection} from 'd3';
+import {IChartBaseData} from "./IChartBaseData";
 
-export interface IChartBaseData extends IWindowChartBaseData {}
 export type ChartBaseSelection = Selection<SVGSVGElement | SVGGElement, IChartBaseData>;
 
 export function chartBaseRender(selection: ChartBaseSelection): ChartBaseSelection {

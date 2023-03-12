@@ -46,6 +46,12 @@ export function axisBottomRender(selection: AxisSelection): void {
     .classed('axis-bottom', true);
 }
 
+export function axisSequenceRender(selection: AxisSelection, index: number): void {
+  selection
+    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d.title, d.subtitle))
+    .classed('axis-left', true);
+}
+
 function axisRender(
   selection: AxisSelection,
   a: D3Axis<AxisDomain>,
