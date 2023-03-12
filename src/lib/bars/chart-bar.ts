@@ -1,16 +1,17 @@
 import { select, Selection } from 'd3';
 import {
-  chartCartesianRender,
-  chartCartesianAxesRender,
+  chartCartesianAxisRender,
   chartCartesianData,
-  ChartCartesian as ChartCartesian,
-} from '../core/chart-cartesian';
+
+} from '../core/charts/chart-cartesian/chart-cartesian';
 import { seriesBarRender, seriesBarData, SeriesBar, Bar } from './series-bar';
 import {
   SeriesLabelBar as SeriesLabelBar,
   seriesLabelBarData as seriesLabelBarData,
   seriesLabelBar,
 } from './series-label-bar';
+import {chartBaseRender} from "../core/charts/chart-base/chart-base-render";
+import {IChartCartesianData as ChartCartesian} from "../core/charts/chart-cartesian/IChartCartesianData";
 
 export interface ChartBar extends SeriesBar, ChartCartesian {
   labelsEnabled: boolean;
@@ -30,7 +31,7 @@ export type ChartBarSelection = Selection<SVGSVGElement | SVGGElement, ChartBar>
 
 export function chartBarRender(selection: ChartBarSelection): void {
   selection
-    .call((s) => chartCartesianRender(s))
+    .call((s) => chartBaseRender(s))
     .classed('chart-bar', true)
     .each((chartD, i, g) => {
       const chartS = <ChartBarSelection>select(g[i]);
@@ -61,7 +62,7 @@ export function chartBarRender(selection: ChartBarSelection): void {
 
       chartD.xAxis.scale = chartD.categoryScale;
       chartD.yAxis.scale = chartD.valueScale;
-      chartCartesianAxesRender(chartS);
+      chartCartesianAxisRender(chartS);
     });
 }
 

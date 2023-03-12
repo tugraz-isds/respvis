@@ -1,6 +1,6 @@
 import { select, Selection } from 'd3';
 import {
-  chartWindowRender,
+  windowChartBaseRender,
   ToolFilterNominal,
   toolFilterNominalData,
   toolDownloadSVGRender,
@@ -40,7 +40,7 @@ export type ChartWindowBarSelection = Selection<HTMLDivElement, ChartWindowBar>;
 export function chartWindowBarRender(selection: ChartWindowBarSelection): void {
   selection
     .classed('chart-window-bar', true)
-    .call((s) => chartWindowRender(s))
+    .call((s) => windowChartBaseRender(s))
     .each((chartWindowD, i, g) => {
       const {
         categoryActiveStates,

@@ -35,7 +35,7 @@
     <h1>Scatter Plot</h1>
     <div id="chart"></div>
     <script type="module">
-      import { chartWindowPointData, PointChartRenderer } from './libs/respvis/respvis.js';
+      import { chartWindowPointData, ScatterPlot } from './libs/respvis/respvis.js';
       import * as d3 from './libs/d3-7.6.0/d3.js'
       import {getTopMakesData, carData} from "./data/sold-cars-germany/sold-cars-germany.js";
 
@@ -88,8 +88,8 @@
       }
 
       const chartWindow = d3.select('#chart').append('div')
-      const renderer = new PointChartRenderer(chartWindow, calcData())
-      renderer.buildWindowPointChart()
+      const renderer = new ScatterPlot(chartWindow, calcData())
+      renderer.buildWindowChart()
     </script>
   </body>
 </html>

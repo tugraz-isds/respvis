@@ -1,7 +1,8 @@
 import {select, Selection} from 'd3';
-import {chartWindowRender, layouterCompute, rectFromString, toolDownloadSVGRender,} from '../core';
+import {windowChartBaseRender, layouterCompute, rectFromString, toolDownloadSVGRender,} from '../core';
 import {chartPointRender} from './chart-point';
 import {ChartPointArgs, ChartPointData, chartPointData} from "./chart-point-data";
+import {IWindowChartBaseRenderer} from "../core/charts/chart-base/IWindowChartBaseRenderer";
 
 export interface ChartWindowPoint extends ChartPointArgs {}
 
@@ -14,7 +15,7 @@ export function chartWindowPointData(data: ChartPointArgs): ChartPointData {
 
 export type ChartWindowPointSelection = Selection<HTMLDivElement, ChartPointData>;
 
-export class PointChartRenderer {
+export class ScatterPlot implements IWindowChartBaseRenderer {
   addedListeners = false
   data: ChartPointData
   constructor(public selection: ChartWindowPointSelection, data: ChartPointArgs) {
@@ -22,14 +23,14 @@ export class PointChartRenderer {
   }
 
   /**
-   * Adds custom event listener. Be sure to add custom event listeners before calling {@link buildWindowPointChart}
+   * Adds custom event listener. Be sure to add custom event listeners before calling {@link buildWindowChart}
    * as the method also adds listeners and the order matters.
    */
   addCustomListener(name: string, callback: (selection: ChartWindowPointSelection, data: ChartPointData) => void) {
     this.selection.on(name, callback)
   }
 
-  buildWindowPointChart() {
+  buildWindowChart() {
     this.renderWindow()
     this.addBuiltInListeners()
     this.addedListeners = true
@@ -39,7 +40,7 @@ export class PointChartRenderer {
     this.selection
       .datum(this.data)
       .classed('chart-window-point', true)
-      .call((s) => chartWindowRender(s))
+      .call((s) => windowChartBaseRender(s))
       .each((chartWindowD, i, g) => {
         const chartWindowS = select<HTMLDivElement, ChartWindowPoint>(g[i])
         const menuItemsS = chartWindowS.selectAll('.menu-tools > .items')

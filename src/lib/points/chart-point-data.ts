@@ -1,11 +1,11 @@
-import {calcDefaultScale, ChartCartesian, chartCartesianData, ScaleAny, ScaleContinuous} from "../core";
+import {calcDefaultScale, IChartCartesianData, chartCartesianData, ScaleAny, ScaleContinuous} from "../core";
 import {Legend, legendData} from "../legend";
 import {SeriesPoint, seriesPointData} from "./series-point";
 import {zoom, ZoomBehavior} from "d3";
 
 type Dimension = number | string // TODO: | date . Include this everywhere
 
-export interface ChartPointArgs extends ChartCartesian {
+export interface ChartPointArgs extends IChartCartesianData {
   xValues: number[][]; //TODO: add strings/dates, also for y
   xScale?: ScaleAny<any, number, number>;
   yValues: number[][];
@@ -26,7 +26,7 @@ export interface ChartPointArgs extends ChartCartesian {
   legend?: Legend;
 }
 
-export interface ChartPointData extends ChartCartesian {
+export interface ChartPointData extends IChartCartesianData {
   xScale: ScaleAny<any, number, number>;
   yScale: ScaleAny<any, number, number>;
   pointSeries: SeriesPoint[];

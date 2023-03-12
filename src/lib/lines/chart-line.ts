@@ -1,10 +1,9 @@
 import { select, Selection } from 'd3';
 import { Line, SeriesLine, seriesLineData, seriesLineRender } from './series-line';
 import {
-  ChartCartesian,
-  chartCartesianAxesRender,
+  IChartCartesianData,
+  chartCartesianAxisRender,
   chartCartesianData,
-  chartCartesianRender,
   arrayIs,
   rectFromString,
 } from '../core';
@@ -12,8 +11,9 @@ import { SeriesPoint, seriesPointRender, seriesPointData, Point } from '../point
 import { Legend, legendData, legendRender, LegendItem } from '../legend';
 import { SeriesLabel, seriesLabelData, seriesLabelRender, JoinEvent } from '../bars';
 import { SeriesConfigTooltips, seriesConfigTooltipsData } from '../tooltip';
+import {chartBaseRender} from "../core/charts/chart-base/chart-base-render";
 
-export interface ChartLine extends SeriesLine, ChartCartesian {
+export interface ChartLine extends SeriesLine, IChartCartesianData {
   legend: Partial<Legend>;
   markerLabelsEnabled: boolean;
   markerLabels: (
@@ -45,7 +45,7 @@ export function chartLineRender(
   selection: Selection<SVGSVGElement | SVGGElement, ChartLine>
 ): void {
   selection
-    .call((s) => chartCartesianRender(s))
+    .call((s) => chartBaseRender(s))
     .classed('chart-line', true)
     .each((chartD, i, g) => {
       const chartS = select<SVGSVGElement | SVGGElement, ChartLine>(g[i]);
@@ -142,7 +142,7 @@ export function chartLineRender(
 
       chartD.xAxis.scale = chartD.xScale;
       chartD.yAxis.scale = chartD.yScale;
-      chartCartesianAxesRender(chartS);
+      chartCartesianAxisRender(chartS);
     });
 }
 

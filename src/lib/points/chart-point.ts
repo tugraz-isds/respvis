@@ -1,15 +1,16 @@
 import {select, Selection} from 'd3';
 import {rectFromString} from '../core';
-import {chartCartesianAxesRender, chartCartesianRender,} from '../core/chart-cartesian';
+import {chartCartesianAxisRender} from '../core/charts/chart-cartesian/chart-cartesian';
 import {SeriesPoint, seriesPointData, seriesPointRender} from './series-point';
 import {Legend, legendRender} from "../legend";
 import {ChartPointData} from "./chart-point-data";
+import {chartBaseRender} from "../core/charts/chart-base/chart-base-render";
 
 export type ChartPointSelection = Selection<SVGSVGElement | SVGGElement, ChartPointData>;
 
 export function chartPointRender(selection: ChartPointSelection): void {
   selection
-    .call((s) => chartCartesianRender(s))
+    .call((s) => chartBaseRender(s))
     .classed('chart-point', true)
     .each((chartD, i, g) => {
       setScale(chartD, g[i])
@@ -19,7 +20,7 @@ export function chartPointRender(selection: ChartPointSelection): void {
       chartD.xAxis.scale = chartD.xScale;
       chartD.yAxis.scale = chartD.yScale;
     })
-    .call((s) => chartCartesianAxesRender(s));
+    .call((s) => chartCartesianAxisRender(s));
 
   function setScale (data: ChartPointData, g: SVGSVGElement | SVGGElement) {
     const drawAreaS = select(g).selectAll('.draw-area');

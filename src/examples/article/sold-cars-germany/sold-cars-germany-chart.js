@@ -1,4 +1,4 @@
-import {PointChartRenderer} from '../../libs/respvis/respvis.js'
+import {ScatterPlot} from '../../libs/respvis/respvis.js'
 import {carData, getTopMakesData} from '../../data/sold-cars-germany/sold-cars-germany.js';
 import * as d3 from '../../libs/d3-7.6.0/d3.js'
 
@@ -49,7 +49,7 @@ const data = {
 };
 
 const chartWindow = d3.select('#sold-cars-germany').append('div')
-const renderer = new PointChartRenderer(chartWindow, data)
+const renderer = new ScatterPlot(chartWindow, data)
 renderer.addCustomListener('resize.custom', (selection, data) => {
     const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
     const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
@@ -59,6 +59,6 @@ renderer.addCustomListener('resize.custom', (selection, data) => {
     renderer.data = data
 })
 
-renderer.buildWindowPointChart()
+renderer.buildWindowChart()
 
 

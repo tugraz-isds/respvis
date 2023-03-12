@@ -1,17 +1,14 @@
-import { BaseType, select, Selection } from 'd3';
-import {
-  chartCartesianRender,
-  chartCartesianAxesRender,
-  chartCartesianData,
-  ChartCartesian,
-} from '../core/chart-cartesian';
-import { Legend, legendData, legendRender, LegendItem } from '../legend';
-import { Bar } from './series-bar';
-import { BarGrouped } from './series-bar-grouped';
-import { SeriesBarStacked, seriesBarStackedData, seriesBarStackedRender } from './series-bar-stacked';
-import { SeriesLabelBar, seriesLabelBarData, seriesLabelBar } from './series-label-bar';
+import {select, Selection} from 'd3';
+import {chartCartesianAxisRender, chartCartesianData,} from '../core/charts/chart-cartesian/chart-cartesian';
+import {Legend, legendData, LegendItem, legendRender} from '../legend';
+import {Bar} from './series-bar';
+import {BarGrouped} from './series-bar-grouped';
+import {SeriesBarStacked, seriesBarStackedData, seriesBarStackedRender} from './series-bar-stacked';
+import {SeriesLabelBar, seriesLabelBar, seriesLabelBarData} from './series-label-bar';
+import {chartBaseRender} from "../core";
+import {IChartCartesianData} from "../core/charts/chart-cartesian/IChartCartesianData";
 
-export interface ChartBarStacked extends Omit<SeriesBarStacked, 'styleClasses'>, ChartCartesian {
+export interface ChartBarStacked extends Omit<SeriesBarStacked, 'styleClasses'>, IChartCartesianData {
   styleClasses: string[];
   legend: Partial<Legend>;
   labelsEnabled: boolean;
@@ -39,7 +36,7 @@ export type ChartBarStackedSelection = Selection<SVGSVGElement | SVGGElement, Ch
 
 export function chartBarStackedRender(selection: ChartBarStackedSelection): void {
   selection
-    .call((s) => chartCartesianRender(s))
+    .call((s) => chartBaseRender(s))
     .classed('chart-bar-stacked', true)
     .each((chartD, i, g) => {
       const {
@@ -102,7 +99,7 @@ export function chartBarStackedRender(selection: ChartBarStackedSelection): void
 
       xAxis.scale = categoryScale;
       yAxis.scale = valueScale;
-      chartCartesianAxesRender(chartS);
+      chartCartesianAxisRender(chartS);
 
       chartS
         .selectAll(`.axis-x .tick`)

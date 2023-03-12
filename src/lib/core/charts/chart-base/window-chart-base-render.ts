@@ -1,9 +1,9 @@
 import { Selection } from 'd3';
-import { layouterRender } from './layouter';
-import { menuDropdownRender } from './menu-dropdown';
-import { resizeEventListener } from './resize-event-dispatcher';
+import { layouterRender } from '../../layouter';
+import { menuDropdownRender } from '../../menu-dropdown';
+import { resizeEventListener } from '../../resize-event-dispatcher';
 
-export function chartWindowRender(selection: Selection<HTMLDivElement>): void {
+export function windowChartBaseRender(selection: Selection<HTMLDivElement>): void {
   selection.classed('chart-window', true);
 
   selection

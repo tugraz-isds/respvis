@@ -1,17 +1,16 @@
-import { max } from 'd3';
-import { select, Selection } from 'd3';
+import {select, Selection} from 'd3';
 import {
-  chartWindowRender,
+  arrayIs,
+  arrayPartition,
+  Checkbox,
+  layouterCompute,
+  toolDownloadSVGRender,
   ToolFilterNominal,
   toolFilterNominalData,
-  toolDownloadSVGRender,
   toolFilterNominalRender,
-  layouterCompute,
-  Checkbox,
+  windowChartBaseRender,
 } from '../core';
-import { arrayIs, arrayIs2D, arrayPartition } from '../core';
-import { chartBarGroupedRender, chartBarGroupedData, ChartBarGrouped } from './chart-bar-grouped';
-import { SeriesLabelBar } from './series-label-bar';
+import {ChartBarGrouped, chartBarGroupedData, chartBarGroupedRender} from './chart-bar-grouped';
 
 export interface ChartWindowBarGrouped extends ChartBarGrouped {
   categoryActiveStates: boolean[];
@@ -51,7 +50,7 @@ export function chartWindowBarGroupedRender(
 ): void {
   selection
     .classed('chart-window-bar-grouped', true)
-    .call((s) => chartWindowRender(s))
+    .call((s) => windowChartBaseRender(s))
     .each((chartWindowD, i, g) => {
       const {
         categories,

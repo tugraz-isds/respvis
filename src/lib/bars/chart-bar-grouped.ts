@@ -1,23 +1,15 @@
-import { select, Selection } from 'd3';
-import {
-  chartCartesianRender,
-  chartCartesianAxesRender,
-  chartCartesianData,
-  ChartCartesian as ChartCartesian,
-} from '../core/chart-cartesian';
-import { Legend, legendData, legendRender } from '../legend';
+import {select, Selection} from 'd3';
+import {chartCartesianAxisRender, chartCartesianData,} from '../core/charts/chart-cartesian/chart-cartesian';
+import {Legend, legendData, legendRender} from '../legend';
 import {
   chartBarStackedHoverAxisTick,
   chartBarStackedHoverBar,
   chartBarStackedHoverLegendItem,
 } from './chart-bar-stacked';
-import {
-  BarGrouped,
-  SeriesBarGrouped,
-  seriesBarGroupedData,
-  seriesBarGroupedRender,
-} from './series-bar-grouped';
-import { SeriesLabelBar, seriesLabelBarData, seriesLabelBar } from './series-label-bar';
+import {SeriesBarGrouped, seriesBarGroupedData, seriesBarGroupedRender,} from './series-bar-grouped';
+import {SeriesLabelBar, seriesLabelBar, seriesLabelBarData} from './series-label-bar';
+import {chartBaseRender} from "../core/charts/chart-base/chart-base-render";
+import {IChartCartesianData as ChartCartesian} from "../core/charts/chart-cartesian/IChartCartesianData";
 
 export interface ChartBarGrouped extends Omit<SeriesBarGrouped, 'styleClasses'>, ChartCartesian {
   styleClasses: string[];
@@ -42,7 +34,7 @@ export type ChartBarGroupedSelection = Selection<SVGSVGElement | SVGGElement, Ch
 
 export function chartBarGroupedRender(selection: ChartBarGroupedSelection): void {
   selection
-    .call((s) => chartCartesianRender(s))
+    .call((s) => chartBaseRender(s))
     .classed('chart-bar-grouped', true)
     .each((chartD, i, g) => {
       const {
@@ -101,7 +93,7 @@ export function chartBarGroupedRender(selection: ChartBarGroupedSelection): void
 
       xAxis.scale = categoryScale;
       yAxis.scale = valueScale;
-      chartCartesianAxesRender(chartS);
+      chartCartesianAxisRender(chartS);
 
       chartS
         .selectAll(`.axis-x .tick`)

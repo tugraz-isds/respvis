@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <title>RespVis - Point Chart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../respvis.css" />
+    <style>
+        #chart {
+            width: 100%;
+            height: 75vh;
+            min-height: 25rem;
+        }
+
+        body {
+            background-color: floralwhite;
+        }
+    </style>
+</head>
+<body>
+<h1>Scatter Plot</h1>
+<div id="chart"></div>
+<script type="module">
+    import { chartWindowPointData, ScatterPlot } from './libs/respvis/respvis.js';
+    import * as d3 from './libs/d3-7.6.0/d3.js'
+    import {getTopMakesData, carData} from "./data/sold-cars-germany/sold-cars-germany.js";
+
+    // const {topMakesNames, mileages, horsePower, prices} = getTopMakesData(5)
+    const allHorsePower = carData.map(entry => entry.hp)
+    const allPrices = carData.map(entry => entry.price)
+    const allMileages = carData.map(entry => entry.mileage)
+
+    const hpScale = d3.scaleLinear()
+        .domain([0, Math.max(...allHorsePower)])
+        .nice()
+    const priceScale = d3.scaleLinear()
+        .domain([0, Math.max(...allPrices)])
+        .nice()
+    const mileageScale = d3.scaleLinear()
+        .domain([0, Math.max(...allMileages)])
+        .range([5, 20])
+
+    const calcData = () => {
+        const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
+        const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
+        const numberFormat = !mediumWidth ? d3.format('.2s') : d3.format(',');
+        return {
+            dimensions: [allHorsePower, allPrices, allMileages],
+            scales: [hpScale, priceScale, mileageScale],
+            axes: [
+                { title: 'Horse Power', subtitle: '[PS]', configureAxis: (a) => a.tickFormat(numberFormat) },
+                { title: 'Price', subtitle: '[EU]', configureAxis: (a) => a.tickFormat(numberFormat) },
+                { title: 'Mileages', subtitle: '[km]', configureAxis: (a) => a.tickFormat(numberFormat) }
+            ],
+            // legend: {
+            //     title: 'Legend',
+            //     keys: [...topMakesNames, "Other"],
+            //     labels: [...topMakesNames, "Other"]
+            // },
+            // zoom: {
+            //     in: 20,
+            //     out: 1
+            // }
+        };
+    }
+
+    const chartWindow = d3.select('#chart').append('div')
+    const renderer = new ScatterPlot(chartWindow, calcData())
+    renderer.buildWindowChart()
+</script>
+</body>
+</html>
