@@ -49,7 +49,7 @@ export function axisBottomRender(selection: AxisSelection): void {
 export function axisSequenceRender(selection: AxisSelection, index: number): void {
   selection
     .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d.title, d.subtitle))
-    .classed('axis-left', true);
+    .classed('axis-sequence', true);
 }
 
 function axisRender(

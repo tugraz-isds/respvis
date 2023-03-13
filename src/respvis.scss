@@ -1,0 +1,64 @@
+@use "./scss";
+
+.bar {
+  stroke-width: 1px;
+  stroke: #000;
+}
+
+.highlight .bar,
+.highlight.bar,
+.highlight .point,
+.highlight.point {
+  filter: brightness(var(--highlight-brightness));
+  stroke-width: 1.2;
+}
+
+.tooltip {
+  opacity: 0;
+  background-color: #fff;
+  border: #000 solid 1px;
+  border-radius: 5px;
+  padding: 0.5em;
+  position: fixed;
+  pointer-events: none;
+}
+
+.tooltip.show {
+  opacity: 1;
+}
+
+.series-point {
+  overflow: hidden;
+}
+
+.point {
+  stroke: #000;
+  stroke-width: 1px;
+}
+
+path.line {
+  fill: none;
+  stroke-width: 2;
+}
+
+.highlight path.line,
+path.line.highlight {
+  stroke-width: 4;
+}
+
+.chart-line[data-flipped='false'] .layout.series-label {
+  margin-top: -1em;
+}
+
+.chart-line[data-flipped='false'] .series-label .label {
+  text-anchor: middle;
+  dominant-baseline: auto;
+}
+
+.chart-line[data-flipped='true'] .layout.series-label {
+  margin-left: 1em;
+}
+
+.chart-line[data-flipped='true'] .series-label .label {
+  dominant-baseline: middle;
+}

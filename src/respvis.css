@@ -1,84 +1,82 @@
-:root {
-  --color-categorical-0: #78b4c6;
-  --color-categorical-1: #1c9820;
-  --color-categorical-2: #ff0087;
-  --color-categorical-3: #9bb64b;
-  --color-categorical-4: #628df2;
-  --color-categorical-5: #0db293;
-  --color-categorical-6: #f14330;
-  --color-categorical-7: #b8949e;
-  --color-categorical-8: #e49c4f;
-  --color-categorical-9: #a665e4;
-  --highlight-brightness: 130%;
+.chart-cartesian .axis {
+  display: grid;
+}
+.chart-cartesian .axis-left {
+  grid-area: axis-left;
+  grid-template-areas: "title subtitle ticks";
+}
+.chart-cartesian .axis-left .ticks-transform {
+  margin-left: 0.5em;
+}
+.chart-cartesian .axis-left .tick text {
+  dominant-baseline: middle;
+  text-anchor: end;
+}
+.chart-cartesian .axis-left .ticks {
+  width: 100%;
+  height: 100%;
+  margin-left: 100%;
+}
+.chart-cartesian .axis-right {
+  grid-template-areas: "ticks title subtitle";
+}
+.chart-cartesian .axis-left, .chart-cartesian .axis-right {
+  grid-template-rows: 100%;
+  grid-template-columns: auto auto auto;
+  align-items: center;
+}
+.chart-cartesian .axis-left .title text, .chart-cartesian .axis-left .subtitle text, .chart-cartesian .axis-right .title text, .chart-cartesian .axis-right .subtitle text {
+  transform: rotate(-90deg);
+  text-anchor: end;
+  dominant-baseline: hanging;
+}
+.chart-cartesian .axis-left .ticks-transform, .chart-cartesian .axis-right .ticks-transform {
+  height: 100%;
+  --fit-width: true;
+}
+.chart-cartesian .axis-bottom {
+  grid-area: axis-bottom;
+  grid-template-areas: "ticks" "title" "subtitle";
+}
+.chart-cartesian .axis-bottom .ticks-transform {
+  margin-bottom: 0.5em;
+}
+.chart-cartesian .axis-bottom .tick text {
+  text-anchor: middle;
+}
+.chart-cartesian .axis-top {
+  grid-template-areas: "title" "subtitle" "ticks";
+}
+.chart-cartesian .axis-bottom, .chart-cartesian .axis-top {
+  grid-template-rows: auto auto auto;
+  grid-template-columns: 100%;
+  justify-items: center;
+}
+.chart-cartesian .axis-bottom .ticks-transform, .chart-cartesian .axis-top .ticks-transform {
+  width: 100%;
+  --fit-height: true;
+}
+.chart-cartesian .ticks-transform {
+  grid-area: ticks;
 }
 
-.layout {
-  --fit-width: false;
-  --fit-height: false;
-  pointer-events: none;
+.chart-parcoord {
+  display: grid;
+  grid-template: auto 1fr/1fr;
+  grid-template-areas: "header" "draw-area";
+  padding: 2rem 1rem 0.5rem 0.5rem;
+  overflow: visible;
 }
 
-[data-style='categorical-0'] {
-  fill: var(--color-categorical-0);
-  stroke: var(--color-categorical-0);
+.axis {
+  font-size: 0.7em;
 }
-
-[data-style='categorical-1'] {
-  fill: var(--color-categorical-1);
-  stroke: var(--color-categorical-1);
+.axis .tick line {
+  stroke: currentColor;
 }
-
-[data-style='categorical-2'] {
-  fill: var(--color-categorical-2);
-  stroke: var(--color-categorical-2);
-}
-
-[data-style='categorical-3'] {
-  fill: var(--color-categorical-3);
-  stroke: var(--color-categorical-3);
-}
-
-[data-style='categorical-4'] {
-  fill: var(--color-categorical-4);
-  stroke: var(--color-categorical-4);
-}
-
-[data-style='categorical-5'] {
-  fill: var(--color-categorical-5);
-  stroke: var(--color-categorical-5);
-}
-
-[data-style='categorical-6'] {
-  fill: var(--color-categorical-6);
-  stroke: var(--color-categorical-6);
-}
-
-[data-style='categorical-7'] {
-  fill: var(--color-categorical-7);
-  stroke: var(--color-categorical-7);
-}
-
-[data-style='categorical-8'] {
-  fill: var(--color-categorical-8);
-  stroke: var(--color-categorical-8);
-}
-
-[data-style='categorical-9'] {
-  fill: var(--color-categorical-9);
-  stroke: var(--color-categorical-9);
-}
-
-.bar {
-  stroke-width: 1px;
-  stroke: #000;
-}
-
-.highlight .bar,
-.highlight.bar,
-.highlight .point,
-.highlight.point {
-  filter: brightness(var(--highlight-brightness));
-  stroke-width: 1.2;
+.axis .ticks .domain {
+  stroke: currentColor;
+  fill: none;
 }
 
 .legend {
@@ -91,12 +89,12 @@
   margin: 0.5rem;
 }
 
-[data-legend-position='right'] .legend,
+[data-legend-position=right] .legend,
 .legend {
   align-self: start;
 }
 
-[data-legend-position='top'] .legend {
+[data-legend-position=top] .legend {
   justify-self: end;
 }
 
@@ -110,15 +108,15 @@
   align-items: flex-start;
 }
 
-[data-legend-position='left'] .legend .items,
-[data-legend-position='right'] .legend .items,
+[data-legend-position=left] .legend .items,
+[data-legend-position=right] .legend .items,
 .legend.vertical .items,
 .legend .items {
   flex-direction: column;
 }
 
-[data-legend-position='top'] .legend .items,
-[data-legend-position='bottom'] .legend .items,
+[data-legend-position=top] .legend .items,
+[data-legend-position=bottom] .legend .items,
 .legend.horizontal .items {
   flex-direction: row;
 }
@@ -145,10 +143,8 @@
 .chart .header {
   grid-area: header;
   display: grid;
-  grid-template: auto auto / 1fr;
-  grid-template-areas:
-    'title'
-    'subtitle';
+  grid-template: auto auto/1fr;
+  grid-template-areas: "title" "subtitle";
   justify-items: center;
   padding-bottom: 1rem;
 }
@@ -166,25 +162,34 @@
     user-select: none;
   }
 }
+.chart-window {
+  display: grid;
+  position: relative;
+  grid-template: min-content 1fr/1fr;
+  grid-template-areas: "toolbar" "chart";
+  width: 100%;
+  height: 100%;
+  font-family: sans-serif;
+}
 
-.chart-cartesian[data-legend-position='right'],
+.chart-cartesian[data-legend-position=right],
 .chart-cartesian {
   display: grid;
-  grid-template: auto 1fr auto / auto 1fr auto;
-  grid-template-areas:
-    'header header header'
-    'axis-left draw-area legend'
-    '. axis-bottom .';
+  grid-template: auto 1fr auto/auto 1fr auto;
+  grid-template-areas: "header header header" "axis-left draw-area legend" ". axis-bottom .";
   padding: 2rem 1rem 0.5rem 0.5rem;
   overflow: visible;
 }
 
-.chart-cartesian[data-legend-position='top'] {
-  grid-template: auto 1fr auto / auto 1fr;
-  grid-template-areas:
-    '. legend'
-    'axis-left draw-area'
-    '. axis-bottom';
+.chart-cartesian[data-legend-position=top] {
+  grid-template: auto 1fr auto/auto 1fr;
+  grid-template-areas: ". legend" "axis-left draw-area" ". axis-bottom";
+}
+
+.layout {
+  --fit-width: false;
+  --fit-height: false;
+  pointer-events: none;
 }
 
 .draw-area {
@@ -194,19 +199,11 @@
 }
 
 .draw-area > * {
-  grid-area: 1 / 1;
+  grid-area: 1/1;
 }
 
 .draw-area .background {
   opacity: 0;
-}
-
-.chart-cartesian .axis-left {
-  grid-area: axis-left;
-}
-
-.chart-cartesian .axis-bottom {
-  grid-area: axis-bottom;
 }
 
 .layouter {
@@ -215,200 +212,19 @@
 }
 
 .layouter > * {
-  grid-area: 1 / 1;
+  grid-area: 1/1;
 }
 
 .layouter > :not(.layout) {
   position: absolute;
-  /* padding and margin are not ignored on root svg elements so they need to 
+  /* padding and margin are not ignored on root svg elements so they need to
   be set to 0 to not apply them twice (1x by layouter, 1x by browser) */
   padding: 0;
   margin: 0;
 }
 
-.series-label {
-  font-size: 0.7em;
-  pointer-events: none;
-}
-
-.label.highlight {
-  font-size: 1.2em;
-}
-
-.text {
-  --fit-width: true;
-  --fit-height: true;
-}
-
-text {
-  stroke: none;
-}
-
-text[data-align-h='center'] {
-  text-anchor: middle;
-}
-
-text[data-align-v='center'] {
-  dominant-baseline: middle;
-}
-
-text[data-align-h='left'] {
-  text-anchor: end;
-}
-
-text[data-align-h='right'] {
-  text-anchor: start;
-}
-
-text[data-align-v='top'] {
-  dominant-baseline: auto;
-}
-
-text[data-align-v='bottom'] {
-  dominant-baseline: hanging;
-}
-
-text,
-text[data-orientation='horizontal'] {
-  dominant-baseline: hanging;
-  text-anchor: start;
-}
-
-text[data-orientation='vertical'] {
-  transform: rotate(-90deg);
-  text-anchor: end;
-  dominant-baseline: hanging;
-}
-
-.title text,
-text.title {
-  font-size: 1.5em;
-  letter-spacing: 0.1em;
-}
-
-.axis {
-  font-size: 0.7em;
-}
-
-.axis {
-  display: grid;
-}
-
-.axis .title,
-.axis .subtitle {
-  --fit-width: true;
-  --fit-height: true;
-}
-
-.axis-left,
-.axis-right {
-  grid-template: 100% / auto auto auto;
-  align-items: center;
-}
-
-.axis-bottom,
-.axis-top {
-  grid-template: auto auto auto / 100%;
-  justify-items: center;
-}
-
-.axis-left {
-  grid-template-areas: 'title subtitle ticks';
-}
-
-.axis-right {
-  grid-template-areas: 'ticks title subtitle';
-}
-
-.axis-bottom {
-  grid-template-areas:
-    'ticks'
-    'title'
-    'subtitle';
-}
-
-.axis-top {
-  grid-template-areas:
-    'title'
-    'subtitle'
-    'ticks';
-}
-
-.title {
-  grid-area: title;
-}
-
-.subtitle {
-  grid-area: subtitle;
-}
-
-.ticks-transform {
-  grid-area: ticks;
-}
-
-.axis-left .ticks-transform {
-  margin-left: 0.5em;
-}
-
-.axis-bottom .ticks-transform {
-  margin-bottom: 0.5em;
-}
-
-.axis-left .title text,
-.axis-left .subtitle text,
-.axis-right .title text,
-.axis-right .subtitle text {
-  transform: rotate(-90deg);
-  text-anchor: end;
-  dominant-baseline: hanging;
-}
-
-.axis-left .tick text {
-  dominant-baseline: middle;
-  text-anchor: end;
-}
-
-.axis .tick line {
-  stroke: currentColor;
-}
-
-.axis .ticks .domain {
-  stroke: currentColor;
-  fill: none;
-}
-
-.axis-bottom .tick text {
-  text-anchor: middle;
-}
-
-.axis-left .ticks-transform,
-.axis-right .ticks-transform {
-  height: 100%;
-  --fit-width: true;
-}
-
-.axis-bottom .ticks-transform,
-.axis-top .ticks-transform {
-  width: 100%;
-  --fit-height: true;
-}
-
-.axis-left .ticks {
-  width: 100%;
-  height: 100%;
-  margin-left: 100%;
-}
-
-.chart-window {
-  display: grid;
-  position: relative;
-  grid-template: min-content 1fr / 1fr;
-  grid-template-areas:
-    'toolbar'
-    'chart';
-  width: 100%;
-  height: 100%;
-  font-family: sans-serif;
+.chart-window .layouter {
+  grid-area: chart;
 }
 
 .chart-window .toolbar {
@@ -423,10 +239,6 @@ text.title {
   position: absolute;
   right: 0;
   top: 0;
-}
-
-.chart-window .layouter {
-  grid-area: chart;
 }
 
 .menu {
@@ -484,6 +296,151 @@ text.title {
   top: 100%;
 }
 
+:root {
+  --color-categorical-0: #78b4c6;
+  --color-categorical-1: #1c9820;
+  --color-categorical-2: #ff0087;
+  --color-categorical-3: #9bb64b;
+  --color-categorical-4: #628df2;
+  --color-categorical-5: #0db293;
+  --color-categorical-6: #f14330;
+  --color-categorical-7: #b8949e;
+  --color-categorical-8: #e49c4f;
+  --color-categorical-9: #a665e4;
+  --highlight-brightness: 130%;
+}
+
+[data-style=categorical-0] {
+  fill: var(--color-categorical-0);
+  stroke: var(--color-categorical-0);
+}
+
+[data-style=categorical-1] {
+  fill: var(--color-categorical-1);
+  stroke: var(--color-categorical-1);
+}
+
+[data-style=categorical-2] {
+  fill: var(--color-categorical-2);
+  stroke: var(--color-categorical-2);
+}
+
+[data-style=categorical-3] {
+  fill: var(--color-categorical-3);
+  stroke: var(--color-categorical-3);
+}
+
+[data-style=categorical-4] {
+  fill: var(--color-categorical-4);
+  stroke: var(--color-categorical-4);
+}
+
+[data-style=categorical-5] {
+  fill: var(--color-categorical-5);
+  stroke: var(--color-categorical-5);
+}
+
+[data-style=categorical-6] {
+  fill: var(--color-categorical-6);
+  stroke: var(--color-categorical-6);
+}
+
+[data-style=categorical-7] {
+  fill: var(--color-categorical-7);
+  stroke: var(--color-categorical-7);
+}
+
+[data-style=categorical-8] {
+  fill: var(--color-categorical-8);
+  stroke: var(--color-categorical-8);
+}
+
+[data-style=categorical-9] {
+  fill: var(--color-categorical-9);
+  stroke: var(--color-categorical-9);
+}
+
+.series-label {
+  font-size: 0.7em;
+  pointer-events: none;
+}
+
+.label.highlight {
+  font-size: 1.2em;
+}
+
+.text {
+  --fit-width: true;
+  --fit-height: true;
+}
+
+text {
+  stroke: none;
+}
+
+text[data-align-h=center] {
+  text-anchor: middle;
+}
+
+text[data-align-v=center] {
+  dominant-baseline: middle;
+}
+
+text[data-align-h=left] {
+  text-anchor: end;
+}
+
+text[data-align-h=right] {
+  text-anchor: start;
+}
+
+text[data-align-v=top] {
+  dominant-baseline: auto;
+}
+
+text[data-align-v=bottom] {
+  dominant-baseline: hanging;
+}
+
+text,
+text[data-orientation=horizontal] {
+  dominant-baseline: hanging;
+  text-anchor: start;
+}
+
+text[data-orientation=vertical] {
+  transform: rotate(-90deg);
+  text-anchor: end;
+  dominant-baseline: hanging;
+}
+
+.title text,
+text.title {
+  font-size: 1.5em;
+  letter-spacing: 0.1em;
+}
+
+.title {
+  grid-area: title;
+}
+
+.subtitle {
+  grid-area: subtitle;
+}
+
+.bar {
+  stroke-width: 1px;
+  stroke: #000;
+}
+
+.highlight .bar,
+.highlight.bar,
+.highlight .point,
+.highlight.point {
+  filter: brightness(var(--highlight-brightness));
+  stroke-width: 1.2;
+}
+
 .tooltip {
   opacity: 0;
   background-color: #fff;
@@ -517,19 +474,19 @@ path.line.highlight {
   stroke-width: 4;
 }
 
-.chart-line[data-flipped='false'] .layout.series-label {
+.chart-line[data-flipped=false] .layout.series-label {
   margin-top: -1em;
 }
 
-.chart-line[data-flipped='false'] .series-label .label {
+.chart-line[data-flipped=false] .series-label .label {
   text-anchor: middle;
   dominant-baseline: auto;
 }
 
-.chart-line[data-flipped='true'] .layout.series-label {
+.chart-line[data-flipped=true] .layout.series-label {
   margin-left: 1em;
 }
 
-.chart-line[data-flipped='true'] .series-label .label {
+.chart-line[data-flipped=true] .series-label .label {
   dominant-baseline: middle;
 }

@@ -1,28 +1,29 @@
-import {IWindowChartParcoordArgs} from "./IWindowChartParcoordArgs";
-import {IChartParcoordData} from "./IChartParcoordData";
+import {IChartParcoordArgs} from "./IChartParcoordArgs";
+import {IChartParcoordData, TParcoordDimensionData} from "./IChartParcoordData";
 import {axisData, calcDefaultScale} from "../../core";
 import {scalePoint} from "d3";
 
-export function parcoordData(data: IWindowChartParcoordArgs): IChartParcoordData {
-  const {scales, styleClasses, legend, dimensions, titles, subtitles, configureAxes} = data
-  const scalesValid = scales ? scales : dimensions.map(dimension => calcDefaultScale(dimension))
-  const styleClassesValid = styleClasses ? styleClasses : dimensions[0].map((dimensions, index) => `categorical-${index}`)
-  const axes = scalesValid.map((scale, index) => {
-    return axisData({
-      scale,
-      title: titles?.[index] ?? '',
-      configureAxis: configureAxes?.[index]
-    })
+export function parcoordData(data: IChartParcoordArgs): IChartParcoordData {
+  const {legend, dimensions, title, subtitle, flipped} = data
+  const dimensionsValid: TParcoordDimensionData[] = dimensions.map((dimension, index) => {
+    const {scale, title, subtitle, styleClass, values, configureAxes} = dimension
+    return {
+      values: dimension.values,
+      scale: scale ? scale : calcDefaultScale(values),
+      styleClass: styleClass ? styleClass : `dimension-${index}`,
+      axis: axisData({
+        scale, title, subtitle,
+        configureAxis: configureAxes?.[index]
+      }),
+    }
   })
 
   const axisScale = scalePoint()
-    .domain(axes.map((axis, index) => index.toString()));
+    .domain(dimensionsValid.map((data, index) => index.toString()));
 
   return {
-    dimensions,
-    scales: scalesValid,
-    styleClasses: styleClassesValid,
-    axes,
-    axisScale
+    dimensions: dimensionsValid,
+    axisScale,
+    title, subtitle, flipped //TODO: Legend
   }
 }

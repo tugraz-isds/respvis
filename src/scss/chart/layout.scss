@@ -1,0 +1,40 @@
+.layout {
+  --fit-width: false;
+  --fit-height: false;
+  pointer-events: none;
+}
+
+.draw-area {
+  grid-area: draw-area;
+  display: grid;
+  overflow: visible;
+}
+
+.draw-area > * {
+  grid-area: 1 / 1;
+}
+
+.draw-area .background {
+  opacity: 0;
+}
+
+.layouter {
+  display: grid;
+  position: relative;
+}
+
+.layouter > * {
+  grid-area: 1 / 1;
+}
+
+.layouter > :not(.layout) {
+  position: absolute;
+  /* padding and margin are not ignored on root svg elements so they need to
+  be set to 0 to not apply them twice (1x by layouter, 1x by browser) */
+  padding: 0;
+  margin: 0;
+}
+
+.chart-window .layouter {
+  grid-area: chart;
+}

@@ -1,0 +1,19 @@
+.chart-cartesian[data-legend-position='right'],
+.chart-cartesian {
+  display: grid;
+  grid-template: auto 1fr auto / auto 1fr auto;
+  grid-template-areas:
+    'header header header'
+    'axis-left draw-area legend'
+    '. axis-bottom .';
+  padding: 2rem 1rem 0.5rem 0.5rem;
+  overflow: visible;
+}
+
+.chart-cartesian[data-legend-position='top'] {
+  grid-template: auto 1fr auto / auto 1fr;
+  grid-template-areas:
+    '. legend'
+    'axis-left draw-area'
+    '. axis-bottom';
+}

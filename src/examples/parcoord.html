@@ -23,7 +23,7 @@
 <script type="module">
     import { WindowChartParcoordRenderer } from './libs/respvis/respvis.js';
     import * as d3 from './libs/d3-7.6.0/d3.js'
-    import {getTopMakesData, carData} from "./data/sold-cars-germany/sold-cars-germany.js";
+    import {carData} from "./data/sold-cars-germany/sold-cars-germany.js";
 
     // const {topMakesNames, mileages, horsePower, prices} = getTopMakesData(5)
     const allHorsePower = carData.map(entry => entry.hp)
@@ -44,14 +44,33 @@
         const mediumWidth = window.matchMedia('(min-width: 40rem)').matches;
         const largeWidth = window.matchMedia('(min-width: 60rem)').matches;
         const numberFormat = !mediumWidth ? d3.format('.2s') : d3.format(',');
+        const dimensions = [
+            {
+                values: allHorsePower,
+                scale: hpScale,
+                title: "Horsepower",
+                subtitle: "[PS]"
+            },
+            {
+                values: allPrices,
+                scale: priceScale,
+                title: "Price",
+                subtitle: "[EU]"
+            },
+            {
+                values: allMileages,
+                scale: mileageScale,
+                title: "Mileage",
+                subtitle: "[km]"
+            }
+        ]
         return {
-            dimensions: [allHorsePower, allPrices, allMileages],
-            scales: [hpScale, priceScale, mileageScale],
-            axes: [
-                { title: 'Horse Power', subtitle: '[PS]', configureAxis: (a) => a.tickFormat(numberFormat) },
-                { title: 'Price', subtitle: '[EU]', configureAxis: (a) => a.tickFormat(numberFormat) },
-                { title: 'Mileages', subtitle: '[km]', configureAxis: (a) => a.tickFormat(numberFormat) }
-            ],
+            dimensions,
+            // axes: [
+            //     { title: 'Horse Power', subtitle: '[PS]', configureAxis: (a) => a.tickFormat(numberFormat) },
+            //     { title: 'Price', subtitle: '[EU]', configureAxis: (a) => a.tickFormat(numberFormat) },
+            //     { title: 'Mileages', subtitle: '[km]', configureAxis: (a) => a.tickFormat(numberFormat) }
+            // ],
             // legend: {
             //     title: 'Legend',
             //     keys: [...topMakesNames, "Other"],

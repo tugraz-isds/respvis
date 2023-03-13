@@ -21,10 +21,9 @@ export function chartParcoordRender(selection: ChartParcoordSelection): void {
 function setScale (data: IChartParcoordData, g: SVGSVGElement | SVGGElement) {
   const drawAreaS = select(g).selectAll('.draw-area');
   const drawAreaBounds = rectFromString(drawAreaS.attr('bounds') || '0, 0, 600, 400');
-  const { axes, scales, dimensions, styleClasses, title, subtitle, flipped, axisScale } = data;
+  const { dimensions, flipped, axisScale } = data;
 
-
-  scales?.forEach(scale => scale.range(
+  dimensions.forEach(dimension => dimension.scale.range(
     flipped ? [0, drawAreaBounds.width] : [drawAreaBounds.height, 0]
   ))
 
@@ -32,19 +31,38 @@ function setScale (data: IChartParcoordData, g: SVGSVGElement | SVGGElement) {
 }
 
 function renderAxes(data: IChartParcoordData, g: SVGSVGElement | SVGGElement) {
-  const { flipped, axes, axisScale } = data
+  const { flipped, dimensions, axisScale } = data
   const flippedBool = flipped ? flipped : false
 
 
-  axes.forEach((axis, index) => {
-    select(g).selectAll<SVGGElement, Axis>(`.axis-${index}`)
+  dimensions.forEach((dimension, index) => { //TODO: create own render function for axes inside draw-area
+    select(g).selectAll('.draw-area').selectAll<SVGGElement, Axis>(`.axis-${index}`)
       .data([null])
       .join('g')
-      .data([axis])
+      .data([dimension.axis])
       .join('g')
       .attr("transform", () => "translate(" + axisScale(index.toString()) + ")" )
-      .call((s) => axisSequenceRender(s, index))
-      .classed(`axis-${index}`, true)
+      .each((d, i, g) => {
+        console.log(g[i])
+        select(g[i]).call(axisLeft(d.scale)).attr('data-ignore-layout-children', true)
+        select(g[i])
+          .selectAll('.title')
+          .data([null])
+          .join('g')
+          .classed('title', true)
+          .attr("y", -12)
+          .attr('data-ignore-layout-children', true)
+          .selectAll('text')
+          .data([null])
+          .join('text')
+          .text(d.title)
+          .style("text-anchor", "middle")
+          .style("fill", "black")
+      })
+      // .call((s) => axisSequenceRender(s, index))
+      .classed(`axis axis-${index}`, true)
+
+
     // .each(function(d) { select(this).call(axisLeft(d.scale)); })
 
       // // And I build the axis with the call function

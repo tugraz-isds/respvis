@@ -1,0 +1,36 @@
+.chart .header {
+  grid-area: header;
+  display: grid;
+  grid-template: auto auto / 1fr;
+  grid-template-areas:
+    'title'
+    'subtitle';
+  justify-items: center;
+  padding-bottom: 1rem;
+}
+
+.chart .header .title,
+.chart .header .subtitle {
+  --fit-width: true;
+  --fit-height: true;
+}
+
+@media (hover: none) {
+  .chart {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+.chart-window {
+  display: grid;
+  position: relative;
+  grid-template: min-content 1fr / 1fr;
+  grid-template-areas:
+    'toolbar'
+    'chart';
+  width: 100%;
+  height: 100%;
+  font-family: sans-serif;
+}

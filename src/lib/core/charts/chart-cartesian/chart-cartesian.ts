@@ -17,6 +17,7 @@ export type ChartCartesianSelection = Selection<SVGSVGElement | SVGGElement, ICh
 
 export function chartCartesianAxisRender(selection: ChartCartesianSelection): void {
   selection
+    .classed('chart-cartesian', true)
     .each(function ({ flipped, xAxis, yAxis }, i, g) {
       const s = <ChartCartesianSelection>select(g[i]);
       const flippedBool = flipped ? flipped : false
