@@ -68,6 +68,36 @@
   overflow: visible;
 }
 
+.chart-parcoord .axis {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: "title" "subtitle" "ticks-transform";
+}
+.chart-parcoord .axis .title {
+  --fit-width: true;
+  --fit-height: true;
+  grid-area: title;
+}
+.chart-parcoord .axis .title text {
+  text-anchor: middle;
+}
+.chart-parcoord .axis .subtitle {
+  --fit-width: true;
+  --fit-height: true;
+  grid-area: subtitle;
+}
+.chart-parcoord .axis .subtitle text {
+  text-anchor: middle;
+}
+.chart-parcoord .axis .ticks-transform {
+  grid-area: ticks-transform;
+}
+.chart-parcoord .axis .ticks text {
+  text-anchor: end;
+  dominant-baseline: middle;
+}
+
 .axis {
   font-size: 0.7em;
 }

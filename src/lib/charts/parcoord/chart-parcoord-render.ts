@@ -21,13 +21,17 @@ export function chartParcoordRender(selection: ChartParcoordSelection): void {
 function setScale (data: IChartParcoordData, g: SVGSVGElement | SVGGElement) {
   const drawAreaS = select(g).selectAll('.draw-area');
   const drawAreaBounds = rectFromString(drawAreaS.attr('bounds') || '0, 0, 600, 400');
+  const titleS = drawAreaS.select('.title')
+  const titleBounds = rectFromString(!titleS.empty() ? titleS.attr('bounds') || '0, 0, 0, 0' : '0, 0, 0, 0');
+  const subtitleS = drawAreaS.select('.subtitle')
+  const subtitleBounds = rectFromString(!subtitleS.empty() ? subtitleS.attr('bounds') || '0, 0, 0, 0' : '0, 0, 0, 0');
   const { dimensions, flipped, axisScale } = data;
 
   dimensions.forEach(dimension => dimension.scale.range(
-    flipped ? [0, drawAreaBounds.width] : [drawAreaBounds.height, 0]
-  ))
+    flipped ? [0, drawAreaBounds.width] : [drawAreaBounds.height - titleBounds.height - subtitleBounds.height, 0]
+  )) //TODO: dynamic Padding
 
-  axisScale.padding(0.25).range(flipped ? [drawAreaBounds.height, 0] : [0, drawAreaBounds.width])
+  axisScale.padding(0.25).range(flipped ? [drawAreaBounds.height, 0] : [0, drawAreaBounds.width]) //TODO: dynamic Padding
 }
 
 function renderAxes(data: IChartParcoordData, g: SVGSVGElement | SVGGElement) {
@@ -42,24 +46,25 @@ function renderAxes(data: IChartParcoordData, g: SVGSVGElement | SVGGElement) {
       .data([dimension.axis])
       .join('g')
       .attr("transform", () => "translate(" + axisScale(index.toString()) + ")" )
-      .each((d, i, g) => {
-        console.log(g[i])
-        select(g[i]).call(axisLeft(d.scale)).attr('data-ignore-layout-children', true)
-        select(g[i])
-          .selectAll('.title')
-          .data([null])
-          .join('g')
-          .classed('title', true)
-          .attr("y", -12)
-          .attr('data-ignore-layout-children', true)
-          .selectAll('text')
-          .data([null])
-          .join('text')
-          .text(d.title)
-          .style("text-anchor", "middle")
-          .style("fill", "black")
-      })
-      // .call((s) => axisSequenceRender(s, index))
+      .call((s) => axisSequenceRender(s, index))
+
+      // .each((d, i, g) => {
+      //   console.log(g[i])
+      //   select(g[i]).call(axisLeft(d.scale)).attr('data-ignore-layout-children', true)
+      //   select(g[i])
+      //     .selectAll('.title')
+      //     .data([null])
+      //     .join('g')
+      //     .classed('title', true)
+      //     .attr("y", -12)
+      //     .attr('data-ignore-layout-children', true)
+      //     .selectAll('text')
+      //     .data([null])
+      //     .join('text')
+      //     .text(d.title)
+      //     .style("text-anchor", "middle")
+      //     .style("fill", "black")
+      // })
       .classed(`axis axis-${index}`, true)
 
 

@@ -82,7 +82,36 @@
   overflow: visible;
 }
 
-
+.chart-parcoord {
+  .axis {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+    'title'
+    'subtitle'
+    'ticks-transform';
+    .title {
+      --fit-width: true;
+      --fit-height: true;
+      grid-area: title;
+      text { text-anchor: middle; }
+    }
+    .subtitle {
+      --fit-width: true;
+      --fit-height: true;
+      grid-area: subtitle;
+      text { text-anchor: middle; }
+    }
+    .ticks-transform {
+      grid-area: ticks-transform;
+    }
+    .ticks text {
+      text-anchor: end;
+      dominant-baseline: middle;
+    }
+  }
+}
 .axis {
   font-size: 0.7em;
   .tick line {
