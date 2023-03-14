@@ -12,6 +12,7 @@ export interface SeriesLine {
   xScale: ScaleAny<any, number, number>;
   yValues: any[][];
   yScale: ScaleAny<any, number, number>;
+  yScales?: ScaleAny<any, number, number>[];
   styleClasses: string | string[];
   keys: string[];
   flipped?: boolean;
@@ -25,27 +26,28 @@ export function seriesLineData(data: Partial<SeriesLine>): SeriesLine {
   // todo: what if typeof xValues[0] === Date? scaleUTC?
   // todo: should we support xValues: any[][]?
 
-  const xScale =
-    data.xScale || typeof xValues?.[0] === 'number'
-      ? scaleLinear()
-          .domain([Math.min(...xValues), Math.max(...xValues)])
-          .nice()
-      : scalePoint().domain(new Set(xValues));
-  const yScale =
-    data.yScale || typeof yValues?.[0]?.[0] === 'number'
-      ? scaleLinear()
-          .domain([
-            Math.min(...yValues.map((a) => Math.min(...a))),
-            Math.max(...yValues.map((a) => Math.max(...a))),
-          ])
-          .nice()
-      : scalePoint().domain(new Set(yValues.flat()));
+  const xScale = data.xScale ??
+    (typeof xValues?.[0] === 'number' ?
+      scaleLinear()
+        .domain([Math.min(...xValues), Math.max(...xValues)])
+        .nice() :
+      scalePoint().domain(new Set(xValues)));
+  const yScale = data.yScale ??
+    (typeof yValues?.[0]?.[0] === 'number' ?
+      scaleLinear()
+        .domain([
+          Math.min(...yValues.map((a) => Math.min(...a))),
+          Math.max(...yValues.map((a) => Math.max(...a))),
+        ])
+        .nice() :
+      scalePoint().domain(new Set(yValues.flat())));
+  const yScales = data.yScales
 
   const styleClasses = data.styleClasses || yValues.map((_, i) => `categorical-${i}`);
   const keys = data.keys || yValues.map((c, i) => i.toString());
   const flipped = data.flipped || false;
 
-  return { xValues, yValues, xScale, yScale, styleClasses, keys, flipped };
+  return { xValues, yValues, xScale, yScale, yScales, styleClasses, keys, flipped };
 }
 
 export function seriesLineRender(selection: Selection<Element, SeriesLine>): void {
@@ -58,12 +60,12 @@ export function seriesLineRender(selection: Selection<Element, SeriesLine>): voi
       if (!boundsStr) return;
 
       const bounds = rectFromString(boundsStr);
-      const { xValues, yValues, xScale, yScale, keys, styleClasses, flipped } = seriesD;
+      const { xValues, yValues, xScale, yScale, yScales, keys, styleClasses, flipped } = seriesD;
 
       const lines: Line[] = yValues.map((yValues, lineIndex) => ({
         positions: yValues.map((yValue, pointIndex) => {
           const x = xScale(xValues[pointIndex])!;
-          const y = yScale(yValue)!;
+          const y = yScales ? yScales[pointIndex](yValue)! : yScale(yValue)!; //Todo: ! is Dirty. Refactoring!
           return {
             x: flipped ? y : x,
             y: flipped ? x : y,

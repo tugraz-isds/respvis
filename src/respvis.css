@@ -216,6 +216,10 @@
   grid-template-areas: ". legend" "axis-left draw-area" ". axis-bottom";
 }
 
+.chart.chart-parcoord text, .chart.chart-parcoord text[data-orientation=horizontal] {
+  dominant-baseline: central;
+}
+
 .layout {
   --fit-width: false;
   --fit-height: false;
@@ -458,6 +462,37 @@ text.title {
   grid-area: subtitle;
 }
 
+path.line {
+  fill: none;
+  stroke-width: 2;
+}
+
+.highlight path.line,
+path.line.highlight {
+  stroke-width: 4;
+}
+
+.chart-line[data-flipped=false] .layout.series-label {
+  margin-top: -1em;
+}
+
+.chart-line[data-flipped=false] .series-label .label {
+  text-anchor: middle;
+  dominant-baseline: auto;
+}
+
+.chart-line[data-flipped=true] .layout.series-label {
+  margin-left: 1em;
+}
+
+.chart-line[data-flipped=true] .series-label .label {
+  dominant-baseline: middle;
+}
+
+.chart.chart-parcoord .line {
+  stroke: var(--color-categorical-0);
+}
+
 .bar {
   stroke-width: 1px;
   stroke: #000;
@@ -492,31 +527,4 @@ text.title {
 .point {
   stroke: #000;
   stroke-width: 1px;
-}
-
-path.line {
-  fill: none;
-  stroke-width: 2;
-}
-
-.highlight path.line,
-path.line.highlight {
-  stroke-width: 4;
-}
-
-.chart-line[data-flipped=false] .layout.series-label {
-  margin-top: -1em;
-}
-
-.chart-line[data-flipped=false] .series-label .label {
-  text-anchor: middle;
-  dominant-baseline: auto;
-}
-
-.chart-line[data-flipped=true] .layout.series-label {
-  margin-left: 1em;
-}
-
-.chart-line[data-flipped=true] .series-label .label {
-  dominant-baseline: middle;
 }

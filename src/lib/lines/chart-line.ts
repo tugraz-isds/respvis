@@ -5,7 +5,7 @@ import {
   chartCartesianAxisRender,
   chartCartesianData,
   arrayIs,
-  rectFromString,
+  rectFromString, ScaleAny,
 } from '../core';
 import { SeriesPoint, seriesPointRender, seriesPointData, Point } from '../points';
 import { Legend, legendData, legendRender, LegendItem } from '../legend';
@@ -54,7 +54,7 @@ export function chartLineRender(
       const { styleClasses, keys, xValues, yValues, xScale, yScale, flipped } = chartD;
 
       xScale.range(flipped ? [drawAreaBounds.height, 0] : [0, drawAreaBounds.width]);
-      yScale.range(flipped ? [0, drawAreaBounds.width] : [drawAreaBounds.height, 0]);
+      (yScale as ScaleAny<any, number, number>).range(flipped ? [0, drawAreaBounds.width] : [drawAreaBounds.height, 0]);
 
       const lineSeriesS = drawAreaS
         .selectAll<SVGGElement, SeriesLine>('.series-line')
@@ -79,7 +79,7 @@ export function chartLineRender(
               xValues,
               yValues: yValues[lineI],
               xScale,
-              yScale,
+              yScale: (yScale as ScaleAny<any, number, number>),
               flipped,
               ...markerTooltips,
             })
@@ -141,7 +141,7 @@ export function chartLineRender(
         });
 
       chartD.xAxis.scale = chartD.xScale;
-      chartD.yAxis.scale = chartD.yScale;
+      chartD.yAxis.scale = chartD.yScale as ScaleAny<any, number, number>;
       chartCartesianAxisRender(chartS);
     });
 }

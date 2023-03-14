@@ -15,7 +15,7 @@ export type ScaleContinuous<TRange, TOutput> =
   | ScaleContinuousNumeric<TRange, TOutput>
   | ScaleTime<TRange, TOutput>;
 
-export type ScaleAny<TDomain extends string | number | Date, TRange, TOutput> =
+export type ScaleAny<TDomain extends string | number | Date, TRange, TOutput> = //TODO: ScaleAny only accepts number or any input. Fix this!
   // continuous input and continuous output
   | ScaleContinuous<TRange, TOutput>
   // continuous input and discrete output
