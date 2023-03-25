@@ -25,7 +25,7 @@ jobs:
           node-version: 14.x
       # Run npm install and build on our code
       - run: npm install
-      - run: npm run build --if-present
+      - run: npm run build
       # Deploy to Netlify using our production secrets
       - name: Deploy to netlify
         uses: netlify/actions/cli@375963b92b795c7b979927c580dd6f2a65ebcf28
@@ -33,5 +33,5 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.RESPVIS_NETLIFY }}
           NETLIFY_SITE_ID: ${{ secrets.RESPVIS_NETLIFY_MASTER_SITE_ID }}
         with:
-          args: deploy --dir=build --prod
+          args: deploy --dir=dist --prod
           secrets: '["RESPVIS_NETLIFY", "RESPVIS_NETLIFY_MASTER_SITE_ID"]'
