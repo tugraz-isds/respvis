@@ -26,10 +26,13 @@
     grid-template-rows: 100%;
     grid-template-columns: auto auto auto;
     align-items: center;
-    .title text, .subtitle text {
-      transform: rotate(-90deg);
-      text-anchor: end;
-      dominant-baseline: hanging;
+    .title, .subtitle {
+      --fit-width: true;
+      text {
+        text-anchor: middle;
+        dominant-baseline: hanging;
+        transform: rotate(-90deg);
+      }
     }
     .ticks-transform {
       height: 100%;
@@ -63,6 +66,12 @@
     .ticks-transform {
       width: 100%;
       --fit-height: true;
+    }
+    .title, .subtitle {
+      --fit-height: true;
+      text {
+        text-anchor: middle;
+      }
     }
   }
 

@@ -25,10 +25,13 @@
   grid-template-columns: auto auto auto;
   align-items: center;
 }
+.chart-cartesian .axis-left .title, .chart-cartesian .axis-left .subtitle, .chart-cartesian .axis-right .title, .chart-cartesian .axis-right .subtitle {
+  --fit-width: true;
+}
 .chart-cartesian .axis-left .title text, .chart-cartesian .axis-left .subtitle text, .chart-cartesian .axis-right .title text, .chart-cartesian .axis-right .subtitle text {
-  transform: rotate(-90deg);
-  text-anchor: end;
+  text-anchor: middle;
   dominant-baseline: hanging;
+  transform: rotate(-90deg);
 }
 .chart-cartesian .axis-left .ticks-transform, .chart-cartesian .axis-right .ticks-transform {
   height: 100%;
@@ -55,6 +58,12 @@
 .chart-cartesian .axis-bottom .ticks-transform, .chart-cartesian .axis-top .ticks-transform {
   width: 100%;
   --fit-height: true;
+}
+.chart-cartesian .axis-bottom .title, .chart-cartesian .axis-bottom .subtitle, .chart-cartesian .axis-top .title, .chart-cartesian .axis-top .subtitle {
+  --fit-height: true;
+}
+.chart-cartesian .axis-bottom .title text, .chart-cartesian .axis-bottom .subtitle text, .chart-cartesian .axis-top .title text, .chart-cartesian .axis-top .subtitle text {
+  text-anchor: middle;
 }
 .chart-cartesian .ticks-transform {
   grid-area: ticks;

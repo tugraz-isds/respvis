@@ -111,16 +111,16 @@ function axisRender(
     .join('text')
     .text(title);
 
-  selection
-    .selectAll('.subtitle')
-    .data([null])
-    .join('g')
-    .classed('subtitle', true)
-    .attr('data-ignore-layout-children', true)
-    .selectAll('text')
-    .data([null])
-    .join('text')
-    .text(subtitle);
+    selection.selectAll('.subtitle')
+      .data([null])
+      .join('g')
+      .classed('subtitle', true)
+      .attr('data-ignore-layout-children', true)
+      .selectAll('text')
+      .data([null])
+      .join('text')
+      .text(subtitle);
+
 }
 
 function d3Axis(
