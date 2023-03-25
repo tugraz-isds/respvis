@@ -3,6 +3,7 @@ name: Development workflow
 
 # When workflow is triggered
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
