@@ -31,7 +31,7 @@
   #electric-power-consumption .point, #electric-power-consumption .axis-x .tick, #electric-power-consumption .axis-y .tick {
     display: none;
   }
-  #electric-power-consumption .point:nth-of-type(5n), #electric-power-consumption .axis-x .tick:nth-of-type(5n), #electric-power-consumption .axis-y .tick:nth-of-type(2n) {
+  #electric-power-consumption .point:first-of-type, #electric-power-consumption .point:last-of-type, #electric-power-consumption .point:nth-of-type(5n), #electric-power-consumption .axis-x .tick:nth-of-type(5n), #electric-power-consumption .axis-y .tick:nth-of-type(2n) {
     display: block;
   }
 }
