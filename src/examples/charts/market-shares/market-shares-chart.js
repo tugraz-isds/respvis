@@ -2,47 +2,16 @@ import {
     chartWindowBarStackedData,
     chartWindowBarStackedRender,
     chartWindowBarStackedAutoFilterCategories,
-    chartWindowBarStackedAutoFilterSubcategories,
-    findMatchingBoundsIndex
+    chartWindowBarStackedAutoFilterSubcategories
 } from '../../libs/respvis/respvis.js';
+import { chooseAxisFormat } from "./chooseAxisFormat.js";
+import { chooseResponsiveData } from "./chooseResponsiveData.js";
 import { years, desktop, phone, tablet, platforms } from '../../data/desktop-phone-tablet.js';
 import * as d3 from '../../libs/d3-7.6.0/d3.js'
 
 const shares = desktop.map((d, i) => [desktop[i], phone[i], tablet[i]]);
 
-const responsiveData = [
-    { maxWidth: '27.5rem' },
-    { maxWidth: '40rem'},
-    { minWidth: '40rem'},
-]
-
-function adaptResponsiveData(index, data) {
-    switch (index) {
-        case 0: adapt0(); break
-        case 1: adapt1(); break
-        case 2: adapt2(); break
-        default: adapt0()
-    }
-    function adapt0() {
-        data.title = 'M.S. Browsers'
-        data.flipped = true
-        data.xAxis.configureAxis = (a) => a.tickFormat((v) => `'${v.slice(-2)}`);
-    }
-    function adapt1() {
-        data.title = 'Market Shares of Browsers'
-        data.flipped = true
-        data.legend.title = 'Platforms'
-        data.xAxis.configureAxis = (a) => a.tickFormat((v) => `'${v.slice(-2)}`);
-    }
-    function adapt2() {
-        data.title = 'Market Shares of Browsers'
-        data.flipped = false
-        data.legend.title = 'Platforms'
-        data.xAxis.configureAxis = (a) => a.tickFormat((v) => v);
-    }
-}
-
-const calcData = () => {
+const calcData = () => { //data for sufficient space
     return {
         title: "Market Shares of Browsers",
         categoryEntity: 'Years',
@@ -53,13 +22,16 @@ const calcData = () => {
         subcategoryEntity: 'Platforms',
         subcategories: platforms,
         labels: {},
-        legend: {},
+        legend: {
+            title: 'Platforms'
+        },
         tooltips: (e, { category, subcategory, value }) =>
             `Year: ${category}<br/>Platform: ${subcategory}<br/>Market Share: ${d3.format('.2f')(
                 value
             )}%`,
         xAxis: {
             title: 'Year',
+            configureAxis: (a) => a.tickFormat((v) => v)
         },
         yAxis: {
             title: 'Market Share',
@@ -78,9 +50,12 @@ const chartWindow = d3
     .call(chartWindowBarStackedAutoFilterCategories(data))
     .call(chartWindowBarStackedAutoFilterSubcategories(data))
     .on('resize', function (e, d) {
-        const index = findMatchingBoundsIndex(e.target, responsiveData)
         const data = calcData()
-        adaptResponsiveData(index, data)
+        chooseResponsiveData(data, e.target)
+
+        const xAxisE = d3.select('#market-shares-chart').select('.axis-x').node()
+        chooseAxisFormat(xAxisE, data)
+
         chartWindow.datum(chartWindowBarStackedData(data)).call(chartWindowBarStackedRender);
     });
 

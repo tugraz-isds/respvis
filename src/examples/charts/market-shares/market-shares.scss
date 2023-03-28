@@ -1,0 +1,50 @@
+#market-shares-chart {
+  container-type: inline-size;
+  @container (min-width: 36.25rem) {
+    .chart {
+      grid-template: auto 1fr auto / auto 1fr auto;
+      grid-template-areas:
+                      'header  header    header'
+                      'axis-left draw-area   legend'
+                      '.     axis-bottom .   ';
+    }
+    .legend {
+      align-items: center;
+      .items {
+        display: flex;
+        flex-direction: column;
+        width: auto;
+      }
+    }
+  }
+
+  @container (max-width: 36.25rem) {
+    width: 100%;
+    .chart {
+      width: 100%;
+      grid-template: auto auto 1fr auto / auto 1fr;
+      grid-template-areas: 'header  header' 'legend legend' 'axis-left draw-area' ' . axis-bottom';
+    }
+
+    .legend {
+      .items {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 100%;
+      }
+    }
+  }
+
+  //@container (min-width: 36.25rem) {
+  //  .axis-y .tick:nth-of-type(2n) {
+  //    display: none;
+  //  }
+  //}
+  //
+  //@container (width < 25rem) {
+  //  .point, .axis {
+  //    display: none;
+  //  }
+  //}
+}
