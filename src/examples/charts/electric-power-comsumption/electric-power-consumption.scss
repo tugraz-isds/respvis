@@ -1,0 +1,51 @@
+#electric-power-consumption {
+  //display: none;
+  container-type: inline-size;
+  .point, .axis-x .tick, .axis-y .tick, .series-label .label {
+    display: none;
+  }
+  .point:first-of-type, .point:last-of-type, .point:nth-of-type(5n), .axis-x .tick:nth-of-type(5n), .axis-y .tick:nth-of-type(2n) {
+    display: block;
+  }
+
+  @container (min-width: 41.25rem) {
+    width: 100%;
+    .chart {
+      grid-template: auto 1fr auto / auto 1fr auto;
+      grid-template-areas:
+                      'header  header    header'
+                      'axis-left draw-area   legend'
+                      '.     axis-bottom .   ';
+    }
+  }
+
+  @container (max-width: 41.25rem) {
+    .chart {
+      grid-template: auto auto 1fr auto / auto 1fr;
+      grid-template-areas: 'header  header' 'legend legend' 'axis-left draw-area' ' . axis-bottom';
+    }
+    .legend-item {
+      margin-top: 1rem;
+    }
+    .legend {
+      width: 100%;
+      margin-bottom: 1rem;
+      margin-left: 0.5rem;
+    }
+    .legend .items {
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-evenly;
+    }
+  }
+
+  @container (max-width: 23.75rem) {
+    .point, .axis {
+      display: none;
+    }
+
+    .point:first-of-type, .point:last-of-type {
+      display: block;
+    }
+  }
+}

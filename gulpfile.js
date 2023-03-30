@@ -1,9 +1,7 @@
 // # Setup
-
 const gulp = require('gulp');
 
 // ## Rollup
-
 const rollup = require('rollup');
 const rollupCommonJs = require('@rollup/plugin-commonjs');
 const rollupNodeResolve = require('@rollup/plugin-node-resolve').default;
@@ -12,19 +10,18 @@ const rollupTerser = require('rollup-plugin-terser').terser;
 const rollupGzip = require('rollup-plugin-gzip').default;
 
 // ## BrowserSync
-
 const browserSync = require('browser-sync').create();
 
 // ## Utilities
-
 const del = require('del');
 const rename = require('gulp-rename');
 const path = require('path');
 
+
+
 // # Private tasks
 
 // ## Bundle JS
-
 async function bundleJS() {
   const bundle = await rollup.rollup({
     input: 'src/lib/index.ts',
@@ -71,14 +68,12 @@ function copyExamplesRedirect() {
 }
 
 // ## Reload browser
-
 function reloadBrowser(cb) {
   browserSync.reload();
   cb();
 }
 
 // ## Clean
-
 function cleanDist() {
   return del('dist', { force: true });
 }
@@ -86,6 +81,20 @@ function cleanDist() {
 function cleanNodeModules() {
   return del('node_modules', { force: true });
 }
+
+// ## Live Update File Changes in Examples
+function updateDistForServe(filename) {
+    updateSingleExampleFile(filename) //gulp.series not possible in watch callback?
+    browserSync.reload();
+}
+
+function updateSingleExampleFile(fileName) {
+    const sameFilePath = fileName.substring(4)
+    const targetFolder = path.dirname(sameFilePath)
+    gulp.src(`./src/${sameFilePath}`).pipe(gulp.dest(`./dist/${targetFolder}`));
+}
+
+
 
 // # Public tasks
 
@@ -106,13 +115,12 @@ exports.serve = function serve() {
   });
 
   const watchOptions = { ignoreInitial: false };
-  gulp.watch('./src/**/*.ts', watchOptions, gulp.series(bundleJS, reloadBrowser));
+  gulp.watch('./src/lib/**/*', watchOptions, gulp.series(bundleJS, reloadBrowser));
   gulp.watch('./src/respvis.css', watchOptions, gulp.series(bundleCSS, reloadBrowser));
-  gulp.watch(
-    './src/examples/**/*',
-    watchOptions,
-    gulp.series(copyExamples, bundleJS, copyExamplesRedirect, reloadBrowser)
-  );
+  gulp.series(copyExamples, copyExamplesRedirect, reloadBrowser)
+
+  const examplesWatcher = gulp.watch('./src/examples/**/*', watchOptions);
+  examplesWatcher.on('change', updateDistForServe)
 };
 
 exports.default = exports.serve;
