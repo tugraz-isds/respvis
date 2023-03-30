@@ -13,8 +13,8 @@ const shares = desktop.map((d, i) => [desktop[i], phone[i], tablet[i]]);
 
 const calcData = () => { //data for sufficient space
     return {
-        title: "Market Shares of Browsers",
-        categoryEntity: 'Years',
+        title: "Market Share of Browsers",
+        categoryEntity: 'Year',
         categories: years,
         values: shares,
         valuesAsRatios: true,
