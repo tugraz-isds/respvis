@@ -22,7 +22,15 @@ const path = require('path');
 // # Private tasks
 
 // ## Bundle JS
-async function bundleJS() {
+
+async function bundleJSDevelopment() {
+  await bundleJS("development")
+}
+
+async function bundleJSProduction() {
+  await bundleJS("production")
+}
+async function bundleJS(mode) {
   const bundle = await rollup.rollup({
     input: 'src/lib/index.ts',
     plugins: [rollupNodeResolve({ browser: true }), rollupCommonJs(), rollupTypescript()],
@@ -49,9 +57,11 @@ async function bundleJS() {
       )
   }
 
+  const respVisLibWrites = [write({format: 'iife'}), write({format: 'es'}), write({format: 'cjs'})]
+
   return Promise.all([
-      write({format: 'iife'}), write({format: 'es'}),
-      write({format: 'cjs'}), write({format: 'es', location: `dist/examples/libs/respvis`})
+    write({format: 'es', location: `dist/examples/libs/respvis`}), //Only do respvis writes in production mode to save time during development
+    mode === 'production' ? respVisLibWrites : undefined
   ]);
 }
 
@@ -100,27 +110,31 @@ function updateSingleExampleFile(fileName) {
 
 exports.clean = cleanDist;
 
-exports.cleanAll = gulp.series([cleanDist, cleanNodeModules]);
+exports.cleanAll = gulp.series(cleanDist, cleanNodeModules);
 
-exports.build = gulp.series([
+exports.build = gulp.series(
   exports.clean,
   copyExamples, // must be done before bundleJS to replace proxy respvis.js in src/examples/libs/respvis/respvis.js
-  gulp.parallel([bundleJS, bundleCSS, copyExamplesRedirect]),
-]);
+  gulp.parallel(bundleJSProduction, bundleCSS, copyExamplesRedirect),
+);
 
-exports.serve = function serve() {
+
+exports.serve = gulp.series(exports.build, watch)
+
+function watch(cb) {
   browserSync.init({
     server: './dist',
     startPath: '/',
   });
 
-  const watchOptions = { ignoreInitial: false };
-  gulp.watch('./src/lib/**/*', watchOptions, gulp.series(bundleJS, reloadBrowser));
+  const watchOptions = { ignoreInitial: true };
+  gulp.watch('./src/lib/**/*', watchOptions, gulp.series(bundleJSDevelopment, reloadBrowser));
   gulp.watch('./src/respvis.css', watchOptions, gulp.series(bundleCSS, reloadBrowser));
-  gulp.series(copyExamples, copyExamplesRedirect, reloadBrowser)
 
   const examplesWatcher = gulp.watch('./src/examples/**/*', watchOptions);
   examplesWatcher.on('change', updateDistForServe)
-};
+
+  cb()
+}
 
 exports.default = exports.serve;
