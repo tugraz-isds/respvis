@@ -99,7 +99,8 @@ function updateDistForServe(filename) {
 }
 
 function updateSingleExampleFile(fileName) {
-    const sameFilePath = fileName.substring(4)
+    const fileNamePosix = fileName.split(path.sep).join(path.posix.sep);
+    const sameFilePath = fileNamePosix.substring(4)
     const targetFolder = path.dirname(sameFilePath)
     gulp.src(`./src/${sameFilePath}`).pipe(gulp.dest(`./dist/${targetFolder}`));
 }
