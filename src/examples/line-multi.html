@@ -1,148 +1,153 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-    <title>RespVis - Multi-Line Chart</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../respvis.css" />
-    <style>
-        .toolbar {
-            display: none;
-        }
-        #chart {
-            width: 100%;
-            height: 75vh;
-            min-height: 25rem;
-        }
+<title>RespVis - Multi-Line Chart</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<link rel="stylesheet" href="../respvis.css" />
+<style>
+  .toolbar {
+    display: none;
+  }
+  #chart {
+    width: 100%;
+    height: 75vh;
+    min-height: 25rem;
+  }
 
-        .series-label .label {
-            display: none;
-        }
+  .series-label .label {
+    display: none;
+  }
 
-        .legend {
-            margin-left: 2rem;
-        }
+  .legend {
+    margin-left: 2rem;
+  }
 
-        .legend-item {
-            margin-top: 1rem;
-        }
+  .legend-item {
+    margin-top: 1rem;
+  }
 
-        @media (max-width: 25rem) {
-            .point, .axis {
-                display: none;
-            }
+  @media (max-width: 30rem) {
+    .point, .axis {
+      display: none;
+    }
 
-            .point:first-of-type, .point:last-of-type {
-                display: block;
-            }
-        }
+    .point:first-of-type, .point:last-of-type {
+      display: block;
+    }
+  }
 
-        @media (max-width: 43.75rem) {
-            .chart {
-                grid-template: auto auto 1fr auto / auto 1fr auto;
-                grid-template-areas: 'header  header  header' 'legend legend legend' 'axis-left draw-area draw-area' ' . axis-bottom . ';
-            }
+  @media (max-width: 50rem) {
+    .chart {
+      grid-template: auto auto 1fr auto / auto 1fr auto;
+      grid-template-areas:
+        'header  header  header'
+        'legend legend legend'
+        'axis-left draw-area draw-area'
+        ' . axis-bottom . ';
+    }
 
-            .legend {
-                width: 100%;
-                margin-bottom: 2rem;
-                margin-left: 0.5rem;
-            }
-            .legend .items {
-                flex-direction: row;
-                width: 100%;
-                justify-content: space-evenly;
-            }
-        }
+    .legend {
+      width: 100%;
+      margin-bottom: 2rem;
+      margin-left: 0.5rem;
+    }
+    .legend .items {
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-evenly;
+    }
+  }
 
-        @media (max-width: 43.75rem) and (min-width: 25rem) {
-            .point, .axis-x .tick {
-                display: none;
-            }
-            .point:nth-of-type(5n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(5n) {
-                display: block;
-            }
-        }
+  @media (min-width: 30rem) and (max-width: 50rem) {
+    .point, .axis-x .tick {
+      display: none;
+    }
+    .point:nth-of-type(5n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(5n) {
+      display: block;
+    }
+  }
 
-        @media (min-width: 43.75rem) {
-            .point, .axis-x .tick {
-                display: none;
-            }
-            .point:nth-of-type(2n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(2n) {
-                display: block;
-            }
-        }
+  @media (min-width: 50rem) {
+    .point, .axis-x .tick {
+      display: none;
+    }
+    .point:nth-of-type(2n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(2n) {
+      display: block;
+    }
+  }
 
-        body {
-            background-color: floralwhite;
-        }
-    </style>
+  body {
+    background-color: floralwhite;
+  }
+</style>
 </head>
+
 <body>
 <h1>Mutli-Line Chart</h1>
 <div id="chart"></div>
 <script type="module">
-    import { select, format} from './libs/d3-7.6.0/d3.js'
-    import {
-        chartWindowLineData,
-        chartWindowLineRender,
-        chartWindowLineAutoResize,
-    } from './libs/respvis/respvis.js';
+  import { select, format} from './libs/d3-7.6.0/d3.js'
+  import {
+    chartWindowLineData,
+    chartWindowLineRender,
+    chartWindowLineAutoResize,
+  } from './libs/respvis/respvis.js';
 
-    import data from './data/electric-power-consumption/electricPowerConsumption.js'
+  import data from './data/electric-power-consumption/electricPowerConsumption.js'
 
-    function mapPowerConsumptionData() {
-        const usaData = data.filter(obj => obj["Country Name"] === "United States")[0]
-        const europeData = data.filter(obj => obj["Country Name"] === "European Union")[0]
-        const asiaData = data.filter(obj => obj["Country Name"] === "East Asia & Pacific")[0]
+  function mapPowerConsumptionData() {
+    const usaData = data.filter(obj => obj["Country Name"] === "United States")[0]
+    const europeData = data.filter(obj => obj["Country Name"] === "European Union")[0]
+    const asiaData = data.filter(obj => obj["Country Name"] === "East Asia & Pacific")[0]
 
-        const years = Array.from({length: 2014 - 1971 + 1}, (value, index) => (1971 + index).toString())
+    const years = Array.from({length: 2014 - 1971 + 1}, (value, index) => (1971 + index).toString())
 
-        const yUSA = years.map(year => usaData[year])
-        const yEurope = years.map(year => europeData[year])
-        const yAsia= years.map(year => asiaData[year])
-        return {yUSA, yEurope, yAsia, years}
+    const yUSA = years.map(year => usaData[year])
+    const yEurope = years.map(year => europeData[year])
+    const yAsia= years.map(year => asiaData[year])
+    return {yUSA, yEurope, yAsia, years}
+  }
+
+  const { yUSA, yEurope, yAsia, years } = mapPowerConsumptionData()
+
+  const calcData = () => {
+    const mediumWidth = window.matchMedia('(min-width: 30rem)').matches;
+    const largeWidth = window.matchMedia('(min-width: 50rem)').matches;
+
+    let title = largeWidth ? "Electric Power Consumption (kWh per Capita)" : mediumWidth ?
+      'Power Consumption (kWh)' : 'Power (kWh)';
+
+    const priceTickFormat = largeWidth ? format(',') : format('.2s');
+    const yearTickFormat = window.matchMedia('(min-width: 80rem)').matches ? (v) => v : (v) => `'${v.slice(-2)}`;
+
+    return {
+      xValues: years,
+      yValues: [yUSA, yEurope, yAsia],
+      xAxis: { title: 'Year', configureAxis: (axis) => axis.tickFormat(yearTickFormat) },
+      yAxis: { title: 'Consumption', configureAxis: (axis) => axis.tickFormat(priceTickFormat) },
+      markerTooltips: {
+        tooltips: (_, { xValue, yValue }) => `Year: ${xValue}<br/>Pow. Consumption: ${yValue}kWh`
+      },
+      legend: {
+        title: 'Legend',
+        keys: ['USA', 'Europe', 'East Asia'],
+        labels: ['USA', 'Europe', 'East Asia'],
+      },
+      title
     }
+  }
 
-    const { yUSA, yEurope, yAsia, years } = mapPowerConsumptionData()
+  const chartData = calcData()
 
-    const calcData = () => {
-        const mediumWidth = window.matchMedia('(min-width: 25rem)').matches;
-        const largeWidth = window.matchMedia('(min-width: 43.5rem)').matches;
-
-        let title = largeWidth ? "Electric Power Consumption (kWh per Capita)" : mediumWidth ?
-            'Power Consumption (kWh)' : 'Pow. Cons. (kWh)';
-
-        const priceTickFormat = largeWidth ? format(',') : format('.2s');
-        const yearTickFormat = window.matchMedia('(min-width: 56.25rem)').matches ? (v) => v : (v) => `'${v.slice(-2)}`;
-
-        return {
-            xValues: years,
-            yValues: [yUSA, yEurope, yAsia],
-            xAxis: { title: 'Year', configureAxis: (axis) => axis.tickFormat(yearTickFormat) },
-            yAxis: { title: 'Consumption', configureAxis: (axis) => axis.tickFormat(priceTickFormat) },
-            markerTooltips: {
-                tooltips: (_, { xValue, yValue }) => `Year: ${xValue}<br/>Pow. Consumption: ${yValue}kWh`
-            },
-            legend: {
-                title: 'Legend',
-                keys: ['USA', 'Europe', 'East Asia'],
-                labels: ['USA', 'Europe', 'East Asia'],
-            },
-            title
-        }
-    }
-
-    const chartData = calcData()
-
-    const chart = select('#chart')
-        .append('div')
-        .datum(chartWindowLineData(chartData))
-        .call(chartWindowLineRender)
-        .call(chartWindowLineAutoResize)
-        .on('resize', () => {
-            chart.datum(chartWindowLineData(calcData())).call(chartWindowLineRender);
-        })
+  const chart = select('#chart')
+    .append('div')
+    .datum(chartWindowLineData(chartData))
+    .call(chartWindowLineRender)
+    .call(chartWindowLineAutoResize)
+    .on('resize', () => {
+      chart.datum(chartWindowLineData(calcData())).call(chartWindowLineRender);
+    })
 </script>
 </body>
 </html>

@@ -23,7 +23,7 @@ export const phone = [
   1.02, 2.94, 6.09, 10.74, 16.24, 27.14, 35.1, 43.59, 51.56, 50.88, 50.39, 51.61,
 ];
 export const tablet = [0, 0, 0, 1.31, 4.59, 6.29, 5.73, 5.04, 4.69, 4.02, 3.57, 2.75];
-export const platforms = ['Desktop', 'Phone', 'Tablet'];
+export const platforms = ['Desktop', 'Smartphone', 'Tablet'];
 
 export default {
   years,
