@@ -7,10 +7,10 @@ SVG-based components with a layouting engine based on the CSS grid
 syntax.
 
 A live version of the `master` branch can be found at
-[respvis-v2.netlify.app](https://respvis-v2.netlify.app/).
+[respvis.netlify.app](https://respvis.netlify.app/).
 
 A live version of the current `develop` branch can be found at
-[respvis-v2-dev.netlify.app](https://respvis-v2-dev.netlify.app/).
+[respvis-dev.netlify.app](https://respvis-dev.netlify.app/).
 
 # Commands
 
@@ -32,6 +32,8 @@ new build of the framework and the examples into the `dist` folder:
 gulp build  // Using globally installed gulp
 
 npx gulp build  // Using locally packaged gulp
+
+npm run build // Using package build script
 ```
 
 To test a built version you have to deploy the `dist` folder to a web
@@ -50,6 +52,8 @@ command to run a hot-reloadable live server is:
 gulp serve  // Using globally installed gulp
 
 npx gulp serve  // Using locally packaged gulp
+
+npm run start // Using package build script
 ```
 
 or simply:
@@ -58,4 +62,6 @@ or simply:
 gulp  // Using globally installed gulp
 
 npx gulp  // Using locally packaged gulp
+
+npm start // Using package build script
 ```
