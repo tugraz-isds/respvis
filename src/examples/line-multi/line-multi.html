@@ -4,97 +4,24 @@
 <title>RespVis - Multi-Line Chart</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta charset="UTF-8" />
-<link rel="stylesheet" href="../respvis.css" />
-<style>
-  .toolbar {
-    display: none;
-  }
-  #chart {
-    width: 100%;
-    height: 75vh;
-    min-height: 25rem;
-  }
+<link rel="stylesheet" href="../../respvis.css" />
+<link rel="stylesheet" href="./line-multi.css" />
 
-  .series-label .label {
-    display: none;
-  }
-
-  .legend {
-    margin-left: 2rem;
-  }
-
-  .legend-item {
-    margin-top: 1rem;
-  }
-
-  @media (max-width: 30rem) {
-    .point, .axis {
-      display: none;
-    }
-
-    .point:first-of-type, .point:last-of-type {
-      display: block;
-    }
-  }
-
-  @media (max-width: 50rem) {
-    .chart {
-      grid-template: auto auto 1fr auto / auto 1fr auto;
-      grid-template-areas:
-        'header  header  header'
-        'legend legend legend'
-        'axis-left draw-area draw-area'
-        ' . axis-bottom . ';
-    }
-
-    .legend {
-      width: 100%;
-      margin-bottom: 2rem;
-      margin-left: 0.5rem;
-    }
-    .legend .items {
-      flex-direction: row;
-      width: 100%;
-      justify-content: space-evenly;
-    }
-  }
-
-  @media (min-width: 30rem) and (max-width: 50rem) {
-    .point, .axis-x .tick {
-      display: none;
-    }
-    .point:nth-of-type(5n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(5n) {
-      display: block;
-    }
-  }
-
-  @media (min-width: 50rem) {
-    .point, .axis-x .tick {
-      display: none;
-    }
-    .point:nth-of-type(2n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(2n) {
-      display: block;
-    }
-  }
-
-  body {
-    background-color: floralwhite;
-  }
-</style>
 </head>
 
 <body>
 <h1>Mutli-Line Chart</h1>
 <div id="chart"></div>
 <script type="module">
-  import { select, format} from './libs/d3-7.6.0/d3.js'
+  import { select, format} from '../libs/d3-7.6.0/d3.js'
   import {
     chartWindowLineData,
     chartWindowLineRender,
     chartWindowLineAutoResize,
-  } from './libs/respvis/respvis.js';
+  } from '../libs/respvis/respvis.js';
 
-  import data from './data/electric-power-consumption/electricPowerConsumption.js'
+  import data from '../data/electric-power-consumption/electricPowerConsumption.js'
+  import {chooseAxisFormat} from "./chooseAxisFormat.js";
 
   function mapPowerConsumptionData() {
     const usaData = data.filter(obj => obj["Country Name"] === "United States")[0]
@@ -110,7 +37,7 @@
   }
 
   const { yUSA, yEurope, yAsia, years } = mapPowerConsumptionData()
-
+  const a = 0
   const calcData = () => {
     const mediumWidth = window.matchMedia('(min-width: 30rem)').matches;
     const largeWidth = window.matchMedia('(min-width: 50rem)').matches;
@@ -119,7 +46,7 @@
       'Power Consumption (kWh)' : 'Power (kWh)';
 
     const priceTickFormat = largeWidth ? format(',') : format('.2s');
-    const yearTickFormat = window.matchMedia('(min-width: 80rem)').matches ? (v) => v : (v) => `'${v.slice(-2)}`;
+    const yearTickFormat = (v) => v //window.matchMedia('(min-width: 80rem)').matches ? (v) => v : (v) => `'${v.slice(-2)}`;
 
     return {
       xValues: years,
@@ -147,6 +74,9 @@
     .call(chartWindowLineAutoResize)
     .on('resize', () => {
       chart.datum(chartWindowLineData(calcData())).call(chartWindowLineRender);
+
+      const xAxisE = select('#chart').select('.axis-x').select('.ticks').node()
+      chooseAxisFormat(xAxisE, data)
     })
 </script>
 </body>

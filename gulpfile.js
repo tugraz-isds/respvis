@@ -134,6 +134,10 @@ function watch(cb) {
 
   const examplesWatcher = gulp.watch('./src/examples/**/*', watchOptions);
   examplesWatcher.on('change', updateDistForServe)
+  examplesWatcher.on('add', updateDistForServe)
+  examplesWatcher.on('addDir', updateDistForServe)
+  examplesWatcher.on('unlink', updateDistForServe)
+  examplesWatcher.on('unlinkDir', updateDistForServe)
 
   cb()
 }

@@ -1,0 +1,82 @@
+body {
+  background-color: floralwhite;
+}
+
+#chart {
+  width: 100%;
+  height: 75vh;
+  min-height: 25rem;
+  .toolbar {
+    display: none;
+  }
+  .series-label .label {
+    display: none;
+  }
+
+  .legend {
+    margin-left: 2rem;
+  }
+
+  .legend-item {
+    margin-top: 1rem;
+  }
+
+  .axis-x .ticks text[orientation='vertical'] {
+    transform: rotate(90deg);
+    text-anchor: start;
+    dominant-baseline: central;
+  }
+}
+
+@media (max-width: 30rem) {
+  #chart {
+    .point, .axis {
+      display: none;
+    }
+    .point:first-of-type, .point:last-of-type {
+      display: block;
+    }
+  }
+}
+
+@media (max-width: 50rem) {
+  .chart {
+    grid-template: auto auto 1fr auto / auto 1fr auto;
+    grid-template-areas:
+        'header  header  header'
+        'legend legend legend'
+        'axis-left draw-area draw-area'
+        ' . axis-bottom . ';
+  }
+
+  .legend {
+    width: 100%;
+    margin-bottom: 2rem;
+    margin-left: 0.5rem;
+  }
+  .legend .items {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-evenly;
+  }
+}
+
+@media (min-width: 30rem) and (max-width: 50rem) {
+  .point, .axis-x .tick {
+    display: none;
+  }
+  .point:nth-of-type(5n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(5n) {
+    display: block;
+  }
+}
+
+@media (min-width: 50rem) {
+  .point, .axis-x .tick {
+    display: none;
+  }
+  .point:nth-of-type(2n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(2n) {
+    display: block;
+  }
+}
+
+
