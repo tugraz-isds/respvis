@@ -131,6 +131,7 @@ function watch(cb) {
   const watchOptions = { ignoreInitial: true };
   gulp.watch('./src/lib/**/*', watchOptions, gulp.series(bundleJSDevelopment, reloadBrowser));
   gulp.watch('./src/respvis.css', watchOptions, gulp.series(bundleCSS, reloadBrowser));
+  gulp.watch('./src/index.html', watchOptions, gulp.series(copyExamplesRedirect, reloadBrowser));
 
   const examplesWatcher = gulp.watch('./src/examples/**/*', watchOptions);
   examplesWatcher.on('change', updateDistForServe)
