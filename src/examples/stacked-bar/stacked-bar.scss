@@ -1,0 +1,30 @@
+#chart {
+  width: 100%;
+  height: 75vh;
+  min-height: 25rem;
+}
+
+body {
+  background-color: floralwhite;
+}
+
+@media (max-width: 40rem) {
+  .chart {
+    grid-template: auto auto 1fr auto / auto 1fr;
+    grid-template-areas:
+        'header header'
+        '. legend'
+        'axis-left draw-area'
+        '. axis-bottom';
+  }
+
+  .legend .items {
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+
+  .axis-y .tick:nth-of-type(2n) {
+    display: none;
+  }
+}
