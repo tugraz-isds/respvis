@@ -20,33 +20,22 @@
   } from '../../libs/respvis/respvis.js';
 
   import {mapPowerConsumptionData} from '../../data/electric-power-consumption/electricPowerConsumption.js'
-  import {chooseAxisFormat} from "./chooseResponsiveData.js";
+  import {chooseAxisFormat, chooseResponsiveData} from "./chooseResponsiveData.js";
 
   const {yUSA, yEurope, yAsia, years} = mapPowerConsumptionData()
   const calcData = () => {
-    const mediumWidth = window.matchMedia('(min-width: 30rem)').matches;
-    const largeWidth = window.matchMedia('(min-width: 50rem)').matches;
-
-    let title = largeWidth ? "Electric Power Consumption (kWh per Capita)" : mediumWidth ?
-      'Power Consumption (kWh)' : 'Power (kWh)';
-
-    const priceTickFormat = largeWidth ? format(',') : format('.2s');
-    const yearTickFormat = (v) => v
-
     return {
       xValues: years,
       yValues: [yUSA, yEurope, yAsia],
-      xAxis: {title: 'Year', configureAxis: (axis) => axis.tickFormat(yearTickFormat)},
-      yAxis: {title: 'Consumption', configureAxis: (axis) => axis.tickFormat(priceTickFormat)},
+      xAxis: {title: 'Year', configureAxis: (axis) => axis.tickFormat((v) => v)},
+      yAxis: {title: 'Consumption'},
       markerTooltips: {
         tooltips: (_, {xValue, yValue}) => `Year: ${xValue}<br/>Pow. Consumption: ${yValue}kWh`
       },
       legend: {
-        title: 'Legend',
         keys: ['USA', 'Europe', 'East Asia'],
         labels: ['USA', 'Europe', 'East Asia'],
-      },
-      title
+      }
     }
   }
 
@@ -60,6 +49,7 @@
     .on('resize', (selection, data) => {
       const xAxisE = select('#chart').select('.axis-x').select('.ticks').node()
       chooseAxisFormat(xAxisE, data)
+      chooseResponsiveData(document.documentElement, data)
       chart.datum(chartWindowLineData(data)).call(chartWindowLineRender);
     })
 </script>
