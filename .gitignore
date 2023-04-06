@@ -106,5 +106,6 @@ dist
 # VS Code
 *.code-workspace
 
+package-lock.json
 # File for enabling intellisense with example files
 src/examples/libs/respvis/
