@@ -1,5 +1,5 @@
-import {findMatchingBoundsIndex} from "../libs/respvis/respvis.js";
-import {select} from "../libs/d3-7.6.0/d3.js";
+import {findMatchingBoundsIndex} from "../../libs/respvis/respvis.js";
+import {select} from "../../libs/d3-7.6.0/d3.js";
 
 const bounds = [
   {minWidth: '50rem', maxWidth: '60rem'},

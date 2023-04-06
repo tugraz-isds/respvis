@@ -4,22 +4,22 @@
   <title>RespVis - Multi-Line Chart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta charset="UTF-8"/>
-  <link rel="stylesheet" href="../../respvis.css"/>
-  <link rel="stylesheet" href="./line-multi.css"/>
+  <link rel="stylesheet" href="../../../respvis.css"/>
+  <link rel="stylesheet" href="line-multi.css"/>
 </head>
 
 <body>
 <h1>Mutli-Line Chart</h1>
 <div id="chart"></div>
 <script type="module">
-  import {select, format} from '../libs/d3-7.6.0/d3.js'
+  import {select, format} from '../../libs/d3-7.6.0/d3.js'
   import {
     chartWindowLineData,
     chartWindowLineRender,
     chartWindowLineAutoResize,
-  } from '../libs/respvis/respvis.js';
+  } from '../../libs/respvis/respvis.js';
 
-  import {mapPowerConsumptionData} from '../data/electric-power-consumption/electricPowerConsumption.js'
+  import {mapPowerConsumptionData} from '../../data/electric-power-consumption/electricPowerConsumption.js'
   import {chooseAxisFormat} from "./chooseResponsiveData.js";
 
   const {yUSA, yEurope, yAsia, years} = mapPowerConsumptionData()
@@ -31,7 +31,7 @@
       'Power Consumption (kWh)' : 'Power (kWh)';
 
     const priceTickFormat = largeWidth ? format(',') : format('.2s');
-    const yearTickFormat = (v) => v //window.matchMedia('(min-width: 80rem)').matches ? (v) => v : (v) => `'${v.slice(-2)}`;
+    const yearTickFormat = (v) => v
 
     return {
       xValues: years,
@@ -57,12 +57,10 @@
     .datum(chartWindowLineData(chartData))
     .call(chartWindowLineRender)
     .call(chartWindowLineAutoResize)
-    .on('resize', () => {
-      const data = calcData()
-      chart.datum(chartWindowLineData(data)).call(chartWindowLineRender);
-
+    .on('resize', (selection, data) => {
       const xAxisE = select('#chart').select('.axis-x').select('.ticks').node()
       chooseAxisFormat(xAxisE, data)
+      chart.datum(chartWindowLineData(data)).call(chartWindowLineRender);
     })
 </script>
 </body>
