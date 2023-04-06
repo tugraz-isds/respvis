@@ -1,4 +1,4 @@
-export default [
+export const data = [
   {
     "Country Name": "European Union",
     "Country Code": "EUU",
@@ -147,3 +147,16 @@ export default [
     "2014": 3665.12829781601
   }
 ]
+
+export function mapPowerConsumptionData() {
+  const usaData = data.filter(obj => obj["Country Name"] === "United States")[0]
+  const europeData = data.filter(obj => obj["Country Name"] === "European Union")[0]
+  const asiaData = data.filter(obj => obj["Country Name"] === "East Asia & Pacific")[0]
+
+  const years = Array.from({length: 2014 - 1971 + 1}, (value, index) => (1971 + index).toString())
+
+  const yUSA = years.map(year => usaData[year])
+  const yEurope = years.map(year => europeData[year])
+  const yAsia= years.map(year => asiaData[year])
+  return {yUSA, yEurope, yAsia, years}
+}

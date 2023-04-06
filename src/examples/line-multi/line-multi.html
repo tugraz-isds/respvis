@@ -1,43 +1,28 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<title>RespVis - Multi-Line Chart</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta charset="UTF-8" />
-<link rel="stylesheet" href="../../respvis.css" />
-<link rel="stylesheet" href="./line-multi.css" />
-
+  <title>RespVis - Multi-Line Chart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="../../respvis.css"/>
+  <link rel="stylesheet" href="./line-multi.css"/>
 </head>
 
 <body>
 <h1>Mutli-Line Chart</h1>
 <div id="chart"></div>
 <script type="module">
-  import { select, format} from '../libs/d3-7.6.0/d3.js'
+  import {select, format} from '../libs/d3-7.6.0/d3.js'
   import {
     chartWindowLineData,
     chartWindowLineRender,
     chartWindowLineAutoResize,
   } from '../libs/respvis/respvis.js';
 
-  import data from '../data/electric-power-consumption/electricPowerConsumption.js'
-  import {chooseAxisFormat} from "./chooseAxisFormat.js";
+  import {mapPowerConsumptionData} from '../data/electric-power-consumption/electricPowerConsumption.js'
+  import {chooseAxisFormat} from "./chooseResponsiveData.js";
 
-  function mapPowerConsumptionData() {
-    const usaData = data.filter(obj => obj["Country Name"] === "United States")[0]
-    const europeData = data.filter(obj => obj["Country Name"] === "European Union")[0]
-    const asiaData = data.filter(obj => obj["Country Name"] === "East Asia & Pacific")[0]
-
-    const years = Array.from({length: 2014 - 1971 + 1}, (value, index) => (1971 + index).toString())
-
-    const yUSA = years.map(year => usaData[year])
-    const yEurope = years.map(year => europeData[year])
-    const yAsia= years.map(year => asiaData[year])
-    return {yUSA, yEurope, yAsia, years}
-  }
-
-  const { yUSA, yEurope, yAsia, years } = mapPowerConsumptionData()
-  const a = 0
+  const {yUSA, yEurope, yAsia, years} = mapPowerConsumptionData()
   const calcData = () => {
     const mediumWidth = window.matchMedia('(min-width: 30rem)').matches;
     const largeWidth = window.matchMedia('(min-width: 50rem)').matches;
@@ -51,10 +36,10 @@
     return {
       xValues: years,
       yValues: [yUSA, yEurope, yAsia],
-      xAxis: { title: 'Year', configureAxis: (axis) => axis.tickFormat(yearTickFormat) },
-      yAxis: { title: 'Consumption', configureAxis: (axis) => axis.tickFormat(priceTickFormat) },
+      xAxis: {title: 'Year', configureAxis: (axis) => axis.tickFormat(yearTickFormat)},
+      yAxis: {title: 'Consumption', configureAxis: (axis) => axis.tickFormat(priceTickFormat)},
       markerTooltips: {
-        tooltips: (_, { xValue, yValue }) => `Year: ${xValue}<br/>Pow. Consumption: ${yValue}kWh`
+        tooltips: (_, {xValue, yValue}) => `Year: ${xValue}<br/>Pow. Consumption: ${yValue}kWh`
       },
       legend: {
         title: 'Legend',
@@ -73,7 +58,8 @@
     .call(chartWindowLineRender)
     .call(chartWindowLineAutoResize)
     .on('resize', () => {
-      chart.datum(chartWindowLineData(calcData())).call(chartWindowLineRender);
+      const data = calcData()
+      chart.datum(chartWindowLineData(data)).call(chartWindowLineRender);
 
       const xAxisE = select('#chart').select('.axis-x').select('.ticks').node()
       chooseAxisFormat(xAxisE, data)

@@ -5,18 +5,11 @@ import {
     chartWindowLineAutoResize,
 } from '../../libs/respvis/respvis.js';
 
-import data from '../../data/electric-power-consumption/electricPowerConsumption.js'
+import {mapPowerConsumptionData} from '../../data/electric-power-consumption/electricPowerConsumption.js'
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
-const usaData = data.filter(obj => obj["Country Name"] === "United States")[0]
-const europeData = data.filter(obj => obj["Country Name"] === "European Union")[0]
-const asiaData = data.filter(obj => obj["Country Name"] === "East Asia & Pacific")[0]
-
+const { yUSA, yEurope, yAsia, years } = mapPowerConsumptionData()
 const xValues = Array.from({length: 2014 - 1971 + 1}, (value, index) => (1971 + index).toString())
-
-const yUSA = xValues.map(year => usaData[year])
-const yEurope = xValues.map(year => europeData[year])
-const yAsia= xValues.map(year => asiaData[year])
 
 const calcData = () => {
     return {
