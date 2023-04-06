@@ -20,7 +20,7 @@ h1 {
 
 .grid-article {
   display: grid;
-  grid-template-columns: repeat( auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat( auto-fit, minmax(25rem, 1fr));
   max-width: 87.5rem;
   margin: 0 auto;
 }
@@ -31,13 +31,13 @@ h1 {
   border-bottom: 0.063rem solid #DADCE0;
 }
 
-@media (min-width: 700px) {
+@media (min-width: 43.75rem) {
   .col-1 { width: 60% }
   .col-2 { width: 40% }
   .col-3 { width: 100%}
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 68.75rem) {
   .col-1 { width: 45% }
   .col-2 { width: 27.5% }
   .col-3 { width: 27.5%}
