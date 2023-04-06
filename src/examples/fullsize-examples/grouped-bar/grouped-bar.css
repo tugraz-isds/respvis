@@ -1,0 +1,27 @@
+#chart {
+  width: 100%;
+  height: 75vh;
+  min-height: 25rem;
+}
+
+body {
+  background-color: floralwhite;
+  --color-categorical-0: #4f8c9d;
+  --color-categorical-1: #e23209;
+  --color-categorical-2: #539322;
+}
+
+@media (max-width: 40rem) {
+  .chart {
+    grid-template: "header header" "axis-left draw-area" 1fr ". axis-bottom" auto ". legend" auto/auto 1fr;
+  }
+  .legend .title {
+    display: none;
+  }
+  .legend .items {
+    flex-direction: row;
+  }
+  .axis-y .tick:nth-of-type(2n) {
+    display: none;
+  }
+}
