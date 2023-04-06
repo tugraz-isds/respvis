@@ -6,9 +6,11 @@ body {
   width: 100%;
   height: 75vh;
   min-height: 25rem;
+
   .toolbar {
     display: none;
   }
+
   .series-label .label {
     display: none;
   }
@@ -33,6 +35,7 @@ body {
     .point, .axis {
       display: none;
     }
+
     .point:first-of-type, .point:last-of-type {
       display: block;
     }

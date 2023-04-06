@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <title>RespVis - Line Chart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="../../respvis.css"/>
+  <link rel="stylesheet" href="./line.css"/>
+</head>
+
+<body>
+<h1>Line Chart</h1>
+<div id="chart"></div>
+<script type="module">
+  import {chartWindowLineData, chartWindowLineRender} from '../libs/respvis/respvis.js';
+
+  import {years, averageOpens} from '../data/google.js';
+  import * as d3 from '../libs/d3-7.6.0/d3.js'
+  import {chooseResponsiveData} from "./chooseResponsiveData.js";
+
+  const calcData = () => {
+    return {
+      subtitle: '2004 to 2022',
+      xValues: years,
+      yValues: [averageOpens],
+      xAxis: {title: 'Year'},
+      yAxis: {title: 'Average Opening Price', subtitle: '[USD]'},
+      markerTooltips: {
+        tooltips: (_, {xValue, yValue}) =>
+          `Year: ${xValue}<br/>Average Open Price: $${d3.format('.2f')(yValue)}`,
+      },
+      markerLabels: (_, {xValue, yValue}) => `${xValue}: $${d3.format('.2s')(yValue)}`,
+    };
+  }
+
+  const chart = d3
+    .select('#chart')
+    .append('div')
+    .datum(chartWindowLineData(calcData()))
+    .call(chartWindowLineRender)
+    .on('resize', () => {
+      const data = calcData()
+      chooseResponsiveData(document.documentElement, data)
+      chart.datum(chartWindowLineData(data)).call(chartWindowLineRender);
+    });
+</script>
+</body>
+</html>
