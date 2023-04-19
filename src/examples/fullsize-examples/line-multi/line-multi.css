@@ -20,7 +20,6 @@ body {
   margin-top: 1rem;
 }
 #chart .axis-x .ticks text[orientation=vertical] {
-  transform: rotate(90deg);
   text-anchor: start;
   dominant-baseline: central;
 }

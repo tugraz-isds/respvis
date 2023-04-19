@@ -6,7 +6,7 @@ export * from './utilities/element';
 export * from './utilities/rect';
 export * from './utilities/circle';
 export * from './utilities/path';
-export * from './utilities/resizing/resizing';
+export * from './utilities/resizing/matchBounds';
 
 export * from './utilities/selection';
 export * from './layouter';

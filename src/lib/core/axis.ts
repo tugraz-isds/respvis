@@ -4,12 +4,14 @@ import {
   axisLeft as d3AxisLeft,
   axisBottom as d3AxisBottom,
   AxisScale,
-  ticks,
+  ticks, selectAll,
 } from 'd3';
 import { scaleLinear } from 'd3';
 import { BaseType, select, Selection } from 'd3';
 import { SelectionOrTransition, Transition } from 'd3';
 import { textAlignVertical, VerticalAlignment, Orientation, textOrientation } from './utilities/text';
+import {findMatchingBoundsIndex, TickOrientation} from "./utilities/resizing/matchBounds";
+import {calceTickAngle} from "./utilities/resizing/resizeTicks";
 
 export interface ConfigureAxisFn {
   (axis: D3Axis<AxisDomain>): void;
@@ -20,6 +22,7 @@ export interface Axis {
   title: string;
   subtitle: string;
   configureAxis: ConfigureAxisFn;
+  tickOrientation?: TickOrientation
 }
 
 export function axisData(data: Partial<Axis>): Axis {
@@ -28,6 +31,7 @@ export function axisData(data: Partial<Axis>): Axis {
     title: data.title || '',
     subtitle: data.subtitle || '',
     configureAxis: data.configureAxis || (() => {}),
+    tickOrientation: data.tickOrientation
   };
 }
 
@@ -36,27 +40,26 @@ export type AxisTransition = Transition<SVGSVGElement | SVGGElement, Axis>;
 
 export function axisLeftRender(selection: AxisSelection): void {
   selection
-    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d.title, d.subtitle))
+    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d))
     .classed('axis-left', true);
 }
 
 export function axisBottomRender(selection: AxisSelection): void {
   selection
-    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisBottom, d), d.title, d.subtitle))
+    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisBottom, d), d))
     .classed('axis-bottom', true);
 }
 
 export function axisSequenceRender(selection: AxisSelection, index: number): void {
   selection
-    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d.title, d.subtitle))
+    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d))
     .classed('axis-sequence', true);
 }
 
 function axisRender(
   selection: AxisSelection,
   a: D3Axis<AxisDomain>,
-  title: string,
-  subtitle: string
+  axisD: Axis
 ): void {
   selection.classed('axis', true);
 
@@ -84,16 +87,16 @@ function axisRender(
     .attr('opacity', null)
     .attr('data-key', (d) => d);
 
-  ticksS.selectAll('.tick').append('g').classed('pivot', true);
+  ticksS.selectAll('.tick')
+    .selectAll('.pivot')
+    .data([null])
+    .join('g')
+    .classed('pivot', true)
+
+  console.log(selection.node()?.getBoundingClientRect().width)
+  const orientation = calcOrientation()
   ticksS.selectAll<Element, any>('.tick').each((d, i, g) => {
-    const tickS = select(g[i]);
-    const textS = tickS.select('text');
-    const x = textS.attr('x') || '0';
-    const y = textS.attr('y') || '0';
-    textS.attr('x', null).attr('y', null);
-    const pivotS = tickS.select('.pivot')!;
-    pivotS.attr('transform', `translate(${x}, ${y})`);
-    pivotS.append(() => textS.node());
+    configureTick(select(g[i]))
   });
 
   ticksS.selectAll('.tick line').attr('stroke', null);
@@ -109,7 +112,7 @@ function axisRender(
     .selectAll('text')
     .data([null])
     .join('text')
-    .text(title);
+    .text(axisD.title);
 
     selection.selectAll('.subtitle')
       .data([null])
@@ -119,7 +122,40 @@ function axisRender(
       .selectAll('text')
       .data([null])
       .join('text')
-      .text(subtitle);
+      .text(axisD.subtitle);
+
+  function configureTick(tickS: Selection<Element>) {
+    const textS = tickS.select('text');
+
+    const x = textS.attr('x') || '0';
+    const y = textS.attr('y') || '0';
+    textS.attr('x', null).attr('y', null);
+
+    const pivotS = tickS.select('.pivot')!;
+    pivotS.append(() => textS.node());
+
+    if (!orientation || !axisD.tickOrientation) {
+      pivotS.attr('transform', `translate(${x}, ${y})`);
+      return
+    }
+
+    textS.attr('orientation', axisD.tickOrientation?.orientation[orientation.orientationIndex])
+    pivotS.transition().duration(200)
+      .attr("transform", "translate(" + x + "," + y + ") rotate(" + orientation.angle + ")");
+  }
+
+  function calcOrientation() {
+    const tickOrientation = axisD.tickOrientation
+    const axisElement = axisD.tickOrientation?.boundElement ?? selection.node()
+    if (!tickOrientation || !axisElement) return undefined
+    // console.log(axisElement, tickOrientation)
+    const angle = calceTickAngle(axisElement, tickOrientation)
+    const boundIndex = findMatchingBoundsIndex(axisElement, tickOrientation.bounds)
+    const orientationIndex = boundIndex > 0 ? boundIndex : tickOrientation.orientation.length - 1
+    return {
+      angle, boundIndex, orientationIndex
+    }
+  }
 
 }
 

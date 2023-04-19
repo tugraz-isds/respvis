@@ -12,10 +12,10 @@ export function chooseAxisFormat(axis, data) {
   switch (index) {
     case 0:
     case 2:
-      layoutAxisLabel(axis, 'vertical');
+      // layoutAxisLabel(axis, 'vertical');
       break
     default:
-      layoutAxisLabel(axis, 'horizontal');
+      // layoutAxisLabel(axis, 'horizontal');
       break
   }
 }

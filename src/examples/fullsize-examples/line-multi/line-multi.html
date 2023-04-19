@@ -27,7 +27,14 @@
     return {
       xValues: years,
       yValues: [yUSA, yEurope, yAsia],
-      xAxis: {title: 'Year', configureAxis: (axis) => axis.tickFormat((v) => v)},
+      xAxis: {
+        title: 'Year',
+        configureAxis: (axis) => axis.tickFormat((v) => v),
+        tickOrientation: {
+          bounds: [ {minWidth: '50rem'}, {minWidth: '30rem'} ],
+          orientation: ['horizontal', 'transition', 'vertical']
+        }
+      },
       yAxis: {title: 'Consumption'},
       markerTooltips: {
         tooltips: (_, {xValue, yValue}) => `Year: ${xValue}<br/>Pow. Consumption: ${yValue}kWh`

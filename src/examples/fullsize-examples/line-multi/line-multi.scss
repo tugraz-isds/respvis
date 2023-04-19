@@ -24,7 +24,7 @@ body {
   }
 
   .axis-x .ticks text[orientation='vertical'] {
-    transform: rotate(90deg);
+    //transform: rotate(90deg);
     text-anchor: start;
     dominant-baseline: central;
   }

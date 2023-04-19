@@ -1,20 +1,26 @@
-const boundRegex = /(\d+(?:\.\d+)?)(px|rem)/
+export const boundRegex = /(\d+(?:\.\d+)?)(px|rem)/
 type Bound = `${number}${'px' | 'rem' | 'em'}`
-type Bounds = {
+export type Bounds = {
   minHeight?: Bound,
   minWidth?: Bound,
   maxHeight?: Bound,
   maxWidth?: Bound
 }
 
-export function findMatchingBoundsIndex(element: HTMLElement, boundsList: Bounds[]) {
+export type TickOrientation = {
+  bounds: Bounds[],
+  boundElement?: Element,
+  orientation: ('horizontal' | 'vertical' | 'transition')[]
+}
+
+export function findMatchingBoundsIndex(element: Element, boundsList: Bounds[]) {
   for (const [index, bounds] of boundsList.entries()) {
     if (matchesBounds(element, bounds)) return index
   }
   return -1
 }
 
-export function matchesBounds(element: HTMLElement, bounds: Bounds) {
+export function matchesBounds(element: Element, bounds: Bounds) {
   const { width, height } = element.getBoundingClientRect()
 
   const minWidthMatch = bounds.minWidth?.match(boundRegex);
@@ -44,7 +50,7 @@ export function matchesBounds(element: HTMLElement, bounds: Bounds) {
   return true
 }
 
-function convertToPx(element, value, unit) {
+export function convertToPx(element, value, unit) {
   if (unit === 'px') {
     return value;
   } else if (unit === 'rem') {
