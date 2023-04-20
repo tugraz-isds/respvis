@@ -1,15 +1,14 @@
 import {
   Axis as D3Axis,
+  axisBottom as d3AxisBottom,
   AxisDomain,
   axisLeft as d3AxisLeft,
-  axisBottom as d3AxisBottom,
   AxisScale,
-  ticks, selectAll,
+  scaleLinear,
+  select,
+  Selection,
+  Transition,
 } from 'd3';
-import { scaleLinear } from 'd3';
-import { BaseType, select, Selection } from 'd3';
-import { SelectionOrTransition, Transition } from 'd3';
-import { textAlignVertical, VerticalAlignment, Orientation, textOrientation } from './utilities/text';
 import {findMatchingBoundsIndex, TickOrientation} from "./utilities/resizing/matchBounds";
 import {calceTickAngle} from "./utilities/resizing/resizeTicks";
 
@@ -30,7 +29,8 @@ export function axisData(data: Partial<Axis>): Axis {
     scale: data.scale || scaleLinear().domain([0, 1]).range([0, 600]),
     title: data.title || '',
     subtitle: data.subtitle || '',
-    configureAxis: data.configureAxis || (() => {}),
+    configureAxis: data.configureAxis || (() => {
+    }),
     tickOrientation: data.tickOrientation
   };
 }
@@ -50,7 +50,7 @@ export function axisBottomRender(selection: AxisSelection): void {
     .classed('axis-bottom', true);
 }
 
-export function axisSequenceRender(selection: AxisSelection, index: number): void {
+export function axisSequenceRender(selection: AxisSelection): void {
   selection
     .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d))
     .classed('axis-sequence', true);
@@ -93,8 +93,9 @@ function axisRender(
     .join('g')
     .classed('pivot', true)
 
-  console.log(selection.node()?.getBoundingClientRect().width)
   const orientation = calcOrientation()
+  // console.log(selection.node()?.getBoundingClientRect().width)
+  console.log(orientation)
   ticksS.selectAll<Element, any>('.tick').each((d, i, g) => {
     configureTick(select(g[i]))
   });
@@ -114,15 +115,15 @@ function axisRender(
     .join('text')
     .text(axisD.title);
 
-    selection.selectAll('.subtitle')
-      .data([null])
-      .join('g')
-      .classed('subtitle', true)
-      .attr('data-ignore-layout-children', true)
-      .selectAll('text')
-      .data([null])
-      .join('text')
-      .text(axisD.subtitle);
+  selection.selectAll('.subtitle')
+    .data([null])
+    .join('g')
+    .classed('subtitle', true)
+    .attr('data-ignore-layout-children', true)
+    .selectAll('text')
+    .data([null])
+    .join('text')
+    .text(axisD.subtitle);
 
   function configureTick(tickS: Selection<Element>) {
     const textS = tickS.select('text');
@@ -131,7 +132,7 @@ function axisRender(
     const y = textS.attr('y') || '0';
     textS.attr('x', null).attr('y', null);
 
-    const pivotS = tickS.select('.pivot')!;
+    const pivotS = tickS.select<SVGGElement>('.pivot')!;
     pivotS.append(() => textS.node());
 
     if (!orientation || !axisD.tickOrientation) {
@@ -139,19 +140,24 @@ function axisRender(
       return
     }
 
-    textS.attr('orientation', axisD.tickOrientation?.orientation[orientation.orientationIndex])
+    textS.attr('angle', orientation.angle > 15 ? axisD.tickOrientation?.orientation[orientation.orientationIndex] : 'horizontal')
+      .style('text-anchor', orientation.angle > 15 ? 'start' : 'middle')
+      .style('dominant-baseline', orientation.angle > 15 ? 'central' : 'hanging')
+    //TODO: no interpolation possible for text-anchor. Maybe do tranform translate workaround
+    // console.log(orientation.angle)
+    // const {width, height} = pivotS.node()!.getBoundingClientRect()
     pivotS.transition().duration(200)
       .attr("transform", "translate(" + x + "," + y + ") rotate(" + orientation.angle + ")");
   }
 
   function calcOrientation() {
     const tickOrientation = axisD.tickOrientation
-    const axisElement = axisD.tickOrientation?.boundElement ?? selection.node()
+    const axisElement = axisD.tickOrientation?.boundElement ?? selection.select<SVGGElement>('.domain').node()
     if (!tickOrientation || !axisElement) return undefined
     // console.log(axisElement, tickOrientation)
     const angle = calceTickAngle(axisElement, tickOrientation)
     const boundIndex = findMatchingBoundsIndex(axisElement, tickOrientation.bounds)
-    const orientationIndex = boundIndex > 0 ? boundIndex : tickOrientation.orientation.length - 1
+    const orientationIndex = boundIndex >= 0 ? boundIndex : tickOrientation.orientation.length - 1
     return {
       angle, boundIndex, orientationIndex
     }

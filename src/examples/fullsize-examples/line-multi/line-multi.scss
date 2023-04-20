@@ -22,12 +22,6 @@ body {
   .legend-item {
     margin-top: 1rem;
   }
-
-  .axis-x .ticks text[orientation='vertical'] {
-    //transform: rotate(90deg);
-    text-anchor: start;
-    dominant-baseline: central;
-  }
 }
 
 @media (max-width: 30rem) {

@@ -8,18 +8,17 @@ export function calceTickAngle(element: Element, tickOrientation: TickOrientatio
     return convertToPx(element, boundWidth, boundWidthUnit)
   }
 
-  const i = findMatchingBoundsIndex(element, tickOrientation.bounds)
-  if (tickOrientation.orientation[i] === 'horizontal') return 0
-  if (tickOrientation.orientation[i] === 'vertical') return 90
-  if (i < 1) return 0
+  const boundsIndex = findMatchingBoundsIndex(element, tickOrientation.bounds)
+  const orientationIndex = boundsIndex >= 0 ? boundsIndex : tickOrientation.orientation.length - 1
 
-  const prevBoundWidth = calcBoundWidthToPx(tickOrientation.bounds[i - 1])
-  const currentBoundWidth = calcBoundWidthToPx(tickOrientation.bounds[i])
+  if (tickOrientation.orientation[orientationIndex] === 'horizontal') return 0
+  if (tickOrientation.orientation[orientationIndex] === 'vertical') return 90
+
+  const prevBoundWidth = calcBoundWidthToPx(tickOrientation.bounds[boundsIndex - 1])
+  const currentBoundWidth = calcBoundWidthToPx(tickOrientation.bounds[boundsIndex])
   const elementWidth = element.getBoundingClientRect().width
 
-  const angleRatio = (prevBoundWidth - currentBoundWidth) / (prevBoundWidth - elementWidth)
+  const angleRatio = (prevBoundWidth - elementWidth) / (prevBoundWidth - currentBoundWidth)
 
-  // console.log(i, element, tickOrientation, currentBoundWidth, prevBoundWidth, elementWidth)
-
-  return tickOrientation.orientation[i - 1] === 'vertical' ? (90 - angleRatio * 90) : angleRatio * 90
+  return tickOrientation.orientation[boundsIndex - 1] === 'vertical' ? (90 - angleRatio * 90) : angleRatio * 90
 }

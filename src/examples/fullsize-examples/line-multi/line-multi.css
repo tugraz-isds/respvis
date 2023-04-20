@@ -19,10 +19,6 @@ body {
 #chart .legend-item {
   margin-top: 1rem;
 }
-#chart .axis-x .ticks text[orientation=vertical] {
-  text-anchor: start;
-  dominant-baseline: central;
-}
 
 @media (max-width: 30rem) {
   #chart .point, #chart .axis {
