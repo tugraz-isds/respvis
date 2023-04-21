@@ -19,7 +19,7 @@ export function chooseResponsiveData(element, data) {
   }
 
   switch (index) {
-    case 0:
+    case 0: case 1:
       data.xAxis.configureAxis = (axis) => axis.tickFormat((v) => v);
       break
     default:
@@ -28,7 +28,7 @@ export function chooseResponsiveData(element, data) {
   }
 
   switch (index) {
-    case 0:
+    case 0: case 1:
       data.yAxis.configureAxis = (axis) => axis.tickFormat(format(','));
       break
     default:
