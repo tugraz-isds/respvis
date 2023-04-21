@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-  <title>RespVis - Scatter Plot</title>
+  <title>RespVis - Point Chart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta charset="UTF-8"/>
   <link rel="stylesheet" href="../../../respvis.css"/>
-  <link rel="stylesheet" href="scatter-color-scale.css"/>
+  <link rel="stylesheet" href="scatter-categorical.css"/>
 </head>
 <body>
-<h1>Scatter Plot Colored</h1>
+<h1>Categorical Scatter Plot</h1>
 <div id="chart"></div>
 <script type="module">
   import {ScatterPlot} from '../../libs/respvis/respvis.js';
   import * as d3 from '../../libs/d3-7.6.0/d3.js'
-  import {carData} from "../../data/sold-cars-germany/sold-cars-germany.js";
+  import {getTopMakesData, carData} from "../../data/sold-cars-germany/sold-cars-germany.js";
   import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
+  const {topMakesNames, mileages, horsePower, prices} = getTopMakesData(5)
   const allHorsePower = carData.map(entry => entry.hp)
   const allPrices = carData.map(entry => entry.price)
   const allMileages = carData.map(entry => entry.mileage)
@@ -26,26 +27,26 @@
   const baseScaleY = d3.scaleLinear()
     .domain([0, Math.max(...allPrices)])
     .nice()
-  const colorScale = d3.scaleSequential()
+  const radiusScale = d3.scaleLinear()
     .domain([0, Math.max(...allMileages)])
-    .interpolator(d3.interpolateYlGnBu)
+    .range([5, 20])
 
   const calcData = () => {
     return {
-      xValues: [allHorsePower],
+      xValues: horsePower,
       xScale: baseScaleX,
-      yValues: [allPrices],
+      yValues: prices,
       yScale: baseScaleY,
       xAxis: {title: 'Horse Power', subtitle: '[PS]'},
       yAxis: {title: 'Price', subtitle: '[EU]'},
-      color: {
-        colorDim: allMileages,
-        colorScale: colorScale
+      radiuses: {
+        radiusDim: mileages,
+        scale: radiusScale
       },
       legend: {
         title: 'Legend',
-        keys: ["Low Mileage", "High Mileage"],
-        labels: ["Low Mileage", "High Mileage"]
+        keys: [...topMakesNames, "Other"],
+        labels: [...topMakesNames, "Other"]
       },
       zoom: {
         in: 20,
