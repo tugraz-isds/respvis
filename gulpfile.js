@@ -12,6 +12,9 @@ const rollupGzip = require('rollup-plugin-gzip').default;
 // ## BrowserSync
 const browserSync = require('browser-sync').create();
 
+// ## Sass
+const sass = require('gulp-sass')(require('sass'));
+
 // ## Utilities
 const del = require('del');
 const rename = require('gulp-rename');
@@ -102,10 +105,39 @@ function updateSingleExampleFile(fileName) {
     const fileNamePosix = fileName.split(path.sep).join(path.posix.sep);
     const sameFilePath = fileNamePosix.substring(4)
     const targetFolder = path.dirname(sameFilePath)
-    gulp.src(`./src/${sameFilePath}`).pipe(gulp.dest(`./dist/${targetFolder}`));
+    gulp.src(`./src/${sameFilePath}`).pipe(gulp.dest(`./dist/${targetFolder}/`));
 }
 
+async function compileSCSSToCSS(filename) {
+  const fileNamePosix = filename.split(path.sep).join(path.posix.sep)
+  const dirNamePosix = path.dirname(fileNamePosix)
+  const cssFilePosix = fileNamePosix.substring(0, fileNamePosix.length - 4) + 'css';
+  await del(cssFilePosix, { force: true })
 
+  return {
+    pipe: gulp.src(fileNamePosix)
+      .pipe(sass().on('error', sass.logError))
+      .pipe(gulp.dest(dirNamePosix)),
+    cssFilePosix, dirNamePosix, fileNamePosix
+  }
+}
+
+async function buildExamplesSCSS(filename) {
+  const { pipe, cssFilePosix } = await compileSCSSToCSS(filename)
+  pipe.on('end', () => {
+    updateDistForServe(cssFilePosix)
+  })
+}
+
+async function buildLibSCSS() {
+  const { pipe } = await compileSCSSToCSS('./src/respvis.scss')
+  pipe.on('end', () => {
+    const cssPipe = bundleCSS()
+    cssPipe.on('end', () => {
+      browserSync.reload()
+    })
+  })
+}
 
 // # Public tasks
 
@@ -133,7 +165,13 @@ function watch(cb) {
   gulp.watch('./src/respvis.css', watchOptions, gulp.series(bundleCSS, reloadBrowser));
   gulp.watch('./src/index.html', watchOptions, gulp.series(copyExamplesRedirect, reloadBrowser));
 
-  const examplesWatcher = gulp.watch('./src/examples/**/*', watchOptions);
+  const scssExamplesWatcher = gulp.watch('./src/examples/**/*.scss', watchOptions);
+  scssExamplesWatcher.on('change', buildExamplesSCSS)
+
+  const scssLibWatcher = gulp.watch(['./src/scss/**/*.scss', './src/*.scss'], watchOptions);
+  scssLibWatcher.on('change', buildLibSCSS)
+
+  const examplesWatcher = gulp.watch('./src/examples/**/!(*.css|*.scss)', watchOptions);
   examplesWatcher.on('change', updateDistForServe)
   examplesWatcher.on('add', updateDistForServe)
   examplesWatcher.on('addDir', updateDistForServe)
