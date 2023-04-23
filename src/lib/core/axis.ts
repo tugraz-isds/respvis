@@ -94,8 +94,6 @@ function axisRender(
     .classed('pivot', true)
 
   const orientation = calcOrientation()
-  // console.log(selection.node()?.getBoundingClientRect().width)
-  console.log(orientation)
   ticksS.selectAll<Element, any>('.tick').each((d, i, g) => {
     configureTick(select(g[i]))
   });

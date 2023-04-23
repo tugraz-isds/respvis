@@ -31,22 +31,30 @@
     .domain([0, Math.max(...allMileages)])
     .range([5, 20])
 
+  const horsePowerWithExtrema = [...horsePower, [0, 0, Math.max(...allHorsePower), Math.max(...allHorsePower)]]
+  const pricesWithExtrema = [...prices, [0, Math.max(...allPrices), 0, Math.max(...allPrices)]]
+  const mileagesWithExtrema = [...mileages, [Math.max(...allMileages), Math.max(...allMileages), Math.max(...allMileages), Math.max(...allMileages)]]
+
   const calcData = () => {
     return {
       xValues: horsePower,
+      // xValues: horsePowerWithExtrema,
+      // flipped: true,
       xScale: baseScaleX,
       yValues: prices,
+      // yValues: pricesWithExtrema,
       yScale: baseScaleY,
       xAxis: {title: 'Horse Power', subtitle: '[PS]'},
       yAxis: {title: 'Price', subtitle: '[EU]'},
       radiuses: {
         radiusDim: mileages,
+        // radiusDim: mileagesWithExtrema,
         scale: radiusScale
       },
       legend: {
         title: 'Legend',
-        keys: [...topMakesNames, "Other"],
-        labels: [...topMakesNames, "Other"]
+        keys: [...topMakesNames, "Own", "Other"],
+        labels: [...topMakesNames, "Own", "Other"]
       },
       zoom: {
         in: 20,

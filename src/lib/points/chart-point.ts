@@ -25,10 +25,10 @@ export function chartPointRender(selection: ChartPointSelection): void {
   function setScale (data: ChartPointData, g: SVGSVGElement | SVGGElement) {
     const drawAreaS = select(g).selectAll('.draw-area');
     const drawAreaBounds = rectFromString(drawAreaS.attr('bounds') || '0, 0, 600, 400');
-    const { flipped, xScale, yScale } = data;
+    const { flipped, xScale, yScale, maxRadius } = data;
 
-    xScale.range(flipped ? [drawAreaBounds.height, 0] : [0, drawAreaBounds.width]);
-    yScale.range(flipped ? [0, drawAreaBounds.width] : [drawAreaBounds.height, 0]);
+    xScale.range(flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius]);
+    yScale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius]);
   }
 
   function renderAllSeriesOfPoints (data: ChartPointData, g: SVGSVGElement | SVGGElement) {

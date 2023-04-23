@@ -30,6 +30,7 @@ export interface ChartPointData extends IChartCartesianData {
   xScale: ScaleAny<any, number, number>;
   yScale: ScaleAny<any, number, number>;
   pointSeries: SeriesPoint[];
+  maxRadius: number
   zoom?: {
     behaviour:  ZoomBehavior<Element, unknown>
     in: number,
@@ -39,7 +40,7 @@ export interface ChartPointData extends IChartCartesianData {
 }
 
 export function chartPointData(data: ChartPointArgs): ChartPointData {
-  const {xValues, yValues, xScale, yScale, legend, styleClasses, flipped, radiuses, zoom : zoomData, color} = data
+  const {xValues, yValues, xScale, yScale, legend, flipped, radiuses, zoom : zoomData, color} = data
 
   const lowerLength = xValues.length < yValues.length ? xValues.length : yValues.length
   const xVals = xValues.slice(0, lowerLength)
@@ -64,6 +65,8 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
       yScale: yScaleValid,
     })
   })
+  const firstPoint = points[0]
+  const maxRadius = typeof firstPoint.radiuses === "number" ? firstPoint.radiuses : firstPoint.radiuses.scale.range()[1]
 
   const labels = legend?.labels ? legend.labels : yVals.map((yVal, index) => `categorical-${index}`)
   //TODO: make zoom optional
@@ -71,7 +74,8 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
     xScale: xScaleValid,
     yScale: yScaleValid,
     pointSeries: points,
-    legend: legendData(legend ? legend : { }),
+    maxRadius,
+    legend: legendData(legend ? legend : { labels }),
     ...chartCartesianData(data),
     zoom: zoomData ? {
       ...zoomData,
