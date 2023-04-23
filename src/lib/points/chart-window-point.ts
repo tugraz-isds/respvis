@@ -1,5 +1,5 @@
 import {select, Selection} from 'd3';
-import {windowChartBaseRender, layouterCompute, rectFromString, toolDownloadSVGRender,} from '../core';
+import {layouterCompute, toolDownloadSVGRender, windowChartBaseRender,} from '../core';
 import {chartPointRender} from './chart-point';
 import {ChartPointArgs, ChartPointData, chartPointData} from "./chart-point-data";
 import {IWindowChartBaseRenderer} from "../core/charts/chart-base/IWindowChartBaseRenderer";
@@ -88,14 +88,16 @@ export class ScatterPlot implements IWindowChartBaseRenderer {
               xScale: e.transform.rescaleX(xScale),
               yScale: e.transform.rescaleY(yScale)
             }
+            chartWindowS.dispatch('resize')
           })
         )
 
         chartWindowS.on('resize.autozoom', () => {
-          const { width, height } = rectFromString(drawArea.attr('bounds') ?? "");
+          const [x, widthTranslate] = xScale.range()
+          const [y, heightTranslate] = yScale.range()
           const extent: [[number, number], [number, number]] = [
-            [0, 0],
-            [width, height],
+            [x, heightTranslate],
+            [widthTranslate, y],
           ];
           zoom.behaviour.extent(extent).translateExtent(extent);
         });

@@ -8,6 +8,12 @@
   //    overflow: visible;
   //  }
   //}
+  .legend {
+    align-items: flex-start;
+    .title {
+      margin: 0;
+    }
+  }
 }
 
 body {
