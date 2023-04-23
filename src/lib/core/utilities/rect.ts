@@ -1,4 +1,3 @@
-import { Selection, ValueFn } from 'd3';
 import { SelectionOrTransition } from './selection';
 import {
   Position,
@@ -86,6 +85,15 @@ export function rectToString(rect: Rect, decimals: number = 0): string {
 export function rectFromString(str: string): Rect {
   const parts = str.split(',').map((s) => parseFloat(s.trim()));
   return { x: parts[0], y: parts[1], width: parts[2], height: parts[3] };
+}
+
+export function rectToViewBox(selectionOrTransition: SelectionOrTransition, rect: Rect): void {
+  selectionOrTransition
+    .call((s: SelectionOrTransition) => {
+      const {x, y} = positionRound(rect)
+      const {width, height} = sizeRound(rect)
+      s.attr('viewbox', `${x}, ${y}, ${width}, ${height}`)
+    })
 }
 
 export function rectToAttrs(selectionOrTransition: SelectionOrTransition, rect: Rect): void {

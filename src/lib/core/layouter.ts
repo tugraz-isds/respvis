@@ -7,7 +7,7 @@ import {
   rectFromString,
   rectToAttrs,
   rectTopRight,
-  rectToString,
+  rectToString, rectToViewBox,
 } from './utilities/rect';
 import { circleInsideRect, circleToAttrs } from './utilities/circle';
 
@@ -20,7 +20,6 @@ function layoutNodeRoot(layouter: HTMLDivElement): Selection<HTMLDivElement, SVG
 
 function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGElement>): void {
   selection.each((d, i, g) => {
-    const svgS = select(d);
     const propTrue = (p: string) => p.trim() === 'true';
     const computedStyle = window.getComputedStyle(g[i]);
     const fitWidth = propTrue(computedStyle.getPropertyValue('--fit-width'));
@@ -75,6 +74,10 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGElement>): boo
     anyChanged = anyChanged || changed;
     if (changed) {
       svgS.attr('bounds', rectToString(bounds));
+      if (svgE.tagName === 'svg' && svgS.attr('class')?.includes('chart')) {
+        svgS.call((s) => rectToViewBox(s, bounds))
+        return
+      }
       switch (svgE.tagName) {
         case 'svg':
         case 'rect':
