@@ -22,15 +22,29 @@ body {
   .legend-item {
     margin-top: 1rem;
   }
+
+  .point, .axis-x .tick {
+    display: none;
+  }
 }
 
-@media (max-width: 30rem) {
+@media (width < 30rem) {
   #chart {
-    .point, .axis {
+    .point, .axis-x .tick {
       display: none;
     }
-
     .point:first-of-type, .point:last-of-type {
+      display: block;
+    }
+    .point:nth-of-type(4n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(4n) {
+      display: block;
+    }
+  }
+}
+
+@media (min-width: 30rem) {
+  #chart {
+    .point:nth-of-type(2n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(2n) {
       display: block;
     }
   }
@@ -55,24 +69,6 @@ body {
     flex-direction: row;
     width: 100%;
     justify-content: space-evenly;
-  }
-}
-
-@media (min-width: 30rem) and (max-width: 50rem) {
-  .point, .axis-x .tick {
-    display: none;
-  }
-  .point:nth-of-type(5n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(5n) {
-    display: block;
-  }
-}
-
-@media (min-width: 50rem) {
-  .point, .axis-x .tick {
-    display: none;
-  }
-  .point:nth-of-type(2n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(2n) {
-    display: block;
   }
 }
 
