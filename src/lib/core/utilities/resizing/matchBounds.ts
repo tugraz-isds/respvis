@@ -10,6 +10,7 @@ export type Bounds = {
 export type TickOrientation = {
   bounds: Bounds[],
   boundElement?: Element,
+  rotationDirection?: 'clockwise' | 'counterclockwise'
   orientation: ('horizontal' | 'vertical' | 'transition')[]
 }
 

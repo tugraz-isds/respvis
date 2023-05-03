@@ -10,7 +10,7 @@ import {
   Transition,
 } from 'd3';
 import {findMatchingBoundsIndex, TickOrientation} from "./utilities/resizing/matchBounds";
-import {calceTickAngle} from "./utilities/resizing/resizeTicks";
+import {calcTickAngle} from "./utilities/resizing/resizeTicks";
 
 export interface ConfigureAxisFn {
   (axis: D3Axis<AxisDomain>): void;
@@ -138,9 +138,10 @@ function axisRender(
       return
     }
 
-    textS.attr('angle', orientation.angle > 15 ? axisD.tickOrientation?.orientation[orientation.orientationIndex] : 'horizontal')
-      .style('text-anchor', orientation.angle > 15 ? 'start' : 'middle')
-      .style('dominant-baseline', orientation.angle > 15 ? 'central' : 'hanging')
+    const rotationDirection = orientation.angle > 15 ? 'clockwise' : orientation.angle < -15 ? 'counterclockwise' : 'none'
+    textS.attr('angle', rotationDirection !== 'none' ? axisD.tickOrientation?.orientation[orientation.orientationIndex] : 'horizontal')
+      .style('text-anchor', rotationDirection === 'clockwise' ? 'start' : rotationDirection === 'counterclockwise' ? 'end' : 'middle')
+      .style('dominant-baseline', rotationDirection !== 'none' ? 'central' : 'hanging')
     //TODO: no interpolation possible for text-anchor. Maybe do tranform translate workaround
     // console.log(orientation.angle)
     // const {width, height} = pivotS.node()!.getBoundingClientRect()
@@ -153,7 +154,7 @@ function axisRender(
     const axisElement = axisD.tickOrientation?.boundElement ?? selection.select<SVGGElement>('.domain').node()
     if (!tickOrientation || !axisElement) return undefined
     // console.log(axisElement, tickOrientation)
-    const angle = calceTickAngle(axisElement, tickOrientation)
+    const angle = calcTickAngle(axisElement, tickOrientation)
     const boundIndex = findMatchingBoundsIndex(axisElement, tickOrientation.bounds)
     const orientationIndex = boundIndex >= 0 ? boundIndex : tickOrientation.orientation.length - 1
     return {

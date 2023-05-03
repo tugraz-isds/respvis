@@ -1,6 +1,6 @@
 import {boundRegex, Bounds, convertToPx, findMatchingBoundsIndex, TickOrientation} from "./matchBounds";
 
-export function calceTickAngle(element: Element, tickOrientation: TickOrientation) {
+export function calcTickAngle(element: Element, tickOrientation: TickOrientation) {
   function calcBoundWidthToPx(bounds: Bounds) {
     const boundMatch = bounds.minWidth?.match(boundRegex);
     if (!boundMatch) return 0 //TODO: enforce use of minwidth in arguments
@@ -10,9 +10,10 @@ export function calceTickAngle(element: Element, tickOrientation: TickOrientatio
 
   const boundsIndex = findMatchingBoundsIndex(element, tickOrientation.bounds)
   const orientationIndex = boundsIndex >= 0 ? boundsIndex : tickOrientation.orientation.length - 1
+  const verticalAngle = tickOrientation.rotationDirection === 'clockwise' ? 90 : -90
 
   if (tickOrientation.orientation[orientationIndex] === 'horizontal') return 0
-  if (tickOrientation.orientation[orientationIndex] === 'vertical') return 90
+  if (tickOrientation.orientation[orientationIndex] === 'vertical') return verticalAngle
 
   const prevBoundWidth = calcBoundWidthToPx(tickOrientation.bounds[boundsIndex - 1])
   const currentBoundWidth = calcBoundWidthToPx(tickOrientation.bounds[boundsIndex])
@@ -20,5 +21,5 @@ export function calceTickAngle(element: Element, tickOrientation: TickOrientatio
 
   const angleRatio = (prevBoundWidth - elementWidth) / (prevBoundWidth - currentBoundWidth)
 
-  return tickOrientation.orientation[boundsIndex - 1] === 'vertical' ? (90 - angleRatio * 90) : angleRatio * 90
+  return tickOrientation.orientation[boundsIndex - 1] === 'vertical' ? (verticalAngle - angleRatio * verticalAngle) : angleRatio * verticalAngle
 }
