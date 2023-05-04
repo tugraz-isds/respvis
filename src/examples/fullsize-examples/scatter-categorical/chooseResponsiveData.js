@@ -28,10 +28,26 @@ export function chooseResponsiveData(element, data) {
 
   switch (index) {
     case 0:
-      data.yAxis.configureAxis = (axis) => axis.tickFormat(format(','));
+    case 1:
+      data.legend.title = 'Legend';
       break
     default:
-      data.yAxis.configureAxis = (axis) => axis.tickFormat(format('.2s'));
+      data.legend.title = '';
+      break
+  }
+
+  switch (index) {
+    case 0:
+      data.pointSeries[0].radiuses.scale.range([5, 20])
+      data.maxRadius = 20
+      break
+    case 1:
+      data.pointSeries[0].radiuses.scale.range([4, 16])
+      data.maxRadius = 16
+      break
+    default:
+      data.pointSeries[0].radiuses.scale.range([3, 12])
+      data.maxRadius = 12
       break
   }
 }
