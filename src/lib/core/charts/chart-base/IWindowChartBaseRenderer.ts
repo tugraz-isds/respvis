@@ -7,6 +7,6 @@ export interface IWindowChartBaseRenderer {
   buildWindowChart: () => void,
   addCustomListener: (
     name: string,
-    callback: (selection: Selection<HTMLDivElement, IChartBaseData>, data: IChartBaseData) => void
+    callback: (event: Event, data: IChartBaseData) => void
   ) => void
 }

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <title>RespVis - Stacked Bar Chart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="../../../../respvis.css"/>
+  <link rel="stylesheet" href="stacked-bar.css"/>
+</head>
+
+<body>
+<h1>Stacked Bar Chart</h1>
+
+<div id="chart"></div>
+<script type="module">
+  import {
+    chartWindowBarStackedData,
+    chartWindowBarStackedRender,
+    chartWindowBarStackedAutoFilterCategories,
+    chartWindowBarStackedAutoFilterSubcategories,
+  } from '../../../libs/respvis/respvis.js';
+  import {years, desktop, phone, tablet, platforms} from '../../../data/desktop-phone-tablet.js';
+  import * as d3 from '../../../libs/d3-7.6.0/d3.js'
+  import {chooseResponsiveData} from "./chooseResponsiveData.js";
+
+  const calcData = () => {
+    return {
+      categoryEntity: 'Years',
+      categories: years,
+      values: desktop.map((d, i) => [desktop[i], phone[i], tablet[i]]),
+      valuesAsRatios: true,
+      valueDomain: [0, 100],
+      subcategoryEntity: 'Platform',
+      subcategories: platforms,
+      labels: {},
+      legend: {reverse: true},
+      tooltips: (e, {category, subcategory, value}) =>
+        `Year: ${category}<br/>Platform: ${subcategory}<br/>Market Share: ${d3.format('.2f')(
+          value
+        )}%`,
+      xAxis: {
+        title: 'Year'
+      },
+      yAxis: {
+        title: 'Market Share',
+        configureAxis: (a) => a.tickFormat((v) => `${v}%`),
+      }
+    };
+  }
+
+  const data = calcData()
+  const chartWindow = d3
+    .select('#chart')
+    .append('div')
+    .datum(chartWindowBarStackedData(data))
+    .call(chartWindowBarStackedRender)
+    .call(chartWindowBarStackedAutoFilterCategories(data))
+    .call(chartWindowBarStackedAutoFilterSubcategories(data))
+    .on('resize', function (e, d) {
+      chooseResponsiveData(document.documentElement, d)
+      chartWindow.datum(chartWindowBarStackedData(d)).call(chartWindowBarStackedRender);
+    });
+</script>
+</body>
+
+</html>

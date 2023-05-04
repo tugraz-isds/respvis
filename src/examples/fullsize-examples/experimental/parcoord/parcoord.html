@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <title>RespVis - Parallel Coordinates Chart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="../../../../respvis.css"/>
+  <link rel="stylesheet" href="parcoord.css"/>
+</head>
+<body>
+<h1>Parallel Coordinates Chart</h1>
+<div id="chart"></div>
+<script type="module">
+  import {WindowChartParcoordRenderer} from '../../../libs/respvis/respvis.js';
+  import * as d3 from '../../../libs/d3-7.6.0/d3.js'
+  import {carData} from "../../../data/sold-cars-germany/sold-cars-germany.js";
+  import {chooseResponsiveData} from "./chooseResponsiveData.js";
+
+  const allHorsePower = carData.map(entry => entry.hp)
+  const allPrices = carData.map(entry => entry.price)
+  const allMileages = carData.map(entry => entry.mileage)
+
+  const hpScale = d3.scaleLinear()
+    .domain([0, Math.max(...allHorsePower)])
+    .nice()
+  const priceScale = d3.scaleLinear()
+    .domain([0, Math.max(...allPrices)])
+    .nice()
+  const mileageScale = d3.scaleLinear()
+    .domain([0, Math.max(...allMileages)])
+    .range([5, 20])
+
+  const calcData = () => {
+    const dimensions = [
+      {
+        values: allHorsePower,
+        scale: hpScale,
+        title: "Horsepower",
+        subtitle: "[PS]"
+      },
+      {
+        values: allPrices,
+        scale: priceScale,
+        title: "Price",
+        subtitle: "[EU]"
+      },
+      {
+        values: allMileages,
+        scale: mileageScale,
+        title: "Mileage",
+        subtitle: "[km]"
+      }
+    ]
+    return {
+      dimensions,
+      title: "Parcoord Example Title",
+      subtitle: "Example Subtitle"
+    };
+  }
+
+  const chartWindow = d3.select('#chart').append('div')
+  const renderer = new WindowChartParcoordRenderer(chartWindow, calcData())
+  renderer.addCustomListener('resize.custom', (selection, data) => {
+    chooseResponsiveData(document.documentElement, data)
+  })
+  renderer.buildWindowChart()
+</script>
+</body>
+</html>

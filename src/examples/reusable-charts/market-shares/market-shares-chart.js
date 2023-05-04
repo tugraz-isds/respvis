@@ -50,13 +50,12 @@ const chartWindow = d3
     .call(chartWindowBarStackedAutoFilterCategories(data))
     .call(chartWindowBarStackedAutoFilterSubcategories(data))
     .on('resize', function (e, d) {
-        const data = calcData()
-        chooseResponsiveData(data, e.target)
+        chooseResponsiveData(d, e.target)
 
         const xAxisE = d3.select('#market-shares-chart').select('.axis-x').node()
-        chooseAxisFormat(xAxisE, data)
+        chooseAxisFormat(xAxisE, d)
 
-        chartWindow.datum(chartWindowBarStackedData(data)).call(chartWindowBarStackedRender);
+        chartWindow.datum(chartWindowBarStackedData(d)).call(chartWindowBarStackedRender);
     });
 
 /*

@@ -1,0 +1,43 @@
+#sold-cars-germany {
+  width: 100%;
+}
+
+#sold-cars-germany {
+  container-type: inline-size;
+}
+@container (width < 30rem) {
+  #sold-cars-germany .chart {
+    grid-template: auto 1fr auto auto/auto 1fr auto;
+    grid-template-areas: "header  header  header" "axis-left draw-area draw-area" " . axis-bottom . " " legend legend .";
+  }
+  #sold-cars-germany .legend {
+    width: 100%;
+    margin-bottom: 2rem;
+    margin-left: 0.5rem;
+    flex-direction: row;
+    justify-content: center;
+  }
+  #sold-cars-germany .legend .items {
+    display: grid;
+    width: 100%;
+    justify-content: space-between;
+    grid-template-columns: auto auto auto;
+  }
+  #sold-cars-germany .legend .items .legend-item {
+    justify-content: flex-start;
+  }
+  #sold-cars-germany .axis-y .tick {
+    display: none;
+  }
+  #sold-cars-germany .axis-y .tick:nth-of-type(2n + 1), #sold-cars-germany .axis-y .tick:first-of-type, #sold-cars-germany .axis-y .tick:last-of-type {
+    display: block;
+  }
+}
+@container (width < 40rem) {
+  #sold-cars-germany .axis-x .tick {
+    display: none;
+  }
+  #sold-cars-germany .axis-x .tick:nth-of-type(2n), #sold-cars-germany .axis-x .tick:first-of-type, #sold-cars-germany .axis-x .tick:last-of-type {
+    display: block;
+  }
+}
