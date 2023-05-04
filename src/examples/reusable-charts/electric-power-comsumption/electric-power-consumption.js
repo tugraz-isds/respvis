@@ -8,7 +8,7 @@ import {
 import {mapPowerConsumptionData} from '../../data/electric-power-consumption/electricPowerConsumption.js'
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
-const { yUSA, yEurope, yAsia, years } = mapPowerConsumptionData()
+const { yUSA, yEurope, yAsia } = mapPowerConsumptionData()
 const xValues = Array.from({length: 2014 - 1971 + 1}, (value, index) => (1971 + index).toString())
 
 const calcData = () => {
@@ -33,7 +33,6 @@ const chart = select('#electric-power-consumption')
     .call(chartWindowLineRender)
     .call(chartWindowLineAutoResize)
     .on('resize', (e, d) => {
-        const data = calcData()
-        chooseResponsiveData(data, e.target)
-        chart.datum(chartWindowLineData(data)).call(chartWindowLineRender);
+        chooseResponsiveData(d, e.target)
+        chart.datum(chartWindowLineData(d)).call(chartWindowLineRender);
     })

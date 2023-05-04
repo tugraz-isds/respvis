@@ -6,7 +6,6 @@ const bounds = [
   {minWidth: '40rem'},
 ]
 
-
 export function chooseResponsiveData(element, data) {
   const index = findMatchingBoundsIndex(element, bounds)
   switch (index) {

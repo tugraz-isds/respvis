@@ -2,7 +2,7 @@ import {select, Selection} from 'd3';
 import {layouterCompute, toolDownloadSVGRender, windowChartBaseRender,} from '../core';
 import {chartPointRender} from './chart-point';
 import {ChartPointArgs, ChartPointData, chartPointData} from "./chart-point-data";
-import {IWindowChartBaseRenderer} from "../core/charts/chart-base/IWindowChartBaseRenderer";
+import {IWindowChartBaseRenderer} from "../core";
 
 export interface ChartWindowPoint extends ChartPointArgs {}
 
@@ -82,7 +82,7 @@ export class ScatterPlot implements IWindowChartBaseRenderer {
         const {xScale, yScale, zoom} = chartWindowD
         if (!zoom) return
         drawArea.call(
-          zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom.autozoom', function (e, d) {
+          zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom.autozoom', function (e) {
             renderer.data = {
               ...chartWindowD,
               xScale: e.transform.rescaleX(xScale),

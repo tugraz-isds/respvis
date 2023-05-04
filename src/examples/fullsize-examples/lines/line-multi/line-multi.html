@@ -20,7 +20,7 @@
   } from '../../../libs/respvis/respvis.js';
 
   import {mapPowerConsumptionData} from '../../../data/electric-power-consumption/electricPowerConsumption.js'
-  import {chooseAxisFormat, chooseResponsiveData} from "./chooseResponsiveData.js";
+  import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
   const {yUSA, yEurope, yAsia, years} = mapPowerConsumptionData()
   const calcData = () => {
@@ -55,8 +55,6 @@
     .call(chartWindowLineRender)
     .call(chartWindowLineAutoResize)
     .on('resize', (selection, data) => {
-      const xAxisE = select('#chart').select('.axis-x').select('.ticks').node()
-      chooseAxisFormat(xAxisE, data)
       chooseResponsiveData(document.documentElement, data)
       chart.datum(chartWindowLineData(data)).call(chartWindowLineRender);
     })
