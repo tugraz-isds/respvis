@@ -53,7 +53,6 @@
     .append('div')
     .datum(chartWindowLineData(chartData))
     .call(chartWindowLineRender)
-    .call(chartWindowLineAutoResize)
     .on('resize', (selection, data) => {
       chooseResponsiveData(document.documentElement, data)
       chart.datum(chartWindowLineData(data)).call(chartWindowLineRender);

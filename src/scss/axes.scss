@@ -10,7 +10,6 @@
       margin-left: 0.5em;
     }
     .tick text {
-      dominant-baseline: middle;
       text-anchor: end;
     }
     .ticks {
@@ -30,7 +29,6 @@
       --fit-width: true;
       text {
         text-anchor: middle;
-        dominant-baseline: hanging;
         transform: rotate(-90deg);
       }
     }
@@ -47,7 +45,7 @@
     'title'
     'subtitle';
     .ticks-transform {
-      margin-bottom: 0.5em;
+      margin-bottom: 1em;
     }
     .tick text {
       text-anchor: middle;

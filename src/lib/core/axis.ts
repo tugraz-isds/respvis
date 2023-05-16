@@ -63,6 +63,27 @@ function axisRender(
 ): void {
   selection.classed('axis', true);
 
+  selection
+    .selectAll('.title')
+    .data([null])
+    .join('g')
+    .classed('title', true)
+    .attr('data-ignore-layout-children', true)
+    .selectAll('text')
+    .data([null])
+    .join('text')
+    .text(axisD.title);
+
+  selection.selectAll('.subtitle')
+    .data([null])
+    .join('g')
+    .classed('subtitle', true)
+    .attr('data-ignore-layout-children', true)
+    .selectAll('text')
+    .data([null])
+    .join('text')
+    .text(axisD.subtitle);
+
   const ticksS = selection
     .selectAll('.ticks-transform')
     .data([null])
@@ -102,27 +123,6 @@ function axisRender(
   ticksS.selectAll('.tick text').attr('fill', null).attr('dx', null).attr('dy', null);
   ticksS.selectAll('.domain').attr('stroke', null).attr('fill', null);
 
-  selection
-    .selectAll('.title')
-    .data([null])
-    .join('g')
-    .classed('title', true)
-    .attr('data-ignore-layout-children', true)
-    .selectAll('text')
-    .data([null])
-    .join('text')
-    .text(axisD.title);
-
-  selection.selectAll('.subtitle')
-    .data([null])
-    .join('g')
-    .classed('subtitle', true)
-    .attr('data-ignore-layout-children', true)
-    .selectAll('text')
-    .data([null])
-    .join('text')
-    .text(axisD.subtitle);
-
   function configureTick(tickS: Selection<Element>) {
     const textS = tickS.select('text');
 
@@ -145,7 +145,7 @@ function axisRender(
     //TODO: no interpolation possible for text-anchor. Maybe do tranform translate workaround
     // console.log(orientation.angle)
     // const {width, height} = pivotS.node()!.getBoundingClientRect()
-    pivotS.transition().duration(200)
+    pivotS //.transition().duration(200) //TODO: enable D3 transitions when being able to differ between initial render and succeeding renders
       .attr("transform", "translate(" + x + "," + y + ") rotate(" + orientation.angle + ")");
   }
 

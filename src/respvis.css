@@ -9,7 +9,6 @@
   margin-left: 0.5em;
 }
 .chart-cartesian .axis-left .tick text {
-  dominant-baseline: middle;
   text-anchor: end;
 }
 .chart-cartesian .axis-left .ticks {
@@ -30,7 +29,6 @@
 }
 .chart-cartesian .axis-left .title text, .chart-cartesian .axis-left .subtitle text, .chart-cartesian .axis-right .title text, .chart-cartesian .axis-right .subtitle text {
   text-anchor: middle;
-  dominant-baseline: hanging;
   transform: rotate(-90deg);
 }
 .chart-cartesian .axis-left .ticks-transform, .chart-cartesian .axis-right .ticks-transform {
@@ -42,7 +40,7 @@
   grid-template-areas: "ticks" "title" "subtitle";
 }
 .chart-cartesian .axis-bottom .ticks-transform {
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
 }
 .chart-cartesian .axis-bottom .tick text {
   text-anchor: middle;
