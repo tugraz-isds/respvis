@@ -1,16 +1,9 @@
 #chart {
-  width: 100%;
+  width: calc(100% - 1rem);
   height: 75vh;
   min-height: 25rem;
 }
 
 body {
   background-color: floralwhite;
-}
-
-@media (max-width: 60rem) {
-  .axis-bottom .tick text {
-    transform: rotate(-45deg);
-    text-anchor: end;
-  }
 }

@@ -39,21 +39,18 @@ export type AxisSelection = Selection<SVGSVGElement | SVGGElement, Axis>;
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, Axis>;
 
 export function axisLeftRender(selection: AxisSelection): void {
-  selection
+  selection.classed('axis axis-left', true)
     .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d))
-    .classed('axis-left', true);
 }
 
 export function axisBottomRender(selection: AxisSelection): void {
-  selection
+  selection.classed('axis axis-bottom', true)
     .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisBottom, d), d))
-    .classed('axis-bottom', true);
 }
 
 export function axisSequenceRender(selection: AxisSelection): void {
-  selection
+  selection.classed('axis axis-sequence', true)
     .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d))
-    .classed('axis-sequence', true);
 }
 
 function axisRender(
@@ -61,8 +58,6 @@ function axisRender(
   a: D3Axis<AxisDomain>,
   axisD: Axis
 ): void {
-  selection.classed('axis', true);
-
   selection
     .selectAll('.title')
     .data([null])
@@ -133,7 +128,7 @@ function axisRender(
     const pivotS = tickS.select<SVGGElement>('.pivot')!;
     pivotS.append(() => textS.node());
 
-    if (!orientation || !axisD.tickOrientation) {
+    if (!orientation || !axisD.tickOrientation || !selection.classed("axis-bottom")) {
       pivotS.attr('transform', `translate(${x}, ${y})`);
       return
     }
