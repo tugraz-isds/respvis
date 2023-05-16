@@ -3,7 +3,7 @@ import {format} from "../../../libs/d3-7.6.0/d3.js";
 
 const bounds = [
   {minWidth: '60rem'},
-  {minWidth: '40rem'},
+  {minWidth: '45rem'},
 ]
 
 export function chooseResponsiveData(element, data) {
@@ -12,10 +12,10 @@ export function chooseResponsiveData(element, data) {
   switch (index) {
     case 0:
     case 1:
-      data.title = "Revenue by Site 2018 to 2020";
+      data.title = "Total Remuneration 2018 to 2020";
       break
     default:
-      data.title = "Revenue by Site";
+      data.title = "Total Remuneration";
       break
   }
 

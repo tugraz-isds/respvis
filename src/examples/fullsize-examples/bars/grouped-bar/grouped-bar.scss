@@ -11,7 +11,7 @@ body {
   --color-categorical-2: #539322;
 }
 
-@media (max-width: 40rem) {
+@media (width < 45rem) {
   .chart {
     grid-template:
         'header header'
