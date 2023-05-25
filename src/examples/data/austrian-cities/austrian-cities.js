@@ -1,4 +1,4 @@
 export default {
   cities: ['Vienna', 'Graz', 'Linz', 'Salzburg', 'Innsbruck', 'Klagenfurt', 'Villach'],
-  populations: [1691000, 222000, 205000, 153000, 132000, 91000, 59000],
+  populations: [1973403, 289440, 210165, 155021, 132493, 101403, 65127],
 };
