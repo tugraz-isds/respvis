@@ -40,8 +40,9 @@ export interface ChartPointData extends IChartCartesianData {
 }
 
 export function chartPointData(data: ChartPointArgs): ChartPointData {
-  const {xValues, yValues, xScale, yScale, legend, flipped, radiuses, zoom : zoomData, color} = data
-
+  const {xValues, yValues, xScale, yScale,
+    legend, flipped, radiuses, zoom : zoomData,
+    color} = data
   const lowerLength = xValues.length < yValues.length ? xValues.length : yValues.length
   const xVals = xValues.slice(0, lowerLength)
   const yVals = yValues.slice(0, lowerLength)
@@ -56,7 +57,7 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
     } : 5
     return seriesPointData({
       flipped, styleClasses,
-      keys: yVals[index].map((_, markerI) => `${index}-${markerI}`),
+      keys: yVals[index].map((_, markerI) => `${legend?.keys?.[index] ?? index}-${markerI}`),
       xValues: xVals[index],
       yValues: yVals[index],
       radiuses: radiusesValid,

@@ -2,7 +2,7 @@ import {select, Selection} from 'd3';
 import {rectFromString} from '../core';
 import {chartCartesianAxisRender} from '../core/charts/chart-cartesian/chart-cartesian';
 import {SeriesPoint, seriesPointData, seriesPointRender} from './series-point';
-import {Legend, legendRender} from "../legend";
+import {Legend, LegendItem, legendRender} from "../legend";
 import {ChartPointData} from "./chart-point-data";
 import {chartBaseRender} from "../core/charts/chart-base/chart-base-render";
 
@@ -15,7 +15,7 @@ export function chartPointRender(selection: ChartPointSelection): void {
     .each((chartD, i, g) => {
       setScale(chartD, g[i])
       renderAllSeriesOfPoints(chartD, g[i])
-      renderLegend(chartD)
+      renderLegend(chartD, g[i])
 
       chartD.xAxis.scale = chartD.xScale;
       chartD.yAxis.scale = chartD.yScale;
@@ -51,19 +51,33 @@ export function chartPointRender(selection: ChartPointSelection): void {
       .call((s) => seriesPointRender(s))
   }
 
-  function renderLegend(chartD: ChartPointData) {
+  function renderLegend(chartD: ChartPointData, g: SVGSVGElement | SVGGElement) {
+    const drawAreaS = select(g).selectAll('.draw-area');
     const {legend} = chartD
     selection
       .selectAll<SVGGElement, Legend>('.legend')
       .data([legend])
       .join('g')
       .call((s) => legendRender(s))
-    // .on('pointerover.chartlinehighlight pointerout.chartlinehighlight', (e) => { //TODO: Hover
-    //   chartLineHoverLegendItem(
-    //     drawAreaS,
-    //     select(e.target.closest('.legend-item')),
-    //     e.type.endsWith('over')
-    //   );
-    // });
+    .on('pointerover.chartpointhighlight pointerout.chartpointhighlight', (e) => { //TODO: Hover
+      chartPointHoverLegendItem(
+        drawAreaS,
+        select(e.target.closest('.legend-item')),
+        e.type.endsWith('over')
+      );
+    });
   }
+}
+
+export function chartPointHoverLegendItem(
+  chartS: Selection,
+  legendItemS: Selection<Element, LegendItem>,
+  hover: boolean
+): void {
+  legendItemS.each((_, i, g) => {
+    const key = g[i].getAttribute('data-key')!;
+    console.log(key)
+    chartS.selectAll(`.point[data-key^="${key}"]`).classed('highlight', hover);
+    chartS.selectAll(`.label[data-key^="${key}"]`).classed('highlight', hover);
+  });
 }
