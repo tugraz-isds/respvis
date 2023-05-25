@@ -1,0 +1,7 @@
+Source: https://gs.statcounter.com/platform-market-share/desktop-mobile-tablet/worldwide/
+Licence: https://creativecommons.org/licenses/by-sa/3.0/
+
+Worldwide market share of desktop, mobile and tablet platforms in percentages
+
+TODO: "This means that you are welcome to use any information provided by Statcounter Global Stats,
+but please ensure to credit us (with a link) anywhere you use our stats/data/graphs."

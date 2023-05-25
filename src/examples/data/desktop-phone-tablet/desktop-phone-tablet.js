@@ -1,7 +1,3 @@
-// worldwide market share of desktop, mobile and tablet platforms in percentages
-//
-// source: https://gs.statcounter.com/platform-market-share/desktop-mobile-tablet/worldwide/
-
 export const years = [
   '2009',
   '2010',

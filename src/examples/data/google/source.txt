@@ -1,0 +1,6 @@
+Source: https://finance.yahoo.com/quote/GOOG/history?p=GOOG
+
+Edit:
+
+Calculated the average opening prices for years from 2004 to 2022
+from given monthly average opening prices
