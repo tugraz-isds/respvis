@@ -44,7 +44,7 @@ export function chooseResponsiveData(element, data) {
       data.yAxis.configureAxis = (axis) => axis.tickFormat(format(','));
       break
     default:
-      data.yAxis.configureAxis = (axis) => axis.tickFormat(format('.1s'));
+      data.yAxis.configureAxis = (axis) => axis.tickFormat(format('.2s'));
       break
   }
 }
