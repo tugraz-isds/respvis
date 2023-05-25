@@ -7,9 +7,6 @@ body {
   height: 75vh;
   min-height: 25rem;
 }
-#chart .toolbar {
-  display: none;
-}
 #chart .series-label .label {
   display: none;
 }
