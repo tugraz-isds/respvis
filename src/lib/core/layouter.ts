@@ -7,7 +7,7 @@ import {
   rectFromString,
   rectToAttrs,
   rectTopRight,
-  rectToString, rectToViewBox,
+  rectToString,
 } from './utilities/rect';
 import { circleInsideRect, circleToAttrs } from './utilities/circle';
 
@@ -74,10 +74,6 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGElement>): boo
     anyChanged = anyChanged || changed;
     if (changed) {
       svgS.attr('bounds', rectToString(bounds));
-      if (svgE.tagName === 'svg' && svgS.attr('class')?.includes('chart')) {
-        svgS.call((s) => rectToViewBox(s, bounds))
-        return
-      }
       switch (svgE.tagName) {
         case 'svg':
         case 'rect':

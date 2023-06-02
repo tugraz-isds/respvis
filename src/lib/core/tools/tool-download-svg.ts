@@ -29,6 +29,8 @@ export function chartDownload<Datum>(
     clonedChart.setAttribute('viewBox', `0, 0, ${width}, ${height}`);
     clonedChart.removeAttribute('width');
     clonedChart.removeAttribute('height');
+    clonedChart.removeAttribute('x');
+    clonedChart.removeAttribute('y');
 
     attrsFromComputedStyle(clonedChart, g[i]);
 
