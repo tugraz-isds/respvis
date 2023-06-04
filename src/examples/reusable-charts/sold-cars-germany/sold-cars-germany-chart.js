@@ -34,8 +34,7 @@ const data = {
     yScale: scales.yScale,
     xAxis: { title: 'Price [EU]', configureAxis: (axis) => axis.tickFormat(format('.3d')) },
     yAxis: { title: 'Horse Power [PS]' },
-    title: "Cars Sold in Germany",
-    subtitle: "From 2011 to 2021",
+    title: "Car Characteristics",
     radiuses: {
         radiusDim: mileages,
         scale: scales.radiusScale

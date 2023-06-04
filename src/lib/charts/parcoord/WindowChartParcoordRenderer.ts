@@ -13,7 +13,7 @@ export class WindowChartParcoordRenderer implements IWindowChartBaseRenderer {
   constructor(public selection: Selection<HTMLDivElement, IChartParcoordData>, data: IChartParcoordArgs) {
     this.data = windowChartParcoordData(data)
   }
-  addCustomListener(name: string, callback: (selection: Selection<HTMLDivElement, IChartBaseData>, data: IChartBaseData) => void): void {
+  addCustomListener(name: string, callback: (event: Event, data: IChartBaseData) => void): void {
   }
 
   buildWindowChart(): void {
