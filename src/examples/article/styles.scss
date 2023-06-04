@@ -34,6 +34,12 @@ h1 {
   //border-bottom: 0.063rem solid #DADCE0;
 }
 
+footer {
+  padding: 0 1rem 1rem;
+  margin-top: 1rem;
+  border-top: 0.063rem solid #DADCE0;
+}
+
 @media (min-width: 43.75rem) {
   .col-1 { width: 60% }
   .col-2 { width: 40% }

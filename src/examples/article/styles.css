@@ -31,6 +31,12 @@ h1 {
   background: floralwhite;
 }
 
+footer {
+  padding: 0 1rem 1rem;
+  margin-top: 1rem;
+  border-top: 0.063rem solid #DADCE0;
+}
+
 @media (min-width: 43.75rem) {
   .col-1 {
     width: 60%;

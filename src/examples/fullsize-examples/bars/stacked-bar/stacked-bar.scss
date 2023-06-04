@@ -8,6 +8,12 @@ body {
   background-color: floralwhite;
 }
 
+footer {
+  padding: 0 1rem 1rem;
+  margin-top: 1rem;
+  border-top: 0.063rem solid #DADCE0;
+}
+
 @media (max-width: 40rem) {
   .chart {
     grid-template: auto auto 1fr auto / auto 1fr;
