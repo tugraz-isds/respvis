@@ -9,6 +9,10 @@
 </head>
 
 <body>
+<h1>Bar Chart</h1>
+<noscript>Please enable JavaScript!</noscript>
+<div id="chart"> </div>
+
 <script type="module">
   import {
     chartWindowBarData,
@@ -21,8 +25,8 @@
 
   const tickOrientation = {
     bounds: [ {minWidth: '40rem'}, {minWidth: '15rem'} ],
-            orientation: ['horizontal', 'transition', 'vertical'],
-            rotationDirection: 'counterclockwise'
+    orientation: ['horizontal', 'transition', 'vertical'],
+    rotationDirection: 'counterclockwise'
   }
 
   const chartWindowData = {
@@ -52,8 +56,5 @@
           })
           .call(chartWindowBarRender);
 </script>
-
-<h1>Bar Chart</h1>
-<div id="chart"></div>
 </body>
 </html>
