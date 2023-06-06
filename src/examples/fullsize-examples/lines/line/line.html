@@ -16,22 +16,21 @@
 <script type="module">
   import {chartWindowLineData, chartWindowLineRender} from '../../../libs/respvis/respvis.js';
 
-  import {years, averageOpens} from '../../../data/google/google.js';
+  import {years, students} from '../../../data/students-tugraz/students-tugraz.js';
   import * as d3 from '../../../libs/d3-7.6.0/d3.js'
   import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
   const calcData = () => {
     return {
-      subtitle: '2004 to 2022',
       xValues: years,
-      yValues: [averageOpens],
-      xAxis: {title: 'Year'},
-      yAxis: {title: 'Average Opening Price', subtitle: '[USD]'},
+      yValues: [students],
+      xAxis: {title: 'Year', subtitle: '[2012 to 2021]'},
+      yAxis: {title: 'Students', subtitle: '[Winter Semester]'},
       markerTooltips: {
         tooltips: (_, {xValue, yValue}) =>
-          `Year: ${xValue}<br/>Average Open Price: $${d3.format('.2f')(yValue)}`,
+          `Year: ${xValue}<br/>Students: ${d3.format('.2f')(yValue)}`,
       },
-      markerLabels: (_, {xValue, yValue}) => `${xValue}: $${d3.format('.2s')(yValue)}`,
+      markerLabels: (_, {xValue, yValue}) => `${xValue}: ${d3.format('.2s')(yValue)}`,
     };
   }
 
@@ -40,10 +39,9 @@
     .append('div')
     .datum(chartWindowLineData(calcData()))
     .call(chartWindowLineRender)
-    .on('resize', () => {
-      const data = calcData()
-      chooseResponsiveData(document.documentElement, data)
-      chart.datum(chartWindowLineData(data)).call(chartWindowLineRender);
+    .on('resize', (e, d) => {
+      chooseResponsiveData(document.documentElement, d)
+      chart.datum(chartWindowLineData(d)).call(chartWindowLineRender);
     });
 </script>
 </body>

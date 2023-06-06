@@ -48,6 +48,11 @@ body {
   .ticks .tick:nth-of-type(2n + 1) {
     display: block;
   }
+  .ticks .tick {
+    &:nth-of-type(2n + 1), &:first-of-type, &:last-of-type {
+      display: block;
+    }
+  }
 
   .point {
     opacity: 1;

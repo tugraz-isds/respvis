@@ -11,10 +11,16 @@ export function chooseResponsiveData(element, data) {
   const index = findMatchingBoundsIndex(element, bounds)
   switch (index) {
     case 0:
-      data.title = 'Average Opening Price of Google Stock';
+      data.title = 'Properly Reported Students of TU Graz';
+      data.subtitle = '';
       break
+    case 1:
+      data.title = 'Properly Reported Students';
+      data.subtitle = 'TU Graz';
+      break;
     default:
-      data.title = 'Google Stock';
+      data.title = 'Students';
+      data.subtitle = 'TU Graz';
       break
   }
 
