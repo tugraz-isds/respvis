@@ -1,6 +1,5 @@
 // # Setup
 const gulp = require('gulp');
-
 // ## Rollup
 const rollup = require('rollup');
 const rollupCommonJs = require('@rollup/plugin-commonjs');
@@ -19,6 +18,7 @@ const sass = require('gulp-sass')(require('sass'));
 const del = require('del');
 const rename = require('gulp-rename');
 const path = require('path');
+const fs = require('fs');
 
 
 
@@ -49,22 +49,27 @@ async function bundleJS(mode) {
           { extension: 'min.js', plugins: minPlugins },
           { extension: 'min.js', plugins: gzPlugins },
       ];
-      return writeConfigurationsIIFE.map((c) =>
-          bundle.write({
-              file:`${location}/respvis.${c.extension}`,
-              format: c.format,
-              name: 'respVis',
-              plugins: c.plugins,
-              sourcemap: true,
-          })
-      )
+      return writeConfigurationsIIFE.map((c) => bundle.write({
+        file:`${location}/respvis.${c.extension}`,
+        format,
+        name: 'respVis',
+        plugins: c.plugins,
+        sourcemap: true,
+      }).then(() => {
+        const fileData = fs.readFileSync(`${location}/respvis.${c.extension}`, 'utf8');
+        const formatString = format === 'iife' ? 'IIFE' :
+          format === 'es' ? 'ESM' :
+            format === 'cjs' ? 'CommonJS' : ''
+        const dataWithHeaderLine = `// RespVis version 2.0 ${formatString}\n` + fileData
+        fs.writeFileSync(`${location}/respvis.${c.extension}`, dataWithHeaderLine, 'utf8');
+      }))
   }
 
-  const respVisLibWrites = [write({format: 'iife'}), write({format: 'es'}), write({format: 'cjs'})]
+  const respVisLibWrites = [...write({format: 'iife'}), ...write({format: 'es'}), ...write({format: 'cjs'})]
 
   return Promise.all([
     write({format: 'es', location: `dist/examples/libs/respvis`}), //Only do respvis writes in production mode to save time during development
-    mode === 'production' ? respVisLibWrites : undefined
+    ...((mode === 'production') ? respVisLibWrites : [])
   ]);
 }
 
