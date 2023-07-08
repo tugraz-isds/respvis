@@ -21,6 +21,7 @@ const rename = require('gulp-rename');
 const path = require('path');
 const fs = require('fs');
 const {copyExampleDependencies} = require("./bundling/copyExampleDependencies");
+const {createExampleDependencies} = require("./bundling/createExampleDependencies");
 
 
 
@@ -38,42 +39,54 @@ async function bundleJSProduction() {
 async function bundleJS(mode) {
   const bundle = await rollup.rollup({
     input: 'src/lib/index.ts',
-    plugins: [rollupNodeResolve({ browser: true }), rollupCommonJs(), rollupTypescript()],
+    plugins: [
+      rollupNodeResolve({ browser: true }),
+      rollupCommonJs(),
+      rollupTypescript({ tsconfig: "./tsconfig.json" })
+    ]
   });
 
   const minPlugins = [rollupTerser()];
   const gzPlugins = [rollupTerser(), rollupGzip()];
 
-  function write(props) {
-      const {format, location = `dist/respvis/${format}`} = props
-      const writeConfigurationsIIFE = [
-          { extension: 'js', plugins: [] },
-          { extension: 'min.js', plugins: minPlugins },
-          { extension: 'min.js', plugins: gzPlugins },
-      ];
-      return writeConfigurationsIIFE.map((c) => bundle.write({
-        file:`${location}/respvis.${c.extension}`,
-        format,
-        name: 'respVis',
-        plugins: c.plugins,
-        sourcemap: true,
-      }).then(() => {
-        const fileData = fs.readFileSync(`${location}/respvis.${c.extension}`, 'utf8');
-        const formatString = format === 'iife' ? 'IIFE' :
-          format === 'es' ? 'ESM' :
-            format === 'cjs' ? 'CommonJS' : ''
-        const dataWithHeaderLine = `// RespVis version 2.0 ${formatString}\n` + fileData
-        fs.writeFileSync(`${location}/respvis.${c.extension}`, dataWithHeaderLine, 'utf8');
-      }))
+  function write(format) {
+    const location = `package/${format}`
+    const writeConfigurationsIIFE = [
+        { extension: 'js', plugins: [] },
+        { extension: 'min.js', plugins: minPlugins },
+        { extension: 'min.js', plugins: gzPlugins },
+    ];
+    return writeConfigurationsIIFE.map((c) => bundle.write({
+      file:`${location}/respvis.${c.extension}`,
+      format,
+      name: 'respVis',
+      plugins: c.plugins,
+      sourcemap: true,
+    }).then(() => {
+      const fileData = fs.readFileSync(`${location}/respvis.${c.extension}`, 'utf8');
+      const formatString = format === 'iife' ? 'IIFE' :
+        format === 'esm' ? 'ESM' :
+          format === 'cjs' ? 'CommonJS' : ''
+      const dataWithHeaderLine = `// RespVis version 2.0 ${formatString}\n` + fileData
+      fs.writeFileSync(`${location}/respvis.${c.extension}`, dataWithHeaderLine, 'utf8');
+    }))
   }
 
-  const respVisLibWrites = [...write({format: 'iife'}), ...write({format: 'es'}), ...write({format: 'cjs'})]
-
-  const a = copyExampleDependencies()
   return Promise.all([
-    write({format: 'es', location: `src/examples-dependencies/libs/respvis`}), //Only do respvis writes in production mode to save time during development
-    ...((mode === 'production') ? respVisLibWrites : [])
-  ]);
+    ...write('esm'),
+    ...((mode === 'production') ? [write('iife'), write('cjs')] : [])
+  ])
+}
+
+async function bundleDeclaration() {
+  const bundle = await rollup.rollup({
+    input: 'package/esm/types/index.d.ts',
+    plugins: [dts.default()]
+  });
+  await bundle.write({
+    file: "package/index.d.ts",
+    format: "esm"
+  })
 }
 
 function bundleCSS() {
@@ -156,7 +169,12 @@ exports.cleanAll = gulp.series(cleanDist, cleanNodeModules);
 exports.build = gulp.series(
   exports.clean,
   copyExamples, // must be done before bundleJS to replace proxy respvis.js in src/examples/libs/respvis/respvis.js
-  gulp.parallel(bundleJSProduction, bundleCSS, copyExamplesRedirect),
+  gulp.parallel(
+    gulp.series(bundleJSProduction, bundleDeclaration),
+    bundleCSS
+  ),
+  createExampleDependencies,
+  copyExampleDependencies
 );
 
 

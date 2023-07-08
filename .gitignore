@@ -107,5 +107,9 @@ dist
 *.code-workspace
 
 package-lock.json
-# File for enabling intellisense with example files
-src/examples/libs/respvis/
+
+# File generated in src/examples for achieving self-containment
+src/examples/**/libs/
+src/examples/**/data/
+package/
+

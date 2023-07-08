@@ -1,9 +1,10 @@
 const { dataPaths} = require('./copyPathData')
 const { libsPaths} = require('./copyPathLibs')
+const mergeStream = require('merge-stream')
 const gulp = require("gulp");
 function copyExampleDependencies() {
   // const appDirPosix = rootDir.split(path.sep).join(path.posix.sep)
-  return [...copyExampleDataDependencies(), ...copyExampleLibDependencies()]
+  return mergeStream([...copyExampleDataDependencies(), ...copyExampleLibDependencies()])
 }
 
 function copyExampleDataDependencies() {

@@ -1,49 +1,49 @@
 const {dataDepsDir, exampleDir} = require('./paths')
 
 const dataAustrianCitiesPaths = {
-  src: `${dataDepsDir}/austrian-cities`,
+  src: `${dataDepsDir}/austrian-cities/**/*`,
   target: [
-    `${exampleDir}/barcharts/barchart`
+    `${exampleDir}/barcharts/barchart/data`
   ]
 }
 
 const dataCompensationEmployeesPaths = {
-  src: `${dataDepsDir}/compensation-employees`,
+  src: `${dataDepsDir}/compensation-employees/**/*`,
   target: [
-    `${exampleDir}/barcharts/grouped-barchart`
+    `${exampleDir}/barcharts/grouped-barchart/data`
   ]
 }
 
 const dataDesktopPhoneTabletPaths = {
-  src: `${dataDepsDir}/desktop-phone-tablet`,
+  src: `${dataDepsDir}/desktop-phone-tablet/**/*`,
   target: [
-    `${exampleDir}/barcharts/stacked-barchart`,
-    `${exampleDir}/article/charts/market-shares`
+    `${exampleDir}/barcharts/stacked-barchart/data`,
+    `${exampleDir}/article/charts/market-shares/data`
   ]
 }
 
 const dataElectricPowerConsumptionPaths = {
-  src: `${dataDepsDir}/electric-power-consumption`,
+  src: `${dataDepsDir}/electric-power-consumption/**/*`,
   target: [
-    `${exampleDir}/linecharts/linechart-multiline`,
-    `${exampleDir}/article/charts/electric-power-consumption`
+    `${exampleDir}/linecharts/linechart-multiline/data`,
+    `${exampleDir}/article/charts/electric-power-consumption/data`
   ]
 }
 
 const dataSoldCarsGermanyPaths = {
-  src: `${dataDepsDir}/sold-cars-germany`,
+  src: `${dataDepsDir}/sold-cars-germany/**/*`,
   target: [
-    `${exampleDir}/scatterplots/scatterplot`,
-    `${exampleDir}/experimental/parcoord`,
-    `${exampleDir}/experimental/scatterplot-colourscale`,
-    `${exampleDir}/article/charts/sold-cars-germany`
+    `${exampleDir}/scatterplots/scatterplot/data`,
+    `${exampleDir}/experimental/parcoord/data`,
+    `${exampleDir}/experimental/scatterplot-colourscale/data`,
+    `${exampleDir}/article/charts/sold-cars-germany/data`
   ]
 }
 
 const dataStudentsTuGrazPaths = {
-  src: `${dataDepsDir}/students-tugraz`,
+  src: `${dataDepsDir}/students-tugraz/**/*`,
   target: [
-    `${exampleDir}/linecharts/linechart`
+    `${exampleDir}/linecharts/linechart/data`
   ]
 }
 
