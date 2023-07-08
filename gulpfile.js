@@ -7,6 +7,7 @@ const rollupNodeResolve = require('@rollup/plugin-node-resolve').default;
 const rollupTypescript = require('@rollup/plugin-typescript');
 const rollupTerser = require('rollup-plugin-terser').terser;
 const rollupGzip = require('rollup-plugin-gzip').default;
+const dts = require('rollup-plugin-dts')
 
 // ## BrowserSync
 const browserSync = require('browser-sync').create();
@@ -19,6 +20,7 @@ const del = require('del');
 const rename = require('gulp-rename');
 const path = require('path');
 const fs = require('fs');
+const {copyExampleDependencies} = require("./bundling/copyExampleDependencies");
 
 
 
@@ -67,8 +69,9 @@ async function bundleJS(mode) {
 
   const respVisLibWrites = [...write({format: 'iife'}), ...write({format: 'es'}), ...write({format: 'cjs'})]
 
+  const a = copyExampleDependencies()
   return Promise.all([
-    write({format: 'es', location: `dist/examples/libs/respvis`}), //Only do respvis writes in production mode to save time during development
+    write({format: 'es', location: `src/examples-dependencies/libs/respvis`}), //Only do respvis writes in production mode to save time during development
     ...((mode === 'production') ? respVisLibWrites : [])
   ]);
 }

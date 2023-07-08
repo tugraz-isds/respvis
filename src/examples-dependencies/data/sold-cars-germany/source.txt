@@ -1,0 +1,12 @@
+Source: https://www.kaggle.com/datasets/ander289386/cars-germany?resource=download
+License: https://creativecommons.org/publicdomain/zero/1.0/
+
+Germany Cars Dataset
+Dataset scraped from AutoScout24 with information about new and used cars.
+
+AutoScout24 is one of the largest Europe's car market for new and used
+cars. We've collected car data from 2011 to 2021.
+
+Edits:
+
+Randomly selected 500 cars from 46,405 cars.

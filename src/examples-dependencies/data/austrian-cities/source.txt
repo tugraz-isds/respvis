@@ -1,0 +1,9 @@
+Source: https://www.kaggle.com/datasets/juanmah/world-cities
+Licence: https://creativecommons.org/licenses/by/4.0/
+
+World cities database
+Accurate and up-to-date database of the world's cities and towns
+
+Edits:
+
+Took only 6 specific austrian cities from the dataset.
