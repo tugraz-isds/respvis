@@ -1,10 +1,16 @@
+const gulp = require("gulp");
+const mergeStream = require('merge-stream')
 const { dataPaths} = require('./copyPathData')
 const { libsPaths} = require('./copyPathLibs')
-const mergeStream = require('merge-stream')
-const gulp = require("gulp");
+const {stylesPaths} = require("./copyPathStyles");
+
 function copyExampleDependencies() {
   // const appDirPosix = rootDir.split(path.sep).join(path.posix.sep)
-  return mergeStream([...copyExampleDataDependencies(), ...copyExampleLibDependencies()])
+  return mergeStream([
+    ...copyExampleDataDependencies(),
+    ...copyExampleLibDependencies(),
+    ...copyExampleStyleDependencies()
+  ])
 }
 
 function copyExampleDataDependencies() {
@@ -15,6 +21,10 @@ function copyExampleDataDependencies() {
 
 function copyExampleLibDependencies() {
   return libsPaths.target.map((target) => gulp.src(libsPaths.src).pipe(gulp.dest(target)))
+}
+
+function copyExampleStyleDependencies() {
+  return stylesPaths.target.map((target) => gulp.src(stylesPaths.src).pipe(gulp.dest(target)))
 }
 
 module.exports = {

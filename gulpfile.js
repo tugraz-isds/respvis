@@ -89,9 +89,9 @@ async function bundleDeclaration() {
   })
 }
 
-function bundleCSS() {
-  return gulp.src('./src/respvis.css').pipe(gulp.dest('./dist'));
-}
+// function bundleCSS() {
+//   return gulp.src('./src/respvis.css').pipe(gulp.dest('./dist'));
+// }
 
 function copyExamples() {
   return gulp.src('./src/examples/**/*').pipe(gulp.dest('./dist/examples'));
@@ -129,17 +129,26 @@ function updateSingleExampleFile(fileName) {
     gulp.src(`./src/${sameFilePath}`).pipe(gulp.dest(`./dist/${targetFolder}/`));
 }
 
-async function compileSCSSToCSS(filename) {
-  const fileNamePosix = filename.split(path.sep).join(path.posix.sep)
-  const dirNamePosix = path.dirname(fileNamePosix)
-  const cssFilePosix = fileNamePosix.substring(0, fileNamePosix.length - 4) + 'css';
-  await del(cssFilePosix, { force: true })
+//source is the filename of the scss file to be compiled. targetDir is the targetDirectory for the css file
+async function compileSCSSToCSS(source, targetDir) {
+  const srcPosix = source.split(path.sep).join(path.posix.sep)
+  const srcDirNamePosix = path.dirname(srcPosix)
+  const fileNameScss = source.split(path.sep)[source.split(path.sep).length - 1]
+  const fileNameCss = fileNameScss.substring(0, fileNameScss.length - 4) + 'css';
+
+
+  const targetDirNamePosix = targetDir ? targetDir.split(path.sep).join(path.posix.sep) : srcDirNamePosix
+  const targetPosix = [targetDirNamePosix, fileNameScss].join(path.posix.sep)
+  const targetCSSFilePosix = targetPosix.substring(0, targetPosix.length - 4) + 'css';
+
+  await del(targetCSSFilePosix, { force: true })
 
   return {
-    pipe: gulp.src(fileNamePosix)
+    pipe: gulp.src(srcPosix)
       .pipe(sass().on('error', sass.logError))
-      .pipe(gulp.dest(dirNamePosix)),
-    cssFilePosix, dirNamePosix, fileNamePosix
+      .pipe(rename(fileNameCss))
+      .pipe(gulp.dest(targetDirNamePosix)),
+    cssFilePosix: targetCSSFilePosix, dirNamePosix: srcDirNamePosix, fileNamePosix: srcPosix
   }
 }
 
@@ -151,11 +160,14 @@ async function buildExamplesSCSS(filename) {
 }
 
 async function buildLibSCSS() {
-  const { pipe } = await compileSCSSToCSS('./src/respvis.scss')
-  pipe.on('end', () => {
-    const cssPipe = bundleCSS()
-    cssPipe.on('end', () => {
-      browserSync.reload()
+  const { pipe } = await compileSCSSToCSS('./src/respvis.scss', './package')
+  await new Promise((resolve) => {
+    pipe.on('end', () => {
+      // const cssPipe = bundleCSS()
+      // cssPipe.on('end', () => {
+        // browserSync.reload()
+        resolve()
+      // })
     })
   })
 }
@@ -171,7 +183,7 @@ exports.build = gulp.series(
   copyExamples, // must be done before bundleJS to replace proxy respvis.js in src/examples/libs/respvis/respvis.js
   gulp.parallel(
     gulp.series(bundleJSProduction, bundleDeclaration),
-    bundleCSS
+    buildLibSCSS
   ),
   createExampleDependencies,
   copyExampleDependencies
@@ -187,9 +199,12 @@ function watch(cb) {
   });
 
   const watchOptions = { ignoreInitial: true };
-  gulp.watch('./src/lib/**/*', watchOptions, gulp.series(bundleJSDevelopment, reloadBrowser));
-  gulp.watch('./src/respvis.css', watchOptions, gulp.series(bundleCSS, reloadBrowser));
-  gulp.watch('./src/index.html', watchOptions, gulp.series(copyExamplesRedirect, reloadBrowser));
+  gulp.watch('./src/lib/**/*', watchOptions,
+    gulp.series(bundleJSDevelopment, createExampleDependencies, copyExampleDependencies, reloadBrowser));
+  // gulp.watch('./src/respvis.css', watchOptions,
+  //   gulp.series(buildLibSCSS, createExampleDependencies, copyExampleDependencies, reloadBrowser));
+  gulp.watch('./src/examples/**/[!.scss]*', watchOptions, gulp.series(copyExamplesRedirect, reloadBrowser));
+
 
   const scssExamplesWatcher = gulp.watch('./src/examples/**/*.scss', watchOptions);
   scssExamplesWatcher.on('change', buildExamplesSCSS)
@@ -197,10 +212,10 @@ function watch(cb) {
   const scssLibWatcher = gulp.watch(['./src/scss/**/*.scss', './src/*.scss'], watchOptions);
   scssLibWatcher.on('change', buildLibSCSS)
 
-  const examplesWatcher = gulp.watch('./src/examples/**/!(*.css|*.scss)', watchOptions);
-  examplesWatcher.on('change', updateDistForServe)
-  examplesWatcher.on('add', updateDistForServe)
-  examplesWatcher.on('addDir', updateDistForServe)
+  // const examplesWatcher = gulp.watch('./src/examples/**/!(*.css|*.scss)', watchOptions);
+  // examplesWatcher.on('change', updateDistForServe)
+  // examplesWatcher.on('add', updateDistForServe)
+  // examplesWatcher.on('addDir', updateDistForServe)
   cb()
 }
 

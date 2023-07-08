@@ -111,5 +111,6 @@ package-lock.json
 # File generated in src/examples for achieving self-containment
 src/examples/**/libs/
 src/examples/**/data/
+src/examples/**/styles/
 package/
 
