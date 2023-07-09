@@ -1,6 +1,6 @@
 const path = require('path');
 
-const rootDir = path.dirname(__dirname)
+const rootDir = path.dirname(__dirname).split(path.sep).join(path.posix.sep)
 const srcDir = `${rootDir}/src`
 
 const exampleDepsDir = `${srcDir}/examples-dependencies`

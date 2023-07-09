@@ -4,7 +4,9 @@
   "description": "A library to build responsive SVG-based visualizations.",
   "main": "./package/cjs/index.js",
   "module": "./package/esm/index.js",
-  "files": ["package"],
+  "files": [
+    "package"
+  ],
   "types": "./package/index.d.ts",
   "scripts": {
     "build": "npx gulp build",
