@@ -1,4 +1,4 @@
-import {findMatchingBoundsIndex} from '../../../libs/respvis/respvis.js';
+import {findMatchingBoundsIndex} from '../../libs/respvis/respvis.js';
 
 const bounds = [
     { maxWidth: '25rem' },

@@ -1,11 +1,11 @@
-import { select } from '../../../libs/d3-7.6.0/d3.js'
+import { select } from '../../libs/d3-7.6.0/d3.js'
 import {
     chartWindowLineData,
     chartWindowLineRender,
     chartWindowLineAutoResize,
-} from '../../../libs/respvis/respvis.js';
+} from '../../libs/respvis/respvis.js';
 
-import {mapPowerConsumptionData} from '../../../data/electric-power-consumption/electricPowerConsumption.js'
+import {mapPowerConsumptionData} from './data/electricPowerConsumption.js'
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
 const { yUSA, yEurope, yAsia } = mapPowerConsumptionData()

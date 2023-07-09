@@ -1,8 +1,8 @@
-import * as d3 from '../../../libs/d3-7.6.0/d3.js'
-import {ScatterPlot} from '../../../libs/respvis/respvis.js'
-import {carData, getTopMakesData} from '../../../data/sold-cars-germany/sold-cars-germany.js';
+import * as d3 from '../../libs/d3-7.6.0/d3.js'
+import {ScatterPlot} from '../../libs/respvis/respvis.js'
+import {carData, getTopMakesData} from './data/sold-cars-germany.js';
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
-import {format} from "../../../libs/d3-7.6.0/d3.js";
+import {format} from "../../libs/d3-7.6.0/d3.js";
 
 
 const {topMakesNames, mileages, horsePower, prices} = getTopMakesData(5)

@@ -94,11 +94,7 @@ async function bundleDeclaration() {
 // }
 
 function copyExamples() {
-  return gulp.src('./src/examples/**/*').pipe(gulp.dest('./dist/examples'));
-}
-
-function copyExamplesRedirect() {
-  return gulp.src('./src/index.html').pipe(gulp.dest('./dist'));
+  return gulp.src('./src/examples/**/*').pipe(gulp.dest('./dist'));
 }
 
 // ## Reload browser
@@ -117,17 +113,17 @@ function cleanNodeModules() {
 }
 
 // ## Live Update File Changes in Examples
-function updateDistForServe(filename) {
-    updateSingleExampleFile(filename) //gulp.series not possible in watch callback?
-    browserSync.reload();
-}
+// function updateDistForServe(filename) {
+//     updateSingleExampleFile(filename) //gulp.series not possible in watch callback?
+//     browserSync.reload();
+// }
 
-function updateSingleExampleFile(fileName) {
-    const fileNamePosix = fileName.split(path.sep).join(path.posix.sep);
-    const sameFilePath = fileNamePosix.substring(4)
-    const targetFolder = path.dirname(sameFilePath)
-    gulp.src(`./src/${sameFilePath}`).pipe(gulp.dest(`./dist/${targetFolder}/`));
-}
+// function updateSingleExampleFile(fileName) {
+//     const fileNamePosix = fileName.split(path.sep).join(path.posix.sep);
+//     const sameFilePath = fileNamePosix.substring(4)
+//     const targetFolder = path.dirname(sameFilePath)
+//     gulp.src(`./src/${sameFilePath}`).pipe(gulp.dest(`./dist/${targetFolder}/`));
+// }
 
 //source is the filename of the scss file to be compiled. targetDir is the targetDirectory for the css file
 async function compileSCSSToCSS(source, targetDir) {
@@ -154,8 +150,11 @@ async function compileSCSSToCSS(source, targetDir) {
 
 async function buildExamplesSCSS(filename) {
   const { pipe, cssFilePosix } = await compileSCSSToCSS(filename)
-  pipe.on('end', () => {
-    updateDistForServe(cssFilePosix)
+  await new Promise((resolve) => {
+    pipe.on('end', () => {
+      // updateDistForServe(cssFilePosix)
+      resolve()
+    })
   })
 }
 
@@ -203,7 +202,8 @@ function watch(cb) {
     gulp.series(bundleJSDevelopment, createExampleDependencies, copyExampleDependencies, reloadBrowser));
   // gulp.watch('./src/respvis.css', watchOptions,
   //   gulp.series(buildLibSCSS, createExampleDependencies, copyExampleDependencies, reloadBrowser));
-  gulp.watch('./src/examples/**/[!.scss]*', watchOptions, gulp.series(copyExamplesRedirect, reloadBrowser));
+  gulp.watch('./src/examples/**/*!(.scss)', watchOptions, gulp.series(copyExamples, reloadBrowser)); //strangly does not detect js files
+  // gulp.watch('./src/examples/**/*.js', watchOptions, gulp.series(copyExamples, reloadBrowser));
 
 
   const scssExamplesWatcher = gulp.watch('./src/examples/**/*.scss', watchOptions);

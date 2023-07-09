@@ -4,8 +4,8 @@
   <title>RespVis - Grouped Bar Chart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta charset="UTF-8"/>
-  <link rel="stylesheet" href="../../../respvis.css"/>
-  <link rel="stylesheet" href="grouped-bar.css"/>
+  <link rel="stylesheet" href="styles/respvis.css"/>
+  <link rel="stylesheet" href="grouped-barchart.css"/>
 </head>
 
 <body>
@@ -19,10 +19,10 @@
     chartWindowBarGroupedRender,
     chartWindowBarGroupedAutoFilterCategories,
     chartWindowBarGroupedAutoFilterSubcategories,
-  } from '../../libs/respvis/respvis.js';
+  } from './libs/respvis/respvis.js';
 
-  import {sites, compensations, years} from '../../data/compensation-employees/compensation-employees.js';
-  import * as d3 from '../../libs/d3-7.6.0/d3.js'
+  import {sites, compensations, years} from './data/compensation-employees.js';
+  import * as d3 from './libs/d3-7.6.0/d3.js'
   import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
   const calcData = () => {

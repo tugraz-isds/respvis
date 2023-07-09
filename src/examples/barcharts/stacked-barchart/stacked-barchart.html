@@ -4,8 +4,8 @@
   <title>RespVis - Stacked Bar Chart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta charset="UTF-8"/>
-  <link rel="stylesheet" href="../../../respvis.css"/>
-  <link rel="stylesheet" href="stacked-bar.css"/>
+  <link rel="stylesheet" href="styles/respvis.css"/>
+  <link rel="stylesheet" href="stacked-barchart.css"/>
 </head>
 
 <body>
@@ -24,9 +24,9 @@
     chartWindowBarStackedRender,
     chartWindowBarStackedAutoFilterCategories,
     chartWindowBarStackedAutoFilterSubcategories,
-  } from '../../libs/respvis/respvis.js';
-  import {years, desktop, phone, tablet, platforms} from '../../data/desktop-phone-tablet/desktop-phone-tablet.js';
-  import * as d3 from '../../libs/d3-7.6.0/d3.js'
+  } from './libs/respvis/respvis.js';
+  import {years, desktop, phone, tablet, platforms} from './data/desktop-phone-tablet.js';
+  import * as d3 from './libs/d3-7.6.0/d3.js'
   import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
   const calcData = () => {

@@ -1,6 +1,6 @@
-import {findMatchingBoundsIndex} from "../../libs/respvis/respvis.js";
-import {format} from "../../libs/d3-7.6.0/d3.js";
-import cityData from '../../data/austrian-cities/austrian-cities.js';
+import {findMatchingBoundsIndex} from "./libs/respvis/respvis.js";
+import {format} from "./libs/d3-7.6.0/d3.js";
+import cityData from './data/austrian-cities.js';
 
 const bounds = [
   {minWidth: '60rem'},

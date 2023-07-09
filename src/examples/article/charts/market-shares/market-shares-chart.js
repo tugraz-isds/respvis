@@ -3,11 +3,11 @@ import {
     chartWindowBarStackedRender,
     chartWindowBarStackedAutoFilterCategories,
     chartWindowBarStackedAutoFilterSubcategories
-} from '../../../libs/respvis/respvis.js';
+} from '../../libs/respvis/respvis.js';
 import { chooseAxisFormat } from "./chooseAxisFormat.js";
 import { chooseResponsiveData } from "./chooseResponsiveData.js";
-import { years, desktop, phone, tablet, platforms } from '../../../data/desktop-phone-tablet/desktop-phone-tablet.js';
-import * as d3 from '../../../libs/d3-7.6.0/d3.js'
+import { years, desktop, phone, tablet, platforms } from './data/desktop-phone-tablet.js';
+import * as d3 from '../../libs/d3-7.6.0/d3.js'
 
 const shares = desktop.map((d, i) => [desktop[i], phone[i], tablet[i]]);
 

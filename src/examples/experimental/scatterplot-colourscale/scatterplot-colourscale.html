@@ -4,8 +4,8 @@
   <title>RespVis - Scatterplot with Colour Scale</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta charset="UTF-8"/>
-  <link rel="stylesheet" href="../../../respvis.css" type="text/css"/>
-  <link rel="stylesheet" href="scatter-colorscale.css" type="text/css"/>
+  <link rel="stylesheet" href="./styles/respvis.css" type="text/css"/>
+  <link rel="stylesheet" href="./scatterplot-colourscale.css" type="text/css"/>
 </head>
 <body>
 <h1>Scatterplot with Colour Scale</h1>
@@ -13,9 +13,9 @@
 <div id="chart"> </div>
 
 <script type="module">
-  import {ScatterPlot} from '../../libs/respvis/respvis.js';
-  import * as d3 from '../../libs/d3-7.6.0/d3.js'
-  import {carData} from "../../data/sold-cars-germany/sold-cars-germany.js";
+  import {ScatterPlot} from './libs/respvis/respvis.js';
+  import * as d3 from './libs/d3-7.6.0/d3.js'
+  import {carData} from "./data/sold-cars-germany.js";
   import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
   const allHorsePower = carData.map(entry => entry.hp)
