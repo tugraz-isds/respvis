@@ -9,12 +9,13 @@
   ],
   "types": "./package/index.d.ts",
   "scripts": {
+    "clean": "npx gulp clean",
     "build": "npx gulp build",
     "start": "npx gulp"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlmostBearded/respvis.git"
+    "url": "git+https://github.com/tugraz-isds/respvis.git"
   },
   "keywords": [
     "d3",
@@ -24,12 +25,12 @@
     "visualization",
     "chart"
   ],
-  "author": "Peter Oberrauner",
+  "author": "David Egger, Peter Oberrauner",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AlmostBearded/respvis/issues"
+    "url": "https://github.com/tugraz-isds/respvis/issues"
   },
-  "homepage": "https://github.com/AlmostBearded/respvis#readme",
+  "homepage": "https://github.com/tugraz-isds/respvis#readme",
   "devDependencies": {
     "@types/d3": "^7.1.0",
     "@types/to-px": "^1.1.2",

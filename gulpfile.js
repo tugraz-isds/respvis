@@ -17,15 +17,9 @@ function cleanPackage() {
   return del('package', { force: true });
 }
 
-function cleanNodeModules() {
-  return del('node_modules', { force: true });
-}
-
 // # Public tasks
 
 exports.clean = gulp.parallel(cleanDist, cleanPackage);
-
-exports.cleanAll = gulp.series(cleanDist, cleanNodeModules);
 
 // TODO: add proxy respvis.js for typescript support in all concerned directories
 exports.build = gulp.series(
