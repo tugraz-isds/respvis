@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.2.0] - 2023-03-25
 
 ### Added
 
@@ -83,6 +83,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add tooltipHide function.
 - Add tooltips to SeriesBar, SeriesBarGrouped & SeriesBarStacked.
 
+- Add d3 bundle locally.
+- Add electric power consumption dataset.
+- Add multi-line chart example.
+- Add source for each dataset.
+- Add possibility to reverse element order in legend.
+- Add categories to scatter plot
+- Add zooming to scatter plot.
+- Add radius size as dimension to scatter plot.
+- Add color scale as dimension to scatter plot (WIP). 
+- Add basic parcoord chart.
+- Add github workflows for development and releases.
+- Add findMatchingBoundsIndex function.
+- Add first container queries to example charts (article).
+- Add SCSS and split up default style in multiple files.
+- Add SCSS auto generation via gulp.
+- Add x-axis rotation feature.
+- Add source for all datasets.
+- Add noscript message which demands to activate javascript.
+- Add dependencies folder which holds dependencies that could be of interest for all examples.
+
 ### Changed
 
 - Set custom colors in grouped bar chart example.
@@ -119,6 +139,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactor SeriesLabel.
 - Refactor SeriesLabelBar.
 
+- Change dataset for scatter plot to car dataset.
+- Change dataset for grouped bar chart to compensation for employees in countries.
+- Change dataset for line chart to number of students of tugraz.
+- Update dataset for bar chart about population in austrian cities.
+- Change toolbar to be shown only when hovering a chart.
+- Improve Article to use 3 charts, multi-line, scatter plot and stacked bar chart
+- Rearrange structure of generated dist folder.
+
 ### Removed
 
 - Remove BarOrientation enum.
@@ -137,6 +165,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove index and groupIndex properties from DataBar & DataBarGrouped.
 - Remove DataBarStacked.
 - Remove seriesLabelBarCenterConfig, seriesLabelBarLeftConfig, seriesLabelBarRightConfig, seriesLabelBarTopConfig.
+
+- Remove basic charts.
 
 ### Fixed
 
