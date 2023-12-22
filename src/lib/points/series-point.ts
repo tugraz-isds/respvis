@@ -15,6 +15,7 @@ import {Size} from '../core/utilities/size';
 export interface Point extends Circle {
   xValue: any;
   yValue: any;
+  radiusValue?: any;
   styleClass: string;
   key: string;
 }
@@ -74,6 +75,7 @@ export function seriesPointCreatePoints(seriesData: SeriesPoint): Point[] {
     const x = xValues[i]
     const y = yValues[i]
     const r = typeof radiuses === "number" ? radiuses : radiuses.scale(radiuses.radiusDim[i]);
+    const radiusValue =
     data.push({
       styleClass: arrayIs(styleClasses) ? styleClasses[i] : styleClasses,
       key: keys?.[i] || i.toString(),
@@ -84,7 +86,8 @@ export function seriesPointCreatePoints(seriesData: SeriesPoint): Point[] {
       radius: r ?? 5,
       xValue: x,
       yValue: y,
-      color: color?.colorScale(color.colorDim[i])
+      color: color?.colorScale(color.colorDim[i]),
+      radiusValue: typeof radiuses !== "number" ? radiuses.radiusDim[i] : undefined
     });
   }
 

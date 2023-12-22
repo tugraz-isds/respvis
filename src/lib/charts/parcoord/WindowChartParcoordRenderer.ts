@@ -14,6 +14,7 @@ export class WindowChartParcoordRenderer implements IWindowChartBaseRenderer {
     this.data = windowChartParcoordData(data)
   }
   addCustomListener(name: string, callback: (event: Event, data: IChartBaseData) => void): void {
+    this.selection.on(name, callback)
   }
 
   buildWindowChart(): void {

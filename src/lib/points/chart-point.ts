@@ -39,13 +39,7 @@ export function chartPointRender(selection: ChartPointSelection): void {
       .data<SeriesPoint>(
       pointSeries.map((p) =>
         seriesPointData({
-          styleClasses: p.styleClasses,
-          keys: p.keys,
-          xValues: p.xValues,
-          yValues: p.yValues,
-          radiuses: p.radiuses,
-          color: p.color,
-          xScale, yScale, flipped
+          ...p, xScale, yScale, flipped
         })
       )).join('svg')
       .call((s) => seriesPointRender(s))
@@ -76,7 +70,6 @@ export function chartPointHoverLegendItem(
 ): void {
   legendItemS.each((_, i, g) => {
     const key = g[i].getAttribute('data-key')!;
-    console.log(key)
     chartS.selectAll(`.point[data-key^="${key}"]`).classed('highlight', hover);
     chartS.selectAll(`.label[data-key^="${key}"]`).classed('highlight', hover);
   });

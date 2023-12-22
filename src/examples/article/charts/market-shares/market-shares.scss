@@ -36,6 +36,17 @@
     }
   }
 
+
+  svg.chart {
+    .axis-bottom {
+      container-type: inline-size;
+      @container (max-width: 50rem) {
+        fill: red;
+        background: red;
+      }
+    }
+  }
+
   //@container (min-width: 36.25rem) {
   //  .axis-y .tick:nth-of-type(2n) {
   //    display: none;

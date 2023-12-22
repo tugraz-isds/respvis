@@ -55,6 +55,7 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
       scale: radiuses.scale,
       radiusDim: radiuses.radiusDim[index]
     } : 5
+    const toolTipData = data.markerTooltips || {}
     return seriesPointData({
       flipped, styleClasses,
       keys: yVals[index].map((_, markerI) => `${legend?.keys?.[index] ?? index}-${markerI}`),
@@ -64,6 +65,7 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
       color,
       xScale: xScaleValid,
       yScale: yScaleValid,
+      ...toolTipData,
     })
   })
   const firstPoint = points[0]

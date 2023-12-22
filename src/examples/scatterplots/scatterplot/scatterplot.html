@@ -47,6 +47,11 @@
       yScale: baseScaleY,
       xAxis: {title: 'Horse Power', subtitle: '[PS]', configureAxis: (axis) => axis.tickFormat(d3.format('.3d'))},
       yAxis: {title: 'Price', subtitle: '[EU]'},
+      markerTooltips: {
+        tooltips: (e, {xValue, yValue, radiusValue}) => {
+          return `Horse Power: ${xValue}PS<br/>Price: ${yValue}€<br/>Mileage: ${radiusValue}km`
+        },
+      },
       radiuses: {
         radiusDim: mileages,
         // radiusDim: mileagesWithExtrema,

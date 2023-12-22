@@ -31,3 +31,12 @@
     width: 100%;
   }
 }
+#market-shares-chart svg.chart .axis-bottom {
+  container-type: inline-size;
+}
+@container (max-width: 50rem) {
+  #market-shares-chart svg.chart .axis-bottom {
+    fill: red;
+    background: red;
+  }
+}

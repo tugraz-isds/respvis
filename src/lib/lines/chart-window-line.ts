@@ -39,9 +39,7 @@ export function chartWindowLineRender(selection: Selection<HTMLDivElement, Chart
     });
 }
 
-export function chartWindowLineAutoResize(
-  selection: Selection<HTMLDivElement, ChartWindowLine>
-): void {
+export function chartWindowLineAutoResize(selection: Selection<HTMLDivElement, ChartWindowLine>): void {
   selection.on('resize', function () {
     select<HTMLDivElement, ChartWindowLine>(this).call((s) => chartWindowLineRender(s));
   });

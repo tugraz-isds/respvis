@@ -23,7 +23,7 @@ export class ScatterPlot implements IWindowChartBaseRenderer {
   }
 
   /**
-   * Adds custom event listener. Be sure to add custom event listeners before calling {@link buildWindowChart}
+   * Adds custom event listener. Be sure to add custom event listeners before calling {@link ScatterPlot.buildWindowChart}
    * as the method also adds listeners and the order matters.
    */
   addCustomListener(name: string, callback: (event: Event, data: ChartPointData) => void) {
