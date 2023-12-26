@@ -105,76 +105,21 @@
   dominant-baseline: middle;
 }
 
-.axis {
-  font-size: 0.7em;
+.axis .title text {
+  font-size: var(--font-size-axis-title);
 }
-.axis .tick line {
-  stroke: currentColor;
+.axis .subtitle text {
+  font-size: var(--font-size-axis-subtitle);
 }
-.axis .ticks .domain {
+.axis .ticks-transform .ticks .domain {
   stroke: currentColor;
   fill: none;
 }
-
-.legend {
-  grid-area: legend;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 0.8em;
-  cursor: default;
-  margin: 0.5rem;
+.axis .ticks-transform .ticks .tick line {
+  stroke: currentColor;
 }
-
-[data-legend-position=right] .legend,
-.legend {
-  align-self: start;
-}
-
-[data-legend-position=top] .legend {
-  justify-self: end;
-}
-
-.legend .title {
-  margin: 0 0.5em;
-}
-
-.legend .items {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-[data-legend-position=left] .legend .items,
-[data-legend-position=right] .legend .items,
-.legend.vertical .items,
-.legend .items {
-  flex-direction: column;
-}
-
-[data-legend-position=top] .legend .items,
-[data-legend-position=bottom] .legend .items,
-.legend.horizontal .items {
-  flex-direction: row;
-}
-
-.legend-item {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin: 0.25em;
-}
-
-.legend-item .symbol {
-  margin-right: 0.5em;
-  stroke: #000;
-  stroke-width: 1px;
-  width: 10px;
-  height: 10px;
-}
-
-.highlight.legend-item .symbol {
-  filter: brightness(var(--highlight-brightness));
+.axis .ticks-transform .ticks .tick text {
+  font-size: var(--font-size-axis-label);
 }
 
 .chart .header {
@@ -184,12 +129,6 @@
   grid-template-areas: "title" "subtitle";
   justify-items: center;
   padding-bottom: 1rem;
-}
-
-.chart .header .title,
-.chart .header .subtitle {
-  --fit-width: true;
-  --fit-height: true;
 }
 
 @media (hover: none) {
@@ -337,18 +276,79 @@
   top: 100%;
 }
 
-:root {
-  --color-categorical-0: #78b4c6;
-  --color-categorical-1: #1c9820;
-  --color-categorical-2: #ff0087;
-  --color-categorical-3: #9bb64b;
-  --color-categorical-4: #628df2;
-  --color-categorical-5: #0db293;
-  --color-categorical-6: #f14330;
-  --color-categorical-7: #b8949e;
-  --color-categorical-8: #e49c4f;
-  --color-categorical-9: #a665e4;
-  --highlight-brightness: 130%;
+.header .title, .header .subtitle {
+  --fit-width: true;
+  --fit-height: true;
+}
+.header .title text {
+  font-size: var(--font-size-title);
+  letter-spacing: 0.1em;
+}
+.header .subtitle text {
+  font-size: var(--font-size-subtitle);
+}
+
+.legend {
+  grid-area: legend;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: default;
+  margin: 0.5rem;
+}
+.legend .title {
+  font-size: var(--font-size-legend-title);
+  margin: 0 0.5em;
+}
+.legend .items .legend-item .label {
+  font-size: var(--font-size-legend-label);
+}
+
+[data-legend-position=right] .legend,
+.legend {
+  align-self: start;
+}
+
+[data-legend-position=top] .legend {
+  justify-self: end;
+}
+
+.legend .items {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+[data-legend-position=left] .legend .items,
+[data-legend-position=right] .legend .items,
+.legend.vertical .items,
+.legend .items {
+  flex-direction: column;
+}
+
+[data-legend-position=top] .legend .items,
+[data-legend-position=bottom] .legend .items,
+.legend.horizontal .items {
+  flex-direction: row;
+}
+
+.legend-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0.25em;
+}
+
+.legend-item .symbol {
+  margin-right: 0.5em;
+  stroke: #000;
+  stroke-width: 1px;
+  width: 10px;
+  height: 10px;
+}
+
+.highlight.legend-item .symbol {
+  filter: brightness(var(--highlight-brightness));
 }
 
 [data-style=categorical-0] {
@@ -401,11 +401,6 @@
   stroke: var(--color-categorical-9);
 }
 
-.series-label {
-  font-size: 0.7em;
-  pointer-events: none;
-}
-
 .label.highlight, .legend-item.highlight {
   font-size: 1.2em;
 }
@@ -455,18 +450,8 @@ text[data-orientation=vertical] {
   dominant-baseline: hanging;
 }
 
-.title text,
-text.title {
-  font-size: 1.5em;
-  letter-spacing: 0.1em;
-}
-
-.title {
+.axis .title .text {
   grid-area: title;
-}
-
-.subtitle {
-  grid-area: subtitle;
 }
 
 path.line {
@@ -498,6 +483,35 @@ path.line.highlight {
 
 .chart.chart-parcoord .line {
   stroke: var(--color-categorical-0);
+}
+
+.chart-window {
+  --root-size: 1rem;
+  --font-size-base: calc(1 * var(--root-size));
+  --font-size-title: calc(1.5 * var(--font-size-base));
+  --font-size-subtitle: calc(1 * var(--font-size-base));
+  --font-size-axis-title: calc(1.1 * var(--font-size-base));
+  --font-size-axis-subtitle: calc(0.7 * var(--font-size-base));
+  --font-size-axis-label: calc(0.7 * var(--font-size-base));
+  --font-size-element-label: calc(0.7 * var(--font-size-base));
+  --font-size-legend-title: calc(1.1 * var(--font-size-base));
+  --font-size-legend-label: calc(0.7 * var(--font-size-base));
+  --color-categorical-0: #78b4c6;
+  --color-categorical-1: #1c9820;
+  --color-categorical-2: #ff0087;
+  --color-categorical-3: #9bb64b;
+  --color-categorical-4: #628df2;
+  --color-categorical-5: #0db293;
+  --color-categorical-6: #f14330;
+  --color-categorical-7: #b8949e;
+  --color-categorical-8: #e49c4f;
+  --color-categorical-9: #a665e4;
+  --highlight-brightness: 130%;
+}
+
+.series-label .label {
+  font-size: var(--font-size-element-label);
+  pointer-events: none;
 }
 
 .bar {

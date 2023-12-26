@@ -19,6 +19,7 @@ const exampleDirList = [
 
   `${exampleDir}/experimental/parcoord`,
   `${exampleDir}/experimental/scatterplot-colourscale`,
+  `${exampleDir}/experimental/scatterplot-reusable`,
 
   `${exampleDir}/linecharts/linechart`,
   `${exampleDir}/linecharts/linechart-multiline`,

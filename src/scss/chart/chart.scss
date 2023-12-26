@@ -9,12 +9,6 @@
   padding-bottom: 1rem;
 }
 
-.chart .header .title,
-.chart .header .subtitle {
-  --fit-width: true;
-  --fit-height: true;
-}
-
 @media (hover: none) {
   .chart {
     -webkit-touch-callout: none;
@@ -33,4 +27,5 @@
   width: 100%;
   height: 100%;
   font-family: sans-serif;
+
 }

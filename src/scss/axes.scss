@@ -119,13 +119,32 @@
     }
   }
 }
+
 .axis {
-  font-size: 0.7em;
-  .tick line {
-    stroke: currentColor;
+  .title {
+    text {
+      font-size: var(--font-size-axis-title);
+    }
   }
-  .ticks .domain {
-    stroke: currentColor;
-    fill: none;
+  .subtitle {
+    text {
+      font-size: var(--font-size-axis-subtitle);
+    }
+  }
+  .ticks-transform {
+    .ticks {
+      .domain {
+        stroke: currentColor;
+        fill: none;
+      }
+      .tick {
+        line {
+          stroke: currentColor;
+        }
+        text {
+          font-size: var(--font-size-axis-label);
+        }
+      }
+    }
   }
 }
