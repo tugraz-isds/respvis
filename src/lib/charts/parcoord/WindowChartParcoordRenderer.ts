@@ -2,7 +2,7 @@ import {IWindowChartBaseRenderer} from "../../core/charts/chart-base/IWindowChar
 import { windowChartParcoordData }from "./window-chart-parcoord-data";
 import {IChartParcoordArgs} from "./IChartParcoordArgs";
 import {select, Selection} from "d3";
-import {IChartBaseData, layouterCompute, toolDownloadSVGRender, windowChartBaseRender} from "../../core";
+import {ChartBaseValid, layouterCompute, toolDownloadSVGRender, windowChartBaseRender} from "../../core";
 import {chartParcoordRender} from "./chart-parcoord-render";
 import {IChartParcoordData} from "./IChartParcoordData";
 
@@ -13,7 +13,7 @@ export class WindowChartParcoordRenderer implements IWindowChartBaseRenderer {
   constructor(public selection: Selection<HTMLDivElement, IChartParcoordData>, data: IChartParcoordArgs) {
     this.data = windowChartParcoordData(data)
   }
-  addCustomListener(name: string, callback: (event: Event, data: IChartBaseData) => void): void {
+  addCustomListener(name: string, callback: (event: Event, data: ChartBaseValid) => void): void {
     this.selection.on(name, callback)
   }
 

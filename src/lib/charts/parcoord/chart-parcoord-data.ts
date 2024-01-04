@@ -4,7 +4,7 @@ import {axisData, calcDefaultScale} from "../../core";
 import {scalePoint} from "d3";
 
 export function parcoordData(data: IChartParcoordArgs): IChartParcoordData {
-  const {legend, dimensions, title, subtitle, flipped} = data
+  const {legend, dimensions, title, subTitle, flipped} = data
   const dimensionsValid: TParcoordDimensionData[] = dimensions.map((dimension, index) => {
     const {scale, title, subtitle, styleClass, values, configureAxes} = dimension
     return {
@@ -24,6 +24,6 @@ export function parcoordData(data: IChartParcoordArgs): IChartParcoordData {
   return {
     dimensions: dimensionsValid,
     axisScale,
-    title, subtitle, flipped //TODO: Legend
+    title, subTitle: subtitle, flipped //TODO: Legend
   }
 }

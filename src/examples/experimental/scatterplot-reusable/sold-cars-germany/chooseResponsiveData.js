@@ -23,24 +23,7 @@
 
 export function chooseResponsiveData(element, data) {
   // const index = recalculateBounds(element)
-  // switch (index) {
-  //   case 0:
-  //     data.title = 'Car Characteristics from AutoScout24 in Germany';
-  //     break
-  //   default:
-  //     data.title = 'Car Characteristics';
-  //     break
-  // }
   //
-  // switch (index) {
-  //   case 0:
-  //   case 1:
-  //     data.yAxis.configureAxis = (axis) => axis.tickFormat(formatWithDecimalZero(format(',')));
-  //     break
-  //   default:
-  //     data.yAxis.configureAxis = (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s')));
-  //     break
-  // }
   //
   // switch (index) {
   //   case 0:

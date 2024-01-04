@@ -1,10 +1,19 @@
 import {Selection} from 'd3';
-import {IChartBaseData} from "./IChartBaseData";
+import {ChartBaseValid, chartBaseValidation} from "./chart-base-validation";
+import {boundArgByIndices} from "../../utilities/resizing/matchBounds";
+import {elementFromSelection} from "../../utilities/d3/util";
+import {getBoundStateFromCSS, updateBoundStateInCSS} from "../../utilities/resizing/bounds";
+import {getConfigBoundableState} from "../../utilities/resizing/boundable";
 
-export type ChartBaseSelection = Selection<SVGSVGElement | SVGGElement, IChartBaseData>;
+export type ChartBaseSelection = Selection<SVGSVGElement | SVGGElement, ChartBaseValid>;
 
 export function chartBaseRender(selection: ChartBaseSelection): ChartBaseSelection {
-  selection
+  const chartElement = elementFromSelection(selection)
+  const chartBaseValid = selection.data()[0]
+  chartBaseValid.selection = selection
+  updateBoundStateInCSS(chartElement, chartBaseValid.bounds)
+
+    selection
     .classed('chart', true)
     .attr('xmlns', 'http://www.w3.org/2000/svg')
 
@@ -26,7 +35,7 @@ export function chartBaseRender(selection: ChartBaseSelection): ChartBaseSelecti
 
   header
     .selectAll('.title')
-    .data((d) => [d.title ? d.title : ""])
+    .data((d) => [getConfigBoundableState(d.title, {chart: chartElement})])
     .join('g')
     .classed('title', true)
     .attr('data-ignore-layout-children', true)
@@ -37,7 +46,7 @@ export function chartBaseRender(selection: ChartBaseSelection): ChartBaseSelecti
 
   header
     .selectAll('.subtitle')
-    .data((d) => [d.subtitle ? d.subtitle : ""])
+    .data((d) => [getConfigBoundableState(d.subTitle, {chart: chartElement})])
     .join('g')
     .classed('subtitle', true)
     .attr('data-ignore-layout-children', true)

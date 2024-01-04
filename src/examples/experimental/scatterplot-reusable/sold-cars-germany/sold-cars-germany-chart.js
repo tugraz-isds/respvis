@@ -1,5 +1,5 @@
 import * as d3 from '../libs/d3-7.6.0/d3.js'
-import {ScatterPlot} from '../libs/respvis/respvis.js'
+import {ScatterPlot, formatWithDecimalZero} from '../libs/respvis/respvis.js'
 import {carData, getTopMakesData} from './data/sold-cars-germany.js';
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
 import {format} from "../libs/d3-7.6.0/d3.js";
@@ -30,13 +30,23 @@ export function createChartSoldCarsGermany(selector) {
 
 
   const data = {
+    bounds: {
+      width: {
+        values: [20, 30, 50],
+        unit: 'rem'
+      }
+    },
+    title: {
+      dependentOn: 'width',
+      tuples: [[0, 'Car Chars.'], [1, 'Car Characteristics'], [3, 'Car Characteristics from AutoScout24 in Germany']]
+    },
     x: {
       values: horsePower,
       scale: scales.xScale,
       // title: 'Price [EU]',
       title: {
         dependentOn: 'width',
-        tuples: [[0, 'Price'], [1, 'Price [EU]'], [2, 'Price [EU] Long']]
+        tuples: [[0, 'Price'], [1, 'Price [EU]'], [2, 'Car Price [EU]']]
       },
       bounds: {
         width: {
@@ -49,9 +59,14 @@ export function createChartSoldCarsGermany(selector) {
     y: {
       values: prices,
       scale: scales.yScale,
-      title: 'Horse Power [PS]'
+      title: 'Horse Power [PS]',
+      configureAxis: {
+        dependentOn: 'width',
+        scope: 'chart',
+        tuples: [[0, (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s')))],
+          [2, (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))]]
+      }
     },
-    title: "Car Characteristics",
     radiuses: {
       radiusDim: mileages,
       scale: scales.radiusScale

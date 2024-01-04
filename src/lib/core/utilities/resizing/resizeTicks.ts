@@ -1,9 +1,10 @@
 import {boundRegex, indexFromBounds, TickOrientation} from "./matchBounds";
 import {convertToPx} from "../length";
-import {Bounds, SVGHTMLElement} from "./types";
+import {SVGHTMLElement} from "./types";
+import {BoundsValid} from "./bounds";
 
 export function calcTickAngle(element: SVGHTMLElement, tickOrientation: TickOrientation) {
-  function calcBoundWidthToPx(bounds: Bounds) {
+  function calcBoundWidthToPx(bounds: BoundsValid) {
     const boundMatch = bounds.minWidth?.match(boundRegex);
     if (!boundMatch) return 0 //TODO: enforce use of minwidth in arguments
     const [, boundWidth, boundWidthUnit] = boundMatch

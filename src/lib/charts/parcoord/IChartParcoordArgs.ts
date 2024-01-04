@@ -1,4 +1,4 @@
-import {ConfigureAxisFn, IChartBaseArgs, ScaleAny} from "../../core";
+import {ConfigureAxisFn, ChartBaseArgs, ScaleAny} from "../../core";
 import {Legend} from "../../legend";
 
 export type TParcoordDimensionArg = {
@@ -10,7 +10,7 @@ export type TParcoordDimensionArg = {
   styleClass?: string
 }
 
-export interface IChartParcoordArgs extends IChartBaseArgs {
+export interface IChartParcoordArgs extends ChartBaseArgs {
   dimensions: TParcoordDimensionArg[]
   legend?: Legend
 }

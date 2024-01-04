@@ -10,10 +10,10 @@
   --transform-factor-height: var(--transform-factor-base);
   --transform-factor-height-offset: 0;
 
-  --transform-index: wide-0;
+  --transform-index: 0;
 
   //Legend To Bottom
-  @container style(--transform-index: wide-3) {
+  @container style(--transform-index-width: 0) or style(--transform-index-width: 1) or style(--transform-index-width: 2) {
     .chart {
       grid-template: auto 1fr auto auto / auto 1fr auto;
       grid-template-areas:
@@ -48,7 +48,7 @@
   }
   //@container style(--transform-index: wide-3) {
 
-  @container style(--transform-index: wide-2) or style(--transform-index: wide-3) {
+  @container style(--transform-index-width: 0) or style(--transform-index-width: 1) {
     .axis-x .tick {
       display: none;
       &:nth-of-type(2n), &:first-of-type, &:last-of-type {

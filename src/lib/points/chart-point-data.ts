@@ -5,17 +5,18 @@ import {
   ScaleAny,
   ScaleContinuous,
   AxisData,
-  TickOrientation, ConfigureAxisFn, AxisArgs, axisData
+  TickOrientation, ConfigureAxisFn, AxisArgs, axisData, LengthDimensionBounds, ChartBaseArgs, ChartBaseValid, chartBaseValidation
 } from "../core";
 import {Legend, legendData} from "../legend";
 import {Point, SeriesPoint, seriesPointData} from "./series-point";
 import {zoom, ZoomBehavior} from "d3";
-import {BoundArg, Bounds} from "../core/utilities/resizing/types";
 import {SeriesConfigTooltips} from "../tooltip";
+import {BoundsValid} from "../core/utilities/resizing/bounds";
+import {ConfigBoundable} from "../core/utilities/resizing/boundable";
 
 // type Dimension = number | string // TODO: | date . Include this everywhere
 
-export type ChartPointArgs = {
+export type ChartPointArgs = ChartBaseArgs & {
   x: AxisArgs,
   y: AxisArgs,
   radiuses?: number | {
@@ -29,16 +30,12 @@ export type ChartPointArgs = {
   zoom?: {
     in: number,
     out: number
-  };
+  }
   styleClasses?: string[]
   legend?: Legend
-  flipped?: boolean;
-  title?: string;
-  subtitle?: string;
-  markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>;
 }
 
-export type ChartPointData = {
+export type ChartPointData = ChartBaseValid & {
   x: AxisData,
   y: AxisData,
   pointSeries: SeriesPoint[];
@@ -49,13 +46,6 @@ export type ChartPointData = {
     out: number
   }
   legend: Legend;
-
-  xAxis?: Partial<AxisData>;
-  yAxis?: Partial<AxisData>;
-  flipped?: boolean;
-  title?: string;
-  subtitle?: string;
-  markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>;
 }
 
 export function chartPointData(data: ChartPointArgs): ChartPointData {
@@ -104,10 +94,8 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
     },
     pointSeries: points,
     maxRadius,
+    ...chartBaseValidation(data),
     legend: legendData(legend ? legend : { labels }),
-    title: data.title || '',
-    subtitle: data.subtitle || '',
-    flipped: data.flipped || false,
     zoom: zoomData ? {
       ...zoomData,
       behaviour: zoom()

@@ -1,4 +1,4 @@
-import {AxisData, IChartBaseData, ScaleAny} from "../../core";
+import {AxisData, ChartBaseValid, ScaleAny} from "../../core";
 import {ScalePoint} from "d3";
 
 export type TParcoordDimensionData = {
@@ -8,7 +8,7 @@ export type TParcoordDimensionData = {
   styleClass: string
 }
 
-export interface IChartParcoordData extends IChartBaseData {
+export interface IChartParcoordData extends ChartBaseValid {
   dimensions: TParcoordDimensionData[]
   axisScale:  ScalePoint<string>
 }

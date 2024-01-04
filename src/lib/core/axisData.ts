@@ -10,27 +10,29 @@ import {
   Transition,
 } from 'd3';
 import {
-  Boundable, boundArgByIndices,
-  getBoundableIndices,
+  LengthDimensionBounds, boundArgByIndices,
   TickOrientation
 } from "./utilities/resizing/matchBounds";
 import {calcTickAngle} from "./utilities/resizing/resizeTicks";
 import {ScaleAny} from "./utilities/scale";
-import {BoundArg, Bounds} from "./utilities/resizing/types";
+import {elementFromSelection} from "./utilities/d3/util";
+import {ChartBaseValid} from "./charts";
+import {BoundsValid, getBoundStateFromCSS, updateBoundStateInCSS} from "./utilities/resizing/bounds";
+import {ConfigBoundable, getConfigBoundableState} from "./utilities/resizing/boundable";
 
 export type AxisArgs = {
   values: number[][], //TODO: add strings/dates, also for y
   scale?: AxisScale<AxisDomain>,
-  bounds?: Partial<Boundable>
-  title?: BoundArg<string>,
-  subTitle?: BoundArg<string>,
-  configureAxis?: ConfigureAxisFn,
+  bounds?: Partial<LengthDimensionBounds>
+  title?: ConfigBoundable<string>,
+  subTitle?: ConfigBoundable<string>,
+  configureAxis?: ConfigBoundable<ConfigureAxisFn>,
   tickOrientation?: TickOrientation
 }
 
 export type AxisData = Required<Omit<AxisArgs, 'tickOrientation' | 'bounds'>> & {
   tickOrientation?: TickOrientation,
-  bounds: Boundable
+  bounds: LengthDimensionBounds
 }
 
 export interface ConfigureAxisFn {
@@ -60,35 +62,37 @@ export function axisData(data: AxisArgs): AxisData {
   }
 }
 
-export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisData>;
-export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisData>;
+export type AxisPropagation = AxisData & Pick<ChartBaseValid, 'selection'>
+export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisPropagation>;
+export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisPropagation>;
 
 export function axisLeftRender(selection: AxisSelection): void {
   selection.classed('axis axis-left', true)
     .each((d, i, g) => {
-      return axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d)
+      return axisRender(select(g[i]), d3Axis(d3AxisLeft, selection), d)
     })
 }
 
 export function axisBottomRender(selection: AxisSelection): void {
   selection.classed('axis axis-bottom', true)
-    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisBottom, d), d))
+    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisBottom, selection), d))
 }
 
 export function axisSequenceRender(selection: AxisSelection): void {
   selection.classed('axis axis-sequence', true)
-    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d))
+    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, selection), d))
 }
 
 function axisRender(
   selection: AxisSelection,
   a: D3Axis<AxisDomain>,
-  axisD: AxisData
+  axisD: AxisPropagation
 ): void {
-  const axisElement = selection.node()
-  if (!axisElement) return
-  const indices = getBoundableIndices(axisElement, axisD.bounds)
-  selection
+  const axisElement = elementFromSelection(selection)
+  const chartElement = elementFromSelection(selection)
+  // updateBoundStateInCSS(axisElement, axisD.bounds) //IS DONE IN d3Axis for now
+
+    selection
     .selectAll('.title')
     .data([null])
     .join('g')
@@ -97,7 +101,7 @@ function axisRender(
     .selectAll('text')
     .data([null])
     .join('text')
-    .text(boundArgByIndices(indices, axisD.title))
+    .text(getConfigBoundableState(axisD.title, {chart: chartElement, self: axisElement}))
 
   selection.selectAll('.subtitle')
     .data([null])
@@ -107,7 +111,7 @@ function axisRender(
     .selectAll('text')
     .data([null])
     .join('text')
-    .text(boundArgByIndices(indices, axisD.subTitle))
+    .text(getConfigBoundableState(axisD.subTitle, {chart: chartElement, self: axisElement}))
 
   const ticksS = selection
     .selectAll('.ticks-transform')
@@ -191,9 +195,15 @@ function axisRender(
 
 function d3Axis(
   axisGenerator: (scale: AxisScale<AxisDomain>) => D3Axis<AxisDomain>,
-  data: AxisData
+  selection: AxisSelection
 ): D3Axis<AxisDomain> {
-  const axis = axisGenerator(data.scale);
-  data.configureAxis(axis);
+  const {scale, bounds, configureAxis, selection: chartSelection} = selection.datum()
+  const axisElement = elementFromSelection(selection)
+  updateBoundStateInCSS(axisElement, bounds)
+  const chartElement = elementFromSelection(chartSelection)
+  const configureAxisValid = getConfigBoundableState(configureAxis, {chart: chartElement, self: axisElement})
+
+  const axis = axisGenerator(scale)
+  configureAxisValid(axis)
   return axis;
 }
