@@ -15,7 +15,7 @@ export * from './resize-event-dispatcher';
 
 export * from './utilities/scale';
 
-export * from './axis';
+export * from './axisData';
 export * from './charts';
 
 export * from './utilities/text';
@@ -25,3 +25,4 @@ export * from './menu-dropdown';
 
 export * from './tools/tool-download-svg';
 export * from './tools/tool-filter-nominal';
+export {convertToPx} from "./utilities/length";

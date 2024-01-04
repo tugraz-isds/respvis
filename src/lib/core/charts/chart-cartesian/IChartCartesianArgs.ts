@@ -1,8 +1,8 @@
-import {Axis} from "../../axis";
+import {AxisData} from "../../axisData";
 import {IChartBaseData} from "../chart-base";
 
 export interface IChartCartesianArgs extends IChartBaseData {
-  xAxis?: Partial<Axis>;
-  yAxis?: Partial<Axis>;
+  xAxis?: Partial<AxisData>;
+  yAxis?: Partial<AxisData>;
   flipped?: boolean;
 }

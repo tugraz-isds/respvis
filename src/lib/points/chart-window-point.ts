@@ -79,25 +79,29 @@ export class ScatterPlot implements IWindowChartBaseRenderer {
     this.selection
       .each((chartWindowD, i, g) => {
         const chartWindowS = select<HTMLDivElement, ChartWindowPoint>(g[i])
-        const {xScale, yScale, zoom} = chartWindowD
+        const {x, y, zoom} = chartWindowD
         if (!zoom) return
         drawArea.call(
           zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom.autozoom', function (e) {
             renderer.data = {
               ...chartWindowD,
-              xScale: e.transform.rescaleX(xScale),
-              yScale: e.transform.rescaleY(yScale)
+              x: {...x,
+                scale: e.transform.rescaleX(x.scale)
+              },
+              y: {...y,
+                scale: e.transform.rescaleY(y.scale)
+              }
             }
             chartWindowS.dispatch('resize')
           })
         )
 
         chartWindowS.on('resize.autozoom', () => {
-          const [x, widthTranslate] = xScale.range()
-          const [y, heightTranslate] = yScale.range()
+          const [x1, widthTranslate] = x.scale.range()
+          const [y1, heightTranslate] = y.scale.range()
           const extent: [[number, number], [number, number]] = [
-            [x, heightTranslate],
-            [widthTranslate, y],
+            [x1, heightTranslate],
+            [widthTranslate, y1],
           ];
           zoom.behaviour.extent(extent).translateExtent(extent);
         });

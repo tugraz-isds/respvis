@@ -1,6 +1,6 @@
 import {select, Selection} from "d3";
 import {IChartParcoordData} from "./IChartParcoordData";
-import {Axis, axisSequenceRender, chartBaseRender, rectFromString} from "../../core";
+import {AxisData, axisSequenceRender, chartBaseRender, rectFromString} from "../../core";
 import {SeriesLine, seriesLineData, seriesLineRender} from "../../lines";
 
 export type ChartParcoordSelection = Selection<SVGSVGElement | SVGGElement, IChartParcoordData>;
@@ -46,7 +46,7 @@ function renderAxes(data: IChartParcoordData, g: SVGSVGElement | SVGGElement) {
 
 
   dimensions.forEach((dimension, index) => { //TODO: create own render function for axes inside draw-area
-    select(g).selectAll('.draw-area').selectAll<SVGGElement, Axis>(`.axis-${index}`)
+    select(g).selectAll('.draw-area').selectAll<SVGGElement, AxisData>(`.axis-${index}`)
       .data([null])
       .join('g')
       .data([dimension.axis])
@@ -120,7 +120,6 @@ function renderLines(data: IChartParcoordData, g: SVGSVGElement | SVGGElement) {
     .join('g')
     .call((s) => seriesLineRender(s))
     .attr("transform", () => {
-      console.log(titleSpace)
       return "translate(0, " + titleSpace + ")"
     })
     // .on('pointerover.chartlinehighlight', (e) =>

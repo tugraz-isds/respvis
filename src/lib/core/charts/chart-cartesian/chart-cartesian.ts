@@ -1,5 +1,5 @@
 import {select, Selection} from 'd3';
-import {Axis, axisBottomRender, axisData, axisLeftRender} from '../../axis';
+import {AxisData, axisBottomRender, axisData, axisLeftRender} from '../../axisData';
 import {IChartCartesianData} from "./IChartCartesianData";
 import {IChartCartesianArgs} from "./IChartCartesianArgs";
 
@@ -18,19 +18,19 @@ export type ChartCartesianSelection = Selection<SVGSVGElement | SVGGElement, ICh
 export function chartCartesianAxisRender(selection: ChartCartesianSelection): void {
   selection
     .classed('chart-cartesian', true)
-    .each(function ({ flipped, xAxis, yAxis }, i, g) {
+    .each(function ({ flipped, x, y }, i, g) {
       const s = <ChartCartesianSelection>select(g[i]);
       const flippedBool = flipped ? flipped : false
 
-      s.selectAll<SVGGElement, Axis>('.axis-left')
-        .data([flipped ? xAxis : yAxis])
+      s.selectAll<SVGGElement, AxisData>('.axis-left')
+        .data([flipped ? x : y])
         .join('g')
         .call((s) => axisLeftRender(s))
         .classed('axis-x', flippedBool)
         .classed('axis-y', !flipped);
 
-      s.selectAll<SVGGElement, Axis>('.axis-bottom')
-        .data([flipped ? yAxis : xAxis])
+      s.selectAll<SVGGElement, AxisData>('.axis-bottom')
+        .data([flipped ? y : x])
         .join('g')
         .call((s) => axisBottomRender(s))
         .classed('axis-x', !flipped)

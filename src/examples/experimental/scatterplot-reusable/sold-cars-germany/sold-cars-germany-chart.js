@@ -3,6 +3,7 @@ import {ScatterPlot} from '../libs/respvis/respvis.js'
 import {carData, getTopMakesData} from './data/sold-cars-germany.js';
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
 import {format} from "../libs/d3-7.6.0/d3.js";
+// import {AxisArgs, Legend, Point, ScaleAny, ScaleContinuous, SeriesConfigTooltips} from "../../../../lib";
 
 
 export function createChartSoldCarsGermany(selector) {
@@ -29,12 +30,27 @@ export function createChartSoldCarsGermany(selector) {
 
 
   const data = {
-    xValues: horsePower,
-    xScale: scales.xScale,
-    yValues: prices,
-    yScale: scales.yScale,
-    xAxis: {title: 'Price [EU]', configureAxis: (axis) => axis.tickFormat(format('.3d'))},
-    yAxis: {title: 'Horse Power [PS]'},
+    x: {
+      values: horsePower,
+      scale: scales.xScale,
+      // title: 'Price [EU]',
+      title: {
+        dependentOn: 'width',
+        tuples: [[0, 'Price'], [1, 'Price [EU]'], [2, 'Price [EU] Long']]
+      },
+      bounds: {
+        width: {
+          values: [10, 30, 50],
+          unit: 'rem'
+        }
+      },
+      configureAxis: (axis) => axis.tickFormat(format('.3d'))
+    },
+    y: {
+      values: prices,
+      scale: scales.yScale,
+      title: 'Horse Power [PS]'
+    },
     title: "Car Characteristics",
     radiuses: {
       radiusDim: mileages,

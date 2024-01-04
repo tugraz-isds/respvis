@@ -1,15 +1,23 @@
-import {calcDefaultScale, IChartCartesianData, chartCartesianData, ScaleAny, ScaleContinuous} from "../core";
+import {
+  calcDefaultScale,
+  IChartCartesianData,
+  chartCartesianData,
+  ScaleAny,
+  ScaleContinuous,
+  AxisData,
+  TickOrientation, ConfigureAxisFn, AxisArgs, axisData
+} from "../core";
 import {Legend, legendData} from "../legend";
-import {SeriesPoint, seriesPointData} from "./series-point";
+import {Point, SeriesPoint, seriesPointData} from "./series-point";
 import {zoom, ZoomBehavior} from "d3";
+import {BoundArg, Bounds} from "../core/utilities/resizing/types";
+import {SeriesConfigTooltips} from "../tooltip";
 
-type Dimension = number | string // TODO: | date . Include this everywhere
+// type Dimension = number | string // TODO: | date . Include this everywhere
 
-export interface ChartPointArgs extends IChartCartesianData {
-  xValues: number[][]; //TODO: add strings/dates, also for y
-  xScale?: ScaleAny<any, number, number>;
-  yValues: number[][];
-  yScale?: ScaleAny<any, number, number>;
+export type ChartPointArgs = {
+  x: AxisArgs,
+  y: AxisArgs,
   radiuses?: number | {
     radiusDim: number[][],
     scale: ScaleAny<any, number, number>
@@ -22,13 +30,17 @@ export interface ChartPointArgs extends IChartCartesianData {
     in: number,
     out: number
   };
-  styleClasses?: string[];
-  legend?: Legend;
+  styleClasses?: string[]
+  legend?: Legend
+  flipped?: boolean;
+  title?: string;
+  subtitle?: string;
+  markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>;
 }
 
-export interface ChartPointData extends IChartCartesianData {
-  xScale: ScaleAny<any, number, number>;
-  yScale: ScaleAny<any, number, number>;
+export type ChartPointData = {
+  x: AxisData,
+  y: AxisData,
   pointSeries: SeriesPoint[];
   maxRadius: number
   zoom?: {
@@ -37,12 +49,21 @@ export interface ChartPointData extends IChartCartesianData {
     out: number
   }
   legend: Legend;
+
+  xAxis?: Partial<AxisData>;
+  yAxis?: Partial<AxisData>;
+  flipped?: boolean;
+  title?: string;
+  subtitle?: string;
+  markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>;
 }
 
 export function chartPointData(data: ChartPointArgs): ChartPointData {
-  const {xValues, yValues, xScale, yScale,
+  const {x, y,
     legend, flipped, radiuses, zoom : zoomData,
     color} = data
+  const {values: xValues, scale: xScale} = x
+  const {values: yValues, scale: yScale} = y
   const lowerLength = xValues.length < yValues.length ? xValues.length : yValues.length
   const xVals = xValues.slice(0, lowerLength)
   const yVals = yValues.slice(0, lowerLength)
@@ -73,13 +94,20 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
 
   const labels = legend?.labels ? legend.labels : yVals.map((yVal, index) => `categorical-${index}`)
   //TODO: make zoom optional
+
   return {
-    xScale: xScaleValid,
-    yScale: yScaleValid,
+    x: {...axisData(x),
+      scale: xScaleValid
+    },
+    y: {...axisData(y),
+      scale: yScaleValid
+    },
     pointSeries: points,
     maxRadius,
     legend: legendData(legend ? legend : { labels }),
-    ...chartCartesianData(data),
+    title: data.title || '',
+    subtitle: data.subtitle || '',
+    flipped: data.flipped || false,
     zoom: zoomData ? {
       ...zoomData,
       behaviour: zoom()

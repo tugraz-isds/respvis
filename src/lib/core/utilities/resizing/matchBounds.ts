@@ -1,64 +1,78 @@
-export const boundRegex = /(\d+(?:\.\d+)?)(px|rem)/
-type Bound = `${number}${'px' | 'rem' | 'em'}`
-export type Bounds = {
-  minHeight?: Bound,
-  minWidth?: Bound,
-  maxHeight?: Bound,
-  maxWidth?: Bound
-}
+import {BoundArg, Bounds, CSSLength, isTupleBoundArg, LengthDimension, SVGHTMLElement} from "./types";
+import {convertToPx} from "../length";
+
+export const boundRegex = /(\d+(?:\.\d+)?)(px|rem|em)/
+type Bound = `${number}${CSSLength}`
+// export type Bounds = {
+//   minHeight?: Bound,
+//   minWidth?: Bound,
+//   maxHeight?: Bound,
+//   maxWidth?: Bound
+// }
 
 export type TickOrientation = {
-  bounds: Bounds[],
-  boundElement?: Element,
+  bounds: Bounds,
+  boundElement?: SVGHTMLElement,
   rotationDirection?: 'clockwise' | 'counterclockwise'
   orientation: ('horizontal' | 'vertical' | 'transition')[]
 }
 
-export function findMatchingBoundsIndex(element: Element, boundsList: Bounds[]) {
-  for (const [index, bounds] of boundsList.entries()) {
-    if (matchesBounds(element, bounds)) return index
+export function boundArgByIndices<T>(indices: BoundableIndices, arg: BoundArg<T>) {
+  if (!isTupleBoundArg(arg)) {
+    return arg
   }
-  return -1
+  const currentIndex = indices[arg.dependentOn]
+  let tuple = arg.tuples[0]
+  for (let i = 1; i < arg.tuples.length; i++) {
+    if (arg.tuples[i][0] <= currentIndex) tuple = arg.tuples[i]
+  }
+  return tuple[1]
 }
 
-export function matchesBounds(element: Element, bounds: Bounds) {
-  const { width, height } = element.getBoundingClientRect()
 
-  const minWidthMatch = bounds.minWidth?.match(boundRegex);
-  if (minWidthMatch) {
-    const [, minWidth, minWidthUnit] = minWidthMatch
-    if (convertToPx(element, minWidth,  minWidthUnit) > width) return false
-  }
-
-  const minHeightMatch = bounds.minHeight?.match(boundRegex);
-  if (minHeightMatch) {
-    const [, minHeight, minHeightUnit] = minHeightMatch
-    if (convertToPx(element, minHeight,  minHeightUnit) > height) return false
-  }
-
-  const maxWidthMatch = bounds.maxWidth?.match(boundRegex);
-  if (maxWidthMatch) {
-    const [, maxWidth, maxWidthUnit] = maxWidthMatch
-    if (convertToPx(element, maxWidth,  maxWidthUnit) < width) return false
-  }
-
-  const maxHeightMatch = bounds.maxHeight?.match(boundRegex);
-  if (maxHeightMatch) {
-    const [, maxHeight, maxHeightUnit] = maxHeightMatch
-    if (convertToPx(element, maxHeight,  maxHeightUnit) < height) return false
-  }
-
-  return true
+export type Boundable = {
+  width: Bounds,
+  height: Bounds,
 }
 
-export function convertToPx(element, value, unit) {
-  if (unit === 'px') {
-    return value;
-  } else if (unit === 'rem') {
-    return value * parseFloat(getComputedStyle(document.documentElement).fontSize);
-  } else if (unit === 'em') {
-    return value * parseFloat(getComputedStyle(element).fontSize);
-  } else {
-    throw new Error(`Invalid unit: ${unit}`);
+type BoundableIndices = {
+  [Property in keyof Boundable]: number;
+}
+
+//TODO: naming of custom css properties
+export function getBoundableIndices(element: SVGHTMLElement, boundable: Boundable): BoundableIndices {
+  const boundsWidthTransformed = transformBoundsWithCSSVars(element, boundable.width, 'width')
+  const boundsWidth = indexFromBounds(element,  boundsWidthTransformed, 'width')
+  element.style.setProperty('--transform-index', 'wide-' + boundsWidth)
+
+  const boundsHeightTransformed = transformBoundsWithCSSVars(element, boundable.height, 'height')
+  const boundsHeight = indexFromBounds(element,  boundsHeightTransformed, 'height')
+  element.style.setProperty('--transform-index', 'tall-' + boundsHeight)
+
+  return { width: boundsWidth, height: boundsHeight}
+}
+
+export function indexFromBounds(element: SVGHTMLElement, bounds: Bounds, dimension: LengthDimension) {
+  const rect = element.getBoundingClientRect()
+  const referenceValue = rect[dimension]
+  if (bounds.values.length === 0) return 0
+  for (let i = 0; i < bounds.values.length; i++) {
+    if (referenceValue < convertToPx(element, bounds.values[i],  bounds.unit)) return i
+  }
+  return bounds.values.length
+}
+
+function transformBoundsWithCSSVars(element: SVGHTMLElement, bounds: Bounds, dimension: LengthDimension): Bounds {
+  const transformFactorWidth = Number(getComputedStyle(element).getPropertyValue(`--transform-factor-${dimension}`))
+  const transformFactorWidthOffset = Number(getComputedStyle(element).getPropertyValue(`--transform-factor-${dimension}-offset`))
+
+  const transformedValues = bounds.values.map(value => {
+    const transformFactorWidthValid = isNaN(transformFactorWidth) ? 1 : transformFactorWidth
+    const transformFactorWidthOffsetValid = isNaN(transformFactorWidthOffset) ? 0 : transformFactorWidthOffset
+    return value * transformFactorWidthValid + transformFactorWidthOffsetValid
+  })
+  return {
+    values: transformedValues,
+    unit: bounds.unit
   }
 }

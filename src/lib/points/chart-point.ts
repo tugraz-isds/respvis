@@ -17,22 +17,26 @@ export function chartPointRender(selection: ChartPointSelection): void {
       renderAllSeriesOfPoints(chartD, g[i])
       renderLegend(chartD, g[i])
 
-      chartD.xAxis.scale = chartD.xScale;
-      chartD.yAxis.scale = chartD.yScale;
+      // chartD.xAxis.scale = chartD.xScale;
+      // chartD.yAxis.scale = chartD.yScale;
     })
     .call((s) => chartCartesianAxisRender(s));
 
   function setScale (data: ChartPointData, g: SVGSVGElement | SVGGElement) {
     const drawAreaS = select(g).selectAll('.draw-area');
     const drawAreaBounds = rectFromString(drawAreaS.attr('bounds') || '0, 0, 600, 400');
-    const { flipped, xScale, yScale, maxRadius } = data;
+    const { flipped, x, y, maxRadius } = data;
+    const {scale: xScale} = x
+    const {scale: yScale} = y
 
     xScale.range(flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius]);
     yScale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius]);
   }
 
   function renderAllSeriesOfPoints (data: ChartPointData, g: SVGSVGElement | SVGGElement) {
-    const { flipped, pointSeries, xScale, yScale } = data;
+    const { flipped, pointSeries, x, y } = data;
+    const {scale: xScale} = x
+    const {scale: yScale} = y
     select(g)
       .selectAll('.draw-area')
       .selectAll<SVGSVGElement, ChartPointData>('.series-point')

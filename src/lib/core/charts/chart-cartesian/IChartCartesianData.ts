@@ -1,8 +1,8 @@
 import {IChartBaseData} from "../chart-base";
-import {Axis} from "../../axis";
+import {AxisData} from "../../axisData";
 
 export interface IChartCartesianData extends IChartBaseData {
-  xAxis: Axis;
-  yAxis: Axis;
+  xAxis: AxisData;
+  yAxis: AxisData;
   flipped?: boolean;
 }

@@ -1,4 +1,4 @@
-import {easeCubicOut, select, Selection} from 'd3';
+import {AxisDomain, AxisScale, easeCubicOut, select, Selection} from 'd3';
 import {SeriesConfigTooltips, seriesConfigTooltipsData, seriesConfigTooltipsHandleEvents,} from '../tooltip';
 import {
   arrayIs,
@@ -22,9 +22,9 @@ export interface Point extends Circle {
 
 export interface SeriesPoint extends SeriesConfigTooltips<SVGCircleElement, Point> {
   xValues: any[];
-  xScale: ScaleAny<any, number, number>;
+  xScale: AxisScale<AxisDomain>,
   yValues: any[];
-  yScale: ScaleAny<any, number, number>;
+  yScale: AxisScale<AxisDomain>,
   radiuses: number | {
     radiusDim: number[],
     scale: ScaleAny<any, number, number>

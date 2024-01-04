@@ -9,38 +9,65 @@ import {
   Selection,
   Transition,
 } from 'd3';
-import {findMatchingBoundsIndex, TickOrientation} from "./utilities/resizing/matchBounds";
+import {
+  Boundable, boundArgByIndices,
+  getBoundableIndices,
+  TickOrientation
+} from "./utilities/resizing/matchBounds";
 import {calcTickAngle} from "./utilities/resizing/resizeTicks";
+import {ScaleAny} from "./utilities/scale";
+import {BoundArg, Bounds} from "./utilities/resizing/types";
+
+export type AxisArgs = {
+  values: number[][], //TODO: add strings/dates, also for y
+  scale?: AxisScale<AxisDomain>,
+  bounds?: Partial<Boundable>
+  title?: BoundArg<string>,
+  subTitle?: BoundArg<string>,
+  configureAxis?: ConfigureAxisFn,
+  tickOrientation?: TickOrientation
+}
+
+export type AxisData = Required<Omit<AxisArgs, 'tickOrientation' | 'bounds'>> & {
+  tickOrientation?: TickOrientation,
+  bounds: Boundable
+}
 
 export interface ConfigureAxisFn {
   (axis: D3Axis<AxisDomain>): void;
 }
 
-export interface Axis {
-  scale: AxisScale<AxisDomain>;
-  title: string;
-  subtitle: string;
-  configureAxis: ConfigureAxisFn;
-  tickOrientation?: TickOrientation
-}
-
-export function axisData(data: Partial<Axis>): Axis {
+export function axisData(data: AxisArgs): AxisData {
+  //TODO: for scale use min and max values of data points
+  //TODO: sort bounds
   return {
+    values: data.values,
     scale: data.scale || scaleLinear().domain([0, 1]).range([0, 600]),
     title: data.title || '',
-    subtitle: data.subtitle || '',
-    configureAxis: data.configureAxis || (() => {
-    }),
-    tickOrientation: data.tickOrientation
-  };
+    subTitle: data.subTitle || '',
+    configureAxis: data.configureAxis || (() => {}),
+    tickOrientation: data.tickOrientation,
+    bounds: {
+      width: data.bounds?.width ?? {
+        unit: 'rem',
+        values: []
+      },
+      height: data.bounds?.height ?? {
+        unit: 'rem',
+        values: []
+      }
+    }
+  }
 }
 
-export type AxisSelection = Selection<SVGSVGElement | SVGGElement, Axis>;
-export type AxisTransition = Transition<SVGSVGElement | SVGGElement, Axis>;
+export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisData>;
+export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisData>;
 
 export function axisLeftRender(selection: AxisSelection): void {
   selection.classed('axis axis-left', true)
-    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d))
+    .each((d, i, g) => {
+      return axisRender(select(g[i]), d3Axis(d3AxisLeft, d), d)
+    })
 }
 
 export function axisBottomRender(selection: AxisSelection): void {
@@ -56,8 +83,11 @@ export function axisSequenceRender(selection: AxisSelection): void {
 function axisRender(
   selection: AxisSelection,
   a: D3Axis<AxisDomain>,
-  axisD: Axis
+  axisD: AxisData
 ): void {
+  const axisElement = selection.node()
+  if (!axisElement) return
+  const indices = getBoundableIndices(axisElement, axisD.bounds)
   selection
     .selectAll('.title')
     .data([null])
@@ -67,7 +97,7 @@ function axisRender(
     .selectAll('text')
     .data([null])
     .join('text')
-    .text(axisD.title);
+    .text(boundArgByIndices(indices, axisD.title))
 
   selection.selectAll('.subtitle')
     .data([null])
@@ -77,7 +107,7 @@ function axisRender(
     .selectAll('text')
     .data([null])
     .join('text')
-    .text(axisD.subtitle);
+    .text(boundArgByIndices(indices, axisD.subTitle))
 
   const ticksS = selection
     .selectAll('.ticks-transform')
@@ -161,7 +191,7 @@ function axisRender(
 
 function d3Axis(
   axisGenerator: (scale: AxisScale<AxisDomain>) => D3Axis<AxisDomain>,
-  data: Axis
+  data: AxisData
 ): D3Axis<AxisDomain> {
   const axis = axisGenerator(data.scale);
   data.configureAxis(axis);
