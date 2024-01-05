@@ -24,17 +24,6 @@
 export function chooseResponsiveData(element, data) {
   // const index = recalculateBounds(element)
   //
-  //
-  // switch (index) {
-  //   case 0:
-  //   case 1:
-  //     data.legend.title = 'Legend';
-  //     break
-  //   default:
-  //     data.legend.title = '';
-  //     break
-  // }
-  //
   // switch (index) {
   //   case 0:
   //     data.pointSeries[0].radiuses.scale.range([5, 20])

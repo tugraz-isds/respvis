@@ -51,10 +51,10 @@ export function chartPointRender(selection: ChartPointSelection): void {
 
   function renderLegend(chartD: ChartPointData, g: SVGSVGElement | SVGGElement) {
     const drawAreaS = select(g).selectAll('.draw-area');
-    const {legend} = chartD
+    const {legend, selection: chartSelection} = chartD
     selection
       .selectAll<SVGGElement, Legend>('.legend')
-      .data([legend])
+      .data([{...legend, selection: chartSelection}])
       .join('g')
       .call((s) => legendRender(s))
     .on('pointerover.chartpointhighlight pointerout.chartpointhighlight', (e) => { //TODO: Hover

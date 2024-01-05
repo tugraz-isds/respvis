@@ -72,7 +72,11 @@ export function createChartSoldCarsGermany(selector) {
       scale: scales.radiusScale
     },
     legend: {
-      title: 'Legend',
+      title: {
+        dependentOn: 'width',
+        scope: 'chart',
+        tuples: [[0,''], [[3], 'Legend']]
+      },
       keys: [...topMakesNames, "Other"],
       labels: [...topMakesNames, "Other"]
     },

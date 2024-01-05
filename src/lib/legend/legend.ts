@@ -1,6 +1,8 @@
 import { select, Selection } from 'd3';
-import { arrayIs, Rect, rectFromSize, rectFromString, Size } from '../core';
+import {arrayIs, ChartBaseValid, Rect, rectFromSize, rectFromString, Size} from '../core';
 import { pathRect } from '../core/utilities/path';
+import {ConfigBoundable, getConfigBoundableState} from "../core/utilities/resizing/boundable";
+import {elementFromSelection} from "../core/utilities/d3/util";
 
 export enum LegendOrientation {
   Vertical = 'vertical',
@@ -15,7 +17,7 @@ export interface LegendItem {
 }
 
 export interface Legend {
-  title: string;
+  title: ConfigBoundable<string>
   labels: string[];
   symbols:
     | ((symbol: SVGPathElement, size: Size) => void)
@@ -50,7 +52,9 @@ export function legendCreateItems(legendData: Legend): LegendItem[] {
   return reverse ? items.reverse() : items
 }
 
-export function legendRender(selection: Selection<Element, Legend>): void {
+type WithChartSelection<T> = T & Pick<ChartBaseValid, 'selection'>
+export function legendRender(selection: Selection<Element, WithChartSelection<Legend>>): void {
+  const chartElement = elementFromSelection(selection.datum().selection)
   selection.classed('legend', true).each((legendD, i, g) => {
     const legendS = select<Element, Legend>(g[i]);
 
@@ -59,7 +63,7 @@ export function legendRender(selection: Selection<Element, Legend>): void {
       .data([null])
       .join('text')
       .classed('title', true)
-      .text(legendD.title);
+      .text(getConfigBoundableState(legendD.title, {chart: chartElement}));
 
     const itemS = legendS.selectAll('.items').data([null]).join('g').classed('items', true);
 
