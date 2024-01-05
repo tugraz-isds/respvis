@@ -2,8 +2,15 @@ import { Selection } from 'd3';
 import { layouterRender } from '../../layouter';
 import { menuDropdownRender } from '../../menu-dropdown';
 import { resizeEventListener } from '../../resize-event-dispatcher';
+import {elementFromSelection} from "../../utilities/d3/util";
+import {updateBoundStateInCSS} from "../../utilities/resizing/bounds";
+import {ChartBaseValid} from "./chart-base-validation";
 
-export function windowChartBaseRender(selection: Selection<HTMLDivElement>): void {
+export function windowChartBaseRender(selection: Selection<HTMLDivElement, ChartBaseValid>): void {
+  const chartWindowElement = elementFromSelection(selection)
+  const chartBaseValid = selection.data()[0]
+  updateBoundStateInCSS(chartWindowElement, chartBaseValid.bounds)
+
   selection.classed('chart-window', true);
 
   selection

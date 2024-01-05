@@ -4,7 +4,7 @@ import {LengthDimensionBounds} from "../../utilities/resizing/matchBounds";
 import {scaleLinear, Selection} from "d3";
 import {Legend} from "../../../legend";
 import {boundsValidation} from "../../utilities/resizing/bounds";
-import {SVGHTMLElement} from "../../utilities/resizing/types";
+import {SVGHTMLElement} from "../../constants/types";
 import {ConfigBoundable} from "../../utilities/resizing/boundable";
 
 export type ChartBaseArgs = {

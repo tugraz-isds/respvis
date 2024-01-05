@@ -1,4 +1,4 @@
-import {CSSLength, LengthDimension, SVGHTMLElement} from "./types";
+import {CSSLength, LengthDimension, SVGHTMLElement} from "../../constants/types";
 import {convertToPx} from "../length";
 import {BoundsValid, LenghtDimensionIndices} from "./bounds";
 import {ConfigBoundable, isConfigTupleBoundable} from "./boundable";

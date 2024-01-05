@@ -1,4 +1,4 @@
-import {CSSLength} from "./resizing/types";
+import {CSSLength} from "../constants/types";
 
 export function convertToPx(element: Element, value: number, unit: CSSLength) {
   if (unit === 'px') {

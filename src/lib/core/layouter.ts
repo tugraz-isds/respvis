@@ -10,6 +10,7 @@ import {
   rectToString,
 } from './utilities/rect';
 import { circleInsideRect, circleToAttrs } from './utilities/circle';
+import {cssVars} from "./constants/cssVars";
 
 function layoutNodeRoot(layouter: HTMLDivElement): Selection<HTMLDivElement, SVGElement> {
   return select(layouter)
@@ -21,9 +22,10 @@ function layoutNodeRoot(layouter: HTMLDivElement): Selection<HTMLDivElement, SVG
 function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGElement>): void {
   selection.each((d, i, g) => {
     const propTrue = (p: string) => p.trim() === 'true';
-    const computedStyle = window.getComputedStyle(g[i]);
-    const fitWidth = propTrue(computedStyle.getPropertyValue('--fit-width'));
-    const fitHeight = propTrue(computedStyle.getPropertyValue('--fit-height'));
+    const computedStyleHTMLElement = window.getComputedStyle(g[i]);
+    const computedStyleSVGElement = window.getComputedStyle(d);
+    const fitWidth = propTrue(computedStyleHTMLElement.getPropertyValue('--fit-width'));
+    const fitHeight = propTrue(computedStyleHTMLElement.getPropertyValue('--fit-height'));
 
     let style = '';
     if (fitWidth || fitHeight) {
@@ -32,6 +34,9 @@ function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGElement>): 
       if (fitHeight) style += `height: ${bbox.height}px; `;
     }
     g[i].setAttribute('style', style);
+    for (let varIndex= 0, len=cssVars.length; varIndex < len; varIndex++) {
+      g[i].style.setProperty(cssVars[varIndex], computedStyleSVGElement.getPropertyValue(cssVars[varIndex]))
+    }
   });
 }
 

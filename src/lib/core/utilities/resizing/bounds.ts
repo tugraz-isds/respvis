@@ -1,4 +1,4 @@
-import {CSSLength, LengthDimension, SVGHTMLElement} from "./types";
+import {CSSLength, LengthDimension, SVGHTMLElement} from "../../constants/types";
 import {indexFromBounds, LengthDimensionBounds} from "./matchBounds";
 
 

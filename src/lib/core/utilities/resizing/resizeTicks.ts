@@ -1,6 +1,6 @@
 import {boundRegex, indexFromBounds, TickOrientation} from "./matchBounds";
 import {convertToPx} from "../length";
-import {SVGHTMLElement} from "./types";
+import {SVGHTMLElement} from "../../constants/types";
 import {BoundsValid} from "./bounds";
 
 export function calcTickAngle(element: SVGHTMLElement, tickOrientation: TickOrientation) {

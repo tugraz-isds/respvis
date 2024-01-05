@@ -1,4 +1,4 @@
-import {LengthDimension, SVGHTMLElement} from "./types";
+import {LengthDimension, SVGHTMLElement} from "../../constants/types";
 import {getBoundStateFromCSS, LenghtDimensionIndices} from "./bounds";
 
 type BoundScopeRequired = 'chart'
