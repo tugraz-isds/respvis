@@ -1,8 +1,8 @@
-import {AxisDomain, AxisScale, easeCubicOut, select, Selection} from 'd3';
+import {easeCubicOut, select, Selection} from 'd3';
 import {SeriesConfigTooltips, seriesConfigTooltipsData, seriesConfigTooltipsHandleEvents,} from '../tooltip';
 import {
   arrayIs,
-  calcDefaultScale,
+  AxisValid,
   Circle,
   circleMinimized,
   circleToAttrs,
@@ -20,12 +20,10 @@ export interface Point extends Circle {
   key: string;
 }
 
-export interface SeriesPoint extends SeriesConfigTooltips<SVGCircleElement, Point> {
-  xValues: any[];
-  xScale: AxisScale<AxisDomain>,
-  yValues: any[];
-  yScale: AxisScale<AxisDomain>,
-  radiuses: number | {
+export type SeriesPointArgs = Partial<SeriesConfigTooltips<SVGCircleElement, Point>> & {
+  x: AxisValid,
+  y: AxisValid,
+  radiuses?: number | {
     radiusDim: number[],
     scale: ScaleAny<any, number, number>
   };
@@ -33,27 +31,31 @@ export interface SeriesPoint extends SeriesConfigTooltips<SVGCircleElement, Poin
     colorDim: number[],
     colorScale: ScaleContinuous<any, string>
   };
-  styleClasses: string | string[];
-  keys: string[];
-  bounds: Size;
-  flipped: boolean;
+  styleClasses?: string | string[];
+  keys?: string[];
+  bounds?: Size;
+  flipped?: boolean;
 }
 
-export function seriesPointData(data: Partial<SeriesPoint>): SeriesPoint {
-  const xValues = data.xValues || [];
-  const yValues = data.yValues || [];
+export type SeriesPointValid = Omit<SeriesPointArgs, 'radiuses'> & {
+  radiuses: number | {
+    radiusDim: number[],
+    scale: ScaleAny<any, number, number>
+  };
+}
 
-  let xScale = data.xScale || calcDefaultScale(xValues)
-  let yScale = data.yScale || calcDefaultScale(xValues)
+export function seriesPointData(data: SeriesPointArgs): SeriesPointValid {
+  const {x, y, radiuses} = data
+  const keys = data.keys || y.values.map((c, i) => i.toString());
 
-  const keys = data.keys || yValues.map((c, i) => i.toString());
+  //TODO: Do clean radius validation
+  const radiusesValid = typeof radiuses === "number" ? radiuses : typeof radiuses === "object" ? {
+    scale: radiuses.scale,
+    radiusDim: radiuses.radiusDim
+  } : 5
 
-  return {
-    xValues,
-    xScale,
-    yValues,
-    yScale,
-    radiuses: data.radiuses || 5,
+  return {x, y,
+    radiuses: radiusesValid,
     color: data.color,
     styleClasses: data.styleClasses || 'categorical-0',
     keys,
@@ -65,23 +67,23 @@ export function seriesPointData(data: Partial<SeriesPoint>): SeriesPoint {
   };
 }
 
-export function seriesPointCreatePoints(seriesData: SeriesPoint): Point[] {
-  const { xScale, yScale, xValues, yValues, radiuses, bounds, keys, styleClasses, flipped, color } =
+export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
+  const { x, y, radiuses, bounds, keys, styleClasses, flipped, color } =
     seriesData;
 
   const data: Point[] = [];
 
-  for (let i = 0; i < xValues.length; ++i) {
-    const x = xValues[i]
-    const y = yValues[i]
+  for (let i = 0; i < x.values.length; ++i) {
+    const xVal = x.values[i]
+    const yVal = y.values[i]
     const r = typeof radiuses === "number" ? radiuses : radiuses.scale(radiuses.radiusDim[i]);
     const radiusValue =
     data.push({
       styleClass: arrayIs(styleClasses) ? styleClasses[i] : styleClasses,
       key: keys?.[i] || i.toString(),
       center: {
-        x: flipped ? yScale(y)! : xScale(x)!,
-        y: flipped ? xScale(x)! : yScale(y)!,
+        x: flipped ? y.scale(yVal)! : x.scale(xVal)!,
+        y: flipped ? x.scale(xVal)! : y.scale(yVal)!,
       },
       radius: r ?? 5,
       xValue: x,
@@ -94,12 +96,12 @@ export function seriesPointCreatePoints(seriesData: SeriesPoint): Point[] {
   return data;
 }
 
-export function seriesPointRender(selection: Selection<Element, SeriesPoint>): void {
+export function seriesPointRender(selection: Selection<Element, SeriesPointValid>): void {
   selection
     .classed('series-point', true)
     .attr('data-ignore-layout-children', true)
     .each((d, i, g) => {
-      const seriesS = select<Element, SeriesPoint>(g[i]);
+      const seriesS = select<Element, SeriesPointValid>(g[i]);
       const boundsAttr = seriesS.attr('bounds');
       if (!boundsAttr) return;
       d.bounds = rectFromString(boundsAttr);

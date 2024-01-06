@@ -1,5 +1,5 @@
 import {select, Selection} from 'd3';
-import {AxisData, axisBottomRender, axisData, axisLeftRender, AxisPropagation} from '../../axisData';
+import {axisBottomRender, axisData, axisLeftRender, AxisPropagation, AxisValid} from "../../axes";
 import {IChartCartesianData} from "./IChartCartesianData";
 import {IChartCartesianArgs} from "./IChartCartesianArgs";
 
@@ -29,7 +29,7 @@ export function chartCartesianAxisRender(selection: ChartCartesianSelection): vo
         .classed('axis-x', flippedBool)
         .classed('axis-y', !flipped);
 
-      s.selectAll<SVGGElement, AxisData>('.axis-bottom')
+      s.selectAll<SVGGElement, AxisValid>('.axis-bottom')
         .data([{...(flipped ? y : x), selection}])
         .join('g')
         .call((s) => axisBottomRender(s))

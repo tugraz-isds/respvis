@@ -1,4 +1,6 @@
 import {
+  AxisDomain,
+  AxisScale,
   ScaleBand,
   ScaleContinuousNumeric,
   scaleLinear,
@@ -27,17 +29,20 @@ export type ScaleAny<TDomain extends string | number | Date, TRange, TOutput> = 
   | ScaleBand<TDomain>
   | ScalePoint<TDomain>;
 
-export function calcDefaultScale(values: any[]) {
-  let scale : ScaleAny<any, number, number> = scaleLinear().domain([0, 1]);
+export function validateScale(values: number[] | unknown[], scale?: AxisScale<AxisDomain>) {
+  if (scale) return scale
+  let scaleValid : ScaleAny<number | string | Date, number, number> = scaleLinear().domain([0, 1]);
   if (values.length > 0) {
     if (typeof values[0] === 'number') {
-      const extent = [Math.min(...values), Math.max(...values)];
+      const valuesNum = values.map(value => Number(value))
+      const extent = [Math.min(...valuesNum), Math.max(...valuesNum)];
       const range = extent[1] - extent[0];
       const domain = [extent[0] - range * 0.05, extent[1] + range * 0.05];
-      scale = scaleLinear().domain(domain).nice();
-    } else {
-      scale = scalePoint().domain(values);
+      scaleValid = scaleLinear().domain(domain).nice();
+    } else if (typeof values[0] === 'string') {
+      const valuesStr = values.map(value => value.toString())
+      scaleValid = scalePoint().domain(valuesStr);
     }
   }
-  return scale
+  return scaleValid
 }

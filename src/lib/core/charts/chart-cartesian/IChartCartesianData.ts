@@ -1,8 +1,8 @@
 import {ChartBaseValid} from "../chart-base";
-import {AxisData} from "../../axisData";
+import {AxisValid} from "../../axes";
 
 export interface IChartCartesianData extends ChartBaseValid {
-  xAxis: AxisData;
-  yAxis: AxisData;
+  xAxis: AxisValid;
+  yAxis: AxisValid;
   flipped?: boolean;
 }

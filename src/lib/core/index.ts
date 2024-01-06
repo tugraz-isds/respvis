@@ -15,7 +15,7 @@ export * from './resize-event-dispatcher';
 
 export * from './utilities/scale';
 
-export * from './axisData';
+export * from './axes';
 export * from './charts';
 
 export * from './utilities/text';

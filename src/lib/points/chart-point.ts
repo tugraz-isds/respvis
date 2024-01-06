@@ -1,10 +1,10 @@
 import {select, Selection} from 'd3';
 import {rectFromString} from '../core';
-import {chartCartesianAxisRender} from '../core/charts/chart-cartesian/chart-cartesian';
-import {SeriesPoint, seriesPointData, seriesPointRender} from './series-point';
+import {chartCartesianAxisRender} from '../core';
+import {seriesPointRender, SeriesPointValid} from './series-point';
 import {Legend, LegendItem, legendRender} from "../legend";
 import {ChartPointData} from "./chart-point-data";
-import {chartBaseRender} from "../core/charts/chart-base/chart-base-render";
+import {chartBaseRender} from "../core";
 
 export type ChartPointSelection = Selection<SVGSVGElement | SVGGElement, ChartPointData>;
 
@@ -29,8 +29,8 @@ export function chartPointRender(selection: ChartPointSelection): void {
     const {scale: xScale} = x
     const {scale: yScale} = y
 
-    xScale.range(flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius]);
-    yScale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius]);
+    xScale.range(flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius])
+    yScale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
   }
 
   function renderAllSeriesOfPoints (data: ChartPointData, g: SVGSVGElement | SVGGElement) {
@@ -40,12 +40,13 @@ export function chartPointRender(selection: ChartPointSelection): void {
     select(g)
       .selectAll('.draw-area')
       .selectAll<SVGSVGElement, ChartPointData>('.series-point')
-      .data<SeriesPoint>(
-      pointSeries.map((p) =>
-        seriesPointData({
-          ...p, xScale, yScale, flipped
-        })
-      )).join('svg')
+      .data<SeriesPointValid>(
+      // pointSeries.map((p) =>
+      //   seriesPointData({
+      //     ...p, xScale, yScale, flipped
+      //   }))
+        [pointSeries]
+      ).join('svg')
       .call((s) => seriesPointRender(s))
   }
 

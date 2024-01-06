@@ -1,6 +1,6 @@
 import {select, Selection} from "d3";
 import {IChartParcoordData} from "./IChartParcoordData";
-import {AxisData, axisSequenceRender, chartBaseRender, rectFromString} from "../../core";
+import {AxisValid, axisSequenceRender, chartBaseRender, rectFromString} from "../../core";
 import {SeriesLine, seriesLineData, seriesLineRender} from "../../lines";
 
 export type ChartParcoordSelection = Selection<SVGSVGElement | SVGGElement, IChartParcoordData>;
@@ -46,7 +46,7 @@ function renderAxes(data: IChartParcoordData, g: SVGSVGElement | SVGGElement) {
 
 
   dimensions.forEach((dimension, index) => { //TODO: create own render function for axes inside draw-area
-    select(g).selectAll('.draw-area').selectAll<SVGGElement, AxisData>(`.axis-${index}`)
+    select(g).selectAll('.draw-area').selectAll<SVGGElement, AxisValid>(`.axis-${index}`)
       .data([null])
       .join('g')
       .data([dimension.axis])

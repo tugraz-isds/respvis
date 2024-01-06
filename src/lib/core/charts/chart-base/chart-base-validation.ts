@@ -3,7 +3,7 @@ import {Point} from "../../../points";
 import {LengthDimensionBounds} from "../../utilities/resizing/matchBounds";
 import {scaleLinear, Selection} from "d3";
 import {Legend} from "../../../legend";
-import {boundsValidation} from "../../utilities/resizing/bounds";
+import {validateBounds} from "../../utilities/resizing/bounds";
 import {SVGHTMLElement} from "../../constants/types";
 import {ConfigBoundable} from "../../utilities/resizing/boundable";
 
@@ -24,8 +24,8 @@ export type ChartBaseValid = Required<Omit<ChartBaseArgs, 'bounds' | 'markerTool
 export function chartBaseValidation(args: ChartBaseArgs): ChartBaseValid {
   return {
     bounds: {
-      width: boundsValidation(args.bounds?.width),
-      height: boundsValidation(args.bounds?.height)
+      width: validateBounds(args.bounds?.width),
+      height: validateBounds(args.bounds?.height)
     },
     title: args.title || '',
     subTitle: args.subTitle || '',

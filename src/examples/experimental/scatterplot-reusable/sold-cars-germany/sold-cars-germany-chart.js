@@ -8,6 +8,8 @@ import {format} from "../libs/d3-7.6.0/d3.js";
 
 export function createChartSoldCarsGermany(selector) {
   const {topMakesNames, mileages, horsePower, prices} = getTopMakesData(5)
+  const topMakesArray = topMakesNames.map((name, i) => new Array(mileages[i].length).fill(name))
+
   const allHorsePower = carData.map(entry => entry.hp)
   const allPrices = carData.map(entry => entry.price)
   const allMileages = carData.map(entry => entry.mileage)
@@ -41,7 +43,7 @@ export function createChartSoldCarsGermany(selector) {
       tuples: [[0, 'Car Chars.'], [1, 'Car Characteristics'], [3, 'Car Characteristics from AutoScout24 in Germany']]
     },
     x: {
-      values: horsePower,
+      values: horsePower.flat(),
       scale: scales.xScale,
       // title: 'Price [EU]',
       title: {
@@ -57,7 +59,8 @@ export function createChartSoldCarsGermany(selector) {
       configureAxis: (axis) => axis.tickFormat(format('.3d'))
     },
     y: {
-      values: prices,
+      values: prices.flat(),
+      categories: topMakesArray.flat(),
       scale: scales.yScale,
       title: 'Horse Power [PS]',
       configureAxis: {

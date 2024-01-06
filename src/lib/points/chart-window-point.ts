@@ -4,7 +4,7 @@ import {chartPointRender} from './chart-point';
 import {ChartPointArgs, ChartPointData, chartPointData} from "./chart-point-data";
 import {IWindowChartBaseRenderer} from "../core";
 
-export interface ChartWindowPoint extends ChartPointArgs {}
+export type ChartWindowPoint = ChartPointData
 
 export function chartWindowPointData(data: ChartPointArgs): ChartPointData {
   const chartData = chartPointData(data);

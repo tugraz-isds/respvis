@@ -4,65 +4,18 @@ import {
   AxisDomain,
   axisLeft as d3AxisLeft,
   AxisScale,
-  scaleLinear,
   select,
   Selection,
-  Transition,
-} from 'd3';
-import {
-  LengthDimensionBounds, boundArgByIndices,
-  TickOrientation
-} from "./utilities/resizing/matchBounds";
-import {calcTickAngle} from "./utilities/resizing/resizeTicks";
-import {ScaleAny} from "./utilities/scale";
-import {elementFromSelection} from "./utilities/d3/util";
-import {ChartBaseValid} from "./charts";
-import {BoundsValid, getBoundStateFromCSS, updateBoundStateInCSS} from "./utilities/resizing/bounds";
-import {ConfigBoundable, getConfigBoundableState} from "./utilities/resizing/boundable";
+  Transition
+} from "d3";
+import {elementFromSelection} from "../utilities/d3/util";
+import {getConfigBoundableState} from "../utilities/resizing/boundable";
+import {calcTickAngle} from "../utilities/resizing/resizeTicks";
+import {ChartBaseValid} from "../charts";
+import {updateBoundStateInCSS} from "../utilities/resizing/bounds";
+import {AxisValid} from "./axis-data";
 
-export type AxisArgs = {
-  values: number[][], //TODO: add strings/dates, also for y
-  scale?: AxisScale<AxisDomain>,
-  bounds?: Partial<LengthDimensionBounds>
-  title?: ConfigBoundable<string>,
-  subTitle?: ConfigBoundable<string>,
-  configureAxis?: ConfigBoundable<ConfigureAxisFn>,
-  tickOrientation?: TickOrientation
-}
-
-export type AxisData = Required<Omit<AxisArgs, 'tickOrientation' | 'bounds'>> & {
-  tickOrientation?: TickOrientation,
-  bounds: LengthDimensionBounds
-}
-
-export interface ConfigureAxisFn {
-  (axis: D3Axis<AxisDomain>): void;
-}
-
-export function axisData(data: AxisArgs): AxisData {
-  //TODO: for scale use min and max values of data points
-  //TODO: sort bounds
-  return {
-    values: data.values,
-    scale: data.scale || scaleLinear().domain([0, 1]).range([0, 600]),
-    title: data.title || '',
-    subTitle: data.subTitle || '',
-    configureAxis: data.configureAxis || (() => {}),
-    tickOrientation: data.tickOrientation,
-    bounds: {
-      width: data.bounds?.width ?? {
-        unit: 'rem',
-        values: []
-      },
-      height: data.bounds?.height ?? {
-        unit: 'rem',
-        values: []
-      }
-    }
-  }
-}
-
-export type AxisPropagation = AxisData & Pick<ChartBaseValid, 'selection'>
+export type AxisPropagation = AxisValid & Pick<ChartBaseValid, 'selection'>
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisPropagation>;
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisPropagation>;
 
@@ -92,7 +45,7 @@ function axisRender(
   const chartElement = elementFromSelection(selection)
   // updateBoundStateInCSS(axisElement, axisD.bounds) //IS DONE IN d3Axis for now
 
-    selection
+  selection
     .selectAll('.title')
     .data([null])
     .join('g')

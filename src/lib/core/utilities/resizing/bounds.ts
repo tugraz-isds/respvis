@@ -8,7 +8,7 @@ export type BoundsArgs = {
 }
 export type BoundsValid = Required<BoundsArgs>
 
-export function boundsValidation(args?: BoundsArgs): BoundsValid {
+export function validateBounds(args?: BoundsArgs): BoundsValid {
   return {
     unit: args ? args.unit : 'rem',
     values: args ? args.values : [],
