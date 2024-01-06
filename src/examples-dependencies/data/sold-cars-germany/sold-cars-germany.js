@@ -5524,23 +5524,19 @@ export function getTopMakes(numberMakes) {
 
 export function getTopMakesData(numberTopMakes) {
  const topMakesNames = getTopMakes(numberTopMakes)
- const prices = [[]]
- const horsePower = [[]]
- const mileages = [[]]
-
- topMakesNames.forEach(() => {
-  prices.push([])
-  horsePower.push([])
-  mileages.push([])
- })
+ const prices = []
+ const horsePower = []
+ const mileages = []
+ const makes = []
 
  carData.forEach(entry => {
   let index = topMakesNames.findIndex((value) => value === entry.make)
   if (index === -1) index = 5
-  prices[index].push(entry.price)
-  horsePower[index].push(entry.hp)
-  mileages[index].push(entry.mileage)
+  prices.push(entry.price)
+  horsePower.push(entry.hp)
+  mileages.push(entry.mileage)
+  makes.push(index === 5 ? 'Other' : entry.make)
  })
- return {prices, horsePower, mileages, topMakesNames}
+ return {prices, horsePower, mileages, makes, topMakesNames}
 }
 

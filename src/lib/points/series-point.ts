@@ -61,9 +61,7 @@ export function seriesPointData(data: SeriesPointArgs): SeriesPointValid {
     keys,
     bounds: data.bounds || { width: 600, height: 400 },
     flipped: data.flipped || false,
-    ...seriesConfigTooltipsData(data),
-    tooltipsEnabled: data.tooltipsEnabled || true,
-    tooltips: data.tooltips || ((e, d) => `X-Value: ${d.xValue}<br/>Y-Value: ${d.yValue}`),
+    ...seriesConfigTooltipsData(data), //TODO: fix tooltips for all charts
   };
 }
 
@@ -86,8 +84,8 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
         y: flipped ? x.scale(xVal)! : y.scale(yVal)!,
       },
       radius: r ?? 5,
-      xValue: x,
-      yValue: y,
+      xValue: xVal,
+      yValue: yVal,
       color: color?.colorScale(color.colorDim[i]),
       radiusValue: typeof radiuses !== "number" ? radiuses.radiusDim[i] : undefined
     });

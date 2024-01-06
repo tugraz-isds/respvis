@@ -50,13 +50,14 @@ export type ChartPointData = ChartBaseValid & {
 export function chartPointData(data: ChartPointArgs): ChartPointData {
   const {
     legend, flipped, radiuses, zoom : zoomData,
-    color} = data
+    color, markerTooltips} = data
   const [x, y] = syncAxes(axisData(data.x), axisData(data.y))
-  const toolTipData = data.markerTooltips || {}
+  const toolTipData = markerTooltips || {}
+  const styleClasses = data.styleClasses ? data.styleClasses :
+    x.categories.map((category) => `categorical-${x.categoryOrder[category]}`)
 
-  const pointSeries = seriesPointData({
-    flipped, x, y, color, radiuses, ...toolTipData,
-    styleClasses: data.styleClasses ? data.styleClasses : x.categories.map((_, index) => `categorical-${index}`),
+  const pointSeries = seriesPointData({...toolTipData,
+    flipped, x, y, color, radiuses, ...toolTipData, styleClasses,
     keys: y.values.map((_, markerI) => `${markerI}`),
   })
 

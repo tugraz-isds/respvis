@@ -40,13 +40,8 @@ export function chartPointRender(selection: ChartPointSelection): void {
     select(g)
       .selectAll('.draw-area')
       .selectAll<SVGSVGElement, ChartPointData>('.series-point')
-      .data<SeriesPointValid>(
-      // pointSeries.map((p) =>
-      //   seriesPointData({
-      //     ...p, xScale, yScale, flipped
-      //   }))
-        [pointSeries]
-      ).join('svg')
+      .data<SeriesPointValid>([pointSeries])
+      .join('svg')
       .call((s) => seriesPointRender(s))
   }
 

@@ -1,5 +1,6 @@
+export const defaultCategory = 'category-default'
 export function validateCategories(values: unknown[], categories?: string[]) {
-  if (!categories) return values.map((value, index) => index.toString())
+  if (!categories) return values.map(() => defaultCategory)
   const lowerLength = values.length < categories.length ? values.length : categories.length
   return categories.slice(0, lowerLength)
 }
