@@ -74,15 +74,17 @@ export function createChartSoldCarsGermany(selector) {
         scope: 'chart',
         tuples: [[0,''], [[3], 'Legend']]
       },
-      keys: [...topMakesNames, "Other"],
-      labels: [...topMakesNames, "Other"]
+      // keys: [...topMakesNames, "Other"],
+      // labels: [...topMakesNames, "Other"]
     },
     zoom: {
       in: 20,
       out: 1
     },
     markerTooltips: {
-      tooltips: ((e, d) => `Car Price: ${d.yValue}€<br/>Horse Power: ${d.xValue}PS`)
+      tooltips: ((e, d) => {
+        return `Car Price: ${d.yValue}€<br/>Horse Power: ${d.xValue}PS<br/>Make: ${d.label}`
+      })
     }
   };
 

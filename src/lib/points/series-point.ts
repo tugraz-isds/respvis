@@ -31,8 +31,9 @@ export type SeriesPointArgs = Partial<SeriesConfigTooltips<SVGCircleElement, Poi
     colorDim: number[],
     colorScale: ScaleContinuous<any, string>
   };
+  key: string
   styleClasses?: string | string[];
-  keys?: string[];
+  labels?: string[]
   bounds?: Size;
   flipped?: boolean;
 }
@@ -45,8 +46,8 @@ export type SeriesPointValid = Omit<SeriesPointArgs, 'radiuses'> & {
 }
 
 export function seriesPointData(data: SeriesPointArgs): SeriesPointValid {
-  const {x, y, radiuses} = data
-  const keys = data.keys || y.values.map((c, i) => i.toString());
+  const {x, y, radiuses, key} = data
+  const labels = data.labels
 
   //TODO: Do clean radius validation
   const radiusesValid = typeof radiuses === "number" ? radiuses : typeof radiuses === "object" ? {
@@ -58,7 +59,8 @@ export function seriesPointData(data: SeriesPointArgs): SeriesPointValid {
     radiuses: radiusesValid,
     color: data.color,
     styleClasses: data.styleClasses || 'categorical-0',
-    keys,
+    key,
+    labels,
     bounds: data.bounds || { width: 600, height: 400 },
     flipped: data.flipped || false,
     ...seriesConfigTooltipsData(data), //TODO: fix tooltips for all charts
@@ -66,7 +68,9 @@ export function seriesPointData(data: SeriesPointArgs): SeriesPointValid {
 }
 
 export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
-  const { x, y, radiuses, bounds, keys, styleClasses, flipped, color } =
+  const { x, y, radiuses, bounds,
+    key: seriesKey, styleClasses, flipped,
+    color, labels } =
     seriesData;
 
   const data: Point[] = [];
@@ -74,11 +78,13 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
   for (let i = 0; i < x.values.length; ++i) {
     const xVal = x.values[i]
     const yVal = y.values[i]
+    const category = x.categories[i]
     const r = typeof radiuses === "number" ? radiuses : radiuses.scale(radiuses.radiusDim[i]);
-    const radiusValue =
+    const key = `${seriesKey}-${x.categoryOrder[category]}`
     data.push({
+      label: labels?.[i],
       styleClass: arrayIs(styleClasses) ? styleClasses[i] : styleClasses,
-      key: keys?.[i] || i.toString(),
+      key,
       center: {
         x: flipped ? y.scale(yVal)! : x.scale(xVal)!,
         y: flipped ? x.scale(xVal)! : y.scale(yVal)!,

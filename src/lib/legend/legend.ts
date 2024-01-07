@@ -1,8 +1,6 @@
-import { select, Selection } from 'd3';
-import {arrayIs, ChartBaseValid, Rect, rectFromSize, rectFromString, Size} from '../core';
-import { pathRect } from '../core/utilities/path';
-import {ConfigBoundable, getConfigBoundableState} from "../core/utilities/resizing/boundable";
-import {elementFromSelection} from "../core/utilities/d3/util";
+import {ChartBaseValid, rectFromSize, Size} from '../core';
+import {pathRect} from '../core/utilities/path';
+import {ConfigBoundable} from "../core/utilities/resizing/boundable";
 
 export enum LegendOrientation {
   Vertical = 'vertical',
@@ -16,7 +14,18 @@ export interface LegendItem {
   key: string;
 }
 
-export interface Legend {
+export type LegendArgs = {
+  title?: ConfigBoundable<string>
+  labels: string[];
+  symbols?:
+    | ((symbol: SVGPathElement, size: Size) => void)
+    | ((symbol: SVGPathElement, size: Size) => void)[];
+  styleClasses?: string | string[];
+  reverse?: boolean;
+  keys: string[];
+}
+
+export type LegendValid = Required<LegendArgs> & {
   title: ConfigBoundable<string>
   labels: string[];
   symbols:
@@ -24,81 +33,15 @@ export interface Legend {
     | ((symbol: SVGPathElement, size: Size) => void)[];
   styleClasses: string | string[];
   reverse?: boolean;
-  keys?: string[];
 }
 
-export function legendData(data: Partial<Legend>): Legend {
-  const labels = data.labels || [];
+export function legendData(data: LegendArgs): LegendValid {
   return {
     title: data.title || '',
-    labels,
-    reverse: data.reverse,
-    styleClasses: data.styleClasses || labels.map((l, i) => `categorical-${i}`),
+    labels: data.labels,
+    reverse: data.reverse ?? false,
+    styleClasses: data.styleClasses || data.labels.map((l, i) => `categorical-${i}`),
     symbols: data.symbols || ((e, s) => pathRect(e, rectFromSize(s))),
     keys: data.keys,
   };
-}
-
-export function legendCreateItems(legendData: Legend): LegendItem[] {
-  const { labels, styleClasses, symbols, keys, reverse } = legendData;
-  const items = labels.map((l, i) => {
-    return {
-      label: l,
-      styleClass: arrayIs(styleClasses) ? styleClasses[i] : styleClasses,
-      symbol: arrayIs(symbols) ? symbols[i] : symbols,
-      key: keys === undefined ? l : keys[i],
-    };
-  });
-  return reverse ? items.reverse() : items
-}
-
-type WithChartSelection<T> = T & Pick<ChartBaseValid, 'selection'>
-export function legendRender(selection: Selection<Element, WithChartSelection<Legend>>): void {
-  const chartElement = elementFromSelection(selection.datum().selection)
-  selection.classed('legend', true).each((legendD, i, g) => {
-    const legendS = select<Element, Legend>(g[i]);
-
-    legendS
-      .selectAll('.title')
-      .data([null])
-      .join('text')
-      .classed('title', true)
-      .text(getConfigBoundableState(legendD.title, {chart: chartElement}));
-
-    const itemS = legendS.selectAll('.items').data([null]).join('g').classed('items', true);
-
-    itemS
-      .selectAll<SVGGElement, LegendItem>('.legend-item')
-      .data(legendCreateItems(legendD), (d) => d.label)
-      .join(
-        (enter) =>
-          enter
-            .append('g')
-            .classed('legend-item', true)
-            .call((itemS) => itemS.append('path').classed('symbol', true))
-            .call((itemS) => itemS.append('text').classed('label', true))
-            .call((s) => legendS.dispatch('enter', { detail: { selection: s } })),
-        undefined,
-        (exit) => exit.remove().call((s) => legendS.dispatch('exit', { detail: { selection: s } }))
-      )
-      .each((itemD, i, g) => {
-        const itemS = select(g[i]);
-        itemS.selectAll('.label').text(itemD.label);
-        itemS.selectAll<SVGPathElement, any>('.symbol').call((symbolS) => {
-          const boundsAttr = symbolS.attr('bounds');
-          if (!boundsAttr) return;
-          itemD.symbol(symbolS.node()!, rectFromString(boundsAttr));
-        });
-      })
-      .attr('data-style', (d) => d.styleClass)
-      .attr('data-key', (d) => d.key)
-      .call((s) => legendS.dispatch('update', { detail: { selection: s } }));
-  });
-
-  selection.on('pointerover.legend pointerout.legend', (e: PointerEvent) => {
-    const item = (<Element>e.target).closest('.legend-item');
-    if (item) {
-      item.classList.toggle('highlight', e.type.endsWith('over'));
-    }
-  });
 }

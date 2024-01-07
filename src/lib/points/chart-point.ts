@@ -2,7 +2,7 @@ import {select, Selection} from 'd3';
 import {rectFromString} from '../core';
 import {chartCartesianAxisRender} from '../core';
 import {seriesPointRender, SeriesPointValid} from './series-point';
-import {Legend, LegendItem, legendRender} from "../legend";
+import {LegendValid, LegendItem, legendRender} from "../legend";
 import {ChartPointData} from "./chart-point-data";
 import {chartBaseRender} from "../core";
 
@@ -47,7 +47,7 @@ export function chartPointRender(selection: ChartPointSelection): void {
     const drawAreaS = select(g).selectAll('.draw-area');
     const {legend, selection: chartSelection} = chartD
     selection
-      .selectAll<SVGGElement, Legend>('.legend')
+      .selectAll<SVGGElement, LegendValid>('.legend')
       .data([{...legend, selection: chartSelection}])
       .join('g')
       .call((s) => legendRender(s))
@@ -67,8 +67,8 @@ export function chartPointHoverLegendItem(
   hover: boolean
 ): void {
   legendItemS.each((_, i, g) => {
-    const key = g[i].getAttribute('data-key')!;
-    chartS.selectAll(`.point[data-key^="${key}"]`).classed('highlight', hover);
-    chartS.selectAll(`.label[data-key^="${key}"]`).classed('highlight', hover);
+    const key = g[i].getAttribute('data-key')!
+    chartS.selectAll(`.point[data-key^="${key}"]`).classed('highlight', hover)
+    chartS.selectAll(`.label[data-key^="${key}"]`).classed('highlight', hover)
   });
 }

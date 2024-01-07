@@ -8,13 +8,13 @@ import {
   rectFromString, ScaleAny,
 } from '../core';
 import { SeriesPointValid, seriesPointRender, seriesPointData, Point } from '../points';
-import { Legend, legendData, legendRender, LegendItem } from '../legend';
+import { LegendValid, legendData, legendRender, LegendItem } from '../legend';
 import { SeriesLabel, seriesLabelData, seriesLabelRender, JoinEvent } from '../bars';
 import { SeriesConfigTooltips, seriesConfigTooltipsData } from '../tooltip';
 import {chartBaseRender} from "../core/charts/chart-base/chart-base-render";
 
 export interface ChartLine extends SeriesLine, IChartCartesianData {
-  legend: Partial<Legend>;
+  legend: Partial<LegendValid>;
   markerLabelsEnabled: boolean;
   markerLabels: (
     chartData: this,
@@ -124,7 +124,7 @@ export function chartLineRender(
 
       const { legend: legendD } = chartD;
       chartS
-        .selectAll<SVGGElement, Legend>('.legend')
+        .selectAll<SVGGElement, LegendValid>('.legend')
         .data(
           arrayIs(styleClasses) && styleClasses.length > 1
             ? [legendData({ styleClasses, labels: keys, ...legendD, keys })]

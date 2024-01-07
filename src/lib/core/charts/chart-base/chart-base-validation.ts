@@ -2,7 +2,7 @@ import {SeriesConfigTooltips} from "../../../tooltip";
 import {Point} from "../../../points";
 import {LengthDimensionBounds} from "../../utilities/resizing/matchBounds";
 import {scaleLinear, Selection} from "d3";
-import {Legend} from "../../../legend";
+import {LegendValid} from "../../../legend";
 import {validateBounds} from "../../utilities/resizing/bounds";
 import {SVGHTMLElement} from "../../constants/types";
 import {ConfigBoundable} from "../../utilities/resizing/boundable";

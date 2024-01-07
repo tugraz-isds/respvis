@@ -9,7 +9,7 @@ import {
   ScaleContinuous,
   syncAxes
 } from "../core";
-import {Legend, legendData} from "../legend";
+import {LegendValid, legendData} from "../legend";
 import {seriesPointData, SeriesPointValid} from "./series-point";
 import {zoom, ZoomBehavior} from "d3";
 
@@ -31,7 +31,7 @@ export type ChartPointArgs = ChartBaseArgs & {
     out: number
   }
   styleClasses?: string[]
-  legend?: Legend
+  legend?: LegendValid
 }
 
 export type ChartPointData = ChartBaseValid & {
@@ -44,7 +44,7 @@ export type ChartPointData = ChartBaseValid & {
     in: number,
     out: number
   }
-  legend: Legend;
+  legend: LegendValid;
 }
 
 export function chartPointData(data: ChartPointArgs): ChartPointData {
@@ -55,15 +55,22 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
   const toolTipData = markerTooltips || {}
   const styleClasses = data.styleClasses ? data.styleClasses :
     x.categories.map((category) => `categorical-${x.categoryOrder[category]}`)
+  const labels = legend?.labels ? legend.labels : x.categories
+
 
   const pointSeries = seriesPointData({...toolTipData,
-    flipped, x, y, color, radiuses, ...toolTipData, styleClasses,
-    keys: y.values.map((_, markerI) => `${markerI}`),
+    flipped, x, y, color, radiuses, ...toolTipData, styleClasses, labels,
+    key: '0'
   })
 
   const maxRadius = typeof pointSeries.radiuses === "number" ? pointSeries.radiuses : pointSeries.radiuses.scale.range()[1]
-  const labels = legend?.labels ? legend.labels : y.values.map((yVal, index) => `categorical-${index}`)
   //TODO: make zoom optional
+  const categories = Object.keys(x.categoryOrder)
+  const legendValid = legendData({
+    ...(legend ? legend : {}),
+    labels: legend?.labels ? legend.labels : categories,
+    keys: categories.map((_, i) => `0-${i}`)
+  })
 
   return {
     x,
@@ -71,7 +78,7 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
     pointSeries,
     maxRadius,
     ...chartBaseValidation(data),
-    legend: legendData(legend ? legend : { labels }),
+    legend: legendValid,
     zoom: zoomData ? {
       ...zoomData,
       behaviour: zoom()

@@ -1,6 +1,6 @@
 import {select, Selection} from 'd3';
 import {chartCartesianAxisRender, chartCartesianData,} from '../core/charts/chart-cartesian/chart-cartesian';
-import {Legend, legendData, legendRender} from '../legend';
+import {LegendValid, legendData, legendRender} from '../legend';
 import {
   chartBarStackedHoverAxisTick,
   chartBarStackedHoverBar,
@@ -13,7 +13,7 @@ import {IChartCartesianData as ChartCartesian} from "../core/charts/chart-cartes
 
 export interface ChartBarGrouped extends Omit<SeriesBarGrouped, 'styleClasses'>, ChartCartesian {
   styleClasses: string[];
-  legend: Partial<Legend>;
+  legend: Partial<LegendValid>;
   labelsEnabled: boolean;
   labels: Partial<SeriesLabelBar>;
 }
@@ -77,7 +77,7 @@ export function chartBarGroupedRender(selection: ChartBarGroupedSelection): void
         .call((s) => seriesLabelBar(s));
 
       chartS
-        .selectAll<SVGGElement, Legend>('.legend')
+        .selectAll<SVGGElement, LegendValid>('.legend')
         .data([
           legendData({ labels: subcategories, styleClasses, ...legendD, keys: subcategories }),
         ])
