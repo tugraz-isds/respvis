@@ -5,6 +5,7 @@ import {seriesPointRender, SeriesPointValid} from './series-point';
 import {LegendValid, LegendItem, legendRender} from "../legend";
 import {ChartPointData} from "./chart-point-data";
 import {chartBaseRender} from "../core";
+import {splitKey} from "../core/utilities/dom/key";
 
 export type ChartPointSelection = Selection<SVGSVGElement | SVGGElement, ChartPointData>;
 
@@ -68,7 +69,10 @@ export function chartPointHoverLegendItem(
 ): void {
   legendItemS.each((_, i, g) => {
     const key = g[i].getAttribute('data-key')!
-    chartS.selectAll(`.point[data-key^="${key}"]`).classed('highlight', hover)
-    chartS.selectAll(`.label[data-key^="${key}"]`).classed('highlight', hover)
+    const tokens = splitKey(key)
+    tokens.reduce((sel, token, index) => {
+      if (index === 0) return sel.selectAll(`.point[data-key~="${token}"]`)
+      return sel.filter(`.point[data-key~="${token}"]`)
+    }, chartS).classed('highlight', hover)
   });
 }

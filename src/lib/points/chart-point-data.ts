@@ -69,7 +69,7 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
   const legendValid = legendData({
     ...(legend ? legend : {}),
     labels: legend?.labels ? legend.labels : categories,
-    keys: categories.map((_, i) => `0-${i}`)
+    keys: categories.map((_, i) => `s-0 c-${i}`)
   })
 
   return {

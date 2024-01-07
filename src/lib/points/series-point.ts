@@ -80,7 +80,7 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
     const yVal = y.values[i]
     const category = x.categories[i]
     const r = typeof radiuses === "number" ? radiuses : radiuses.scale(radiuses.radiusDim[i]);
-    const key = `${seriesKey}-${x.categoryOrder[category]}`
+    const key = `s-${seriesKey} c-${x.categoryOrder[category]} i-${i}`
     data.push({
       label: labels?.[i],
       styleClass: arrayIs(styleClasses) ? styleClasses[i] : styleClasses,
