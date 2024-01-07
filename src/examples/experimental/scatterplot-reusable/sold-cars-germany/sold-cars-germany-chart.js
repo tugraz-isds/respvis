@@ -8,12 +8,7 @@ import {format} from "../libs/d3-7.6.0/d3.js";
 
 export function createChartSoldCarsGermany(selector) {
   const {topMakesNames, mileages, horsePower, prices, makes} = getTopMakesData(5)
-  // const topMakesArray = topMakesNames.map((name, i) => new Array(mileages[i].length).fill(name))
-
-  // const allHorsePower = carData.map(entry => entry.hp)
-  // const allPrices = carData.map(entry => entry.price)
-  // const allMileages = carData.map(entry => entry.mileage)
-
+  //TODO: default scales not working like that. Find reason why
   const baseScaleX = d3.scaleLinear()
     .domain([0, Math.max(...horsePower)])
     .nice()

@@ -34,9 +34,7 @@ export function chartPointRender(selection: ChartPointSelection): void {
   }
 
   function renderAllSeriesOfPoints (data: ChartPointData, g: SVGSVGElement | SVGGElement) {
-    const { flipped, pointSeries, x, y } = data;
-    const {scale: xScale} = x
-    const {scale: yScale} = y
+    const {pointSeries, x } = data;
     select(g)
       .selectAll('.draw-area')
       .selectAll<SVGSVGElement, ChartPointData>('.series-point')
