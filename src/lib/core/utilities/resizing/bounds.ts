@@ -1,5 +1,5 @@
 import {CSSLength, LengthDimension, SVGHTMLElement} from "../../constants/types";
-import {indexFromBounds, LengthDimensionBounds, WithBounds} from "./matchBounds";
+import {indexFromBounds} from "./matchBounds";
 import {elementFromSelection} from "../d3/util";
 import {Selection} from "d3";
 
@@ -18,6 +18,13 @@ export function validateBounds(args?: BoundsArgs): BoundsValid {
 }
 
 
+export type WithBounds = {
+  bounds: LengthDimensionBounds
+}
+export type LengthDimensionBounds = {
+  width: BoundsValid,
+  height: BoundsValid,
+}
 export type LenghtDimensionIndices = {
   [Property in keyof LengthDimensionBounds]: number;
 }

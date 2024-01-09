@@ -1,9 +1,9 @@
-import {Axis as D3Axis, AxisDomain, AxisScale, schemeGnBu} from 'd3';
-import {LengthDimensionBounds, TickOrientation} from "../utilities/resizing/matchBounds";
+import {Axis as D3Axis, AxisDomain, AxisScale} from 'd3';
+import {TickOrientation} from "../utilities/resizing/matchBounds";
 import {ConfigBoundable} from "../utilities/resizing/boundable";
 import {validateScale} from "../utilities/scale";
 import {defaultCategory, validateCategories} from "../categories";
-import {validateBounds} from "../utilities/resizing/bounds";
+import {LengthDimensionBounds, validateBounds} from "../utilities/resizing/bounds";
 
 export type AxisArgs = {
   values: number[], // TODO: add strings/dates, also for y

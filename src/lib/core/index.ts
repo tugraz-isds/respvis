@@ -31,3 +31,5 @@ export {} from "./utilities/resizing/bounds";
 export {updateBoundStateInCSS} from "./utilities/resizing/bounds";
 export {getBoundStateFromCSS} from "./utilities/resizing/bounds";
 export {LenghtDimensionIndices} from "./utilities/resizing/bounds";
+export {LengthDimensionBounds} from "./utilities/resizing/bounds";
+export {WithBounds} from "./utilities/resizing/bounds";

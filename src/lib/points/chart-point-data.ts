@@ -11,7 +11,7 @@ import {
 } from "../core";
 import {LegendValid, legendData} from "../legend";
 import {seriesPointData, SeriesPointValid} from "./series-point";
-import {zoom, ZoomBehavior} from "d3";
+import {validateZoom, ZoomArgs, ZoomValid} from "../core/utilities/zoom";
 
 // type Dimension = number | string // TODO: | date . Include this everywhere
 
@@ -26,10 +26,7 @@ export type ChartPointArgs = ChartBaseArgs & {
     colorDim: number[],
     colorScale: ScaleContinuous<any, string>
   }
-  zoom?: {
-    in: number,
-    out: number
-  }
+  zoom?: ZoomArgs
   styleClasses?: string[]
   legend?: LegendValid
 }
@@ -39,17 +36,13 @@ export type ChartPointData = ChartBaseValid & {
   y: AxisValid,
   pointSeries: SeriesPointValid;
   maxRadius: number
-  zoom?: {
-    behaviour:  ZoomBehavior<Element, unknown>
-    in: number,
-    out: number
-  }
+  zoom?: ZoomValid
   legend: LegendValid;
 }
 
 export function chartPointData(data: ChartPointArgs): ChartPointData {
   const {
-    legend, flipped, radiuses, zoom : zoomData,
+    legend, flipped, radiuses, zoom ,
     color, markerTooltips} = data
   const [x, y] = syncAxes(axisData(data.x), axisData(data.y))
   const toolTipData = markerTooltips || {}
@@ -78,9 +71,6 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
     maxRadius,
     ...chartBaseValidation(data),
     legend: legendValid,
-    zoom: zoomData ? {
-      ...zoomData,
-      behaviour: zoom()
-    } : undefined
+    zoom: zoom ? validateZoom(zoom) : undefined
   };
 }

@@ -1,5 +1,4 @@
-import {validateBounds} from "../utilities/resizing/bounds";
-import {LengthDimensionBounds} from "../utilities/resizing/matchBounds";
+import {LengthDimensionBounds, validateBounds} from "../utilities/resizing/bounds";
 import {Selection} from "d3";
 
 export type ChartWindowSelection = Selection<HTMLDivElement, ChartWindowValid>
