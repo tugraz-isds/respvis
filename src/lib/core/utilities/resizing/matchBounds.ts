@@ -4,7 +4,7 @@ import {BoundsValid, LenghtDimensionIndices} from "./bounds";
 import {ConfigBoundable, isConfigTupleBoundable} from "./boundable";
 
 export const boundRegex = /(\d+(?:\.\d+)?)(px|rem|em)/
-type Bound = `${number}${CSSLength}`
+// type Bound = `${number}${CSSLength}`
 // export type Bounds = {
 //   minHeight?: Bound,
 //   minWidth?: Bound,
@@ -31,6 +31,9 @@ export function boundArgByIndices<T>(indices: LenghtDimensionIndices, arg: Confi
   return tuple[1]
 }
 
+export type WithBounds = {
+  bounds: LengthDimensionBounds
+}
 
 export type LengthDimensionBounds = {
   width: BoundsValid,

@@ -71,7 +71,6 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
     labels: legend?.labels ? legend.labels : categories,
     keys: categories.map((_, i) => `s-0 c-${i}`)
   })
-
   return {
     x,
     y,

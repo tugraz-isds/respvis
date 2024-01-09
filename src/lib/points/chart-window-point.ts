@@ -1,25 +1,21 @@
 import {select, Selection} from 'd3';
-import {layouterCompute, toolDownloadSVGRender, windowChartBaseRender,} from '../core';
+import {IWindowChartBaseRenderer, layouterCompute,} from '../core';
 import {chartPointRender} from './chart-point';
 import {ChartPointArgs, ChartPointData, chartPointData} from "./chart-point-data";
-import {IWindowChartBaseRenderer} from "../core";
+import {ChartWindowValid, validateChartWindow} from "../core";
+import {renderChartWindow} from "../core";
 
-export type ChartWindowPoint = ChartPointData
-
-export function chartWindowPointData(data: ChartPointArgs): ChartPointData {
-  const chartData = chartPointData(data);
-  return {
-    ...chartData,
-  };
-}
-
-export type ChartWindowPointSelection = Selection<HTMLDivElement, ChartPointData>;
+export type ScatterplotData = ChartWindowValid & ChartPointData
+export type ScatterplotSelection = Selection<HTMLDivElement, ScatterplotData>;
 
 export class ScatterPlot implements IWindowChartBaseRenderer {
   addedListeners = false
-  data: ChartPointData
-  constructor(public selection: ChartWindowPointSelection, data: ChartPointArgs) {
-    this.data = chartWindowPointData(data)
+  data: ChartWindowValid & ChartPointData
+
+  constructor(public selection: ScatterplotSelection, data: ChartPointArgs) {
+    const chartData = chartPointData(data)
+    const windowData = validateChartWindow({...chartData, type: 'point'})
+    this.data = {...chartData, ...windowData}
   }
 
   /**
@@ -37,33 +33,13 @@ export class ScatterPlot implements IWindowChartBaseRenderer {
   }
 
   private renderWindow(): void {
-    this.selection
-      .datum(this.data)
-      .classed('chart-window-point', true)
-      .call((s) => windowChartBaseRender(s))
-      .each((chartWindowD, i, g) => {
-        const chartWindowS = select<HTMLDivElement, ChartWindowPoint>(g[i])
-        const menuItemsS = chartWindowS.selectAll('.menu-tools > .items')
-        const layouterS = chartWindowS.selectAll<HTMLDivElement, any>('.layouter');
-
-        // download svg
-        menuItemsS
-          .selectAll<HTMLLIElement, any>('.tool-download-svg')
-          .data([null])
-          .join('li')
-          .call((s) => toolDownloadSVGRender(s));
-
-        // chart
-        const chartS = layouterS
-          .selectAll<SVGSVGElement, ChartPointData>('svg.chart-point')
-          .data([chartWindowD])
-          .join('svg')
-          .call((s) => chartPointRender(s));
-
-        layouterS
-          .on('boundschange.chartwindowpoint', () => chartPointRender(chartS))
-          .call((s) => layouterCompute(s));
-      });
+    const {
+      chartS,
+      layouterS
+    } = renderChartWindow(this.selection, this.data)
+    chartS.call((s) => chartPointRender(s))
+    layouterS.on('boundschange.chartwindowpoint', () => chartPointRender(chartS))
+      .call((s) => layouterCompute(s));
   }
 
   private addBuiltInListeners() {
@@ -78,14 +54,15 @@ export class ScatterPlot implements IWindowChartBaseRenderer {
 
     this.selection
       .each((chartWindowD, i, g) => {
-        const chartWindowS = select<HTMLDivElement, ChartWindowPoint>(g[i])
+        const chartWindowS = select<HTMLDivElement, ScatterplotData>(g[i])
         const {x, y, zoom, pointSeries} = chartWindowD
         if (!zoom) return
         drawArea.call(
           zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom.autozoom', function (e) {
             const xUpdated = {...x, scale: e.transform.rescaleX(x.scale)}
             const yUpdated = {...y, scale: e.transform.rescaleY(y.scale)}
-            renderer.data = {...chartWindowD,
+            renderer.data = {
+              ...chartWindowD,
               x: xUpdated,
               y: yUpdated,
               pointSeries: {...pointSeries, x: xUpdated, y: yUpdated}
@@ -108,8 +85,12 @@ export class ScatterPlot implements IWindowChartBaseRenderer {
 
   private addFinalListeners() {
     const instance = this
-    this.selection.on('resize.final', () => {instance.renderWindow()});
-    this.data.zoom?.behaviour.on('zoom.final', () => { instance.renderWindow()})
+    this.selection.on('resize.final', () => {
+      instance.renderWindow()
+    });
+    this.data.zoom?.behaviour.on('zoom.final', () => {
+      instance.renderWindow()
+    })
   }
 }
 

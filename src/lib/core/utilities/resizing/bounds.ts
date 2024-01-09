@@ -1,5 +1,7 @@
 import {CSSLength, LengthDimension, SVGHTMLElement} from "../../constants/types";
-import {indexFromBounds, LengthDimensionBounds} from "./matchBounds";
+import {indexFromBounds, LengthDimensionBounds, WithBounds} from "./matchBounds";
+import {elementFromSelection} from "../d3/util";
+import {Selection} from "d3";
 
 
 export type BoundsArgs = {
@@ -18,6 +20,12 @@ export function validateBounds(args?: BoundsArgs): BoundsValid {
 
 export type LenghtDimensionIndices = {
   [Property in keyof LengthDimensionBounds]: number;
+}
+
+export function updateCSSForSelection<T extends SVGHTMLElement, D extends WithBounds>(selection: Selection<T, D>) {
+  const element = elementFromSelection(selection)
+  const chartBaseValid = selection.data()[0]
+  updateBoundStateInCSS(element, chartBaseValid.bounds)
 }
 
 export function getBoundStateFromCSS(element: SVGHTMLElement): LenghtDimensionIndices {

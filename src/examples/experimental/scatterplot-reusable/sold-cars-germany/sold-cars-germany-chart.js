@@ -1,5 +1,5 @@
 import * as d3 from '../libs/d3-7.6.0/d3.js'
-import {ScatterPlot, formatWithDecimalZero} from '../libs/respvis/respvis.js'
+import {ScatterPlot, formatWithDecimalZero, ChartWindowRenderer} from '../libs/respvis/respvis.js'
 import {carData, getTopMakesData} from './data/sold-cars-germany.js';
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
 import {format} from "../libs/d3-7.6.0/d3.js";
@@ -95,4 +95,9 @@ export function createChartSoldCarsGermany(selector) {
     chooseResponsiveData(event.target, data)
   })
   renderer.buildWindowChart()
+  // const renderer = new ChartWindowRenderer()
+  // const chartWindowData = {...data,
+  //   ...renderer.validate({...data, type: 'point'})
+  // }
+  // renderer.render(chartWindow, chartWindowData)
 }

@@ -17,6 +17,7 @@ export * from './utilities/scale';
 
 export * from './axes';
 export * from './charts';
+export * from './chart-window';
 
 export * from './utilities/text';
 
