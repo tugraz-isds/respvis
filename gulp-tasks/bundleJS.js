@@ -5,7 +5,7 @@ const rollupTypescript = require("@rollup/plugin-typescript");
 const {terser: rollupTerser} = require("rollup-plugin-terser");
 const {default: rollupGzip} = require("rollup-plugin-gzip");
 const fs = require("fs");
-const {rootDir} = require('./paths')
+const {rootDir, srcDir} = require('./paths')
 
 async function bundleJSDevelopment() {
   await bundleJS("development")
@@ -21,7 +21,9 @@ async function bundleJS(mode) {
     plugins: [
       rollupNodeResolve({ browser: true }),
       rollupCommonJs(),
-      rollupTypescript({ tsconfig: `${rootDir}/tsconfig.json` })
+      rollupTypescript({
+        tsconfig: `${rootDir}/tsconfig.json`,
+      }),
     ]
   });
 

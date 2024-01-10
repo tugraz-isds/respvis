@@ -1,5 +1,5 @@
 import * as d3 from '../libs/d3-7.6.0/d3.js'
-import {ScatterPlot, formatWithDecimalZero} from '../libs/respvis/respvis.js'
+import {ScatterPlot, formatWithDecimalZero, ChartPointArgs} from '../libs/respvis/respvis.js'
 import {getTopMakesData} from './data/sold-cars-germany.js';
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
 import {format} from "../libs/d3-7.6.0/d3.js";
@@ -26,7 +26,7 @@ export function createChartSoldCarsGermany(selector) {
   }
 
 
-  const data = {
+  const data: ChartPointArgs = {
     bounds: {
       width: {
         values: [20, 30, 50],
@@ -72,7 +72,7 @@ export function createChartSoldCarsGermany(selector) {
       title: {
         dependentOn: 'width',
         scope: 'chart',
-        tuples: [[0,''], [[3], 'Legend']]
+        tuples: [[0,''], [3, 'Legend']]
       },
       // keys: [...topMakesNames, "Other"],
       // labels: [...topMakesNames, "Other"]
