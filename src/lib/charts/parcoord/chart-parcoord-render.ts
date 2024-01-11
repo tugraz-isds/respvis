@@ -55,7 +55,6 @@ function renderAxes(data: IChartParcoordData, g: SVGSVGElement | SVGGElement) {
       .call((s) => axisSequenceRender(s, index))
 
       // .each((d, i, g) => {
-      //   console.log(g[i])
       //   select(g[i]).call(axisLeft(d.scale)).attr('data-ignore-layout-children', true)
       //   select(g[i])
       //     .selectAll('.title')

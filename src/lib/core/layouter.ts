@@ -34,7 +34,7 @@ function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGElement>): 
       if (fitHeight) style += `height: ${bbox.height}px; `;
     }
     g[i].setAttribute('style', style);
-    for (let varIndex= 0, len=cssVars.length; varIndex < len; varIndex++) {
+    for (let varIndex= 0, len= cssVars.length; varIndex < len; varIndex++) {
       g[i].style.setProperty(cssVars[varIndex], computedStyleSVGElement.getPropertyValue(cssVars[varIndex]))
     }
   });
@@ -124,7 +124,7 @@ export function layouterRender(selection: Selection<HTMLDivElement>): void {
   selection.classed('layouter', true);
 }
 
-export function layouterCompute(selection: Selection<HTMLDivElement>): void {
+export function layouterCompute(selection: Selection<HTMLDivElement>, dispatch = true): void {
   selection.each(function () {
     const layouterS = select(this);
     const layoutRootS = layoutNodeRoot(this);
@@ -155,7 +155,8 @@ export function layouterCompute(selection: Selection<HTMLDivElement>): void {
         .attr('height', null)
         .attr('viewBox', rectToString({ ...bounds, x: 0, y: 0 }));
 
-      layouterS.dispatch('boundschange');
+      //TODO: Think about better solution and layouter process in general than using flag here
+      if (dispatch) layouterS.dispatch('boundschange');
     }
   });
 }

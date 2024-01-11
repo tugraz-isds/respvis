@@ -24,8 +24,10 @@ export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
       layouterS
     } = renderChartWindow(this.selection, this.data)
     chartS.call((s) => chartPointRender(s))
-    layouterS.on('boundschange.chartwindowpoint', () => chartPointRender(chartS))
-      .call((s) => layouterCompute(s));
+    layouterS.on('boundschange.chartwindowpoint', () => {
+      chartPointRender(chartS)
+      layouterS.call((s) => layouterCompute(s, false))
+    }).call((s) => layouterCompute(s));
   }
 
   protected addBuiltInListeners() {

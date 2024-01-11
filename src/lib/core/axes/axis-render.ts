@@ -125,7 +125,6 @@ function axisRender(
       .style('text-anchor', rotationDirection === 'clockwise' ? 'start' : rotationDirection === 'counterclockwise' ? 'end' : 'middle')
       .style('dominant-baseline', rotationDirection !== 'none' ? 'central' : 'hanging')
     //TODO: no interpolation possible for text-anchor. Maybe do tranform translate workaround
-    // console.log(orientation.angle)
     // const {width, height} = pivotS.node()!.getBoundingClientRect()
     pivotS //.transition().duration(200) //TODO: enable D3 transitions when being able to differ between initial render and succeeding renders
       .attr("transform", "translate(" + x + "," + y + ") rotate(" + orientation.angle + ")");
@@ -135,7 +134,6 @@ function axisRender(
     const tickOrientation = axisD.tickOrientation
     const axisElement = axisD.tickOrientation?.boundElement ?? selection.select<SVGGElement>('.domain').node()
     if (!tickOrientation || !axisElement) return undefined
-    // console.log(axisElement, tickOrientation)
     const angle = calcTickAngle(axisElement, tickOrientation)
     const boundIndex = findMatchingBoundsIndex(axisElement, tickOrientation.bounds)
     const orientationIndex = boundIndex >= 0 ? boundIndex : tickOrientation.orientation.length - 1

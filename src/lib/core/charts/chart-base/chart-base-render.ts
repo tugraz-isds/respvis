@@ -1,7 +1,7 @@
 import {Selection} from 'd3';
 import {ChartBaseValid} from "./chart-base-validation";
 import {elementFromSelection} from "../../utilities/d3/util";
-import {updateBoundStateInCSS} from "../../utilities/resizing/bounds";
+import {updateCSSForSelection} from "../../utilities/resizing/bounds";
 import {getConfigBoundableState} from "../../utilities/resizing/boundable";
 
 export type ChartBaseSelection = Selection<SVGSVGElement | SVGGElement, ChartBaseValid>;
@@ -10,7 +10,7 @@ export function chartBaseRender(selection: ChartBaseSelection): ChartBaseSelecti
   const chartElement = elementFromSelection(selection)
   const chartBaseValid = selection.data()[0]
   chartBaseValid.selection = selection
-  updateBoundStateInCSS(chartElement, chartBaseValid.bounds)
+  updateCSSForSelection(selection)
 
   selection
     .classed('chart', true)
