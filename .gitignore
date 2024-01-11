@@ -115,4 +115,5 @@ src/examples/**/styles/
 src/examples-dependencies/libs/respvis/
 package/
 
-notes.txt
+notes
+notes/notes.txt

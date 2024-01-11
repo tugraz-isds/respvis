@@ -1,5 +1,5 @@
 import {Selection} from 'd3';
-import {ChartWindowValid, layouterCompute, renderChartWindow, validateChartWindow,} from '../core';
+import {ChartWindowValid, layouterCompute, rectFromString, renderChartWindow, validateChartWindow,} from '../core';
 import {chartPointRender} from './chart-point';
 import {ChartPointArgs, ChartPointData, chartPointData} from "./chart-point-data";
 import {addZoom} from "../core/utilities/zoom";
@@ -38,6 +38,13 @@ export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
     const renderer = this
     const chartWindowD = this.selection.datum()
     if (!chartWindowD.zoom) return
+    const drawArea = this.selection.selectAll('.draw-area')
+    renderer.addCustomListener('resize.zoom', () => {
+      const {flipped, maxRadius, x, y} = renderer.data
+      const drawAreaBounds = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
+      x.scale.range(flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius])
+      y.scale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
+    })
     addZoom(this.selection, ({xScale, yScale}) => {
       const {x, y, pointSeries} = renderer.data
       const xRescaled = {...x, scale: xScale}

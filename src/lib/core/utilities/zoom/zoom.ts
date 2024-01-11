@@ -1,5 +1,6 @@
 import {AxisDomain, AxisScale, Selection, zoom, ZoomBehavior, ZoomTransform} from "d3";
 import {ChartPointData} from "../../../points";
+import {throttle} from "../d3/util";
 
 export type ZoomArgs = {
   in: number,
@@ -22,18 +23,21 @@ type ZoomSelection = Selection<HTMLDivElement, Pick<ChartPointData, 'zoom' | 'x'
 export function addZoom(selection: ZoomSelection, callback: (props: {
   xScale: AxisScale<AxisDomain>,
   yScale: AxisScale<AxisDomain>
-}) => void) {
+}) => void, throttleMs = 50) {
   const {x, y, zoom} = selection.datum()
   const drawArea = selection.selectAll('.draw-area')
   function updateScales() {
     if (!zoom) return
+    const onZoom = function (e) {
+      const transform: ZoomTransform = e.transform
+      const xScale = transform.rescaleX(x.scale)
+      const yScale = transform.rescaleY(y.scale)
+      // .range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
+      callback({xScale, yScale})
+    }
+    const throttledZoom = throttle(onZoom, throttleMs)
     drawArea.call(
-      zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom.autozoom', function (e) {
-        const transform: ZoomTransform = e.transform
-        const xScale = transform.rescaleX(x.scale)
-        const yScale = transform.rescaleY(y.scale)
-        callback({xScale, yScale})
-      })
+      zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom.autozoom', throttledZoom)
     )
   }
   function updateRangeExtent() {

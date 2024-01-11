@@ -6,3 +6,16 @@ export function elementFromSelection<T extends BaseType>(selection?: Selection<T
   if (!element) throw new Error(ErrorMessages.elementNotExisting)
   return element
 }
+
+// type WrapperFunction<T extends (...args: any[]) => K, K> = (func: T, delay: number) => T
+export function throttle<T extends (...args: any[]) => K, K>(func: T, delayMs: number): T {
+  let lastTime = 0;
+  return function (...args) {
+    const currentTime = new Date().getTime();
+
+    if (currentTime - lastTime >= delayMs) {
+      func.apply(this, args);
+      lastTime = currentTime;
+    }
+  } as T
+}
