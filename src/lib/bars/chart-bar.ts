@@ -1,17 +1,16 @@
 import { select, Selection } from 'd3';
 import {
   chartCartesianAxisRender,
-  chartCartesianData,
+  chartCartesianData, ChartCartesianValid as ChartCartesian,
 
-} from '../core/charts/chart-cartesian/chart-cartesian';
+} from '../core/charts/chart-cartesian/chart-cartesian-validation';
 import { seriesBarRender, seriesBarData, SeriesBar, Bar } from './series-bar';
 import {
   SeriesLabelBar as SeriesLabelBar,
   seriesLabelBarData as seriesLabelBarData,
   seriesLabelBar,
 } from './series-label-bar';
-import {chartBaseRender} from "../core/charts/chart-base/chart-base-render";
-import {IChartCartesianData as ChartCartesian} from "../core/charts/chart-cartesian/IChartCartesianData";
+import {chartBaseRender} from "../core";
 
 export interface ChartBar extends SeriesBar, ChartCartesian {
   labelsEnabled: boolean;

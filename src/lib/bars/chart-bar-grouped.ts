@@ -1,5 +1,9 @@
 import {select, Selection} from 'd3';
-import {chartCartesianAxisRender, chartCartesianData,} from '../core/charts/chart-cartesian/chart-cartesian';
+import {
+  chartCartesianAxisRender,
+  chartCartesianData,
+  ChartCartesianValid as ChartCartesian,
+} from '../core/charts/chart-cartesian/chart-cartesian-validation';
 import {LegendValid, legendData, legendRender} from '../legend';
 import {
   chartBarStackedHoverAxisTick,
@@ -8,8 +12,7 @@ import {
 } from './chart-bar-stacked';
 import {SeriesBarGrouped, seriesBarGroupedData, seriesBarGroupedRender,} from './series-bar-grouped';
 import {SeriesLabelBar, seriesLabelBar, seriesLabelBarData} from './series-label-bar';
-import {chartBaseRender} from "../core/charts/chart-base/chart-base-render";
-import {IChartCartesianData as ChartCartesian} from "../core/charts/chart-cartesian/IChartCartesianData";
+import {chartBaseRender} from "../core";
 
 export interface ChartBarGrouped extends Omit<SeriesBarGrouped, 'styleClasses'>, ChartCartesian {
   styleClasses: string[];

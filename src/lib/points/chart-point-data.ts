@@ -1,23 +1,9 @@
-import {
-  AxisArgs,
-  axisData,
-  AxisValid,
-  ChartBaseArgs,
-  ChartBaseValid,
-  chartBaseValidation,
-  ScaleAny,
-  ScaleContinuous,
-  syncAxes
-} from "../core";
-import {LegendValid, legendData} from "../legend";
+import {ChartCartesianArgs, chartCartesianData, ChartCartesianValid, ScaleAny, ScaleContinuous} from "../core";
 import {seriesPointData, SeriesPointValid} from "./series-point";
-import {validateZoom, ZoomArgs, ZoomValid} from "../core/utilities/zoom";
 
 // type Dimension = number | string // TODO: | date . Include this everywhere
 
-export type ChartPointArgs = ChartBaseArgs & {
-  x: AxisArgs,
-  y: AxisArgs,
+export type ChartPointArgs = ChartCartesianArgs & {
   radiuses?: number | {
     radiusDim: number[],
     scale: ScaleAny<any, number, number>
@@ -26,30 +12,27 @@ export type ChartPointArgs = ChartBaseArgs & {
     colorDim: number[],
     colorScale: ScaleContinuous<any, string>
   }
-  zoom?: ZoomArgs
-  styleClasses?: string[]
-  legend?: LegendValid
 }
 
-export type ChartPointData = ChartBaseValid & {
-  x: AxisValid,
-  y: AxisValid,
+export type ChartPointData = ChartCartesianValid & {
   pointSeries: SeriesPointValid;
   maxRadius: number
-  zoom?: ZoomValid
-  legend: LegendValid;
 }
 
 export function chartPointData(data: ChartPointArgs): ChartPointData {
+  //TODO: adapt to thought structure of labels, data-style, data-key
   const {
-    legend, flipped, radiuses, zoom ,
-    color, markerTooltips} = data
-  const [x, y] = syncAxes(axisData(data.x), axisData(data.y))
+    legend, flipped, radiuses ,
+    color} = data
+
+  const {x, y, markerTooltips,
+    ...restCartesian} = chartCartesianData(data)
+
+  //TODO: move to cartesian or base
   const toolTipData = markerTooltips || {}
   const styleClasses = data.styleClasses ? data.styleClasses :
     x.categories.map((category) => `categorical-${x.categoryOrder[category]}`)
   const labels = legend?.labels ? legend.labels : x.categories
-
 
   const pointSeries = seriesPointData({...toolTipData,
     flipped, x, y, color, radiuses, ...toolTipData, styleClasses, labels,
@@ -57,20 +40,12 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
   })
 
   const maxRadius = typeof pointSeries.radiuses === "number" ? pointSeries.radiuses : pointSeries.radiuses.scale.range()[1]
-  //TODO: make zoom optional
-  const categories = Object.keys(x.categoryOrder)
-  const legendValid = legendData({
-    ...(legend ? legend : {}),
-    labels: legend?.labels ? legend.labels : categories,
-    keys: categories.map((_, i) => `s-0 c-${i}`)
-  })
   return {
     x,
     y,
+    markerTooltips,
+    ...restCartesian,
     pointSeries,
     maxRadius,
-    ...chartBaseValidation(data),
-    legend: legendValid,
-    zoom: zoom ? validateZoom(zoom) : undefined
   };
 }

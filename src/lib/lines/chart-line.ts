@@ -1,19 +1,20 @@
-import { select, Selection } from 'd3';
-import { Line, SeriesLine, seriesLineData, seriesLineRender } from './series-line';
+import {select, Selection} from 'd3';
+import {Line, SeriesLine, seriesLineData, seriesLineRender} from './series-line';
 import {
-  IChartCartesianData,
+  arrayIs,
+  chartBaseRender,
   chartCartesianAxisRender,
   chartCartesianData,
-  arrayIs,
-  rectFromString, ScaleAny,
+  ChartCartesianValid,
+  rectFromString,
+  ScaleAny,
 } from '../core';
-import { SeriesPointValid, seriesPointRender, seriesPointData, Point } from '../points';
-import { LegendValid, legendData, legendRender, LegendItem } from '../legend';
-import { SeriesLabel, seriesLabelData, seriesLabelRender, JoinEvent } from '../bars';
-import { SeriesConfigTooltips, seriesConfigTooltipsData } from '../tooltip';
-import {chartBaseRender} from "../core/charts/chart-base/chart-base-render";
+import {Point, seriesPointData, seriesPointRender, SeriesPointValid} from '../points';
+import {legendData, LegendItem, legendRender, LegendValid} from '../legend';
+import {SeriesLabel, seriesLabelData, seriesLabelRender} from '../bars';
+import {SeriesConfigTooltips} from '../tooltip';
 
-export interface ChartLine extends SeriesLine, IChartCartesianData {
+export interface ChartLine extends SeriesLine, ChartCartesianValid {
   legend: Partial<LegendValid>;
   markerLabelsEnabled: boolean;
   markerLabels: (

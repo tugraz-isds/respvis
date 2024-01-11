@@ -1,14 +1,17 @@
 import {select, Selection} from 'd3';
-import {chartCartesianAxisRender, chartCartesianData,} from '../core/charts/chart-cartesian/chart-cartesian';
+import {
+  chartCartesianAxisRender,
+  chartCartesianData,
+  ChartCartesianValid,
+} from '../core';
 import {LegendValid, legendData, LegendItem, legendRender} from '../legend';
 import {Bar} from './series-bar';
 import {BarGrouped} from './series-bar-grouped';
 import {SeriesBarStacked, seriesBarStackedData, seriesBarStackedRender} from './series-bar-stacked';
 import {SeriesLabelBar, seriesLabelBar, seriesLabelBarData} from './series-label-bar';
 import {chartBaseRender} from "../core";
-import {IChartCartesianData} from "../core/charts/chart-cartesian/IChartCartesianData";
 
-export interface ChartBarStacked extends Omit<SeriesBarStacked, 'styleClasses'>, IChartCartesianData {
+export interface ChartBarStacked extends Omit<SeriesBarStacked, 'styleClasses'>, ChartCartesianValid {
   styleClasses: string[];
   legend: Partial<LegendValid>;
   labelsEnabled: boolean;

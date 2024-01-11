@@ -7,42 +7,39 @@ import {splitKey} from "../core/utilities/dom/key";
 
 export type ChartPointSelection = Selection<SVGSVGElement | SVGGElement, ChartPointData>;
 
-export function chartPointRender(selection: ChartPointSelection): void {
-  selection
-    .call((s) => chartBaseRender(s))
+export function chartPointRender(selection: ChartPointSelection) {
+  chartBaseRender(selection).chart
     .classed('chart-point', true)
-    .each((chartD, i, g) => {
-      renderAllSeriesOfPoints(chartD, g[i])
-      renderLegend(chartD, g[i])
-    })
-    .call((s) => chartCartesianAxisRender(s));
+    .call(renderAllSeriesOfPoints)
+    .call(renderLegend)
+  selection.call(chartCartesianAxisRender)
+}
 
-  function renderAllSeriesOfPoints(data: ChartPointData, g: SVGSVGElement | SVGGElement) {
-    const {pointSeries} = data;
-    select(g)
-      .selectAll('.draw-area')
-      .selectAll<SVGSVGElement, ChartPointData>('.series-point')
-      .data<SeriesPointValid>([pointSeries])
-      .join('svg')
-      .call((s) => seriesPointRender(s))
-  }
+function renderAllSeriesOfPoints(selection: ChartPointSelection) {
+  const {pointSeries} = selection.datum()
+  selection
+    .selectAll('.draw-area')
+    .selectAll<SVGSVGElement, ChartPointData>('.series-point')
+    .data<SeriesPointValid>([pointSeries])
+    .join('svg')
+    .call(seriesPointRender)
+}
 
-  function renderLegend(chartD: ChartPointData, g: SVGSVGElement | SVGGElement) {
-    const drawAreaS = select(g).selectAll('.draw-area');
-    const {legend, selection: chartSelection} = chartD
-    selection
-      .selectAll<SVGGElement, LegendValid>('.legend')
-      .data([{...legend, selection: chartSelection}])
-      .join('g')
-      .call((s) => legendRender(s))
-      .on('pointerover.chartpointhighlight pointerout.chartpointhighlight', (e) => { //TODO: Hover
-        chartPointHoverLegendItem(
-          drawAreaS,
-          select(e.target.closest('.legend-item')),
-          e.type.endsWith('over')
-        );
-      });
-  }
+function renderLegend(selection: ChartPointSelection) {
+  const drawAreaS = selection.selectAll('.draw-area');
+  const {legend, selection: chartSelection} = selection.datum()
+  return selection
+    .selectAll<SVGGElement, LegendValid>('.legend')
+    .data([{...legend, selection: chartSelection}])
+    .join('g')
+    .call((s) => legendRender(s))
+    .on('pointerover.chartpointhighlight pointerout.chartpointhighlight', (e) => { //TODO: Hover
+      chartPointHoverLegendItem(
+        drawAreaS,
+        select(e.target.closest('.legend-item')),
+        e.type.endsWith('over')
+      );
+    });
 }
 
 export function chartPointHoverLegendItem(

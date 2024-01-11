@@ -9,7 +9,6 @@ export type ChartBaseArgs = {
   bounds?: Partial<LengthDimensionBounds>
   title?: ConfigBoundable<string>,
   subTitle?: ConfigBoundable<string>;
-  flipped?: boolean;
   markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>;
 }
 
@@ -27,7 +26,6 @@ export function chartBaseValidation(args: ChartBaseArgs): ChartBaseValid {
     },
     title: args.title || '',
     subTitle: args.subTitle || '',
-    flipped: !!args.flipped,
     markerTooltips: args.markerTooltips,
   }
 }
