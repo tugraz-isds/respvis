@@ -1,5 +1,5 @@
 import {ChartCartesianArgs, chartCartesianData, ChartCartesianValid, ScaleAny, ScaleContinuous} from "../core";
-import {seriesPointData, SeriesPointValid} from "./series-point";
+import {seriesPointData, SeriesPointValid} from "./series-point-validation";
 
 // type Dimension = number | string // TODO: | date . Include this everywhere
 
@@ -20,32 +20,25 @@ export type ChartPointData = ChartCartesianValid & {
 }
 
 export function chartPointData(data: ChartPointArgs): ChartPointData {
-  //TODO: adapt to thought structure of labels, data-style, data-key
-  const {
-    legend, flipped, radiuses ,
-    color} = data
+  const {radiuses , color} = data
 
   const {x, y, markerTooltips,
-    ...restCartesian} = chartCartesianData(data)
+    legend, flipped, ...restCartesian} = chartCartesianData(data)
 
-  //TODO: move to cartesian or base
-  const toolTipData = markerTooltips || {}
-  const styleClasses = data.styleClasses ? data.styleClasses :
-    x.categories.map((category) => `categorical-${x.categoryOrder[category]}`)
-  const labels = legend?.labels ? legend.labels : x.categories
-
-  const pointSeries = seriesPointData({...toolTipData,
-    flipped, x, y, color, radiuses, ...toolTipData, styleClasses, labels,
-    key: '0'
+  const pointSeries = seriesPointData({
+    ...(markerTooltips ?? {}),
+    flipped, x, y, color, radiuses, legend, key: '0'
   })
 
   const maxRadius = typeof pointSeries.radiuses === "number" ? pointSeries.radiuses : pointSeries.radiuses.scale.range()[1]
   return {
     x,
     y,
-    markerTooltips,
-    ...restCartesian,
+    flipped,
+    legend,
     pointSeries,
     maxRadius,
+    ...restCartesian,
+    markerTooltips,
   };
 }

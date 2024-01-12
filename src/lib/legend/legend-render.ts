@@ -4,14 +4,16 @@ import {elementFromSelection} from "../core/utilities/d3/util";
 import {getConfigBoundableState} from "../core/utilities/resizing/boundable";
 import {LegendValid, LegendItem} from "./legend";
 
-export function legendCreateItems(legendData: LegendValid): LegendItem[] {
-  const {labels, styleClasses, symbols, keys, reverse} = legendData;
-  const items = labels.map((l, i) => {
+export function legendItemData(legendData: LegendValid): LegendItem[] {
+  const { labelCallback, categories, styleClasses,
+    symbols, keys, reverse
+  } = legendData;
+  const items = categories.map((c, i) => {
     return {
-      label: l,
+      label: labelCallback(c),
       styleClass: arrayIs(styleClasses) ? styleClasses[i] : styleClasses,
       symbol: arrayIs(symbols) ? symbols[i] : symbols,
-      key: keys === undefined ? l : keys[i],
+      key: keys[i],
     };
   });
   return reverse ? items.reverse() : items
@@ -34,7 +36,7 @@ export function legendRender(selection: Selection<Element, WithChartSelection<Le
 
     itemS
       .selectAll<SVGGElement, LegendItem>('.legend-item')
-      .data(legendCreateItems(legendD), (d) => d.label)
+      .data(legendItemData(legendD), (d) => d.label)
       .join(
         (enter) =>
           enter

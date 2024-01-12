@@ -2,23 +2,23 @@ import {select, Selection} from 'd3';
 import {AxisArgs, axisBottomRender, axisData, axisLeftRender, AxisPropagation, AxisValid, syncAxes} from "../../axes";
 import {ChartBaseArgs, ChartBaseValid, chartBaseValidation} from "../chart-base";
 import {validateZoom, ZoomArgs, ZoomValid} from "../../utilities/zoom";
-import {legendData, LegendValid} from "../../../legend";
+import {LegendArgsUser, legendData, LegendValid} from "../../../legend";
 
 export type ChartCartesianArgs = ChartBaseArgs & {
-  x: AxisArgs,
-  y: AxisArgs,
-  flipped?: boolean;
+  x: AxisArgs
+  y: AxisArgs
+  flipped?: boolean
   zoom?: ZoomArgs
   styleClasses?: string[]
-  legend?: LegendValid
+  legend?: LegendArgsUser
 }
 
-export type ChartCartesianValid = ChartBaseValid & { //TODO: what about styleClasses?
-  x: AxisValid,
-  y: AxisValid,
-  flipped: boolean;
+export type ChartCartesianValid = ChartBaseValid & {
+  x: AxisValid
+  y: AxisValid
+  flipped: boolean
   zoom?: ZoomValid
-  legend: LegendValid;
+  legend: LegendValid
 }
 
 export function chartCartesianData(data: ChartCartesianArgs): ChartCartesianValid {
@@ -26,15 +26,10 @@ export function chartCartesianData(data: ChartCartesianArgs): ChartCartesianVali
     legend, flipped, zoom
   } = data
   const [x, y] = syncAxes(axisData(data.x), axisData(data.y))
-  const styleClasses = data.styleClasses ? data.styleClasses :
-    x.categories.map((category) => `categorical-${x.categoryOrder[category]}`)
-  const labels = legend?.labels ? legend.labels : x.categories
-
-  const categories = Object.keys(x.categoryOrder)
+  const categoriesOrdered = Object.keys(x.categoryOrder)
   const legendValid = legendData({
     ...(legend ? legend : {}),
-    labels: legend?.labels ? legend.labels : categories,
-    keys: categories.map((_, i) => `s-0 c-${i}`)
+    categories: categoriesOrdered,
   })
 
   return {

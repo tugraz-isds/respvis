@@ -74,8 +74,10 @@ export function createChartSoldCarsGermany(selector) {
         scope: 'chart',
         tuples: [[0,''], [3, 'Legend']]
       },
-      // keys: [...topMakesNames, "Other"],
-      // labels: [...topMakesNames, "Other"]
+      // labelCallback: (label: string) => {
+      //   console.log(label)
+      //   return label + '1'
+      // }
     },
     zoom: {
       in: 20,

@@ -1,9 +1,10 @@
 import {select, Selection} from 'd3';
 import {chartBaseRender, chartCartesianAxisRender} from '../core';
-import {seriesPointRender, SeriesPointValid} from './series-point';
+import {SeriesPointValid} from './series-point';
 import {LegendItem, legendRender, LegendValid} from "../legend";
 import {ChartPointData} from "./chart-point-data";
 import {splitKey} from "../core/utilities/dom/key";
+import {seriesPointRender} from "./series-point-render";
 
 export type ChartPointSelection = Selection<SVGSVGElement | SVGGElement, ChartPointData>;
 

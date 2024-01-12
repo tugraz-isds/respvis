@@ -1,5 +1,5 @@
-import {ChartBaseValid, rectFromSize, Size} from '../core';
-import {pathRect} from '../core/utilities/path';
+import {rectFromSize, Size} from '../core';
+import {pathRect} from '../core';
 import {ConfigBoundable} from "../core/utilities/resizing/boundable";
 
 export enum LegendOrientation {
@@ -8,40 +8,40 @@ export enum LegendOrientation {
 }
 
 export interface LegendItem {
-  label: string;
-  styleClass: string;
-  symbol: (pathElement: SVGPathElement, size: Size) => void;
-  key: string;
+  label: string
+  styleClass: string
+  symbol: (pathElement: SVGPathElement, size: Size) => void
+  key: string
 }
 
-export type LegendArgs = {
+export type LegendArgsUser = {
   title?: ConfigBoundable<string>
-  labels: string[];
+  labelCallback?: (category: string) => string
   symbols?:
     | ((symbol: SVGPathElement, size: Size) => void)
-    | ((symbol: SVGPathElement, size: Size) => void)[];
-  styleClasses?: string | string[];
-  reverse?: boolean;
-  keys: string[];
+    | ((symbol: SVGPathElement, size: Size) => void)[]
+  reverse?: boolean
+}
+
+export type LegendArgs = LegendArgsUser & {
+  categories: string[]
 }
 
 export type LegendValid = Required<LegendArgs> & {
-  title: ConfigBoundable<string>
-  labels: string[];
-  symbols:
-    | ((symbol: SVGPathElement, size: Size) => void)
-    | ((symbol: SVGPathElement, size: Size) => void)[];
-  styleClasses: string | string[];
-  reverse?: boolean;
+  reverse: boolean
+  keys: string[]
+  styleClasses: string[]
 }
 
 export function legendData(data: LegendArgs): LegendValid {
+  const {labelCallback, categories} = data
   return {
     title: data.title || '',
-    labels: data.labels,
+    labelCallback: labelCallback ? labelCallback : (label: string) => label,
+    categories,
     reverse: data.reverse ?? false,
-    styleClasses: data.styleClasses || data.labels.map((l, i) => `categorical-${i}`),
+    styleClasses: categories.map((l, i) => `categorical-${i}`),
     symbols: data.symbols || ((e, s) => pathRect(e, rectFromSize(s))),
-    keys: data.keys,
+    keys: categories.map((_, i) => `s-0 c-${i}`),
   };
 }
