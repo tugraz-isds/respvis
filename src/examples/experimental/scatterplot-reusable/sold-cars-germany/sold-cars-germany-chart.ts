@@ -64,9 +64,15 @@ export function createChartSoldCarsGermany(selector) {
           [2, (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))]]
       }
     },
-    radiuses: {
-      radiusDim: mileages,
-      scale: scales.radiusScale
+    radii: {
+      values: mileages,
+      scale: {
+        dependentOn: 'width',
+        value: scales.radiusScale,
+        tuples: [[0, (s => s.range([3, 12]))],
+          [2, (s) => s.range([4, 16])],
+          [3,  (s) => s.range([5, 20])]
+      },
     },
     legend: {
       title: {

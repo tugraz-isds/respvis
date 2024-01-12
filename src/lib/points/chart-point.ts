@@ -1,6 +1,6 @@
 import {select, Selection} from 'd3';
 import {chartBaseRender, chartCartesianAxisRender} from '../core';
-import {SeriesPointValid} from './series-point';
+import {SeriesPointValid} from './series-point-validation';
 import {LegendItem, legendRender, LegendValid} from "../legend";
 import {ChartPointData} from "./chart-point-data";
 import {splitKey} from "../core/utilities/dom/key";

@@ -1,7 +1,7 @@
 import {SeriesConfigTooltips, seriesConfigTooltipsData,} from '../tooltip';
-import {AxisValid, Circle, ScaleAny, ScaleContinuous} from '../core';
-import {Size} from '../core';
+import {AxisValid, Circle, ScaleContinuous, Size} from '../core';
 import {LegendValid} from "../legend";
+import {getRadiusDefinite, isRadiusVaryingArg, RadiusArg} from "../core/utilities/radius/radius-dimension";
 
 export interface Point extends Circle {
   xValue: any
@@ -15,10 +15,7 @@ export interface Point extends Circle {
 export type SeriesPointArgs = Partial<SeriesConfigTooltips<SVGCircleElement, Point>> & {
   x: AxisValid
   y: AxisValid
-  radiuses?: number | {
-    radiusDim: number[]
-    scale: ScaleAny<any, number, number>
-  };
+  radii?: RadiusArg
   color?: {
     colorDim: number[]
     colorScale: ScaleContinuous<any, string>
@@ -29,23 +26,21 @@ export type SeriesPointArgs = Partial<SeriesConfigTooltips<SVGCircleElement, Poi
   flipped?: boolean
 }
 
-export type SeriesPointValid = Omit<SeriesPointArgs, 'radiuses'> & {
-  radiuses: number | {
-    radiusDim: number[],
-    scale: ScaleAny<any, number, number>
+export type SeriesPointValid = Required<Omit<SeriesPointArgs, 'color'>> & {
+  color?: {
+    colorDim: number[]
+    colorScale: ScaleContinuous<any, string>
   };
 }
 
 export function seriesPointData(data: SeriesPointArgs): SeriesPointValid {
-  const {x, y, radiuses, key, legend} = data
+  const {x, y, radii, key, legend} = data
   //TODO: Do clean radius validation
-  const radiusesValid = typeof radiuses === "number" ? radiuses : typeof radiuses === "object" ? {
-    scale: radiuses.scale,
-    radiusDim: radiuses.radiusDim
-  } : 5
+  const radiusesValid = typeof radii === "number" ? radii :
+    isRadiusVaryingArg(radii) ? radii : 5
 
   return {x, y,
-    radiuses: radiusesValid,
+    radii: radiusesValid,
     color: data.color,
     legend,
     key,
@@ -56,17 +51,20 @@ export function seriesPointData(data: SeriesPointArgs): SeriesPointValid {
 }
 
 export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
-  const { x, y, radiuses, bounds,
+  const { x, y, radii, bounds,
     legend, key: seriesKey, flipped,
-    color } = seriesData;
+    color } = seriesData
 
-  const data: Point[] = [];
+  const data: Point[] = []
+  //TODO: Find a good solution for this quick dirty hack!!!!
+  const chartElement = document.getElementsByClassName('chart-point')[0] as SVGSVGElement
+  const radiusDefinite = getRadiusDefinite(radii, {chart: chartElement})
 
   for (let i = 0; i < x.values.length; ++i) {
     const xVal = x.values[i]
     const yVal = y.values[i]
     const category = x.categories[i]
-    const r = typeof radiuses === "number" ? radiuses : radiuses.scale(radiuses.radiusDim[i]);
+    const r = typeof radiusDefinite === "number" ? radiusDefinite : radiusDefinite.scale(radiusDefinite.values[i])
     const key = `s-${seriesKey} c-${x.categoryOrder[category]} i-${i}`
     data.push({
       label: legend.labelCallback(category),
@@ -80,7 +78,7 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
       xValue: xVal,
       yValue: yVal,
       color: color?.colorScale(color.colorDim[i]),
-      radiusValue: typeof radiuses !== "number" ? radiuses.radiusDim[i] : undefined
+      radiusValue: typeof radii !== "number" ? radii.values[i] : undefined
     });
   }
 
