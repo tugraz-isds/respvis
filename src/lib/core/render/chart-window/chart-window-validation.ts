@@ -1,8 +1,9 @@
-import {LengthDimensionBounds, validateBounds} from "../utilities/resizing/bounds";
+import {LengthDimensionBounds, validateBounds} from "../../data/resizing/bounds";
 import {Selection} from "d3";
+import {RenderArgs} from "../charts/renderer";
 
 export type ChartWindowSelection = Selection<HTMLDivElement, ChartWindowValid>
-export type ChartWindowArgs = {
+export type ChartWindowArgs = RenderArgs & {
   type: 'point' | 'bar' | 'line',
   bounds?: Partial<LengthDimensionBounds>
   //toolbar stuff comes here

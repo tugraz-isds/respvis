@@ -1,9 +1,5 @@
 import { select, Selection } from 'd3';
-import {
-  chartCartesianAxisRender,
-  chartCartesianData, ChartCartesianValid as ChartCartesian,
-
-} from '../core/charts/chart-cartesian/chart-cartesian-validation';
+import {chartCartesianAxisRender, chartCartesianData} from "../core";
 import { seriesBarRender, seriesBarData, SeriesBar, Bar } from './series-bar';
 import {
   SeriesLabelBar as SeriesLabelBar,
@@ -12,7 +8,7 @@ import {
 } from './series-label-bar';
 import {chartBaseRender} from "../core";
 
-export interface ChartBar extends SeriesBar, ChartCartesian {
+export interface ChartBar extends SeriesBar { //extends ChartCartesian
   labelsEnabled: boolean;
   labels: Partial<SeriesLabelBar>;
 }

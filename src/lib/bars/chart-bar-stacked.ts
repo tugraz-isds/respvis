@@ -4,7 +4,7 @@ import {
   chartCartesianData,
   ChartCartesianValid,
 } from '../core';
-import {LegendValid, legendData, LegendItem, legendRender} from '../legend';
+import {LegendValid, legendData, LegendItem, legendRender} from '../core/render/legend';
 import {Bar} from './series-bar';
 import {BarGrouped} from './series-bar-grouped';
 import {SeriesBarStacked, seriesBarStackedData, seriesBarStackedRender} from './series-bar-stacked';

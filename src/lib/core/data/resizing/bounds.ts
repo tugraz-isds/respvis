@@ -1,6 +1,6 @@
 import {CSSLength, LengthDimension, SVGHTMLElement} from "../../constants/types";
 import {indexFromBounds} from "./matchBounds";
-import {elementFromSelection} from "../d3/util";
+import {elementFromSelection} from "../../utilities/d3/util";
 import {Selection} from "d3";
 
 

@@ -3,6 +3,6 @@ export * from './tooltip';
 export * from './bars';
 export * from './points';
 export * from './lines';
-export * from './legend';
+export * from './core/render/legend';
 
 export * from './charts';

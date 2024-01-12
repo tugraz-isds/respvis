@@ -1,12 +1,20 @@
 import {select, Selection} from 'd3';
-import {AxisArgs, axisBottomRender, axisData, axisLeftRender, AxisPropagation, AxisValid, syncAxes} from "../../axes";
+import {
+  axisBottomRender,
+  axisData,
+  axisLeftRender,
+  AxisPropagation,
+  AxisUserArgs,
+  AxisValid,
+  syncAxes
+} from "../../axes";
 import {ChartBaseArgs, ChartBaseValid, chartBaseValidation} from "../chart-base";
-import {validateZoom, ZoomArgs, ZoomValid} from "../../utilities/zoom";
-import {LegendArgsUser, legendData, LegendValid} from "../../../legend";
+import {validateZoom, ZoomArgs, ZoomValid} from "../../../data/zoom";
+import {LegendArgsUser, legendData, LegendValid} from "../../legend";
 
 export type ChartCartesianArgs = ChartBaseArgs & {
-  x: AxisArgs
-  y: AxisArgs
+  x: AxisUserArgs
+  y: AxisUserArgs
   flipped?: boolean
   zoom?: ZoomArgs
   styleClasses?: string[]
@@ -23,12 +31,13 @@ export type ChartCartesianValid = ChartBaseValid & {
 
 export function chartCartesianData(data: ChartCartesianArgs): ChartCartesianValid {
   const {
-    legend, flipped, zoom
+    legend, flipped, zoom, renderer
   } = data
-  const [x, y] = syncAxes(axisData(data.x), axisData(data.y))
+  const [x, y] = syncAxes(axisData({...data.x, renderer}), axisData({...data.y, renderer}))
   const categoriesOrdered = Object.keys(x.categoryOrder)
   const legendValid = legendData({
     ...(legend ? legend : {}),
+    renderer: data.renderer,
     categories: categoriesOrdered,
   })
 

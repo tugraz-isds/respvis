@@ -1,11 +1,12 @@
 import {Axis as D3Axis, AxisDomain, AxisScale} from 'd3';
-import {TickOrientation} from "../utilities/resizing/matchBounds";
-import {ConfigBoundable} from "../utilities/resizing/boundable";
-import {validateScale} from "../utilities/scale";
-import {defaultCategory, validateCategories} from "../categories";
-import {LengthDimensionBounds, validateBounds} from "../utilities/resizing/bounds";
+import {TickOrientation} from "../../data/resizing/matchBounds";
+import {ConfigBoundable} from "../../data/resizing/boundable";
+import {validateScale} from "../../utilities/scale";
+import {defaultCategory, validateCategories} from "../../data/categories";
+import {LengthDimensionBounds, validateBounds} from "../../data/resizing/bounds";
+import {RenderArgs} from "../charts/renderer";
 
-export type AxisArgs = {
+export type AxisUserArgs = {
   values: number[], // TODO: add strings/dates, also for y
   scale?: AxisScale<AxisDomain>,
   categories?: string[]
@@ -15,6 +16,8 @@ export type AxisArgs = {
   configureAxis?: ConfigBoundable<ConfigureAxisFn>,
   tickOrientation?: TickOrientation
 }
+
+export type AxisArgs = AxisUserArgs & RenderArgs
 
 export type AxisValid = Required<Omit<AxisArgs, 'tickOrientation' | 'bounds'>> & {
   tickOrientation?: TickOrientation,
@@ -32,19 +35,21 @@ export function axisData(data: AxisArgs): AxisValid {
   const categories = validateCategories(data.values, data.categories)
   const categoryOrder1 = categories.reduce<string[]>(
     (prev, current) => prev.includes(current) ? prev : [...prev, current], [])
-    const categoryOrder = categoryOrder1.reduce((prev, current, index) => {
-      prev[current] = index
-      return prev
-    }, {})
+  const categoryOrder = categoryOrder1.reduce((prev, current, index) => {
+    prev[current] = index
+    return prev
+  }, {})
 
   return {
+    renderer: data.renderer,
     values: data.values,
     scale: validateScale(data.values, data.scale).range([0, 600]),
     categories: validateCategories(data.values, data.categories),
     categoryOrder,
     title: data.title || '',
     subTitle: data.subTitle || '',
-    configureAxis: data.configureAxis || (() => {}),
+    configureAxis: data.configureAxis || (() => {
+    }),
     tickOrientation: data.tickOrientation,
     bounds: {
       width: validateBounds(data.bounds?.width),
@@ -60,10 +65,11 @@ export function syncAxes(...axes: AxisValid[]) {
   const sharedCategory = sharedCategoryAxis?.categories.slice(0, lowestLength)
   const sharedCategoryOrder = sharedCategoryAxis?.categoryOrder
   return axes.map(axis => {
-    return {...axis,
+    return {
+      ...axis,
       values: axis.values.slice(0, lowestLength),
       categories: sharedCategory ? sharedCategory : axis.categories.slice(0, lowestLength),
-      categoryOrder: sharedCategoryOrder ? sharedCategoryOrder: axis.categoryOrder
+      categoryOrder: sharedCategoryOrder ? sharedCategoryOrder : axis.categoryOrder
     }
   })
 }

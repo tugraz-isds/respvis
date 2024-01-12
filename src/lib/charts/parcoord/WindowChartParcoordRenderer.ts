@@ -1,4 +1,4 @@
-import {IWindowChartBaseRenderer} from "../../core/charts/chart-base/IWindowChartBaseRenderer";
+import {IWindowChartBaseRenderer} from "../../core";
 import { windowChartParcoordData }from "./window-chart-parcoord-data";
 import {IChartParcoordArgs} from "./IChartParcoordArgs";
 import {select, Selection} from "d3";

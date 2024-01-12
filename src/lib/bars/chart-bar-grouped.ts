@@ -1,10 +1,6 @@
 import {select, Selection} from 'd3';
-import {
-  chartCartesianAxisRender,
-  chartCartesianData,
-  ChartCartesianValid as ChartCartesian,
-} from '../core/charts/chart-cartesian/chart-cartesian-validation';
-import {LegendValid, legendData, legendRender} from '../legend';
+import {chartCartesianAxisRender, chartCartesianData} from "../core";
+import {LegendValid, legendData, legendRender} from '../core/render/legend';
 import {
   chartBarStackedHoverAxisTick,
   chartBarStackedHoverBar,
@@ -14,7 +10,7 @@ import {SeriesBarGrouped, seriesBarGroupedData, seriesBarGroupedRender,} from '.
 import {SeriesLabelBar, seriesLabelBar, seriesLabelBarData} from './series-label-bar';
 import {chartBaseRender} from "../core";
 
-export interface ChartBarGrouped extends Omit<SeriesBarGrouped, 'styleClasses'>, ChartCartesian {
+export interface ChartBarGrouped extends Omit<SeriesBarGrouped, 'styleClasses'> { //extends ChartCartesian
   styleClasses: string[];
   legend: Partial<LegendValid>;
   labelsEnabled: boolean;

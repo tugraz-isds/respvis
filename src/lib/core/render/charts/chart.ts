@@ -1,11 +1,21 @@
 import {Selection} from "d3";
+import {SVGHTMLElement} from "../../constants/types";
 import {ChartWindowValid} from "../chart-window";
 import {ChartBaseValid} from "./chart-base";
+import {Renderer} from "./renderer";
 
 type ChartValid = ChartWindowValid & ChartBaseValid
-export abstract class Chart {
+
+export abstract class Chart implements Renderer {
   private addedListeners = false
-  constructor(public selection: Selection<HTMLDivElement, ChartValid>) {}
+  chartSelection?: Selection<SVGHTMLElement>
+  drawAreaSelection?: Selection<SVGHTMLElement>
+  xAxisSelection?: Selection<SVGHTMLElement>
+  yAxisSelection?: Selection<SVGHTMLElement>
+  legendSelection?: Selection<SVGHTMLElement>
+
+  constructor(public windowSelection: Selection<HTMLDivElement, ChartValid>) {}
+
 
   buildChart() {
     this.render()
@@ -20,12 +30,12 @@ export abstract class Chart {
    * as the method also adds listeners and the order matters.
    */
   addCustomListener<T extends ChartValid>(name: string, callback: (event: Event, data: T) => void) {
-    this.selection.on(name, callback)
+    this.windowSelection.on(name, callback)
   }
 
   private addFinalListeners() {
     const instance = this
-    this.selection.on('resize.final', () => {
+    this.windowSelection.on('resize.final', () => {
       instance.render()
     });
   }

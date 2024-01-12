@@ -1,4 +1,4 @@
-import {ScaleAny} from "../scale";
+import {ScaleAny} from "../../utilities/scale";
 import {
   BoundScopeElementMapping,
   ConfigTupleBoundableCallback,

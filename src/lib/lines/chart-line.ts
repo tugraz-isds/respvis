@@ -10,7 +10,7 @@ import {
   ScaleAny,
 } from '../core';
 import {Point, seriesPointData, seriesPointRender, SeriesPointValid} from '../points';
-import {legendData, LegendItem, legendRender, LegendValid} from '../legend';
+import {legendData, LegendItem, legendRender, LegendValid} from '../core/render/legend';
 import {SeriesLabel, seriesLabelData, seriesLabelRender} from '../bars';
 import {SeriesConfigTooltips} from '../tooltip';
 

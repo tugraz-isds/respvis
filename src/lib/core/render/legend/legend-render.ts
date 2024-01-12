@@ -1,7 +1,7 @@
-import {arrayIs, ChartBaseValid, rectFromString} from "../core";
+import {arrayIs, ChartBaseValid, rectFromString} from "../../index";
 import {select, Selection} from "d3";
-import {elementFromSelection} from "../core/utilities/d3/util";
-import {getConfigBoundableState} from "../core/utilities/resizing/boundable";
+import {elementFromSelection} from "../../utilities/d3/util";
+import {getConfigBoundableState} from "../../data/resizing/boundable";
 import {LegendValid, LegendItem} from "./legend";
 
 export function legendItemData(legendData: LegendValid): LegendItem[] {

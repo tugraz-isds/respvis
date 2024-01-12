@@ -1,6 +1,6 @@
 import {ChartCartesianArgs, chartCartesianData, ChartCartesianValid, ScaleContinuous} from "../core";
 import {seriesPointData, SeriesPointValid} from "./series-point-validation";
-import {RadiusArg} from "../core/utilities/radius/radius-dimension";
+import {RadiusArg} from "../core/data/radius/radius-dimension";
 
 // type Dimension = number | string // TODO: | date . Include this everywhere
 
@@ -24,7 +24,7 @@ export function chartPointData(data: ChartPointArgs): ChartPointData {
 
   const pointSeries = seriesPointData({
     ...(markerTooltips ?? {}),
-    flipped, x, y, color, radii, legend, key: '0'
+    flipped, x, y, color, radii, legend, key: '0', renderer: data.renderer
   })
 
   return {

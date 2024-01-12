@@ -1,6 +1,6 @@
 import {AxisDomain, AxisScale, Selection, zoom, ZoomBehavior, ZoomTransform} from "d3";
 import {ChartPointData} from "../../../points";
-import {throttle} from "../d3/util";
+import {throttle} from "../../utilities/d3/util";
 
 export type ZoomArgs = {
   in: number,

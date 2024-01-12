@@ -8,11 +8,11 @@ import {
   Selection,
   Transition
 } from "d3";
-import {elementFromSelection} from "../utilities/d3/util";
-import {getConfigBoundableState} from "../utilities/resizing/boundable";
-import {calcTickAngle} from "../utilities/resizing/resizeTicks";
+import {elementFromSelection} from "../../utilities/d3/util";
+import {getConfigBoundableState} from "../../data/resizing/boundable";
+import {calcTickAngle} from "../../data/resizing/resizeTicks";
 import {ChartBaseValid} from "../charts";
-import {updateBoundStateInCSS} from "../utilities/resizing/bounds";
+import {updateBoundStateInCSS} from "../../data";
 import {AxisValid} from "./axis-data";
 
 export type AxisPropagation = AxisValid & Pick<ChartBaseValid, 'selection'>

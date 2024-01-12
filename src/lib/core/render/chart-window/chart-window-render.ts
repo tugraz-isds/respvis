@@ -1,11 +1,11 @@
-import {ChartPointData} from "../../points";
+import {ChartPointData} from "../../../points";
 import {Selection} from "d3";
-import {toolbarRender} from "../charts/chart-base";
+import {toolbarRender} from "../charts";
 import {toolDownloadSVGRender} from "../tools/tool-download-svg";
-import {layouterRender} from "../layouter";
-import {updateCSSForSelection} from "../utilities/resizing/bounds";
-import {resizeEventListener} from "../resize-event-dispatcher";
-import {SVGHTMLElement} from "../constants/types";
+import {layouterRender} from "../../layouter";
+import {updateCSSForSelection} from "../../data/resizing/bounds";
+import {resizeEventListener} from "../../resize-event-dispatcher";
+import {SVGHTMLElement} from "../../constants/types";
 import {ChartWindowValid} from "./chart-window-validation";
 
 export function renderChartWindow<D extends ChartWindowValid>(selection: Selection<SVGHTMLElement, D>, data: D) {

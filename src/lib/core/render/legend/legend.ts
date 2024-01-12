@@ -1,6 +1,7 @@
-import {rectFromSize, Size} from '../core';
-import {pathRect} from '../core';
-import {ConfigBoundable} from "../core/utilities/resizing/boundable";
+import {rectFromSize, Size} from '../../index';
+import {pathRect} from '../../index';
+import {ConfigBoundable} from "../../data/resizing/boundable";
+import {RenderArgs} from "../charts/renderer";
 
 export enum LegendOrientation {
   Vertical = 'vertical',
@@ -14,7 +15,7 @@ export interface LegendItem {
   key: string
 }
 
-export type LegendArgsUser = {
+export type LegendArgsUser =  {
   title?: ConfigBoundable<string>
   labelCallback?: (category: string) => string
   symbols?:
@@ -23,7 +24,7 @@ export type LegendArgsUser = {
   reverse?: boolean
 }
 
-export type LegendArgs = LegendArgsUser & {
+export type LegendArgs = LegendArgsUser & RenderArgs & {
   categories: string[]
 }
 
@@ -34,8 +35,9 @@ export type LegendValid = Required<LegendArgs> & {
 }
 
 export function legendData(data: LegendArgs): LegendValid {
-  const {labelCallback, categories} = data
+  const {labelCallback, categories, renderer} = data
   return {
+    renderer,
     title: data.title || '',
     labelCallback: labelCallback ? labelCallback : (label: string) => label,
     categories,

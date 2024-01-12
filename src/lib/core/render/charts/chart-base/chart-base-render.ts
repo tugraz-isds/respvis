@@ -1,13 +1,15 @@
 import {Selection} from 'd3';
 import {ChartBaseValid} from "./chart-base-validation";
-import {elementFromSelection} from "../../utilities/d3/util";
-import {updateCSSForSelection} from "../../utilities/resizing/bounds";
-import {getConfigBoundableState} from "../../utilities/resizing/boundable";
-import {ChartPointData} from "../../../points";
+import {elementFromSelection} from "../../../utilities/d3/util";
+import {updateCSSForSelection} from "../../../data/resizing/bounds";
+import {getConfigBoundableState} from "../../../data/resizing/boundable";
+import {ChartPointData} from "../../../../points";
 
 export type ChartBaseSelection = Selection<SVGSVGElement | SVGGElement, ChartBaseValid>;
 
 export function chartBaseRender<T extends ChartBaseSelection>(selection: T) {
+  const data = selection.datum()
+  data.renderer.chartSelection = selection
   addSelectionToData(selection)
   updateCSSForSelection(selection)
 

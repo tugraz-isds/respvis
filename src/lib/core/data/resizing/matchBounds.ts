@@ -1,5 +1,5 @@
 import {LengthDimension, SVGHTMLElement} from "../../constants/types";
-import {convertToPx} from "../length";
+import {convertToPx} from "../../utilities/length";
 import {BoundsValid} from "./bounds";
 
 export const boundRegex = /(\d+(?:\.\d+)?)(px|rem|em)/

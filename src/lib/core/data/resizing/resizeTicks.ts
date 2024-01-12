@@ -1,5 +1,5 @@
 import {boundRegex, indexFromBounds, TickOrientation} from "./matchBounds";
-import {convertToPx} from "../length";
+import {convertToPx} from "../../utilities/length";
 import {SVGHTMLElement} from "../../constants/types";
 import {BoundsValid} from "./bounds";
 

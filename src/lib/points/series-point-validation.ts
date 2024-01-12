@@ -1,7 +1,9 @@
 import {SeriesConfigTooltips, seriesConfigTooltipsData,} from '../tooltip';
 import {AxisValid, Circle, ScaleContinuous, Size} from '../core';
-import {LegendValid} from "../legend";
-import {getRadiusDefinite, isRadiusVaryingArg, RadiusArg} from "../core/utilities/radius/radius-dimension";
+import {LegendValid} from "../core/render/legend";
+import {getRadiusDefinite, isRadiusVaryingArg, RadiusArg} from "../core/data/radius/radius-dimension";
+import {RenderArgs} from "../core/render/charts/renderer";
+import {elementFromSelection} from "../core/utilities/d3/util";
 
 export interface Point extends Circle {
   xValue: any
@@ -12,7 +14,7 @@ export interface Point extends Circle {
   key: string
 }
 
-export type SeriesPointArgs = Partial<SeriesConfigTooltips<SVGCircleElement, Point>> & {
+export type SeriesPointArgs = Partial<SeriesConfigTooltips<SVGCircleElement, Point>> & RenderArgs & {
   x: AxisValid
   y: AxisValid
   radii?: RadiusArg
@@ -34,13 +36,14 @@ export type SeriesPointValid = Required<Omit<SeriesPointArgs, 'color'>> & {
 }
 
 export function seriesPointData(data: SeriesPointArgs): SeriesPointValid {
-  const {x, y, radii, key, legend} = data
+  const {x, y, radii, key, legend, renderer} = data
   //TODO: Do clean radius validation
   const radiusesValid = typeof radii === "number" ? radii :
     isRadiusVaryingArg(radii) ? radii : 5
 
   return {x, y,
     radii: radiusesValid,
+    renderer,
     color: data.color,
     legend,
     key,
@@ -53,13 +56,11 @@ export function seriesPointData(data: SeriesPointArgs): SeriesPointValid {
 export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
   const { x, y, radii, bounds,
     legend, key: seriesKey, flipped,
-    color } = seriesData
+    color, renderer } = seriesData
 
   const data: Point[] = []
-  //TODO: Find a good solution for this quick dirty hack!!!!
-  const chartElement = document.getElementsByClassName('chart-point')[0] as SVGSVGElement
+  const chartElement = elementFromSelection(renderer.chartSelection)
   const radiusDefinite = getRadiusDefinite(radii, {chart: chartElement})
-
   for (let i = 0; i < x.values.length; ++i) {
     const xVal = x.values[i]
     const yVal = y.values[i]

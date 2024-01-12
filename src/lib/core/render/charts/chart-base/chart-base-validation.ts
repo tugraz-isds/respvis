@@ -1,11 +1,12 @@
-import {SeriesConfigTooltips} from "../../../tooltip";
-import {Point} from "../../../points";
+import {SeriesConfigTooltips} from "../../../../tooltip";
+import {Point} from "../../../../points";
 import {Selection} from "d3";
-import {LengthDimensionBounds, validateBounds} from "../../utilities/resizing/bounds";
-import {SVGHTMLElement} from "../../constants/types";
-import {ConfigBoundable} from "../../utilities/resizing/boundable";
+import {LengthDimensionBounds, validateBounds} from "../../../data/resizing/bounds";
+import {SVGHTMLElement} from "../../../constants/types";
+import {ConfigBoundable} from "../../../data/resizing/boundable";
+import {RenderArgs} from "../renderer";
 
-export type ChartBaseArgs = {
+export type ChartBaseArgs = RenderArgs & {
   bounds?: Partial<LengthDimensionBounds>
   title?: ConfigBoundable<string>,
   subTitle?: ConfigBoundable<string>;
@@ -20,6 +21,7 @@ export type ChartBaseValid = Required<Omit<ChartBaseArgs, 'bounds' | 'markerTool
 
 export function chartBaseValidation(args: ChartBaseArgs): ChartBaseValid {
   return {
+    renderer: args.renderer,
     bounds: {
       width: validateBounds(args.bounds?.width),
       height: validateBounds(args.bounds?.height)

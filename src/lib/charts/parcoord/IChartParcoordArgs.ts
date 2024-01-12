@@ -1,5 +1,5 @@
 import {ConfigureAxisFn, ChartBaseArgs, ScaleAny} from "../../core";
-import {LegendValid} from "../../legend";
+import {LegendValid} from "../../core/render/legend";
 
 export type TParcoordDimensionArg = {
   values: number[],
