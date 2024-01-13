@@ -1,12 +1,11 @@
 import { select, Selection } from 'd3';
 import {
-  windowChartBaseRender,
   ToolFilterNominal,
   toolFilterNominalData,
   toolDownloadSVGRender,
   toolFilterNominalRender,
   Checkbox,
-  layouterCompute,
+  layouterCompute, chartWindowRender,
 } from '../core';
 import { arrayIs } from '../core';
 import { chartBarRender, chartBarData, ChartBar } from './chart-bar';
@@ -40,7 +39,7 @@ export type ChartWindowBarSelection = Selection<HTMLDivElement, ChartWindowBar>;
 export function chartWindowBarRender(selection: ChartWindowBarSelection): void {
   selection
     .classed('chart-window-bar', true)
-    .call((s) => windowChartBaseRender(s))
+    .call((s) => chartWindowRender(s))
     .each((chartWindowD, i, g) => {
       const {
         categoryActiveStates,

@@ -1,9 +1,10 @@
 import {SeriesConfigTooltips, seriesConfigTooltipsData,} from '../tooltip';
 import {AxisValid, Circle, ScaleContinuous, Size} from '../core';
 import {LegendValid} from "../core/render/legend";
-import {getRadiusDefinite, isRadiusVaryingArg, RadiusArg} from "../core/data/radius/radius-dimension";
+import {getRadiusDefinite} from "../core/data/radius/radius-util";
 import {RenderArgs} from "../core/render/charts/renderer";
 import {elementFromSelection} from "../core/utilities/d3/util";
+import {isRadiusVaryingArg, RadiusArg} from "../core/data/radius/radius-validation";
 
 export interface Point extends Circle {
   xValue: any
@@ -60,7 +61,8 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
 
   const data: Point[] = []
   const chartElement = elementFromSelection(renderer.chartSelection)
-  const radiusDefinite = getRadiusDefinite(radii, {chart: chartElement})
+  const drawAreaElement = elementFromSelection(renderer.drawAreaSelection)
+  const radiusDefinite = getRadiusDefinite(radii, {chart: chartElement, self: drawAreaElement})
   for (let i = 0; i < x.values.length; ++i) {
     const xVal = x.values[i]
     const yVal = y.values[i]
@@ -79,7 +81,7 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
       xValue: xVal,
       yValue: yVal,
       color: color?.colorScale(color.colorDim[i]),
-      radiusValue: typeof radii !== "number" ? radii.values[i] : undefined
+      radiusValue: typeof radiusDefinite !== "number" ? radiusDefinite.values[i] : undefined
     });
   }
 

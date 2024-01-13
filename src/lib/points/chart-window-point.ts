@@ -1,13 +1,13 @@
 import {Selection} from 'd3';
-import {ChartWindowValid, layouterCompute, rectFromString, renderChartWindow, validateChartWindow,} from '../core';
-import {chartPointRender} from './chart-point';
-import {ChartPointArgs, ChartPointData, chartPointData} from "./chart-point-data";
+import {chartWindowRender, ChartWindowValid, layouterCompute, rectFromString,} from '../core';
+import {chartPointRender} from "./chart-point-render";
+import {ChartPointArgs, chartPointData, ChartPointValid} from "./chart-point-validation";
 import {addZoom} from "../core/data/zoom";
 import {Chart} from "../core/render/charts/chart";
-import {getMaxRadius} from "../core/data/radius/radius-dimension";
+import {getMaxRadius} from "../core/data/radius/radius-util";
 import {elementFromSelection} from "../core/utilities/d3/util";
 
-export type ScatterplotData = ChartWindowValid & ChartPointData
+export type ScatterplotData = ChartWindowValid & ChartPointValid
 export type ScatterplotSelection = Selection<HTMLDivElement, ScatterplotData>;
 
 type ChartPointUserArgs = Omit<ChartPointArgs, 'renderer'>
@@ -16,17 +16,18 @@ export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
   data: ScatterplotData
 
   constructor(public windowSelection: ScatterplotSelection, data: ChartPointUserArgs) {
-    super(windowSelection)
+    super(windowSelection, {...data, type: 'point'})
+    const windowData = this.windowSelection.datum()
     const chartData = chartPointData({...data, renderer: this})
-    const windowData = validateChartWindow({...chartData, type: 'point'})
-    this.data = {...chartData, ...windowData}
+    this.data = {...windowData, ...chartData}
+    this.windowSelection.datum(this.data)
   }
 
   public render(): void {
     const {
       chartS,
       layouterS
-    } = renderChartWindow(this.windowSelection, this.data)
+    } = chartWindowRender(this.windowSelection)
     chartS.call((s) => chartPointRender(s))
     layouterS.on('boundschange.chartwindowpoint', () => {
       chartPointRender(chartS)

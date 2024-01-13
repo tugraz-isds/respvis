@@ -11,13 +11,11 @@ import {
 import {elementFromSelection} from "../../utilities/d3/util";
 import {getConfigBoundableState} from "../../data/resizing/boundable";
 import {calcTickAngle} from "../../data/resizing/resizeTicks";
-import {ChartBaseValid} from "../charts";
 import {updateBoundStateInCSS} from "../../data";
-import {AxisValid} from "./axis-data";
+import {AxisValid} from "./axis-validation";
 
-export type AxisPropagation = AxisValid & Pick<ChartBaseValid, 'selection'>
-export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisPropagation>;
-export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisPropagation>;
+export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
+export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
 
 export function axisLeftRender(selection: AxisSelection): void {
   selection.classed('axis axis-left', true)
@@ -36,13 +34,10 @@ export function axisSequenceRender(selection: AxisSelection): void {
     .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, selection), d))
 }
 
-function axisRender(
-  selection: AxisSelection,
-  a: D3Axis<AxisDomain>,
-  axisD: AxisPropagation
-): void {
+function axisRender(selection: AxisSelection, a: D3Axis<AxisDomain>): void {
+  const axisD = selection.datum()
   const axisElement = elementFromSelection(selection)
-  const chartElement = elementFromSelection(selection)
+  const chartElement = elementFromSelection(axisD.renderer.chartSelection)
   // updateBoundStateInCSS(axisElement, axisD.bounds) //IS DONE IN d3Axis for now
 
   selection
@@ -148,10 +143,10 @@ function d3Axis(
   axisGenerator: (scale: AxisScale<AxisDomain>) => D3Axis<AxisDomain>,
   selection: AxisSelection
 ): D3Axis<AxisDomain> {
-  const {scale, bounds, configureAxis, selection: chartSelection} = selection.datum()
+  const {scale, bounds, configureAxis, renderer} = selection.datum()
   const axisElement = elementFromSelection(selection)
   updateBoundStateInCSS(axisElement, bounds)
-  const chartElement = elementFromSelection(chartSelection)
+  const chartElement = elementFromSelection(renderer.chartSelection)
   const configureAxisValid = getConfigBoundableState(configureAxis, {chart: chartElement, self: axisElement})
 
   const axis = axisGenerator(scale)

@@ -1,6 +1,6 @@
 import {Selection} from "d3";
 import {SVGHTMLElement} from "../../constants/types";
-import {ChartWindowValid} from "../chart-window";
+import {ChartWindowArgs, ChartWindowValid, validateChartWindow} from "../chart-window";
 import {ChartBaseValid} from "./chart-base";
 import {Renderer} from "./renderer";
 
@@ -14,7 +14,11 @@ export abstract class Chart implements Renderer {
   yAxisSelection?: Selection<SVGHTMLElement>
   legendSelection?: Selection<SVGHTMLElement>
 
-  constructor(public windowSelection: Selection<HTMLDivElement, ChartValid>) {}
+  protected constructor(public windowSelection: Selection<HTMLDivElement, ChartValid>,
+              data: Omit<ChartWindowArgs, 'renderer'>) {
+    const windowData = validateChartWindow({...data, renderer: this, type: 'point'})
+    windowSelection.datum(windowData)
+  }
 
 
   buildChart() {

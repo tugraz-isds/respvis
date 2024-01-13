@@ -1,13 +1,13 @@
 import {select, Selection} from 'd3';
 import {
   axisBottomRender,
-  axisData,
+  axisValidation,
   axisLeftRender,
-  AxisPropagation,
+  AxisSelection,
   AxisUserArgs,
   AxisValid,
   syncAxes
-} from "../../axes";
+} from "../../axis";
 import {ChartBaseArgs, ChartBaseValid, chartBaseValidation} from "../chart-base";
 import {validateZoom, ZoomArgs, ZoomValid} from "../../../data/zoom";
 import {LegendArgsUser, legendData, LegendValid} from "../../legend";
@@ -33,7 +33,7 @@ export function chartCartesianData(data: ChartCartesianArgs): ChartCartesianVali
   const {
     legend, flipped, zoom, renderer
   } = data
-  const [x, y] = syncAxes(axisData({...data.x, renderer}), axisData({...data.y, renderer}))
+  const [x, y] = syncAxes(axisValidation({...data.x, renderer}), axisValidation({...data.y, renderer}))
   const categoriesOrdered = Object.keys(x.categoryOrder)
   const legendValid = legendData({
     ...(legend ? legend : {}),
@@ -56,18 +56,18 @@ export type ChartCartesianSelection = Selection<SVGSVGElement | SVGGElement, Cha
 export function chartCartesianAxisRender<T extends ChartCartesianSelection>(selection: T): void {
   selection
     .classed('chart-cartesian', true)
-    .each(function ({flipped, x, y, selection}, i, g) {
+    .each(function ({flipped, x, y, selection, renderer}, i, g) {
       const s = <ChartCartesianSelection>select(g[i]);
       const flippedBool = flipped ? flipped : false
 
-      s.selectAll<SVGGElement, AxisPropagation>('.axis-left')
+      renderer.yAxisSelection = s.selectAll<SVGGElement, AxisSelection>('.axis-left')
         .data([{...(flipped ? x : y), selection}])
         .join('g')
         .call((s) => axisLeftRender(s))
         .classed('axis-x', flippedBool)
         .classed('axis-y', !flipped);
 
-      s.selectAll<SVGGElement, AxisValid>('.axis-bottom')
+      renderer.xAxisSelection = s.selectAll<SVGGElement, AxisValid>('.axis-bottom')
         .data([{...(flipped ? y : x), selection}])
         .join('g')
         .call((s) => axisBottomRender(s))

@@ -71,7 +71,7 @@ export function createChartSoldCarsGermany(selector) {
         value: scales.radiusScale,
         tuples: [[0, (s => s.range([3, 12]))],
           [2, (s) => s.range([4, 16])],
-          [3,  (s) => s.range([5, 20])]
+          [3,  (s) => s.range([5, 20])]]
       },
     },
     legend: {
@@ -91,7 +91,10 @@ export function createChartSoldCarsGermany(selector) {
     },
     markerTooltips: {
       tooltips: ((e, d) => {
-        return `Car Price: ${d.yValue}€<br/>Horse Power: ${d.xValue}PS<br/>Make: ${d.label}`
+        return `Car Price: ${d.yValue}€<br/>
+Horse Power: ${d.xValue}PS<br/>
+Make: ${d.label}<br/>
+Mileage: ${d.radiusValue}km<br/>`
       })
     }
   };

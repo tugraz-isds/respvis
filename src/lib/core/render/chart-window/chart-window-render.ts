@@ -1,14 +1,15 @@
-import {ChartPointData} from "../../../points";
+import {ChartPointValid} from "../../../points";
 import {Selection} from "d3";
-import {toolbarRender} from "../charts";
-import {toolDownloadSVGRender} from "../tools/tool-download-svg";
+import {toolDownloadSVGRender} from "../toolbar/tool-download-svg";
 import {layouterRender} from "../../layouter";
 import {updateCSSForSelection} from "../../data/resizing/bounds";
 import {resizeEventListener} from "../../resize-event-dispatcher";
 import {SVGHTMLElement} from "../../constants/types";
 import {ChartWindowValid} from "./chart-window-validation";
+import {toolbarRender} from "../toolbar/toolbar-render";
 
-export function renderChartWindow<D extends ChartWindowValid>(selection: Selection<SVGHTMLElement, D>, data: D) {
+export function chartWindowRender<D extends ChartWindowValid>(selection: Selection<SVGHTMLElement, D>) {
+  const data = selection.datum()
   selection
     .datum(data)
     .classed('chart-window', true)
@@ -35,7 +36,7 @@ export function renderChartWindow<D extends ChartWindowValid>(selection: Selecti
     .call((s) => layouterRender(s));
 
   const chartS = layouterS
-    .selectAll<SVGSVGElement, ChartPointData>(`svg.chart-${data.type}`)
+    .selectAll<SVGSVGElement, ChartPointValid>(`svg.chart-${data.type}`)
     .data([data])
     .join('svg')
 

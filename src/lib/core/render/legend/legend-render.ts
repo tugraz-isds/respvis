@@ -1,8 +1,9 @@
-import {arrayIs, ChartBaseValid, rectFromString} from "../../index";
+import {arrayIs, rectFromString} from "../../index";
 import {select, Selection} from "d3";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {getConfigBoundableState} from "../../data/resizing/boundable";
-import {LegendValid, LegendItem} from "./legend";
+import {LegendItem, LegendValid} from "./legend";
+import {SVGHTMLElement} from "../../constants/types";
 
 export function legendItemData(legendData: LegendValid): LegendItem[] {
   const { labelCallback, categories, styleClasses,
@@ -19,18 +20,21 @@ export function legendItemData(legendData: LegendValid): LegendItem[] {
   return reverse ? items.reverse() : items
 }
 
-type WithChartSelection<T> = T & Pick<ChartBaseValid, 'selection'>
-export function legendRender(selection: Selection<Element, WithChartSelection<LegendValid>>): void {
-  const chartElement = elementFromSelection(selection.datum().selection)
+export function legendRender(selection: Selection<SVGHTMLElement, LegendValid>) {
+  const data = selection.datum()
+  const chartElement = elementFromSelection(data.renderer.chartSelection)
+  data.renderer.legendSelection = selection
+
   selection.classed('legend', true).each((legendD, i, g) => {
-    const legendS = select<Element, LegendValid>(g[i]);
+    const legendS = select<SVGHTMLElement, LegendValid>(g[i])
+    const legendElement = elementFromSelection(legendS)
 
     legendS
       .selectAll('.title')
       .data([null])
       .join('text')
       .classed('title', true)
-      .text(getConfigBoundableState(legendD.title, {chart: chartElement}));
+      .text(getConfigBoundableState(legendD.title, {chart: chartElement, self: legendElement}));
 
     const itemS = legendS.selectAll('.items').data([null]).join('g').classed('items', true);
 

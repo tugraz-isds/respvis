@@ -1,6 +1,6 @@
 import {IChartParcoordArgs} from "./IChartParcoordArgs";
 import {IChartParcoordData, TParcoordDimensionData} from "./IChartParcoordData";
-import {axisData, validateScale} from "../../core";
+import {axisValidation, validateScale} from "../../core";
 import {scalePoint} from "d3";
 
 export function parcoordData(data: IChartParcoordArgs): IChartParcoordData {
@@ -11,7 +11,7 @@ export function parcoordData(data: IChartParcoordArgs): IChartParcoordData {
       values: dimension.values,
       scale: scale ? scale : validateScale(values),
       styleClass: styleClass ? styleClass : `dimension-${index}`,
-      axis: axisData({
+      axis: axisValidation({
         scale, title, subtitle,
         configureAxis: configureAxes?.[index]
       }),

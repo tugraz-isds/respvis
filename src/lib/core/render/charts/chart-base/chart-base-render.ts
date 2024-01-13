@@ -3,51 +3,50 @@ import {ChartBaseValid} from "./chart-base-validation";
 import {elementFromSelection} from "../../../utilities/d3/util";
 import {updateCSSForSelection} from "../../../data/resizing/bounds";
 import {getConfigBoundableState} from "../../../data/resizing/boundable";
-import {ChartPointData} from "../../../../points";
+import {ChartPointValid} from "../../../../points";
+import {SVGHTMLElement} from "../../../constants/types";
 
 export type ChartBaseSelection = Selection<SVGSVGElement | SVGGElement, ChartBaseValid>;
 
 export function chartBaseRender<T extends ChartBaseSelection>(selection: T) {
-  const data = selection.datum()
-  data.renderer.chartSelection = selection
-  addSelectionToData(selection)
   updateCSSForSelection(selection)
 
-  chartRender(selection).call(drawAreaRender)
-
+  const chart = chartRender(selection)
+  const {drawArea, background} = drawAreaRender(chart)
   const header = headerRender(selection)
-  const title = titleRender(header, selection);
-  const subTitle = subTitleRender(header, selection);
+  const title = titleRender(header, selection)
+  const subTitle = subTitleRender(header, selection)
 
-  return {chart: selection, header, title, subTitle}
+  const data = selection.datum()
+  data.renderer.chartSelection = chart
+  data.renderer.drawAreaSelection = drawArea
+
+  return {chart, header, title, subTitle, drawArea, background}
 }
 
-function addSelectionToData(selection: Selection<SVGSVGElement | SVGGElement, ChartBaseValid>) {
-  const chartBaseValid = selection.data()[0]
-  chartBaseValid.selection = selection
-}
-
-function chartRender(selection: ChartBaseSelection): ChartBaseSelection {
+function chartRender<T extends ChartBaseSelection>(selection: T): T {
   return selection
     .classed('chart', true)
     .attr('xmlns', 'http://www.w3.org/2000/svg')
 }
-
-function drawAreaRender(selection: Selection<SVGSVGElement | SVGGElement, ChartBaseValid>) {
-  selection
-    .selectAll('.draw-area')
-    .data([null])
+function drawAreaRender<T extends ChartBaseSelection>(selection: T) {
+  const drawArea = selection
+    .selectAll<SVGHTMLElement, T>('.draw-area')
+    .data([selection.datum()])
     .join('svg')
     .classed('draw-area', true)
-    .selectAll('.background')
-    .data([null])
+
+  const background = drawArea
+    .selectAll<SVGHTMLElement, T>('.background')
+    .data([selection.datum()])
     .join('rect')
-    .classed('background', true);
+    .classed('background', true)
+  return {drawArea, background}
 }
 
 function headerRender(selection: Selection<SVGSVGElement | SVGGElement, ChartBaseValid>) {
   return selection
-    .selectAll<SVGSVGElement, ChartPointData>('.header')
+    .selectAll<SVGSVGElement, ChartPointValid>('.header')
     .data((d) => [d])
     .join('g')
     .classed('header', true);

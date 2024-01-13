@@ -1,12 +1,16 @@
-import {IWindowChartBaseRenderer} from "../../core";
 import { windowChartParcoordData }from "./window-chart-parcoord-data";
 import {IChartParcoordArgs} from "./IChartParcoordArgs";
 import {select, Selection} from "d3";
-import {ChartBaseValid, layouterCompute, toolDownloadSVGRender, windowChartBaseRender} from "../../core";
+import {
+  ChartBaseValid,
+  chartWindowRender,
+  layouterCompute,
+  toolDownloadSVGRender
+} from "../../core";
 import {chartParcoordRender} from "./chart-parcoord-render";
 import {IChartParcoordData} from "./IChartParcoordData";
 
-export class WindowChartParcoordRenderer implements IWindowChartBaseRenderer {
+export class WindowChartParcoordRenderer { //TODO: extend Chart
   data: IChartParcoordData;
   addedListeners = false
 
@@ -27,7 +31,7 @@ export class WindowChartParcoordRenderer implements IWindowChartBaseRenderer {
     this.selection
       .datum(this.data)
       .classed('chart-window-parcoord', true)
-      .call((s) => windowChartBaseRender(s))
+      .call((s) => chartWindowRender(s))
       .each((chartWindowD, i, g) => {
         const chartWindowS = select<HTMLDivElement, IChartParcoordData>(g[i])
         const menuItemsS = chartWindowS.selectAll('.menu-tools > .items')

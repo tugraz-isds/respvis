@@ -2,7 +2,7 @@ import {Axis as D3Axis, AxisDomain, AxisScale} from 'd3';
 import {TickOrientation} from "../../data/resizing/matchBounds";
 import {ConfigBoundable} from "../../data/resizing/boundable";
 import {validateScale} from "../../utilities/scale";
-import {defaultCategory, validateCategories} from "../../data/categories";
+import {defaultCategory, validateCategories} from "../../data/category";
 import {LengthDimensionBounds, validateBounds} from "../../data/resizing/bounds";
 import {RenderArgs} from "../charts/renderer";
 
@@ -29,7 +29,7 @@ export interface ConfigureAxisFn {
   (axis: D3Axis<AxisDomain>): void;
 }
 
-export function axisData(data: AxisArgs): AxisValid {
+export function axisValidation(data: AxisArgs): AxisValid {
   //TODO: find correct types for scale and d3 scale
   //TODO: sort bounds
   const categories = validateCategories(data.values, data.categories)

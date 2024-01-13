@@ -1,6 +1,6 @@
 import { select, Selection } from 'd3';
 import { ChartLine, chartLineData, chartLineRender } from './chart-line';
-import { windowChartBaseRender, layouterCompute, toolDownloadSVGRender } from '../core';
+import { layouterCompute, toolDownloadSVGRender, chartWindowRender} from '../core';
 
 export interface ChartWindowLine extends ChartLine {}
 
@@ -11,7 +11,7 @@ export function chartWindowLineData(data: Partial<ChartWindowLine>): ChartWindow
 
 export function chartWindowLineRender(selection: Selection<HTMLDivElement, ChartWindowLine>): void {
   selection
-    .call((s) => windowChartBaseRender(s))
+    .call((s) => chartWindowRender(s))
     .classed('chart-window-line', true)
     .each((chartWindowD, i, g) => {
       const chartWindowS = select<HTMLDivElement, ChartWindowLine>(g[i]);

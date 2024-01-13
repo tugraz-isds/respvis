@@ -35,11 +35,9 @@ export function isConfigTupleBoundable<T>(arg: ConfigBoundable<T>): arg is Confi
 
 export type ConfigBoundable<T> = ConfigTupleBoundable<T> | T
 
-
-
 export function getConfigBoundableState<T>(boundable: ConfigBoundable<T>, mapping: BoundScopeElementMapping ): T {
   if (isConfigTupleBoundable(boundable)) {
-    const scope = boundable.scope ? boundable.scope : 'self'
+    const scope = boundable.scope ? boundable.scope : 'chart'
     const mappingElement = mapping[scope]
     const element = mappingElement ? mappingElement : mapping.chart
     return configTupleBoundableByIndices(getBoundStateFromCSS(element), boundable)

@@ -1,14 +1,13 @@
 import {select, Selection} from 'd3';
 import {
   arrayIs,
-  arrayPartition,
+  arrayPartition, chartWindowRender,
   Checkbox,
   layouterCompute,
   toolDownloadSVGRender,
   ToolFilterNominal,
   toolFilterNominalData,
   toolFilterNominalRender,
-  windowChartBaseRender,
 } from '../core';
 import {ChartBarGrouped, chartBarGroupedData, chartBarGroupedRender} from './chart-bar-grouped';
 
@@ -50,7 +49,7 @@ export function chartWindowBarGroupedRender(
 ): void {
   selection
     .classed('chart-window-bar-grouped', true)
-    .call((s) => windowChartBaseRender(s))
+    .call((s) => chartWindowRender(s))
     .each((chartWindowD, i, g) => {
       const {
         categories,

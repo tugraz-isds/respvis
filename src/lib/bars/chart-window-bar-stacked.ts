@@ -1,14 +1,13 @@
 import {select, Selection} from 'd3';
 import {
   arrayIs,
-  arrayPartition,
+  arrayPartition, chartWindowRender,
   Checkbox,
   layouterCompute,
   toolDownloadSVGRender,
   ToolFilterNominal,
   toolFilterNominalData,
   toolFilterNominalRender,
-  windowChartBaseRender,
 } from '../core';
 import {ChartBarStacked, chartBarStackedData, chartBarStackedRender} from './chart-bar-stacked';
 
@@ -56,7 +55,7 @@ export function chartWindowBarStackedRender(
 ): void {
   selection
     .classed('chart-window-bar-stacked', true)
-    .call((s) => windowChartBaseRender(s))
+    .call((s) => chartWindowRender(s))
     .each((chartWindowD, i, g) => {
       const {
         categories,

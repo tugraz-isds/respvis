@@ -1,24 +1,8 @@
-import {AxisDomain, AxisScale, Selection, zoom, ZoomBehavior, ZoomTransform} from "d3";
-import {ChartPointData} from "../../../points";
+import {AxisDomain, AxisScale, Selection, ZoomTransform} from "d3";
+import {ChartPointValid} from "../../../points";
 import {throttle} from "../../utilities/d3/util";
 
-export type ZoomArgs = {
-  in: number,
-  out: number
-}
-
-export type ZoomValid = ZoomArgs & {
-  behaviour: ZoomBehavior<Element, unknown>
-}
-
-export function validateZoom(args: ZoomArgs): ZoomValid {
-  return {
-    ...args,
-    behaviour: zoom()
-  }
-}
-
-type ZoomSelection = Selection<HTMLDivElement, Pick<ChartPointData, 'zoom' | 'x' | 'y'>>
+type ZoomSelection = Selection<HTMLDivElement, Pick<ChartPointValid, 'zoom' | 'x' | 'y'>>
 
 export function addZoom(selection: ZoomSelection, callback: (props: {
   xScale: AxisScale<AxisDomain>,
