@@ -7,7 +7,7 @@ export * from './utilities/rect';
 export * from './utilities/circle';
 export * from './utilities/path';
 export * from './utilities/formats';
-export * from './data/resizing/matchBounds';
+export * from './data/breakpoint/matchBounds';
 
 export * from './utilities/d3/selection';
 export * from './layouter';

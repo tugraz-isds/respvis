@@ -8,16 +8,16 @@ type ChartValid = ChartWindowValid & ChartBaseValid
 
 export abstract class Chart implements Renderer {
   private addedListeners = false
+  abstract windowSelection: Selection<SVGHTMLElement, ChartValid & ChartWindowValid>
+  protected readonly initialWindowData: ChartWindowValid
   chartSelection?: Selection<SVGHTMLElement>
   drawAreaSelection?: Selection<SVGHTMLElement>
   xAxisSelection?: Selection<SVGHTMLElement>
   yAxisSelection?: Selection<SVGHTMLElement>
   legendSelection?: Selection<SVGHTMLElement>
 
-  protected constructor(public windowSelection: Selection<HTMLDivElement, ChartValid>,
-              data: Omit<ChartWindowArgs, 'renderer'>) {
-    const windowData = validateChartWindow({...data, renderer: this, type: 'point'})
-    windowSelection.datum(windowData)
+  protected constructor(data: Omit<ChartWindowArgs, 'renderer'>) {
+    this.initialWindowData = validateChartWindow({...data, renderer: this, type: 'point'})
   }
 
 

@@ -9,9 +9,9 @@ import {
   Transition
 } from "d3";
 import {elementFromSelection} from "../../utilities/d3/util";
-import {getConfigBoundableState} from "../../data/resizing/boundable";
-import {calcTickAngle} from "../../data/resizing/resizeTicks";
-import {updateBoundStateInCSS} from "../../data";
+import {getCurrentResponsiveValue} from "../../data/breakpoint/responsive-value";
+import {calcTickAngle} from "../../data/breakpoint/resizeTicks";
+import {updateBreakpointStatesInCSS} from "../../data";
 import {AxisValid} from "./axis-validation";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
@@ -49,7 +49,7 @@ function axisRender(selection: AxisSelection, a: D3Axis<AxisDomain>): void {
     .selectAll('text')
     .data([null])
     .join('text')
-    .text(getConfigBoundableState(axisD.title, {chart: chartElement, self: axisElement}))
+    .text(getCurrentResponsiveValue(axisD.title, {chart: chartElement, self: axisElement}))
 
   selection.selectAll('.subtitle')
     .data([null])
@@ -59,7 +59,7 @@ function axisRender(selection: AxisSelection, a: D3Axis<AxisDomain>): void {
     .selectAll('text')
     .data([null])
     .join('text')
-    .text(getConfigBoundableState(axisD.subTitle, {chart: chartElement, self: axisElement}))
+    .text(getCurrentResponsiveValue(axisD.subTitle, {chart: chartElement, self: axisElement}))
 
   const ticksS = selection
     .selectAll('.ticks-transform')
@@ -145,9 +145,9 @@ function d3Axis(
 ): D3Axis<AxisDomain> {
   const {scale, bounds, configureAxis, renderer} = selection.datum()
   const axisElement = elementFromSelection(selection)
-  updateBoundStateInCSS(axisElement, bounds)
+  updateBreakpointStatesInCSS(axisElement, bounds)
   const chartElement = elementFromSelection(renderer.chartSelection)
-  const configureAxisValid = getConfigBoundableState(configureAxis, {chart: chartElement, self: axisElement})
+  const configureAxisValid = getCurrentResponsiveValue(configureAxis, {chart: chartElement, self: axisElement})
 
   const axis = axisGenerator(scale)
   configureAxisValid(axis)

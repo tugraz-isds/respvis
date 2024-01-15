@@ -1,15 +1,15 @@
-import {BoundScopeElementMapping, getConfigBoundableState} from "../resizing/boundable";
+import {BreakpointScopeElementMapping, getCurrentResponsiveValue} from "../breakpoint/responsive-value";
 import {isRadiusVaryingArg, RadiusValid} from "./radius-validation";
 
-export function getMaxRadius(radius: RadiusValid, mapping: BoundScopeElementMapping) {
+export function getMaxRadius(radius: RadiusValid, mapping: BreakpointScopeElementMapping) {
   const radiusOrScale = getRadiusDefinite(radius, mapping)
   return typeof radiusOrScale === 'number' ? radiusOrScale : radiusOrScale.scale.range()[1]
 }
 
-export function getRadiusDefinite(radius: RadiusValid, mapping: BoundScopeElementMapping) {
+export function getRadiusDefinite(radius: RadiusValid, mapping: BreakpointScopeElementMapping) {
   if (isRadiusVaryingArg(radius)) {
-    const scale = getConfigBoundableState(radius.scale, mapping)
+    const scale = getCurrentResponsiveValue(radius.scale, mapping)
     return {...radius, scale}
   }
-  return getConfigBoundableState(radius, mapping)
+  return getCurrentResponsiveValue(radius, mapping)
 }

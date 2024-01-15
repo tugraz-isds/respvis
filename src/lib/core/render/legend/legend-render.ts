@@ -1,7 +1,7 @@
 import {arrayIs, rectFromString} from "../../index";
 import {select, Selection} from "d3";
 import {elementFromSelection} from "../../utilities/d3/util";
-import {getConfigBoundableState} from "../../data/resizing/boundable";
+import {getCurrentResponsiveValue} from "../../data/breakpoint/responsive-value";
 import {LegendItem, LegendValid} from "./legend";
 import {SVGHTMLElement} from "../../constants/types";
 
@@ -34,7 +34,7 @@ export function legendRender(selection: Selection<SVGHTMLElement, LegendValid>) 
       .data([null])
       .join('text')
       .classed('title', true)
-      .text(getConfigBoundableState(legendD.title, {chart: chartElement, self: legendElement}));
+      .text(getCurrentResponsiveValue(legendD.title, {chart: chartElement, self: legendElement}));
 
     const itemS = legendS.selectAll('.items').data([null]).join('g').classed('items', true);
 

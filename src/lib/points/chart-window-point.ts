@@ -13,14 +13,12 @@ export type ScatterplotSelection = Selection<HTMLDivElement, ScatterplotData>;
 type ChartPointUserArgs = Omit<ChartPointArgs, 'renderer'>
 
 export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
-  data: ScatterplotData
-
-  constructor(public windowSelection: ScatterplotSelection, data: ChartPointUserArgs) {
-    super(windowSelection, {...data, type: 'point'})
-    const windowData = this.windowSelection.datum()
+  public windowSelection: ScatterplotSelection
+  constructor(windowSelection: Selection<HTMLDivElement>, data: ChartPointUserArgs) {
+    super({...data, type: 'point'})
     const chartData = chartPointData({...data, renderer: this})
-    this.data = {...windowData, ...chartData}
-    this.windowSelection.datum(this.data)
+    this.windowSelection = windowSelection as ScatterplotSelection
+    this.windowSelection.datum({...this.initialWindowData, ...chartData})
   }
 
   public render(): void {
@@ -28,7 +26,7 @@ export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
       chartS,
       layouterS
     } = chartWindowRender(this.windowSelection)
-    chartS.call((s) => chartPointRender(s))
+    chartPointRender(chartS)
     layouterS.on('boundschange.chartwindowpoint', () => {
       chartPointRender(chartS)
       layouterS.call((s) => layouterCompute(s, false))
@@ -46,7 +44,7 @@ export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
     if (!chartWindowD.zoom) return
     const drawArea = this.windowSelection.selectAll('.draw-area')
     renderer.addCustomListener('resize.zoom', () => {
-      const {flipped, x, y, pointSeries} = renderer.data
+      const {flipped, x, y, pointSeries} = renderer.windowSelection.datum()
       const {radii} = pointSeries
       const maxRadius = getMaxRadius(radii, {chart: chartElement})
       const drawAreaBounds = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
@@ -54,13 +52,13 @@ export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
       y.scale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
     })
     addZoom(this.windowSelection, ({xScale, yScale}) => {
-      const {x, y, pointSeries} = renderer.data
+      const {x, y, pointSeries} = renderer.windowSelection.datum()
       const xRescaled = {...x, scale: xScale}
       const yRescaled = {...y, scale: yScale}
-      renderer.data = {
-        ...chartWindowD,
-        x: xRescaled, y: yRescaled, pointSeries: {...pointSeries, x: xRescaled, y: yRescaled}
-      }
+      renderer.windowSelection.data([{
+          ...chartWindowD,
+          x: xRescaled, y: yRescaled, pointSeries: {...pointSeries, x: xRescaled, y: yRescaled}
+      }])
       renderer.windowSelection.dispatch('resize')
     })
   }

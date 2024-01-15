@@ -1,8 +1,8 @@
 import {Selection} from 'd3';
 import {ChartBaseValid} from "./chart-base-validation";
 import {elementFromSelection} from "../../../utilities/d3/util";
-import {updateCSSForSelection} from "../../../data/resizing/bounds";
-import {getConfigBoundableState} from "../../../data/resizing/boundable";
+import {updateCSSForSelection} from "../../../data/breakpoint/breakpoint";
+import {getCurrentResponsiveValue} from "../../../data/breakpoint/responsive-value";
 import {ChartPointValid} from "../../../../points";
 import {SVGHTMLElement} from "../../../constants/types";
 
@@ -56,7 +56,7 @@ function titleRender(header: ChartBaseSelection, chart: ChartBaseSelection){
   const chartElement = elementFromSelection(chart)
    return header
     .selectAll('.title')
-    .data((d) => [getConfigBoundableState(d.title, {chart: chartElement})])
+    .data((d) => [getCurrentResponsiveValue(d.title, {chart: chartElement})])
     .join('g')
     .classed('title', true)
     .attr('data-ignore-layout-children', true)
@@ -70,7 +70,7 @@ function subTitleRender(header: ChartBaseSelection, chart: ChartBaseSelection) {
   const chartElement = elementFromSelection(chart)
   return header
     .selectAll('.subtitle')
-    .data((d) => [getConfigBoundableState(d.subTitle, {chart: chartElement})])
+    .data((d) => [getCurrentResponsiveValue(d.subTitle, {chart: chartElement})])
     .join('g')
     .classed('subtitle', true)
     .attr('data-ignore-layout-children', true)

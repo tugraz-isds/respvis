@@ -1,6 +1,6 @@
 import {rectFromSize, Size} from '../../index';
 import {pathRect} from '../../index';
-import {ConfigBoundable} from "../../data/resizing/boundable";
+import {ResponsiveValueOptional} from "../../data/breakpoint/responsive-value";
 import {RenderArgs} from "../charts/renderer";
 
 export enum LegendOrientation {
@@ -16,7 +16,7 @@ export interface LegendItem {
 }
 
 export type LegendArgsUser =  {
-  title?: ConfigBoundable<string>
+  title?: ResponsiveValueOptional<string>
   labelCallback?: (category: string) => string
   symbols?:
     | ((symbol: SVGPathElement, size: Size) => void)

@@ -1,19 +1,19 @@
 import {Axis as D3Axis, AxisDomain, AxisScale} from 'd3';
-import {TickOrientation} from "../../data/resizing/matchBounds";
-import {ConfigBoundable} from "../../data/resizing/boundable";
+import {TickOrientation} from "../../data/breakpoint/matchBounds";
+import {ResponsiveValueOptional} from "../../data/breakpoint/responsive-value";
 import {validateScale} from "../../utilities/scale";
 import {defaultCategory, validateCategories} from "../../data/category";
-import {LengthDimensionBounds, validateBounds} from "../../data/resizing/bounds";
+import {LayoutBreakpoints, validateBreakpoints} from "../../data/breakpoint/breakpoint";
 import {RenderArgs} from "../charts/renderer";
 
 export type AxisUserArgs = {
   values: number[], // TODO: add strings/dates, also for y
   scale?: AxisScale<AxisDomain>,
   categories?: string[]
-  bounds?: Partial<LengthDimensionBounds>
-  title?: ConfigBoundable<string>,
-  subTitle?: ConfigBoundable<string>,
-  configureAxis?: ConfigBoundable<ConfigureAxisFn>,
+  bounds?: Partial<LayoutBreakpoints>
+  title?: ResponsiveValueOptional<string>,
+  subTitle?: ResponsiveValueOptional<string>,
+  configureAxis?: ResponsiveValueOptional<ConfigureAxisFn>,
   tickOrientation?: TickOrientation
 }
 
@@ -21,7 +21,7 @@ export type AxisArgs = AxisUserArgs & RenderArgs
 
 export type AxisValid = Required<Omit<AxisArgs, 'tickOrientation' | 'bounds'>> & {
   tickOrientation?: TickOrientation,
-  bounds: LengthDimensionBounds
+  bounds: LayoutBreakpoints
   categoryOrder: Record<string, number>
 }
 
@@ -52,8 +52,8 @@ export function axisValidation(data: AxisArgs): AxisValid {
     }),
     tickOrientation: data.tickOrientation,
     bounds: {
-      width: validateBounds(data.bounds?.width),
-      height: validateBounds(data.bounds?.height)
+      width: validateBreakpoints(data.bounds?.width),
+      height: validateBreakpoints(data.bounds?.height)
     }
   }
 }

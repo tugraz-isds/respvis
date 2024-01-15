@@ -2,7 +2,7 @@ import {ChartPointValid} from "../../../points";
 import {Selection} from "d3";
 import {toolDownloadSVGRender} from "../toolbar/tool-download-svg";
 import {layouterRender} from "../../layouter";
-import {updateCSSForSelection} from "../../data/resizing/bounds";
+import {updateCSSForSelection} from "../../data/breakpoint/breakpoint";
 import {resizeEventListener} from "../../resize-event-dispatcher";
 import {SVGHTMLElement} from "../../constants/types";
 import {ChartWindowValid} from "./chart-window-validation";

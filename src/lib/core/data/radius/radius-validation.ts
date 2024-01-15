@@ -1,10 +1,10 @@
-import {ConfigTupleBoundableCallback, ConfigTupleBoundableValue} from "../resizing/boundable";
+import {ResponsiveValueByCallback, ResponsiveValueByValue} from "../breakpoint/responsive-value";
 import {ScaleAny} from "../../utilities/scale";
 
-export type RadiusUnifiedArg = ConfigTupleBoundableValue<number>
+export type RadiusUnifiedArg = ResponsiveValueByValue<number>
 export type RadiusVaryingArg = {
   values: number[]
-  scale: ConfigTupleBoundableCallback<ScaleAny<any, number, number>>
+  scale: ResponsiveValueByCallback<ScaleAny<any, number, number>>
 }
 export type RadiusArg = RadiusUnifiedArg | RadiusVaryingArg
 

@@ -1,17 +1,17 @@
 import {LengthDimension, SVGHTMLElement} from "../../constants/types";
 import {convertToPx} from "../../utilities/length";
-import {BoundsValid} from "./bounds";
+import {BreakpointsValid} from "./breakpoint";
 
 export const boundRegex = /(\d+(?:\.\d+)?)(px|rem|em)/
 
 export type TickOrientation = {
-  bounds: BoundsValid,
+  bounds: BreakpointsValid,
   boundElement?: SVGHTMLElement,
   rotationDirection?: 'clockwise' | 'counterclockwise'
   orientation: ('horizontal' | 'vertical' | 'transition')[]
 }
 
-export function indexFromBounds(element: SVGHTMLElement, bounds: BoundsValid, dimension: LengthDimension) {
+export function indexFromBounds(element: SVGHTMLElement, bounds: BreakpointsValid, dimension: LengthDimension) {
   const rect = element.getBoundingClientRect()
   const referenceValue = rect[dimension]
   if (bounds.values.length === 0) return 0
