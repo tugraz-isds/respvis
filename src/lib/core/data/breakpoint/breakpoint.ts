@@ -35,8 +35,8 @@ export function updateCSSForSelection<T extends SVGHTMLElement, D extends WithBr
 }
 
 export function getBreakpointStatesFromCSS(element: SVGHTMLElement): LayoutIndices {
-  const width = Number(element.style.getPropertyValue('--transform-index-width'))
-  const height = Number(element.style.getPropertyValue('--transform-index-height'))
+  const width = Number(element.style.getPropertyValue('--layout-width'))
+  const height = Number(element.style.getPropertyValue('--layout-height'))
   return {width, height}
 }
 
@@ -44,16 +44,16 @@ export function getBreakpointStatesFromCSS(element: SVGHTMLElement): LayoutIndic
 export function updateBreakpointStatesInCSS(element: SVGHTMLElement, breakpoints: LayoutBreakpoints) {
   const boundsWidthTransformed = getTransformedBreakpoints(element, breakpoints.width, 'width')
   const widthState = indexFromBounds(element, boundsWidthTransformed, 'width')
-  element.style.setProperty('--transform-index-width',  widthState.toString())
+  element.style.setProperty('--layout-width',  widthState.toString())
 
   const boundsHeightTransformed = getTransformedBreakpoints(element, breakpoints.height, 'height')
   const heightState = indexFromBounds(element, boundsHeightTransformed, 'height')
-  element.style.setProperty('--transform-index-height',  heightState.toString())
+  element.style.setProperty('--layout-height',  heightState.toString())
 }
 
 function getTransformedBreakpoints(element: SVGHTMLElement, breakpoint: BreakpointsValid, dimension: LengthDimension): BreakpointsValid {
-  const transformFactorWidth = Number(getComputedStyle(element).getPropertyValue(`--transform-factor-${dimension}`))
-  const transformFactorWidthOffset = Number(getComputedStyle(element).getPropertyValue(`--transform-factor-${dimension}-offset`))
+  const transformFactorWidth = Number(getComputedStyle(element).getPropertyValue(`--layout-${dimension}-factor`))
+  const transformFactorWidthOffset = Number(getComputedStyle(element).getPropertyValue(`--layout-${dimension}-factor-offset`))
 
   const transformedValues = breakpoint.values.map(value => {
     const transformFactorWidthValid = isNaN(transformFactorWidth) ? 1 : transformFactorWidth

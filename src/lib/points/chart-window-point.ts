@@ -10,7 +10,7 @@ import {elementFromSelection} from "../core/utilities/d3/util";
 export type ScatterplotData = ChartWindowValid & ChartPointValid
 export type ScatterplotSelection = Selection<HTMLDivElement, ScatterplotData>;
 
-type ChartPointUserArgs = Omit<ChartPointArgs, 'renderer'>
+export type ChartPointUserArgs = Omit<ChartPointArgs, 'renderer'>
 
 export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
   public windowSelection: ScatterplotSelection

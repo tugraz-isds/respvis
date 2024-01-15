@@ -4,14 +4,8 @@
 
 .chart-window {
   container-type: inline-size;
-  --transform-factor-base: 1;
-  --transform-factor-width: var(--transform-factor-base);
-  --transform-factor-width-offset: 0;
-  --transform-factor-height: var(--transform-factor-base);
-  --transform-factor-height-offset: 0;
-  --transform-index: 0;
 }
-@container style(--transform-index-width: 0) or style(--transform-index-width: 1) or style(--transform-index-width: 2) {
+@container style(--layout-width: 0) or style(--layout-width: 1) or style(--layout-width: 2) {
   .chart-window .chart {
     grid-template: auto 1fr auto auto/auto 1fr auto;
     grid-template-areas: "header  header  header" "axis-left draw-area draw-area" " . axis-bottom . " " legend legend .";
@@ -39,7 +33,7 @@
     display: block;
   }
 }
-@container style(--transform-index-width: 0) or style(--transform-index-width: 1) {
+@container style(--layout-width: 0) or style(--layout-width: 1) {
   .chart-window .axis-x .tick {
     display: none;
   }

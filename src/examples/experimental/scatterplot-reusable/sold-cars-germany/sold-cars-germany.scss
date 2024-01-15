@@ -4,16 +4,8 @@
 
 .chart-window {
   container-type: inline-size;
-  --transform-factor-base: 1;
-  --transform-factor-width: var(--transform-factor-base);
-  --transform-factor-width-offset: 0;
-  --transform-factor-height: var(--transform-factor-base);
-  --transform-factor-height-offset: 0;
-
-  --transform-index: 0;
-
   //Legend To Bottom
-  @container style(--transform-index-width: 0) or style(--transform-index-width: 1) or style(--transform-index-width: 2) {
+  @container style(--layout-width: 0) or style(--layout-width: 1) or style(--layout-width: 2) {
     .chart {
       grid-template: auto 1fr auto auto / auto 1fr auto;
       grid-template-areas:
@@ -48,7 +40,7 @@
   }
   //@container style(--transform-index: wide-3) {
 
-  @container style(--transform-index-width: 0) or style(--transform-index-width: 1) {
+  @container style(--layout-width: 0) or style(--layout-width: 1) {
     .axis-x .tick {
       display: none;
       &:nth-of-type(2n), &:first-of-type, &:last-of-type {

@@ -1,8 +1,9 @@
 import * as d3 from '../libs/d3-7.6.0/d3.js'
-import {ScatterPlot, formatWithDecimalZero, ChartPointArgs} from '../libs/respvis/respvis.js'
+import {ScatterPlot, formatWithDecimalZero} from '../libs/respvis/respvis.js'
 import {getTopMakesData} from './data/sold-cars-germany.js';
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
 import {format} from "../libs/d3-7.6.0/d3.js";
+import {ChartPointUserArgs} from "../../../../lib";
 // import {AxisArgs, Legend, Point, ScaleAny, ScaleContinuous, SeriesConfigTooltips} from "../../../../lib";
 
 
@@ -26,7 +27,7 @@ export function createChartSoldCarsGermany(selector) {
   }
 
 
-  const data: ChartPointArgs = {
+  const data: ChartPointUserArgs = {
     bounds: {
       width: {
         values: [20, 30, 50],

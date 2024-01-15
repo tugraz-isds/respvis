@@ -2,8 +2,8 @@
 // import {format} from "../libs/d3-7.6.0/d3.js";
 //
 // function recalculateBounds(element) {
-//   const transformFactorWidth = Number(getComputedStyle(element).getPropertyValue('--transform-factor-width'))
-//   const transformFactorWidthOffset = Number(getComputedStyle(element).getPropertyValue('--transform-factor-width-offset'))
+//   const transformFactorWidth = Number(getComputedStyle(element).getPropertyValue('--layout-width-factor'))
+//   const transformFactorWidthOffset = Number(getComputedStyle(element).getPropertyValue('--layout-width-offset-factor'))
 //   if (isNaN(transformFactorWidth) || isNaN(transformFactorWidthOffset)) return
 //
 //   const bounds = [
