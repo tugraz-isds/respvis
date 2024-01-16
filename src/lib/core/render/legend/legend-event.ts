@@ -8,9 +8,9 @@ export function legendAddHover(selection: LegendSelection) {
   const legend= selection.datum()
   const chartS = legend.renderer.chartSelection
   if (!chartS) throw new Error(ErrorMessages.elementNotExisting)
-  const drawAreaS = selection.selectAll('.draw-area')
+  const drawAreaS = chartS.selectAll('.draw-area')
   //TODO: Hover General for all charts
-  return chartS.on('pointerover.chartpointhighlight pointerout.chartpointhighlight', (e) => {
+  return selection.on('pointerover.chartpointhighlight pointerout.chartpointhighlight', (e) => {
       chartPointHoverLegendItem(
         drawAreaS,
         select(e.target.closest('.legend-item')),
