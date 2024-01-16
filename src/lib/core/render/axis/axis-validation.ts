@@ -1,7 +1,7 @@
-import {Axis as D3Axis, AxisDomain, AxisScale} from 'd3';
+import {Axis as D3Axis, AxisDomain} from 'd3';
 import {TickOrientation} from "../../data/breakpoint/matchBounds";
 import {ResponsiveValueOptional} from "../../data/breakpoint/responsive-value";
-import {validateScale} from "../../utilities/scale";
+import {AxisScale, validateAxisScale} from "../../data/scale/validateAxisScale";
 import {defaultCategory, validateCategories} from "../../data/category";
 import {LayoutBreakpoints, validateBreakpoints} from "../../data/breakpoint/breakpoint";
 import {RenderArgs} from "../charts/renderer";
@@ -31,8 +31,6 @@ export interface ConfigureAxisFn {
 }
 
 export function axisValidation(data: AxisArgs): AxisValid {
-  //TODO: find correct types for scale and d3 scale
-  //TODO: sort bounds
   const categories = validateCategories(data.values, data.categories)
   const categoryOrder1 = categories.reduce<string[]>(
     (prev, current) => prev.includes(current) ? prev : [...prev, current], [])
@@ -44,7 +42,7 @@ export function axisValidation(data: AxisArgs): AxisValid {
   return {
     renderer: data.renderer,
     values: data.values,
-    scale: validateScale(data.values, data.scale).range([0, 600]),
+    scale: validateAxisScale({...data}),
     categories: validateCategories(data.values, data.categories),
     categoriesTitle: data.categoriesTitle || 'Categories',
     categoryOrder,

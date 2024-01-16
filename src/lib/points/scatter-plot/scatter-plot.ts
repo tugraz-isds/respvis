@@ -1,4 +1,4 @@
-import {select, selectAll, selection, Selection} from 'd3';
+import {select, Selection} from 'd3';
 import {
   chartWindowRender,
   ChartWindowValid,
@@ -6,15 +6,14 @@ import {
   rectFromString,
   resizeEventListener,
   toolbarRender,
-} from '../core';
-import {chartPointRender} from "./chart-point-render";
-import {ChartPointArgs, chartPointData, ChartPointValid} from "./chart-point-validation";
-import {addZoom} from "../core/data/zoom";
-import {Chart} from "../core/render/charts/chart";
-import {getMaxRadius} from "../core/data/radius/radius-util";
-import {elementFromSelection} from "../core/utilities/d3/util";
-import {ChangeEvent} from "rollup";
-import {SVGHTMLElement} from "../core/constants/types";
+} from '../../core';
+import {scatterPlotRender} from "./scatter-plot-render";
+import {ChartPointArgs, chartPointData, ChartPointValid} from "./scatter-plot-validation";
+import {addZoom} from "../../core/data/zoom";
+import {Chart} from "../../core/render/charts/chart";
+import {getMaxRadius} from "../../core/data/radius/radius-util";
+import {elementFromSelection} from "../../core/utilities/d3/util";
+import {SVGHTMLElement} from "../../core/constants/types";
 
 export type ScatterplotData = ChartWindowValid & ChartPointValid
 export type ScatterplotSelection = Selection<HTMLDivElement, ScatterplotData>;
@@ -36,9 +35,9 @@ export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
       layouterS
     } = chartWindowRender(this.windowSelection)
     toolbarRender(this.windowSelection)
-    chartPointRender(chartS)
+    scatterPlotRender(chartS)
     layouterS.on('boundschange.chartwindowpoint', () => {
-      chartPointRender(chartS)
+      scatterPlotRender(chartS)
       layouterS.call((s) => layouterCompute(s, false))
     }).call((s) => layouterCompute(s))
     resizeEventListener(this.windowSelection)

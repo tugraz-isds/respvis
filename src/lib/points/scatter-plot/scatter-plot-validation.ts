@@ -1,7 +1,6 @@
-import {ChartCartesianArgs, chartCartesianData, ChartCartesianValid, ScaleContinuous} from "../core";
-import {seriesPointData, SeriesPointValid} from "./series-point-validation";
-
-import {RadiusArg} from "../core/data/radius/radius-validation";
+import {ChartCartesianArgs, chartCartesianData, ChartCartesianValid, ScaleContinuous} from "../../core";
+import {seriesPointData, SeriesPointValid} from "../point-series/point-series-validation";
+import {RadiusArg} from "../../core/data/radius/radius-validation";
 
 // type Dimension = number | string // TODO: | date . Include this everywhere
 

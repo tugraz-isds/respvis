@@ -1,10 +1,10 @@
-import {SeriesConfigTooltips, seriesConfigTooltipsData,} from '../tooltip';
-import {AxisValid, Circle, ScaleContinuous, Size} from '../core';
-import {LegendValid} from "../core/render/legend";
-import {getRadiusDefinite} from "../core/data/radius/radius-util";
-import {RenderArgs} from "../core/render/charts/renderer";
-import {elementFromSelection} from "../core/utilities/d3/util";
-import {isRadiusVaryingArg, RadiusArg} from "../core/data/radius/radius-validation";
+import {SeriesConfigTooltips, seriesConfigTooltipsData,} from '../../tooltip';
+import {AxisValid, Circle, ScaleContinuous, Size} from '../../core';
+import {LegendValid} from "../../core/render/legend";
+import {getRadiusDefinite} from "../../core/data/radius/radius-util";
+import {RenderArgs} from "../../core/render/charts/renderer";
+import {elementFromSelection} from "../../core/utilities/d3/util";
+import {isRadiusVaryingArg, RadiusArg} from "../../core/data/radius/radius-validation";
 
 export interface Point extends Circle {
   xValue: any

@@ -1,19 +1,33 @@
 import { select, Selection } from 'd3';
-import {chartCartesianAxisRender, chartCartesianData} from "../core";
-import { seriesBarRender, seriesBarData, SeriesBar, Bar } from './series-bar';
+import {
+  ChartCartesianArgs,
+  chartCartesianAxisRender,
+  chartCartesianData,
+  ChartCartesianValid,
+  ScaleContinuous
+} from "../../core";
+import { seriesBarRender, seriesBarData, SeriesBar, Bar } from '../series-bar';
 import {
   SeriesLabelBar as SeriesLabelBar,
   seriesLabelBarData as seriesLabelBarData,
   seriesLabelBar,
-} from './series-label-bar';
-import {chartBaseRender} from "../core";
+} from '../series-label-bar';
+import {chartBaseRender} from "../../core";
+import {SeriesPointValid} from "../../points";
 
-export interface ChartBar extends SeriesBar { //extends ChartCartesian
-  labelsEnabled: boolean;
-  labels: Partial<SeriesLabelBar>;
+export type BarChartArgs = ChartCartesianArgs & {
+  // labelsEnabled: boolean;
+  // labels: Partial<SeriesLabelBar>;
 }
 
-export function chartBarData(data: Partial<ChartBar>): ChartBar {
+export type BarChartValid = ChartCartesianValid & {
+}
+
+export interface BarChartValidation extends SeriesBar { //extends ChartCartesian
+
+}
+
+export function barChartValidation(data: Partial<BarChartValidation>): BarChartValidation {
   return {
     ...seriesBarData(data),
     ...chartCartesianData(data),
@@ -22,7 +36,7 @@ export function chartBarData(data: Partial<ChartBar>): ChartBar {
   };
 }
 
-export type ChartBarSelection = Selection<SVGSVGElement | SVGGElement, ChartBar>;
+export type ChartBarSelection = Selection<SVGSVGElement | SVGGElement, BarChartValidation>;
 
 export function chartBarRender(selection: ChartBarSelection): void {
   selection

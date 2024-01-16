@@ -1,9 +1,9 @@
 import {easeCubicOut, select, Selection} from "d3";
-import {circleMinimized, circleToAttrs, rectFromString} from "../core";
-import {seriesConfigTooltipsHandleEvents} from "../tooltip";
-import {Point, seriesPointCreatePoints, SeriesPointValid} from "./series-point-validation";
+import {circleMinimized, circleToAttrs, rectFromString} from "../../core";
+import {seriesConfigTooltipsHandleEvents} from "../../tooltip";
+import {Point, seriesPointCreatePoints, SeriesPointValid} from "./point-series-validation";
 
-export function seriesPointRender(selection: Selection<Element, SeriesPointValid>): void {
+export function pointSeriesRender(selection: Selection<Element, SeriesPointValid>): void {
   selection
     .classed('series-point', true)
     .attr('data-ignore-layout-children', true)

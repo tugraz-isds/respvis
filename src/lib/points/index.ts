@@ -1,6 +1,6 @@
-export * from './series-point-validation';
-export * from './chart-point-render';
-export * from './chart-window-point';
-export {ChartPointValid, ChartPointArgs, chartPointData} from "./chart-point-validation";
-export {seriesPointJoin} from "./series-point-render";
-export {seriesPointRender} from "./series-point-render";
+export * from './point-series/point-series-validation'
+export * from './scatter-plot/scatter-plot-render'
+export * from './scatter-plot/scatter-plot'
+export {ChartPointValid, ChartPointArgs, chartPointData} from "./scatter-plot/scatter-plot-validation"
+export {seriesPointJoin} from "./point-series/point-series-render"
+export {pointSeriesRender} from "./point-series/point-series-render"

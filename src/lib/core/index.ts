@@ -13,7 +13,7 @@ export * from './utilities/d3/selection';
 export * from './layouter';
 export * from './resize-event-dispatcher';
 
-export * from './utilities/scale';
+export * from './data/scale/validateAxisScale';
 
 export * from './render';
 
@@ -23,4 +23,6 @@ export * from './series-checkbox';
 export * from './menu-dropdown';
 
 export {convertToPx} from "./utilities/length";
+export {ScaleAny} from "./data/scale/scales";
+export {ScaleContinuous} from "./data/scale/scales";
 

@@ -6,11 +6,11 @@ import {
   toolFilterNominalRender,
   Checkbox,
   layouterCompute, chartWindowRender,
-} from '../core';
-import { arrayIs } from '../core';
-import { chartBarRender, chartBarData, ChartBar } from './chart-bar';
+} from '../../core';
+import { arrayIs } from '../../core';
+import { chartBarRender, barChartValidation, BarChartValidation } from './bar-chart-validation';
 
-export interface ChartWindowBar extends ChartBar {
+export interface ChartWindowBar extends BarChartValidation {
   categoryActiveStates: boolean[];
   categoryEntity: string;
   valueEntity: string;
@@ -18,7 +18,7 @@ export interface ChartWindowBar extends ChartBar {
 }
 
 export function chartWindowBarData(data: Partial<ChartWindowBar>): ChartWindowBar {
-  const chartData = chartBarData(data),
+  const chartData = barChartValidation(data),
     valueDomain = data.valueDomain || ((values) => [0, Math.max(...values) * 1.05]);
 
   chartData.valueScale.domain(
@@ -107,9 +107,9 @@ export function chartWindowBarRender(selection: ChartWindowBarSelection): void {
 
       // chart
       const chartS = layouterS
-        .selectAll<SVGSVGElement, ChartBar>('svg.chart-bar')
+        .selectAll<SVGSVGElement, BarChartValidation>('svg.chart-bar')
         .data([
-          chartBarData({
+          barChartValidation({
             ...chartWindowD,
             categories: filteredCategories,
             values: filteredValues,

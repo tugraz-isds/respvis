@@ -9,7 +9,7 @@ import {
   rectFromString,
   ScaleAny,
 } from '../core';
-import {Point, seriesPointData, seriesPointRender, SeriesPointValid} from '../points';
+import {Point, seriesPointData, pointSeriesRender, SeriesPointValid} from '../points';
 import {legendData, LegendItem, legendRender, LegendValid} from '../core/render/legend';
 import {SeriesLabel, seriesLabelData, seriesLabelRender} from '../bars';
 import {SeriesConfigTooltips} from '../tooltip';
@@ -87,7 +87,7 @@ export function chartLineRender(
           )
         )
         .join('g')
-        .call((s) => seriesPointRender(s))
+        .call((s) => pointSeriesRender(s))
         .on('pointerover.chartlinehighlight', (e) =>
           chartLineHoverMarker(chartS, select(e.target), true)
         )
