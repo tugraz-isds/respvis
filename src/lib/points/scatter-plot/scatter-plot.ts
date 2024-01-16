@@ -8,7 +8,7 @@ import {
   toolbarRender,
 } from '../../core';
 import {scatterPlotRender} from "./scatter-plot-render";
-import {ChartPointArgs, chartPointData, ChartPointValid} from "./scatter-plot-validation";
+import {ChartPointArgs, scatterPlotValidation, ChartPointValid} from "./scatter-plot-validation";
 import {addZoom} from "../../core/data/zoom";
 import {Chart} from "../../core/render/charts/chart";
 import {getMaxRadius} from "../../core/data/radius/radius-util";
@@ -24,7 +24,7 @@ export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
   public windowSelection: ScatterplotSelection
   constructor(windowSelection: Selection<HTMLDivElement>, data: ChartPointUserArgs) {
     super({...data, type: 'point'})
-    const chartData = chartPointData({...data, renderer: this})
+    const chartData = scatterPlotValidation({...data, renderer: this})
     this.windowSelection = windowSelection as ScatterplotSelection
     this.windowSelection.datum({...this.initialWindowData, ...chartData})
   }

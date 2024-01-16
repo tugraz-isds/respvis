@@ -3,6 +3,7 @@
 // export * from './stacked-bars-component';
 // export * from './bar-labels-component';
 
+export * from './bar-chart';
 export * from './series-bar';
 export * from './series-bar-grouped';
 export * from './series-bar-stacked';

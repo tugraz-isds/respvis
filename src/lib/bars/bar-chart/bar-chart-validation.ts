@@ -2,7 +2,7 @@ import { select, Selection } from 'd3';
 import {
   ChartCartesianArgs,
   chartCartesianAxisRender,
-  chartCartesianData,
+  chartCartesianValidation,
   ChartCartesianValid,
   ScaleContinuous
 } from "../../core";
@@ -13,7 +13,7 @@ import {
   seriesLabelBar,
 } from '../series-label-bar';
 import {chartBaseRender} from "../../core";
-import {SeriesPointValid} from "../../points";
+import {seriesPointData, SeriesPointValid} from "../../points";
 
 export type BarChartArgs = ChartCartesianArgs & {
   // labelsEnabled: boolean;
@@ -27,12 +27,18 @@ export interface BarChartValidation extends SeriesBar { //extends ChartCartesian
 
 }
 
-export function barChartValidation(data: Partial<BarChartValidation>): BarChartValidation {
+export function barChartValidation(data: BarChartArgs): BarChartValid {
+  //TODO create bar series
+  // const pointSeries = seriesPointData({
+  //   ...(markerTooltips ?? {}),
+  //   flipped, x, y, color, radii, legend, key: '0', renderer: data.renderer
+  // })
   return {
-    ...seriesBarData(data),
-    ...chartCartesianData(data),
-    labelsEnabled: data.labelsEnabled ?? true,
-    labels: data.labels || {},
+    ...chartCartesianValidation(data),
+    // ...seriesBarData(data),
+    // ...chartCartesianValidation(data),
+    // labelsEnabled: data.labelsEnabled ?? true,
+    // labels: data.labels || {},
   };
 }
 

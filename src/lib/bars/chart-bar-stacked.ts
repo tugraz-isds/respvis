@@ -1,10 +1,10 @@
 import {select, Selection} from 'd3';
 import {
   chartCartesianAxisRender,
-  chartCartesianData,
+  chartCartesianValidation,
   ChartCartesianValid,
 } from '../core';
-import {LegendValid, legendData, LegendItem, legendRender} from '../core/render/legend';
+import {LegendValid, legendValidation, LegendItem, legendRender} from '../core/render/legend';
 import {Bar} from './series-bar';
 import {BarGrouped} from './series-bar-grouped';
 import {SeriesBarStacked, seriesBarStackedData, seriesBarStackedRender} from './series-bar-stacked';
@@ -22,7 +22,7 @@ export function chartBarStackedData(data: Partial<ChartBarStacked>): ChartBarSta
   const seriesData = seriesBarStackedData(data);
   return {
     ...seriesData,
-    ...chartCartesianData(data),
+    ...chartCartesianValidation(data),
     styleClasses: data.styleClasses || seriesData.subcategories.map((c, i) => `categorical-${i}`),
     legend: data.legend || {},
     labelsEnabled: data.labelsEnabled ?? true,
@@ -83,7 +83,7 @@ export function chartBarStackedRender(selection: ChartBarStackedSelection): void
       chartS
         .selectAll<SVGGElement, LegendValid>('.legend')
         .data([
-          legendData({
+          legendValidation({
             labels: subcategories,
             styleClasses: styleClasses,
             ...legendD,

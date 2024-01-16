@@ -2,7 +2,7 @@ import {Selection} from 'd3';
 import {AxisUserArgs, AxisValid, axisValidation, syncAxes} from "../../axis";
 import {ChartBaseArgs, ChartBaseValid, chartBaseValidation} from "../chart-base";
 import {validateZoom, ZoomArgs, ZoomValid} from "../../../data/zoom";
-import {LegendArgsUser, legendData, LegendValid} from "../../legend";
+import {LegendArgsUser, legendValidation, LegendValid} from "../../legend";
 
 export type ChartCartesianArgs = ChartBaseArgs & {
   x: AxisUserArgs
@@ -21,13 +21,13 @@ export type ChartCartesianValid = ChartBaseValid & {
   legend: LegendValid
 }
 
-export function chartCartesianData(data: ChartCartesianArgs): ChartCartesianValid {
+export function chartCartesianValidation(data: ChartCartesianArgs): ChartCartesianValid {
   const {
     legend, flipped, zoom, renderer
   } = data
   const [x, y] = syncAxes(axisValidation({...data.x, renderer}), axisValidation({...data.y, renderer}))
   const categoriesOrdered = Object.keys(x.categoryOrder)
-  const legendValid = legendData({
+  const legendValid = legendValidation({
     ...(legend ? legend : {}),
     renderer: data.renderer,
     categories: categoriesOrdered,

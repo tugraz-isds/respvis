@@ -65,16 +65,6 @@ export function createChartSoldCarsGermany(selector) {
           [2, (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))]]
       }
     },
-    radii: {
-      values: mileages,
-      scale: {
-        dependentOn: 'width',
-        value: scales.radiusScale,
-        tuples: [[0, (s => s.range([3, 12]))],
-          [2, (s) => s.range([4, 16])],
-          [3,  (s) => s.range([5, 20])]]
-      },
-    },
     legend: {
       title: {
         dependentOn: 'width',
@@ -86,9 +76,15 @@ export function createChartSoldCarsGermany(selector) {
       //   return label + '1'
       // }
     },
-    zoom: {
-      in: 20,
-      out: 1
+    radii: {
+      values: mileages,
+      scale: {
+        dependentOn: 'width',
+        value: scales.radiusScale,
+        tuples: [[0, (s => s.range([3, 12]))],
+          [2, (s) => s.range([4, 16])],
+          [3,  (s) => s.range([5, 20])]]
+      },
     },
     markerTooltips: {
       tooltips: ((e, d) => {
@@ -97,7 +93,12 @@ Horse Power: ${d.xValue}PS<br/>
 Make: ${d.label}<br/>
 Mileage: ${d.radiusValue}km<br/>`
       })
-    }
+    },
+    zoom: {
+      in: 20,
+      out: 1
+    },
+
   };
 
   //'#sold-cars-germany'

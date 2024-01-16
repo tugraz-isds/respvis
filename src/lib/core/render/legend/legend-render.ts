@@ -1,31 +1,24 @@
-import {arrayIs, rectFromString} from "../../index";
+import {rectFromString} from "../../index";
 import {select, Selection} from "d3";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {getCurrentResponsiveValue} from "../../data/breakpoint/responsive-value";
-import {LegendItem, LegendValid} from "./legend";
+import {LegendItem} from "./legend-item-validation";
 import {SVGHTMLElement} from "../../constants/types";
+import {legendItemData} from "./legend-item-validation";
+import {LegendValid} from "./legend-validation";
 
-export function legendItemData(legendData: LegendValid): LegendItem[] {
-  const { labelCallback, categories, styleClasses,
-    symbols, keys, reverse
-  } = legendData;
-  const items = categories.map((c, i) => {
-    return {
-      label: labelCallback(c),
-      styleClass: arrayIs(styleClasses) ? styleClasses[i] : styleClasses,
-      symbol: arrayIs(symbols) ? symbols[i] : symbols,
-      key: keys[i],
-    };
-  });
-  return reverse ? items.reverse() : items
-}
+export type LegendSelection = Selection<SVGHTMLElement, LegendValid>
 
-export function legendRender(selection: Selection<SVGHTMLElement, LegendValid>) {
-  const data = selection.datum()
+export function legendRender(selection: Selection, data: LegendValid): LegendSelection {
   const chartElement = elementFromSelection(data.renderer.chartSelection)
-  data.renderer.legendSelection = selection
+  const legendS = selection
+    .selectAll<SVGGElement, LegendValid>('.legend')
+    .data([data])
+    .join('g')
+    .classed('legend', true)
+  data.renderer.legendSelection = legendS
 
-  selection.classed('legend', true).each((legendD, i, g) => {
+  legendS.each((legendD, i, g) => {
     const legendS = select<SVGHTMLElement, LegendValid>(g[i])
     const legendElement = elementFromSelection(legendS)
 
@@ -64,12 +57,14 @@ export function legendRender(selection: Selection<SVGHTMLElement, LegendValid>) 
       .attr('data-style', (d) => d.styleClass)
       .attr('data-key', (d) => d.key)
       .call((s) => legendS.dispatch('update', {detail: {selection: s}}));
-  });
+  })
 
-  selection.on('pointerover.legend pointerout.legend', (e: PointerEvent) => {
+  legendS.on('pointerover.legend pointerout.legend', (e: PointerEvent) => {
     const item = (<Element>e.target).closest('.legend-item');
     if (item) {
       item.classList.toggle('highlight', e.type.endsWith('over'));
     }
-  });
+  })
+
+  return legendS
 }

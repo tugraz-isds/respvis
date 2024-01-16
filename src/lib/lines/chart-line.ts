@@ -4,13 +4,13 @@ import {
   arrayIs,
   chartBaseRender,
   chartCartesianAxisRender,
-  chartCartesianData,
+  chartCartesianValidation,
   ChartCartesianValid,
   rectFromString,
   ScaleAny,
 } from '../core';
 import {Point, seriesPointData, pointSeriesRender, SeriesPointValid} from '../points';
-import {legendData, LegendItem, legendRender, LegendValid} from '../core/render/legend';
+import {legendValidation, LegendItem, legendRender, LegendValid} from '../core/render/legend';
 import {SeriesLabel, seriesLabelData, seriesLabelRender} from '../bars';
 import {SeriesConfigTooltips} from '../tooltip';
 
@@ -31,7 +31,7 @@ export interface ChartLine extends SeriesLine, ChartCartesianValid {
 
 export function chartLineData(data: Partial<ChartLine>): ChartLine {
   const seriesD = seriesLineData(data);
-  const chartCartesianD = chartCartesianData(data);
+  const chartCartesianD = chartCartesianValidation(data);
   return {
     ...seriesD,
     ...chartCartesianD,
@@ -128,7 +128,7 @@ export function chartLineRender(
         .selectAll<SVGGElement, LegendValid>('.legend')
         .data(
           arrayIs(styleClasses) && styleClasses.length > 1
-            ? [legendData({ styleClasses, labels: keys, ...legendD, keys })]
+            ? [legendValidation({ styleClasses, labels: keys, ...legendD, keys })]
             : []
         )
         .join('g')

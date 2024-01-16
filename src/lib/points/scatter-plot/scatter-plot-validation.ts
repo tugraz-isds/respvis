@@ -1,4 +1,4 @@
-import {ChartCartesianArgs, chartCartesianData, ChartCartesianValid, ScaleContinuous} from "../../core";
+import {ChartCartesianArgs, chartCartesianValidation, ChartCartesianValid, ScaleContinuous} from "../../core";
 import {seriesPointData, SeriesPointValid} from "../point-series/point-series-validation";
 import {RadiusArg} from "../../core/data/radius/radius-validation";
 
@@ -16,11 +16,11 @@ export type ChartPointValid = ChartCartesianValid & {
   pointSeries: SeriesPointValid;
 }
 
-export function chartPointData(data: ChartPointArgs): ChartPointValid {
+export function scatterPlotValidation(data: ChartPointArgs): ChartPointValid {
   const {radii , color} = data
 
   const { x, y, markerTooltips,
-    legend, flipped, ...restCartesian } = chartCartesianData(data)
+    legend, flipped, ...restCartesian } = chartCartesianValidation(data)
 
   const pointSeries = seriesPointData({
     ...(markerTooltips ?? {}),

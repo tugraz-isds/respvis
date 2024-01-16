@@ -8,13 +8,6 @@ export enum LegendOrientation {
   Horizontal = 'horizontal',
 }
 
-export interface LegendItem {
-  label: string
-  styleClass: string
-  symbol: (pathElement: SVGPathElement, size: Size) => void
-  key: string
-}
-
 export type LegendArgsUser =  {
   title?: ResponsiveValueOptional<string>
   labelCallback?: (category: string) => string
@@ -37,7 +30,7 @@ export type LegendValid = Required<LegendArgs> & {
   styleClasses: string[]
 }
 
-export function legendData(data: LegendArgs): LegendValid {
+export function legendValidation(data: LegendArgs): LegendValid {
   const {labelCallback, categories, renderer} = data
   const keysActive = categories.reduce((prev, c, i) => {
     prev[`s-0 c-${i}`] = true
