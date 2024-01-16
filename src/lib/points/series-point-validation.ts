@@ -68,6 +68,8 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
     const yVal = y.values[i]
     const category = x.categories[i]
     const r = typeof radiusDefinite === "number" ? radiusDefinite : radiusDefinite.scale(radiusDefinite.values[i])
+    const seriesCategory = `s-${seriesKey} c-${x.categoryOrder[category]}`
+    if (!legend.keysActive[seriesCategory]) continue
     const key = `s-${seriesKey} c-${x.categoryOrder[category]} i-${i}`
     data.push({
       label: legend.labelCallback(category),

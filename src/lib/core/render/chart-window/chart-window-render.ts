@@ -1,5 +1,5 @@
 import {ChartPointValid} from "../../../points";
-import {Selection} from "d3";
+import {select, Selection} from "d3";
 import {toolDownloadSVGRender} from "../toolbar/tool-download-svg";
 import {layouterRender} from "../../layouter";
 import {updateCSSForSelection} from "../../data/breakpoint/breakpoint";
@@ -10,24 +10,10 @@ import {toolbarRender} from "../toolbar/toolbar-render";
 
 export function chartWindowRender<D extends ChartWindowValid>(selection: Selection<SVGHTMLElement, D>) {
   const data = selection.datum()
-  selection
-    .datum(data)
+  selection.datum(data)
     .classed('chart-window', true)
     .classed(`chart-window-${data.type}`, true)
-
   updateCSSForSelection(selection)
-
-  const toolbarS = selection
-    .selectAll<HTMLDivElement, any>('.toolbar')
-    .data([null])
-    .join('div')
-    .call((s) => toolbarRender(s));
-
-  const menuItemsS = selection.selectAll('.menu-tools > .items')
-    .selectAll<HTMLLIElement, any>('.tool-download-svg')
-    .data([null])
-    .join('li')
-    .call((s) => toolDownloadSVGRender(s));
 
   const layouterS = selection
     .selectAll<HTMLDivElement, any>('.layouter')
@@ -40,6 +26,36 @@ export function chartWindowRender<D extends ChartWindowValid>(selection: Selecti
     .data([data])
     .join('svg')
 
-  resizeEventListener(selection);
-  return {chartWindowS: selection, menuItemsS, layouterS, chartS, toolbarS}
+  data.renderer.chartSelection = chartS
+  return {chartWindowS: selection, layouterS, chartS}
+}
+
+
+function renderMenu() {
+  // category filter
+  // const categoryFilterS = menuItemsS
+  //   .selectAll<HTMLLIElement, ToolFilterNominal>('.tool-filter-categories')
+  //   .data([
+  //     toolFilterNominalData({
+  //       text: chartWindowD.categoryEntity,
+  //       options: chartWindowD.categories,
+  //       keys: chartWindowD.categories,
+  //     }),
+  //   ])
+  //   .join('li')
+  //   .classed('tool-filter-categories', true)
+  //   .call((s) => toolFilterNominalRender(s))
+  //   .call((s) =>
+  //     s.selectAll('.checkbox input').attr('checked', (d, i) => categoryActiveStates[i])
+  //   )
+  //   .on('change.chartwindowbar', function (e, filterD) {
+  //     const categoryFilterS = select(this);
+  //     const checkedStates: boolean[] = [];
+  //     const checkboxS = categoryFilterS
+  //       .selectAll<Element, Checkbox>('.checkbox')
+  //       .each((d, i, g) => checkedStates.push(g[i].querySelector('input')!.checked));
+  //     chartWindowS.dispatch('categoryfilter', {
+  //       detail: { categoryActiveStates: checkedStates },
+  //     });
+  //   });
 }

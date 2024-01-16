@@ -29,13 +29,16 @@ export function seriesPointJoin(
 ): void {
   joinSelection
     .join(
-      (enter) =>
-        enter
+      (enter) => {
+        return enter
           .append('circle')
           .classed('point', true)
-          .each((d, i, g) => circleToAttrs(select(g[i]), circleMinimized(d)))
-          .call((s) => seriesSelection.dispatch('enter', {detail: {selection: s}})),
-      undefined,
+          .each((d, i, g) => {
+            const s = select(g[i])
+            circleToAttrs(s, circleMinimized(d))
+          })
+          .call((s) => seriesSelection.dispatch('enter', {detail: {selection: s}}))
+      }, undefined,
       (exit) =>
         exit
           .classed('exiting', true)
@@ -43,18 +46,21 @@ export function seriesPointJoin(
             s
               .transition('exit')
               .duration(250)
-              .each((d, i, g) => circleToAttrs(select(g[i]), circleMinimized(d)))
+              .each((d, i, g) => {
+                const t = select(g[i]).transition('minimize').duration(250)
+                return circleToAttrs(t, circleMinimized(d))
+              })
               .remove()
           )
           .call((s) => seriesSelection.dispatch('exit', {detail: {selection: s}}))
     )
-    .call((s) =>
-      s
-        .transition('update')
-        .duration(250)
-        .ease(easeCubicOut)
-        .each((d, i, g) => circleToAttrs(select(g[i]), d))
-    )
+    .attr('cx', (d) => d.center.x)
+    .attr('cy', (d) => d.center.y)
+    .each((d, i, g) => {
+      const s = select(g[i])
+      const t = s.transition('update').ease(easeCubicOut)
+      circleToAttrs(t, d)
+    })
     .attr('data-style', (d) => !d.color ? d.styleClass : null)
     .attr('data-key', (d) => d.key)
     .call((s) => seriesSelection.dispatch('update', {detail: {selection: s}}));

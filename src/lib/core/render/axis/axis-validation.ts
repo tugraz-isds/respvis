@@ -9,7 +9,8 @@ import {RenderArgs} from "../charts/renderer";
 export type AxisUserArgs = {
   values: number[], // TODO: add strings/dates, also for y
   scale?: AxisScale<AxisDomain>,
-  categories?: string[]
+  categories?: string[],
+  categoriesTitle?: ResponsiveValueOptional<string>
   bounds?: Partial<LayoutBreakpoints>
   title?: ResponsiveValueOptional<string>,
   subTitle?: ResponsiveValueOptional<string>,
@@ -45,6 +46,7 @@ export function axisValidation(data: AxisArgs): AxisValid {
     values: data.values,
     scale: validateScale(data.values, data.scale).range([0, 600]),
     categories: validateCategories(data.values, data.categories),
+    categoriesTitle: data.categoriesTitle || 'Categories',
     categoryOrder,
     title: data.title || '',
     subTitle: data.subTitle || '',
@@ -64,12 +66,14 @@ export function syncAxes(...axes: AxisValid[]) {
   const sharedCategoryAxis = axes.find(axis => axis.categories[0] !== defaultCategory)
   const sharedCategory = sharedCategoryAxis?.categories.slice(0, lowestLength)
   const sharedCategoryOrder = sharedCategoryAxis?.categoryOrder
+  const sharedCategoryTitle = sharedCategoryAxis?.categoriesTitle
   return axes.map(axis => {
     return {
       ...axis,
       values: axis.values.slice(0, lowestLength),
       categories: sharedCategory ? sharedCategory : axis.categories.slice(0, lowestLength),
-      categoryOrder: sharedCategoryOrder ? sharedCategoryOrder : axis.categoryOrder
+      categoryOrder: sharedCategoryOrder ? sharedCategoryOrder : axis.categoryOrder,
+      categoriesTitle: sharedCategoryTitle ? sharedCategoryTitle : axis.categoriesTitle
     }
   })
 }

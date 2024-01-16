@@ -1,4 +1,4 @@
-import { create, EnterElement, select, Selection, ValueFn } from 'd3';
+import {create, EnterElement, select, selectAll, Selection, ValueFn} from 'd3';
 import { v4 as uuid } from 'uuid';
 
 export interface Checkbox {
@@ -38,21 +38,30 @@ export function seriesCheckboxRender(selection: Selection<HTMLElement, SeriesChe
     .classed('series-checkbox', true)
     .on(
       'click.seriescheckbox',
-      (e) => e.target.classList.contains('checkbox') && e.target.querySelector('input').click()
+      (e) => {
+        e.target.classList.contains('checkbox') && e.target.querySelector('input').click()
+      }
     )
     .each((d, i, g) => {
-      const seriesS = select<HTMLElement, SeriesCheckbox>(g[i]);
+      const seriesS = select<HTMLElement, SeriesCheckbox>(g[i])
       seriesS
         .selectAll<Element, Checkbox>('.checkbox')
         .data(seriesCheckboxCreateCheckboxes(d), (d) => d.label)
-        .call((s) => seriesCheckboxJoin(seriesS, s));
-    });
+        .call((s) => seriesCheckboxJoin(seriesS, s))
+    })
 }
 
 export function seriesCheckboxJoin(
   seriesSelection: Selection,
   joinSelection: Selection<Element, Checkbox>
 ): void {
+  const onClick = (e, d: Checkbox) => {
+    // console.log("HIHO")
+    const chart = selectAll('#scatterplot-reusable-wide-0 svg.chart-point')
+    // const
+    // console.log(chart)
+  }
+
   joinSelection
     .join(
       (enter) =>
@@ -66,7 +75,8 @@ export function seriesCheckboxJoin(
           .each((d, i, g) => {
             const s = select(g[i]),
               id = uuid();
-            s.append('input').attr('type', 'checkbox').attr('id', id).attr('checked', true);
+            const inputS = s.append('input').attr('type', 'checkbox').attr('id', id).attr('checked', true)
+            inputS.on('click.categorycheck', (e) => onClick(e, d))
             s.append('label').attr('for', id);
           })
           .call((s) => seriesSelection.dispatch('enter', { detail: { selection: s } })),

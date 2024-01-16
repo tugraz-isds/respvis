@@ -1,13 +1,17 @@
-import { select, Selection, ValueFn } from 'd3';
+import {BaseType, select, Selection, ValueFn} from 'd3';
 import {
   elementComputedStyleWithoutDefaults,
   elementSVGPresentationAttrs,
 } from '../../utilities/element';
+import {SVGHTMLElement} from "../../constants/types";
 
 // TODO: maybe SVGO could be used to optimize the downloaded SVG? https://github.com/svg/svgo
 
-export function toolDownloadSVGRender(selection: Selection<HTMLLIElement>): void {
+export function toolDownloadSVGRender(selection: Selection<BaseType>): void {
   selection
+    .selectAll<HTMLLIElement, any>('.tool-download-svg')
+    .data([null])
+    .join('li')
     .classed('tool-download-svg', true)
     .text('Download SVG')
     .on('click', function () {

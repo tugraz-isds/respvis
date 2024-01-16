@@ -1,19 +1,49 @@
 import {Selection} from "d3";
 import {menuDropdownRender} from "../../menu-dropdown";
+import {toolDownloadSVGRender} from "./tool-download-svg";
+import {AxisValid} from "../axis";
+import {ToolFilterNominal, toolFilterNominalRender} from "./tool-filter-nominal";
+import {RenderArgs} from "../charts/renderer";
+import {getCurrentResponsiveValue} from "../../data/breakpoint/responsive-value";
+import {elementFromSelection} from "../../utilities/d3/util";
+import {LegendValid} from "../legend";
 
-export function toolbarRender(selection: Selection<HTMLDivElement>): void {
-  selection.classed('toolbar', true);
+type ToolbarValid = RenderArgs & {
+  x: AxisValid,
+  y: AxisValid,
+  legend: LegendValid
+}
 
-  selection
+export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLDivElement, D>): void {
+  const {x, renderer, legend} = selection.datum()
+  const toolbarS = selection
+    .selectAll<HTMLDivElement, any>('.toolbar')
+    .data([null])
+    .join('div')
+    .classed('toolbar', true)
+
+  menuToolsRender(toolbarS)
+  const menuToolsItems = toolbarS.selectAll('.menu-tools > .items')
+  toolDownloadSVGRender(menuToolsItems)
+
+  const chartElement = elementFromSelection(renderer.chartSelection)
+  const filterOptions: ToolFilterNominal = {
+    text: getCurrentResponsiveValue(x.categoriesTitle, {chart: chartElement}),
+    options: Object.keys(x.categoryOrder),
+    keys: legend.keys
+  }
+
+  toolFilterNominalRender(menuToolsItems, filterOptions)
+}
+
+function menuToolsRender(selection: Selection<HTMLDivElement>) {
+  const menuTools = selection
     .selectAll<HTMLDivElement, any>('.menu-tools')
     .data([null])
     .join('div')
-    .call((s) => menuToolsRender(s));
-}
-
-export function menuToolsRender(selection: Selection<HTMLDivElement>): void {
-  selection.call((s) => menuDropdownRender(s)).classed('menu-tools', true);
-
-  selection.selectChildren('.chevron').remove();
-  selection.selectChildren('.text').text('☰');
+  menuDropdownRender(menuTools)
+    .classed('menu-tools', true)
+    .selectChildren('.chevron').remove()
+  menuTools.selectChildren('.text').text('☰')
+  return menuTools
 }

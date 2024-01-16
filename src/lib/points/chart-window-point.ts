@@ -1,11 +1,20 @@
-import {Selection} from 'd3';
-import {chartWindowRender, ChartWindowValid, layouterCompute, rectFromString,} from '../core';
+import {select, selectAll, selection, Selection} from 'd3';
+import {
+  chartWindowRender,
+  ChartWindowValid,
+  layouterCompute,
+  rectFromString,
+  resizeEventListener,
+  toolbarRender,
+} from '../core';
 import {chartPointRender} from "./chart-point-render";
 import {ChartPointArgs, chartPointData, ChartPointValid} from "./chart-point-validation";
 import {addZoom} from "../core/data/zoom";
 import {Chart} from "../core/render/charts/chart";
 import {getMaxRadius} from "../core/data/radius/radius-util";
 import {elementFromSelection} from "../core/utilities/d3/util";
+import {ChangeEvent} from "rollup";
+import {SVGHTMLElement} from "../core/constants/types";
 
 export type ScatterplotData = ChartWindowValid & ChartPointValid
 export type ScatterplotSelection = Selection<HTMLDivElement, ScatterplotData>;
@@ -26,15 +35,18 @@ export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
       chartS,
       layouterS
     } = chartWindowRender(this.windowSelection)
+    toolbarRender(this.windowSelection)
     chartPointRender(chartS)
     layouterS.on('boundschange.chartwindowpoint', () => {
       chartPointRender(chartS)
       layouterS.call((s) => layouterCompute(s, false))
     }).call((s) => layouterCompute(s))
+    resizeEventListener(this.windowSelection)
   }
 
   protected addBuiltInListeners() {
     this.addZoomListeners()
+    this.addFilterListener()
   }
 
   private addZoomListeners() {
@@ -60,6 +72,20 @@ export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
           x: xRescaled, y: yRescaled, pointSeries: {...pointSeries, x: xRescaled, y: yRescaled}
       }])
       renderer.windowSelection.dispatch('resize')
+    })
+  }
+
+  private addFilterListener() {
+    this.addCustomListener('change', (e) => {
+      if (!e.target) return
+      const changeS = select(e.target as SVGHTMLElement)
+      if (changeS.attr('type') !== 'checkbox') return
+      const parentS = changeS.select(function() {return this.parentElement})
+      const currentKey = parentS.attr('data-key')
+      if (!currentKey) return;
+      const {keysActive} = this.windowSelection.datum().legend
+      keysActive[currentKey] = changeS.property('checked')
+      this.render()
     })
   }
 }

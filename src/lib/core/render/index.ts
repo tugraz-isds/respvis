@@ -3,5 +3,4 @@ export * from './axis';
 export * from './chart-window';
 export * from './toolbar/tool-download-svg';
 export * from './toolbar/tool-filter-nominal';
-export {menuToolsRender} from "./toolbar/toolbar-render";
 export {toolbarRender} from "./toolbar/toolbar-render";
