@@ -1,7 +1,7 @@
-import {ResponsiveValueByCallback, ResponsiveValueByValue} from "../breakpoint/responsive-value";
+import {ResponsiveValueByCallback, ResponsiveValueByValueOptional} from "../breakpoint/responsive-value";
 import {ScaleLinear} from "d3";
 
-export type RadiusUnifiedArg = ResponsiveValueByValue<number>
+export type RadiusUnifiedArg = ResponsiveValueByValueOptional<number>
 export type RadiusVaryingArg = {
   values: number[]
   scale: ResponsiveValueByCallback<ScaleLinear<number, number>>

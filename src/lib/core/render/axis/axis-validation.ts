@@ -1,7 +1,7 @@
 import {Axis as D3Axis, AxisDomain} from 'd3';
 import {TickOrientation} from "../../data/breakpoint/matchBounds";
 import {ResponsiveValueOptional} from "../../data/breakpoint/responsive-value";
-import {AxisScale, validateAxisScale} from "../../data/scale/validateAxisScale";
+import {AxisScale, axisScaleValidation} from "../../data/scale/axis-scale-validation";
 import {defaultCategory, validateCategories} from "../../data/category";
 import {LayoutBreakpoints, validateBreakpoints} from "../../data/breakpoint/breakpoint";
 import {RenderArgs} from "../charts/renderer";
@@ -42,7 +42,7 @@ export function axisValidation(data: AxisArgs): AxisValid {
   return {
     renderer: data.renderer,
     values: data.values,
-    scale: validateAxisScale({...data}),
+    scale: axisScaleValidation({...data}),
     categories: validateCategories(data.values, data.categories),
     categoriesTitle: data.categoriesTitle || 'Categories',
     categoryOrder,

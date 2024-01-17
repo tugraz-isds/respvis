@@ -9,9 +9,9 @@ import {LegendValid} from "./legend-validation";
 
 export type LegendSelection = Selection<SVGHTMLElement, LegendValid>
 
-export function legendRender(selection: Selection, data: LegendValid): LegendSelection {
+export function legendRender(parentS: Selection, data: LegendValid): LegendSelection {
   const chartElement = elementFromSelection(data.renderer.chartSelection)
-  const legendS = selection
+  const legendS = parentS
     .selectAll<SVGGElement, LegendValid>('.legend')
     .data([data])
     .join('g')

@@ -6,7 +6,7 @@ import {
   ChartCartesianValid,
   ScaleContinuous
 } from "../../core";
-import { seriesBarRender, seriesBarData, SeriesBar, Bar } from '../series-bar';
+import { seriesBarRender, seriesBarData, SeriesBarValid, Bar} from "../bar-series/bar-series-validation";
 import {
   SeriesLabelBar as SeriesLabelBar,
   seriesLabelBarData as seriesLabelBarData,
@@ -21,10 +21,10 @@ export type BarChartArgs = ChartCartesianArgs & {
 }
 
 export type BarChartValid = ChartCartesianValid & {
+  barSeries: SeriesBarValid
 }
 
-export interface BarChartValidation extends SeriesBar { //extends ChartCartesian
-
+export interface BarChartValidation extends SeriesBarValid { //extends ChartCartesian
 }
 
 export function barChartValidation(data: BarChartArgs): BarChartValid {
@@ -33,9 +33,17 @@ export function barChartValidation(data: BarChartArgs): BarChartValid {
   //   ...(markerTooltips ?? {}),
   //   flipped, x, y, color, radii, legend, key: '0', renderer: data.renderer
   // })
+  const { x, y, markerTooltips,
+    legend, flipped, ...restCartesian } = chartCartesianValidation(data)
+
+  const barSeries = seriesBarData({
+    ...(markerTooltips ?? {}),
+    flipped, x, y, legend, key: '0', renderer: data.renderer
+  })
   return {
-    ...chartCartesianValidation(data),
-    // ...seriesBarData(data),
+    x, y, legend, flipped,
+    ...restCartesian,
+    barSeries,
     // ...chartCartesianValidation(data),
     // labelsEnabled: data.labelsEnabled ?? true,
     // labels: data.labels || {},
@@ -53,7 +61,7 @@ export function chartBarRender(selection: ChartBarSelection): void {
       const drawAreaS = chartS.selectAll('.draw-area');
 
       const barSeriesS = drawAreaS
-        .selectAll<SVGGElement, SeriesBar>('.series-bar')
+        .selectAll<SVGGElement, SeriesBarValid>('.series-bar')
         .data([chartD])
         .join('g')
         .call((s) => seriesBarRender(s))

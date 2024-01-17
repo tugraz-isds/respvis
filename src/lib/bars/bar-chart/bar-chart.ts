@@ -21,13 +21,14 @@ import {getMaxRadius} from "../../core/data/radius/radius-util";
 import {addZoom} from "../../core/data/zoom";
 import {BarChartArgs, barChartValidation, chartBarRender} from "./bar-chart-validation";
 import {barChartRender} from "./bar-chart-render";
+import {CartesianChart} from "../../core/render/charts/chart-cartesian/cartesian-chart";
 
 export type BarChartData = ChartWindowValid & ChartCartesianValid // & ChartBarValid
 export type BarChartSelection = Selection<HTMLDivElement, BarChartData>
 
 export type BarChartUserArgs = Omit<BarChartArgs, 'renderer'>
 
-export class BarChart extends Chart {
+export class BarChart extends CartesianChart {
   public windowSelection: BarChartSelection
   constructor(windowSelection: Selection<HTMLDivElement>, data: BarChartUserArgs) {
     super({...data, type: 'bar'})
@@ -43,13 +44,14 @@ export class BarChart extends Chart {
     } = chartWindowRender(this.windowSelection)
     toolbarRender(this.windowSelection)
     barChartRender(chartS)
-    // layouterS.on('boundschange.chartwindowbar', () => {
-    //   scatterPlotRender(chartS)
-    //   layouterS.call((s) => layouterCompute(s, false))
-    // }).call((s) => layouterCompute(s))
-    // resizeEventListener(this.windowSelection)
+    layouterS.on('boundschange.chartwindowbar', () => {
+      // scatterPlotRender(chartS)
+      layouterS.call((s) => layouterCompute(s, false))
+    }).call((s) => layouterCompute(s))
+    resizeEventListener(this.windowSelection)
   }
 
-  protected addBuiltInListeners() {
+  protected override addBuiltInListeners() {
+    super.addBuiltInListeners()
   }
 }

@@ -2,8 +2,8 @@ import {range, scaleBand, ScaleBand, ScaleContinuousNumeric, scaleLinear, select
 import {JoinEvent} from '.';
 import {arrayIs, arrayIs2D, Rect, rectFromString} from '../core';
 import {Size} from '../core/utilities/size';
-import {SeriesConfigTooltips, seriesConfigTooltipsData, seriesConfigTooltipsHandleEvents,} from '../tooltip';
-import {Bar, seriesBarJoin} from './series-bar';
+import {SeriesConfigTooltips, seriesConfigTooltipsData, seriesConfigTooltipsHandleEvents} from '../tooltip';
+import {Bar, seriesBarJoin} from ".";
 
 export interface BarGrouped extends Bar {
   subcategory: string;

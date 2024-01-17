@@ -2,8 +2,22 @@ import {select, Selection} from "d3";
 import {axisBottomRender, axisLeftRender, AxisSelection, AxisValid} from "../../axis";
 import {ChartCartesianSelection} from "./chart-cartesian-validation";
 
-export function chartCartesianAxisRender<T extends ChartCartesianSelection>(selection: T): void {
-  selection
+export function chartCartesianAxisRender<T extends ChartCartesianSelection>(chartS: T): void {
+  // const seriesS = select<Element, SeriesBar>(g[i]);
+  // const boundsAttr = seriesS.attr('bounds');
+  // if (!boundsAttr) return;
+  // d.bounds = rectFromString(boundsAttr);
+
+  // if (!flipped) {
+  //   categoryScale.range([0, bounds.width]);
+  //   valueScale.range([bounds.height, 0]);
+  // } else {
+  //   categoryScale.range([0, bounds.height]);
+  //   valueScale.range([0, bounds.width]);
+  // }
+
+
+  chartS
     .classed('chart-cartesian', true)
     .each(function ({flipped, x, y, selection, renderer}, i, g) {
       const s = <ChartCartesianSelection>select(g[i]);
@@ -14,7 +28,7 @@ export function chartCartesianAxisRender<T extends ChartCartesianSelection>(sele
         .join('g')
         .call((s) => axisLeftRender(s))
         .classed('axis-x', flippedBool)
-        .classed('axis-y', !flipped);
+        .classed('axis-y', !flipped)
 
       renderer.xAxisSelection = s.selectAll<SVGGElement, AxisValid>('.axis-bottom')
         .data([{...(flipped ? y : x), selection}])

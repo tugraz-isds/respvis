@@ -17,7 +17,7 @@ export abstract class Chart implements Renderer {
   legendSelection?: Selection<SVGHTMLElement>
 
   protected constructor(data: Omit<ChartWindowArgs, 'renderer'>) {
-    this.initialWindowData = validateChartWindow({...data, renderer: this, type: 'point'})
+    this.initialWindowData = validateChartWindow({...data, renderer: this})
   }
 
 

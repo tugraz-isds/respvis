@@ -19,16 +19,16 @@ type AxisScaleArgs = {
   scale?: AxisScale<AxisDomain>
 }
 
-export function validateAxisScale(axisScaleArgs: AxisScaleArgs): AxisScale<AxisDomain> {
+export function axisScaleValidation(axisScaleArgs: AxisScaleArgs): AxisScale<AxisDomain> {
   //Cases: number | string | Date | { valueOf(): number}
   const {values, scale} = axisScaleArgs
   if (scale) return scale
 
-  let scaleValid: AxisScale<number> = scaleLinear().domain([0, 1])
+  let scaleValid: AxisScale<number> = scaleLinear().domain([0, 1]).nice()
   if (values.length <= 0) return scaleValid
 
   if (isDateArray(values)) {
-    return scaleTime(values, [0, 600])
+    return scaleTime(values, [0, 600]).nice()
   }
 
   if (isNumberArray(values) || hasValueOf(values)) {
@@ -36,12 +36,10 @@ export function validateAxisScale(axisScaleArgs: AxisScaleArgs): AxisScale<AxisD
       values.map(value => Number(value)) :
       values.map(value => value.valueOf())
     const extent = [Math.min(...valuesNum), Math.max(...valuesNum)]
-    const range = extent[1] - extent[0]
-    const domain = [extent[0] - range * 0.05, extent[1] + range * 0.05]
-    return scaleLinear().domain(domain).nice()
+    return scaleLinear().domain(extent).nice()
   }
 
-  return scaleBand([0, 600]).domain(values)
+  return scaleBand([0, 600]).domain(values).padding(0.1)
 }
 
 function isNumberArray(arr: any[]): arr is number[] {

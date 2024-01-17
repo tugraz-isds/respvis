@@ -20,18 +20,18 @@ export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
 export function axisLeftRender(selection: AxisSelection): void {
   selection.classed('axis axis-left', true)
     .each((d, i, g) => {
-      return axisRender(select(g[i]), d3Axis(d3AxisLeft, selection), d)
+      return axisRender(select(g[i]), d3Axis(d3AxisLeft, selection))
     })
 }
 
 export function axisBottomRender(selection: AxisSelection): void {
   selection.classed('axis axis-bottom', true)
-    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisBottom, selection), d))
+    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisBottom, selection)))
 }
 
 export function axisSequenceRender(selection: AxisSelection): void {
   selection.classed('axis axis-sequence', true)
-    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, selection), d))
+    .each((d, i, g) => axisRender(select(g[i]), d3Axis(d3AxisLeft, selection)))
 }
 
 function axisRender(selection: AxisSelection, a: D3Axis<AxisDomain>): void {

@@ -1,5 +1,5 @@
-import {create, EnterElement, select, selectAll, Selection, ValueFn} from 'd3';
-import { v4 as uuid } from 'uuid';
+import {create, EnterElement, select, Selection, ValueFn} from 'd3';
+import {v4 as uuid} from 'uuid';
 
 export interface Checkbox {
   container: string | ValueFn<EnterElement, Checkbox, HTMLElement>;
@@ -56,10 +56,7 @@ export function seriesCheckboxJoin(
   joinSelection: Selection<Element, Checkbox>
 ): void {
   const onClick = (e, d: Checkbox) => {
-    // console.log("HIHO")
-    const chart = selectAll('#scatterplot-reusable-wide-0 svg.chart-point')
-    // const
-    // console.log(chart)
+    //TODO:?
   }
 
   joinSelection

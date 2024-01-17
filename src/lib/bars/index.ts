@@ -4,7 +4,7 @@
 // export * from './bar-labels-component';
 
 export * from './bar-chart';
-export * from './series-bar';
+export * from './bar-series';
 export * from './series-bar-grouped';
 export * from './series-bar-stacked';
 export * from './bar-chart/bar-chart-validation';

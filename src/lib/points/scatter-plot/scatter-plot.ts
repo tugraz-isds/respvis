@@ -8,19 +8,19 @@ import {
   toolbarRender,
 } from '../../core';
 import {scatterPlotRender} from "./scatter-plot-render";
-import {ChartPointArgs, scatterPlotValidation, ChartPointValid} from "./scatter-plot-validation";
+import {ChartPointArgs, ChartPointValid, scatterPlotValidation} from "./scatter-plot-validation";
 import {addZoom} from "../../core/data/zoom";
-import {Chart} from "../../core/render/charts/chart";
 import {getMaxRadius} from "../../core/data/radius/radius-util";
 import {elementFromSelection} from "../../core/utilities/d3/util";
 import {SVGHTMLElement} from "../../core/constants/types";
+import {CartesianChart} from "../../core/render/charts/chart-cartesian/cartesian-chart";
 
 export type ScatterplotData = ChartWindowValid & ChartPointValid
 export type ScatterplotSelection = Selection<HTMLDivElement, ScatterplotData>;
 
 export type ChartPointUserArgs = Omit<ChartPointArgs, 'renderer'>
 
-export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
+export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseRenderer
   public windowSelection: ScatterplotSelection
   constructor(windowSelection: Selection<HTMLDivElement>, data: ChartPointUserArgs) {
     super({...data, type: 'point'})
@@ -43,7 +43,8 @@ export class ScatterPlot extends Chart { //implements IWindowChartBaseRenderer
     resizeEventListener(this.windowSelection)
   }
 
-  protected addBuiltInListeners() {
+  protected override addBuiltInListeners() {
+    super.addBuiltInListeners()
     this.addZoomListeners()
     this.addFilterListener()
   }

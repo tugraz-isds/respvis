@@ -9,7 +9,7 @@ import {
   textAlignHorizontal,
   textAlignVertical,
 } from '../core';
-import { Bar } from './series-bar';
+import { Bar} from ".";
 import { Label, seriesLabelJoin } from './series-label';
 
 export interface LabelBar extends Label {

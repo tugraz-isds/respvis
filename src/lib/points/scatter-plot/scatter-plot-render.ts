@@ -18,9 +18,9 @@ export function scatterPlotRender(selection: ScatterplotChartSelection) {
   selection.call(chartCartesianAxisRender)
 }
 
-function renderAllSeriesOfPoints(selection: ScatterplotChartSelection) {
-  const {pointSeries} = selection.datum()
-  selection
+function renderAllSeriesOfPoints(chartS: ScatterplotChartSelection) {
+  const {pointSeries} = chartS.datum()
+  chartS
     .selectAll('.draw-area')
     .selectAll<SVGSVGElement, ChartPointValid>('.series-point')
     .data<SeriesPointValid>([pointSeries])

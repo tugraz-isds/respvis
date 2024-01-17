@@ -8,7 +8,7 @@ import {
   seriesConfigTooltipsData,
   seriesConfigTooltipsHandleEvents,
 } from '../tooltip';
-import { seriesBarJoin } from './series-bar';
+import { seriesBarJoin} from ".";
 import { BarGrouped, SeriesBarGrouped } from './series-bar-grouped';
 
 export interface SeriesBarStacked extends SeriesConfigTooltips<SVGRectElement, BarGrouped> {

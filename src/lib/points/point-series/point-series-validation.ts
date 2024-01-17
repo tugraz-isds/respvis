@@ -1,10 +1,8 @@
-import {SeriesConfigTooltips, seriesConfigTooltipsData,} from '../../tooltip';
-import {AxisValid, Circle, ScaleContinuous, Size} from '../../core';
-import {LegendValid} from "../../core/render/legend";
+import {Circle, ScaleContinuous} from '../../core';
 import {getRadiusDefinite} from "../../core/data/radius/radius-util";
-import {RenderArgs} from "../../core/render/charts/renderer";
 import {elementFromSelection} from "../../core/utilities/d3/util";
-import {isRadiusVaryingArg, RadiusArg} from "../../core/data/radius/radius-validation";
+import {RadiusArg} from "../../core/data/radius/radius-validation";
+import {SeriesArgs, seriesValidation} from "../../core/render/series";
 
 export interface Point extends Circle {
   xValue: any
@@ -15,18 +13,12 @@ export interface Point extends Circle {
   key: string
 }
 
-export type SeriesPointArgs = Partial<SeriesConfigTooltips<SVGCircleElement, Point>> & RenderArgs & {
-  x: AxisValid
-  y: AxisValid
+export type SeriesPointArgs = SeriesArgs & {
   radii?: RadiusArg
   color?: {
     colorDim: number[]
     colorScale: ScaleContinuous<any, string>
   };
-  key: string
-  legend: LegendValid
-  bounds?: Size
-  flipped?: boolean
 }
 
 export type SeriesPointValid = Required<Omit<SeriesPointArgs, 'color'>> & {
@@ -37,20 +29,13 @@ export type SeriesPointValid = Required<Omit<SeriesPointArgs, 'color'>> & {
 }
 
 export function seriesPointData(data: SeriesPointArgs): SeriesPointValid {
-  const {x, y, radii, key, legend, renderer} = data
+  const {radii, color} = data
   //TODO: Do clean radius validation
-  const radiusesValid = typeof radii === "number" ? radii :
-    isRadiusVaryingArg(radii) ? radii : 5
-
-  return {x, y,
+  const radiusesValid = radii !== undefined ? radii : 5
+  return {
+    ...seriesValidation(data),
     radii: radiusesValid,
-    renderer,
-    color: data.color,
-    legend,
-    key,
-    bounds: data.bounds || { width: 600, height: 400 },
-    flipped: data.flipped || false,
-    ...seriesConfigTooltipsData(data), //TODO: fix tooltips for all charts
+    color,
   };
 }
 

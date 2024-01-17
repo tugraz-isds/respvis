@@ -16,12 +16,17 @@ export type ResponsiveValueByValue<T> = {
   scope?: BreakpointScope
 }
 
+export type ResponsiveValueByValueOptional<T> = ResponsiveValueByValue<T> | T
+
 export type ResponsiveValueByCallback<T> = {
   value: T,
   tuples: [index: number, callback: (value: T) => any][],
   dependentOn: LengthDimension,
   scope?: BreakpointScope
 }
+
+export type ResponsiveValueByCallbackOptional<T> = ResponsiveValueByCallback<T> | T
+
 
 export function isResponsiveValueByCallback<T>(arg: ResponsiveValueOptional<T>): arg is ResponsiveValueByCallback<T> {
   return typeof arg === 'object' && arg !== null && 'tuples' in arg && 'dependentOn' in arg && 'value' in arg;
