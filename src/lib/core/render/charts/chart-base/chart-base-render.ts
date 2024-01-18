@@ -2,9 +2,9 @@ import {Selection} from 'd3';
 import {ChartBaseValid} from "./chart-base-validation";
 import {elementFromSelection} from "../../../utilities/d3/util";
 import {updateCSSForSelection} from "../../../data/breakpoint/breakpoint";
-import {getCurrentResponsiveValue} from "../../../data/breakpoint/responsive-value";
 import {ChartPointValid} from "../../../../points";
 import {SVGHTMLElement} from "../../../constants/types";
+import {getCurrentResponsiveValue} from "../../../data/responsive-value/responsive-value";
 
 export type ChartBaseSelection = Selection<SVGSVGElement | SVGGElement, ChartBaseValid>;
 

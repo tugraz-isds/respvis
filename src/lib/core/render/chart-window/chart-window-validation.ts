@@ -1,7 +1,8 @@
-import {LayoutBreakpoints, validateBreakpoints} from "../../data/breakpoint/breakpoint";
+import {LayoutBreakpoints} from "../../data/breakpoint/breakpoint";
 import {Selection} from "d3";
 import {RenderArgs} from "../charts/renderer";
 import {ChartType} from "../../constants/types";
+import {validateBreakpoints} from "../../data/breakpoint/breakpoint-validation";
 
 export type ChartWindowSelection = Selection<HTMLDivElement, ChartWindowValid>
 export type ChartWindowArgs = RenderArgs & {

@@ -20,7 +20,7 @@ export function createBarCart(selector: string) {
     },
     title: {
       dependentOn: 'width',
-      tuples: [[0, 'Car Chars.'], [1, 'Car Characteristics'], [3, 'Car Characteristics from AutoScout24 in Germany']]
+      tuples: [[0, 'Population of Austria'], [2, 'Population of Austrian Cities']]
     },
     x: {
       values: data.cities,

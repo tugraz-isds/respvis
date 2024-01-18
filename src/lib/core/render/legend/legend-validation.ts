@@ -1,7 +1,7 @@
 import {rectFromSize, Size} from '../../index';
 import {pathRect} from '../../index';
-import {ResponsiveValueOptional} from "../../data/breakpoint/responsive-value";
 import {RenderArgs} from "../charts/renderer";
+import {ResponsiveValueOptional} from "../../data/responsive-value/responsive-value";
 
 export enum LegendOrientation {
   Vertical = 'vertical',

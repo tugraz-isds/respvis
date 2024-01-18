@@ -4,9 +4,9 @@ import {toolDownloadSVGRender} from "./tool-download-svg";
 import {AxisValid} from "../axis";
 import {ToolFilterNominal, toolFilterNominalRender} from "./tool-filter-nominal";
 import {RenderArgs} from "../charts/renderer";
-import {getCurrentResponsiveValue} from "../../data/breakpoint/responsive-value";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {LegendValid} from "../legend";
+import {getCurrentResponsiveValue} from "../../data/responsive-value/responsive-value";
 
 type ToolbarValid = RenderArgs & {
   x: AxisValid,

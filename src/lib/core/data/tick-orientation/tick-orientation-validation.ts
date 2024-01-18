@@ -1,9 +1,26 @@
-import {boundRegex, indexFromBounds, TickOrientation} from "./matchBounds";
+import {Orientation, SVGHTMLElement} from "../../constants/types";
+import {boundRegex, indexFromBounds} from "../breakpoint/matchBounds";
 import {convertToPx} from "../../utilities/length";
-import {SVGHTMLElement} from "../../constants/types";
-import {BreakpointsValid} from "./breakpoint";
+import {ResponsiveValueByValue, ResponsiveValueByValueOptional} from "../responsive-value/responsive-value-value";
+import {ResponsiveValueOptional} from "../responsive-value/responsive-value";
+import {BreakpointsValid} from "../breakpoint/breakpoint-validation";
 
-export function calcTickAngle(element: SVGHTMLElement, tickOrientation: TickOrientation) {
+export type TickOrientationArgs = {
+  rotationDirection?: 'clockwise' | 'counterclockwise'
+  orientation: ResponsiveValueByValueOptional<Orientation>
+  //TODO: maybe add property for indicating abrupt or continuous transition
+}
+
+export type TickOrientationValid = Required<TickOrientationArgs>
+
+export function tickOrientationValidation(args?: TickOrientationArgs): TickOrientationValid {
+  return {
+    rotationDirection: args?.rotationDirection ?? 'counterclockwise',
+    orientation: args?.orientation ?? 'horizontal'
+  }
+}
+
+export function calcTickAngle(element: SVGHTMLElement, tickOrientation: TickOrientationValid) {
   function calcBoundWidthToPx(bounds: BreakpointsValid) {
     const boundMatch = bounds.minWidth?.match(boundRegex);
     if (!boundMatch) return 0 //TODO: enforce use of minwidth in arguments

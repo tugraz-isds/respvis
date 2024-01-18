@@ -1,5 +1,5 @@
-import {BreakpointScopeElementMapping, getCurrentResponsiveValue} from "../breakpoint/responsive-value";
 import {isRadiusVaryingArg, RadiusValid} from "./radius-validation";
+import {BreakpointScopeElementMapping, getCurrentResponsiveValue} from "../responsive-value/responsive-value";
 
 export function getMaxRadius(radius: RadiusValid, mapping: BreakpointScopeElementMapping) {
   const radiusOrScale = getRadiusDefinite(radius, mapping)

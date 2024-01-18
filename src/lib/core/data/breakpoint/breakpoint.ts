@@ -1,21 +1,9 @@
-import {CSSLength, LengthDimension, SVGHTMLElement} from "../../constants/types";
+import {LengthDimension, SVGHTMLElement} from "../../constants/types";
 import {indexFromBounds} from "./matchBounds";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {Selection} from "d3";
+import {BreakpointsValid} from "./breakpoint-validation";
 
-
-export type BreakpointsArgs = {
-  values: number[],
-  unit: CSSLength
-}
-export type BreakpointsValid = Required<BreakpointsArgs>
-
-export function validateBreakpoints(args?: BreakpointsArgs): BreakpointsValid {
-  return {
-    unit: args ? args.unit : 'rem',
-    values: args ? args.values : [],
-  }
-}
 
 export type WithBreakpoints = {
   bounds: LayoutBreakpoints
@@ -41,6 +29,12 @@ export function getBreakpointStatesFromCSS(element: SVGHTMLElement): LayoutIndic
 }
 
 //TODO: naming of custom css properties
+
+export function getComputedBreakpointValues(element: SVGHTMLElement, breakpoints: LayoutBreakpoints) {
+  const boundsWidthTransformed = getTransformedBreakpoints(element, breakpoints.width, 'width')
+  const boundsHeightTransformed = getTransformedBreakpoints(element, breakpoints.height, 'height')
+}
+
 export function updateBreakpointStatesInCSS(element: SVGHTMLElement, breakpoints: LayoutBreakpoints) {
   const boundsWidthTransformed = getTransformedBreakpoints(element, breakpoints.width, 'width')
   const widthState = indexFromBounds(element, boundsWidthTransformed, 'width')
@@ -52,8 +46,8 @@ export function updateBreakpointStatesInCSS(element: SVGHTMLElement, breakpoints
 }
 
 function getTransformedBreakpoints(element: SVGHTMLElement, breakpoint: BreakpointsValid, dimension: LengthDimension): BreakpointsValid {
-  const transformFactorWidth = Number(getComputedStyle(element).getPropertyValue(`--layout-${dimension}-factor`))
-  const transformFactorWidthOffset = Number(getComputedStyle(element).getPropertyValue(`--layout-${dimension}-factor-offset`))
+  const transformFactorWidth = parseFloat(getComputedStyle(element).getPropertyValue(`--layout-${dimension}-factor`))
+  const transformFactorWidthOffset = parseFloat(getComputedStyle(element).getPropertyValue(`--layout-${dimension}-factor-offset`))
 
   const transformedValues = breakpoint.values.map(value => {
     const transformFactorWidthValid = isNaN(transformFactorWidth) ? 1 : transformFactorWidth

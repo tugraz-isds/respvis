@@ -1,11 +1,11 @@
 import {rectFromString} from "../../index";
 import {select, Selection} from "d3";
 import {elementFromSelection} from "../../utilities/d3/util";
-import {getCurrentResponsiveValue} from "../../data/breakpoint/responsive-value";
 import {LegendItem} from "./legend-item-validation";
 import {SVGHTMLElement} from "../../constants/types";
 import {legendItemData} from "./legend-item-validation";
 import {LegendValid} from "./legend-validation";
+import {getCurrentResponsiveValue} from "../../data/responsive-value/responsive-value";
 
 export type LegendSelection = Selection<SVGHTMLElement, LegendValid>
 

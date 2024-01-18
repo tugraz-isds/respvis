@@ -36,14 +36,14 @@ export function createChartSoldCarsGermany(selector) {
     },
     title: {
       dependentOn: 'width',
-      tuples: [[0, 'Car Chars.'], [1, 'Car Characteristics'], [3, 'Car Characteristics from AutoScout24 in Germany']]
+      mapping: {0: 'Car Chars.', 1 : 'Car Characteristics', 3: 'Car Characteristics from AutoScout24 in Germany'}
     },
     x: {
       values: horsePower,
       scale: scales.xScale,
       title: {
         dependentOn: 'width',
-        tuples: [[0, 'HP in [PS]'], [1, 'Horse P. [PS]'], [2, 'Horse Power in [PS]']]
+        mapping: {0: 'HP in [PS]', 1: 'Horse P. [PS]', 2: 'Horse Power in [PS]'}
       },
       bounds: {
         width: {
@@ -61,15 +61,16 @@ export function createChartSoldCarsGermany(selector) {
       configureAxis: {
         dependentOn: 'width',
         scope: 'chart',
-        tuples: [[0, (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s')))],
-          [2, (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))]]
+        mapping: {0: (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s'))),
+          2: (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))
+        }
       }
     },
     legend: {
       title: {
         dependentOn: 'width',
         scope: 'chart',
-        tuples: [[0,''], [3, 'Legend']]
+        mapping: {0: '', 3: 'Legend'}
       },
       // labelCallback: (label: string) => {
       //   console.log(label)
@@ -81,9 +82,11 @@ export function createChartSoldCarsGermany(selector) {
       scale: {
         dependentOn: 'width',
         value: scales.radiusScale,
-        tuples: [[0, (s => s.range([3, 12]))],
-          [2, (s) => s.range([4, 16])],
-          [3,  (s) => s.range([5, 20])]]
+        mapping: {
+          0: s => s.range([3, 12]),
+          2: s => s.range([4, 16]),
+          3: s => s.range([5, 20])
+        }
       },
     },
     markerTooltips: {

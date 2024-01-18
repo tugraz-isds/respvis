@@ -9,10 +9,19 @@ import {
   Transition
 } from "d3";
 import {elementFromSelection} from "../../utilities/d3/util";
-import {getCurrentResponsiveValue} from "../../data/breakpoint/responsive-value";
-import {calcTickAngle} from "../../data/breakpoint/resizeTicks";
-import {updateBreakpointStatesInCSS} from "../../data";
+import {getBreakpointStatesFromCSS, updateBreakpointStatesInCSS} from "../../data";
 import {AxisValid} from "./axis-validation";
+import {calcTickAngle} from "../../data/tick-orientation/tick-orientation-validation";
+import {
+  getExactResponsiveValueByValue,
+  isResponsiveValueByValue
+} from "../../data/responsive-value/responsive-value-value";
+import {
+  getCurrentResponsiveValue,
+  getExactBreakpoint,
+  getPostExactBreakpoint,
+  getPreExactBreakpoint
+} from "../../data/responsive-value/responsive-value";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
@@ -126,8 +135,24 @@ function axisRender(selection: AxisSelection, a: D3Axis<AxisDomain>): void {
   }
 
   function calcOrientation() {
-    const tickOrientation = axisD.tickOrientation
-    const axisElement = axisD.tickOrientation?.boundElement ?? selection.select<SVGGElement>('.domain').node()
+    const {tickOrientation, renderer} = axisD
+    if (!isResponsiveValueByValue(tickOrientation.orientation)) {
+      return tickOrientation.orientation === 'horizontal' ? 0 : 90
+    }
+    //TODO: This is actually Breakpoint layout width not breakpoint
+    const exactBreakpoint = getExactBreakpoint(tickOrientation.orientation, {chart: chartElement, self: axisElement})
+    const exactOrientation = getExactResponsiveValueByValue(exactBreakpoint, tickOrientation.orientation)
+    if (exactOrientation !== null) return 'horizontal' ? 0 : 90
+
+    const preBreakpoint = getPreExactBreakpoint(exactBreakpoint, tickOrientation.orientation)
+    const postBreakpoint = getPostExactBreakpoint(exactBreakpoint, tickOrientation.orientation)
+    if (preBreakpoint === null || postBreakpoint === null) return 0
+
+    const preOrientation = getExactResponsiveValueByValue(preBreakpoint, tickOrientation.orientation) ?? 'horizontal'
+    const postOrientation = getExactResponsiveValueByValue(postBreakpoint, tickOrientation.orientation) ?? 'horizontal'
+    tickOrientation.orientation.dependentOn
+
+    // const axisElement = axisD.tickOrientation?.boundElement ?? selection.select<SVGGElement>('.domain').node()
     if (!tickOrientation || !axisElement) return undefined
     const angle = calcTickAngle(axisElement, tickOrientation)
     const boundIndex = findMatchingBoundsIndex(axisElement, tickOrientation.bounds)

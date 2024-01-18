@@ -1,10 +1,11 @@
 import {SeriesConfigTooltips} from "../../../../tooltip";
 import {Point} from "../../../../points";
 import {Selection} from "d3";
-import {LayoutBreakpoints, validateBreakpoints} from "../../../data/breakpoint/breakpoint";
+import {LayoutBreakpoints} from "../../../data/breakpoint/breakpoint";
 import {SVGHTMLElement} from "../../../constants/types";
-import {ResponsiveValueOptional} from "../../../data/breakpoint/responsive-value";
 import {RenderArgs} from "../renderer";
+import {ResponsiveValueOptional} from "../../../data/responsive-value/responsive-value";
+import {validateBreakpoints} from "../../../data/breakpoint/breakpoint-validation";
 
 export type ChartBaseArgs = RenderArgs & {
   bounds?: Partial<LayoutBreakpoints>
