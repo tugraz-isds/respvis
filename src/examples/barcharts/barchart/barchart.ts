@@ -5,11 +5,11 @@ import {chooseResponsiveData} from "./chooseResponsiveData.js";
 import {BarChartUserArgs} from "../../../lib";
 
 export function createBarCart(selector: string) {
-  const tickOrientation = {
-    bounds: [{minWidth: '40rem'}, {minWidth: '15rem'}],
-    orientation: ['horizontal', 'transition', 'vertical'],
-    rotationDirection: 'counterclockwise'
-  }
+  // const tickOrientation = {
+  //   bounds: [{minWidth: '40rem'}, {minWidth: '15rem'}],
+  //   orientation: ['horizontal', 'transition', 'vertical'],
+  //   rotationDirection: 'counterclockwise'
+  // }
 
   const barChartArgs: BarChartUserArgs = {
     bounds: {
@@ -20,7 +20,7 @@ export function createBarCart(selector: string) {
     },
     title: {
       dependentOn: 'width',
-      tuples: [[0, 'Population of Austria'], [2, 'Population of Austrian Cities']]
+      mapping: {0: 'Population of Austria', 2: 'Population of Austrian Cities'},
     },
     x: {
       values: data.cities,
@@ -32,10 +32,24 @@ export function createBarCart(selector: string) {
           unit: 'rem'
         }
       },
+      tickOrientation: {
+        orientation: {
+          scope: 'self',
+          dependentOn: 'width',
+          mapping: {0: 'vertical', 3: 'horizontal'}
+        },
+        rotationDirection: 'counterclockwise'
+      },
     },
     y: {
       title: 'Population',
       // tickOrientation, //y because of flipping
+      // bounds: {
+      //   width: {
+      //     values: [15, 40],
+      //     unit: "rem"
+      //   }
+      // },
       configureAxis: (axis) => axis.tickFormat(d3.format('.2s')),
       values: data.populations
     },
@@ -43,7 +57,7 @@ export function createBarCart(selector: string) {
       title: {
         dependentOn: 'width',
         scope: 'chart',
-        tuples: [[0, ''], [3, 'Legend']]
+        mapping: {0: '', 3: 'Legend'}
       }
     },
     markerTooltips: {

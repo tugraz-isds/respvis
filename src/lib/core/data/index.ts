@@ -1,3 +1,3 @@
 export {} from "./data/resizing/bounds";
-export {updateBreakpointStatesInCSS, getBreakpointStatesFromCSS, LayoutIndices,
+export {updateBreakpointStatesInCSS, getLayoutStatesFromCSS, LayoutStates,
   LayoutBreakpoints, WithBreakpoints} from "./breakpoint/breakpoint";

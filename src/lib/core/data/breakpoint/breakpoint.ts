@@ -1,19 +1,20 @@
-import {LengthDimension, SVGHTMLElement} from "../../constants/types";
+import {CSSLengthValue, isCSSLengthValue, LengthDimension, SVGHTMLElement} from "../../constants/types";
 import {indexFromBounds} from "./matchBounds";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {Selection} from "d3";
-import {BreakpointsValid} from "./breakpoint-validation";
-
+import {BreakpointsValid, getActiveBreakpoints} from "./breakpoint-validation";
+import {defaultLayoutIndex, pxLowerLimit, pxUpperLimit} from "../../constants/other";
 
 export type WithBreakpoints = {
   bounds: LayoutBreakpoints
 }
-export type LayoutBreakpoints = {
-  width: BreakpointsValid,
-  height: BreakpointsValid,
+export type LayoutBreakpoints = Record<LengthDimension, BreakpointsValid>
+type LayoutState = {
+  index: number,
+  preBreakValue: CSSLengthValue,
+  postBreakValue: CSSLengthValue
 }
-export type LayoutIndices = {
-  [Property in keyof LayoutBreakpoints]: number;
+export type LayoutStates = Record<LengthDimension, LayoutState> & {
 }
 
 export function updateCSSForSelection<T extends SVGHTMLElement, D extends WithBreakpoints>(selection: Selection<T, D>) {
@@ -22,10 +23,22 @@ export function updateCSSForSelection<T extends SVGHTMLElement, D extends WithBr
   updateBreakpointStatesInCSS(element, chartBaseValid.bounds)
 }
 
-export function getBreakpointStatesFromCSS(element: SVGHTMLElement): LayoutIndices {
-  const width = Number(element.style.getPropertyValue('--layout-width'))
-  const height = Number(element.style.getPropertyValue('--layout-height'))
-  return {width, height}
+export function getLayoutStateFromCSS(element: SVGHTMLElement, dimension: LengthDimension) : LayoutState {
+  const indexValueQueried = parseInt(element.style.getPropertyValue(`--layout-${dimension}`))
+  const preBreakValueQueried = element.style.getPropertyValue(`--layout-${dimension}-pre-breakpoint`)
+  const postBreakValueQueried = element.style.getPropertyValue(`--layout-${dimension}-post-breakpoint`)
+  return {
+    index: !isNaN(indexValueQueried) ? indexValueQueried : defaultLayoutIndex,
+    postBreakValue: isCSSLengthValue(postBreakValueQueried) ? postBreakValueQueried : pxUpperLimit,
+    preBreakValue: isCSSLengthValue(preBreakValueQueried) ? preBreakValueQueried : pxLowerLimit,
+  }
+}
+
+export function getLayoutStatesFromCSS(element: SVGHTMLElement): LayoutStates {
+  return {
+    width: getLayoutStateFromCSS(element, 'width'),
+    height: getLayoutStateFromCSS(element, 'height')
+  }
 }
 
 //TODO: naming of custom css properties
@@ -35,19 +48,25 @@ export function getComputedBreakpointValues(element: SVGHTMLElement, breakpoints
   const boundsHeightTransformed = getTransformedBreakpoints(element, breakpoints.height, 'height')
 }
 
-export function updateBreakpointStatesInCSS(element: SVGHTMLElement, breakpoints: LayoutBreakpoints) {
-  const boundsWidthTransformed = getTransformedBreakpoints(element, breakpoints.width, 'width')
-  const widthState = indexFromBounds(element, boundsWidthTransformed, 'width')
-  element.style.setProperty('--layout-width',  widthState.toString())
-
-  const boundsHeightTransformed = getTransformedBreakpoints(element, breakpoints.height, 'height')
-  const heightState = indexFromBounds(element, boundsHeightTransformed, 'height')
-  element.style.setProperty('--layout-height',  heightState.toString())
+export function updateBreakpointStatesInCSS(element: SVGHTMLElement, layoutBreakpoints: LayoutBreakpoints) {
+  for (const k in layoutBreakpoints) {
+    if (!layoutBreakpoints.hasOwnProperty(k)) continue
+    const dimension = k as LengthDimension
+    const breakpoints = layoutBreakpoints[dimension]
+    const boundsWidthTransformed = getTransformedBreakpoints(element, breakpoints, dimension)
+    const layoutWidthIndex = indexFromBounds(element, boundsWidthTransformed, dimension)
+    const [preBreak, postBreak] = getActiveBreakpoints(layoutWidthIndex, breakpoints)
+    element.style.setProperty(`--layout-${dimension}`, layoutWidthIndex.toString())
+    element.style.setProperty(`--layout-${dimension}-pre-breakpoint`, preBreak)
+    element.style.setProperty(`--layout-${dimension}-post-breakpoint`, postBreak)
+  }
 }
 
 function getTransformedBreakpoints(element: SVGHTMLElement, breakpoint: BreakpointsValid, dimension: LengthDimension): BreakpointsValid {
-  const transformFactorWidth = parseFloat(getComputedStyle(element).getPropertyValue(`--layout-${dimension}-factor`))
-  const transformFactorWidthOffset = parseFloat(getComputedStyle(element).getPropertyValue(`--layout-${dimension}-factor-offset`))
+  const transformFactorWidth = parseFloat(getComputedStyle(element)
+    .getPropertyValue(`--layout-${dimension}-factor`))
+  const transformFactorWidthOffset = parseFloat(getComputedStyle(element)
+    .getPropertyValue(`--layout-${dimension}-factor-offset`))
 
   const transformedValues = breakpoint.values.map(value => {
     const transformFactorWidthValid = isNaN(transformFactorWidth) ? 1 : transformFactorWidth

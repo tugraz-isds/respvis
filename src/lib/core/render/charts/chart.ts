@@ -8,7 +8,7 @@ type ChartValid = ChartWindowValid & ChartBaseValid
 
 export abstract class Chart implements Renderer {
   private addedListeners = false
-  abstract windowSelection: Selection<SVGHTMLElement, ChartValid & ChartWindowValid>
+  abstract windowSelection: Selection<SVGHTMLElement, ChartValid>
   protected readonly initialWindowData: ChartWindowValid
   chartSelection?: Selection<SVGHTMLElement>
   drawAreaSelection?: Selection<SVGHTMLElement>

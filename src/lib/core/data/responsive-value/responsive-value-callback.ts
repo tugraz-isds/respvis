@@ -1,7 +1,7 @@
 import {LengthDimension} from "../../constants/types";
 
-import {BreakpointScope, ResponsiveValueOptional} from "./responsive-value";
-import {ResponsiveValueByValue} from "./responsive-value-value";
+import {ResponsiveValueOptional} from "./responsive-value";
+import {BreakpointScope} from "../breakpoint/breakpoint-scope";
 
 export type ResponsiveValueByCallback<T> = {
   value: T,

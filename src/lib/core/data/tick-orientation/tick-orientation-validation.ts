@@ -1,13 +1,12 @@
-import {Orientation, SVGHTMLElement} from "../../constants/types";
-import {boundRegex, indexFromBounds} from "../breakpoint/matchBounds";
-import {convertToPx} from "../../utilities/length";
-import {ResponsiveValueByValue, ResponsiveValueByValueOptional} from "../responsive-value/responsive-value-value";
-import {ResponsiveValueOptional} from "../responsive-value/responsive-value";
+import {boundRegex, Orientation, RotationDirection, SVGHTMLElement} from "../../constants/types";
+import {indexFromBounds} from "../breakpoint/matchBounds";
+import {RespValByValueOptional} from "../responsive-value/responsive-value-value";
 import {BreakpointsValid} from "../breakpoint/breakpoint-validation";
+import {convertToPx} from "../../utilities/dom/units";
 
 export type TickOrientationArgs = {
-  rotationDirection?: 'clockwise' | 'counterclockwise'
-  orientation: ResponsiveValueByValueOptional<Orientation>
+  rotationDirection?: RotationDirection
+  orientation: RespValByValueOptional<Orientation>
   //TODO: maybe add property for indicating abrupt or continuous transition
 }
 

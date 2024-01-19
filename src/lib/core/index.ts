@@ -22,8 +22,8 @@ export * from './utilities/text';
 export * from './series-checkbox';
 export * from './menu-dropdown';
 
-export {convertToPx} from "./utilities/length";
 export {ScaleAny} from "./data/scale/scales";
 export {ScaleContinuous} from "./data/scale/scales";
 export {TickOrientationValid} from "./data/tick-orientation/tick-orientation-validation";
+export {convertToPx} from "./utilities/dom/units";
 

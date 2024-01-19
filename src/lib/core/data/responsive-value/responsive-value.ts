@@ -1,63 +1,55 @@
 import {
   estimateResponsiveValueByValue,
   getExactResponsiveValueByValue,
-  ResponsiveValueByValue
+  RespValByValue
 } from "./responsive-value-value";
 import {
-  estimateResponsiveValueByCallback, getExactResponsiveValueByCallback,
+  estimateResponsiveValueByCallback,
+  getExactResponsiveValueByCallback,
   isResponsiveValueByCallback,
   ResponsiveValueByCallback
 } from "./responsive-value-callback";
-import {SVGHTMLElement} from "../../constants/types";
-import {ErrorMessages} from "../../utilities/error";
-import {getBreakpointStatesFromCSS} from "../breakpoint/breakpoint";
+import {getLayoutStatesFromCSS} from "../breakpoint/breakpoint";
 import {maxBreakpointCount} from "../../constants/other";
+import {BreakpointScopeMapping} from "../breakpoint/breakpoint-scope";
 
-type BreakpointScopeRequired = 'chart'
-type BreakpointScopeOptional = 'self'
-export type BreakpointScope = BreakpointScopeOptional | BreakpointScopeRequired
-export type BreakpointScopeElementMapping = {
-  [k in BreakpointScopeOptional]?: SVGHTMLElement
-} & {
-  [k in BreakpointScopeRequired]: SVGHTMLElement
-}
-export type ResponsiveValue<T> = ResponsiveValueByValue<T> | ResponsiveValueByCallback<T>
+export type ResponsiveValue<T> = RespValByValue<T> | ResponsiveValueByCallback<T>
 export type ResponsiveValueOptional<T> = ResponsiveValue<T> | T
 
 export function isResponsiveValue<T>(arg: ResponsiveValueOptional<T>): arg is ResponsiveValue<T> {
   return typeof arg === 'object' && arg !== null && 'mapping' in arg && 'dependentOn' in arg;
 }
 
-export function getCurrentResponsiveValue<T>(val: ResponsiveValueOptional<T>, mapping: BreakpointScopeElementMapping): T {
+export function getCurrentResponsiveValue<T>(val: ResponsiveValueOptional<T>, mapping: BreakpointScopeMapping): T {
   if (isResponsiveValue(val)) {
-    const exactBreakpoint = getExactBreakpoint(val, mapping)
+    const exactBreakpoint = getExactLayoutIndex(val, mapping)
     return estimateResponsiveValue(exactBreakpoint, val)
   }
   return val
 }
 
-export function getExactBreakpoint<T>(val: ResponsiveValue<T>, mapping: BreakpointScopeElementMapping) {
+export function getExactLayoutIndex<T>(val: ResponsiveValue<T>, mapping: BreakpointScopeMapping) {
   const scope = val.scope ? val.scope : 'chart'
   const mappingElement = mapping[scope]
   const element = mappingElement ? mappingElement : mapping.chart
-  const layoutIndices = getBreakpointStatesFromCSS(element)
+  const layoutIndices = getLayoutStatesFromCSS(element)
   return layoutIndices[val.dependentOn]
 }
 
-export function getPreExactBreakpoint<T>(exactBreakpoint: number, respVal: ResponsiveValue<T>) {
-  let preExactIndex: number | null = null
-  for (let i = 0; i < exactBreakpoint; i++) {
-    if (respVal.mapping[i] !== undefined) preExactIndex = i
+export function getPreLayoutIndex<T>(exactBreakpoint: number, respVal: ResponsiveValue<T>) {
+  for (let i = exactBreakpoint - 1; i >= 0; i--) {
+    if (respVal.mapping[i] !== undefined) return i
   }
-  return preExactIndex
+  return null
 }
 
-export function getPostExactBreakpoint<T>(exactBreakpoint: number, respVal: ResponsiveValue<T>) {
-  let preExactIndex: number | null = null
-  for (let i = exactBreakpoint + 1; i > exactBreakpoint + maxBreakpointCount; i++) {
-    if (respVal.mapping[i] !== undefined) preExactIndex = i
+export function getPostLayoutIndex<T>(exactBreakpoint: number, respVal: ResponsiveValue<T>) {
+  const keys = Object.keys(respVal.mapping)
+  for (let i = 0; i < keys.length; i++) {
+    const index = parseInt(keys[i])
+    if (index > exactBreakpoint) return index
   }
-  return preExactIndex
+  return null
 }
 
 function estimateResponsiveValue<T>(exactBreakpoint: number, respVal: ResponsiveValue<T>) {

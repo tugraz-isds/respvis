@@ -9,19 +9,11 @@ import {
   Transition
 } from "d3";
 import {elementFromSelection} from "../../utilities/d3/util";
-import {getBreakpointStatesFromCSS, updateBreakpointStatesInCSS} from "../../data";
+import {updateBreakpointStatesInCSS} from "../../data";
 import {AxisValid} from "./axis-validation";
-import {calcTickAngle} from "../../data/tick-orientation/tick-orientation-validation";
-import {
-  getExactResponsiveValueByValue,
-  isResponsiveValueByValue
-} from "../../data/responsive-value/responsive-value-value";
-import {
-  getCurrentResponsiveValue,
-  getExactBreakpoint,
-  getPostExactBreakpoint,
-  getPreExactBreakpoint
-} from "../../data/responsive-value/responsive-value";
+import {getCurrentResponsiveValue} from "../../data/responsive-value/responsive-value";
+import {calcTickAngle} from "./axis-tick-orientation";
+import {RotationDirection} from "../../constants/types";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
@@ -99,67 +91,48 @@ function axisRender(selection: AxisSelection, a: D3Axis<AxisDomain>): void {
     .data([null])
     .join('g')
     .classed('pivot', true)
-
-  const orientation = calcOrientation()
+  const angle = calcTickAngle(selection)
+  // const orientation = calcOrientation()
   ticksS.selectAll<Element, any>('.tick').each((d, i, g) => {
-    configureTick(select(g[i]))
+    configureTick(select(g[i]), angle, selection.datum().tickOrientation.rotationDirection)
   });
+  //
+  // ticksS.selectAll('.tick line').attr('stroke', null);
+  // ticksS.selectAll('.tick text').attr('fill', null).attr('dx', null).attr('dy', null);
+  // ticksS.selectAll('.domain').attr('stroke', null).attr('fill', null);
 
-  ticksS.selectAll('.tick line').attr('stroke', null);
-  ticksS.selectAll('.tick text').attr('fill', null).attr('dx', null).attr('dy', null);
-  ticksS.selectAll('.domain').attr('stroke', null).attr('fill', null);
-
-  function configureTick(tickS: Selection<Element>) {
-    const textS = tickS.select('text');
+  function configureTick(tickS: Selection<Element>, angle: number, rotationDirection: RotationDirection) {
+    const textS = tickS.select('text')
 
     const x = textS.attr('x') || '0';
     const y = textS.attr('y') || '0';
-    textS.attr('x', null).attr('y', null);
+    textS.attr('x', null).attr('y', null)
 
-    const pivotS = tickS.select<SVGGElement>('.pivot')!;
-    pivotS.append(() => textS.node());
+    const pivotS = tickS.select<SVGGElement>('.pivot')!
+    pivotS.append(() => textS.node())
 
-    if (!orientation || !axisD.tickOrientation || !selection.classed("axis-bottom")) {
+    //TODO: for now apply transformation only for horizontal axis because of different text styles etc.
+    if (!axisD.tickOrientation || !axisElement.classList.contains('axis-bottom')) { //|| !selection.classed("axis-bottom")
       pivotS.attr('transform', `translate(${x}, ${y})`);
       return
     }
 
-    const rotationDirection = orientation.angle > 15 ? 'clockwise' : orientation.angle < -15 ? 'counterclockwise' : 'none'
-    textS.attr('angle', rotationDirection !== 'none' ? axisD.tickOrientation?.orientation[orientation.orientationIndex] : 'horizontal')
-      .style('text-anchor', rotationDirection === 'clockwise' ? 'start' : rotationDirection === 'counterclockwise' ? 'end' : 'middle')
-      .style('dominant-baseline', rotationDirection !== 'none' ? 'central' : 'hanging')
-    //TODO: no interpolation possible for text-anchor. Maybe do tranform translate workaround
-    // const {width, height} = pivotS.node()!.getBoundingClientRect()
+    let textAnchor: string
+    let dominantBaseline: string
+    if (rotationDirection === 'counterclockwise') {
+      textAnchor = angle > 15 ? 'start' : 'middle'
+      dominantBaseline = angle > 15 ? 'ideographic' : 'hanging'
+    } else {
+      textAnchor = angle < -15 ? 'end' : 'middle'
+      dominantBaseline = angle < -15 ? 'ideographic' : 'hanging'
+    }
+
+    textS
+      .style('text-anchor', textAnchor)
+      .style('dominant-baseline', dominantBaseline)
+
     pivotS //.transition().duration(200) //TODO: enable D3 transitions when being able to differ between initial render and succeeding renders
-      .attr("transform", "translate(" + x + "," + y + ") rotate(" + orientation.angle + ")");
-  }
-
-  function calcOrientation() {
-    const {tickOrientation, renderer} = axisD
-    if (!isResponsiveValueByValue(tickOrientation.orientation)) {
-      return tickOrientation.orientation === 'horizontal' ? 0 : 90
-    }
-    //TODO: This is actually Breakpoint layout width not breakpoint
-    const exactBreakpoint = getExactBreakpoint(tickOrientation.orientation, {chart: chartElement, self: axisElement})
-    const exactOrientation = getExactResponsiveValueByValue(exactBreakpoint, tickOrientation.orientation)
-    if (exactOrientation !== null) return 'horizontal' ? 0 : 90
-
-    const preBreakpoint = getPreExactBreakpoint(exactBreakpoint, tickOrientation.orientation)
-    const postBreakpoint = getPostExactBreakpoint(exactBreakpoint, tickOrientation.orientation)
-    if (preBreakpoint === null || postBreakpoint === null) return 0
-
-    const preOrientation = getExactResponsiveValueByValue(preBreakpoint, tickOrientation.orientation) ?? 'horizontal'
-    const postOrientation = getExactResponsiveValueByValue(postBreakpoint, tickOrientation.orientation) ?? 'horizontal'
-    tickOrientation.orientation.dependentOn
-
-    // const axisElement = axisD.tickOrientation?.boundElement ?? selection.select<SVGGElement>('.domain').node()
-    if (!tickOrientation || !axisElement) return undefined
-    const angle = calcTickAngle(axisElement, tickOrientation)
-    const boundIndex = findMatchingBoundsIndex(axisElement, tickOrientation.bounds)
-    const orientationIndex = boundIndex >= 0 ? boundIndex : tickOrientation.orientation.length - 1
-    return {
-      angle, boundIndex, orientationIndex
-    }
+      .attr("transform", "translate(" + x + "," + y + ") rotate(" + angle + ")")
   }
 
 }

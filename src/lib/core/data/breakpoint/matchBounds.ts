@@ -1,9 +1,7 @@
 import {LengthDimension, SVGHTMLElement} from "../../constants/types";
-import {convertToPx} from "../../utilities/length";
 
 import {BreakpointsValid} from "./breakpoint-validation";
-
-export const boundRegex = /(\d+(?:\.\d+)?)(px|rem|em)/
+import {convertToPx} from "../../utilities/dom/units";
 
 export function indexFromBounds(element: SVGHTMLElement, bounds: BreakpointsValid, dimension: LengthDimension) {
   const rect = element.getBoundingClientRect()
