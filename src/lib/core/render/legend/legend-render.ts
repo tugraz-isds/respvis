@@ -5,7 +5,7 @@ import {LegendItem} from "./legend-item-validation";
 import {SVGHTMLElement} from "../../constants/types";
 import {legendItemData} from "./legend-item-validation";
 import {LegendValid} from "./legend-validation";
-import {getCurrentResponsiveValue} from "../../data/responsive-value/responsive-value";
+import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 
 export type LegendSelection = Selection<SVGHTMLElement, LegendValid>
 
@@ -27,7 +27,7 @@ export function legendRender(parentS: Selection, data: LegendValid): LegendSelec
       .data([null])
       .join('text')
       .classed('title', true)
-      .text(getCurrentResponsiveValue(legendD.title, {chart: chartElement, self: legendElement}));
+      .text(getCurrentRespVal(legendD.title, {chart: chartElement, self: legendElement}));
 
     const itemS = legendS.selectAll('.items').data([null]).join('g').classed('items', true);
 

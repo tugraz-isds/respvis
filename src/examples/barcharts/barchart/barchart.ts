@@ -41,15 +41,26 @@ export function createBarCart(selector: string) {
         rotationDirection: 'counterclockwise'
       },
     },
+    // flipped: {
+    //   dependentOn: 'width',
+    //   mapping: {0: true, 2: false}
+    // },
     y: {
       title: 'Population',
-      // tickOrientation, //y because of flipping
-      // bounds: {
-      //   width: {
-      //     values: [15, 40],
-      //     unit: "rem"
-      //   }
-      // },
+      bounds: {
+        height: {
+          values: [10, 30, 50],
+          unit: 'rem'
+        }
+      },
+      tickOrientation: {
+        orientation: {
+          scope: 'self',
+          dependentOn: 'height',
+          mapping: {0: 'horizontal', 2: 'vertical'}
+        },
+        rotationDirection: 'counterclockwise'
+      },
       configureAxis: (axis) => axis.tickFormat(d3.format('.2s')),
       values: data.populations
     },
@@ -62,7 +73,7 @@ export function createBarCart(selector: string) {
     },
     markerTooltips: {
       tooltips: (i, d) => `City: ${d.xValue}<br/>Population: ${d.yValue}`,
-    }
+    },
   }
 
   const chartWindow = d3.select(selector).append('div')

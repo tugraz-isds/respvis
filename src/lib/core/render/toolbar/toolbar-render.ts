@@ -6,7 +6,7 @@ import {ToolFilterNominal, toolFilterNominalRender} from "./tool-filter-nominal"
 import {RenderArgs} from "../charts/renderer";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {LegendValid} from "../legend";
-import {getCurrentResponsiveValue} from "../../data/responsive-value/responsive-value";
+import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 
 type ToolbarValid = RenderArgs & {
   x: AxisValid,
@@ -28,7 +28,7 @@ export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLD
 
   const chartElement = elementFromSelection(renderer.chartSelection)
   const filterOptions: ToolFilterNominal = {
-    text: getCurrentResponsiveValue(x.categoriesTitle, {chart: chartElement}),
+    text: getCurrentRespVal(x.categoriesTitle, {chart: chartElement}),
     options: Object.keys(x.categoryOrder),
     keys: legend.keys
   }

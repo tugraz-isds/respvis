@@ -4,7 +4,7 @@ import {elementFromSelection} from "../../../utilities/d3/util";
 import {updateCSSForSelection} from "../../../data/breakpoint/breakpoint";
 import {ChartPointValid} from "../../../../points";
 import {SVGHTMLElement} from "../../../constants/types";
-import {getCurrentResponsiveValue} from "../../../data/responsive-value/responsive-value";
+import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 
 export type ChartBaseSelection = Selection<SVGSVGElement | SVGGElement, ChartBaseValid>;
 
@@ -56,7 +56,7 @@ function titleRender(header: ChartBaseSelection, chart: ChartBaseSelection){
   const chartElement = elementFromSelection(chart)
    return header
     .selectAll('.title')
-    .data((d) => [getCurrentResponsiveValue(d.title, {chart: chartElement})])
+    .data((d) => [getCurrentRespVal(d.title, {chart: chartElement})])
     .join('g')
     .classed('title', true)
     .attr('data-ignore-layout-children', true)
@@ -70,7 +70,7 @@ function subTitleRender(header: ChartBaseSelection, chart: ChartBaseSelection) {
   const chartElement = elementFromSelection(chart)
   return header
     .selectAll('.subtitle')
-    .data((d) => [getCurrentResponsiveValue(d.subTitle, {chart: chartElement})])
+    .data((d) => [getCurrentRespVal(d.subTitle, {chart: chartElement})])
     .join('g')
     .classed('subtitle', true)
     .attr('data-ignore-layout-children', true)

@@ -3,11 +3,12 @@ import {AxisUserArgs, AxisValid, axisValidation, syncAxes} from "../../axis";
 import {ChartBaseArgs, ChartBaseValid, chartBaseValidation} from "../chart-base";
 import {validateZoom, ZoomArgs, ZoomValid} from "../../../data/zoom";
 import {LegendArgsUser, legendValidation, LegendValid} from "../../legend";
+import {RespValByValueOptional} from "../../../data/responsive-value/responsive-value-value";
 
 export type ChartCartesianArgs = ChartBaseArgs & {
   x: AxisUserArgs
   y: AxisUserArgs
-  flipped?: boolean
+  flipped?: RespValByValueOptional<boolean>
   zoom?: ZoomArgs
   styleClasses?: string[]
   legend?: LegendArgsUser
@@ -16,7 +17,7 @@ export type ChartCartesianArgs = ChartBaseArgs & {
 export type ChartCartesianValid = ChartBaseValid & {
   x: AxisValid
   y: AxisValid
-  flipped: boolean
+  flipped: RespValByValueOptional<boolean>
   zoom?: ZoomValid
   legend: LegendValid
 }

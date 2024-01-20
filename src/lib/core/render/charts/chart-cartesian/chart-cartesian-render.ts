@@ -1,6 +1,8 @@
-import {select, Selection} from "d3";
+import {Selection} from "d3";
 import {axisBottomRender, axisLeftRender, AxisSelection, AxisValid} from "../../axis";
 import {ChartCartesianSelection} from "./chart-cartesian-validation";
+import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
+import {elementFromSelection} from "../../../utilities/d3/util";
 
 export function chartCartesianAxisRender<T extends ChartCartesianSelection>(chartS: T): void {
   // const seriesS = select<Element, SeriesBar>(g[i]);
@@ -15,29 +17,33 @@ export function chartCartesianAxisRender<T extends ChartCartesianSelection>(char
   //   categoryScale.range([0, bounds.height]);
   //   valueScale.range([0, bounds.width]);
   // }
+  const {renderer, ...data} = chartS.datum()
+  const flipped = getCurrentRespVal(data.flipped, {chart: elementFromSelection(chartS)})
+  const leftAxisD = flipped ? data.x : data.y
+  const leftAxisClass = flipped ? 'axis-x' : 'axis-y'
+  const bottomAxisD = flipped ? data.y : data.x
+  const bottomAxisClass = flipped ? 'axis-y' : 'axis-x'
+  // console.log('Range', leftAxisD.scale.range())
+  // console.log('Domain', leftAxisD.scale.domain())
 
+  // console.log(flipped)
+  chartS.classed('chart-cartesian', true)
+    .attr('data-flipped', flipped)
 
-  chartS
-    .classed('chart-cartesian', true)
-    .each(function ({flipped, x, y, selection, renderer}, i, g) {
-      const s = <ChartCartesianSelection>select(g[i]);
-      const flippedBool = flipped ? flipped : false
+  const leftAxisS= chartS.selectAll<SVGGElement, AxisSelection>('.axis-left')
+    .data([leftAxisD])
+    .join('g')
+    .call((s) => axisLeftRender(s))
+    .classed(leftAxisClass, true)
 
-      renderer.yAxisSelection = s.selectAll<SVGGElement, AxisSelection>('.axis-left')
-        .data([{...(flipped ? x : y), selection}])
-        .join('g')
-        .call((s) => axisLeftRender(s))
-        .classed('axis-x', flippedBool)
-        .classed('axis-y', !flipped)
+  const bottomAxisS = chartS.selectAll<SVGGElement, AxisValid>('.axis-bottom')
+    .data([bottomAxisD])
+    .join('g')
+    .call((s) => axisBottomRender(s))
+    .classed(bottomAxisClass, true)
 
-      renderer.xAxisSelection = s.selectAll<SVGGElement, AxisValid>('.axis-bottom')
-        .data([{...(flipped ? y : x), selection}])
-        .join('g')
-        .call((s) => axisBottomRender(s))
-        .classed('axis-x', !flipped)
-        .classed('axis-y', flippedBool);
-    })
-    .attr('data-flipped', (d) => d.flipped ? d.flipped : false);
+  renderer.yAxisSelection = flipped ? bottomAxisS: leftAxisS
+  renderer.xAxisSelection = flipped ? leftAxisS : bottomAxisS
 }
 
 export enum LegendPosition {

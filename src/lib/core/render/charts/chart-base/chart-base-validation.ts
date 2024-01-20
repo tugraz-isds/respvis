@@ -4,13 +4,13 @@ import {Selection} from "d3";
 import {LayoutBreakpoints} from "../../../data/breakpoint/breakpoint";
 import {SVGHTMLElement} from "../../../constants/types";
 import {RenderArgs} from "../renderer";
-import {ResponsiveValueOptional} from "../../../data/responsive-value/responsive-value";
+import {RespValOptional} from "../../../data/responsive-value/responsive-value";
 import {validateBreakpoints} from "../../../data/breakpoint/breakpoint-validation";
 
 export type ChartBaseArgs = RenderArgs & {
   bounds?: Partial<LayoutBreakpoints>
-  title?: ResponsiveValueOptional<string>,
-  subTitle?: ResponsiveValueOptional<string>;
+  title?: RespValOptional<string>,
+  subTitle?: RespValOptional<string>;
   markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>;
 }
 

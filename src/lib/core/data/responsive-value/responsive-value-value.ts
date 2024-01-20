@@ -1,6 +1,6 @@
 import {LengthDimension} from "../../constants/types";
 
-import {getPostLayoutIndex, getPreLayoutIndex, ResponsiveValueOptional} from "./responsive-value";
+import {getPostLayoutIndex, getPreLayoutIndex, RespValOptional} from "./responsive-value";
 import {ErrorMessages} from "../../utilities/error";
 import {defaultScope, maxBreakpointCount} from "../../constants/other";
 import {BreakpointScope, BreakpointScopeMapping} from "../breakpoint/breakpoint-scope";
@@ -13,7 +13,7 @@ export type RespValByValue<T> = {
 }
 export type RespValByValueOptional<T> = RespValByValue<T> | T
 
-export function isResponsiveValueByValue<T>(arg: ResponsiveValueOptional<T>): arg is RespValByValue<T> {
+export function isResponsiveValueByValue<T>(arg: RespValOptional<T>): arg is RespValByValue<T> {
   return typeof arg === 'object' && arg !== null && 'mapping' in arg && 'dependentOn' in arg && !('value' in arg)
 }
 
@@ -22,7 +22,6 @@ export function getResponsiveValueInformation<T>(respVal: RespValByValue<T>, sco
   const desiredElement = respVal.scope ? scopes[respVal.scope] : undefined
   const element = desiredElement ? desiredElement : scopes[defaultScope]
   const layout = respVal.dependentOn
-  // console.log(desiredElement)
 
   const {index: layoutIndex} = getLayoutStateFromCSS(element, layout)
   const valueAtLayoutIndex = getExactResponsiveValueByValue(layoutIndex, respVal)

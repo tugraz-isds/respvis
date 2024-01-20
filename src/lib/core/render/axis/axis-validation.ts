@@ -8,18 +8,18 @@ import {
   TickOrientationArgs,
   tickOrientationValidation
 } from "../../data/tick-orientation/tick-orientation-validation";
-import {ResponsiveValueOptional} from "../../data/responsive-value/responsive-value";
+import {RespValOptional} from "../../data/responsive-value/responsive-value";
 import {validateBreakpoints} from "../../data/breakpoint/breakpoint-validation";
 
 export type AxisUserArgs = {
   values: number[], // TODO: add strings/dates, also for y
   scale?: AxisScale<AxisDomain>,
   categories?: string[],
-  categoriesTitle?: ResponsiveValueOptional<string>
+  categoriesTitle?: RespValOptional<string>
   bounds?: Partial<LayoutBreakpoints>
-  title?: ResponsiveValueOptional<string>,
-  subTitle?: ResponsiveValueOptional<string>,
-  configureAxis?: ResponsiveValueOptional<ConfigureAxisFn>,
+  title?: RespValOptional<string>,
+  subTitle?: RespValOptional<string>,
+  configureAxis?: RespValOptional<ConfigureAxisFn>,
   tickOrientation?: TickOrientationArgs
 }
 

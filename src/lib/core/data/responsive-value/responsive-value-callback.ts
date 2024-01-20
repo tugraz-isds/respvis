@@ -1,21 +1,21 @@
 import {LengthDimension} from "../../constants/types";
 
-import {ResponsiveValueOptional} from "./responsive-value";
+import {RespValOptional} from "./responsive-value";
 import {BreakpointScope} from "../breakpoint/breakpoint-scope";
 
-export type ResponsiveValueByCallback<T> = {
+export type RespValByCallback<T> = {
   value: T,
   mapping: { [key: number]: (value: T) => any },
   dependentOn: LengthDimension,
   scope?: BreakpointScope
 }
-export type ResponsiveValueByCallbackOptional<T> = ResponsiveValueByCallback<T> | T
+export type RespValByCallbackOptional<T> = RespValByCallback<T> | T
 
-export function isResponsiveValueByCallback<T>(arg: ResponsiveValueOptional<T>): arg is ResponsiveValueByCallback<T> {
+export function isRespValByCallback<T>(arg: RespValOptional<T>): arg is RespValByCallback<T> {
   return typeof arg === 'object' && arg !== null && 'mapping' in arg && 'dependentOn' in arg && 'value' in arg;
 }
 
-export function estimateResponsiveValueByCallback<T>(exactBreakpoint: number, respVal: ResponsiveValueByCallback<T>) {
+export function estimateRespValByCallback<T>(exactBreakpoint: number, respVal: RespValByCallback<T>) {
   let value: ((arg: any) => T) | null = null
   for (let i = 0; i <= exactBreakpoint; i++) {
     if (respVal.mapping[i]) value = respVal.mapping[i]
@@ -24,7 +24,7 @@ export function estimateResponsiveValueByCallback<T>(exactBreakpoint: number, re
   return respVal.value
 }
 
-export function getExactResponsiveValueByCallback<T>(exactBreakpoint: number, respVal: ResponsiveValueByCallback<T>) {
+export function getExactRespValByCallback<T>(exactBreakpoint: number, respVal: RespValByCallback<T>) {
   if (respVal.mapping[exactBreakpoint]) {
     respVal.mapping[exactBreakpoint](respVal.value)
   }

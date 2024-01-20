@@ -1,34 +1,38 @@
 import {
   getResponsiveValueInformation,
   isResponsiveValueByValue,
+  RespValByValue,
 } from "../../data/responsive-value/responsive-value-value";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {BreakpointsValid, getActiveBreakpoints} from "../../data/breakpoint/breakpoint-validation";
 import {cssLengthInPx} from "../../utilities/dom/units";
 import {AxisSelection} from "./axis-render";
+import {Orientation} from "../../constants/types";
 
 
-export function calcTickAngle(axisS: AxisSelection) {
+export function tickAngleCalculation(axisS: AxisSelection) {
   const {tickOrientation} = axisS.datum()
   const angleOrBreakData = calcTickAngleOrInterpolationData(axisS)
-  console.log(angleOrBreakData)
-  if (typeof angleOrBreakData === 'number') return angleOrBreakData
-  const {breaks, element, preOrientation} = angleOrBreakData
+  if (typeof angleOrBreakData === 'number') {
+    return angleOrBreakData
+  }
+  const layoutDirection = (tickOrientation.orientation as RespValByValue<Orientation>).dependentOn
+  const {breaks, element,
+    preOrientation, verticalAngle} = angleOrBreakData
   const [preBreak, postBreak] = breaks
 
-  const elementWidth = element.getBoundingClientRect().width
-  const angleRatio = (postBreak - elementWidth) / (postBreak - preBreak)
-  const verticalAngle = tickOrientation.rotationDirection === 'clockwise' ? -90 : 90
+  const elementLength = element.getBoundingClientRect()[layoutDirection]
+  const angleRatio = (postBreak - elementLength) / (postBreak - preBreak)
   return preOrientation === 'vertical' ? angleRatio * verticalAngle : (verticalAngle - angleRatio * verticalAngle)
 }
 
 function calcTickAngleOrInterpolationData(axisS: AxisSelection) {
   const {tickOrientation, renderer, bounds} = axisS.datum()
-  const verticalAngle = tickOrientation.rotationDirection === 'clockwise' ? -90 : 90
+  let verticalAngle = tickOrientation.rotationDirection === 'clockwise' ? -90 : 90
   if (!isResponsiveValueByValue(tickOrientation.orientation)) {
     return tickOrientation.orientation === 'horizontal' ? 0 : verticalAngle
   }
-
+  if (tickOrientation.orientation.dependentOn === 'height') verticalAngle *= -1
   const chartElement = elementFromSelection(renderer.chartSelection)
   const axisElement = elementFromSelection(axisS)
   const scopes = {chart: chartElement, self: axisElement}
@@ -51,7 +55,8 @@ function calcTickAngleOrInterpolationData(axisS: AxisSelection) {
   return {
     preOrientation: valueAtPreLayoutIndex,
     element,
-    breaks: getInterpolationBreakpoints({breakpoints, preLayoutIndex, postLayoutIndex, element})
+    breaks: getInterpolationBreakpoints({breakpoints, preLayoutIndex, postLayoutIndex, element}),
+    verticalAngle
   } as const
 }
 

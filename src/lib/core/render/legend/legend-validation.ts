@@ -1,7 +1,7 @@
 import {rectFromSize, Size} from '../../index';
 import {pathRect} from '../../index';
 import {RenderArgs} from "../charts/renderer";
-import {ResponsiveValueOptional} from "../../data/responsive-value/responsive-value";
+import {RespValOptional} from "../../data/responsive-value/responsive-value";
 
 export enum LegendOrientation {
   Vertical = 'vertical',
@@ -9,7 +9,7 @@ export enum LegendOrientation {
 }
 
 export type LegendArgsUser =  {
-  title?: ResponsiveValueOptional<string>
+  title?: RespValOptional<string>
   labelCallback?: (category: string) => string
   symbols?:
     | ((symbol: SVGPathElement, size: Size) => void)
