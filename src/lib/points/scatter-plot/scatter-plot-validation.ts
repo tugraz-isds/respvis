@@ -1,11 +1,8 @@
-import {ChartCartesianArgs, chartCartesianValidation, ChartCartesianValid, ScaleContinuous} from "../../core";
-import {seriesPointData, SeriesPointValid} from "../point-series/point-series-validation";
-import {RadiusArg} from "../../core/data/radius/radius-validation";
+import {ChartCartesianUserArgs, ChartCartesianValid, chartCartesianValidation, ScaleContinuous} from "../../core";
+import {SeriesPointUserArgs, SeriesPointValid, seriesPointValidation} from "../point-series/point-series-validation";
 
-// type Dimension = number | string // TODO: | date . Include this everywhere
-
-export type ChartPointArgs = ChartCartesianArgs & {
-  radii?: RadiusArg
+export type ScatterPlotArgs = Omit<ChartCartesianUserArgs, 'series'> & {
+  series: SeriesPointUserArgs
   color?: {
     colorDim: number[],
     colorScale: ScaleContinuous<any, string>
@@ -14,26 +11,30 @@ export type ChartPointArgs = ChartCartesianArgs & {
 
 export type ChartPointValid = ChartCartesianValid & {
   pointSeries: SeriesPointValid;
+  color?: {
+    colorDim: number[],
+    colorScale: ScaleContinuous<any, string>
+  }
 }
 
-export function scatterPlotValidation(data: ChartPointArgs): ChartPointValid {
-  const {radii , color} = data
+//TODO: Check if done correctly for all charts
+//1. Series Data
+//1. Base Data
+//3. Series Data -> Axis Data
+//3. Series Data -> Legend Data
 
-  const { x, y, markerTooltips,
-    legend, flipped, ...restCartesian } = chartCartesianValidation(data)
-
-  const pointSeries = seriesPointData({
-    ...(markerTooltips ?? {}),
-    flipped, x, y, color, radii, legend, key: '0', renderer: data.renderer
-  })
+export function scatterPlotValidation(scatterArgs: ScatterPlotArgs): ChartPointValid {
+  const {renderer, x, y, color, zoom,
+    legend, bounds,
+    flipped, title, subTitle
+  } = scatterArgs
+  const series = seriesPointValidation({...scatterArgs.series, key: '0', renderer})
+  const cartesianData =
+    chartCartesianValidation({renderer, series, x, y, zoom, legend, bounds, flipped, title, subTitle})
 
   return {
-    x,
-    y,
-    flipped,
-    legend,
-    pointSeries,
-    ...restCartesian,
-    markerTooltips,
+    pointSeries: series,
+    ...cartesianData,
+    color
   }
 }

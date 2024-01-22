@@ -1,13 +1,5 @@
-import {
-  AxisDomain, ScaleBand,
-  scaleBand,
-  ScaleLinear,
-  scaleLinear,
-  ScaleTime,
-  scaleTime,
-} from 'd3';
-
-type ToArray<T> = T extends any ? T[] : never;
+import {AxisDomain, ScaleBand, scaleBand, ScaleLinear, scaleLinear, ScaleTime, scaleTime,} from 'd3';
+import {ToArray} from "../../constants/types";
 
 export type AxisScale<Domain extends AxisDomain> =
   Domain extends Date ? ScaleTime<number, number, never> :

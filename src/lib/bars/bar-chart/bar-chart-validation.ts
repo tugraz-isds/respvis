@@ -1,21 +1,14 @@
-import { select, Selection } from 'd3';
+import {select, Selection} from 'd3';
 import {
-  ChartCartesianArgs,
+  chartBaseRender,
   chartCartesianAxisRender,
-  chartCartesianValidation,
+  ChartCartesianUserArgs,
   ChartCartesianValid,
-  ScaleContinuous
+  chartCartesianValidation
 } from "../../core";
-import { seriesBarRender, seriesBarData, SeriesBarValid, Bar} from "../bar-series/bar-series-validation";
-import {
-  SeriesLabelBar as SeriesLabelBar,
-  seriesLabelBarData as seriesLabelBarData,
-  seriesLabelBar,
-} from '../series-label-bar';
-import {chartBaseRender} from "../../core";
-import {seriesPointData, SeriesPointValid} from "../../points";
+import {Bar, seriesBarRender, SeriesBarValid, seriesBarValidation} from "../bar-series/bar-series-validation";
 
-export type BarChartArgs = ChartCartesianArgs & {
+export type BarChartArgs = ChartCartesianUserArgs & {
   // labelsEnabled: boolean;
   // labels: Partial<SeriesLabelBar>;
 }
@@ -27,30 +20,21 @@ export type BarChartValid = ChartCartesianValid & {
 export interface BarChartValidation extends SeriesBarValid { //extends ChartCartesian
 }
 
-export function barChartValidation(data: BarChartArgs): BarChartValid {
-  //TODO create bar series
-  // const pointSeries = seriesPointData({
-  //   ...(markerTooltips ?? {}),
-  //   flipped, x, y, color, radii, legend, key: '0', renderer: data.renderer
-  // })
-  const { x, y, markerTooltips,
-    legend, flipped, ...restCartesian } = chartCartesianValidation(data)
-
-  const barSeries = seriesBarData({
-    ...(markerTooltips ?? {}),
-    flipped, x, y, legend, key: '0', renderer: data.renderer
-  })
+export function barChartValidation(chartArgs: BarChartArgs): BarChartValid {
+  const {renderer, x, y, zoom,
+    legend, bounds,
+    flipped, title, subTitle
+  } = chartArgs
+  const series = seriesBarValidation({...chartArgs.series, key: '0', renderer})
+  const cartesianData =
+    chartCartesianValidation({renderer, series, x, y, zoom, legend, bounds, flipped, title, subTitle})
   return {
-    x, y, legend, flipped,
-    ...restCartesian,
-    barSeries,
-    // ...chartCartesianValidation(data),
-    // labelsEnabled: data.labelsEnabled ?? true,
-    // labels: data.labels || {},
-  };
+    ...cartesianData,
+    barSeries: series
+  }
 }
 
-export type ChartBarSelection = Selection<SVGSVGElement | SVGGElement, BarChartValidation>;
+export type ChartBarSelection = Selection<SVGSVGElement | SVGGElement, BarChartValid>;
 
 export function chartBarRender(selection: ChartBarSelection): void {
   selection
@@ -62,26 +46,26 @@ export function chartBarRender(selection: ChartBarSelection): void {
 
       const barSeriesS = drawAreaS
         .selectAll<SVGGElement, SeriesBarValid>('.series-bar')
-        .data([chartD])
+        .data([chartD.barSeries])
         .join('g')
         .call((s) => seriesBarRender(s))
         .on('pointerover.chartbarhighlight', (e) => chartBarHoverBar(chartS, select(e.target), true))
         .on('pointerout.chartbarhighlight', (e) => chartBarHoverBar(chartS, select(e.target), false));
 
-      drawAreaS
-        .selectAll<Element, SeriesLabelBar>('.series-label-bar')
-        .data(
-          chartD.labelsEnabled
-            ? [
-                seriesLabelBarData({
-                  barContainer: barSeriesS,
-                  ...chartD.labels,
-                }),
-              ]
-            : []
-        )
-        .join('g')
-        .call((s) => seriesLabelBar(s));
+      // drawAreaS
+      //   .selectAll<Element, SeriesLabelBar>('.series-label-bar')
+      //   .data(
+      //     chartD.labelsEnabled
+      //       ? [
+      //           seriesLabelBarData({
+      //             barContainer: barSeriesS,
+      //             ...chartD.labels,
+      //           }),
+      //         ]
+      //       : []
+      //   )
+      //   .join('g')
+      //   .call((s) => seriesLabelBar(s));
 
       chartD.xAxis.scale = chartD.categoryScale;
       chartD.yAxis.scale = chartD.valueScale;

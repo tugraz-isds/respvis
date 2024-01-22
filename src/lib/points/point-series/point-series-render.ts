@@ -1,7 +1,8 @@
 import {easeCubicOut, select, Selection} from "d3";
 import {circleMinimized, circleToAttrs, rectFromString} from "../../core";
 import {seriesConfigTooltipsHandleEvents} from "../../tooltip";
-import {Point, seriesPointCreatePoints, SeriesPointValid} from "./point-series-validation";
+import {seriesPointCreatePoints, SeriesPointValid} from "./point-series-validation";
+import {Point} from "./point";
 
 export function pointSeriesRender(selection: Selection<Element, SeriesPointValid>): void {
   selection

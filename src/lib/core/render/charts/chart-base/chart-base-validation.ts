@@ -1,5 +1,3 @@
-import {SeriesConfigTooltips} from "../../../../tooltip";
-import {Point} from "../../../../points";
 import {Selection} from "d3";
 import {LayoutBreakpoints} from "../../../data/breakpoint/breakpoint";
 import {SVGHTMLElement} from "../../../constants/types";
@@ -11,12 +9,10 @@ export type ChartBaseArgs = RenderArgs & {
   bounds?: Partial<LayoutBreakpoints>
   title?: RespValOptional<string>,
   subTitle?: RespValOptional<string>;
-  markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>;
 }
 
-export type ChartBaseValid = Required<Omit<ChartBaseArgs, 'bounds' | 'markerTooltips'>> & {
+export type ChartBaseValid = Required<Omit<ChartBaseArgs, 'bounds'>> & {
   bounds: LayoutBreakpoints,
-  markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>;
   selection?: Selection<SVGHTMLElement>
 }
 
@@ -29,6 +25,5 @@ export function chartBaseValidation(args: ChartBaseArgs): ChartBaseValid {
     },
     title: args.title || '',
     subTitle: args.subTitle || '',
-    markerTooltips: args.markerTooltips,
   }
 }

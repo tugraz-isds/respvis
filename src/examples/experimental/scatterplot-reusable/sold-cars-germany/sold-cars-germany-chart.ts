@@ -1,9 +1,8 @@
 import * as d3 from '../libs/d3-7.6.0/d3.js'
-import {ScatterPlot, formatWithDecimalZero} from '../libs/respvis/respvis.js'
+import {ScatterPlot, formatWithDecimalZero, ChartPointUserArgs} from '../libs/respvis/respvis.js'
 import {getTopMakesData} from './data/sold-cars-germany.js';
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
 import {format} from "../libs/d3-7.6.0/d3.js";
-import {ChartPointUserArgs} from "../../../../lib";
 // import {AxisArgs, Legend, Point, ScaleAny, ScaleContinuous, SeriesConfigTooltips} from "../../../../lib";
 
 
@@ -28,6 +27,33 @@ export function createChartSoldCarsGermany(selector) {
 
 
   const data: ChartPointUserArgs = {
+    series: {
+      xValues: horsePower,
+      xScale: scales.xScale,
+      yValues: prices,
+      yScale: scales.yScale,
+      categories: makes,
+      radii: {
+        values: mileages,
+        scale: {
+          dependentOn: 'width',
+          value: scales.radiusScale,
+          mapping: {
+            0: s => s.range([3, 12]),
+            2: s => s.range([4, 16]),
+            3: s => s.range([5, 20])
+          }
+        },
+      },
+      markerTooltips: {
+        tooltips: ((e, d) => {
+        return `Car Price: ${d.yValue}€<br/>
+                Horse Power: ${d.xValue}PS<br/>
+                Make: ${d.label}<br/>
+                Mileage: ${d.radiusValue}km<br/>`
+      })
+    },
+    },
     bounds: {
       width: {
         values: [20, 30, 50],
@@ -39,8 +65,6 @@ export function createChartSoldCarsGermany(selector) {
       mapping: {0: 'Car Chars.', 1 : 'Car Characteristics', 3: 'Car Characteristics from AutoScout24 in Germany'}
     },
     x: {
-      values: horsePower,
-      scale: scales.xScale,
       title: {
         dependentOn: 'width',
         mapping: {0: 'HP in [PS]', 1: 'Horse P. [PS]', 2: 'Horse Power in [PS]'}
@@ -54,9 +78,6 @@ export function createChartSoldCarsGermany(selector) {
       configureAxis: (axis) => axis.tickFormat(format('.3d'))
     },
     y: {
-      values: prices,
-      categories: makes,
-      scale: scales.yScale,
       title: 'Car Price [EU]',
       configureAxis: {
         dependentOn: 'width',
@@ -77,31 +98,10 @@ export function createChartSoldCarsGermany(selector) {
       //   return label + '1'
       // }
     },
-    radii: {
-      values: mileages,
-      scale: {
-        dependentOn: 'width',
-        value: scales.radiusScale,
-        mapping: {
-          0: s => s.range([3, 12]),
-          2: s => s.range([4, 16]),
-          3: s => s.range([5, 20])
-        }
-      },
-    },
-    markerTooltips: {
-      tooltips: ((e, d) => {
-        return `Car Price: ${d.yValue}€<br/>
-Horse Power: ${d.xValue}PS<br/>
-Make: ${d.label}<br/>
-Mileage: ${d.radiusValue}km<br/>`
-      })
-    },
     zoom: {
       in: 20,
       out: 1
-    },
-
+    }
   };
 
   //'#sold-cars-germany'
@@ -114,3 +114,78 @@ Mileage: ${d.radiusValue}km<br/>`
   // const chartWindowData = validateChartWindow(data)
   // renderChartWindow(chartWindow, chartWindowData)
 }
+
+// bounds: {
+//   width: {
+//     values: [20, 30, 50],
+//       unit: 'rem'
+//   }
+// },
+// title: {
+//   dependentOn: 'width',
+//     mapping: {0: 'Car Chars.', 1 : 'Car Characteristics', 3: 'Car Characteristics from AutoScout24 in Germany'}
+// },
+// x: {
+//   values: horsePower,
+//     scale: scales.xScale,
+//     title: {
+//     dependentOn: 'width',
+//       mapping: {0: 'HP in [PS]', 1: 'Horse P. [PS]', 2: 'Horse Power in [PS]'}
+//   },
+//   bounds: {
+//     width: {
+//       values: [10, 30, 50],
+//         unit: 'rem'
+//     }
+//   },
+//   configureAxis: (axis) => axis.tickFormat(format('.3d'))
+// },
+// y: {
+//   values: prices,
+//     categories: makes,
+//     scale: scales.yScale,
+//     title: 'Car Price [EU]',
+//     configureAxis: {
+//     dependentOn: 'width',
+//       scope: 'chart',
+//       mapping: {0: (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s'))),
+//       2: (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))
+//     }
+//   }
+// },
+// legend: {
+//   title: {
+//     dependentOn: 'width',
+//       scope: 'chart',
+//       mapping: {0: '', 3: 'Legend'}
+//   },
+//   // labelCallback: (label: string) => {
+//   //   console.log(label)
+//   //   return label + '1'
+//   // }
+// },
+// radii: {
+//   values: mileages,
+//     scale: {
+//     dependentOn: 'width',
+//       value: scales.radiusScale,
+//       mapping: {
+//       0: s => s.range([3, 12]),
+//         2: s => s.range([4, 16]),
+//         3: s => s.range([5, 20])
+//     }
+//   },
+// },
+// markerTooltips: {
+//   tooltips: ((e, d) => {
+//     return `Car Price: ${d.yValue}€<br/>
+// Horse Power: ${d.xValue}PS<br/>
+// Make: ${d.label}<br/>
+// Mileage: ${d.radiusValue}km<br/>`
+//   })
+// },
+// zoom: {
+// in: 20,
+//     out: 1
+// },
+

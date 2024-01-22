@@ -18,3 +18,7 @@ export type Orientation = 'horizontal' | 'vertical'
 export type RotationDirection = 'clockwise' | 'counterclockwise'
 
 
+
+// util types
+
+export type ToArray<T> = T extends any ? T[] : never;

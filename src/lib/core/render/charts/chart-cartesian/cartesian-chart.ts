@@ -13,6 +13,9 @@ export abstract class CartesianChart extends Chart {
   protected addBuiltInListeners() {
     const renderer = this
     const drawArea = this.windowSelection.selectAll('.draw-area')
+    if(this.chartSelection?.classed('chart-point')) return
+    //TODO: This is conflicting with zoom listener. But bar chart and others need it.
+    // Find better way of rescaling everything!
     this.addCustomListener('resize.axisRescale', () => {
       const {x, y, ...restArgs} = renderer.windowSelection.datum()
       const {width, height} = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')

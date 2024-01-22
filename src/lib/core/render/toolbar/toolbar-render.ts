@@ -7,6 +7,7 @@ import {RenderArgs} from "../charts/renderer";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {LegendValid} from "../legend";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
+import {categoryOrderMapToArray} from "../../data/category";
 
 type ToolbarValid = RenderArgs & {
   x: AxisValid,
@@ -15,7 +16,8 @@ type ToolbarValid = RenderArgs & {
 }
 
 export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLDivElement, D>): void {
-  const {x, renderer, legend} = selection.datum()
+  const {renderer, legend} = selection.datum()
+  const {categoriesTitle, categoryOrderMap, keys} = legend.series
   const toolbarS = selection
     .selectAll<HTMLDivElement, any>('.toolbar')
     .data([null])
@@ -28,9 +30,9 @@ export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLD
 
   const chartElement = elementFromSelection(renderer.chartSelection)
   const filterOptions: ToolFilterNominal = {
-    text: getCurrentRespVal(x.categoriesTitle, {chart: chartElement}),
-    options: Object.keys(x.categoryOrder),
-    keys: legend.keys
+    text: getCurrentRespVal(categoriesTitle, {chart: chartElement}),
+    options: categoryOrderMapToArray(categoryOrderMap),
+    keys
   }
 
   toolFilterNominalRender(menuToolsItems, filterOptions)

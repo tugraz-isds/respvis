@@ -1,6 +1,7 @@
 import {arrayIs} from "../../utilities/array";
 import {LegendValid} from "./legend-validation";
 import {Size} from "../../utilities/size";
+import {categoryOrderMapToArray} from "../../data/category";
 
 export interface LegendItem {
   label: string
@@ -10,11 +11,12 @@ export interface LegendItem {
 }
 
 export function legendItemData(legendData: LegendValid): LegendItem[] {
-  const {
-    labelCallback, categories, styleClasses,
-    symbols, keys, reverse
+  const { series,
+    symbols, reverse
   } = legendData;
-  const items = categories.map((c, i) => {
+  const {styleClasses, keys, categoryOrderMap, labelCallback} = series
+  const categoryOrderedArray = categoryOrderMapToArray(categoryOrderMap)
+  const items = categoryOrderedArray.map((c, i) => {
     return {
       label: labelCallback(c),
       styleClass: arrayIs(styleClasses) ? styleClasses[i] : styleClasses,

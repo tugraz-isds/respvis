@@ -2,20 +2,20 @@ import {AxisDomain, AxisScale, Selection, ZoomTransform} from "d3";
 import {ChartPointValid} from "../../../points";
 import {throttle} from "../../utilities/d3/util";
 
-type ZoomSelection = Selection<HTMLDivElement, Pick<ChartPointValid, 'zoom' | 'x' | 'y'>>
+type ZoomSelection = Selection<HTMLDivElement, Pick<ChartPointValid, 'zoom' | 'series'>>
 
 export function addZoom(selection: ZoomSelection, callback: (props: {
   xScale: AxisScale<AxisDomain>,
   yScale: AxisScale<AxisDomain>
 }) => void, throttleMs = 50) {
-  const {x, y, zoom} = selection.datum()
+  const {series, zoom} = selection.datum()
   const drawArea = selection.selectAll('.draw-area')
   function updateScales() {
     if (!zoom) return
     const onZoom = function (e) {
       const transform: ZoomTransform = e.transform
-      const xScale = transform.rescaleX(x.scale)
-      const yScale = transform.rescaleY(y.scale)
+      const xScale = transform.rescaleX(series.xScale)
+      const yScale = transform.rescaleY(series.yScale)
       // .range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
       callback({xScale, yScale})
     }
@@ -27,8 +27,8 @@ export function addZoom(selection: ZoomSelection, callback: (props: {
   function updateRangeExtent() {
     if (!zoom) return
     selection.on('resize.autozoom', () => {
-      const [x1, widthTranslate] = x.scale.range()
-      const [y1, heightTranslate] = y.scale.range()
+      const [x1, widthTranslate] = series.xScale.range()
+      const [y1, heightTranslate] = series.yScale.range()
       const extent: [[number, number], [number, number]] = [
         [x1, heightTranslate],
         [widthTranslate, y1],

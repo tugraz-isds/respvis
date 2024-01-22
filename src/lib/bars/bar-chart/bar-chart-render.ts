@@ -4,7 +4,6 @@ import {BarChartValid, chartBarHoverBar, ChartBarSelection} from "./bar-chart-va
 import {legendRender} from "../../core/render/legend";
 import {legendAddHover} from "../../core/render/legend/legend-event";
 import {seriesBarRender, SeriesBarValid} from "../bar-series";
-import {seriesLabelBar, SeriesLabelBar, seriesLabelBarData} from "../series-label-bar";
 
 export type BarChartChartSelection = Selection<SVGSVGElement | SVGGElement, BarChartValid>;
 
@@ -32,19 +31,19 @@ export function renderBars(chartS: BarChartChartSelection) {
         .on('pointerover.chartbarhighlight', (e) => chartBarHoverBar(chartS, select(e.target), true))
         .on('pointerout.chartbarhighlight', (e) => chartBarHoverBar(chartS, select(e.target), false));
 
-    //   drawAreaS
-    //     .selectAll<Element, SeriesLabelBar>('.series-label-bar')
-    //     .data(
-    //       chartD.labelsEnabled
-    //         ? [
-    //           seriesLabelBarData({
-    //             barContainer: barSeriesS,
-    //             ...chartD.labels,
-    //           }),
-    //         ]
-    //         : []
-    //     )
-    //     .join('g')
-    //     .call((s) => seriesLabelBar(s));
+      // drawAreaS
+      //   .selectAll<Element, SeriesLabelBar>('.series-label-bar')
+      //   .data(
+      //     chartD.labelsEnabled
+      //       ? [
+      //         seriesLabelBarData({
+      //           barContainer: barSeriesS,
+      //           ...chartD.labels,
+      //         }),
+      //       ]
+      //       : []
+      //   )
+      //   .join('g')
+      //   .call((s) => seriesLabelBar(s));
     });
 }

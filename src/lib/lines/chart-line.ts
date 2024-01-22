@@ -9,7 +9,7 @@ import {
   rectFromString,
   ScaleAny,
 } from '../core';
-import {Point, seriesPointData, pointSeriesRender, SeriesPointValid} from '../points';
+import {Point, seriesPointValidation, pointSeriesRender, SeriesPointValid} from '../points';
 import {legendValidation, LegendItem, legendRender, LegendValid} from '../core/render/legend';
 import {SeriesLabel, seriesLabelData, seriesLabelRender} from '../bars';
 import {SeriesConfigTooltips} from '../tooltip';
@@ -74,7 +74,7 @@ export function chartLineRender(
         .selectAll<SVGGElement, SeriesPointValid>('.series-point')
         .data<SeriesPointValid>(
           keys.map((k, lineI) =>
-            seriesPointData({
+            seriesPointValidation({
               styleClasses: arrayIs(styleClasses) ? styleClasses[lineI] : styleClasses,
               keys: yValues[lineI].map((_, markerI) => `${k}-${markerI}`),
               xValues,

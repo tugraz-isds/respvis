@@ -1,48 +1,46 @@
 import {Selection} from 'd3';
-import {AxisUserArgs, AxisValid, axisValidation, syncAxes} from "../../axis";
+import {AxisUserArgs, AxisValid, axisValidation} from "../../axis";
 import {ChartBaseArgs, ChartBaseValid, chartBaseValidation} from "../chart-base";
 import {validateZoom, ZoomArgs, ZoomValid} from "../../../data/zoom";
-import {LegendArgsUser, legendValidation, LegendValid} from "../../legend";
+import {LegendUserArgs, LegendValid, legendValidation} from "../../legend";
 import {RespValByValueOptional} from "../../../data/responsive-value/responsive-value-value";
+import {SeriesUserArgs, SeriesValid} from "../../series";
 
-export type ChartCartesianArgs = ChartBaseArgs & {
+export type ChartCartesianUserArgs = ChartBaseArgs & {
+  series: SeriesUserArgs
+  // additionalSeries:
   x: AxisUserArgs
   y: AxisUserArgs
-  flipped?: RespValByValueOptional<boolean>
+  legend?: LegendUserArgs
   zoom?: ZoomArgs
-  styleClasses?: string[]
-  legend?: LegendArgsUser
+  flipped?: RespValByValueOptional<boolean>
+}
+
+export type ChartCartesianArgs = Omit<ChartCartesianUserArgs, 'series'> & {
+  series: SeriesValid
 }
 
 export type ChartCartesianValid = ChartBaseValid & {
+  series: SeriesValid
   x: AxisValid
   y: AxisValid
-  flipped: RespValByValueOptional<boolean>
-  zoom?: ZoomValid
   legend: LegendValid
+  zoom?: ZoomValid
+  flipped: RespValByValueOptional<boolean>
 }
 
-export function chartCartesianValidation(data: ChartCartesianArgs): ChartCartesianValid {
-  const {
-    legend, flipped, zoom, renderer
-  } = data
-  const [x, y] = syncAxes(axisValidation({...data.x, renderer}), axisValidation({...data.y, renderer}))
-  const categoriesOrdered = Object.keys(x.categoryOrder)
-  const legendValid = legendValidation({
-    ...(legend ? legend : {}),
-    renderer: data.renderer,
-    categories: categoriesOrdered,
-  })
+export type ChartCartesianSelection = Selection<SVGSVGElement | SVGGElement, ChartCartesianValid>
 
+export function chartCartesianValidation(cartesianArgs: ChartCartesianArgs): ChartCartesianValid {
+  const {renderer, series,x, y ,
+    zoom, flipped} = cartesianArgs
   return {
+    series,
+    x: axisValidation({...x, renderer, scale: series.xScale}),
+    y: axisValidation({...y, renderer, scale: series.yScale}),
+    legend: legendValidation({...cartesianArgs.legend, renderer, series}),
+    ...chartBaseValidation(cartesianArgs),
+    zoom: zoom ? validateZoom(zoom) : undefined,
     flipped: flipped || false,
-    x,
-    y,
-    ...chartBaseValidation(data),
-    legend: legendValid,
-    zoom: zoom ? validateZoom(zoom) : undefined
   };
 }
-
-export type ChartCartesianSelection = Selection<SVGSVGElement | SVGGElement, ChartCartesianValid>;
-

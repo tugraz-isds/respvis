@@ -1,19 +1,8 @@
-import {
-  easeCubicOut,
-  ScaleBand,
-  scaleBand,
-  ScaleContinuousNumeric,
-  scaleLinear,
-  select,
-  Selection,
-  Transition
-} from 'd3';
-import {arrayIs} from '../../core';
+import {easeCubicOut, select, Selection, Transition} from 'd3';
 import {Rect, rectFitStroke, rectFromString, rectMinimized, rectToAttrs,} from '../../core/utilities/rect';
-import {Size} from '../../core/utilities/size';
-import {SeriesConfigTooltips, seriesConfigTooltipsData, seriesConfigTooltipsHandleEvents,} from '../../tooltip';
+import {seriesConfigTooltipsHandleEvents,} from '../../tooltip';
 import toPX from 'to-px';
-import {SeriesArgs, seriesValidation} from "../../core/render/series";
+import {SeriesArgs, SeriesValid, seriesValidation} from "../../core/render/series";
 
 export interface Bar extends Rect {
   category: string;
@@ -24,16 +13,14 @@ export interface Bar extends Rect {
 
 export type SeriesBarArgs = SeriesArgs & {}
 
-export type SeriesBarValid = SeriesBarArgs & {
+export type SeriesBarValid = SeriesValid & {
   // categories: any[];
   // categoryScale: ScaleBand<any>;
   // values: number[];
   // valueScale: ScaleContinuousNumeric<number, number>;
-  //TODO: find out if flipped needed
-  flipped?: boolean
 }
 
-export function seriesBarData(data: SeriesBarArgs): SeriesBarValid {
+export function seriesBarValidation(data: SeriesBarArgs): SeriesBarValid {
   // const categories = data.categories || [];
   return {
     ...seriesValidation(data)
@@ -57,7 +44,11 @@ export function seriesBarData(data: SeriesBarArgs): SeriesBarValid {
 }
 
 export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
-  const {x, y, key: seriesKey, legend, renderer, flipped, bounds} = seriesData;
+  const {xValues, yValues,
+    xScale, yScale,
+    categories, categoryOrderMap, labelCallback,
+    key: seriesKey, keysActive,
+    renderer, flipped, bounds} = seriesData;
   //categories, categoryScale, values, valueScale, keys, styleClasses
   // if (!flipped) {
   //   categoryScale.range([0, bounds.width]);
@@ -69,20 +60,20 @@ export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
 
   const data: Bar[] = [];
 
-  for (let i = 0; i < y.values.length; ++i) {
-    const xVal = x.values[i]
-    const yVal = y.values[i]
-    const category = x.categories[i]
-    const seriesCategory = `s-${seriesKey} c-${x.categoryOrder[category]}`
-    if (!legend.keysActive[seriesCategory]) continue
-    const key = `s-${seriesKey} c-${x.categoryOrder[category]} i-${i}`
+  for (let i = 0; i < yValues.length; ++i) {
+    const xVal = xValues[i]
+    const yVal = yValues[i]
+    const category = categories[i]
+    const seriesCategory = `s-${seriesKey} c-${categoryOrderMap[category]}`
+    if (!keysActive[seriesCategory]) continue
+    const key = `s-${seriesKey} c-${categoryOrderMap[category]} i-${i}`
     const bar: Bar = {
-      x: x.scale(xVal)!,
-      y: Math.min(y.scale(0)!, y.scale(yVal)!),
-      width: x.scale.bandwidth(),
-      height: Math.abs(y.scale(0)! - y.scale(yVal)!),
-      category: legend.labelCallback(xVal),
-      styleClass: `categorical-${x.categoryOrder[category]}`,
+      x: xScale(xVal)!,
+      y: Math.min(yScale(0)!, yScale(yVal)!),
+      width: xScale.bandwidth(),
+      height: Math.abs(yScale(0)! - yScale(yVal)!),
+      category: labelCallback(xVal),
+      styleClass: `categorical-${categoryOrderMap[category]}`,
       key,
     }
     data.push(bar);

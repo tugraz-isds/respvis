@@ -8,7 +8,7 @@ import {
   toolbarRender,
 } from '../../core';
 import {scatterPlotRender} from "./scatter-plot-render";
-import {ChartPointArgs, ChartPointValid, scatterPlotValidation} from "./scatter-plot-validation";
+import {ScatterPlotArgs, ChartPointValid, scatterPlotValidation} from "./scatter-plot-validation";
 import {addZoom} from "../../core/data/zoom";
 import {getMaxRadius} from "../../core/data/radius/radius-util";
 import {elementFromSelection} from "../../core/utilities/d3/util";
@@ -18,7 +18,7 @@ import {CartesianChart} from "../../core/render/charts/chart-cartesian/cartesian
 export type ScatterplotData = ChartWindowValid & ChartPointValid
 export type ScatterplotSelection = Selection<HTMLDivElement, ScatterplotData>;
 
-export type ChartPointUserArgs = Omit<ChartPointArgs, 'renderer'>
+export type ChartPointUserArgs = Omit<ScatterPlotArgs, 'renderer'>
 
 export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseRenderer
   public windowSelection: ScatterplotSelection
@@ -56,12 +56,14 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
     if (!chartWindowD.zoom) return
     const drawArea = this.windowSelection.selectAll('.draw-area')
     renderer.addCustomListener('resize.zoom', () => {
-      const {flipped, x, y, pointSeries} = renderer.windowSelection.datum()
-      const {radii} = pointSeries
+      const { flipped, series, pointSeries} = renderer.windowSelection.datum()
+      const { radii} = pointSeries
+      const { xScale, yScale } = series
       const maxRadius = getMaxRadius(radii, {chart: chartElement})
       const drawAreaBounds = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
-      x.scale.range(flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius])
-      y.scale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
+      //TODO: resizing is also necessary if no zoom
+      xScale.range(flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius])
+      yScale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
     })
     addZoom(this.windowSelection, ({xScale, yScale}) => {
       const {x, y, pointSeries} = renderer.windowSelection.datum()
@@ -69,7 +71,7 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
       const yRescaled = {...y, scale: yScale}
       renderer.windowSelection.data([{
           ...chartWindowD,
-          x: xRescaled, y: yRescaled, pointSeries: {...pointSeries, x: xRescaled, y: yRescaled}
+          x: xRescaled, y: yRescaled, pointSeries: {...pointSeries, xScale, yScale}
       }])
       renderer.windowSelection.dispatch('resize')
     })
@@ -83,7 +85,7 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
       const parentS = changeS.select(function() {return this.parentElement})
       const currentKey = parentS.attr('data-key')
       if (!currentKey) return;
-      const {keysActive} = this.windowSelection.datum().legend
+      const {keysActive} = this.windowSelection.datum().series
       keysActive[currentKey] = changeS.property('checked')
       this.render()
     })

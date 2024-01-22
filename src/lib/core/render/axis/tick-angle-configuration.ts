@@ -37,10 +37,6 @@ function configureTick(tickS: Selection<Element>, angle: number, axisS: AxisSele
   } = tickAngleConfig(angle)[axisLocation][rotationDirection]
   const transformRelative = cssLengthInPx('0.5em', textElement)
 
-  if (axisLocation === 'left') {
-    console.log(angle, textAnchor, dominantBaseline, transformFixed, transformRelative)
-  }
-
   textS
     .style('text-anchor', textAnchor)
     .style('dominant-baseline', dominantBaseline)
