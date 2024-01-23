@@ -23,11 +23,11 @@ export interface BarChartValidation extends SeriesBarValid { //extends ChartCart
 export function barChartValidation(chartArgs: BarChartArgs): BarChartValid {
   const {renderer, x, y, zoom,
     legend, bounds,
-    flipped, title, subTitle
+    title, subTitle
   } = chartArgs
   const series = seriesBarValidation({...chartArgs.series, key: '0', renderer})
   const cartesianData =
-    chartCartesianValidation({renderer, series, x, y, zoom, legend, bounds, flipped, title, subTitle})
+    chartCartesianValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
   return {
     ...cartesianData,
     barSeries: series

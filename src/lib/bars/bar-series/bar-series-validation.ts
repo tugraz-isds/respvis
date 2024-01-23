@@ -3,6 +3,8 @@ import {Rect, rectFitStroke, rectFromString, rectMinimized, rectToAttrs,} from '
 import {seriesConfigTooltipsHandleEvents,} from '../../tooltip';
 import toPX from 'to-px';
 import {SeriesArgs, SeriesValid, seriesValidation} from "../../core/render/series";
+import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
+import {elementFromSelection} from "../../core/utilities/d3/util";
 
 export interface Bar extends Rect {
   category: string;
@@ -48,7 +50,7 @@ export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
     xScale, yScale,
     categories, categoryOrderMap, labelCallback,
     key: seriesKey, keysActive,
-    renderer, flipped, bounds} = seriesData;
+    renderer, bounds} = seriesData;
   //categories, categoryScale, values, valueScale, keys, styleClasses
   // if (!flipped) {
   //   categoryScale.range([0, bounds.width]);
@@ -57,6 +59,8 @@ export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
   //   categoryScale.range([0, bounds.height]);
   //   valueScale.range([0, bounds.width]);
   // }
+  const flipped = getCurrentRespVal(seriesData.flipped, {chart: elementFromSelection(renderer.chartSelection)})
+
 
   const data: Bar[] = [];
 
@@ -67,11 +71,20 @@ export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
     const seriesCategory = `s-${seriesKey} c-${categoryOrderMap[category]}`
     if (!keysActive[seriesCategory]) continue
     const key = `s-${seriesKey} c-${categoryOrderMap[category]} i-${i}`
+    // const bar: Bar = {
+    //   x: xScale(xVal)!,
+    //   y: Math.min(yScale(0)!, yScale(yVal)!),
+    //   width: xScale.bandwidth(),
+    //   height: Math.abs(yScale(0)! - yScale(yVal)!),
+    //   category: labelCallback(xVal),
+    //   styleClass: `categorical-${categoryOrderMap[category]}`,
+    //   key,
+    // }
     const bar: Bar = {
-      x: xScale(xVal)!,
-      y: Math.min(yScale(0)!, yScale(yVal)!),
-      width: xScale.bandwidth(),
-      height: Math.abs(yScale(0)! - yScale(yVal)!),
+      x: flipped ? Math.min(yScale(0)!, yScale(yVal)!) : xScale(xVal)!,
+      y: flipped ? xScale(xVal)! : Math.min(yScale(0)!, yScale(yVal)!),
+      width: flipped ? Math.abs(yScale(0)! - yScale(yVal)!) : xScale.bandwidth(),
+      height: flipped ? xScale.bandwidth() : Math.abs(yScale(0)! - yScale(yVal)!),
       category: labelCallback(xVal),
       styleClass: `categorical-${categoryOrderMap[category]}`,
       key,

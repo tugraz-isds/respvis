@@ -12,6 +12,10 @@ export function createBarCart(selector: string) {
       markerTooltips: {
         tooltips: (i, d) => `City: ${d.xValue}<br/>Population: ${d.yValue}`,
       },
+      flipped: {
+        dependentOn: 'width',
+        mapping: {0: true, 2: false}
+      },
     },
     bounds: {
       width: {
@@ -40,10 +44,6 @@ export function createBarCart(selector: string) {
         rotationDirection: 'counterclockwise'
       },
     },
-    // flipped: {
-    //   dependentOn: 'width',
-    //   mapping: {0: true, 2: false}
-    // },
     y: {
       title: 'Population',
       bounds: {

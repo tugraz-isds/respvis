@@ -8,7 +8,9 @@ import {RespValOptional} from "../../data/responsive-value/responsive-value";
 import {ToArray} from "../../constants/types";
 import {getCategoryOrderArray, getCategoryOrderMap, validateCategories} from "../../data/category";
 import {arrayAlignLengths} from "../../utilities/array";
+import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 
+//TODO: Maybe rename series to cartesian series because of x and y values?
 export type SeriesUserArgs = {
   xValues: ToArray<AxisDomain>,
   xScale?: AxisScale<AxisDomain>,
@@ -17,18 +19,18 @@ export type SeriesUserArgs = {
   categories?: string[],
   categoriesTitle?: RespValOptional<string>,
   markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>
-  labelCallback?: (category: string) => string
+  labelCallback?: (category: string) => string,
+  flipped?: RespValByValueOptional<boolean>
 }
 
-export type SeriesArgs = Omit<SeriesUserArgs, 'markerTooltips'> & RenderArgs & {
+export type SeriesArgs = SeriesUserArgs & RenderArgs & {
   key: string
   bounds?: Size,
-  markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>
-  flipped?: boolean
 }
 
-export type SeriesValid = Required<Omit<SeriesArgs, 'markerTooltips'>> & {
+export type SeriesValid = Required<Omit<SeriesArgs, 'markerTooltips' | 'flipped'>> & {
   markerTooltips: SeriesConfigTooltips<SVGCircleElement, Point>
+  flipped: RespValByValueOptional<boolean>
   categoryOrderMap: Record<string, number>
   keys: string[]
   keysActive: {

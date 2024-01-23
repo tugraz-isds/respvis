@@ -18,7 +18,7 @@ export function chartCartesianAxisRender<T extends ChartCartesianSelection>(char
   //   valueScale.range([0, bounds.width]);
   // }
   const {renderer, ...data} = chartS.datum()
-  const flipped = getCurrentRespVal(data.flipped, {chart: elementFromSelection(chartS)})
+  const flipped = getCurrentRespVal(data.series.flipped, {chart: elementFromSelection(chartS)})
   const leftAxisD = flipped ? data.x : data.y
   const leftAxisClass = flipped ? 'axis-x' : 'axis-y'
   const bottomAxisD = flipped ? data.y : data.x
