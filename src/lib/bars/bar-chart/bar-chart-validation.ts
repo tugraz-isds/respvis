@@ -67,8 +67,8 @@ export function chartBarRender(selection: ChartBarSelection): void {
       //   .join('g')
       //   .call((s) => seriesLabelBar(s));
 
-      chartD.xAxis.scale = chartD.categoryScale;
-      chartD.yAxis.scale = chartD.valueScale;
+      // chartD.xAxis.scale = chartD.categoryScale;
+      // chartD.yAxis.scale = chartD.valueScale;
       chartCartesianAxisRender(chartS);
     });
 }

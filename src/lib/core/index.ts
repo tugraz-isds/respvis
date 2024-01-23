@@ -24,6 +24,5 @@ export * from './menu-dropdown';
 
 export {ScaleAny} from "./data/scale/scales";
 export {ScaleContinuous} from "./data/scale/scales";
-export {TickOrientationValid} from "./data/tick-orientation/tick-orientation-validation";
 export {convertToPx} from "./utilities/dom/units";
 

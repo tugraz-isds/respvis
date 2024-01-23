@@ -4,6 +4,24 @@ import data from './data/austrian-cities.js';
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
 export function createBarCart(selector: string) {
+  const tickOrientationHorizontal = {
+    scope: 'self',
+      dependentOn: 'width',
+      mapping: {0: 90, 3: 0} //{0: 90, 1: -180, 3: 179} // demonstration purposes
+  } as const
+  const tickOrientationVertical = {
+    scope: 'self',
+    dependentOn: 'height',
+    mapping: {0: 0, 3: 90} //{0: -180, 1: -180, 3: 179} // demonstration purposes
+  } as const
+  const axisBoundsWidth = {
+    values: [10, 30, 50],
+      unit: 'rem'
+  } as const
+  const axisBoundsHeight = {
+    values: [10, 20, 30],
+    unit: 'rem'
+  } as const
   const barChartArgs: BarChartUserArgs = {
     series: {
       xValues: data.cities,
@@ -30,36 +48,20 @@ export function createBarCart(selector: string) {
     x: {
       title: 'Cities',
       bounds: {
-        width: {
-          values: [10, 30, 50],
-          unit: 'rem'
-        }
+        width: axisBoundsWidth,
+        height: axisBoundsHeight
       },
-      tickOrientation: {
-        orientation: {
-          scope: 'self',
-          dependentOn: 'width',
-          mapping: {0: 'vertical', 3: 'horizontal'}
-        },
-        rotationDirection: 'counterclockwise'
-      },
+      tickOrientation: tickOrientationHorizontal,
+      tickOrientationFlipped: tickOrientationVertical
     },
     y: {
       title: 'Population',
       bounds: {
-        height: {
-          values: [10, 30, 50],
-          unit: 'rem'
-        }
+        height: axisBoundsHeight,
+        width: axisBoundsWidth
       },
-      tickOrientation: {
-        orientation: {
-          scope: 'self',
-          dependentOn: 'height',
-          mapping: {0: 'horizontal', 2: 'vertical'}
-        },
-        rotationDirection: 'counterclockwise'
-      },
+      tickOrientation: tickOrientationVertical,
+      tickOrientationFlipped: tickOrientationHorizontal,
       configureAxis: (axis) => axis.tickFormat(d3.format('.2s')),
     },
     legend: {

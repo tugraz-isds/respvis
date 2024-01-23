@@ -6,12 +6,21 @@ import {defaultScope, maxBreakpointCount} from "../../constants/other";
 import {BreakpointScope, BreakpointScopeMapping} from "../breakpoint/breakpoint-scope";
 import {getLayoutStateFromCSS} from "../breakpoint/breakpoint";
 
+//TODO: Simultaneous Interpretation of multiple breakpoint indexes
+// Change dependentOn to be inside mapping
+// Properties of mapping can then be mapping themselves
+// Or instead of mapping as key, use width / height as keys
+
 export type RespValByValue<T> = {
-  mapping: { 0: T, [key: number]: T },
-  dependentOn: LengthDimension,
-  scope?: BreakpointScope
+  readonly mapping: { 0: T, [key: number]: T },
+  readonly dependentOn: LengthDimension,
+  readonly scope?: BreakpointScope
 }
 export type RespValByValueOptional<T> = RespValByValue<T> | T
+
+export function respValByValueValidation() {
+
+}
 
 export function isResponsiveValueByValue<T>(arg: RespValOptional<T>): arg is RespValByValue<T> {
   return typeof arg === 'object' && arg !== null && 'mapping' in arg && 'dependentOn' in arg && !('value' in arg)
@@ -53,6 +62,5 @@ export function estimateResponsiveValueByValue<T>(exactBreakpoint: number, respV
 }
 
 export function getExactResponsiveValueByValue<T>(exactBreakpoint: number, respVal: RespValByValue<T>) {
-  if (respVal.mapping[exactBreakpoint]) return respVal.mapping[exactBreakpoint]
-  return null
+  return respVal.mapping[exactBreakpoint] ?? null
 }

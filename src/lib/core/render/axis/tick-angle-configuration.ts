@@ -4,6 +4,7 @@ import {SVGHTMLElement} from "../../constants/types";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {cssLengthInPx} from "../../utilities/dom/units";
 import {tickAngleCalculation} from "./tick-angle-calculation";
+import {normalizeAngle} from "../../utilities/angle";
 
 export function tickAngleConfiguration(axisS: AxisSelection, ticksS: Selection<SVGHTMLElement>) {
   const angle = tickAngleCalculation(axisS)
@@ -13,8 +14,6 @@ export function tickAngleConfiguration(axisS: AxisSelection, ticksS: Selection<S
 }
 
 function configureTick(tickS: Selection<Element>, angle: number, axisS: AxisSelection) {
-  const { tickOrientation } = axisS.datum()
-  const { rotationDirection } = tickOrientation
   const axisElement = elementFromSelection(axisS)
 
   const textS = tickS.select('text')
@@ -34,58 +33,45 @@ function configureTick(tickS: Selection<Element>, angle: number, axisS: AxisSele
     textAnchor,
     dominantBaseline,
     transformFixed,
-  } = tickAngleConfig(angle)[axisLocation][rotationDirection]
+  } = tickAngleConfig(normalizeAngle(angle))[axisLocation]
   const transformRelative = cssLengthInPx('0.5em', textElement)
 
   textS
     .style('text-anchor', textAnchor)
     .style('dominant-baseline', dominantBaseline)
+  const normalizedAngle = normalizeAngle(angle)
 
   pivotS //.transition().duration(200) //TODO: enable D3 transitions when being able to differ between initial render and succeeding renders
-    // .attr('dy', transformTopRelative)
     .attr("transform", axisLocation === 'bottom' ?
-      `translate(0, ${transformRelative + transformFixed}) rotate(${angle})` : axisLocation === 'top' ?
-      `translate(0, -${transformRelative + transformFixed}) rotate(${angle})` : axisLocation === 'left' ?
-      `translate(-${transformRelative + transformFixed}, 0) rotate(${angle})` : //right
-      `translate(${transformRelative + transformFixed}, 0) rotate(${angle})`
+      `translate(0, ${transformRelative + transformFixed}) rotate(${normalizedAngle})` : axisLocation === 'top' ?
+      `translate(0, -${transformRelative + transformFixed}) rotate(${normalizedAngle})` : axisLocation === 'left' ?
+      `translate(-${transformRelative + transformFixed}, 0) rotate(${normalizedAngle})` : //right
+      `translate(${transformRelative + transformFixed}, 0) rotate(${normalizedAngle})`
     )
 }
 
 //TODO: Add valid configurations for other axes than bottom
 const tickAngleConfig = (angle: number) => {
   return {
-    left: leftConfig(angle),
-    bottom: bottomConfig(angle),
-    right: bottomConfig(angle),
-    top: bottomConfig(angle),
+    bottom: horizontalConfig(angle),
+    left: horizontalConfig(normalizeAngle(angle - 90)),
+    right: horizontalConfig(normalizeAngle(angle + 90)),
+    top: horizontalConfig(angle),
   } as const
 }
-const bottomConfig = (angle: number) => {
-  return {
-    counterclockwise: {
-      textAnchor: angle < 15 ? 'middle' : 'start',
-      dominantBaseline: angle < 15 ? 'hanging' : 'middle',
-      transformFixed: angle < 45 ? 8 : 4
-    },
-    clockwise: {
-      textAnchor: angle > -15 ? 'middle' : 'end',
-      dominantBaseline: angle > -15 ? 'hanging' : 'middle',
-      transformFixed: angle > -45 ? 8 : 4
-    }
-  } as const
-}
+const horizontalConfig = (angle: number) => {
+  const anchorStart = (angle > 15 && angle < 165)
+  const anchorMiddle = (angle >= 345) || (angle >= 0 && angle <= 15) || (angle >= 165 && angle <= 195)
+  // const anchorEnd = (angle < 345 && angle > 195)
 
-const leftConfig = (angle: number) => {
+  const baseLineHanging = (angle >= 0 && angle <= 15) || (angle >= 345)
+  const baseLineAuto = (angle >= 165 && angle <= 195)
+  // const baseLineMiddle = (angle >= 15 && angle <= 165) || (angle >= 195 && angle <= 345)
+
+  const moreSpace = (angle >= 345) || (angle >= 0 && angle <= 15) || (angle >= 165 || angle <= 195)
   return {
-    counterclockwise: {
-      textAnchor: angle > -75 ? 'end' : 'middle',
-      dominantBaseline: angle > -75 ? 'middle' : 'auto',
-      transformFixed: angle > -45 ? 8 : 4,
-    },
-    clockwise: {
-      textAnchor: angle < 75 ? 'end' : 'middle',
-      dominantBaseline: angle < 75 ? 'middle' : 'hanging',
-      transformFixed: angle < 45 ? 8 : 4 //TODO: think if it should be 6 fixed
-    }
+    textAnchor: anchorStart ? 'start' : anchorMiddle ? 'middle' : 'end',
+    dominantBaseline: baseLineHanging ? 'hanging' : baseLineAuto ? 'auto' : 'middle',
+    transformFixed: moreSpace ? 6 : 4
   } as const
 }
