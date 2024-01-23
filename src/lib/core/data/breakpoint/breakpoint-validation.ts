@@ -2,7 +2,7 @@ import {CSSLengthUnit, CSSLengthValue} from "../../constants/types";
 import {pxUpperLimit} from "../../constants/other";
 
 export type BreakpointsArgs = {
-  values: number[],
+  values: readonly number[],
   unit: CSSLengthUnit
 }
 export type BreakpointsValid = Required<BreakpointsArgs>
