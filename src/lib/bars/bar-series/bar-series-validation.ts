@@ -46,8 +46,7 @@ export function seriesBarValidation(data: SeriesBarArgs): SeriesBarValid {
 }
 
 export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
-  const {xValues, yValues,
-    xScale, yScale,
+  const {x, y,
     categories, categoryOrderMap, labelCallback,
     key: seriesKey, keysActive,
     renderer, bounds} = seriesData;
@@ -64,27 +63,18 @@ export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
 
   const data: Bar[] = [];
 
-  for (let i = 0; i < yValues.length; ++i) {
-    const xVal = xValues[i]
-    const yVal = yValues[i]
+  for (let i = 0; i < y.values.length; ++i) {
+    const xVal = x.values[i]
+    const yVal = y.values[i]
     const category = categories[i]
     const seriesCategory = `s-${seriesKey} c-${categoryOrderMap[category]}`
     if (!keysActive[seriesCategory]) continue
     const key = `s-${seriesKey} c-${categoryOrderMap[category]} i-${i}`
-    // const bar: Bar = {
-    //   x: xScale(xVal)!,
-    //   y: Math.min(yScale(0)!, yScale(yVal)!),
-    //   width: xScale.bandwidth(),
-    //   height: Math.abs(yScale(0)! - yScale(yVal)!),
-    //   category: labelCallback(xVal),
-    //   styleClass: `categorical-${categoryOrderMap[category]}`,
-    //   key,
-    // }
     const bar: Bar = {
-      x: flipped ? Math.min(yScale(0)!, yScale(yVal)!) : xScale(xVal)!,
-      y: flipped ? xScale(xVal)! : Math.min(yScale(0)!, yScale(yVal)!),
-      width: flipped ? Math.abs(yScale(0)! - yScale(yVal)!) : xScale.bandwidth(),
-      height: flipped ? xScale.bandwidth() : Math.abs(yScale(0)! - yScale(yVal)!),
+      x: flipped ? Math.min(y.scale(0)!, y.scale(yVal)!) : x.scale(xVal)!,
+      y: flipped ? x.scale(xVal)! : Math.min(y.scale(0)!, y.scale(yVal)!),
+      width: flipped ? Math.abs(y.scale(0)! - y.scale(yVal)!) : x.scale.bandwidth(),
+      height: flipped ? x.scale.bandwidth() : Math.abs(y.scale(0)! - y.scale(yVal)!),
       category: labelCallback(xVal),
       styleClass: `categorical-${categoryOrderMap[category]}`,
       key,

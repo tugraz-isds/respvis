@@ -1,5 +1,4 @@
 import {
-  AxisDomain,
   ScaleBand,
   ScaleContinuousNumeric,
   ScaleOrdinal,
@@ -24,6 +23,3 @@ export type ScaleAny<TDomain extends string | number | Date, TRange, TOutput> = 
   | ScaleOrdinal<TDomain, TRange>
   | ScaleBand<TDomain>
   | ScalePoint<TDomain>;
-
-
-

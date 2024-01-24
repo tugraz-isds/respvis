@@ -13,7 +13,7 @@ export * from './utilities/d3/selection';
 export * from './layouter';
 export * from './resize-event-dispatcher';
 
-export * from './data/scale/axis-scale-validation';
+export * from './data/scale/axis-scaled-values-validation';
 
 export * from './render';
 

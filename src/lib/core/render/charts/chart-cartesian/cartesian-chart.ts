@@ -21,8 +21,8 @@ export abstract class CartesianChart extends Chart {
       const {width, height} = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
       const chartElement = elementFromSelection(renderer.chartSelection)
       const flipped = getCurrentRespVal(restArgs.series.flipped, {chart: chartElement})
-      x.scale.range(flipped ? [height, 0] : [0, width])
-      y.scale.range(flipped ? [0, width] : [height, 0])
+      x.scaledValues.scale.range(flipped ? [height, 0] : [0, width])
+      y.scaledValues.scale.range(flipped ? [0, width] : [height, 0])
     })
   }
 }

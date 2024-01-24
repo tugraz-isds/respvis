@@ -17,7 +17,8 @@ type ToolbarValid = RenderArgs & {
 
 export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLDivElement, D>): void {
   const {renderer, legend} = selection.datum()
-  const {categoriesTitle, categoryOrderMap, keys} = legend.series
+  const {categoriesTitle, categoryOrderMap, keys,
+    x, y} = legend.series
   const toolbarS = selection
     .selectAll<HTMLDivElement, any>('.toolbar')
     .data([null])
@@ -28,14 +29,25 @@ export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLD
   const menuToolsItems = toolbarS.selectAll('.menu-tools > .items')
   toolDownloadSVGRender(menuToolsItems)
 
+  //categories
   const chartElement = elementFromSelection(renderer.chartSelection)
   const filterOptions: ToolFilterNominal = {
     text: getCurrentRespVal(categoriesTitle, {chart: chartElement}),
     options: categoryOrderMapToArray(categoryOrderMap),
     keys
   }
-
   toolFilterNominalRender(menuToolsItems, filterOptions)
+
+  //catgorical x axis
+  // if(isStringArray(x.values)) {
+  //   console.log(x.values)
+  //   const filterOptions: ToolFilterNominal = {
+  //     text: getCurrentRespVal('X-Axis Categories', {chart: chartElement}),
+  //     options: categoryOrderMapToArray(categoryOrderMap),
+  //     keys
+  //   }
+    // toolFilterNominalRender(menuToolsItems, filterOptions)
+  // }
 }
 
 function menuToolsRender(selection: Selection<HTMLDivElement>) {

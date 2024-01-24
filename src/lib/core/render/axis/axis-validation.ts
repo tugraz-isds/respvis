@@ -1,5 +1,5 @@
 import {Axis as D3Axis, AxisDomain} from 'd3';
-import {AxisScale} from "../../data/scale/axis-scale-validation";
+import {AxisScaledValuesValid} from "../../data/scale/axis-scaled-values-validation";
 import {LayoutBreakpoints} from "../../data/breakpoint/breakpoint";
 import {RenderArgs} from "../charts/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
@@ -16,7 +16,7 @@ export type AxisUserArgs = {
 }
 
 export type AxisArgs = AxisUserArgs & RenderArgs & {
-  scale: AxisScale<AxisDomain>
+  scaledValues: AxisScaledValuesValid
 }
 
 export type AxisValid = Required<Omit<AxisArgs, 'bounds'>> & {
@@ -30,7 +30,7 @@ export interface ConfigureAxisFn {
 export function axisValidation(data: AxisArgs): AxisValid {
   return {
     renderer: data.renderer,
-    scale: data.scale,
+    scaledValues: data.scaledValues,
     title: data.title || '',
     subTitle: data.subTitle || '',
     configureAxis: data.configureAxis || (() => {

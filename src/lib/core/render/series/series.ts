@@ -2,20 +2,20 @@ import {Size} from "../../utilities/size";
 import {SeriesConfigTooltips, seriesConfigTooltipsData} from "../../../tooltip";
 import {RenderArgs} from "../charts/renderer";
 import {Point} from "../../../points";
-import {AxisScale, axisScaleValidation} from "../../data/scale/axis-scale-validation";
-import {AxisDomain} from "d3";
+import {
+  AxisScaledValuesArg,
+  AxisScaledValuesValid,
+  axisScaledValuesValidation
+} from "../../data/scale/axis-scaled-values-validation";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
-import {ToArray} from "../../constants/types";
 import {getCategoryOrderArray, getCategoryOrderMap, validateCategories} from "../../data/category";
-import {arrayAlignLengths} from "../../utilities/array";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
+import {alignScaledValuesLengths} from "../../data/scale/scaled-values";
 
 //TODO: Maybe rename series to cartesian series because of x and y values?
 export type SeriesUserArgs = {
-  xValues: ToArray<AxisDomain>,
-  xScale?: AxisScale<AxisDomain>,
-  yValues: ToArray<AxisDomain>,
-  yScale?: AxisScale<AxisDomain>,
+  x: AxisScaledValuesArg
+  y: AxisScaledValuesArg
   categories?: string[],
   categoriesTitle?: RespValOptional<string>,
   markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>
@@ -28,7 +28,9 @@ export type SeriesArgs = SeriesUserArgs & RenderArgs & {
   bounds?: Size,
 }
 
-export type SeriesValid = Required<Omit<SeriesArgs, 'markerTooltips' | 'flipped'>> & {
+export type SeriesValid = Required<Omit<SeriesArgs, 'markerTooltips' | 'flipped' | 'x' | 'y'>> & {
+  x: AxisScaledValuesValid
+  y: AxisScaledValuesValid
   markerTooltips: SeriesConfigTooltips<SVGCircleElement, Point>
   flipped: RespValByValueOptional<boolean>
   categoryOrderMap: Record<string, number>
@@ -41,8 +43,10 @@ export type SeriesValid = Required<Omit<SeriesArgs, 'markerTooltips' | 'flipped'
 
 export function seriesValidation(data: SeriesArgs): SeriesValid {
   const {key, renderer, flipped, labelCallback} = data
-  const [xValues, yValues] = arrayAlignLengths(data.xValues, data.yValues)
-  const categories = validateCategories(xValues, data.categories)
+  const [xAligned, yAligned] = alignScaledValuesLengths(data.x, data.y) //<typeof data.x.values, typeof data.y.values>
+  const x = axisScaledValuesValidation(xAligned)
+  const y = axisScaledValuesValidation(yAligned)
+  const categories = validateCategories(x.values, data.categories)
   const categoryOrderArray = getCategoryOrderArray(categories)
   const categoryOrderMap = getCategoryOrderMap(categories)
   const keysActive = categoryOrderArray.reduce((prev, c, i) => {
@@ -51,9 +55,7 @@ export function seriesValidation(data: SeriesArgs): SeriesValid {
   }, {})
   const styleClasses = categoryOrderArray.map((l, i) => `categorical-${i}`)
 
-  return { renderer, xValues, yValues,
-    xScale: axisScaleValidation({ values: data.xValues, scale: data.xScale }),
-    yScale: axisScaleValidation({ values: data.yValues, scale: data.yScale }),
+  return { renderer, x, y,
     bounds: data.bounds || { width: 600, height: 400 },
     categoriesTitle: data.categoriesTitle ?? 'Categories',
     categories,

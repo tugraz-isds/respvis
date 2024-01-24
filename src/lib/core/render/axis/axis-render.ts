@@ -70,13 +70,13 @@ function d3Axis(
   axisGenerator: (scale: AxisScale<AxisDomain>) => D3Axis<AxisDomain>,
   selection: AxisSelection
 ): D3Axis<AxisDomain> {
-  const {scale, bounds, configureAxis, renderer} = selection.datum()
+  const {scaledValues, bounds, configureAxis, renderer} = selection.datum()
   const axisElement = elementFromSelection(selection)
   updateBreakpointStatesInCSS(axisElement, bounds)
   const chartElement = elementFromSelection(renderer.chartSelection)
   const configureAxisValid = getCurrentRespVal(configureAxis, {chart: chartElement, self: axisElement})
 
-  const axis = axisGenerator(scale)
+  const axis = axisGenerator(scaledValues.scale)
   configureAxisValid(axis)
   return axis;
 }

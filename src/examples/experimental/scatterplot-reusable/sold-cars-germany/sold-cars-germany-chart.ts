@@ -28,10 +28,14 @@ export function createChartSoldCarsGermany(selector) {
 
   const data: ChartPointUserArgs = {
     series: {
-      xValues: horsePower,
-      xScale: scales.xScale,
-      yValues: prices,
-      yScale: scales.yScale,
+      x: {
+        values: horsePower,
+        scale: scales.xScale
+      },
+      y: {
+        values: prices,
+        scale: scales.yScale
+      },
       categories: makes,
       radii: {
         values: mileages,

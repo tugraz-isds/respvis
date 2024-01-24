@@ -33,8 +33,8 @@ export function chartCartesianValidation(cartesianArgs: ChartCartesianArgs): Cha
     zoom} = cartesianArgs
   return {
     series,
-    x: axisValidation({...x, renderer, scale: series.xScale}),
-    y: axisValidation({...y, renderer, scale: series.yScale}),
+    x: axisValidation({...x, renderer, scaledValues: series.x}),
+    y: axisValidation({...y, renderer, scaledValues: series.y}),
     legend: legendValidation({...cartesianArgs.legend, renderer, series}),
     ...chartBaseValidation(cartesianArgs),
     zoom: zoom ? validateZoom(zoom) : undefined

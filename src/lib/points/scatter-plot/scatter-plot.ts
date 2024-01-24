@@ -56,23 +56,31 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
     if (!chartWindowD.zoom) return
     const drawArea = this.windowSelection.selectAll('.draw-area')
     renderer.addCustomListener('resize.zoom', () => {
-      const { flipped, series, pointSeries} = renderer.windowSelection.datum()
+      const { series, pointSeries} = renderer.windowSelection.datum()
       const { radii} = pointSeries
-      const { xScale, yScale } = series
+      const { x, y } = series
       const maxRadius = getMaxRadius(radii, {chart: chartElement})
       const drawAreaBounds = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
       //TODO: resizing is also necessary if no zoom
-      xScale.range(flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius])
-      yScale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
+      x.scale.range(series.flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius])
+      y.scale.range(series.flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
     })
     addZoom(this.windowSelection, ({xScale, yScale}) => {
       const {x, y, pointSeries} = renderer.windowSelection.datum()
-      const xRescaled = {...x, scale: xScale}
-      const yRescaled = {...y, scale: yScale}
+      x.scaledValues = {...x.scaledValues, scale: xScale}
+      y.scaledValues = {...y.scaledValues, scale: yScale}
+      //TODO: solve the zoom-resize issue
+      // with this code resizing works always, but zooming does not work
+      // pointSeries.x = x.scaledValues
+      // pointSeries.y = y.scaledValues
+
+      //with this code zooming works, but resizing does only work on zoom
       renderer.windowSelection.data([{
-          ...chartWindowD,
-          x: xRescaled, y: yRescaled, pointSeries: {...pointSeries, xScale, yScale}
+        ...chartWindowD,
+        pointSeries: {...pointSeries, x: x.scaledValues, y: y.scaledValues}
       }])
+
+      //3rd Option: Maybe try to revalidate data completely on zoom before rerender
       renderer.windowSelection.dispatch('resize')
     })
   }

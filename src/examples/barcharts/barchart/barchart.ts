@@ -24,8 +24,8 @@ export function createBarCart(selector: string) {
   } as const
   const barChartArgs: BarChartUserArgs = {
     series: {
-      xValues: data.cities,
-      yValues: data.populations,
+      x: { values: data.cities },
+      y: { values: data.populations },
       categoriesTitle: 'City',
       markerTooltips: {
         tooltips: (i, d) => `City: ${d.xValue}<br/>Population: ${d.yValue}`,

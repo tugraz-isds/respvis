@@ -14,8 +14,8 @@ export function addZoom(selection: ZoomSelection, callback: (props: {
     if (!zoom) return
     const onZoom = function (e) {
       const transform: ZoomTransform = e.transform
-      const xScale = transform.rescaleX(series.xScale)
-      const yScale = transform.rescaleY(series.yScale)
+      const xScale = transform.rescaleX(series.x.scale)
+      const yScale = transform.rescaleY(series.y.scale)
       // .range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
       callback({xScale, yScale})
     }
@@ -27,8 +27,8 @@ export function addZoom(selection: ZoomSelection, callback: (props: {
   function updateRangeExtent() {
     if (!zoom) return
     selection.on('resize.autozoom', () => {
-      const [x1, widthTranslate] = series.xScale.range()
-      const [y1, heightTranslate] = series.yScale.range()
+      const [x1, widthTranslate] = series.x.scale.range()
+      const [y1, heightTranslate] = series.y.scale.range()
       const extent: [[number, number], [number, number]] = [
         [x1, heightTranslate],
         [widthTranslate, y1],

@@ -28,8 +28,7 @@ export function seriesPointValidation(data: SeriesPointArgs): SeriesPointValid {
 }
 
 export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
-  const { xValues, yValues,
-    xScale, yScale,
+  const { x, y,
     categories, categoryOrderMap,
     keysActive, labelCallback,
     bounds, key: seriesKey, flipped,
@@ -39,9 +38,9 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
   const chartElement = elementFromSelection(renderer.chartSelection)
   const drawAreaElement = elementFromSelection(renderer.drawAreaSelection)
   const radiusDefinite = getRadiusDefinite(radii, {chart: chartElement, self: drawAreaElement})
-  for (let i = 0; i < xValues.length; ++i) {
-    const xVal = xValues[i]
-    const yVal = yValues[i]
+  for (let i = 0; i < x.values.length; ++i) {
+    const xVal = x.values[i]
+    const yVal = y.values[i]
     const category = categories[i]
     const r = typeof radiusDefinite === "number" ? radiusDefinite : radiusDefinite.scale(radiusDefinite.values[i])
     const seriesCategory = `s-${seriesKey} c-${categoryOrderMap[category]}`
@@ -52,8 +51,8 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
       styleClass: `categorical-${categoryOrderMap[category]}`,
       key,
       center: {
-        x: flipped ? yScale(yVal)! : xScale(xVal)!,
-        y: flipped ? xScale(xVal)! : yScale(yVal)!,
+        x: flipped ? y.scale(yVal)! : x.scale(xVal)!,
+        y: flipped ? x.scale(xVal)! : y.scale(yVal)!,
       },
       radius: r ?? 5,
       xValue: xVal,
