@@ -53,20 +53,6 @@ export function seriesValidation(data: SeriesArgs): SeriesValid {
     return prev
   }, keysActive)
 
-  if (isScaledValuesCategorical(x)) {
-    x.categories.orderKeys.reduce((prev, c) => {
-      prev[`a-0-${c}`] = true
-      return prev
-    }, keysActive)
-  }
-
-  if (isScaledValuesCategorical(y)) {
-    y.categories.orderKeys.reduce((prev, c) => {
-      prev[`a-1-${c}`] = true
-      return prev
-    }, keysActive)
-  }
-
   return { renderer, x, y,
     categories: categoriesValid,
     bounds: data.bounds || { width: 600, height: 400 },
@@ -98,7 +84,7 @@ export function getSeriesItemAxisData(axis: AxisScaledValuesValid, index: number
   if (!isScaledValuesCategorical(axis)) return {
     styleClass: '', axisCategoryKey: ''
   }
-  const {parentKey, categories, values} = axis
+  const {parentKey, categories} = axis
   const axisKey = parentKey
   const category = categories.values[index]
   const categoryKey = categories.valueKeys[index]

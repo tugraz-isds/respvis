@@ -5,6 +5,8 @@ import toPX from 'to-px';
 import {getSeriesItemCategoryData, SeriesArgs, SeriesValid, seriesValidation} from "../../core/render/series";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 import {elementFromSelection} from "../../core/utilities/d3/util";
+import {isScaledValuesCategorical} from "../../core/data/scale/scaled-values";
+import {getAdaptedScale} from "../../core";
 
 export interface Bar extends Rect {
   category: string;
@@ -35,17 +37,20 @@ export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
   for (let i = 0; i < y.values.length; ++i) {
     const xVal = x.values[i]
     const yVal = y.values[i]
+    const xScale = getAdaptedScale(x)
+    const yScale = getAdaptedScale(y)
     const {key, seriesCategory, styleClass, label,
     axisCategoryKeyX, axisCategoryKeyY } = getSeriesItemCategoryData(seriesData, i)
 
     if (keysActive[seriesCategory] === false) continue
-    if (keysActive[axisCategoryKeyX] === false || keysActive[axisCategoryKeyY] === false) continue
+    if (isScaledValuesCategorical(x) && x.keysActive[axisCategoryKeyX] === false ||
+      isScaledValuesCategorical(y) && y.keysActive[axisCategoryKeyY] === false) continue
 
     const bar: Bar = {
-      x: flipped ? Math.min(y.scale(0)!, y.scale(yVal)!) : x.scale(xVal)!,
-      y: flipped ? x.scale(xVal)! : Math.min(y.scale(0)!, y.scale(yVal)!),
-      width: flipped ? Math.abs(y.scale(0)! - y.scale(yVal)!) : x.scale.bandwidth(),
-      height: flipped ? x.scale.bandwidth() : Math.abs(y.scale(0)! - y.scale(yVal)!),
+      x: flipped ? Math.min(yScale(0)!, yScale(yVal)!) : xScale(xVal)!,
+      y: flipped ? x.scale(xVal)! : Math.min(yScale(0)!, yScale(yVal)!),
+      width: flipped ? Math.abs(yScale(0)! - yScale(yVal)!) : xScale.bandwidth(),
+      height: flipped ? xScale.bandwidth() : Math.abs(yScale(0)! - yScale(yVal)!),
       category: label,
       styleClass, key,
     }

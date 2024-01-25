@@ -13,6 +13,7 @@ import {AxisValid} from "./axis-validation";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {axisTicksPostGenerationRender, axisTicksPreGenerationRender} from "./axis-ticks-render";
 import {tickAngleConfiguration} from "./tick-angle-configuration";
+import {getAdaptedScale} from "../../data/scale/axis-scaled-values-validation";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
@@ -76,7 +77,9 @@ function d3Axis(
   const chartElement = elementFromSelection(renderer.chartSelection)
   const configureAxisValid = getCurrentRespVal(configureAxis, {chart: chartElement, self: axisElement})
 
-  const axis = axisGenerator(scaledValues.scale)
+  const scale = getAdaptedScale(scaledValues)
+
+  const axis = axisGenerator(scale)
   configureAxisValid(axis)
   return axis;
 }

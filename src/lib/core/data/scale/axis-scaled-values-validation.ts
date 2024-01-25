@@ -1,5 +1,5 @@
 import {AxisDomain, scaleBand, scaleLinear, scaleTime,} from 'd3';
-import {ScaledValuesArg, ScaledValuesValid} from "./scaled-values";
+import {isScaledValuesCategorical, ScaledValuesArg, ScaledValuesValid} from "./scaled-values";
 import {ErrorMessages} from "../../utilities/error";
 import {validateCategories} from "../category";
 import {AxisKey} from "../../constants/types";
@@ -31,7 +31,15 @@ export function axisScaledValuesValidation(axisScaleArgs: AxisScaledValuesArg, a
     title: `Axis ${axisKey}`,
     parentKey: axisKey
   })
-  return {values, categories, parentKey: axisKey, scale: scaleBand([0, 600]).domain(values).padding(0.1)}
+
+  return {values, categories,
+    parentKey: axisKey,
+    scale: scaleBand([0, 600]).domain(values).padding(0.1),
+    keysActive: categories.orderKeys.reduce((prev, c) => {
+      prev[`${axisKey}-${c}`] = true
+      return prev
+    }, {})
+  }
 }
 
 export function isNumberArray(arr: any[]): arr is number[] {
@@ -48,4 +56,15 @@ export function isDateArray(arr: any[]): arr is Date[] {
 
 function hasValueOf(arr: any[]): arr is { valueOf: () => number }[] {
   return arr.length > 0 && typeof arr[0].valueOf === "number"
+}
+
+export function getAdaptedScale(scaledValues: AxisScaledValuesValid) {
+  if (isScaledValuesCategorical(scaledValues)) {
+    const activeDomain = scaledValues.categories.values.reduce((prev, current, i) => {
+      const key = `${scaledValues.parentKey}-${scaledValues.categories.valueKeys[i]}`
+      return scaledValues.keysActive[key] ? [...prev, current] : prev
+    }, [])
+    return scaledValues.scale.copy().domain(activeDomain)
+  }
+  return scaledValues.scale
 }

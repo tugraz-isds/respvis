@@ -11,7 +11,10 @@ type ScaledValuesCategoricalArg = { values: ToArray<string>, scale?: ScaleBand<s
   parentKey: string
 }
 type ScaledValuesCategoricalValid = Required<ScaledValuesCategoricalArg> & {
-  categories: CategoryValid
+  categories: CategoryValid,
+  keysActive: {
+    [key: string]: boolean
+  }
 }
 
 export type ScaledValuesArg<Domain> =
@@ -37,7 +40,7 @@ export function isScaledValuesLinear(arg: ScaledValuesValid<any>) : arg is Requi
   return isNumberArray(arg.values)
 }
 
-export function isScaledValuesCategorical(arg: ScaledValuesValid<any>) : arg is Required<ScaledValuesCategoricalArg> {
+export function isScaledValuesCategorical(arg: ScaledValuesValid<any>) : arg is Required<ScaledValuesCategoricalValid> {
   return isStringArray(arg.values)
 }
 
