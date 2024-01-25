@@ -94,7 +94,6 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
       const currentKey = parentS.attr('data-key')
       if (!currentKey) return;
       const {keysActive} = this.windowSelection.datum().series
-      console.log(currentKey, keysActive)
       keysActive[currentKey] = changeS.property('checked')
       this.render()
     })

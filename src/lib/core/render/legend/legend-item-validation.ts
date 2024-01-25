@@ -15,6 +15,8 @@ export function legendItemData(legendData: LegendValid): LegendItem[] {
     symbols, reverse
   } = legendData;
   const {categories, labelCallback} = series
+  if (!categories) return []
+
   const {orderMap, styleClasses, orderKeys} = categories! //TODO: Categories optional
   const categoryOrderedArray = categoryOrderMapToArray(orderMap)
   const items = categoryOrderedArray.map((c, i) => {

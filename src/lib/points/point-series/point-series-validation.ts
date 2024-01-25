@@ -1,7 +1,13 @@
 import {getRadiusDefinite} from "../../core/data/radius/radius-util";
 import {elementFromSelection} from "../../core/utilities/d3/util";
 import {RadiusArg} from "../../core/data/radius/radius-validation";
-import {SeriesArgs, SeriesUserArgs, SeriesValid, seriesValidation} from "../../core/render/series";
+import {
+  getSeriesItemCategoryData,
+  SeriesArgs,
+  SeriesUserArgs,
+  SeriesValid,
+  seriesValidation
+} from "../../core/render/series";
 import {Point} from "./point";
 import {ColorContinuous} from "../../core/data/color-continuous/color-continuous";
 
@@ -28,9 +34,7 @@ export function seriesPointValidation(data: SeriesPointArgs): SeriesPointValid {
 }
 
 export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
-  const { x, y,
-    categories, labelCallback,
-    bounds, flipped,
+  const { x, y, flipped,
     key: seriesKey, keysActive,
     radii, color, renderer } = seriesData
 
@@ -43,15 +47,12 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
     const xVal = x.values[i]
     const yVal = y.values[i]
     const r = typeof radiusDefinite === "number" ? radiusDefinite : radiusDefinite.scale(radiusDefinite.values[i])
-    const category = categories?.values[i]
-    const categoryKey = categories?.valueKeys[i]
-    const seriesCategory = `${seriesKey}${categoryKey ? ` ${categoryKey}` : ''}`
-    if (!keysActive[seriesCategory]) continue //TODO: fix keys this!
-    const key = `${seriesCategory} i-${i}`
+
+    const {key, seriesCategory, styleClass, label} = getSeriesItemCategoryData(seriesData, i)
+    if (!keysActive[seriesCategory]) continue
+
     data.push({
-      label: labelCallback(category ?? ''),
-      styleClass: (categories && category) ? `categorical-${categories.orderMap[category]}` : 'categorical-0',
-      key,
+      label, styleClass, key,
       center: {
         x: flipped ? y.scale(yVal)! : x.scale(xVal)!,
         y: flipped ? x.scale(xVal)! : y.scale(yVal)!,

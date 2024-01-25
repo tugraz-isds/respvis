@@ -26,7 +26,7 @@ export function createBarCart(selector: string) {
     series: {
       x: { values: data.cities },
       y: { values: data.populations },
-      categoriesTitle: 'City',
+      // categoriesTitle: 'City',
       markerTooltips: {
         tooltips: (i, d) => `City: ${d.xValue}<br/>Population: ${d.yValue}`,
       },
@@ -64,13 +64,13 @@ export function createBarCart(selector: string) {
       tickOrientationFlipped: tickOrientationHorizontal,
       configureAxis: (axis) => axis.tickFormat(d3.format('.2s')),
     },
-    legend: {
-      title: {
-        dependentOn: 'width',
-        scope: 'chart',
-        mapping: {0: '', 3: 'Legend'}
-      }
-    }
+    // legend: {
+    //   title: {
+    //     dependentOn: 'width',
+    //     scope: 'chart',
+    //     mapping: {0: '', 3: 'Legend'}
+    //   }
+    // }
   }
 
   const chartWindow = d3.select(selector).append('div')

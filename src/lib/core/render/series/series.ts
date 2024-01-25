@@ -48,7 +48,7 @@ export function seriesValidation(data: SeriesArgs): SeriesValid {
 
   const keysActive = {}
   keysActive[key] = true
-  categoriesValid?.orderKeys.reduce((prev, c, i) => {
+  categoriesValid?.orderKeys.reduce((prev, c) => {
     prev[`${key} ${c}`] = true
     return prev
   }, keysActive)
@@ -62,4 +62,16 @@ export function seriesValidation(data: SeriesArgs): SeriesValid {
     labelCallback: labelCallback ? labelCallback : (label: string) => label,
     flipped: flipped ?? false
   }
+}
+
+export function getSeriesItemCategoryData(series: SeriesValid, index: number) {
+  const {categories, key: seriesKey, labelCallback} = series
+
+  const category = categories?.values[index]
+  const categoryKey = categories?.valueKeys[index]
+  const seriesCategory = `${seriesKey}${categoryKey ? ` ${categoryKey}` : ''}`
+  const key = `${seriesCategory} i-${index}`
+  const styleClass = (categories && category) ? `categorical-${categories.orderMap[category]}` : 'categorical-0'
+  const label = labelCallback(category ?? '')
+  return {styleClass, key, seriesCategory, label}
 }

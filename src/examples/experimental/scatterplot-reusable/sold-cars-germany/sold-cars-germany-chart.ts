@@ -60,6 +60,10 @@ export function createChartSoldCarsGermany(selector) {
                 Mileage: ${d.radiusValue}km<br/>`
       })
     },
+      // labelCallback: (label: string) => {
+      //   // console.log(label)
+      //   return label + '1'
+      // }
     },
     bounds: {
       width: {
@@ -100,10 +104,6 @@ export function createChartSoldCarsGermany(selector) {
         scope: 'chart',
         mapping: {0: '', 3: 'Legend'}
       },
-      // labelCallback: (label: string) => {
-      //   console.log(label)
-      //   return label + '1'
-      // }
     },
     zoom: {
       in: 20,

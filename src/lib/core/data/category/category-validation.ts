@@ -64,21 +64,3 @@ export function categoryOrderMapToArray(map: CategoryOrderMap) {
   }
   return arraySorted
 }
-
-// export function
-
-export function groupByCategory<T>(values: T[], categories: string[]) {
-  const groupedData: { [category: string]: T[] } = {};
-
-  for (let i = 0; i < values.length; i++) {
-    const category = categories[i]
-    const value = values[i]
-    if (!groupedData[category]) {
-      groupedData[category] = [value]
-      continue
-    }
-    groupedData[category].push(value)
-  }
-  // const groups: T[][] = Object.values(groupedData)
-  return groupedData;
-}

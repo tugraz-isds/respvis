@@ -19,8 +19,6 @@ export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLD
   const {renderer, legend} = selection.datum()
   const {categories,
     x, y, key} = legend.series
-  const {title: categoriesTitle, orderMap: categoryOrderMap,
-    valueKeys, orderKeys} = categories! //TODO: make categories optional!
   const toolbarS = selection
     .selectAll<HTMLDivElement, any>('.toolbar')
     .data([null])
@@ -32,13 +30,19 @@ export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLD
   toolDownloadSVGRender(menuToolsItems)
 
   //categories
-  const chartElement = elementFromSelection(renderer.chartSelection)
-  const filterOptions: ToolFilterNominal = {
-    text: getCurrentRespVal(categoriesTitle, {chart: chartElement}),
-    options: categoryOrderMapToArray(categoryOrderMap),
-    keys: orderKeys.map(oKey => key + ' ' + oKey)
+  if (categories) {
+    const {title: categoriesTitle, orderMap: categoryOrderMap,
+      orderKeys} = categories
+    const chartElement = elementFromSelection(renderer.chartSelection)
+    const filterOptions: ToolFilterNominal = {
+      text: getCurrentRespVal(categoriesTitle, {chart: chartElement}),
+      options: categoryOrderMapToArray(categoryOrderMap),
+      keys: orderKeys.map(oKey => key + ' ' + oKey)
+    }
+    toolFilterNominalRender(menuToolsItems, filterOptions)
   }
-  toolFilterNominalRender(menuToolsItems, filterOptions)
+
+
 
   //catgorical x axis
   // if(isScaledValuesCategorical(x)) {

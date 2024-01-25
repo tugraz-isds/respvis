@@ -2,7 +2,7 @@ import {easeCubicOut, select, Selection, Transition} from 'd3';
 import {Rect, rectFitStroke, rectFromString, rectMinimized, rectToAttrs,} from '../../core/utilities/rect';
 import {seriesConfigTooltipsHandleEvents,} from '../../tooltip';
 import toPX from 'to-px';
-import {SeriesArgs, SeriesValid, seriesValidation} from "../../core/render/series";
+import {getSeriesItemCategoryData, SeriesArgs, SeriesValid, seriesValidation} from "../../core/render/series";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 import {elementFromSelection} from "../../core/utilities/d3/util";
 
@@ -15,69 +15,36 @@ export interface Bar extends Rect {
 
 export type SeriesBarArgs = SeriesArgs & {}
 
-export type SeriesBarValid = SeriesValid & {
-  // categories: any[];
-  // categoryScale: ScaleBand<any>;
-  // values: number[];
-  // valueScale: ScaleContinuousNumeric<number, number>;
-}
+export type SeriesBarValid = SeriesValid & {}
 
 export function seriesBarValidation(data: SeriesBarArgs): SeriesBarValid {
-  // const categories = data.categories || [];
   return {
     ...seriesValidation(data)
-    // bounds: data.bounds || { width: 600, height: 400 },
-    // categories: categories,
-    // styleClasses: data.styleClasses || 'categorical-0',
-    // categoryScale: data.categoryScale || scaleBand().domain(categories).padding(0.1),
-    // values: data.values || [],
-    // valueScale:
-    //   data.valueScale ||
-    //   scaleLinear()
-    //     .domain([0, Math.max(...(data.values || []))])
-    //     .nice(),
-    // flipped: data.flipped || false,
-    // keys: data.keys || categories,
-    // ...seriesConfigTooltipsData<SVGRectElement, Bar>(data),
-    // tooltipsEnabled: data.tooltipsEnabled || true,
-    // tooltips:
-    //   data.tooltips || ((element, data) => `Category: ${data.category}<br/>Value: ${data.value}`),
   };
 }
 
 export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
-  const {x, y,
-    categories, categoryOrderMap, labelCallback,
-    key: seriesKey, keysActive,
-    renderer, bounds} = seriesData;
-  //categories, categoryScale, values, valueScale, keys, styleClasses
-  // if (!flipped) {
-  //   categoryScale.range([0, bounds.width]);
-  //   valueScale.range([bounds.height, 0]);
-  // } else {
-  //   categoryScale.range([0, bounds.height]);
-  //   valueScale.range([0, bounds.width]);
-  // }
+  const { renderer,
+    x, y,
+    keysActive, key: seriesKey,
+  } = seriesData
   const flipped = getCurrentRespVal(seriesData.flipped, {chart: elementFromSelection(renderer.chartSelection)})
+  const data: Bar[] = []
 
-
-  const data: Bar[] = [];
-
+  if (!keysActive[seriesKey]) return data
   for (let i = 0; i < y.values.length; ++i) {
     const xVal = x.values[i]
     const yVal = y.values[i]
-    const category = categories[i]
-    const seriesCategory = `s-${seriesKey} c-${categoryOrderMap[category]}`
+    const {key, seriesCategory, styleClass, label} = getSeriesItemCategoryData(seriesData, i)
     if (!keysActive[seriesCategory]) continue
-    const key = `s-${seriesKey} c-${categoryOrderMap[category]} i-${i}`
+
     const bar: Bar = {
       x: flipped ? Math.min(y.scale(0)!, y.scale(yVal)!) : x.scale(xVal)!,
       y: flipped ? x.scale(xVal)! : Math.min(y.scale(0)!, y.scale(yVal)!),
       width: flipped ? Math.abs(y.scale(0)! - y.scale(yVal)!) : x.scale.bandwidth(),
       height: flipped ? x.scale.bandwidth() : Math.abs(y.scale(0)! - y.scale(yVal)!),
-      category: labelCallback(xVal),
-      styleClass: `categorical-${categoryOrderMap[category]}`,
-      key,
+      category: label,
+      styleClass, key,
     }
     data.push(bar);
   }
