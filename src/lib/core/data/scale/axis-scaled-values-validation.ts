@@ -36,7 +36,7 @@ export function isStringArray(arr: any[]): arr is string[] {
   return arr.length > 0 && typeof arr[0] === 'string'
 }
 
-function isDateArray(arr: any[]): arr is Date[] {
+export function isDateArray(arr: any[]): arr is Date[] {
   return arr.length > 0 && arr[0] instanceof Date
 }
 

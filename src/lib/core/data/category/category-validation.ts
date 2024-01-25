@@ -1,8 +1,45 @@
+import {RespValOptional} from "../responsive-value/responsive-value";
+import {arrayAlignLengths} from "../../utilities/array";
+import {CategoryKey} from "../../constants/types";
+
 export const defaultCategory = 'category-default'
-export function validateCategories(values: unknown[], categories?: string[]) {
-  if (!categories) return values.map(() => defaultCategory)
-  const lowerLength = values.length < categories.length ? values.length : categories.length
-  return categories.slice(0, lowerLength)
+
+export type CategoryUserArgs = {
+  values: string[],
+  title: RespValOptional<string>,
+}
+
+export type CategoryArgs = CategoryUserArgs & {
+  parentKey: string
+}
+
+export type CategoryValid = CategoryArgs & {
+  orderMap: Record<string, number>
+  valueKeys: CategoryKey[]
+  orderKeys: CategoryKey[]
+  styleClasses: string[]
+}
+
+export function validateCategories(referenceData: unknown[], categoryArgs?: CategoryArgs): CategoryValid | undefined {
+  if (!categoryArgs) return undefined
+  const { values, parentKey, title} = categoryArgs
+
+  // console.log(categoryArgs, t)
+  const [categoriesAligned] = arrayAlignLengths(categoryArgs.values, referenceData)
+  const orderArray = getCategoryOrderArray(categoriesAligned)
+  const orderMap = getCategoryOrderMap(categoriesAligned)
+  const valueKeys = categoriesAligned.map((category) => `c-${orderMap[category]}` as CategoryKey)
+  const orderKeys = orderArray.map((_, i) => `c-${i}` as CategoryKey)
+  const styleClasses = orderArray.map((l, i) => `categorical-${i}`)
+  return {
+    title, //?? 'Categories',
+    values,
+    parentKey,
+    orderMap,
+    valueKeys,
+    orderKeys,
+    styleClasses,
+  }
 }
 
 export function getCategoryOrderArray(categoryDim: string[]) {

@@ -26,11 +26,11 @@ export type ChartPointValid = ChartCartesianValid & {
 export function scatterPlotValidation(scatterArgs: ScatterPlotArgs): ChartPointValid {
   const {renderer, x, y, color, zoom,
     legend, bounds,
-    flipped, title, subTitle
+    title, subTitle
   } = scatterArgs
-  const series = seriesPointValidation({...scatterArgs.series, key: '0', renderer})
+  const series = seriesPointValidation({...scatterArgs.series, key: 's-0', renderer})
   const cartesianData =
-    chartCartesianValidation({renderer, series, x, y, zoom, legend, bounds, flipped, title, subTitle})
+    chartCartesianValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
 
   return {
     pointSeries: series,

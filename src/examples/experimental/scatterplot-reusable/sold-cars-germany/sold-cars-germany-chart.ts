@@ -36,7 +36,10 @@ export function createChartSoldCarsGermany(selector) {
         values: prices,
         scale: scales.yScale
       },
-      categories: makes,
+      categories: {
+        values: makes,
+        title: 'Makes'
+      },
       radii: {
         values: mileages,
         scale: {

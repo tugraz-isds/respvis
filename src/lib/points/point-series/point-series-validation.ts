@@ -29,11 +29,12 @@ export function seriesPointValidation(data: SeriesPointArgs): SeriesPointValid {
 
 export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
   const { x, y,
-    categories, categoryOrderMap,
-    keysActive, labelCallback,
-    bounds, key: seriesKey, flipped,
+    categories, labelCallback,
+    bounds, flipped,
+    key: seriesKey, keysActive,
     radii, color, renderer } = seriesData
 
+  if (!keysActive[seriesKey]) return []
   const data: Point[] = []
   const chartElement = elementFromSelection(renderer.chartSelection)
   const drawAreaElement = elementFromSelection(renderer.drawAreaSelection)
@@ -41,14 +42,15 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
   for (let i = 0; i < x.values.length; ++i) {
     const xVal = x.values[i]
     const yVal = y.values[i]
-    const category = categories[i]
     const r = typeof radiusDefinite === "number" ? radiusDefinite : radiusDefinite.scale(radiusDefinite.values[i])
-    const seriesCategory = `s-${seriesKey} c-${categoryOrderMap[category]}`
-    if (!keysActive[seriesCategory]) continue
-    const key = `s-${seriesKey} c-${categoryOrderMap[category]} i-${i}`
+    const category = categories?.values[i]
+    const categoryKey = categories?.valueKeys[i]
+    const seriesCategory = `${seriesKey}${categoryKey ? ` ${categoryKey}` : ''}`
+    if (!keysActive[seriesCategory]) continue //TODO: fix keys this!
+    const key = `${seriesCategory} i-${i}`
     data.push({
-      label: labelCallback(category),
-      styleClass: `categorical-${categoryOrderMap[category]}`,
+      label: labelCallback(category ?? ''),
+      styleClass: (categories && category) ? `categorical-${categories.orderMap[category]}` : 'categorical-0',
       key,
       center: {
         x: flipped ? y.scale(yVal)! : x.scale(xVal)!,

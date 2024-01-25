@@ -14,14 +14,15 @@ export function legendItemData(legendData: LegendValid): LegendItem[] {
   const { series,
     symbols, reverse
   } = legendData;
-  const {styleClasses, keys, categoryOrderMap, labelCallback} = series
-  const categoryOrderedArray = categoryOrderMapToArray(categoryOrderMap)
+  const {categories, labelCallback} = series
+  const {orderMap, styleClasses, orderKeys} = categories! //TODO: Categories optional
+  const categoryOrderedArray = categoryOrderMapToArray(orderMap)
   const items = categoryOrderedArray.map((c, i) => {
     return {
       label: labelCallback(c),
       styleClass: arrayIs(styleClasses) ? styleClasses[i] : styleClasses,
       symbol: arrayIs(symbols) ? symbols[i] : symbols,
-      key: keys[i],
+      key: `${series.key} ${orderKeys[i]}`,
     };
   });
   return reverse ? items.reverse() : items
