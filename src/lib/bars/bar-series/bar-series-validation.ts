@@ -35,8 +35,11 @@ export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
   for (let i = 0; i < y.values.length; ++i) {
     const xVal = x.values[i]
     const yVal = y.values[i]
-    const {key, seriesCategory, styleClass, label} = getSeriesItemCategoryData(seriesData, i)
-    if (!keysActive[seriesCategory]) continue
+    const {key, seriesCategory, styleClass, label,
+    axisCategoryKeyX, axisCategoryKeyY } = getSeriesItemCategoryData(seriesData, i)
+
+    if (keysActive[seriesCategory] === false) continue
+    if (keysActive[axisCategoryKeyX] === false || keysActive[axisCategoryKeyY] === false) continue
 
     const bar: Bar = {
       x: flipped ? Math.min(y.scale(0)!, y.scale(yVal)!) : x.scale(xVal)!,

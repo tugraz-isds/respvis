@@ -18,6 +18,7 @@ export type Orientation = 'horizontal' | 'vertical'
 export type RotationDirection = 'clockwise' | 'counterclockwise'
 
 
+export type AxisKey = `a-${number}`
 export type SeriesKey = `s-${number}`
 export type CategoryKey = `c-${number}`
 export type IndividualKey = `i-${number}`

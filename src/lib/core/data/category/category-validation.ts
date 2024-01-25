@@ -20,8 +20,7 @@ export type CategoryValid = CategoryArgs & {
   styleClasses: string[]
 }
 
-export function validateCategories(referenceData: unknown[], categoryArgs?: CategoryArgs): CategoryValid | undefined {
-  if (!categoryArgs) return undefined
+export function validateCategories(referenceData: unknown[], categoryArgs: CategoryArgs): CategoryValid  {
   const { values, parentKey, title} = categoryArgs
 
   // console.log(categoryArgs, t)

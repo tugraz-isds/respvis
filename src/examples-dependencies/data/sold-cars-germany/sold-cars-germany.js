@@ -5532,9 +5532,9 @@ export function getTopMakesData(numberTopMakes) {
  carData.forEach(entry => {
   let index = topMakesNames.findIndex((value) => value === entry.make)
   if (index === -1) index = 5
-  prices.push(entry.price)
-  horsePower.push(entry.hp)
-  mileages.push(entry.mileage)
+  prices.push(parseInt(entry.price))
+  horsePower.push(parseInt(entry.hp))
+  mileages.push(parseInt(entry.mileage))
   makes.push(index === 5 ? 'Other' : entry.make)
  })
  return {prices, horsePower, mileages, makes, topMakesNames}

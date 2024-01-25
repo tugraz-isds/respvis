@@ -25,7 +25,7 @@ export function barChartValidation(chartArgs: BarChartArgs): BarChartValid {
     legend, bounds,
     title, subTitle
   } = chartArgs
-  const series = seriesBarValidation({...chartArgs.series, key: '0', renderer})
+  const series = seriesBarValidation({...chartArgs.series, key: 's-0', renderer})
   const cartesianData =
     chartCartesianValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
   return {

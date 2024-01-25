@@ -8,6 +8,7 @@ import {elementFromSelection} from "../../utilities/d3/util";
 import {LegendValid} from "../legend";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {categoryOrderMapToArray} from "../../data/category";
+import {isScaledValuesCategorical} from "../../data/scale/scaled-values";
 
 type ToolbarValid = RenderArgs & {
   x: AxisValid,
@@ -29,11 +30,11 @@ export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLD
   const menuToolsItems = toolbarS.selectAll('.menu-tools > .items')
   toolDownloadSVGRender(menuToolsItems)
 
+  const chartElement = elementFromSelection(renderer.chartSelection)
   //categories
   if (categories) {
     const {title: categoriesTitle, orderMap: categoryOrderMap,
       orderKeys} = categories
-    const chartElement = elementFromSelection(renderer.chartSelection)
     const filterOptions: ToolFilterNominal = {
       text: getCurrentRespVal(categoriesTitle, {chart: chartElement}),
       options: categoryOrderMapToArray(categoryOrderMap),
@@ -42,18 +43,16 @@ export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLD
     toolFilterNominalRender(menuToolsItems, filterOptions)
   }
 
-
-
-  //catgorical x axis
-  // if(isScaledValuesCategorical(x)) {
-  //   console.log(x.scale)
-  //   const filterOptions: ToolFilterNominal = {
-  //     text: getCurrentRespVal('X-Axis Categories', {chart: chartElement}),
-  //     options: categoryOrderMapToArray(categoryOrderMap),
-  //     keys
-  //   }
-  //   toolFilterNominalRender(menuToolsItems, filterOptions)
-  // }
+  // catgorical x axis
+  if(isScaledValuesCategorical(x)) {
+    // console.log(x.scale)
+    const filterOptions: ToolFilterNominal = {
+      text: getCurrentRespVal('X-Axis Categories', {chart: chartElement}),
+      options: categoryOrderMapToArray(x.categories.orderMap),
+      keys: x.categories.orderKeys.map(oKey => `${x.parentKey}-${oKey}`)
+    }
+    toolFilterNominalRender(menuToolsItems, filterOptions)
+  }
 }
 
 function menuToolsRender(selection: Selection<HTMLDivElement>) {

@@ -1,4 +1,4 @@
-import {select, Selection} from 'd3';
+import {Selection} from 'd3';
 import {
   chartWindowRender,
   ChartWindowValid,
@@ -8,11 +8,10 @@ import {
   toolbarRender,
 } from '../../core';
 import {scatterPlotRender} from "./scatter-plot-render";
-import {ScatterPlotArgs, ChartPointValid, scatterPlotValidation} from "./scatter-plot-validation";
+import {ChartPointValid, ScatterPlotArgs, scatterPlotValidation} from "./scatter-plot-validation";
 import {addZoom} from "../../core/data/zoom";
 import {getMaxRadius} from "../../core/data/radius/radius-util";
 import {elementFromSelection} from "../../core/utilities/d3/util";
-import {SVGHTMLElement} from "../../core/constants/types";
 import {CartesianChart} from "../../core/render/charts/chart-cartesian/cartesian-chart";
 
 export type ScatterplotData = ChartWindowValid & ChartPointValid
@@ -82,20 +81,6 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
 
       //3rd Option: Maybe try to revalidate data completely on zoom before rerender
       renderer.windowSelection.dispatch('resize')
-    })
-  }
-
-  private addFilterListener() {
-    this.addCustomListener('change', (e) => {
-      if (!e.target) return
-      const changeS = select(e.target as SVGHTMLElement)
-      if (changeS.attr('type') !== 'checkbox') return
-      const parentS = changeS.select(function() {return this.parentElement})
-      const currentKey = parentS.attr('data-key')
-      if (!currentKey) return;
-      const {keysActive} = this.windowSelection.datum().series
-      keysActive[currentKey] = changeS.property('checked')
-      this.render()
     })
   }
 }

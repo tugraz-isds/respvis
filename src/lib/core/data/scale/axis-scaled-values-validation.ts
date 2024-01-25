@@ -1,13 +1,14 @@
 import {AxisDomain, scaleBand, scaleLinear, scaleTime,} from 'd3';
 import {ScaledValuesArg, ScaledValuesValid} from "./scaled-values";
 import {ErrorMessages} from "../../utilities/error";
+import {validateCategories} from "../category";
+import {AxisKey} from "../../constants/types";
 
 export type AxisDomainRV = Extract<AxisDomain, number | string | Date>
 export type AxisScaledValuesArg = ScaledValuesArg<AxisDomainRV>
 export type AxisScaledValuesValid = ScaledValuesValid<AxisDomainRV>
 
-export function axisScaledValuesValidation(axisScaleArgs: AxisScaledValuesArg): AxisScaledValuesValid {
-  //Cases: number | string | Date | { valueOf(): number}
+export function axisScaledValuesValidation(axisScaleArgs: AxisScaledValuesArg, axisKey: AxisKey): AxisScaledValuesValid {
   const {values, scale} = axisScaleArgs
   if (scale) return {values, scale} as AxisScaledValuesValid //TODO: additional check with error message
 
@@ -25,7 +26,12 @@ export function axisScaledValuesValidation(axisScaleArgs: AxisScaledValuesArg): 
     return {values: valuesNum, scale: scaleLinear().domain(extent).nice()}
   }
 
-  return {values, scale: scaleBand([0, 600]).domain(values).padding(0.1)}
+  const categories = validateCategories(values, {
+    values,
+    title: `Axis ${axisKey}`,
+    parentKey: axisKey
+  })
+  return {values, categories, parentKey: axisKey, scale: scaleBand([0, 600]).domain(values).padding(0.1)}
 }
 
 export function isNumberArray(arr: any[]): arr is number[] {
