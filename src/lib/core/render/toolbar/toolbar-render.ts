@@ -46,6 +46,8 @@ function categorySeriesRender(menuToolsItemsS: Selection, toolbarValid: ToolbarV
   const {renderer, legend} = toolbarValid
   const {categories, key} = legend.series
   const chartElement = elementFromSelection(renderer.chartSelection)
+
+  toolFilterNominalRender(menuToolsItemsS, {text: 'Main Series', options: ['Series'], keys: [key], class: 'filter-series'})
   if (categories) {
     const {title: categoriesTitle, orderMap: categoryOrderMap,
       orderKeys} = categories
@@ -59,7 +61,6 @@ function categorySeriesRender(menuToolsItemsS: Selection, toolbarValid: ToolbarV
     toolFilterNominalRender(menuToolsItemsS, filterOptions)
     // toolFilterNominalRender(menuToolsItemsS, {text: categoryText, options: [categoryText], keys: [key], class: 'filter-series'})
   }
-  toolFilterNominalRender(menuToolsItemsS, {text: 'Main Series', options: ['Series'], keys: [key], class: 'filter-series'})
 }
 
 function categoryAxisRender(menuToolsItemsS: Selection, toolbarValid: ToolbarValid, axis: 'x' | 'y') {
