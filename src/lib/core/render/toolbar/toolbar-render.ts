@@ -17,42 +17,17 @@ type ToolbarValid = RenderArgs & {
 }
 
 export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLDivElement, D>): void {
-  const {renderer, legend} = selection.datum()
-  const {categories,
-    x, y, key} = legend.series
   const toolbarS = selection
     .selectAll<HTMLDivElement, any>('.toolbar')
     .data([null])
     .join('div')
     .classed('toolbar', true)
-
   menuToolsRender(toolbarS)
   const menuToolsItems = toolbarS.selectAll('.menu-tools > .items')
   toolDownloadSVGRender(menuToolsItems)
-
-  const chartElement = elementFromSelection(renderer.chartSelection)
-  //categories
-  if (categories) {
-    const {title: categoriesTitle, orderMap: categoryOrderMap,
-      orderKeys} = categories
-    const filterOptions: ToolFilterNominal = {
-      text: getCurrentRespVal(categoriesTitle, {chart: chartElement}),
-      options: categoryOrderMapToArray(categoryOrderMap),
-      keys: orderKeys.map(oKey => key + ' ' + oKey)
-    }
-    toolFilterNominalRender(menuToolsItems, filterOptions)
-  }
-
-  // catgorical x axis
-  if(isScaledValuesCategorical(x)) {
-    // console.log(x.scale)
-    const filterOptions: ToolFilterNominal = {
-      text: getCurrentRespVal('X-Axis Categories', {chart: chartElement}),
-      options: categoryOrderMapToArray(x.categories.orderMap),
-      keys: x.categories.orderKeys.map(oKey => `${x.parentKey}-${oKey}`)
-    }
-    toolFilterNominalRender(menuToolsItems, filterOptions)
-  }
+  categorySeriesRender(menuToolsItems, selection.datum())
+  categoryAxisRender(menuToolsItems, selection.datum(), 'x')
+  categoryAxisRender(menuToolsItems, selection.datum(), 'y')
 }
 
 function menuToolsRender(selection: Selection<HTMLDivElement>) {
@@ -65,4 +40,39 @@ function menuToolsRender(selection: Selection<HTMLDivElement>) {
     .selectChildren('.chevron').remove()
   menuTools.selectChildren('.text').text('☰')
   return menuTools
+}
+
+function categorySeriesRender(menuToolsItemsS: Selection, toolbarValid: ToolbarValid) {
+  const {renderer, legend} = toolbarValid
+  const {categories, key} = legend.series
+  const chartElement = elementFromSelection(renderer.chartSelection)
+  if (categories) {
+    const {title: categoriesTitle, orderMap: categoryOrderMap,
+      orderKeys} = categories
+    const categoryText = getCurrentRespVal(categoriesTitle, {chart: chartElement})
+    const filterOptions: ToolFilterNominal = {
+      text: categoryText,
+      options: [...categoryOrderMapToArray(categoryOrderMap), categoryText],
+      keys: [...orderKeys.map(oKey => key + ' ' + oKey), key],
+      class: 'filter-category'
+    }
+    toolFilterNominalRender(menuToolsItemsS, filterOptions)
+    // toolFilterNominalRender(menuToolsItemsS, {text: categoryText, options: [categoryText], keys: [key], class: 'filter-series'})
+  }
+  toolFilterNominalRender(menuToolsItemsS, {text: 'Main Series', options: ['Series'], keys: [key], class: 'filter-series'})
+}
+
+function categoryAxisRender(menuToolsItemsS: Selection, toolbarValid: ToolbarValid, axis: 'x' | 'y') {
+  const {renderer} = toolbarValid
+  const axisScaledValues = toolbarValid[axis].scaledValues
+  const chartElement = elementFromSelection(renderer.chartSelection)
+  if(isScaledValuesCategorical(axisScaledValues)) {
+    const filterOptions: ToolFilterNominal = {
+      text: getCurrentRespVal('X-Axis Categories', {chart: chartElement}),
+      options: categoryOrderMapToArray(axisScaledValues.categories.orderMap),
+      keys: axisScaledValues.categories.orderKeys.map(oKey => `${axisScaledValues.parentKey}-${oKey}`),
+      class: `filter-axis-${axis}`
+    }
+    toolFilterNominalRender(menuToolsItemsS, filterOptions)
+  }
 }

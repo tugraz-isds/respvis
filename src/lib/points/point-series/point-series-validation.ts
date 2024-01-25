@@ -48,8 +48,11 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
     const yVal = y.values[i]
     const r = typeof radiusDefinite === "number" ? radiusDefinite : radiusDefinite.scale(radiusDefinite.values[i])
 
-    const {key, seriesCategory, styleClass, label} = getSeriesItemCategoryData(seriesData, i)
-    if (!keysActive[seriesCategory]) continue
+    const {key, seriesCategory, styleClass, label,
+      axisCategoryKeyX, axisCategoryKeyY} = getSeriesItemCategoryData(seriesData, i)
+
+    if (keysActive[seriesCategory] === false) continue
+    if (keysActive[axisCategoryKeyX] === false || keysActive[axisCategoryKeyY] === false) continue
 
     data.push({
       label, styleClass, key,

@@ -1,12 +1,12 @@
-import {BaseType, create, select, Selection} from 'd3';
-import { menuDropdownRender } from '../../menu-dropdown';
-import { SeriesCheckbox, seriesCheckboxData, seriesCheckboxRender } from '../../series-checkbox';
-import {SVGHTMLElement} from "../../constants/types";
+import {create, select, Selection} from 'd3';
+import {menuDropdownRender} from '../../menu-dropdown';
+import {SeriesCheckbox, seriesCheckboxData, seriesCheckboxRender} from '../../series-checkbox';
 
 export interface ToolFilterNominal {
-  text: string;
-  options: string[];
-  keys: string[];
+  text: string
+  options: string[]
+  keys: string[]
+  class: string
 }
 
 export function toolFilterNominalData(data: Partial<ToolFilterNominal>): ToolFilterNominal {
@@ -15,14 +15,16 @@ export function toolFilterNominalData(data: Partial<ToolFilterNominal>): ToolFil
     text: data.text || 'Filter',
     options: options,
     keys: data.keys || options,
+    class: '',
   };
 }
 
 export function toolFilterNominalRender(selection: Selection, data: ToolFilterNominal): void {
-  const nominalSelection = selection.selectAll<HTMLLIElement, ToolFilterNominal>('.tool-filter-nominal')
+  const nominalSelection = selection
+    .selectAll<HTMLLIElement, ToolFilterNominal>(`.tool-filter-nominal.${data.class}`)
     .data([data])
     .join('li')
-    .classed('tool-filter-nominal', true).call((s) => menuDropdownRender(s));
+    .classed(`tool-filter-nominal ${data.class}`, true).call((s) => menuDropdownRender(s));
 
   nominalSelection.each((d, i, g) => {
     const s = select(g[i]);
