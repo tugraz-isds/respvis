@@ -1,10 +1,12 @@
 import {Selection} from 'd3';
 import {chartBaseRender, chartCartesianAxisRender} from '../../core';
-import {SeriesPointValid} from '../point-series/point-series-validation';
+import {seriesPointCreatePoints, SeriesPointValid} from '../point-series/point-series-validation';
 import {legendRender} from "../../core/render/legend";
 import {ChartPointValid} from "./scatter-plot-validation";
 import {pointSeriesRender} from "../point-series/point-series-render";
 import {legendAddHover} from "../../core/render/legend/legend-event";
+import {SeriesLabel, seriesLabelData, seriesLabelRender} from "../../bars";
+import {Point} from "../point-series/point";
 
 export type ScatterplotChartSelection = Selection<SVGSVGElement | SVGGElement, ChartPointValid>;
 
@@ -26,4 +28,23 @@ function renderAllSeriesOfPoints(chartS: ScatterplotChartSelection) {
     .data<SeriesPointValid>([pointSeries])
     .join('svg')
     .call(pointSeriesRender)
+
+
+  //TODO: improve this improvised label series
+  // const points = seriesPointCreatePoints(pointSeries)
+  // const labelData = seriesLabelData({
+  //   positions: points.map((p) => {
+  //     return {x: p.center.x + 13, y: p.center.y + 13}
+  //   }),
+  //   keys: points.map((p) => p.key),
+  //   texts: points.map((p, markerI) =>
+  //     p.radiusValue.toString() + '€'
+  //   ),
+  // });
+  // chartS
+  //   .selectAll('.draw-area')
+  //   .selectAll<SVGGElement, SeriesLabel>('.series-label')
+  //   .data([labelData])
+  //   .join('g')
+  //   .call((s) => seriesLabelRender(s));
 }

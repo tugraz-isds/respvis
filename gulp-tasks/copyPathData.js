@@ -37,6 +37,7 @@ const dataSoldCarsGermanyPaths = {
     `${exampleDir}/experimental/parcoord/data`,
     `${exampleDir}/experimental/scatterplot-colourscale/data`,
     `${exampleDir}/experimental/scatterplot-reusable/sold-cars-germany/data`,
+    `${exampleDir}/experimental/scatterplot-labels/sold-cars-germany/data`,
     `${exampleDir}/article/charts/sold-cars-germany/data`
   ]
 }

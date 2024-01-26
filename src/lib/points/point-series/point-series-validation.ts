@@ -11,7 +11,7 @@ import {
 import {Point} from "./point";
 import {ColorContinuous} from "../../core/data/color-continuous/color-continuous";
 import {isScaledValuesCategorical} from "../../core/data/scale/scaled-values";
-import {getAdaptedScale} from "../../core";
+import {AxisScaledValuesValid, getAdaptedScale} from "../../core";
 
 export type SeriesPointUserArgs = SeriesUserArgs & {
   radii?: RadiusArg
@@ -45,11 +45,11 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
   const chartElement = elementFromSelection(renderer.chartSelection)
   const drawAreaElement = elementFromSelection(renderer.drawAreaSelection)
   const radiusDefinite = getRadiusDefinite(radii, {chart: chartElement, self: drawAreaElement})
-  for (let i = 0; i < x.values.length; ++i) {
-    const xVal = x.values[i]
-    const yVal = y.values[i]
-    const xScale = getAdaptedScale(x)
-    const yScale = getAdaptedScale(y)
+  for (let i = 0; i < x.values.length; i++) {
+    const xFlipped = flipped ? y : x
+    const yFlipped = flipped ? x : y
+    const xScale = getAdaptedScale(xFlipped)
+    const yScale = getAdaptedScale(yFlipped)
     const r = typeof radiusDefinite === "number" ? radiusDefinite : radiusDefinite.scale(radiusDefinite.values[i])
 
     const {key, seriesCategory, styleClass, label,
@@ -59,11 +59,22 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
     if (isScaledValuesCategorical(x) && x.keysActive[axisCategoryKeyX] === false ||
       isScaledValuesCategorical(y) && y.keysActive[axisCategoryKeyY] === false) continue
 
+    const calcGraphicValue = (scaledValues: AxisScaledValuesValid, index: number) => {
+      if (isScaledValuesCategorical(scaledValues)) {
+        return scaledValues.scale(scaledValues.values[index])! + scaledValues.scale.bandwidth() / 2
+      }
+      return scaledValues.scale(scaledValues.values[index])!
+    }
+    const xVal = xFlipped.values[i]
+    const xGraphVal = calcGraphicValue(xFlipped, i)
+    const yVal = yFlipped.values[i]
+    const yGraphVal = calcGraphicValue(yFlipped, i)
+
     data.push({
       label, styleClass, key,
       center: {
-        x: flipped ? yScale(yVal)! : xScale(xVal)!,
-        y: flipped ? xScale(xVal)! : yScale(yVal)!,
+        x: xGraphVal,
+        y: yGraphVal,
       },
       radius: r ?? 5,
       xValue: xVal,
@@ -75,4 +86,5 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
 
   return data;
 }
+
 
