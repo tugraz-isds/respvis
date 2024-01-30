@@ -3,11 +3,14 @@ import {SVGHTMLElement} from "../../constants/types";
 import {ChartWindowArgs, ChartWindowValid, validateChartWindow} from "../chart-window";
 import {ChartBaseValid} from "./chart-base";
 import {Renderer} from "./renderer";
+import {resizeEventListener} from "../../resize-event-dispatcher";
+import {throttle} from "../../utilities/d3/util";
 
 type ChartValid = ChartWindowValid & ChartBaseValid
 
 export abstract class Chart implements Renderer {
   private addedListeners = false
+  protected initialRenderHappened = false
   abstract windowSelection: Selection<SVGHTMLElement, ChartValid>
   protected readonly initialWindowData: ChartWindowValid
   chartSelection?: Selection<SVGHTMLElement>
@@ -23,6 +26,7 @@ export abstract class Chart implements Renderer {
 
   buildChart() {
     this.render()
+    this.initialRenderHappened = true
     if (this.addedListeners) return
     this.addBuiltInListeners()
     this.addedListeners = true
@@ -39,9 +43,10 @@ export abstract class Chart implements Renderer {
 
   private addFinalListeners() {
     const instance = this
-    this.windowSelection.on('resize.final', () => {
-      instance.render()
-    });
+    resizeEventListener(this.windowSelection)
+    const rerender = () => instance.render()
+    const throttledRerender = throttle(rerender, 50)
+    this.windowSelection.on('resize.final', rerender)
   }
 
   protected abstract addBuiltInListeners(): void

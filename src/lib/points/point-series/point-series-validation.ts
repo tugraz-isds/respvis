@@ -12,6 +12,7 @@ import {Point} from "./point";
 import {ColorContinuous} from "../../core/data/color-continuous/color-continuous";
 import {isScaledValuesCategorical} from "../../core/data/scale/scaled-values";
 import {AxisScaledValuesValid, getAdaptedScale} from "../../core";
+import {ScaleBand, ScaleLinear} from "d3";
 
 export type SeriesPointUserArgs = SeriesUserArgs & {
   radii?: RadiusArg
@@ -48,8 +49,6 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
   for (let i = 0; i < x.values.length; i++) {
     const xFlipped = flipped ? y : x
     const yFlipped = flipped ? x : y
-    const xScale = getAdaptedScale(xFlipped)
-    const yScale = getAdaptedScale(yFlipped)
     const r = typeof radiusDefinite === "number" ? radiusDefinite : radiusDefinite.scale(radiusDefinite.values[i])
 
     const {key, seriesCategory, styleClass, label,
@@ -61,9 +60,11 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
 
     const calcGraphicValue = (scaledValues: AxisScaledValuesValid, index: number) => {
       if (isScaledValuesCategorical(scaledValues)) {
-        return scaledValues.scale(scaledValues.values[index])! + scaledValues.scale.bandwidth() / 2
+        const scale = getAdaptedScale(scaledValues) as ScaleBand<string>
+        return scale(scaledValues.values[index])! + scale.bandwidth() / 2
       }
-      return scaledValues.scale(scaledValues.values[index])!
+      const scale = getAdaptedScale(scaledValues) as ScaleLinear<number, number>
+      return scale(scaledValues.values[index])!
     }
     const xVal = xFlipped.values[i]
     const xGraphVal = calcGraphicValue(xFlipped, i)
@@ -81,7 +82,7 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
       yValue: yVal,
       color: color?.scale(color?.values[i]),
       radiusValue: typeof radiusDefinite !== "number" ? radiusDefinite.values[i] : undefined
-    });
+    })
   }
 
   return data;

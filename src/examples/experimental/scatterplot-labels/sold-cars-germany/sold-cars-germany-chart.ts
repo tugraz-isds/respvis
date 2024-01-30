@@ -101,7 +101,7 @@ export function createChartSoldCarsGermany(selector) {
       title: {
         dependentOn: 'width',
         scope: 'chart',
-        mapping: {0: '', 3: 'Legend'}
+        mapping: {0: '', 2: 'Car Make'}
       },
     },
     zoom: {

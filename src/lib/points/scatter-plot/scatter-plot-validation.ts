@@ -10,7 +10,7 @@ export type ScatterPlotArgs = Omit<ChartCartesianUserArgs, 'series'> & {
 }
 
 export type ChartPointValid = ChartCartesianValid & {
-  pointSeries: SeriesPointValid;
+  series: SeriesPointValid;
   color?: {
     colorDim: number[],
     colorScale: ScaleContinuous<any, string>
@@ -33,7 +33,7 @@ export function scatterPlotValidation(scatterArgs: ScatterPlotArgs): ChartPointV
     chartCartesianValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
 
   return {
-    pointSeries: series,
+    series: series,
     ...cartesianData,
     color
   }

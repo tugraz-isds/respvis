@@ -1,5 +1,5 @@
 import {Selection} from "d3";
-import {chartWindowRender, ChartWindowValid, layouterCompute, resizeEventListener, toolbarRender} from "../../core";
+import {chartWindowRender, ChartWindowValid, layouterCompute, toolbarRender} from "../../core";
 import {BarChartArgs, BarChartValid, barChartValidation} from "./bar-chart-validation";
 import {barChartRender} from "./bar-chart-render";
 import {CartesianChart} from "../../core/render/charts/chart-cartesian/cartesian-chart";
@@ -19,17 +19,15 @@ export class BarChart extends CartesianChart {
   }
 
   public render(): void {
+    super.render()
     const {
       chartS,
       layouterS
     } = chartWindowRender(this.windowSelection)
     toolbarRender(this.windowSelection)
     barChartRender(chartS)
-    layouterS.on('boundschange.chartwindowbar', () => {
-      barChartRender(chartS)
-      layouterS.call((s) => layouterCompute(s, false))
-    }).call((s) => layouterCompute(s))
-    resizeEventListener(this.windowSelection)
+    const boundsChanged = layouterCompute(layouterS)
+    if (boundsChanged) this.render()
   }
 
   protected override addBuiltInListeners() {

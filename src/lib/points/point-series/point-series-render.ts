@@ -55,11 +55,11 @@ export function seriesPointJoin(
           )
           .call((s) => seriesSelection.dispatch('exit', {detail: {selection: s}}))
     )
-    .attr('cx', (d) => d.center.x)
-    .attr('cy', (d) => d.center.y)
     .each((d, i, g) => {
       const s = select(g[i])
       const t = s.transition('update').ease(easeCubicOut)
+      t.attr('cx', d.center.x)
+        .attr('cy', d.center.y)
       circleToAttrs(t, d)
     })
     .attr('data-style', (d) => !d.color ? d.styleClass : null)

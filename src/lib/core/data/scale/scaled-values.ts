@@ -5,12 +5,12 @@ import {isDateArray, isNumberArray, isStringArray} from "./axis-scaled-values-va
 import {CategoryValid} from "../category";
 
 //TODO: add all additional scales offered by d3
-type ScaledValuesDate = { values: ToArray<Date>, scale?: ScaleTime<number, number, never> }
-type ScaledValuesLinear = { values: ToArray<number>, scale?: ScaleLinear<number, number, never> }
+export type ScaledValuesDate = { values: ToArray<Date>, scale?: ScaleTime<number, number, never> }
+export type ScaledValuesLinear = { values: ToArray<number>, scale?: ScaleLinear<number, number, never> }
 type ScaledValuesCategoricalArg = { values: ToArray<string>, scale?: ScaleBand<string>,
   parentKey: string
 }
-type ScaledValuesCategoricalValid = Required<ScaledValuesCategoricalArg> & {
+export type ScaledValuesCategoricalValid = Required<ScaledValuesCategoricalArg> & {
   categories: CategoryValid,
   keysActive: {
     [key: string]: boolean
@@ -46,4 +46,14 @@ export function isScaledValuesCategorical(arg: ScaledValuesValid<any>) : arg is 
 
 export function isScaledValuesDate(arg: ScaledValuesValid<any>) : arg is Required<ScaledValuesDate> {
   return isDateArray(arg.values)
+}
+
+export function isScaleTime(arg: any): arg is ScaleTime<number, number, never> {
+  const isScale = 'domain' in arg && 'range' in arg
+  return isScale && arg.domain[0] instanceof Date
+}
+
+export function isScaleLinear(arg: any): arg is ScaleLinear<number, number, never> {
+  const isScale = 'domain' in arg && 'range' in arg
+  return isScale && typeof arg.domain[0] === 'number'
 }

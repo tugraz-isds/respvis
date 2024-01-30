@@ -1,12 +1,13 @@
-import {AxisDomain, AxisScale, Selection, ZoomTransform} from "d3";
+import {ScaleLinear, ScaleTime, Selection, ZoomTransform} from "d3";
 import {ChartPointValid} from "../../../points";
 import {throttle} from "../../utilities/d3/util";
+import {isScaledValuesCategorical} from "../scale/scaled-values";
 
 type ZoomSelection = Selection<HTMLDivElement, Pick<ChartPointValid, 'zoom' | 'series'>>
 
 export function addZoom(selection: ZoomSelection, callback: (props: {
-  xScale: AxisScale<AxisDomain>,
-  yScale: AxisScale<AxisDomain>
+  xScale:  ScaleTime<number, number, never> | ScaleLinear<number, number, never>,
+  yScale:  ScaleTime<number, number, never> | ScaleLinear<number, number, never>
 }) => void, throttleMs = 50) {
   const {series, zoom} = selection.datum()
   const drawArea = selection.selectAll('.draw-area')
@@ -14,9 +15,9 @@ export function addZoom(selection: ZoomSelection, callback: (props: {
     if (!zoom) return
     const onZoom = function (e) {
       const transform: ZoomTransform = e.transform
+      if (isScaledValuesCategorical(series.x) || isScaledValuesCategorical(series.y)) return
       const xScale = transform.rescaleX(series.x.scale)
       const yScale = transform.rescaleY(series.y.scale)
-      // .range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
       callback({xScale, yScale})
     }
     const throttledZoom = throttle(onZoom, throttleMs)

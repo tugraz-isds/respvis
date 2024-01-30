@@ -1,12 +1,10 @@
 import {Selection} from 'd3';
 import {chartBaseRender, chartCartesianAxisRender} from '../../core';
-import {seriesPointCreatePoints, SeriesPointValid} from '../point-series/point-series-validation';
+import {SeriesPointValid} from '../point-series/point-series-validation';
 import {legendRender} from "../../core/render/legend";
 import {ChartPointValid} from "./scatter-plot-validation";
 import {pointSeriesRender} from "../point-series/point-series-render";
 import {legendAddHover} from "../../core/render/legend/legend-event";
-import {SeriesLabel, seriesLabelData, seriesLabelRender} from "../../bars";
-import {Point} from "../point-series/point";
 
 export type ScatterplotChartSelection = Selection<SVGSVGElement | SVGGElement, ChartPointValid>;
 
@@ -21,11 +19,11 @@ export function scatterPlotRender(selection: ScatterplotChartSelection) {
 }
 
 function renderAllSeriesOfPoints(chartS: ScatterplotChartSelection) {
-  const {pointSeries} = chartS.datum()
+  const {series} = chartS.datum()
   chartS
     .selectAll('.draw-area')
     .selectAll<SVGSVGElement, ChartPointValid>('.series-point')
-    .data<SeriesPointValid>([pointSeries])
+    .data<SeriesPointValid>([series])
     .join('svg')
     .call(pointSeriesRender)
 

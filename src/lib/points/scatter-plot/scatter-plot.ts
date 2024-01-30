@@ -1,10 +1,10 @@
 import {Selection} from 'd3';
 import {
+  AxisScaledValuesValid,
   chartWindowRender,
   ChartWindowValid,
   layouterCompute,
   rectFromString,
-  resizeEventListener,
   toolbarRender,
 } from '../../core';
 import {scatterPlotRender} from "./scatter-plot-render";
@@ -13,6 +13,8 @@ import {addZoom} from "../../core/data/zoom";
 import {getMaxRadius} from "../../core/data/radius/radius-util";
 import {elementFromSelection} from "../../core/utilities/d3/util";
 import {CartesianChart} from "../../core/render/charts/chart-cartesian/cartesian-chart";
+import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
+import {isScaledValuesCategorical} from "../../core/data/scale/scaled-values";
 
 export type ScatterplotData = ChartWindowValid & ChartPointValid
 export type ScatterplotSelection = Selection<HTMLDivElement, ScatterplotData>;
@@ -29,57 +31,66 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
   }
 
   public render(): void {
+    super.render()
     const {
       chartS,
       layouterS
     } = chartWindowRender(this.windowSelection)
     toolbarRender(this.windowSelection)
     scatterPlotRender(chartS)
-    layouterS.on('boundschange.chartwindowpoint', () => {
-      scatterPlotRender(chartS)
-      layouterS.call((s) => layouterCompute(s, false))
-    }).call((s) => layouterCompute(s))
-    resizeEventListener(this.windowSelection)
+    const boundsChanged = layouterCompute(layouterS)
+    if (boundsChanged) this.render()
+
+    // layouterS.call((s) => layouterCompute(s))
+    // console.log('HIHOEnd')
+
+    //
+    //
+    // layouterS.on('boundschange.chartwindowpoint', () => {
+    //   // this.render()
+    //   console.log(renderer.initialRenderHappened)
+    //   // scatterPlotRender(chartS)
+    //   layouterS.call((s) => layouterCompute(s, false))
+    // })
   }
 
   protected override addBuiltInListeners() {
     super.addBuiltInListeners()
     this.addZoomListeners()
-    this.addFilterListener()
+  }
+
+  protected override preRender() {
+    if (!this.initialRenderHappened) return
+    const { series} = this.windowSelection.datum()
+    const { radii} = series
+    const { x, y } = series
+    const drawArea = this.windowSelection.selectAll('.draw-area')
+    const chartElement = elementFromSelection(this.chartSelection)
+    const maxRadius = getMaxRadius(radii, {chart: chartElement})
+    const drawAreaBounds = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
+    const flipped = getCurrentRespVal(series.flipped, {chart: chartElement})
+    //TODO: resizing is also necessary if no zoom
+    x.scale.range(flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius])
+    y.scale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
   }
 
   private addZoomListeners() {
     const renderer = this
     const chartWindowD = this.windowSelection.datum()
-    const chartElement = elementFromSelection(this.windowSelection)
     if (!chartWindowD.zoom) return
-    const drawArea = this.windowSelection.selectAll('.draw-area')
-    renderer.addCustomListener('resize.zoom', () => {
-      const { series, pointSeries} = renderer.windowSelection.datum()
-      const { radii} = pointSeries
-      const { x, y } = series
-      const maxRadius = getMaxRadius(radii, {chart: chartElement})
-      const drawAreaBounds = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
-      //TODO: resizing is also necessary if no zoom
-      x.scale.range(series.flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius])
-      y.scale.range(series.flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
-    })
-    addZoom(this.windowSelection, ({xScale, yScale}) => {
-      const {x, y, pointSeries} = renderer.windowSelection.datum()
-      x.scaledValues = {...x.scaledValues, scale: xScale}
-      y.scaledValues = {...y.scaledValues, scale: yScale}
-      //TODO: solve the zoom-resize issue
-      // with this code resizing works always, but zooming does not work
-      // pointSeries.x = x.scaledValues
-      // pointSeries.y = y.scaledValues
 
-      //with this code zooming works, but resizing does only work on zoom
+    addZoom(this.windowSelection, ({xScale, yScale}) => {
+      const {x, y, series} = renderer.windowSelection.datum()
+      if (isScaledValuesCategorical(x.scaledValues) || isScaledValuesCategorical(y.scaledValues)) return
+
+      x.scaledValues = {...x.scaledValues, scale: xScale} as AxisScaledValuesValid
+      y.scaledValues = {...y.scaledValues, scale: yScale} as AxisScaledValuesValid
+
       renderer.windowSelection.data([{
         ...chartWindowD,
-        pointSeries: {...pointSeries, x: x.scaledValues, y: y.scaledValues}
+        series: {...series, x: x.scaledValues, y: y.scaledValues}
       }])
 
-      //3rd Option: Maybe try to revalidate data completely on zoom before rerender
       renderer.windowSelection.dispatch('resize')
     })
   }

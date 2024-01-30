@@ -12,20 +12,22 @@ export abstract class CartesianChart extends Chart {
 
   abstract windowSelection: Selection<SVGHTMLElement, ChartCartesianValid & ChartWindowValid>
   protected addBuiltInListeners() {
-    const renderer = this
-    const drawArea = this.windowSelection.selectAll('.draw-area')
     this.addFilterListener()
-    if(this.chartSelection?.classed('chart-point')) return
-    //TODO: This is conflicting with zoom listener. But bar chart and others need it.
-    // Find better way of rescaling everything!
-    this.addCustomListener('resize.axisRescale', () => {
-      const {x, y, ...restArgs} = renderer.windowSelection.datum()
-      const {width, height} = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
-      const chartElement = elementFromSelection(renderer.chartSelection)
-      const flipped = getCurrentRespVal(restArgs.series.flipped, {chart: chartElement})
-      x.scaledValues.scale.range(flipped ? [height, 0] : [0, width])
-      y.scaledValues.scale.range(flipped ? [0, width] : [height, 0])
-    })
+  }
+
+  public render() {
+    this.preRender()
+  }
+
+  protected preRender() {
+    if (!this.initialRenderHappened) return
+    const drawArea = this.windowSelection.selectAll('.draw-area')
+    const {x, y, ...restArgs} = this.windowSelection.datum()
+    const {width, height} = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
+    const chartElement = elementFromSelection(this.chartSelection)
+    const flipped = getCurrentRespVal(restArgs.series.flipped, {chart: chartElement})
+    x.scaledValues.scale.range(flipped ? [height, 0] : [0, width])
+    y.scaledValues.scale.range(flipped ? [0, width] : [height, 0])
   }
 
   private addFilterListener() {

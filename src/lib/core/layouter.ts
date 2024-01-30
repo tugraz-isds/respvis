@@ -75,7 +75,7 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGElement>): boo
     const svgS = select(svgE);
     const prevBounds = rectFromString(svgS.attr('bounds') || '0, 0, 0, 0');
     const bounds = elementRelativeBounds(this);
-    const changed = !rectEquals(prevBounds, bounds, 0.1);
+    const changed = !rectEquals(prevBounds, bounds, 1);
     anyChanged = anyChanged || changed;
     if (changed) {
       svgS.attr('bounds', rectToString(bounds));
@@ -124,7 +124,9 @@ export function layouterRender(selection: Selection<HTMLDivElement>): void {
   selection.classed('layouter', true);
 }
 
-export function layouterCompute(selection: Selection<HTMLDivElement>, dispatch = true): void {
+export function layouterCompute(selection: Selection<HTMLDivElement>, dispatch = true) {
+  let anyBoundsChanged = false;
+
   selection.each(function () {
     const layouterS = select(this);
     const layoutRootS = layoutNodeRoot(this);
@@ -137,7 +139,6 @@ export function layouterCompute(selection: Selection<HTMLDivElement>, dispatch =
       layoutS = layoutNodeChildren(layoutS);
     }
 
-    let anyBoundsChanged = false;
     layouterS.selectAll<HTMLDivElement, SVGElement>('.layout').each(function () {
       const layoutS = select<HTMLDivElement, SVGElement>(this);
       const boundsChanged = layoutNodeBounds(layoutS);
@@ -156,7 +157,8 @@ export function layouterCompute(selection: Selection<HTMLDivElement>, dispatch =
         .attr('viewBox', rectToString({ ...bounds, x: 0, y: 0 }));
 
       //TODO: Think about better solution and layouter process in general than using flag here
-      if (dispatch) layouterS.dispatch('boundschange');
+      // if (dispatch) layouterS.dispatch('boundschange');
     }
   });
+  return anyBoundsChanged
 }
