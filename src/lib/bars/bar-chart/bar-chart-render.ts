@@ -25,7 +25,7 @@ export function renderBars(chartS: BarChartChartSelection) {
 
       const barSeriesS = drawAreaS
         .selectAll<SVGGElement, SeriesBarValid>('.series-bar')
-        .data([chartD.barSeries])
+        .data([chartD.series])
         .join('g')
         .call((s) => seriesBarRender(s))
         .on('pointerover.chartbarhighlight', (e) => chartBarHoverBar(chartS, select(e.target), true))

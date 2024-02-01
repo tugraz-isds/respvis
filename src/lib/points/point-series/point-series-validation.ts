@@ -10,9 +10,13 @@ import {
 } from "../../core/render/series";
 import {Point} from "./point";
 import {ColorContinuous} from "../../core/data/color-continuous/color-continuous";
-import {isScaledValuesCategorical} from "../../core/data/scale/scaled-values";
-import {AxisScaledValuesValid, getAdaptedScale} from "../../core";
-import {ScaleBand, ScaleLinear} from "d3";
+import {
+  isScaledValuesCategorical,
+  ScaledValuesCategoricalValid,
+  ScaledValuesLinear
+} from "../../core/data/scale/scaled-values";
+import {AxisScaledValuesValid, getFilteredScaledValues} from "../../core";
+import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 
 export type SeriesPointUserArgs = SeriesUserArgs & {
   radii?: RadiusArg
@@ -37,13 +41,14 @@ export function seriesPointValidation(data: SeriesPointArgs): SeriesPointValid {
 }
 
 export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
-  const { x, y, flipped,
+  const { x, y,
     key: seriesKey, keysActive,
     radii, color, renderer } = seriesData
+  const chartElement = elementFromSelection(renderer.chartSelection)
+  const flipped = getCurrentRespVal(seriesData.flipped, {chart: chartElement})
 
   if (!keysActive[seriesKey]) return []
   const data: Point[] = []
-  const chartElement = elementFromSelection(renderer.chartSelection)
   const drawAreaElement = elementFromSelection(renderer.drawAreaSelection)
   const radiusDefinite = getRadiusDefinite(radii, {chart: chartElement, self: drawAreaElement})
   for (let i = 0; i < x.values.length; i++) {
@@ -52,7 +57,7 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
     const r = typeof radiusDefinite === "number" ? radiusDefinite : radiusDefinite.scale(radiusDefinite.values[i])
 
     const {key, seriesCategory, styleClass, label,
-      axisCategoryKeyX, axisCategoryKeyY} = getSeriesItemCategoryData(seriesData, i)
+      axisCategoryKeyX, axisCategoryKeyY} = getSeriesItemCategoryData({...seriesData, index: i, flipped})
 
     if (keysActive[seriesCategory] === false) continue
     if (isScaledValuesCategorical(x) && x.keysActive[axisCategoryKeyX] === false ||
@@ -60,11 +65,11 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
 
     const calcGraphicValue = (scaledValues: AxisScaledValuesValid, index: number) => {
       if (isScaledValuesCategorical(scaledValues)) {
-        const scale = getAdaptedScale(scaledValues) as ScaleBand<string>
-        return scale(scaledValues.values[index])! + scale.bandwidth() / 2
+        const {scale, values} = getFilteredScaledValues(scaledValues) as ScaledValuesCategoricalValid
+        return scale(values[index])! + scale.bandwidth() / 2
       }
-      const scale = getAdaptedScale(scaledValues) as ScaleLinear<number, number>
-      return scale(scaledValues.values[index])!
+      const {scale, values} = getFilteredScaledValues(scaledValues) as Required<ScaledValuesLinear>
+      return scale(values[index])!
     }
     const xVal = xFlipped.values[i]
     const xGraphVal = calcGraphicValue(xFlipped, i)

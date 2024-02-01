@@ -27,7 +27,7 @@ export class BarChart extends CartesianChart {
     toolbarRender(this.windowSelection)
     barChartRender(chartS)
     const boundsChanged = layouterCompute(layouterS)
-    if (boundsChanged) this.render()
+    if (boundsChanged) this.initializeRender()
   }
 
   protected override addBuiltInListeners() {

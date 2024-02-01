@@ -11,7 +11,7 @@ export function legendAddHover(legendS: LegendSelection) {
   const drawAreaS = chartS.selectAll('.draw-area')
   //TODO: Hover General for all charts
   return legendS.on('pointerover.chartpointhighlight pointerout.chartpointhighlight', (e) => {
-      chartPointHoverLegendItem(
+      chartHoverLegendItem(
         drawAreaS,
         select(e.target.closest('.legend-item')),
         e.type.endsWith('over')
@@ -19,7 +19,7 @@ export function legendAddHover(legendS: LegendSelection) {
     });
 }
 
-function chartPointHoverLegendItem(
+function chartHoverLegendItem(
   chartS: Selection,
   legendItemS: Selection<Element, LegendItem>,
   hover: boolean
@@ -28,8 +28,8 @@ function chartPointHoverLegendItem(
     const key = g[i].getAttribute('data-key')!
     const tokens = splitKey(key)
     tokens.reduce((sel, token, index) => {
-      if (index === 0) return sel.selectAll(`.point[data-key~="${token}"]`)
-      return sel.filter(`.point[data-key~="${token}"]`)
+      if (index === 0) return sel.selectAll(`.element[data-key~="${token}"]`)
+      return sel.filter(`.element[data-key~="${token}"]`)
     }, chartS).classed('highlight', hover)
   });
 }

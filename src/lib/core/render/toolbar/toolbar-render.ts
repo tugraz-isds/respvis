@@ -69,7 +69,7 @@ function categoryAxisRender(menuToolsItemsS: Selection, toolbarValid: ToolbarVal
   const chartElement = elementFromSelection(renderer.chartSelection)
   if(isScaledValuesCategorical(axisScaledValues)) {
     const filterOptions: ToolFilterNominal = {
-      text: getCurrentRespVal('X-Axis Categories', {chart: chartElement}),
+      text: getCurrentRespVal( `${axis.toUpperCase()}-Axis Categories`, {chart: chartElement}),
       options: categoryOrderMapToArray(axisScaledValues.categories.orderMap),
       keys: axisScaledValues.categories.orderKeys.map(oKey => `${axisScaledValues.parentKey}-${oKey}`),
       class: `filter-axis-${axis}`

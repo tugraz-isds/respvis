@@ -35,12 +35,14 @@ export function chartCartesianAxisRender<T extends ChartCartesianSelection>(char
     .join('g')
     .call((s) => axisLeftRender(s))
     .classed(leftAxisClass, true)
+    .classed(bottomAxisClass, false)
 
   const bottomAxisS = chartS.selectAll<SVGGElement, AxisValid>('.axis-bottom')
     .data([bottomAxisD])
     .join('g')
     .call((s) => axisBottomRender(s))
     .classed(bottomAxisClass, true)
+    .classed(leftAxisClass, false)
 
   renderer.yAxisSelection = flipped ? bottomAxisS: leftAxisS
   renderer.xAxisSelection = flipped ? leftAxisS : bottomAxisS

@@ -15,7 +15,7 @@ export abstract class CartesianChart extends Chart {
     this.addFilterListener()
   }
 
-  public render() {
+  public override render() {
     this.preRender()
   }
 

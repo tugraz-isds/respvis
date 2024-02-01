@@ -45,12 +45,12 @@ export function createChartSoldCarsGermany(selector) {
       },
       markerTooltips: {
         tooltips: ((e, d) => {
-        return `Car Price: ${d.yValue}€<br/>
+          return `Car Price: ${d.yValue}€<br/>
                 Horse Power: ${d.xValue}PS<br/>
                 Make: ${d.label}<br/>
                 Mileage: ${d.radiusValue}km<br/>`
-      })
-    },
+        })
+      },
       // labelCallback: (label: string) => {
       //   // console.log(label)
       //   return label + '1'
@@ -64,7 +64,7 @@ export function createChartSoldCarsGermany(selector) {
     },
     title: {
       dependentOn: 'width',
-      mapping: {0: 'Car Chars.', 1 : 'Car Characteristics', 3: 'Car Characteristics from AutoScout24 in Germany'}
+      mapping: {0: 'Car Chars.', 1: 'Car Characteristics', 3: 'Car Characteristics from AutoScout24 in Germany'}
     },
     x: {
       title: {
@@ -92,7 +92,8 @@ export function createChartSoldCarsGermany(selector) {
       configureAxis: {
         dependentOn: 'width',
         scope: 'chart',
-        mapping: {0: (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s'))),
+        mapping: {
+          0: (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s'))),
           2: (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))
         }
       }

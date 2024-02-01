@@ -13,15 +13,21 @@ export function isCSSLengthValue(value: any): value is CSSLengthValue {
 
 export type ChartType = 'point' | 'bar' | 'line'
 
+export type BarSeriesType = 'standard' | 'stacked' | 'grouped'
+
 export type Orientation = 'horizontal' | 'vertical'
 
 export type RotationDirection = 'clockwise' | 'counterclockwise'
 
 
+export type KeyType = 'series' | 'axis' | 'category' | 'individual'
 export type AxisKey = `a-${number}`
 export type SeriesKey = `s-${number}`
 export type CategoryKey = `c-${number}`
 export type IndividualKey = `i-${number}`
+
+export const categoryRegex = /^c-\d+$/
+
 
 
 // util types

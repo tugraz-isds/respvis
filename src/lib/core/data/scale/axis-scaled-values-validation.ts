@@ -3,6 +3,9 @@ import {isScaledValuesCategorical, ScaledValuesArg, ScaledValuesValid} from "./s
 import {ErrorMessages} from "../../utilities/error";
 import {validateCategories} from "../category";
 import {AxisKey} from "../../constants/types";
+import {SeriesValid} from "../../render/series";
+import {getCurrentRespVal} from "../responsive-value/responsive-value";
+import {elementFromSelection} from "../../utilities/d3/util";
 
 export type AxisDomainRV = Extract<AxisDomain, number | string | Date>
 export type AxisScaledValuesArg = ScaledValuesArg<AxisDomainRV>
@@ -58,13 +61,21 @@ function hasValueOf(arr: any[]): arr is { valueOf: () => number }[] {
   return arr.length > 0 && typeof arr[0].valueOf === "number"
 }
 
-export function getAdaptedScale(scaledValues: AxisScaledValuesValid) {
+
+export function getFlippedScaledValues(props: Pick<SeriesValid, 'flipped' | 'renderer' | 'x' | 'y'>) {
+  const {flipped, renderer} = props
+  const currentlyFlipped = getCurrentRespVal(flipped, {chart: elementFromSelection(renderer.chartSelection)})
+  if (currentlyFlipped) return {x: props.y, y: props.x}
+  return {x: props.x, y: props.y}
+}
+
+export function getFilteredScaledValues(scaledValues: AxisScaledValuesValid): AxisScaledValuesValid {
   if (isScaledValuesCategorical(scaledValues)) {
     const activeDomain = scaledValues.categories.values.reduce((prev, current, i) => {
       const key = `${scaledValues.parentKey}-${scaledValues.categories.valueKeys[i]}`
       return scaledValues.keysActive[key] ? [...prev, current] : prev
     }, [])
-    return scaledValues.scale.copy().domain(activeDomain)
+    return {...scaledValues, scale: scaledValues.scale.copy().domain(activeDomain)}
   }
-  return scaledValues.scale
+  return scaledValues
 }

@@ -33,7 +33,7 @@ export function seriesPointJoin(
       (enter) => {
         return enter
           .append('circle')
-          .classed('point', true)
+          .classed('element point', true)
           .each((d, i, g) => {
             const s = select(g[i])
             circleToAttrs(s, circleMinimized(d))

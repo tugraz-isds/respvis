@@ -40,18 +40,6 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
     scatterPlotRender(chartS)
     const boundsChanged = layouterCompute(layouterS)
     if (boundsChanged) this.render()
-
-    // layouterS.call((s) => layouterCompute(s))
-    // console.log('HIHOEnd')
-
-    //
-    //
-    // layouterS.on('boundschange.chartwindowpoint', () => {
-    //   // this.render()
-    //   console.log(renderer.initialRenderHappened)
-    //   // scatterPlotRender(chartS)
-    //   layouterS.call((s) => layouterCompute(s, false))
-    // })
   }
 
   protected override addBuiltInListeners() {

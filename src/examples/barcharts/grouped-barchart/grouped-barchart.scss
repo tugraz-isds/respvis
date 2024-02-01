@@ -6,9 +6,9 @@
 
 body {
   background-color: floralwhite;
-  --color-categorical-0: #4f8c9d;
-  --color-categorical-1: #e23209;
-  --color-categorical-2: #539322;
+  [data-style=categorical-0] { --color-categorical-0: #4f8c9d; }
+  [data-style=categorical-1] { --color-categorical-1: #e23209; }
+  [data-style=categorical-2] { --color-categorical-2: #539322; }
 }
 
 @media (width < 45rem) {

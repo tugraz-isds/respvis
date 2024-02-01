@@ -15,6 +15,7 @@ export type CategoryArgs = CategoryUserArgs & {
 
 export type CategoryValid = CategoryArgs & {
   orderMap: Record<string, number>
+  orderArray: string[]
   valueKeys: CategoryKey[]
   orderKeys: CategoryKey[]
   styleClasses: string[]
@@ -35,6 +36,7 @@ export function validateCategories(referenceData: unknown[], categoryArgs: Categ
     values,
     parentKey,
     orderMap,
+    orderArray,
     valueKeys,
     orderKeys,
     styleClasses,

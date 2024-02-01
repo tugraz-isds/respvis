@@ -9,8 +9,9 @@ import {
 } from "../../data/scale/axis-scaled-values-validation";
 import {CategoryUserArgs, CategoryValid, validateCategories} from "../../data/category";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
-import {alignScaledValuesLengths, isScaledValuesCategorical} from "../../data/scale/scaled-values";
+import {alignScaledValuesLengths} from "../../data/scale/scaled-values";
 import {SeriesKey} from "../../constants/types";
+import {getSubKey, splitKey} from "../../utilities/dom/key";
 
 //TODO: Maybe rename series to cartesian series because of x and y values?
 export type SeriesUserArgs = {
@@ -64,31 +65,9 @@ export function seriesValidation(data: SeriesArgs): SeriesValid {
   }
 }
 
-export function getSeriesItemCategoryData(series: SeriesValid, index: number) {
-  const {categories, key: seriesKey, labelCallback,
-  x, y} = series
-  const {axisCategoryKey: axisCategoryKeyX, styleClass: styleClassX} = getSeriesItemAxisData(x, index)
-  const {axisCategoryKey: axisCategoryKeyY, styleClass: styleClassY} = getSeriesItemAxisData(y, index)
-
-  const category = categories?.values[index]
-  const categoryKey = categories?.valueKeys[index]
-  const seriesCategory = `${seriesKey}${categoryKey ? ` ${categoryKey}` : ''}`
-  const key = `${seriesCategory} ${axisCategoryKeyX} ${axisCategoryKeyY} i-${index}`
-  const styleClassCategory = (categories && category) ? `categorical-${categories.orderMap[category]}` : 'categorical-0'
-  const styleClass = `${styleClassCategory}` //TODO: What about more specific category attributes? //${styleClassX} ${styleClassY}
-  const label = labelCallback(category ?? '')
-  return {styleClass, key, seriesCategory, label, axisCategoryKeyX, axisCategoryKeyY, styleClassX, styleClassY}
-}
-
-export function getSeriesItemAxisData(axis: AxisScaledValuesValid, index: number) {
-  if (!isScaledValuesCategorical(axis)) return {
-    styleClass: '', axisCategoryKey: ''
-  }
-  const {parentKey, categories} = axis
-  const axisKey = parentKey
-  const category = categories.values[index]
-  const categoryKey = categories.valueKeys[index]
-  const axisCategoryKey = `${axisKey}-${categoryKey}`
-  const styleClass = `${axisKey}-categorical-${categories.orderMap[category]}`
-  return {styleClass, axisCategoryKey}
+export function seriesGetActiveCategoryKeys(keysActive: {[p: string]: boolean}) {
+  return Object.keys(keysActive).reduce((activeKeys, key) => {
+    const categoryKey = getSubKey(splitKey(key), 'category')
+    return categoryKey !== undefined && keysActive[key] ? [...activeKeys, categoryKey] : activeKeys
+  }, [])
 }

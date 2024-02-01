@@ -6,8 +6,14 @@
 
 body {
   background-color: floralwhite;
+}
+body [data-style=categorical-0] {
   --color-categorical-0: #4f8c9d;
+}
+body [data-style=categorical-1] {
   --color-categorical-1: #e23209;
+}
+body [data-style=categorical-2] {
   --color-categorical-2: #539322;
 }
 

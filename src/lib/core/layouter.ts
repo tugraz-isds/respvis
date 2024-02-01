@@ -76,6 +76,27 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGElement>): boo
     const prevBounds = rectFromString(svgS.attr('bounds') || '0, 0, 0, 0');
     const bounds = elementRelativeBounds(this);
     const changed = !rectEquals(prevBounds, bounds, 1);
+
+    // if (svgE.classList.contains('axis-y')) {
+    //   const epsilon = 1
+    //   const xAbs = Math.abs(bounds.x - prevBounds.x)
+    //   const yAbs = Math.abs(bounds.y - prevBounds.y)
+    //   const heightAbs = Math.abs(bounds.height - prevBounds.height)
+    //   const widthAbs = Math.abs(bounds.width - prevBounds.width)
+    //   if (xAbs > epsilon)  {
+    //     console.log(svgE.classList, xAbs, 'X')
+    //   }
+    //   if (yAbs > epsilon)  {
+    //     console.log(svgE.classList, yAbs, 'Y')
+    //   }
+    //   if (widthAbs > epsilon)  {
+    //     console.log(svgE.classList, widthAbs, 'WIDTH')
+    //   }
+    //   if (heightAbs > epsilon)  {
+    //     console.log(svgE.classList, heightAbs, 'Height')
+    //   }
+    // }
+
     anyChanged = anyChanged || changed;
     if (changed) {
       svgS.attr('bounds', rectToString(bounds));
@@ -157,8 +178,10 @@ export function layouterCompute(selection: Selection<HTMLDivElement>, dispatch =
         .attr('viewBox', rectToString({ ...bounds, x: 0, y: 0 }));
 
       //TODO: Think about better solution and layouter process in general than using flag here
-      // if (dispatch) layouterS.dispatch('boundschange');
+      if (dispatch) layouterS.dispatch('boundschange');
     }
   });
+
+
   return anyBoundsChanged
 }
