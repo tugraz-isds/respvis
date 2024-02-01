@@ -5,8 +5,10 @@ import {isDateArray, isNumberArray, isStringArray} from "./axis-scaled-values-va
 import {CategoryValid} from "../category";
 
 //TODO: add all additional scales offered by d3
-export type ScaledValuesDate = { values: ToArray<Date>, scale?: ScaleTime<number, number, never> }
-export type ScaledValuesLinear = { values: ToArray<number>, scale?: ScaleLinear<number, number, never> }
+export type ScaledValuesDateArg = { values: ToArray<Date>, scale?: ScaleTime<number, number, never> }
+export type ScaledValuesDateValid = Required<ScaledValuesDateArg>
+export type ScaledValuesLinearArg = { values: ToArray<number>, scale?: ScaleLinear<number, number, never> }
+export type ScaledValuesLinearValid = Required<ScaledValuesLinearArg>
 type ScaledValuesCategoricalArg = { values: ToArray<string>, scale?: ScaleBand<string>,
   parentKey: string
 }
@@ -18,13 +20,13 @@ export type ScaledValuesCategoricalValid = Required<ScaledValuesCategoricalArg> 
 }
 
 export type ScaledValuesArg<Domain> =
-  Domain extends Date ? ScaledValuesDate :
-  Domain extends number ? ScaledValuesLinear :
+  Domain extends Date ? ScaledValuesDateArg :
+  Domain extends number ? ScaledValuesLinearArg :
   Domain extends string ? ScaledValuesCategoricalArg : never
 
 export type ScaledValuesValid<Domain> =
-  Domain extends Date ? Required<ScaledValuesDate> :
-    Domain extends number ? Required<ScaledValuesLinear> :
+  Domain extends Date ? ScaledValuesDateValid :
+    Domain extends number ? ScaledValuesLinearValid :
       Domain extends string ? ScaledValuesCategoricalValid: never
 
 type SV = {values: any[], scale?: any}
@@ -36,7 +38,7 @@ export function alignScaledValuesLengths<S1 extends SV, S2 extends SV>
   return [newVws1, newVws2]
 }
 
-export function isScaledValuesLinear(arg: ScaledValuesValid<any>) : arg is Required<ScaledValuesLinear> {
+export function isScaledValuesLinear(arg: ScaledValuesValid<any>) : arg is Required<ScaledValuesLinearArg> {
   return isNumberArray(arg.values)
 }
 
@@ -44,7 +46,7 @@ export function isScaledValuesCategorical(arg: ScaledValuesValid<any>) : arg is 
   return isStringArray(arg.values)
 }
 
-export function isScaledValuesDate(arg: ScaledValuesValid<any>) : arg is Required<ScaledValuesDate> {
+export function isScaledValuesDate(arg: ScaledValuesValid<any>) : arg is Required<ScaledValuesDateArg> {
   return isDateArray(arg.values)
 }
 

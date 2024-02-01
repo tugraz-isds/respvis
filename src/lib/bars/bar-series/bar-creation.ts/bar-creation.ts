@@ -5,6 +5,8 @@ import {getSeriesItemCategoryData} from "../../../core/render/series";
 import {isScaledValuesCategorical} from "../../../core/data/scale/scaled-values";
 import {Bar, SeriesBarValid} from "../bar-series-validation";
 import {createGroupedBar} from "./bar-grouped-creation";
+import {aggregateScaledValues} from "../../../core/data/scale/scaled-values-aggregation";
+import {createStackedBar} from "./bar-stacked-creation";
 
 export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
   const {
@@ -16,7 +18,7 @@ export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
   const {x: xFlipped, y: yFlipped} = getFlippedScaledValues(seriesData)
   const [x, y] = [getFilteredScaledValues(xFlipped), getFilteredScaledValues(yFlipped)]
   const flipped = getCurrentRespVal(seriesData.flipped, {chart: elementFromSelection(renderer.chartSelection)})
-
+  const [xAgg, yAgg] = [aggregateScaledValues(x, y), aggregateScaledValues(y, x)]
 
   if (!keysActive[seriesKey]) return data
   for (let i = 0; i < seriesData.y.values.length; ++i) {
@@ -33,15 +35,21 @@ export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
     if (isScaledValuesCategorical(x) && x.keysActive[axisCategoryKeyX] === false ||
       isScaledValuesCategorical(y) && y.keysActive[axisCategoryKeyY] === false) continue
 
-    const wholeBarRect = getBarRect(x, y, i, flipped)
-    let finalBarRect: Rect
-    if (seriesData.categories && seriesData.type !== 'standard') {
-      const barProps = {wholeBarRect, x, y, flipped, i,
+    const calcWholeBarRect = () => {
+      if (seriesData.type === 'stacked' && seriesData.categories) getBarRect(xAgg ?? x, yAgg ?? y, i, flipped)
+      return getBarRect(x, y, i, flipped)
+    }
+    const calcFinalBarRect = (wholeBarRect: Rect) => {
+      if (!seriesData.categories || seriesData.type === 'standard') return wholeBarRect
+      const barProps = { wholeBarRect, x, y, flipped, i,
         categoryDataItem, categoryDataSeries: seriesData.categories, keysActive
       }
-      finalBarRect = createGroupedBar(barProps)
-    } else finalBarRect = wholeBarRect
+      if (seriesData.type === 'grouped') return createGroupedBar(barProps)
+      if (!xAgg && !yAgg) return wholeBarRect
+      return createStackedBar({...barProps, aggScaledValues: (xAgg ?? yAgg)!})
+    }
 
+    const finalBarRect = calcFinalBarRect(calcWholeBarRect())
     const bar: Bar = {
       ...finalBarRect, xValue: seriesData.x.values[i], yValue: seriesData.y.values[i],
       label, styleClass, key

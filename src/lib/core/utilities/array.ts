@@ -29,3 +29,7 @@ export function arrayAlignLengths<T1, T2>(array1: T1, array2: T2): [T1, T2] {
   const lowerLength = array1.length < array2.length ? array1.length : array2.length
   return [array1.slice(0, lowerLength) as T1, array2.slice(0, lowerLength) as T2]
 }
+
+export function sum(array: number[]) {
+  return array.reduce((sum, val) => sum + val, 0)
+}
