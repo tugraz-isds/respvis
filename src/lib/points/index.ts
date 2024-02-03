@@ -5,3 +5,4 @@ export {ChartPointValid, ScatterPlotArgs, scatterPlotValidation} from "./scatter
 export {seriesPointJoin} from "./point-series/point-series-render"
 export {pointSeriesRender} from "./point-series/point-series-render"
 export {Point} from "./point-series/point";
+export {seriesPointCreatePoints} from "./point-series/point-creation";

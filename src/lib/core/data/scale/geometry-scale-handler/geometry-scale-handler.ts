@@ -1,7 +1,7 @@
 import {ScaledValuesBase} from "../scaled-values-base";
 import {AxisDomainRV} from "../axis-scaled-values-validation";
 
-type RenderState = {
+export type RenderState = {
   flipped: boolean
   originalXValues: ScaledValuesBase<AxisDomainRV>
   originalYValues: ScaledValuesBase<AxisDomainRV>

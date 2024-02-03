@@ -1,6 +1,7 @@
-import {ScaledValueTag, ToArray} from "../../constants/types";
+import {AxisType, ScaledValueTag, ToArray} from "../../constants/types";
 import {AxisDomainRV} from "./axis-scaled-values-validation";
 import {ScaleBase} from "./scales";
+import {ZoomTransform} from "d3";
 
 export abstract class ScaledValuesBase<T extends AxisDomainRV> {
   abstract readonly tag: ScaledValueTag
@@ -19,6 +20,10 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
   isKeyActive(keyActive: string) { return true }
 
   cloneFiltered(): ScaledValuesBase<T> {
+    return this.clone()
+  }
+
+  cloneZoomed(transform: ZoomTransform, axisType: AxisType): ScaledValuesBase<T> {
     return this.clone()
   }
 

@@ -25,7 +25,6 @@ export function createChartSoldCarsGermany(selector) {
     radiusScale
   }
 
-
   const data: ChartPointUserArgs = {
     series: {
       x: {
@@ -60,6 +59,10 @@ export function createChartSoldCarsGermany(selector) {
                 Mileage: ${d.radiusValue}km<br/>`
       })
     },
+      flipped: {
+        dependentOn: 'width',
+        mapping: {0: true, 2: false}
+      }
       // labelCallback: (label: string) => {
       //   // console.log(label)
       //   return label + '1'

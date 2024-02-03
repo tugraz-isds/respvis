@@ -27,6 +27,8 @@ export type SeriesKey = `s-${number}`
 export type CategoryKey = `c-${number}`
 export type IndividualKey = `i-${number}`
 
+export type AxisType = 'x' | 'y'
+
 export type ActiveKeyMap = {[p: string]: boolean}
 
 export const categoryRegex = /^c-\d+$/

@@ -1,6 +1,7 @@
 import {
   ScaleBand,
-  ScaleContinuousNumeric, ScaleLinear,
+  ScaleContinuousNumeric,
+  ScaleLinear,
   ScaleOrdinal,
   ScalePoint,
   ScaleQuantile,
@@ -8,14 +9,14 @@ import {
   ScaleThreshold,
   ScaleTime
 } from "d3";
-import {ToArray} from "../../constants/types";
 import {AxisDomainRV} from "./axis-scaled-values-validation";
-import {ScaledValuesCategoricalValid, ScaledValuesDateValid, ScaledValuesLinearValid} from "./scaled-values";
-import {NumberValue} from "d3-scale";
+
+export type ScaledNumeric<T extends number | Date> =
+  T extends Date ? ScaleTime<number, number, never> :
+    T extends number ? ScaleLinear<number, number, never> : never
 
 export type ScaleBase<T extends AxisDomainRV> =
-  T extends Date ? ScaleTime<number, number, never> :
-    T extends number ? ScaleLinear<number, number, never> :
+  T extends Date | number ? ScaledNumeric<T> :
     T extends string ? ScaleBand<string> : never
 
 export type ScaleContinuous<TRange, TOutput> =

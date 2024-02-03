@@ -1,12 +1,5 @@
 import {Selection} from 'd3';
-import {
-  AxisScaledValuesValid,
-  chartWindowRender,
-  ChartWindowValid,
-  layouterCompute,
-  rectFromString,
-  toolbarRender,
-} from '../../core';
+import {chartWindowRender, ChartWindowValid, layouterCompute, rectFromString, toolbarRender,} from '../../core';
 import {scatterPlotRender} from "./scatter-plot-render";
 import {ChartPointValid, ScatterPlotArgs, scatterPlotValidation} from "./scatter-plot-validation";
 import {addZoom} from "../../core/data/zoom";
@@ -14,7 +7,6 @@ import {getMaxRadius} from "../../core/data/radius/radius-util";
 import {elementFromSelection} from "../../core/utilities/d3/util";
 import {CartesianChart} from "../../core/render/charts/chart-cartesian/cartesian-chart";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
-import {isScaledValuesCategorical} from "../../core/data/scale/scaled-values";
 
 export type ScatterplotData = ChartWindowValid & ChartPointValid
 export type ScatterplotSelection = Selection<HTMLDivElement, ScatterplotData>;
@@ -67,16 +59,18 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
     const chartWindowD = this.windowSelection.datum()
     if (!chartWindowD.zoom) return
 
-    addZoom(this.windowSelection, ({xScale, yScale}) => {
-      const {x, y, series} = renderer.windowSelection.datum()
-      if (isScaledValuesCategorical(x.scaledValues) || isScaledValuesCategorical(y.scaledValues)) return
-
-      x.scaledValues = {...x.scaledValues, scale: xScale} as AxisScaledValuesValid
-      y.scaledValues = {...y.scaledValues, scale: yScale} as AxisScaledValuesValid
+    addZoom(this.windowSelection, ({x, y}) => {
+      const scatterPlotData = renderer.windowSelection.datum()
+      const series = scatterPlotData.series
+      scatterPlotData.x.scaledValues = x
+      scatterPlotData.y.scaledValues = y
+      scatterPlotData.series = {...series, x, y}
+      // The below code does not work
+      // scatterPlotData.series.x = x
+      // scatterPlotData.series.y = y
 
       renderer.windowSelection.data([{
-        ...chartWindowD,
-        series: {...series, x: x.scaledValues, y: y.scaledValues}
+        ...scatterPlotData,
       }])
 
       renderer.windowSelection.dispatch('resize')

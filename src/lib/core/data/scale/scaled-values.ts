@@ -1,9 +1,7 @@
-import {ScaledValueTag, ToArray} from "../../constants/types";
+import {ToArray} from "../../constants/types";
 import {arrayAlignLengths} from "../../utilities/array";
 import {ScaleBand, ScaleLinear, ScaleTime} from "d3";
-import {AxisDomainRV, isDateArray, isNumberArray, isStringArray} from "./axis-scaled-values-validation";
-import {CategoryValid} from "../category";
-import {ScaleAny} from "./scales";
+import {isDateArray, isNumberArray, isStringArray} from "./axis-scaled-values-validation";
 
 //TODO: add all additional scales offered by d3
 
@@ -49,17 +47,17 @@ export function isScaledValuesDate(arg: ScaledValuesValid<any>) : arg is Require
 
 export function isScaleTime(arg: any): arg is ScaleTime<number, number, never> {
   const isScale = 'domain' in arg && 'range' in arg
-  return isScale && arg.domain[0] instanceof Date
+  return isScale && arg.domain()[0] instanceof Date
 }
 
 export function isScaleLinear(arg: any): arg is ScaleLinear<number, number, never> {
   const isScale = 'domain' in arg && 'range' in arg
-  return isScale && typeof arg.domain[0] === 'number'
+  return isScale && typeof arg.domain()[0] === 'number'
 }
 
 export function isScaleCategory(arg: any): arg is ScaleBand<string> {
   const isScale = 'domain' in arg && 'range' in arg
-  return isScale && typeof arg.domain[0] === 'string'
+  return isScale && typeof arg.domain()[0] === 'string'
 }
 
 

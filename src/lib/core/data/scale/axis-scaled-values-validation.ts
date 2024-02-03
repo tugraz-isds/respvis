@@ -1,12 +1,5 @@
 import {AxisDomain,} from 'd3';
-import {
-  isScaleCategory,
-  isScaledValuesCategorical,
-  isScaleLinear,
-  isScaleTime,
-  ScaledValuesArg,
-  ScaledValuesValid
-} from "./scaled-values";
+import {isScaleCategory, isScaleLinear, isScaleTime, ScaledValuesArg, ScaledValuesValid} from "./scaled-values";
 import {ErrorMessages} from "../../utilities/error";
 import {AxisKey} from "../../constants/types";
 import {SeriesValid} from "../../render/series";
@@ -21,7 +14,7 @@ export type AxisDomainRV = Extract<AxisDomain, number | string | Date>
 export type AxisScaledValuesArg = ScaledValuesArg<AxisDomainRV>
 export type AxisScaledValuesValid = ScaledValuesValid<AxisDomainRV>
 
-export function axisScaledValuesValidation(axisScaleArgs: AxisScaledValuesArg, axisKey: AxisKey): ScaledValuesBase {
+export function axisScaledValuesValidation(axisScaleArgs: AxisScaledValuesArg, axisKey: AxisKey): ScaledValuesBase<AxisDomainRV> {
   const {values, scale} = axisScaleArgs
 
   if (values.length <= 0) throw new Error(ErrorMessages.responsiveValueHasNoValues)
@@ -32,7 +25,9 @@ export function axisScaledValuesValidation(axisScaleArgs: AxisScaledValuesArg, a
   }
 
   if (isNumberArray(values) || hasValueOf(values)) {
-    if (scale && !isScaleLinear(scale)) throw new Error(ErrorMessages.invalidScaledValuesCombination)
+    if (scale && !isScaleLinear(scale)) {
+      throw new Error(ErrorMessages.invalidScaledValuesCombination)
+    }
     const valuesNum = isNumberArray(values) ?
       values.map(value => Number(value)) :
       values.map(value => parseFloat(value.valueOf()))
@@ -59,15 +54,7 @@ function hasValueOf(arr: any[]): arr is { valueOf: () => number }[] {
   return arr.length > 0 && typeof arr[0].valueOf === "number"
 }
 
-
-export function getFlippedScaledValues(props: Pick<SeriesValid, 'flipped' | 'renderer' | 'x' | 'y'>) {
-  const {flipped, renderer} = props
-  const currentlyFlipped = getCurrentRespVal(flipped, {chart: elementFromSelection(renderer.chartSelection)})
-  if (currentlyFlipped) return {x: props.y, y: props.x}
-  return {x: props.x, y: props.y}
-}
-
-export function getFilteredScaledValues(scaledValues: ScaledValuesBase): ScaledValuesBase {
+export function getFilteredScaledValues(scaledValues: ScaledValuesBase<AxisDomainRV>): ScaledValuesBase<AxisDomainRV> {
   if (scaledValues instanceof ScaledValuesCategorical) {
     const activeDomain = scaledValues.categories.values.reduce((prev, current, i) => {
       const key = `${scaledValues.parentKey}-${scaledValues.categories.valueKeys[i]}`

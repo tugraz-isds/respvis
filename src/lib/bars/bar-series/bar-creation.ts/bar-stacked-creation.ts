@@ -33,11 +33,6 @@ export function createStackedBar(props: createStackedBarProps) {
     aggScaledValues.scale.range(scaledValuesOriginalYRangeInverted) //TODO: adapt axis! .domain([0, 100])
   }
 
-  // const innerScaleDomain = seriesGetActiveCategoryKeys(aggScaledValues.scale.domain())
-  // const categoryKey = categoryDataSeries.valueKeys[i]
-  // const innerValue = innerScale(categoryKey) ?? 0
-  // const yScaleDown = aggScaledValues.scale.copy().domain(aggScaledValues.sc)
-
   const innerValueStart = aggScaledValues.scale(aggScaledValues.values[i])
   return  {
     x: flipped ? wholeBarRect.x + innerValueStart : wholeBarRect.x,
