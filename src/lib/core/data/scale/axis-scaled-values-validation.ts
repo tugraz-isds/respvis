@@ -1,48 +1,46 @@
-import {AxisDomain, scaleBand, scaleLinear, scaleTime,} from 'd3';
-import {isScaledValuesCategorical, ScaledValuesArg, ScaledValuesValid} from "./scaled-values";
+import {AxisDomain,} from 'd3';
+import {
+  isScaleCategory,
+  isScaledValuesCategorical,
+  isScaleLinear,
+  isScaleTime,
+  ScaledValuesArg,
+  ScaledValuesValid
+} from "./scaled-values";
 import {ErrorMessages} from "../../utilities/error";
-import {validateCategories} from "../category";
 import {AxisKey} from "../../constants/types";
 import {SeriesValid} from "../../render/series";
 import {getCurrentRespVal} from "../responsive-value/responsive-value";
 import {elementFromSelection} from "../../utilities/d3/util";
+import {ScaledValuesDate} from "./scaled-values-date";
+import {ScaledValuesLinear} from "./scaled-values-linear";
+import {ScaledValuesCategorical} from "./scaled-values-categorical";
+import {ScaledValuesBase} from "./scaled-values-base";
 
 export type AxisDomainRV = Extract<AxisDomain, number | string | Date>
 export type AxisScaledValuesArg = ScaledValuesArg<AxisDomainRV>
 export type AxisScaledValuesValid = ScaledValuesValid<AxisDomainRV>
 
-export function axisScaledValuesValidation(axisScaleArgs: AxisScaledValuesArg, axisKey: AxisKey): AxisScaledValuesValid {
+export function axisScaledValuesValidation(axisScaleArgs: AxisScaledValuesArg, axisKey: AxisKey): ScaledValuesBase {
   const {values, scale} = axisScaleArgs
-  if (scale) return {values, scale} as AxisScaledValuesValid //TODO: additional check with error message
 
   if (values.length <= 0) throw new Error(ErrorMessages.responsiveValueHasNoValues)
 
   if (isDateArray(values)) {
-    return {values, scale: scaleTime(values, [0, 600]).nice()}
+    if (scale && !isScaleTime(scale)) throw new Error(ErrorMessages.invalidScaledValuesCombination)
+    return new ScaledValuesDate({values, scale})
   }
 
   if (isNumberArray(values) || hasValueOf(values)) {
+    if (scale && !isScaleLinear(scale)) throw new Error(ErrorMessages.invalidScaledValuesCombination)
     const valuesNum = isNumberArray(values) ?
       values.map(value => Number(value)) :
       values.map(value => parseFloat(value.valueOf()))
-    const extent = [Math.min(...valuesNum), Math.max(...valuesNum)]
-    return {values: valuesNum, scale: scaleLinear().domain(extent).nice()}
+    return new ScaledValuesLinear({values: valuesNum, scale})
   }
 
-  const categories = validateCategories(values, {
-    values,
-    title: `Axis ${axisKey}`,
-    parentKey: axisKey
-  })
-
-  return {values, categories,
-    parentKey: axisKey,
-    scale: scaleBand([0, 600]).domain(values).padding(0.1),
-    keysActive: categories.orderKeys.reduce((prev, c) => {
-      prev[`${axisKey}-${c}`] = true
-      return prev
-    }, {})
-  }
+  if (scale && !isScaleCategory(scale)) throw new Error(ErrorMessages.invalidScaledValuesCombination)
+  return new ScaledValuesCategorical({values, scale, parentKey: axisKey, parentTitle: 'Axis ' + axisKey})
 }
 
 export function isNumberArray(arr: any[]): arr is number[] {
@@ -69,13 +67,15 @@ export function getFlippedScaledValues(props: Pick<SeriesValid, 'flipped' | 'ren
   return {x: props.x, y: props.y}
 }
 
-export function getFilteredScaledValues(scaledValues: AxisScaledValuesValid): AxisScaledValuesValid {
-  if (isScaledValuesCategorical(scaledValues)) {
+export function getFilteredScaledValues(scaledValues: ScaledValuesBase): ScaledValuesBase {
+  if (scaledValues instanceof ScaledValuesCategorical) {
     const activeDomain = scaledValues.categories.values.reduce((prev, current, i) => {
       const key = `${scaledValues.parentKey}-${scaledValues.categories.valueKeys[i]}`
       return scaledValues.keysActive[key] ? [...prev, current] : prev
     }, [])
-    return {...scaledValues, scale: scaledValues.scale.copy().domain(activeDomain)}
+    const clone = scaledValues.clone()
+    clone.scale.domain(activeDomain)
+    return clone
   }
   return scaledValues
 }

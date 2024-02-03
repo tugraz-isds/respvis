@@ -5,6 +5,7 @@ import {RenderArgs} from "../charts/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
 import {validateBreakpoints} from "../../data/breakpoint/breakpoint-validation";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
+import {ScaledValuesBase} from "../../data/scale/scaled-values-base";
 
 export type AxisUserArgs = {
   bounds?: Partial<LayoutBreakpoints>
@@ -16,7 +17,7 @@ export type AxisUserArgs = {
 }
 
 export type AxisArgs = AxisUserArgs & RenderArgs & {
-  scaledValues: AxisScaledValuesValid
+  scaledValues: ScaledValuesBase
 }
 
 export type AxisValid = Required<Omit<AxisArgs, 'bounds'>> & {

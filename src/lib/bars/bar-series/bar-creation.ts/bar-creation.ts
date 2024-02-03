@@ -1,30 +1,24 @@
-import {AxisScaledValuesValid, getFilteredScaledValues, getFlippedScaledValues, Rect} from "../../../core";
 import {getCurrentRespVal} from "../../../core/data/responsive-value/responsive-value";
 import {elementFromSelection} from "../../../core/utilities/d3/util";
 import {getSeriesItemCategoryData} from "../../../core/render/series";
-import {isScaledValuesCategorical} from "../../../core/data/scale/scaled-values";
 import {Bar, SeriesBarValid} from "../bar-series-validation";
 import {createGroupedBar} from "./bar-grouped-creation";
 import {aggregateScaledValues} from "../../../core/data/scale/scaled-values-aggregation";
 import {createStackedBar} from "./bar-stacked-creation";
+import {RectScaleHandler} from "../../../core/data/scale/geometry-scale-handler/rect-scale-handler";
 
 export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
-  const {
-    renderer,
-    keysActive, key: seriesKey
-  } = seriesData
+  const {renderer, keysActive, key: seriesKey} = seriesData
   const data: Bar[] = []
 
-  const {x: xFlipped, y: yFlipped} = getFlippedScaledValues(seriesData)
-  const [x, y] = [getFilteredScaledValues(xFlipped), getFilteredScaledValues(yFlipped)]
   const flipped = getCurrentRespVal(seriesData.flipped, {chart: elementFromSelection(renderer.chartSelection)})
+  const [x, y] = [seriesData.x.cloneFiltered(), seriesData.y.cloneFiltered()]
+  const geometryHandler = new RectScaleHandler({originalYValues: y, originalXValues: x, flipped})
+
   const [xAgg, yAgg] = [aggregateScaledValues(x, y), aggregateScaledValues(y, x)]
 
   if (!keysActive[seriesKey]) return data
   for (let i = 0; i < seriesData.y.values.length; ++i) {
-    // const xOriginalVal = seriesData.x.values[i]
-    // const yOriginalVal = seriesData.y.values[i]
-
     const categoryDataItem = getSeriesItemCategoryData({...seriesData, x, y, index: i, flipped})
     const {
       key, seriesCategory, styleClass, label,
@@ -32,52 +26,23 @@ export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
     } = categoryDataItem
 
     if (keysActive[seriesCategory] === false) continue
-    if (isScaledValuesCategorical(x) && x.keysActive[axisCategoryKeyX] === false ||
-      isScaledValuesCategorical(y) && y.keysActive[axisCategoryKeyY] === false) continue
+    if (!x.isKeyActive(axisCategoryKeyX) || !y.isKeyActive(axisCategoryKeyY)) continue
 
-    const calcWholeBarRect = () => {
-      if (seriesData.type === 'stacked' && seriesData.categories) getBarRect(xAgg ?? x, yAgg ?? y, i, flipped)
-      return getBarRect(x, y, i, flipped)
-    }
-    const calcFinalBarRect = (wholeBarRect: Rect) => {
-      if (!seriesData.categories || seriesData.type === 'standard') return wholeBarRect
-      const barProps = { wholeBarRect, x, y, flipped, i,
-        categoryDataItem, categoryDataSeries: seriesData.categories, keysActive
-      }
-      if (seriesData.type === 'grouped') return createGroupedBar(barProps)
-      if (!xAgg && !yAgg) return wholeBarRect
-      return createStackedBar({...barProps, aggScaledValues: (xAgg ?? yAgg)!})
+    const calcFinalBarRect = () => {
+      if (seriesData.type === 'grouped' && seriesData.categories) return createGroupedBar({
+        originalScaleHandler: geometryHandler, i, keysActive, categoryDataSeries: seriesData.categories
+      })
+      if (seriesData.type === 'stacked' && seriesData.categories && (xAgg || yAgg)) return createStackedBar({
+        originalScaleHandler: geometryHandler, i, keysActive, aggScaledValues: (xAgg ?? yAgg)!,
+        categoryDataSeries: seriesData.categories, categoryDataItem
+      })
+      return geometryHandler.getBarRect(i)
     }
 
-    const finalBarRect = calcFinalBarRect(calcWholeBarRect())
-    const bar: Bar = {
-      ...finalBarRect, xValue: seriesData.x.values[i], yValue: seriesData.y.values[i],
+    data.push({
+      ...calcFinalBarRect(), xValue: seriesData.x.values[i], yValue: seriesData.y.values[i],
       label, styleClass, key
-    }
-
-    data.push(bar);
+    });
   }
   return data;
-}
-
-export function getBarRect(x: AxisScaledValuesValid, y: AxisScaledValuesValid, i: number, flipped: boolean) {
-  return flipped ? getHorizontalBarRect(x, y, i) : getVerticalBarRect(x, y, i)
-}
-
-function getHorizontalBarRect(x: AxisScaledValuesValid, y: AxisScaledValuesValid, i: number): Rect {
-  return {
-    x: Math.min(x.scale(0)!, x.scale(x.values[i])!),
-    y: y.scale(y.values[i])!,
-    width: Math.abs(x.scale(0)! - x.scale(x.values[i])!),
-    height: y.scale.bandwidth()
-  }
-}
-
-function getVerticalBarRect(x: AxisScaledValuesValid, y: AxisScaledValuesValid, i: number): Rect {
-  return {
-    x: x.scale(x.values[i])!,
-    y: Math.min(y.scale(0)!, y.scale(y.values[i])!),
-    width: x.scale.bandwidth(),
-    height: Math.abs(y.scale(0)! - y.scale(y.values[i])!)
-  }
 }

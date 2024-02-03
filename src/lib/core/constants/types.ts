@@ -17,7 +17,8 @@ export type BarSeriesType = 'standard' | 'stacked' | 'grouped'
 
 export type Orientation = 'horizontal' | 'vertical'
 
-export type RotationDirection = 'clockwise' | 'counterclockwise'
+export type ScaledValueTag = 'categorical' | 'linear' | 'date'
+
 
 
 export type KeyType = 'series' | 'axis' | 'category' | 'individual'
@@ -25,6 +26,8 @@ export type AxisKey = `a-${number}`
 export type SeriesKey = `s-${number}`
 export type CategoryKey = `c-${number}`
 export type IndividualKey = `i-${number}`
+
+export type ActiveKeyMap = {[p: string]: boolean}
 
 export const categoryRegex = /^c-\d+$/
 

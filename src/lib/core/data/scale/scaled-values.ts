@@ -1,28 +1,25 @@
-import {ToArray} from "../../constants/types";
+import {ScaledValueTag, ToArray} from "../../constants/types";
 import {arrayAlignLengths} from "../../utilities/array";
 import {ScaleBand, ScaleLinear, ScaleTime} from "d3";
-import {isDateArray, isNumberArray, isStringArray} from "./axis-scaled-values-validation";
+import {AxisDomainRV, isDateArray, isNumberArray, isStringArray} from "./axis-scaled-values-validation";
 import {CategoryValid} from "../category";
+import {ScaleAny} from "./scales";
 
 //TODO: add all additional scales offered by d3
-export type ScaledValuesDateArg = { values: ToArray<Date>, scale?: ScaleTime<number, number, never> }
-export type ScaledValuesDateValid = Required<ScaledValuesDateArg>
-export type ScaledValuesLinearArg = { values: ToArray<number>, scale?: ScaleLinear<number, number, never> }
-export type ScaledValuesLinearValid = Required<ScaledValuesLinearArg>
-type ScaledValuesCategoricalArg = { values: ToArray<string>, scale?: ScaleBand<string>,
-  parentKey: string
-}
-export type ScaledValuesCategoricalValid = Required<ScaledValuesCategoricalArg> & {
-  categories: CategoryValid,
-  keysActive: {
-    [key: string]: boolean
-  }
-}
+
+export type ScaledValuesDateUserArgs = { values: ToArray<Date>, scale?: ScaleTime<number, number, never> }
+export type ScaledValuesDateValid = Required<ScaledValuesDateUserArgs>
+
+export type ScaledValuesLinearUserArgs = { values: ToArray<number>, scale?: ScaleLinear<number, number, never> }
+export type ScaledValuesLinearValid = Required<ScaledValuesLinearUserArgs>
+
+export type ScaledValuesCategoricalUserArgs = { values: ToArray<string>, scale?: ScaleBand<string> }
+export type ScaledValuesCategoricalValid = Required<ScaledValuesCategoricalUserArgs> & {}
 
 export type ScaledValuesArg<Domain> =
-  Domain extends Date ? ScaledValuesDateArg :
-  Domain extends number ? ScaledValuesLinearArg :
-  Domain extends string ? ScaledValuesCategoricalArg : never
+  Domain extends Date ? ScaledValuesDateUserArgs :
+  Domain extends number ? ScaledValuesLinearUserArgs :
+  Domain extends string ? ScaledValuesCategoricalUserArgs : never
 
 export type ScaledValuesValid<Domain> =
   Domain extends Date ? ScaledValuesDateValid :
@@ -38,7 +35,7 @@ export function alignScaledValuesLengths<S1 extends SV, S2 extends SV>
   return [newVws1, newVws2]
 }
 
-export function isScaledValuesLinear(arg: ScaledValuesValid<any>) : arg is Required<ScaledValuesLinearArg> {
+export function isScaledValuesLinear(arg: ScaledValuesValid<any>) : arg is Required<ScaledValuesLinearUserArgs> {
   return isNumberArray(arg.values)
 }
 
@@ -46,7 +43,7 @@ export function isScaledValuesCategorical(arg: ScaledValuesValid<any>) : arg is 
   return isStringArray(arg.values)
 }
 
-export function isScaledValuesDate(arg: ScaledValuesValid<any>) : arg is Required<ScaledValuesDateArg> {
+export function isScaledValuesDate(arg: ScaledValuesValid<any>) : arg is Required<ScaledValuesDateUserArgs> {
   return isDateArray(arg.values)
 }
 
@@ -59,3 +56,12 @@ export function isScaleLinear(arg: any): arg is ScaleLinear<number, number, neve
   const isScale = 'domain' in arg && 'range' in arg
   return isScale && typeof arg.domain[0] === 'number'
 }
+
+export function isScaleCategory(arg: any): arg is ScaleBand<string> {
+  const isScale = 'domain' in arg && 'range' in arg
+  return isScale && typeof arg.domain[0] === 'string'
+}
+
+
+
+

@@ -13,7 +13,7 @@ import {ColorContinuous} from "../../core/data/color-continuous/color-continuous
 import {
   isScaledValuesCategorical,
   ScaledValuesCategoricalValid,
-  ScaledValuesLinearArg
+  ScaledValuesLinearUserArgs
 } from "../../core/data/scale/scaled-values";
 import {AxisScaledValuesValid, getFilteredScaledValues} from "../../core";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
@@ -68,7 +68,7 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
         const {scale, values} = getFilteredScaledValues(scaledValues) as ScaledValuesCategoricalValid
         return scale(values[index])! + scale.bandwidth() / 2
       }
-      const {scale, values} = getFilteredScaledValues(scaledValues) as Required<ScaledValuesLinearArg>
+      const {scale, values} = getFilteredScaledValues(scaledValues) as Required<ScaledValuesLinearUserArgs>
       return scale(values[index])!
     }
     const xVal = xFlipped.values[i]

@@ -3,6 +3,7 @@ import {SeriesConfigTooltips, seriesConfigTooltipsData} from "../../../tooltip";
 import {RenderArgs} from "../charts/renderer";
 import {Point} from "../../../points";
 import {
+  AxisDomainRV,
   AxisScaledValuesArg,
   AxisScaledValuesValid,
   axisScaledValuesValidation
@@ -12,6 +13,7 @@ import {RespValByValueOptional} from "../../data/responsive-value/responsive-val
 import {alignScaledValuesLengths} from "../../data/scale/scaled-values";
 import {SeriesKey} from "../../constants/types";
 import {getSubKey, splitKey} from "../../utilities/dom/key";
+import {ScaledValuesBase} from "../../data/scale/scaled-values-base";
 
 //TODO: Maybe rename series to cartesian series because of x and y values?
 export type SeriesUserArgs = {
@@ -29,8 +31,8 @@ export type SeriesArgs = SeriesUserArgs & RenderArgs & {
 }
 
 export type SeriesValid = Required<Omit<SeriesArgs, 'markerTooltips' | 'flipped' | 'x' | 'y' | 'categories'>> & {
-  x: AxisScaledValuesValid
-  y: AxisScaledValuesValid
+  x: ScaledValuesBase<AxisDomainRV>
+  y: ScaledValuesBase<AxisDomainRV>
   categories?: CategoryValid
   markerTooltips: SeriesConfigTooltips<SVGCircleElement, Point>
   flipped: RespValByValueOptional<boolean>

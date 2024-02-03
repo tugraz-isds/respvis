@@ -24,5 +24,5 @@ export function seriesBarValidation(data: SeriesBarArgs): SeriesBarValid {
   return {
     type: data.type ?? 'standard',
     ...seriesValidation(data)
-  };
+  }
 }

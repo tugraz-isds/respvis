@@ -9,6 +9,7 @@ import {LegendValid} from "../legend";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {categoryOrderMapToArray} from "../../data/category";
 import {isScaledValuesCategorical} from "../../data/scale/scaled-values";
+import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";
 
 type ToolbarValid = RenderArgs & {
   x: AxisValid,
@@ -67,7 +68,7 @@ function categoryAxisRender(menuToolsItemsS: Selection, toolbarValid: ToolbarVal
   const {renderer} = toolbarValid
   const axisScaledValues = toolbarValid[axis].scaledValues
   const chartElement = elementFromSelection(renderer.chartSelection)
-  if(isScaledValuesCategorical(axisScaledValues)) {
+  if(axisScaledValues instanceof ScaledValuesCategorical) {
     const filterOptions: ToolFilterNominal = {
       text: getCurrentRespVal( `${axis.toUpperCase()}-Axis Categories`, {chart: chartElement}),
       options: categoryOrderMapToArray(axisScaledValues.categories.orderMap),
