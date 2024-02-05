@@ -3,7 +3,7 @@ import {AxisUserArgs, AxisValid, axisValidation} from "../../axis";
 import {ChartBaseArgs, ChartBaseValid, chartBaseValidation} from "../chart-base";
 import {validateZoom, ZoomArgs, ZoomValid} from "../../../data/zoom";
 import {LegendUserArgs, LegendValid, legendValidation} from "../../legend";
-import {SeriesUserArgs, SeriesValid} from "../../series";
+import {Series, SeriesUserArgs} from "../../series";
 
 export type ChartCartesianUserArgs = ChartBaseArgs & {
   series: SeriesUserArgs
@@ -15,11 +15,11 @@ export type ChartCartesianUserArgs = ChartBaseArgs & {
 }
 
 export type ChartCartesianArgs = Omit<ChartCartesianUserArgs, 'series'> & {
-  series: SeriesValid
+  series: Series
 }
 
 export type ChartCartesianValid = ChartBaseValid & {
-  series: SeriesValid
+  series: Series
   x: AxisValid
   y: AxisValid
   legend: LegendValid
@@ -29,7 +29,7 @@ export type ChartCartesianValid = ChartBaseValid & {
 export type ChartCartesianSelection = Selection<SVGSVGElement | SVGGElement, ChartCartesianValid>
 
 export function chartCartesianValidation(cartesianArgs: ChartCartesianArgs): ChartCartesianValid {
-  const {renderer, series,x, y ,
+  const {renderer, series,x, y,
     zoom} = cartesianArgs
   return {
     series,

@@ -9,7 +9,7 @@ import {LegendValid} from "../legend";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {categoryOrderMapToArray} from "../../data/category";
 import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";
-import {mergekeys} from "../../utilities/dom/key";
+import {mergeKeys} from "../../utilities/dom/key";
 
 type ToolbarValid = RenderArgs & {
   x: AxisValid,
@@ -56,7 +56,7 @@ function categorySeriesRender(menuToolsItemsS: Selection, toolbarValid: ToolbarV
     const filterOptions: ToolFilterNominal = {
       text: categoryText,
       options: categoryOrderMapToArray(categoryOrderMap),
-      keys: keyOrder.map(key => mergekeys([categories.parentKey, key])),
+      keys: keyOrder.map(key => mergeKeys([categories.parentKey, key])),
       class: 'filter-category'
     }
     toolFilterNominalRender(menuToolsItemsS, filterOptions)

@@ -1,21 +1,18 @@
 import {Selection} from 'd3';
 import {chartWindowRender, ChartWindowValid, layouterCompute, rectFromString, toolbarRender,} from '../../core';
 import {scatterPlotRender} from "./scatter-plot-render";
-import {ChartPointValid, ScatterPlotArgs, scatterPlotValidation} from "./scatter-plot-validation";
-import {addZoom} from "../../core/data/zoom";
+import {ScatterPlotArgs, ScatterPlotValid, scatterPlotValidation} from "./scatter-plot-validation";
 import {getMaxRadius} from "../../core/data/radius/radius-util";
 import {elementFromSelection} from "../../core/utilities/d3/util";
 import {CartesianChart} from "../../core/render/charts/chart-cartesian/cartesian-chart";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 
-export type ScatterplotData = ChartWindowValid & ChartPointValid
-export type ScatterplotSelection = Selection<HTMLDivElement, ScatterplotData>;
-
-export type ChartPointUserArgs = Omit<ScatterPlotArgs, 'renderer'>
+export type ScatterplotSelection = Selection<HTMLDivElement, ChartWindowValid & ScatterPlotValid>;
+export type ScatterPlotUserArgs = Omit<ScatterPlotArgs, 'renderer'>
 
 export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseRenderer
   public windowSelection: ScatterplotSelection
-  constructor(windowSelection: Selection<HTMLDivElement>, data: ChartPointUserArgs) {
+  constructor(windowSelection: Selection<HTMLDivElement>, data: ScatterPlotUserArgs) {
     super({...data, type: 'point'})
     const chartData = scatterPlotValidation({...data, renderer: this})
     this.windowSelection = windowSelection as ScatterplotSelection
@@ -36,7 +33,6 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
 
   protected override addBuiltInListeners() {
     super.addBuiltInListeners()
-    this.addZoomListeners()
   }
 
   protected override preRender() {
@@ -52,29 +48,5 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
     //TODO: resizing is also necessary if no zoom
     x.scale.range(flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius])
     y.scale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
-  }
-
-  private addZoomListeners() {
-    const renderer = this
-    const chartWindowD = this.windowSelection.datum()
-    if (!chartWindowD.zoom) return
-
-    addZoom(this.windowSelection, ({x, y}) => {
-      const scatterPlotData = renderer.windowSelection.datum()
-      const seriesUpdated = scatterPlotData.series.clone()
-      seriesUpdated.x = x
-      seriesUpdated.y = y
-      scatterPlotData.x.scaledValues = x
-      scatterPlotData.y.scaledValues = y
-      // The below code does not work
-      // scatterPlotData.series.x = x
-      // scatterPlotData.series.y = y
-
-      renderer.windowSelection.data([{
-        ...scatterPlotData, series: seriesUpdated
-      }])
-
-      renderer.windowSelection.dispatch('resize')
-    })
   }
 }

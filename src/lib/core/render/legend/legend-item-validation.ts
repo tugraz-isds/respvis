@@ -2,7 +2,7 @@ import {arrayIs} from "../../utilities/array";
 import {LegendValid} from "./legend-validation";
 import {Size} from "../../utilities/size";
 import {categoryOrderMapToArray} from "../../data/category";
-import {mergekeys} from "../../utilities/dom/key";
+import {mergeKeys} from "../../utilities/dom/key";
 
 export interface LegendItem {
   label: string
@@ -23,7 +23,7 @@ export function legendItemData(legendData: LegendValid): LegendItem[] {
       label: labelCallback(c),
       styleClass: styleClassOrder[i],
       symbol: arrayIs(symbols) ? symbols[i] : symbols,
-      key: mergekeys([categories.parentKey, keyOrder[i]]),
+      key: mergeKeys([categories.parentKey, keyOrder[i]]),
     };
   });
   return reverse ? items.reverse() : items

@@ -1,4 +1,4 @@
-import {ChartPointValid} from "../../../points";
+import {ScatterPlotValid} from "../../../points";
 import {Selection} from "d3";
 import {layouterRender} from "../../layouter";
 import {updateCSSForSelection} from "../../data/breakpoint/breakpoint";
@@ -19,7 +19,7 @@ export function chartWindowRender<D extends ChartWindowValid>(selection: Selecti
     .call((s) => layouterRender(s));
 
   const chartS = layouterS
-    .selectAll<SVGSVGElement, ChartPointValid>(`svg.chart-${data.type}`)
+    .selectAll<SVGSVGElement, ScatterPlotValid>(`svg.chart-${data.type}`)
     .data([data])
     .join('svg')
 

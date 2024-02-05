@@ -65,8 +65,8 @@ export class Series implements RenderArgs, Required<Omit<SeriesArgs, 'markerTool
 
     //TODO: pass correct parameters here
     if (args instanceof Series) this.categories = args.categories
-    else this.categories = categories ? new ScaledValuesCategorical({
-      values: categories.values, parentKey: key, parentTitle: 'TODO'
+    else this.categories = args.categories ? new ScaledValuesCategorical({
+      ...args.categories, parentKey: key,
     }) : undefined
 
     this.bounds = args.bounds || {width: 600, height: 400}

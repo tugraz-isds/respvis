@@ -1,6 +1,15 @@
-import {years, desktop, phone, tablet, desktopCategory, phoneCategory, tabletCategory} from './data/desktop-phone-tablet.js';
+import {
+  desktop,
+  desktopCategory,
+  phone,
+  phoneCategory,
+  tablet,
+  tabletCategory,
+  years
+} from './data/desktop-phone-tablet.js';
 import * as d3 from './libs/d3-7.6.0/d3.js'
-import { BarChart, BarChartUserArgs } from './libs/respvis/respvis.js';
+import {BarChart, BarChartUserArgs} from './libs/respvis/respvis.js';
+
 export function renderStackedBarChart(selector: string) {
   const yearsWhole = [...years, ...years, ...years]
   const sharesWhole = [...desktop, ...phone, ...tablet]
@@ -101,7 +110,11 @@ export function renderStackedBarChart(selector: string) {
       // tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,
       // configureAxis: (axis) => axis.tickFormat(d3.format('.2s')),
-    }
+    },
+    // zoom: { //TODO: make stacked bar chart work with zooming!
+    //   in: 20,
+    //   out: 1
+    // }
   }
 
   const chartWindow = d3.select(selector).append('div')

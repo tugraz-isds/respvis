@@ -3,17 +3,18 @@ import {ScaledValuesBase} from "./scaled-values-base";
 import {scaleBand, ScaleBand} from "d3";
 import {CategoryValid, validateCategories} from "../category";
 import {ActiveKeyMap} from "../../constants/types";
+import {RespValOptional} from "../responsive-value/responsive-value";
 
 type ScaledValuesCategoricalArgs = ScaledValuesCategoricalUserArgs & {
   parentKey: string
-  parentTitle: string
+  title: RespValOptional<string>
 }
 export class ScaledValuesCategorical extends ScaledValuesBase<string> {
   tag = 'categorical' as const
   readonly values: string[]
   readonly scale: ScaleBand<string>
   readonly parentKey: string
-  readonly parentTitle: string
+  readonly title: RespValOptional<string>
   readonly categories: CategoryValid
   readonly keysActive: ActiveKeyMap
 
@@ -22,11 +23,11 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     this.values = args.values
     this.scale = args.scale ?? scaleBand([0, 600]).domain(this.values).padding(0.1)
     this.parentKey = args.parentKey
-    this.parentTitle = args.parentTitle
+    this.title = args.title
 
     this.categories = 'categories' in args ? args.categories : validateCategories(this.values, {
       values: this.values,
-      title: args.parentTitle,
+      title: args.title,
       parentKey: args.parentKey
     })
 

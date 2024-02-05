@@ -16,7 +16,7 @@ export function pointSeriesRender(selection: Selection<Element, PointSeries>): v
       d.bounds = rectFromString(boundsAttr);
       seriesS
         .selectAll<SVGCircleElement, Point>('.point')
-        .data(seriesPointCreatePoints(d), (d) => d.key)
+        .data(seriesPointCreatePoints(d, false), (d) => d.key)
         .call((s) => seriesPointJoin(seriesS, s));
     })
     .on('pointerover.seriespointhighlight pointerout.seriespointhighlight', (e: PointerEvent) =>
@@ -51,8 +51,9 @@ export function seriesPointJoin(
               .each((d, i, g) => {
                 const t = select(g[i]).transition('minimize').duration(250)
                 return circleToAttrs(t, circleMinimized(d))
-              })
-              .remove()
+              }).on('end', () => {
+              exit.remove()
+            })
           )
           .call((s) => seriesSelection.dispatch('exit', {detail: {selection: s}}))
     )

@@ -5,11 +5,11 @@ export type ScatterPlotArgs = Omit<ChartCartesianUserArgs, 'series'> & {
   series: SeriesPointUserArgs
 }
 
-export type ChartPointValid = ChartCartesianValid & {
+export type ScatterPlotValid = ChartCartesianValid & {
   series: PointSeries;
 }
 
-export function scatterPlotValidation(scatterArgs: ScatterPlotArgs): ChartPointValid {
+export function scatterPlotValidation(scatterArgs: ScatterPlotArgs): ScatterPlotValid {
   const {renderer, x, y, zoom,
     legend, bounds,
     title, subTitle

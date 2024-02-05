@@ -2,7 +2,7 @@ import {Selection} from 'd3';
 import {ChartBaseValid} from "./chart-base-validation";
 import {elementFromSelection} from "../../../utilities/d3/util";
 import {updateCSSForSelection} from "../../../data/breakpoint/breakpoint";
-import {ChartPointValid} from "../../../../points";
+import {ScatterPlotValid} from "../../../../points";
 import {SVGHTMLElement} from "../../../constants/types";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 
@@ -46,7 +46,7 @@ function drawAreaRender<T extends ChartBaseSelection>(selection: T) {
 
 function headerRender(selection: Selection<SVGSVGElement | SVGGElement, ChartBaseValid>) {
   return selection
-    .selectAll<SVGSVGElement, ChartPointValid>('.header')
+    .selectAll<SVGSVGElement, ScatterPlotValid>('.header')
     .data((d) => [d])
     .join('g')
     .classed('header', true);

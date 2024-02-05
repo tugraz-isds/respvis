@@ -64,6 +64,10 @@ export function createBarCart(selector: string) {
       tickOrientationFlipped: tickOrientationHorizontal,
       configureAxis: (axis) => axis.tickFormat(d3.format('.2s')),
     },
+    // zoom: { //TODO: make bar chart work with zooming!
+    //   in: 20,
+    //   out: 1
+    // }
     // legend: {
     //   title: {
     //     dependentOn: 'width',

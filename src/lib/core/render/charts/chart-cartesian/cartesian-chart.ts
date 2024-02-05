@@ -6,12 +6,14 @@ import {ChartWindowValid} from "../../chart-window";
 import {ChartCartesianValid} from "./chart-cartesian-validation";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {elementFromSelection} from "../../../utilities/d3/util";
+import {addZoom} from "../../../data/zoom";
 
 export abstract class CartesianChart extends Chart {
 
-  abstract windowSelection: Selection<SVGHTMLElement, ChartCartesianValid & ChartWindowValid>
+  abstract windowSelection: Selection<HTMLDivElement, ChartCartesianValid & ChartWindowValid>
   protected addBuiltInListeners() {
     this.addFilterListener()
+    this.addZoomListeners()
   }
 
   public override render() {
@@ -46,6 +48,30 @@ export abstract class CartesianChart extends Chart {
       x.setKeyActiveIfDefined(currentKey, changeS.property('checked'))
       y.setKeyActiveIfDefined(currentKey, changeS.property('checked'))
       this.render()
+    })
+  }
+
+  private addZoomListeners() {
+    const renderer = this
+    const chartWindowD = this.windowSelection.datum()
+    if (!chartWindowD.zoom) return
+
+    addZoom(this.windowSelection, ({x, y}) => {
+      const cartesianData = renderer.windowSelection.datum()
+      const seriesUpdated = cartesianData.series.clone()
+      seriesUpdated.x = x
+      seriesUpdated.y = y
+      cartesianData.x.scaledValues = x
+      cartesianData.y.scaledValues = y
+      // The below code does not work
+      // scatterPlotData.series.x = x
+      // scatterPlotData.series.y = y
+
+      renderer.windowSelection.data([{
+        ...cartesianData, series: seriesUpdated
+      }])
+
+      renderer.windowSelection.dispatch('resize')
     })
   }
 }

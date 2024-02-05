@@ -17,7 +17,7 @@ export function combineKeys(keys: (string | undefined)[]): string {
   }, '') as string
 }
 
-export function mergekeys(keys: string[]) {
+export function mergeKeys(keys: string[]) {
   return keys.reduce((prev, current) => {
     return prev + '-' + current
   })
