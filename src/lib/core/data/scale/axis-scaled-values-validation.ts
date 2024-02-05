@@ -2,9 +2,6 @@ import {AxisDomain,} from 'd3';
 import {isScaleCategory, isScaleLinear, isScaleTime, ScaledValuesArg, ScaledValuesValid} from "./scaled-values";
 import {ErrorMessages} from "../../utilities/error";
 import {AxisKey} from "../../constants/types";
-import {SeriesValid} from "../../render/series";
-import {getCurrentRespVal} from "../responsive-value/responsive-value";
-import {elementFromSelection} from "../../utilities/d3/util";
 import {ScaledValuesDate} from "./scaled-values-date";
 import {ScaledValuesLinear} from "./scaled-values-linear";
 import {ScaledValuesCategorical} from "./scaled-values-categorical";
@@ -57,7 +54,7 @@ function hasValueOf(arr: any[]): arr is { valueOf: () => number }[] {
 export function getFilteredScaledValues(scaledValues: ScaledValuesBase<AxisDomainRV>): ScaledValuesBase<AxisDomainRV> {
   if (scaledValues instanceof ScaledValuesCategorical) {
     const activeDomain = scaledValues.categories.values.reduce((prev, current, i) => {
-      const key = `${scaledValues.parentKey}-${scaledValues.categories.valueKeys[i]}`
+      const key = `${scaledValues.parentKey}-${scaledValues.categories.keyValues[i]}`
       return scaledValues.keysActive[key] ? [...prev, current] : prev
     }, [])
     const clone = scaledValues.clone()

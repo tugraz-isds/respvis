@@ -3,8 +3,8 @@ import * as d3 from './libs/d3-7.6.0/d3.js'
 import { BarChart, BarChartUserArgs } from './libs/respvis/respvis.js';
 export function renderStackedBarChart(selector: string) {
   const yearsWhole = [...years, ...years, ...years]
-  const sharesWhole = [...desktop, ...tablet, ...phone]
-  const platformsWhole = [...desktopCategory, ...tabletCategory, ...phoneCategory]
+  const sharesWhole = [...desktop, ...phone, ...tablet]
+  const platformsWhole = [...desktopCategory, ...phoneCategory, ...tabletCategory]
   const calcData = () => {
     return {
       categoryEntity: 'Years',

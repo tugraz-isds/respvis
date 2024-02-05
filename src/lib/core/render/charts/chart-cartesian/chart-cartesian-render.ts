@@ -3,6 +3,9 @@ import {axisBottomRender, axisLeftRender, AxisSelection, AxisValid} from "../../
 import {ChartCartesianSelection} from "./chart-cartesian-validation";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {elementFromSelection} from "../../../utilities/d3/util";
+import {ScaledValuesAggregation} from "../../../data/scale/scaled-values-aggregation";
+import {ScaledValuesLinear} from "../../../data/scale/scaled-values-linear";
+import {BarSeries} from "../../../../bars";
 
 export function chartCartesianAxisRender<T extends ChartCartesianSelection>(chartS: T): void {
   // const seriesS = select<Element, SeriesBar>(g[i]);
@@ -23,22 +26,34 @@ export function chartCartesianAxisRender<T extends ChartCartesianSelection>(char
   const leftAxisClass = flipped ? 'axis-x' : 'axis-y'
   const bottomAxisD = flipped ? data.y : data.x
   const bottomAxisClass = flipped ? 'axis-y' : 'axis-x'
-  // console.log('Range', leftAxisD.scale.range())
-  // console.log('Domain', leftAxisD.scale.domain())
+
+  //TODO: clean this stacked bar chart mess up
+  const aggScaledValues = new ScaledValuesAggregation(
+    leftAxisD.scaledValues, bottomAxisD.scaledValues, data.series.categories).aggregateIfPossible()
+
+  const bottomAxisDAgg = (aggScaledValues && bottomAxisD.scaledValues instanceof ScaledValuesLinear &&
+    data.series instanceof BarSeries && data.series.type === 'stacked') ?
+    {...bottomAxisD, scaledValues: aggScaledValues} : bottomAxisD
+  bottomAxisDAgg.scaledValues.scale.range(bottomAxisD.scaledValues.scale.range())
+
+  const leftAxisDAgg = (aggScaledValues && leftAxisD.scaledValues instanceof ScaledValuesLinear &&
+    data.series instanceof BarSeries && data.series.type === 'stacked') ?
+    {...leftAxisD, scaledValues: aggScaledValues} : leftAxisD
+  leftAxisDAgg.scaledValues.scale.range(leftAxisD.scaledValues.scale.range())
 
   // console.log(flipped)
   chartS.classed('chart-cartesian', true)
     .attr('data-flipped', flipped)
 
   const leftAxisS= chartS.selectAll<SVGGElement, AxisSelection>('.axis-left')
-    .data([leftAxisD])
+    .data([leftAxisDAgg])
     .join('g')
     .call((s) => axisLeftRender(s))
     .classed(leftAxisClass, true)
     .classed(bottomAxisClass, false)
 
   const bottomAxisS = chartS.selectAll<SVGGElement, AxisValid>('.axis-bottom')
-    .data([bottomAxisD])
+    .data([bottomAxisDAgg])
     .join('g')
     .call((s) => axisBottomRender(s))
     .classed(bottomAxisClass, true)

@@ -1,47 +1,46 @@
 import {getCurrentRespVal} from "../../../core/data/responsive-value/responsive-value";
 import {elementFromSelection} from "../../../core/utilities/d3/util";
-import {getSeriesItemCategoryData} from "../../../core/render/series";
 import {Bar, SeriesBarValid} from "../bar-series-validation";
 import {createGroupedBar} from "./bar-grouped-creation";
-import {aggregateScaledValues} from "../../../core/data/scale/scaled-values-aggregation";
+// import {aggregateScaledValues} from "../../../core/data/scale/scaled-values-aggregation";
 import {createStackedBar} from "./bar-stacked-creation";
 import {RectScaleHandler} from "../../../core/data/scale/geometry-scale-handler/rect-scale-handler";
+import {defaultStyleClass} from "../../../core/constants/other";
+import {ScaledValuesAggregation} from "../../../core/data/scale/scaled-values-aggregation";
 
 export function seriesBarCreateBars(seriesData: SeriesBarValid): Bar[] {
-  const {renderer, keysActive, key: seriesKey} = seriesData
+  const {renderer, keysActive, key: seriesKey, categories} = seriesData
   const data: Bar[] = []
 
   const flipped = getCurrentRespVal(seriesData.flipped, {chart: elementFromSelection(renderer.chartSelection)})
   const [x, y] = [seriesData.x.cloneFiltered(), seriesData.y.cloneFiltered()]
   const geometryHandler = new RectScaleHandler({originalYValues: y, originalXValues: x, flipped})
 
-  const [xAgg, yAgg] = [aggregateScaledValues(x, y), aggregateScaledValues(y, x)]
+  const aggScaledValues = new ScaledValuesAggregation(x, y, categories).aggregateIfPossible()
 
   if (!keysActive[seriesKey]) return data
   for (let i = 0; i < seriesData.y.values.length; ++i) {
-    const categoryDataItem = getSeriesItemCategoryData({...seriesData, x, y, index: i, flipped})
-    const {
-      key, seriesCategory, styleClass, label,
-      axisCategoryKeyX, axisCategoryKeyY
-    } = categoryDataItem
-
-    if (keysActive[seriesCategory] === false) continue
-    if (!x.isKeyActive(axisCategoryKeyX) || !y.isKeyActive(axisCategoryKeyY)) continue
+    if (categories && !categories.isKeyActiveByIndex(i)) continue
+    if (!x.isKeyActiveByIndex(i) || !y.isKeyActiveByIndex(i)) continue
 
     const calcFinalBarRect = () => {
       if (seriesData.type === 'grouped' && seriesData.categories) return createGroupedBar({
-        originalScaleHandler: geometryHandler, i, keysActive, categoryDataSeries: seriesData.categories
+        originalScaleHandler: geometryHandler, i, categories: seriesData.categories
       })
-      if (seriesData.type === 'stacked' && seriesData.categories && (xAgg || yAgg)) return createStackedBar({
-        originalScaleHandler: geometryHandler, i, keysActive, aggScaledValues: (xAgg ?? yAgg)!,
-        categoryDataSeries: seriesData.categories, categoryDataItem
+      if (seriesData.type === 'stacked' && seriesData.categories && aggScaledValues) return createStackedBar({
+        originalScaleHandler: geometryHandler, i, keysActive, aggScaledValues,
+        categoryDataSeries: seriesData.categories.categories
       })
       return geometryHandler.getBarRect(i)
     }
 
     data.push({
-      ...calcFinalBarRect(), xValue: seriesData.x.values[i], yValue: seriesData.y.values[i],
-      label, styleClass, key
+      ...calcFinalBarRect(),
+      xValue: seriesData.x.values[i],
+      yValue: seriesData.y.values[i],
+      styleClass: seriesData.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
+      label: seriesData.labelCallback(seriesData.categories?.values[i] ?? ''),
+      key: seriesData.getCombinedKey(i) + ` i-${i}`,
     });
   }
   return data;

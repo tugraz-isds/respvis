@@ -29,11 +29,11 @@ export function getSeriesItemCategoryData(props: Props) : SeriesItemCategory {
   let secondAxisKey = flipped ? axisCategoryKeyX : axisCategoryKeyY
   secondAxisKey = secondAxisKey ? ' ' + secondAxisKey : ''
 
-  const category = categories?.values[index]
-  const categoryKey = categories?.valueKeys[index]
+  const category = categories?.categories.values[index]
+  const categoryKey = categories?.categories.keyValues[index]
   const seriesCategory = `${seriesKey}${categoryKey ? ` ${categoryKey}` : ''}`
   const key = `${seriesCategory}${firstAxisKey}${secondAxisKey} i-${index}`
-  const styleClassCategory = (categories && category) ? `categorical-${categories.orderMap[category]}` : 'categorical-0'
+  const styleClassCategory = (categories && category) ? `categorical-${categories.categories.categoryOrderMap[category]}` : 'categorical-0'
   const styleClass = `${styleClassCategory}` //TODO: What about more specific category attributes? //${styleClassX} ${styleClassY}
   const label = labelCallback(category ?? '')
   return {styleClass, key, seriesCategory, label, axisCategoryKeyX, axisCategoryKeyY, styleClassX, styleClassY}

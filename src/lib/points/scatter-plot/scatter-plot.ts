@@ -61,16 +61,17 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
 
     addZoom(this.windowSelection, ({x, y}) => {
       const scatterPlotData = renderer.windowSelection.datum()
-      const series = scatterPlotData.series
+      const seriesUpdated = scatterPlotData.series.clone()
+      seriesUpdated.x = x
+      seriesUpdated.y = y
       scatterPlotData.x.scaledValues = x
       scatterPlotData.y.scaledValues = y
-      scatterPlotData.series = {...series, x, y}
       // The below code does not work
       // scatterPlotData.series.x = x
       // scatterPlotData.series.y = y
 
       renderer.windowSelection.data([{
-        ...scatterPlotData,
+        ...scatterPlotData, series: seriesUpdated
       }])
 
       renderer.windowSelection.dispatch('resize')

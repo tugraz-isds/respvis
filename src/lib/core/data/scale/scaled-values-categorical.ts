@@ -2,6 +2,7 @@ import {ScaledValuesCategoricalUserArgs} from "./scaled-values";
 import {ScaledValuesBase} from "./scaled-values-base";
 import {scaleBand, ScaleBand} from "d3";
 import {CategoryValid, validateCategories} from "../category";
+import {ActiveKeyMap} from "../../constants/types";
 
 type ScaledValuesCategoricalArgs = ScaledValuesCategoricalUserArgs & {
   parentKey: string
@@ -14,9 +15,7 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
   readonly parentKey: string
   readonly parentTitle: string
   readonly categories: CategoryValid
-  readonly keysActive: {
-    [key: string]: boolean
-  }
+  readonly keysActive: ActiveKeyMap
 
   constructor(args: ScaledValuesCategoricalArgs | ScaledValuesCategorical) {
     super()
@@ -31,17 +30,39 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
       parentKey: args.parentKey
     })
 
-    this.keysActive = 'keysActive' in args ? args.keysActive : this.categories.orderKeys.reduce((prev, c) => {
+    this.keysActive = 'keysActive' in args ? args.keysActive : this.categories.keyOrder.reduce((prev, c) => {
       prev[`${args.parentKey}-${c}`] = true
       return prev
     }, {})
   }
 
-  isKeyActive(key: string) { return this.keysActive[key] !== false }
+  isKeyActiveByKey(key: string) {
+    return this.keysActive[key] !== false
+  }
+
+  isKeyActiveByIndex(i: number) {
+    return this.isKeyActiveByKey(this.getCombinedKey(i))
+  }
+
+  setKeyActiveIfDefined(key: string, value: boolean) {
+    if (this.keysActive[key] !== undefined) this.keysActive[key] = value
+  }
+
+  getCombinedKey(i: number) {
+    return this.parentKey + '-' + this.categories.keyValues[i]
+  }
+
+  getCategoryData(i: number) {
+    const categoryKey = this.categories.keyValues[i]
+    const parentKey = this.parentKey
+    const combinedKey = parentKey + '-' + categoryKey
+    const styleClass = this.categories.styleClassOrder[i]
+    return {categoryKey, parentKey, combinedKey, styleClass}
+  }
 
   cloneFiltered() {
     const activeDomain = this.categories.values.reduce((prev, current, i) => {
-      const key = `${this.parentKey}-${this.categories.valueKeys[i]}`
+      const key = `${this.parentKey}-${this.categories.keyValues[i]}`
       return this.keysActive[key] ? [...prev, current] : prev
     }, [])
     const clone = this.clone()

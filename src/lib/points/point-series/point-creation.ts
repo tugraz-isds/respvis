@@ -3,11 +3,11 @@ import {elementFromSelection} from "../../core/utilities/d3/util";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 import {getRadiusScaledValues} from "../../core/data/radius/radius-util";
 import {PointScaleHandler} from "../../core/data/scale/geometry-scale-handler/point-scale-handler";
-import {getSeriesItemCategoryData} from "../../core/render/series";
-import {SeriesPointValid} from "./point-series-validation";
+import {PointSeries} from "./point-series-validation";
+import {defaultStyleClass} from "../../core/constants/other";
 
-export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
-  const {key: seriesKey, keysActive, color, renderer} = seriesData
+export function seriesPointCreatePoints(seriesData: PointSeries): Point[] {
+  const {key: seriesKey, keysActive, color, renderer, categories} = seriesData
   const chartElement = elementFromSelection(renderer.chartSelection)
   const flipped = getCurrentRespVal(seriesData.flipped, {chart: chartElement})
 
@@ -19,21 +19,18 @@ export function seriesPointCreatePoints(seriesData: SeriesPointValid): Point[] {
   if (!keysActive[seriesKey]) return []
   const data: Point[] = []
   for (let i = 0; i < x.values.length; i++) {
-    const {
-      key, seriesCategory, styleClass, label,
-      axisCategoryKeyX, axisCategoryKeyY
-    } = getSeriesItemCategoryData({...seriesData, index: i, flipped})
-
-    if (keysActive[seriesCategory] === false) continue
-    if (!x.isKeyActive(axisCategoryKeyX) || !y.isKeyActive(axisCategoryKeyY)) continue
+    if (categories && !categories.isKeyActiveByIndex(i)) continue
+    if (!x.isKeyActiveByIndex(i) || !y.isKeyActiveByIndex(i)) continue
 
     data.push({
-      label, styleClass, key,
       ...geometryHandler.getPointCircle(i),
       xValue: geometryHandler.getCurrentXValues().getScaledValue(i),
       yValue: geometryHandler.getCurrentYValues().getScaledValue(i),
       color: color?.scale(color?.values[i]),
-      radiusValue: geometryHandler.getRadius(i)
+      radiusValue: geometryHandler.getRadius(i),
+      key: seriesData.getCombinedKey(i) + ` i-${i}`,
+      styleClass: seriesData.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
+      label: seriesData.labelCallback(seriesData.categories?.values[i] ?? ''),
     })
   }
 

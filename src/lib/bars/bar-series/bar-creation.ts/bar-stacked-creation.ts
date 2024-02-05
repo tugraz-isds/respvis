@@ -1,24 +1,16 @@
-import {SeriesItemCategory} from "../../../core/render/series/series-item-category";
 import {CategoryValid} from "../../../core/data/category";
 import {ScaledValuesLinearValid} from "../../../core/data/scale/scaled-values";
 import {RectScaleHandler} from "../../../core/data/scale/geometry-scale-handler/rect-scale-handler";
 
 type createStackedBarProps = {
-  // wholeBarRect: Rect
   originalScaleHandler: RectScaleHandler
-  // x: AxisScaledValuesValid,
   aggScaledValues: ScaledValuesLinearValid
-  // y: AxisScaledValuesValid,
   i: number,
-  // flipped: boolean,
-  categoryDataItem: SeriesItemCategory,
   categoryDataSeries: CategoryValid,
   keysActive: {[p: string]: boolean}
 }
 export function createStackedBar(props: createStackedBarProps) {
-  const {i, originalScaleHandler, categoryDataItem,
-    categoryDataSeries, keysActive,
-    aggScaledValues} = props
+  const {i, originalScaleHandler, aggScaledValues} = props
 
   const scaledValuesOriginalY = originalScaleHandler.renderState.originalYValues
   const flipped = originalScaleHandler.renderState.flipped

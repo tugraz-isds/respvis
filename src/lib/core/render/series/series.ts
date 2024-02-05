@@ -1,19 +1,19 @@
 import {Size} from "../../utilities/size";
 import {SeriesConfigTooltips, seriesConfigTooltipsData} from "../../../tooltip";
-import {RenderArgs} from "../charts/renderer";
+import {RenderArgs, Renderer} from "../charts/renderer";
 import {Point} from "../../../points";
 import {
   AxisDomainRV,
   AxisScaledValuesArg,
-  AxisScaledValuesValid,
   axisScaledValuesValidation
 } from "../../data/scale/axis-scaled-values-validation";
-import {CategoryUserArgs, CategoryValid, validateCategories} from "../../data/category";
+import {CategoryUserArgs} from "../../data/category";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 import {alignScaledValuesLengths} from "../../data/scale/scaled-values";
-import {SeriesKey} from "../../constants/types";
-import {getSubKey, splitKey} from "../../utilities/dom/key";
+import {ActiveKeyMap, SeriesKey} from "../../constants/types";
+import {combineKeys} from "../../utilities/dom/key";
 import {ScaledValuesBase} from "../../data/scale/scaled-values-base";
+import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";
 
 //TODO: Maybe rename series to cartesian series because of x and y values?
 export type SeriesUserArgs = {
@@ -33,43 +33,64 @@ export type SeriesArgs = SeriesUserArgs & RenderArgs & {
 export type SeriesValid = Required<Omit<SeriesArgs, 'markerTooltips' | 'flipped' | 'x' | 'y' | 'categories'>> & {
   x: ScaledValuesBase<AxisDomainRV>
   y: ScaledValuesBase<AxisDomainRV>
-  categories?: CategoryValid
+  categories?: ScaledValuesCategorical
   markerTooltips: SeriesConfigTooltips<SVGCircleElement, Point>
   flipped: RespValByValueOptional<boolean>
-  keysActive: {
-    [key: string]: boolean
-  }
+  keysActive: ActiveKeyMap,
+  getCombinedKey: (i: number) => string
 }
 
-export function seriesValidation(data: SeriesArgs): SeriesValid {
-  const {key, renderer, flipped,
-    labelCallback, categories} = data
-  const [xAligned, yAligned] = alignScaledValuesLengths(data.x, data.y) //<typeof data.x.values, typeof data.y.values>
-  const x = axisScaledValuesValidation(xAligned, 'a-0')
-  const y = axisScaledValuesValidation(yAligned, 'a-1')
-  const categoriesValid = categories ? validateCategories(x.values, {...categories, parentKey: `s-${key}`}) : undefined
-
-  const keysActive = {}
-  keysActive[key] = true
-  categoriesValid?.orderKeys.reduce((prev, c) => {
-    prev[`${key} ${c}`] = true
-    return prev
-  }, keysActive)
-
-  return { renderer, x, y,
-    categories: categoriesValid,
-    bounds: data.bounds || { width: 600, height: 400 },
-    key,
-    keysActive,
-    markerTooltips: seriesConfigTooltipsData(data.markerTooltips),
-    labelCallback: labelCallback ? labelCallback : (label: string) => label,
-    flipped: flipped ?? false
-  }
+export function seriesValidation(data: SeriesArgs): Series {
+  return new Series(data)
 }
 
-export function seriesGetActiveCategoryKeys(keysActive: {[p: string]: boolean}) {
-  return Object.keys(keysActive).reduce((activeKeys, key) => {
-    const categoryKey = getSubKey(splitKey(key), 'category')
-    return categoryKey !== undefined && keysActive[key] ? [...activeKeys, categoryKey] : activeKeys
-  }, [])
+
+export class Series implements RenderArgs, Required<Omit<SeriesArgs, 'markerTooltips' | 'flipped' | 'x' | 'y' | 'categories'>> {
+  x: ScaledValuesBase<AxisDomainRV>
+  y: ScaledValuesBase<AxisDomainRV>
+  categories?: ScaledValuesCategorical
+  key: `s-${number}`;
+  keysActive: ActiveKeyMap
+  bounds: Size;
+  markerTooltips: SeriesConfigTooltips<SVGCircleElement, Point>
+  labelCallback: (category: string) => string
+  flipped: RespValByValueOptional<boolean>
+  renderer: Renderer
+
+  constructor(args: SeriesArgs | Series) {
+    const {key, labelCallback, categories} = args
+    const [xAligned, yAligned] = alignScaledValuesLengths(args.x, args.y)
+    this.x = args instanceof Series ? args.x : axisScaledValuesValidation(xAligned, 'a-0')
+    this.y = args instanceof Series ? args.y : axisScaledValuesValidation(yAligned, 'a-1')
+
+    //TODO: pass correct parameters here
+    if (args instanceof Series) this.categories = args.categories
+    else this.categories = categories ? new ScaledValuesCategorical({
+      values: categories.values, parentKey: key, parentTitle: 'TODO'
+    }) : undefined
+
+    this.bounds = args.bounds || {width: 600, height: 400}
+    this.key = args.key
+
+    if (args instanceof Series) this.keysActive = args.keysActive
+    else {
+      this.keysActive = {}
+      this.keysActive[key] = true
+    }
+    this.markerTooltips = args instanceof Series ? args.markerTooltips : seriesConfigTooltipsData(args.markerTooltips)
+    this.labelCallback = args instanceof Series ? args.labelCallback : (labelCallback ?? ((label: string) => label))
+    this.renderer = args.renderer
+    this.flipped = args.flipped ?? false
+  }
+
+  getCombinedKey(i: number) {
+    const xKey = this.x instanceof ScaledValuesCategorical ? this.x.getCategoryData(i).combinedKey : undefined
+    const yKey = this.y instanceof ScaledValuesCategorical ? this.y.getCategoryData(i).combinedKey : undefined
+    const seriesCategoryKey = this.categories ? this.categories.getCategoryData(i).combinedKey : undefined
+    return combineKeys([this.key, seriesCategoryKey, xKey, yKey])
+  }
+
+  clone() {
+    return new Series(this)
+  }
 }

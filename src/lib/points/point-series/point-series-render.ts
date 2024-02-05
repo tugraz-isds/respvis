@@ -1,16 +1,16 @@
 import {easeCubicOut, select, Selection} from "d3";
 import {circleMinimized, circleToAttrs, rectFromString} from "../../core";
 import {seriesConfigTooltipsHandleEvents} from "../../tooltip";
-import {SeriesPointValid} from "./point-series-validation";
+import {PointSeries} from "./point-series-validation";
 import {Point} from "./point";
 import {seriesPointCreatePoints} from "./point-creation";
 
-export function pointSeriesRender(selection: Selection<Element, SeriesPointValid>): void {
+export function pointSeriesRender(selection: Selection<Element, PointSeries>): void {
   selection
     .classed('series-point', true)
     .attr('data-ignore-layout-children', true)
     .each((d, i, g) => {
-      const seriesS = select<Element, SeriesPointValid>(g[i]);
+      const seriesS = select<Element, PointSeries>(g[i]);
       const boundsAttr = seriesS.attr('bounds');
       if (!boundsAttr) return;
       d.bounds = rectFromString(boundsAttr);

@@ -17,7 +17,11 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
     return this.scale(this.values[i] as any)!
   }
 
-  isKeyActive(keyActive: string) { return true }
+  isKeyActiveByKey(key: string) { return true }
+
+  isKeyActiveByIndex(i: number) { return true }
+
+  setKeyActiveIfDefined(key: string, value: boolean) {}
 
   cloneFiltered(): ScaledValuesBase<T> {
     return this.clone()

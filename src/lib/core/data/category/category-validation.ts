@@ -14,32 +14,36 @@ export type CategoryArgs = CategoryUserArgs & {
 }
 
 export type CategoryValid = CategoryArgs & {
-  orderMap: Record<string, number>
-  orderArray: string[]
-  valueKeys: CategoryKey[]
-  orderKeys: CategoryKey[]
-  styleClasses: string[]
+  categoryOrderMap: Record<string, number>
+  categoryOrder: string[]
+  keyValues: CategoryKey[]
+  keyOrder: CategoryKey[]
+  styleClassOrder: string[]
+  styleClassValues: string[]
 }
 
 export function validateCategories(referenceData: unknown[], categoryArgs: CategoryArgs): CategoryValid  {
   const { values, parentKey, title} = categoryArgs
 
-  // console.log(categoryArgs, t)
   const [categoriesAligned] = arrayAlignLengths(categoryArgs.values, referenceData)
-  const orderArray = getCategoryOrderArray(categoriesAligned)
-  const orderMap = getCategoryOrderMap(categoriesAligned)
-  const valueKeys = categoriesAligned.map((category) => `c-${orderMap[category]}` as CategoryKey)
-  const orderKeys = orderArray.map((_, i) => `c-${i}` as CategoryKey)
-  const styleClasses = orderArray.map((l, i) => `categorical-${i}`)
+  const categoryOrder = getCategoryOrderArray(categoriesAligned)
+  const categoryOrderMap = getCategoryOrderMap(categoriesAligned)
+
+  const keyValues = categoriesAligned.map((category) => `c-${categoryOrderMap[category]}` as CategoryKey)
+  const keyOrder = categoryOrder.map((_, i) => `c-${i}` as CategoryKey)
+
+  const styleClassValues = categoriesAligned.map((category) => `categorical-${categoryOrderMap[category]}`)
+  const styleClassOrder = categoryOrder.map((l, i) => `categorical-${i}`)
   return {
     title, //?? 'Categories',
     values,
     parentKey,
-    orderMap,
-    orderArray,
-    valueKeys,
-    orderKeys,
-    styleClasses,
+    categoryOrderMap,
+    categoryOrder,
+    keyValues,
+    keyOrder,
+    styleClassValues,
+    styleClassOrder
   }
 }
 

@@ -8,8 +8,8 @@ import {elementFromSelection} from "../../utilities/d3/util";
 import {LegendValid} from "../legend";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {categoryOrderMapToArray} from "../../data/category";
-import {isScaledValuesCategorical} from "../../data/scale/scaled-values";
 import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";
+import {mergekeys} from "../../utilities/dom/key";
 
 type ToolbarValid = RenderArgs & {
   x: AxisValid,
@@ -50,17 +50,16 @@ function categorySeriesRender(menuToolsItemsS: Selection, toolbarValid: ToolbarV
 
   toolFilterNominalRender(menuToolsItemsS, {text: 'Main Series', options: ['Series'], keys: [key], class: 'filter-series'})
   if (categories) {
-    const {title: categoriesTitle, orderMap: categoryOrderMap,
-      orderKeys} = categories
+    const {title: categoriesTitle, categoryOrderMap: categoryOrderMap,
+      keyOrder} = categories.categories
     const categoryText = getCurrentRespVal(categoriesTitle, {chart: chartElement})
     const filterOptions: ToolFilterNominal = {
       text: categoryText,
-      options: [...categoryOrderMapToArray(categoryOrderMap), categoryText],
-      keys: [...orderKeys.map(oKey => key + ' ' + oKey), key],
+      options: categoryOrderMapToArray(categoryOrderMap),
+      keys: keyOrder.map(key => mergekeys([categories.parentKey, key])),
       class: 'filter-category'
     }
     toolFilterNominalRender(menuToolsItemsS, filterOptions)
-    // toolFilterNominalRender(menuToolsItemsS, {text: categoryText, options: [categoryText], keys: [key], class: 'filter-series'})
   }
 }
 
@@ -71,8 +70,8 @@ function categoryAxisRender(menuToolsItemsS: Selection, toolbarValid: ToolbarVal
   if(axisScaledValues instanceof ScaledValuesCategorical) {
     const filterOptions: ToolFilterNominal = {
       text: getCurrentRespVal( `${axis.toUpperCase()}-Axis Categories`, {chart: chartElement}),
-      options: categoryOrderMapToArray(axisScaledValues.categories.orderMap),
-      keys: axisScaledValues.categories.orderKeys.map(oKey => `${axisScaledValues.parentKey}-${oKey}`),
+      options: categoryOrderMapToArray(axisScaledValues.categories.categoryOrderMap),
+      keys: axisScaledValues.categories.keyOrder.map(oKey => `${axisScaledValues.parentKey}-${oKey}`),
       class: `filter-axis-${axis}`
     }
     toolFilterNominalRender(menuToolsItemsS, filterOptions)

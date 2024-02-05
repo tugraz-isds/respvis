@@ -1,6 +1,6 @@
 import {Selection} from 'd3';
 import {chartBaseRender, chartCartesianAxisRender} from '../../core';
-import {SeriesPointValid} from '../point-series/point-series-validation';
+import {PointSeries} from '../point-series/point-series-validation';
 import {legendRender} from "../../core/render/legend";
 import {ChartPointValid} from "./scatter-plot-validation";
 import {pointSeriesRender} from "../point-series/point-series-render";
@@ -23,7 +23,7 @@ function renderAllSeriesOfPoints(chartS: ScatterplotChartSelection) {
   chartS
     .selectAll('.draw-area')
     .selectAll<SVGSVGElement, ChartPointValid>('.series-point')
-    .data<SeriesPointValid>([series])
+    .data<PointSeries>([series])
     .join('svg')
     .call(pointSeriesRender)
 

@@ -1,5 +1,5 @@
 import {Rect,} from '../../core/utilities/rect';
-import {SeriesArgs, SeriesUserArgs, SeriesValid, seriesValidation} from "../../core/render/series";
+import {Series, SeriesArgs, SeriesUserArgs, SeriesValid} from "../../core/render/series";
 import {BarSeriesType} from "../../core/constants/types";
 
 export interface Bar extends Rect {
@@ -20,9 +20,18 @@ export type SeriesBarValid = SeriesValid & {
   type: BarSeriesType
 }
 
-export function seriesBarValidation(data: SeriesBarArgs): SeriesBarValid {
-  return {
-    type: data.type ?? 'standard',
-    ...seriesValidation(data)
+export function seriesBarValidation(data: SeriesBarArgs): BarSeries {
+  return new BarSeries(data)
+}
+
+export class BarSeries extends Series {
+  type: BarSeriesType
+  constructor(args: SeriesBarArgs | BarSeries) {
+    super(args);
+    this.type = args.type ?? 'standard'
+  }
+
+  clone() {
+    return new BarSeries(this)
   }
 }

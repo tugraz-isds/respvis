@@ -6,7 +6,6 @@ import {ChartWindowValid} from "../../chart-window";
 import {ChartCartesianValid} from "./chart-cartesian-validation";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {elementFromSelection} from "../../../utilities/d3/util";
-import {isScaledValuesCategorical} from "../../../data/scale/scaled-values";
 
 export abstract class CartesianChart extends Chart {
 
@@ -37,18 +36,15 @@ export abstract class CartesianChart extends Chart {
       if (changeS.attr('type') !== 'checkbox') return
       const parentS = changeS.select(function() {return this.parentElement})
       const currentKey = parentS.attr('data-key')
-      if (!currentKey) return;
+      if (!currentKey) return
 
-      //TODO: create dynamic solution for this!
-      const {keysActive, x, y} = this.windowSelection.datum().series
+      const {keysActive, x, y, categories} = this.windowSelection.datum().series
       if (keysActive[currentKey] !== undefined) {
         keysActive[currentKey] = changeS.property('checked')
-      } else if (isScaledValuesCategorical(x) && x.keysActive[currentKey] !== undefined) {
-        x.keysActive[currentKey] = changeS.property('checked')
-      } else if (isScaledValuesCategorical(y) && y.keysActive[currentKey] !== undefined) {
-        y.keysActive[currentKey] = changeS.property('checked')
       }
-
+      categories?.setKeyActiveIfDefined(currentKey, changeS.property('checked'))
+      x.setKeyActiveIfDefined(currentKey, changeS.property('checked'))
+      y.setKeyActiveIfDefined(currentKey, changeS.property('checked'))
       this.render()
     })
   }
