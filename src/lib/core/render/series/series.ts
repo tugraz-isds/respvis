@@ -2,23 +2,19 @@ import {Size} from "../../utilities/size";
 import {SeriesConfigTooltips, seriesConfigTooltipsData} from "../../../tooltip";
 import {RenderArgs, Renderer} from "../charts/renderer";
 import {Point} from "../../../points";
-import {
-  AxisDomainRV,
-  AxisScaledValuesArg,
-  axisScaledValuesValidation
-} from "../../data/scale/axis-scaled-values-validation";
+import {AxisDomainRV, axisScaledValuesValidation} from "../../data/scale/axis-scaled-values-validation";
 import {CategoryUserArgs} from "../../data/category";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 import {alignScaledValuesLengths} from "../../data/scale/scaled-values";
 import {ActiveKeyMap, SeriesKey} from "../../constants/types";
-import {combineKeys} from "../../utilities/dom/key";
+import {combineKeys, mergeKeys} from "../../utilities/dom/key";
 import {ScaledValuesBase} from "../../data/scale/scaled-values-base";
 import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";
 
 //TODO: Maybe rename series to cartesian series because of x and y values?
 export type SeriesUserArgs = {
-  x: AxisScaledValuesArg
-  y: AxisScaledValuesArg
+  x: ScaledValuesBase<AxisDomainRV>
+  y: ScaledValuesBase<AxisDomainRV>
   categories?: CategoryUserArgs
   markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>
   labelCallback?: (category: string) => string,
@@ -88,6 +84,14 @@ export class Series implements RenderArgs, Required<Omit<SeriesArgs, 'markerTool
     const yKey = this.y instanceof ScaledValuesCategorical ? this.y.getCategoryData(i).combinedKey : undefined
     const seriesCategoryKey = this.categories ? this.categories.getCategoryData(i).combinedKey : undefined
     return combineKeys([this.key, seriesCategoryKey, xKey, yKey])
+  }
+
+  getMergedKeys() {
+    if (this.categories) {
+      return this.categories.categories.keyOrder.map(cKey =>
+        mergeKeys([this.key, cKey]))
+    }
+    return [this.key]
   }
 
   clone() {

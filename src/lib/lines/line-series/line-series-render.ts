@@ -2,54 +2,47 @@ import {Selection} from "d3";
 import {Point, seriesPointCreatePoints, seriesPointJoin} from "../../points";
 import {pathLine, rectFromString} from "../../core";
 import {LineSeries} from "./line-series-validation";
-import {mergeKeys} from "../../core/utilities/dom/key";
 import {defaultStyleClass} from "../../core/constants/other";
 import {seriesConfigTooltipsHandleEvents} from "../../tooltip";
+import {Line} from "./line";
 
 export function lineSeriesRender(pointLineS: Selection<Element, LineSeries>): void {
-  const lineSeries = pointLineS.datum()
-  const pointGroups = seriesPointCreatePoints(lineSeries, true)
-
-  const pointSelection = pointLineS.filter('.series-point-line')
-  pointSelection.each((d, i, g) => {
-    const boundsAttrPoints = pointSelection.attr('bounds')
-    if (!boundsAttrPoints) return
-    d.bounds = rectFromString(boundsAttrPoints)
-    pointSelection.selectAll<SVGCircleElement, Point>('.point')
-      .data(pointGroups.flat(), (d) => d.key)
-      .call((s) => seriesPointJoin(pointSelection, s))
-    pointSelection.on('pointerover.seriespointhighlight pointerout.seriespointhighlight', (e: PointerEvent) =>
-      (<Element>e.target).classList.toggle('highlight', e.type.endsWith('over'))
-    ).call((s) => seriesConfigTooltipsHandleEvents(s))
-  })
-
-
-  const getKeySelectors = () => {
-    if (lineSeries.categories) {
-      const parentKey = lineSeries.categories.parentKey
-      return lineSeries.categories.categories.keyOrder.map(cKey =>
-        mergeKeys([parentKey, cKey]))
-    }
-    return [lineSeries.key]
-  }
-  const keySelectors = getKeySelectors()
-  const seriesInactive = lineSeries.keysActive[lineSeries.key] === false
-
-  const lineSelection = pointLineS.filter('.series-line')
-  lineSelection.each((d, i, g) => {
-    const boundsAttr = lineSelection.attr('bounds')
-    if (!boundsAttr) return
-    keySelectors.forEach((key, i) => {
-      renderLine(lineSelection, seriesInactive ? [] : pointGroups[i], key)
-    })
-  })
+  const pointGroups = seriesPointCreatePoints(pointLineS.datum(), true)
+  lineSeriesPointsRender(pointLineS.filter('.series-point-line'), pointGroups)
+  lineSeriesLinesRender(pointLineS.filter('.series-line'), pointGroups)
 }
 
-function renderLine(seriesS: Selection<Element>, points: Point[], key: string) {
-  const pointsEmpty = points.length === 0
-  seriesS
-    .selectAll<SVGPathElement, Point[]>('path')
-    .data(pointsEmpty ? [] : [points], () => key)
+function lineSeriesPointsRender(pointS: Selection<Element, LineSeries>, pointGroups: Point[][]) {
+  if (!pointS.attr('bounds')) return
+  pointS.selectAll<SVGCircleElement, Point>('.point')
+    .data(pointGroups.flat(), (d) => d.key)
+    .call((s) => seriesPointJoin(pointS, s))
+  pointS.on('pointerover.seriespointhighlight pointerout.seriespointhighlight', (e: PointerEvent) =>
+    (<Element>e.target).classList.toggle('highlight', e.type.endsWith('over'))
+  ).call((s) => seriesConfigTooltipsHandleEvents(s))
+}
+
+function lineSeriesLinesRender(lineS: Selection<Element, LineSeries>, pointGroups: Point[][]) {
+  const boundsAttr = lineS.attr('bounds')
+  if (!boundsAttr) return
+  lineS.datum().bounds = rectFromString(boundsAttr)
+  const lineSeries = lineS.datum()
+  const keySelectors = lineSeries.getMergedKeys()
+  const lines: Line[] = keySelectors.map((key, i) => ({
+    key,
+    positions: pointGroups[i].map(point => point.center),
+    styleClass: pointGroups[i][0]?.styleClass ?? defaultStyleClass
+  })).filter(line => line.positions.length !== 0)
+
+  lineS.selectAll<SVGPathElement, Line>('path')
+    .data(lines, (d) => d.key)
+    .call(s => lineSeriesJoin(lineS, s))
+}
+
+function lineSeriesJoin(seriesS: Selection<Element>, joinS: Selection<Element, Line>) {
+  // todo: enter transition
+  // todo: exit transition
+  joinS
     .join(
       (enter) =>
         enter
@@ -60,16 +53,12 @@ function renderLine(seriesS: Selection<Element>, points: Point[], key: string) {
       (exit) =>
         exit.remove().call((s) => seriesS.dispatch('exit', {detail: {selection: s}}))
     )
-    .each((points, i, g) => {
-      const positions = points.map(point => point.center)
-      pathLine(g[i], positions);
-    })
-    .attr('data-style', (d) => d[0]?.styleClass ?? defaultStyleClass)
-    .attr('data-key', (d) => key)
+    .each((line, i, g) => pathLine(g[i], line.positions))
+    .attr('data-style', (d) => d.styleClass)
+    .attr('data-key', (d) => d.key)
     .call((s) => seriesS.dispatch('update', {detail: {selection: s}}))
     .on('pointerover.serieslinehighlight pointerout.serieslinehighlight', (e: PointerEvent) =>
       (<Element>e.target).classList.toggle('highlight', e.type.endsWith('over'))
-    );
-
+    )
 }
 

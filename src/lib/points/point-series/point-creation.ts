@@ -5,7 +5,6 @@ import {getRadiusScaledValues} from "../../core/data/radius/radius-util";
 import {PointScaleHandler} from "../../core/data/scale/geometry-scale-handler/point-scale-handler";
 import {PointSeries} from "./point-series-validation";
 import {defaultStyleClass} from "../../core/constants/other";
-import {getActiveKeys} from "../../core/utilities/dom/key";
 
 export function seriesPointCreatePoints<T extends boolean, R = T extends false ? Point[] : Point[][]>
 (seriesData: PointSeries, grouped: T) : R {
@@ -18,11 +17,12 @@ export function seriesPointCreatePoints<T extends boolean, R = T extends false ?
   const radii = getRadiusScaledValues(seriesData.radii, {chart: chartElement, self: drawAreaElement})
   const geometryHandler = new PointScaleHandler({originalYValues: y, originalXValues: x, flipped, radii})
 
-  if (!keysActive[seriesKey]) return [] as R
-
   const pointsSingleGroup: Point[] = []
-  const pointsGrouped: Point[][] = new Array(categories ? getActiveKeys(categories.keysActive).length : 1)
+  const pointsGrouped: Point[][] = new Array(categories ? categories.categories.keyOrder.length : 1)
     .fill(0).map(() => [])
+
+  if (!keysActive[seriesKey] && !grouped) return pointsSingleGroup as R
+  if (!keysActive[seriesKey] && grouped) return pointsGrouped as R
 
   for (let i = 0; i < x.values.length; i++) {
     if (categories && !categories.isKeyActiveByIndex(i)) continue
