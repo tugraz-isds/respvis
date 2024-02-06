@@ -14,7 +14,7 @@ export type ScaledValuesLinearValid = Required<ScaledValuesLinearUserArgs>
 export type ScaledValuesCategoricalUserArgs = { values: ToArray<string>, scale?: ScaleBand<string> }
 export type ScaledValuesCategoricalValid = Required<ScaledValuesCategoricalUserArgs> & {}
 
-export type ScaledValuesArg<Domain> =
+export type ScaledValuesUserArgs<Domain> =
   Domain extends Date ? ScaledValuesDateUserArgs :
   Domain extends number ? ScaledValuesLinearUserArgs :
   Domain extends string ? ScaledValuesCategoricalUserArgs : never

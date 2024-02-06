@@ -1,6 +1,6 @@
 import {IChartParcoordArgs} from "./IChartParcoordArgs";
 import {IChartParcoordData, TParcoordDimensionData} from "./IChartParcoordData";
-import {axisValidation, axisScaledValuesValidation} from "../../core";
+import {axisScaledValuesValidation, axisValidation} from "../../../core";
 import {scalePoint} from "d3";
 
 export function parcoordData(data: IChartParcoordArgs): IChartParcoordData {

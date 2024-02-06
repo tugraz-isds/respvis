@@ -1,5 +1,5 @@
 import {Axis as D3Axis, AxisDomain} from 'd3';
-import {AxisScaledValuesValid} from "../../data/scale/axis-scaled-values-validation";
+import {AxisDomainRV} from "../../data/scale/axis-scaled-values-validation";
 import {LayoutBreakpoints} from "../../data/breakpoint/breakpoint";
 import {RenderArgs} from "../charts/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
@@ -9,15 +9,15 @@ import {ScaledValuesBase} from "../../data/scale/scaled-values-base";
 
 export type AxisUserArgs = {
   bounds?: Partial<LayoutBreakpoints>
-  title?: RespValOptional<string>,
-  subTitle?: RespValOptional<string>,
-  configureAxis?: RespValOptional<ConfigureAxisFn>,
+  title?: RespValOptional<string>
+  subTitle?: RespValOptional<string>
+  configureAxis?: RespValOptional<ConfigureAxisFn>
   tickOrientation?: RespValByValueOptional<number>
   tickOrientationFlipped?: RespValByValueOptional<number>
 }
 
 export type AxisArgs = AxisUserArgs & RenderArgs & {
-  scaledValues: ScaledValuesBase
+  scaledValues: ScaledValuesBase<AxisDomainRV>
 }
 
 export type AxisValid = Required<Omit<AxisArgs, 'bounds'>> & {

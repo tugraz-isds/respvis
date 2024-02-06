@@ -1,6 +1,6 @@
 import {select, Selection} from "d3";
 import {IChartParcoordData} from "./IChartParcoordData";
-import {axisSequenceRender, AxisValid, chartBaseRender, rectFromString} from "../../core";
+import {axisSequenceRender, AxisValid, chartBaseRender, rectFromString} from "../../../core";
 
 export type ChartParcoordSelection = Selection<SVGSVGElement | SVGGElement, IChartParcoordData>;
 

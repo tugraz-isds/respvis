@@ -11,7 +11,10 @@ export function isCSSLengthValue(value: any): value is CSSLengthValue {
   return value.match(boundRegex) !== null
 }
 
-export type ChartType = 'point' | 'bar' | 'line'
+
+export type CartesianChartType = 'point' | 'bar' | 'line'
+
+export type ChartType = CartesianChartType | 'parcoord'
 
 export type BarSeriesType = 'standard' | 'stacked' | 'grouped'
 

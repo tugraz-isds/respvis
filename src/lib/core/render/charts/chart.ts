@@ -5,7 +5,7 @@ import {ChartBaseValid} from "./chart-base";
 import {Renderer} from "./renderer";
 import {resizeEventListener} from "../../resize-event-dispatcher";
 
-type ChartValid = ChartWindowValid & ChartBaseValid
+export type ChartValid = ChartWindowValid & ChartBaseValid
 
 export abstract class Chart implements Renderer {
   private addedListeners = false

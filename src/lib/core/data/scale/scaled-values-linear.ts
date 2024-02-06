@@ -1,4 +1,4 @@
-import {ScaledValuesArg} from "./scaled-values";
+import {ScaledValuesUserArgs} from "./scaled-values";
 import {ScaledValuesBase} from "./scaled-values-base";
 import {scaleLinear, ScaleLinear, ZoomTransform} from "d3";
 import {AxisType} from "../../constants/types";
@@ -8,7 +8,7 @@ export class ScaledValuesLinear extends ScaledValuesBase<number> {
   values: number[]
   scale: ScaleLinear<number, number, never>
 
-  constructor(args: ScaledValuesArg<number>) {
+  constructor(args: ScaledValuesUserArgs<number>) {
     super()
     this.values = args.values
     const extent = [Math.min(...this.values), Math.max(...this.values)]

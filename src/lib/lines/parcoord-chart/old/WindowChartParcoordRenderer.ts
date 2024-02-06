@@ -1,12 +1,7 @@
-import { windowChartParcoordData }from "./window-chart-parcoord-data";
+import {windowChartParcoordData} from "./window-chart-parcoord-data";
 import {IChartParcoordArgs} from "./IChartParcoordArgs";
 import {select, Selection} from "d3";
-import {
-  ChartBaseValid,
-  chartWindowRender,
-  layouterCompute,
-  toolDownloadSVGRender
-} from "../../core";
+import {ChartBaseValid, chartWindowRender, layouterCompute, toolDownloadSVGRender} from "../../../core";
 import {chartParcoordRender} from "./chart-parcoord-render";
 import {IChartParcoordData} from "./IChartParcoordData";
 

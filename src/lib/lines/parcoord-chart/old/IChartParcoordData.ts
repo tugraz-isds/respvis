@@ -1,4 +1,4 @@
-import {AxisValid, ChartBaseValid, ScaleAny} from "../../core";
+import {AxisValid, ChartBaseValid, ScaleAny} from "../../../core";
 import {ScalePoint} from "d3";
 
 export type TParcoordDimensionData = {

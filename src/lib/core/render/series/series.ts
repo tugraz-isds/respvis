@@ -5,7 +5,7 @@ import {Point} from "../../../points";
 import {AxisDomainRV, axisScaledValuesValidation} from "../../data/scale/axis-scaled-values-validation";
 import {CategoryUserArgs} from "../../data/category";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
-import {alignScaledValuesLengths} from "../../data/scale/scaled-values";
+import {alignScaledValuesLengths, ScaledValuesUserArgs} from "../../data/scale/scaled-values";
 import {ActiveKeyMap, SeriesKey} from "../../constants/types";
 import {combineKeys, mergeKeys} from "../../utilities/dom/key";
 import {ScaledValuesBase} from "../../data/scale/scaled-values-base";
@@ -13,8 +13,8 @@ import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorica
 
 //TODO: Maybe rename series to cartesian series because of x and y values?
 export type SeriesUserArgs = {
-  x: ScaledValuesBase<AxisDomainRV>
-  y: ScaledValuesBase<AxisDomainRV>
+  x: ScaledValuesUserArgs<AxisDomainRV>
+  y: ScaledValuesUserArgs<AxisDomainRV>
   categories?: CategoryUserArgs
   markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>
   labelCallback?: (category: string) => string,
@@ -56,8 +56,8 @@ export class Series implements RenderArgs, Required<Omit<SeriesArgs, 'markerTool
   constructor(args: SeriesArgs | Series) {
     const {key, labelCallback, categories} = args
     const [xAligned, yAligned] = alignScaledValuesLengths(args.x, args.y)
-    this.x = args instanceof Series ? args.x : axisScaledValuesValidation(xAligned, 'a-0')
-    this.y = args instanceof Series ? args.y : axisScaledValuesValidation(yAligned, 'a-1')
+    this.x = xAligned instanceof ScaledValuesBase ? xAligned : axisScaledValuesValidation(xAligned, 'a-0')
+    this.y = yAligned instanceof ScaledValuesBase ? yAligned : axisScaledValuesValidation(yAligned, 'a-1')
 
     //TODO: pass correct parameters here
     if (args instanceof Series) this.categories = args.categories

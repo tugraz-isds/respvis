@@ -25,6 +25,7 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     this.parentKey = args.parentKey
     this.title = args.title
 
+    //TODO: this is no real alignment validation. Fix this!
     this.categories = 'categories' in args ? args.categories : validateCategories(this.values, {
       values: this.values,
       title: args.title,

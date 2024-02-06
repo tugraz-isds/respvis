@@ -1,6 +1,0 @@
-export * from './chart-parcoord-data'
-export * from './chart-parcoord-render'
-export * from './IChartParcoordData'
-export * from './IChartParcoordArgs'
-export * from './window-chart-parcoord-data'
-export * from './WindowChartParcoordRenderer'
