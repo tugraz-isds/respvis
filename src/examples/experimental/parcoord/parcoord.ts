@@ -18,32 +18,34 @@ export function renderParcoord(selector: string) {
   //   .range([5, 20])
 
   const data: ParcoordChartUserArgs = {
-    dimensions: [
-      {
-        scaledValues: { values: horsePower},
-        axis: {
-          title: "Horsepower",
-          subtitle: "[PS]"
-        }
-      },
-      {
-        scaledValues: { values: prices},
-        axis: {
-          title: "Price",
-          subtitle: "[EU]"
-        }
-      },
-      {
-        scaledValues: { values: mileages},
-        axis: {
-          title: "Mileage",
-          subtitle: "[km]"
-        }
-      },
-    ],
-    categories: {
-      values: makes,
-      title: 'Makes'
+    series: {
+      dimensions: [
+        {
+          scaledValues: { values: horsePower},
+          axis: {
+            title: "Horsepower",
+            subtitle: "[PS]"
+          }
+        },
+        {
+          scaledValues: { values: prices},
+          axis: {
+            title: "Price",
+            subtitle: "[EU]"
+          }
+        },
+        {
+          scaledValues: { values: mileages},
+          axis: {
+            title: "Mileage",
+            subtitle: "[km]"
+          }
+        },
+      ],
+      categories: {
+        values: makes,
+        title: 'Makes'
+      }
     },
     bounds: {
       width: {

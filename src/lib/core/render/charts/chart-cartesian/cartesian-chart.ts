@@ -16,10 +16,6 @@ export abstract class CartesianChart extends Chart {
     this.addZoomListeners()
   }
 
-  public override render() {
-    this.preRender()
-  }
-
   protected preRender() {
     if (!this.initialRenderHappened) return
     const drawArea = this.windowSelection.selectAll('.draw-area')

@@ -1,1 +1,1 @@
-export * from '../lines/parcoord-chart'
+export * from '../parcoord/parcoord-chart'

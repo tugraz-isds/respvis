@@ -1,5 +1,10 @@
 import {Rect,} from '../../core/utilities/rect';
-import {Series, SeriesArgs, SeriesUserArgs, SeriesValid} from "../../core/render/series";
+import {
+  CartesianSeries,
+  CartesianSeriesArgs,
+  CartesianSeriesUserArgs,
+  CartesianSeriesValid
+} from "../../core/render/cartesian-series";
 import {BarSeriesType} from "../../core/constants/types";
 
 export interface Bar extends Rect {
@@ -10,13 +15,13 @@ export interface Bar extends Rect {
   key: string;
 }
 
-export type SeriesBarUserArgs = SeriesUserArgs & {
+export type SeriesBarUserArgs = CartesianSeriesUserArgs & {
   type?: BarSeriesType
 }
 
-export type SeriesBarArgs = SeriesBarUserArgs & SeriesArgs
+export type SeriesBarArgs = SeriesBarUserArgs & CartesianSeriesArgs
 
-export type SeriesBarValid = SeriesValid & {
+export type SeriesBarValid = CartesianSeriesValid & {
   type: BarSeriesType
 }
 
@@ -24,7 +29,7 @@ export function seriesBarValidation(data: SeriesBarArgs): BarSeries {
   return new BarSeries(data)
 }
 
-export class BarSeries extends Series {
+export class BarSeries extends CartesianSeries {
   type: BarSeriesType
   constructor(args: SeriesBarArgs | BarSeries) {
     super(args);

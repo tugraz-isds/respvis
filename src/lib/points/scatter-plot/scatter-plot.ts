@@ -28,7 +28,7 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
     toolbarRender(this.windowSelection)
     scatterPlotRender(chartS)
     const boundsChanged = layouterCompute(layouterS)
-    if (boundsChanged) this.render()
+    if (boundsChanged) this.initializeRender()
   }
 
   protected override addBuiltInListeners() {

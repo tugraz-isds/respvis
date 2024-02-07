@@ -35,7 +35,7 @@ export abstract class Chart implements Renderer {
   }
 
   /**
-   * Adds custom event listener. Be sure to add custom event listeners before calling {@link this.buildChart}
+   * Adds custom event listener. Be sure to add custom event listeners before calling {@link Chart.buildChart}
    * as the method also adds listeners and the order matters.
    */
   addCustomListener<T extends ChartValid>(name: string, callback: (event: Event, data: T) => void) {
@@ -73,5 +73,9 @@ export abstract class Chart implements Renderer {
     // }, 20)
   }
 
-  protected abstract render() : void
+  protected preRender() {}
+
+  protected render() {
+    this.preRender()
+  }
 }

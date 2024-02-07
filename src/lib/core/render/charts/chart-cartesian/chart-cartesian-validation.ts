@@ -3,10 +3,10 @@ import {AxisUserArgs, AxisValid, axisValidation} from "../../axis";
 import {ChartBaseArgs, ChartBaseValid, chartBaseValidation} from "../chart-base";
 import {validateZoom, ZoomArgs, ZoomValid} from "../../../data/zoom";
 import {LegendUserArgs, LegendValid, legendValidation} from "../../legend";
-import {Series, SeriesUserArgs} from "../../series";
+import {CartesianSeries, CartesianSeriesUserArgs} from "../../cartesian-series";
 
 export type ChartCartesianUserArgs = ChartBaseArgs & {
-  series: SeriesUserArgs
+  series: CartesianSeriesUserArgs
   // additionalSeries:
   x: AxisUserArgs
   y: AxisUserArgs
@@ -15,11 +15,11 @@ export type ChartCartesianUserArgs = ChartBaseArgs & {
 }
 
 export type ChartCartesianArgs = Omit<ChartCartesianUserArgs, 'series'> & {
-  series: Series
+  series: CartesianSeries
 }
 
 export type ChartCartesianValid = ChartBaseValid & {
-  series: Series
+  series: CartesianSeries
   x: AxisValid
   y: AxisValid
   legend: LegendValid

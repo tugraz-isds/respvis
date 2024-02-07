@@ -25,7 +25,7 @@ export class LineChart extends CartesianChart {
     toolbarRender(this.windowSelection)
     lineChartRender(chartS)
     const boundsChanged = layouterCompute(layouterS)
-    if (boundsChanged) this.render()
+    if (boundsChanged) this.initializeRender()
   }
 
   protected override addBuiltInListeners() {

@@ -1,8 +1,10 @@
 import {Selection} from "d3";
-import {chartWindowRender, ChartWindowValid, layouterCompute} from "../../core";
+import {chartWindowRender, ChartWindowValid, layouterCompute, rectFromString} from "../../core";
 import {Chart} from "../../core/render/charts/chart";
 import {ParcoordChartUserArgs, ParcoordChartValid, parcoordChartValidation} from "./parcoord-chart-validation";
 import {parCoordChartRender} from "./parcoord-chart-render";
+import {elementFromSelection} from "../../core/utilities/d3/util";
+import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 
 export type ParcoordChartSelection = Selection<HTMLDivElement, ChartWindowValid & ParcoordChartValid> // & LineChartValid
 
@@ -21,6 +23,7 @@ export class ParcoordChart extends Chart {
   }
 
   protected render(): void {
+    super.render()
     const {
       chartS,
       layouterS
@@ -28,6 +31,21 @@ export class ParcoordChart extends Chart {
     // toolbarRender(this.windowSelection)
     parCoordChartRender(chartS)
     const boundsChanged = layouterCompute(layouterS)
-    // if (boundsChanged) this.render()
+    if (boundsChanged) this.initializeRender()
   }
+
+  protected preRender() {
+    if (!this.initialRenderHappened) return
+    const drawArea = this.windowSelection.selectAll('.draw-area')
+    const {series} = this.windowSelection.datum()
+    const {axes, axesScale} = series
+    const {width, height} = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
+    const chartElement = elementFromSelection(this.chartSelection)
+    const flipped = getCurrentRespVal(series.flipped, {chart: chartElement})
+    axes.forEach(axis => axis.scaledValues.scale.range(flipped ? [0, width] : [height, 0]))
+    axesScale.range(flipped ? [height, 0] : [0, width])
+    console.log(axes[0].scaledValues.scale.range())
+  }
+
+
 }
