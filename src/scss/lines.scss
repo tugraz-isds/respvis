@@ -24,9 +24,3 @@ path.line.highlight {
 .chart-line[data-flipped='true'] .series-label .label {
   dominant-baseline: middle;
 }
-
-.chart.chart-parcoord {
-  .line {
-    stroke: var(--color-categorical-0);
-  }
-}

@@ -41,10 +41,19 @@ export class ParcoordChart extends Chart {
     const {axes, axesScale} = series
     const {width, height} = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
     const chartElement = elementFromSelection(this.chartSelection)
-    const flipped = getCurrentRespVal(series.flipped, {chart: chartElement})
-    axes.forEach(axis => axis.scaledValues.scale.range(flipped ? [0, width] : [height, 0]))
-    axesScale.range(flipped ? [height, 0] : [0, width])
-    console.log(axes[0].scaledValues.scale.range())
+
+    const renderState = { width, height,
+      flipped: getCurrentRespVal(series.flipped, {chart: chartElement}),
+      originalXRange: function (){
+        return this.flipped ? [this.height, 0] : [0, this.width]
+      },
+      originalYRange: function (){
+        return this.flipped ? [0, this.width] : [this.height, 0]
+      }
+    }
+
+    axes.forEach(axis => axis.scaledValues.scale.range(renderState.originalYRange()))
+    axesScale.range(renderState.originalXRange())
   }
 
 

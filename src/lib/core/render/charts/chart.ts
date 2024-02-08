@@ -30,8 +30,8 @@ export abstract class Chart implements Renderer {
     this.initialRenderHappened = true
     if (this.addedListeners) return
     this.addBuiltInListeners()
-    this.addedListeners = true
     this.addFinalListeners()
+    this.addedListeners = true
   }
 
   /**

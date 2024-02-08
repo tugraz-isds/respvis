@@ -67,44 +67,6 @@
   grid-area: ticks;
 }
 
-.chart-parcoord {
-  display: grid;
-  grid-template: auto 1fr/1fr;
-  grid-template-areas: "header" "draw-area";
-  padding: 2rem 1rem 0.5rem 0.5rem;
-  overflow: visible;
-}
-
-.chart-parcoord .axis {
-  display: grid;
-  grid-template-rows: auto auto 1fr;
-  grid-template-columns: 1fr;
-  grid-template-areas: "title" "subtitle" "ticks-transform";
-}
-.chart-parcoord .axis .title {
-  --fit-width: true;
-  --fit-height: true;
-  grid-area: title;
-}
-.chart-parcoord .axis .title text {
-  text-anchor: middle;
-}
-.chart-parcoord .axis .subtitle {
-  --fit-width: true;
-  --fit-height: true;
-  grid-area: subtitle;
-}
-.chart-parcoord .axis .subtitle text {
-  text-anchor: middle;
-}
-.chart-parcoord .axis .ticks-transform {
-  grid-area: ticks-transform;
-}
-.chart-parcoord .axis .ticks text {
-  text-anchor: end;
-  dominant-baseline: middle;
-}
-
 .axis .title text {
   font-size: var(--font-size-axis-title);
 }
@@ -120,6 +82,22 @@
 }
 .axis .ticks-transform .ticks .tick text {
   font-size: var(--font-size-axis-label);
+}
+
+.chart-window {
+  display: grid;
+  position: relative;
+  grid-template: min-content 1fr/1fr;
+  grid-template-areas: "toolbar" "chart";
+  width: 100%;
+  height: 100%;
+  font-family: sans-serif;
+}
+
+.chart {
+  display: grid;
+  grid-template: auto 1fr/1fr;
+  grid-template-areas: "header" "padding-wrapper";
 }
 
 .chart .header {
@@ -138,52 +116,51 @@
     user-select: none;
   }
 }
-.chart-window {
-  display: grid;
-  position: relative;
-  grid-template: min-content 1fr/1fr;
-  grid-template-areas: "toolbar" "chart";
-  width: 100%;
-  height: 100%;
-  font-family: sans-serif;
+.chart-cartesian, .chart-cartesian[data-legend-position=right] {
+  grid-template: auto 1fr/1fr auto;
+  grid-template-areas: "header header" "padding-wrapper legend";
 }
-
-.chart-cartesian[data-legend-position=right],
-.chart-cartesian {
+.chart-cartesian .padding-wrapper, .chart-cartesian[data-legend-position=right] .padding-wrapper {
   display: grid;
-  grid-template: auto 1fr auto/auto 1fr auto;
-  grid-template-areas: "header header header" "axis-left draw-area legend" ". axis-bottom .";
-  padding: 2rem 1rem 0.5rem 0.5rem;
+  grid-area: padding-wrapper;
+  grid-template: 1fr auto/auto 1fr;
+  grid-template-areas: "axis-left draw-area" ". axis-bottom";
   overflow: visible;
 }
 
 .chart-cartesian[data-legend-position=top] {
-  grid-template: auto 1fr auto/auto 1fr;
-  grid-template-areas: ". legend" "axis-left draw-area" ". axis-bottom";
+  grid-template: auto auto 1fr/1fr;
+  grid-template-areas: "header" "legend" "padding-wrapper";
 }
 
-.chart.chart-parcoord text, .chart.chart-parcoord text[data-orientation=horizontal] {
-  dominant-baseline: central;
-}
-
-.layout {
-  --fit-width: false;
-  --fit-height: false;
-  pointer-events: none;
-}
-
-.draw-area {
-  grid-area: draw-area;
+.chart.chart-parcoord .padding-wrapper {
   display: grid;
+  grid-area: padding-wrapper;
+  grid-template: 1fr/1fr;
+  grid-template-areas: "draw-area";
+  padding: 3rem;
+  overflow: hidden;
+}
+.chart.chart-parcoord .padding-wrapper .draw-area {
   overflow: visible;
 }
-
-.draw-area > * {
-  grid-area: 1/1;
+.chart.chart-parcoord .axis.axis-sequence .title-wrapper {
+  position: absolute;
+  translate: 0 -10px;
 }
-
-.draw-area .background {
-  opacity: 0;
+.chart.chart-parcoord .axis.axis-sequence .title-wrapper .subtitle {
+  translate: 0 -3px;
+}
+.chart.chart-parcoord .axis.axis-sequence .title-wrapper .title, .chart.chart-parcoord .axis.axis-sequence .title-wrapper .subtitle {
+  --fit-height: true;
+  --fit-width: true;
+}
+.chart.chart-parcoord .axis.axis-sequence .title-wrapper .title text, .chart.chart-parcoord .axis.axis-sequence .title-wrapper .subtitle text {
+  text-anchor: middle;
+  dominant-baseline: auto;
+}
+.chart.chart-parcoord .axis.axis-sequence .ticks-transform {
+  grid-area: ticks-transform;
 }
 
 .layouter {
@@ -201,6 +178,24 @@
   be set to 0 to not apply them twice (1x by layouter, 1x by browser) */
   padding: 0;
   margin: 0;
+}
+
+.layout {
+  --fit-width: false;
+  --fit-height: false;
+  pointer-events: none;
+}
+
+.draw-area {
+  display: grid;
+}
+
+.draw-area > * {
+  grid-area: 1/1;
+}
+
+.draw-area .background {
+  opacity: 0;
 }
 
 .chart-window .layouter {
@@ -479,10 +474,6 @@ path.line.highlight {
 
 .chart-line[data-flipped=true] .series-label .label {
   dominant-baseline: middle;
-}
-
-.chart.chart-parcoord .line {
-  stroke: var(--color-categorical-0);
 }
 
 .chart-window {

@@ -8,24 +8,16 @@ import {ScaledValuesLinear} from "../../../data/scale/scaled-values-linear";
 import {BarSeries} from "../../../../bars";
 
 export function chartCartesianAxisRender<T extends ChartCartesianSelection>(chartS: T): void {
-  // const seriesS = select<Element, SeriesBar>(g[i]);
-  // const boundsAttr = seriesS.attr('bounds');
-  // if (!boundsAttr) return;
-  // d.bounds = rectFromString(boundsAttr);
-
-  // if (!flipped) {
-  //   categoryScale.range([0, bounds.width]);
-  //   valueScale.range([bounds.height, 0]);
-  // } else {
-  //   categoryScale.range([0, bounds.height]);
-  //   valueScale.range([0, bounds.width]);
-  // }
   const {renderer, ...data} = chartS.datum()
   const flipped = getCurrentRespVal(data.series.flipped, {chart: elementFromSelection(chartS)})
   const leftAxisD = flipped ? data.x : data.y
   const leftAxisClass = flipped ? 'axis-x' : 'axis-y'
   const bottomAxisD = flipped ? data.y : data.x
   const bottomAxisClass = flipped ? 'axis-y' : 'axis-x'
+  const paddingWrapperS = chartS.selectAll('.padding-wrapper')
+
+  chartS.classed('chart-cartesian', true)
+    .attr('data-flipped', flipped)
 
   //TODO: clean this stacked bar chart mess up
   const aggScaledValues = new ScaledValuesAggregation(
@@ -41,18 +33,14 @@ export function chartCartesianAxisRender<T extends ChartCartesianSelection>(char
     {...leftAxisD, scaledValues: aggScaledValues} : leftAxisD
   leftAxisDAgg.scaledValues.scale.range(leftAxisD.scaledValues.scale.range())
 
-  // console.log(flipped)
-  chartS.classed('chart-cartesian', true)
-    .attr('data-flipped', flipped)
-
-  const leftAxisS= chartS.selectAll<SVGGElement, AxisSelection>('.axis-left')
+  const leftAxisS= paddingWrapperS.selectAll<SVGGElement, AxisSelection>('.axis-left')
     .data([leftAxisDAgg])
     .join('g')
     .call((s) => axisLeftRender(s))
     .classed(leftAxisClass, true)
     .classed(bottomAxisClass, false)
 
-  const bottomAxisS = chartS.selectAll<SVGGElement, AxisValid>('.axis-bottom')
+  const bottomAxisS = paddingWrapperS.selectAll<SVGGElement, AxisValid>('.axis-bottom')
     .data([bottomAxisDAgg])
     .join('g')
     .call((s) => axisBottomRender(s))

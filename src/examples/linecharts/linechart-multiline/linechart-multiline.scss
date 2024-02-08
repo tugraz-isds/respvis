@@ -48,12 +48,11 @@ body {
 
 @media (max-width: 50rem) {
   .chart {
-    grid-template: auto auto 1fr auto / auto 1fr auto;
+    grid-template: auto auto 1fr / 1fr;
     grid-template-areas:
-        'header  header  header'
-        'legend legend legend'
-        'axis-left draw-area draw-area'
-        ' . axis-bottom . ';
+      'header'
+      'legend'
+      'padding-wrapper';
   }
 
   .legend {

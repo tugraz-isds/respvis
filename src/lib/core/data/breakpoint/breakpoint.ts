@@ -1,4 +1,10 @@
-import {CSSLengthValue, isCSSLengthValue, LengthDimension, SVGHTMLElement} from "../../constants/types";
+import {
+  CSSBreakPointLengthUnit,
+  isCSSBreakpointLengthValue,
+  LengthDimension,
+  SVGHTMLElement,
+  UnitValue
+} from "../../constants/types";
 import {indexFromBounds} from "./matchBounds";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {Selection} from "d3";
@@ -11,8 +17,8 @@ export type WithBreakpoints = {
 export type LayoutBreakpoints = Record<LengthDimension, BreakpointsValid>
 type LayoutState = {
   index: number,
-  preBreakValue: CSSLengthValue,
-  postBreakValue: CSSLengthValue
+  preBreakValue: UnitValue<CSSBreakPointLengthUnit>,
+  postBreakValue: UnitValue<CSSBreakPointLengthUnit>
 }
 export type LayoutStates = Record<LengthDimension, LayoutState> & {
 }
@@ -29,8 +35,8 @@ export function getLayoutStateFromCSS(element: SVGHTMLElement, dimension: Length
   const postBreakValueQueried = element.style.getPropertyValue(`--layout-${dimension}-post-breakpoint`)
   return {
     index: !isNaN(indexValueQueried) ? indexValueQueried : defaultLayoutIndex,
-    postBreakValue: isCSSLengthValue(postBreakValueQueried) ? postBreakValueQueried : pxUpperLimit,
-    preBreakValue: isCSSLengthValue(preBreakValueQueried) ? preBreakValueQueried : pxLowerLimit,
+    postBreakValue: isCSSBreakpointLengthValue(postBreakValueQueried) ? postBreakValueQueried : pxUpperLimit,
+    preBreakValue: isCSSBreakpointLengthValue(preBreakValueQueried) ? preBreakValueQueried : pxLowerLimit,
   }
 }
 

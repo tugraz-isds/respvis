@@ -39,7 +39,7 @@ function lineSeriesLinesRender(lineS: Selection<Element, LineSeries>, pointGroup
     .call(s => lineSeriesJoin(lineS, s))
 }
 
-function lineSeriesJoin(seriesS: Selection<Element>, joinS: Selection<Element, Line>) {
+export function lineSeriesJoin(seriesS: Selection<Element>, joinS: Selection<Element, Line>) {
   // todo: enter transition
   // todo: exit transition
   joinS

@@ -9,12 +9,11 @@ export type BarChartChartSelection = Selection<SVGSVGElement | SVGGElement, BarC
 
 export function barChartRender(selection: BarChartChartSelection) {
   const { legend } = selection.datum()
-  chartBaseRender(selection).chart
-    .classed('chart-bar', true)
-    .call(renderBars)
+  const {chartS } = chartBaseRender(selection)
+  chartS.classed('chart-bar', true).call(renderBars)
   const legendS = legendRender(selection, legend)
   legendAddHover(legendS)
-  selection.call(chartCartesianAxisRender)
+  chartS.call(chartCartesianAxisRender)
 }
 
 export function renderBars(chartS: BarChartChartSelection) {

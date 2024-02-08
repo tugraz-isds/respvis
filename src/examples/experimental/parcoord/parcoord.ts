@@ -24,21 +24,21 @@ export function renderParcoord(selector: string) {
           scaledValues: { values: horsePower},
           axis: {
             title: "Horsepower",
-            subtitle: "[PS]"
+            subTitle: "[PS]"
           }
         },
         {
           scaledValues: { values: prices},
           axis: {
             title: "Price",
-            subtitle: "[EU]"
+            subTitle: "[EU]"
           }
         },
         {
           scaledValues: { values: mileages},
           axis: {
             title: "Mileage",
-            subtitle: "[km]"
+            subTitle: "[km]"
           }
         },
       ],
@@ -53,14 +53,7 @@ export function renderParcoord(selector: string) {
         unit: 'rem'
       }
     },
-    title: {
-      dependentOn: 'width',
-      mapping: {0: 'Registered Students', 1 : 'Students at TU Graz', 3: 'Students Registered at TU Graz'}
-    },
-    subTitle: {
-      dependentOn: 'width',
-      mapping: {0: 'TU Graz', 1 : ''}
-    },
+    title: 'Car data'
   }
 
   const chartWindow = d3.select(selector).append('div')

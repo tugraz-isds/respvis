@@ -10,7 +10,7 @@ export type ScatterplotSVGChartSelection = Selection<SVGSVGElement | SVGGElement
 
 export function scatterPlotRender(selection: ScatterplotSVGChartSelection) {
   const { legend } = selection.datum()
-  chartBaseRender(selection).chart
+  chartBaseRender(selection).chartS
     .classed('chart-point', true)
     .call(renderAllSeriesOfPoints)
   const legendS = legendRender(selection, legend)
@@ -24,7 +24,7 @@ function renderAllSeriesOfPoints(chartS: ScatterplotSVGChartSelection) {
     .selectAll('.draw-area')
     .selectAll<SVGSVGElement, ScatterPlotValid>('.series-point')
     .data<PointSeries>([series])
-    .join('svg')
+    .join('g')
     .call(pointSeriesRender)
 
 

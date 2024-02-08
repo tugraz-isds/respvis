@@ -39,7 +39,13 @@ function axisRender(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
   const axisElement = elementFromSelection(axisS)
   const chartElement = elementFromSelection(axisD.renderer.chartSelection)
 
-  axisS
+  const titleWrapperS = axisS
+    .selectAll('.title-wrapper')
+    .data([null])
+    .join('g')
+    .classed('title-wrapper', true)
+
+  titleWrapperS
     .selectAll('.title')
     .data([null])
     .join('g')
@@ -50,7 +56,7 @@ function axisRender(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
     .join('text')
     .text(getCurrentRespVal(axisD.title, {chart: chartElement, self: axisElement}))
 
-  axisS.selectAll('.subtitle')
+  titleWrapperS.selectAll('.subtitle')
     .data([null])
     .join('g')
     .classed('subtitle', true)

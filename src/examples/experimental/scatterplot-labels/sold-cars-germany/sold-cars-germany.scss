@@ -19,12 +19,11 @@
 
   @container style(--layout-width: 0) or style(--layout-width: 1) {
     .chart {
-      grid-template: auto 1fr auto auto / auto 1fr auto;
+      grid-template: auto 1fr auto / 1fr;
       grid-template-areas:
-          'header  header  header'
-          'axis-left draw-area draw-area'
-          ' . axis-bottom . '
-          ' legend legend .';
+      'header'
+      'padding-wrapper'
+      'legend';
     }
 
     .legend {

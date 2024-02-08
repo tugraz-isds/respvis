@@ -12,7 +12,6 @@ export function throttle<T extends (...args: any[]) => K, K>(func: T, delayMs: n
   let lastTime = 0;
   return function (...args) {
     const currentTime = new Date().getTime();
-
     if (currentTime - lastTime >= delayMs) {
       func.apply(this, args);
       lastTime = currentTime;

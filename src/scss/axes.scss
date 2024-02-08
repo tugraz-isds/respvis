@@ -78,48 +78,6 @@
   }
 }
 
-
-.chart-parcoord {
-  display: grid;
-  grid-template: auto 1fr / 1fr;
-  grid-template-areas:
-    'header'
-    'draw-area';
-  padding: 2rem 1rem 0.5rem 0.5rem;
-  overflow: visible;
-}
-
-.chart-parcoord {
-  .axis {
-    display: grid;
-    grid-template-rows: auto auto 1fr;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-    'title'
-    'subtitle'
-    'ticks-transform';
-    .title {
-      --fit-width: true;
-      --fit-height: true;
-      grid-area: title;
-      text { text-anchor: middle; }
-    }
-    .subtitle {
-      --fit-width: true;
-      --fit-height: true;
-      grid-area: subtitle;
-      text { text-anchor: middle; }
-    }
-    .ticks-transform {
-      grid-area: ticks-transform;
-    }
-    .ticks text {
-      text-anchor: end;
-      dominant-baseline: middle;
-    }
-  }
-}
-
 .axis {
   .title {
     text {

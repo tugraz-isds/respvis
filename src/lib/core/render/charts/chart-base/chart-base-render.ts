@@ -6,39 +6,48 @@ import {ScatterPlotValid} from "../../../../points";
 import {SVGHTMLElement} from "../../../constants/types";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 
-export type ChartBaseSelection = Selection<SVGSVGElement | SVGGElement, ChartBaseValid>;
 
-export function chartBaseRender<T extends ChartBaseSelection>(selection: T) {
-  updateCSSForSelection(selection)
+type ChartBaseElement = SVGSVGElement | SVGGElement
+export type ChartBaseSelection<T extends ChartBaseElement, D extends ChartBaseValid> = Selection<T, D>;
 
-  const chart = chartRender(selection)
-  const {drawArea, background} = drawAreaRender(chart)
-  const header = headerRender(selection)
-  const title = titleRender(header, selection)
-  const subTitle = subTitleRender(header, selection)
+export function chartBaseRender<T extends ChartBaseElement, D extends ChartBaseValid>(chartS: ChartBaseSelection<T, D>) {
+  updateCSSForSelection(chartS)
 
-  const data = selection.datum()
-  data.renderer.chartSelection = chart
+  chartS.classed('chart', true)
+    .attr('xmlns', 'http://www.w3.org/2000/svg')
+
+  const paddingWrapperS = paddingWrapperRender(chartS)
+  const {drawArea, background} = drawAreaRender(paddingWrapperS)
+  const header = headerRender(chartS)
+  const title = titleRender(header, chartS)
+  const subTitle = subTitleRender(header, chartS)
+
+  const data = chartS.datum()
+  data.renderer.chartSelection = chartS
   data.renderer.drawAreaSelection = drawArea
 
-  return {chart, header, title, subTitle, drawArea, background}
+  return {chartS, paddingWrapperS, header, title, subTitle, drawArea, background}
 }
 
-function chartRender<T extends ChartBaseSelection>(selection: T): T {
-  return selection
-    .classed('chart', true)
-    .attr('xmlns', 'http://www.w3.org/2000/svg')
+function paddingWrapperRender<T extends ChartBaseElement, D extends ChartBaseValid>(chartS: ChartBaseSelection<T, D>) {
+  return chartS
+    .selectAll<SVGSVGElement, D>('.padding-wrapper')
+    .data([chartS.datum()])
+    .join('svg')
+    .classed('padding-wrapper', true)
 }
-function drawAreaRender<T extends ChartBaseSelection>(selection: T) {
-  const drawArea = selection
+
+
+function drawAreaRender<T extends ChartBaseElement, D extends ChartBaseValid>(paddingS: ChartBaseSelection<T, D>) {
+  const drawArea = paddingS
     .selectAll<SVGHTMLElement, T>('.draw-area')
-    .data([selection.datum()])
+    .data([paddingS.datum()])
     .join('svg')
     .classed('draw-area', true)
 
   const background = drawArea
     .selectAll<SVGHTMLElement, T>('.background')
-    .data([selection.datum()])
+    .data([paddingS.datum()])
     .join('rect')
     .classed('background', true)
   return {drawArea, background}

@@ -1,19 +1,29 @@
-.chart-cartesian[data-legend-position='right'],
-.chart-cartesian {
-  display: grid;
-  grid-template: auto 1fr auto / auto 1fr auto;
+.chart-cartesian, .chart-cartesian[data-legend-position='right'] {
+  grid-template: auto 1fr / 1fr auto;
   grid-template-areas:
-    'header header header'
-    'axis-left draw-area legend'
-    '. axis-bottom .';
-  padding: 2rem 1rem 0.5rem 0.5rem;
-  overflow: visible;
+      'header header'
+      'padding-wrapper legend';
+
+  .padding-wrapper { //.draw-area
+    display: grid;
+    grid-area: padding-wrapper;
+    grid-template: 1fr auto / auto 1fr;
+    grid-template-areas:
+    'axis-left draw-area'
+    '. axis-bottom';
+    overflow: visible;
+    //.draw-area {
+    //  display: grid;
+    //  width: 100%;
+    //}
+  }
 }
 
 .chart-cartesian[data-legend-position='top'] {
-  grid-template: auto 1fr auto / auto 1fr;
+  grid-template: auto auto 1fr / 1fr;
   grid-template-areas:
-    '. legend'
-    'axis-left draw-area'
-    '. axis-bottom';
+      'header'
+      'legend'
+      'padding-wrapper';
 }
+
