@@ -22,7 +22,7 @@ export type CategoryValid = CategoryArgs & {
   styleClassValues: string[]
 }
 
-export function validateCategories(referenceData: unknown[], categoryArgs: CategoryArgs): CategoryValid  {
+export function categoriesValidation(referenceData: unknown[], categoryArgs: CategoryArgs): CategoryValid  {
   const { values, parentKey, title} = categoryArgs
 
   const [categoriesAligned] = arrayAlignLengths(categoryArgs.values, referenceData)

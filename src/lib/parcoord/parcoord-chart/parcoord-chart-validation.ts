@@ -1,5 +1,5 @@
 import {ChartBaseArgs, ChartBaseValid, chartBaseValidation} from "../../core";
-import {ParcoordSeries, ParcoordSeriesUserArgs, ParcoordSeriesValid} from "../parcoord-series";
+import {ParcoordSeries, ParcoordSeriesUserArgs} from "../parcoord-series";
 
 export type ParcoordChartUserArgs = Omit<ParcoordChartArgs, 'renderer'>
 
@@ -11,7 +11,7 @@ export type ParcoordChartArgs = ChartBaseArgs & {
 
 //TODO: create own parcoord series from arguments
 export type ParcoordChartValid = ChartBaseValid & {
-  series: ParcoordSeriesValid
+  series: ParcoordSeries
   // legend: LegendValid
   // zoom?: ZoomValid
 }

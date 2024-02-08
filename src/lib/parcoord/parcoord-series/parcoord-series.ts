@@ -1,4 +1,4 @@
-import {Series, SeriesArgs, SeriesUserArgs, SeriesValid} from "../../core/render/series";
+import {Series, SeriesArgs, SeriesUserArgs} from "../../core/render/series";
 import {AxisKey, SeriesKey} from "../../core/constants/types";
 import {
   arrayAlignLengths,
@@ -26,13 +26,7 @@ export type ParcoordArgs = SeriesArgs & ParcoordSeriesUserArgs & {
   bounds?: Size,
 }
 
-export type ParcoordSeriesValid = SeriesValid & {
-  axes: AxisValid[]
-  axesScale: ScalePoint<string>
-  axisKeys: AxisKey[]
-}
-
-export class ParcoordSeries extends Series implements ParcoordSeriesValid {
+export class ParcoordSeries extends Series {
   axes: AxisValid[]
   axesScale: ScalePoint<string>
   axisKeys: AxisKey[]

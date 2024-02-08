@@ -1,7 +1,7 @@
 import {ScaledValuesCategoricalUserArgs} from "./scaled-values";
 import {ScaledValuesBase} from "./scaled-values-base";
 import {scaleBand, ScaleBand} from "d3";
-import {CategoryValid, validateCategories} from "../category";
+import {categoriesValidation, CategoryValid} from "../category";
 import {ActiveKeyMap} from "../../constants/types";
 import {RespValOptional} from "../responsive-value/responsive-value";
 
@@ -26,7 +26,7 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     this.title = args.title
 
     //TODO: this is no real alignment validation. Fix this!
-    this.categories = 'categories' in args ? args.categories : validateCategories(this.values, {
+    this.categories = 'categories' in args ? args.categories : categoriesValidation(this.values, {
       values: this.values,
       title: args.title,
       parentKey: args.parentKey
@@ -39,6 +39,7 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
   }
 
   isKeyActiveByKey(key: string) {
+    // noinspection PointlessBooleanExpressionJS
     return this.keysActive[key] !== false
   }
 

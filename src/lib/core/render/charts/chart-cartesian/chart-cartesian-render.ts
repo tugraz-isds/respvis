@@ -5,7 +5,7 @@ import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value
 import {elementFromSelection} from "../../../utilities/d3/util";
 import {ScaledValuesAggregation} from "../../../data/scale/scaled-values-aggregation";
 import {ScaledValuesLinear} from "../../../data/scale/scaled-values-linear";
-import {BarSeries} from "../../../../bars";
+import {BarSeries} from "../../../../bar";
 
 export function chartCartesianAxisRender<T extends ChartCartesianSelection>(chartS: T): void {
   const {renderer, ...data} = chartS.datum()

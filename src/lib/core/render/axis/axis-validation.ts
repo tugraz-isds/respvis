@@ -3,7 +3,7 @@ import {AxisDomainRV} from "../../data/scale/axis-scaled-values-validation";
 import {LayoutBreakpoints} from "../../data/breakpoint/breakpoint";
 import {RenderArgs} from "../charts/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
-import {validateBreakpoints} from "../../data/breakpoint/breakpoint-validation";
+import {breakPointsValidation} from "../../data/breakpoint/breakpoint-validation";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 import {ScaledValuesBase} from "../../data/scale/scaled-values-base";
 
@@ -39,8 +39,8 @@ export function axisValidation(data: AxisArgs): AxisValid {
     tickOrientation: data.tickOrientation ?? 0,
     tickOrientationFlipped: data.tickOrientationFlipped ?? 0,
     bounds: {
-      width: validateBreakpoints(data.bounds?.width),
-      height: validateBreakpoints(data.bounds?.height)
+      width: breakPointsValidation(data.bounds?.width),
+      height: breakPointsValidation(data.bounds?.height)
     }
   }
 }

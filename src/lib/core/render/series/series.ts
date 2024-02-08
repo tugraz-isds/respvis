@@ -1,6 +1,6 @@
 import {CategoryUserArgs} from "../../data/category";
 import {SeriesConfigTooltips, seriesConfigTooltipsData} from "../../../tooltip";
-import {Point} from "../../../points";
+import {Point} from "../../../point";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 import {RenderArgs, Renderer} from "../charts/renderer";
 import {ActiveKeyMap, SeriesKey} from "../../constants/types";
@@ -39,7 +39,7 @@ export abstract class Series implements RenderArgs, SeriesValid {
   renderer: Renderer
 
   constructor(args: SeriesArgs | Series) {
-    const {key, labelCallback, categories} = args
+    const {key, labelCallback} = args
 
     //TODO: pass correct parameters here
     if (args instanceof Series) this.categories = args.categories

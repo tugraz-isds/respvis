@@ -7,7 +7,7 @@ export type BreakpointsArgs = {
 }
 export type BreakpointsValid = Required<BreakpointsArgs>
 
-export function validateBreakpoints(args?: BreakpointsArgs): BreakpointsValid {
+export function breakPointsValidation(args?: BreakpointsArgs): BreakpointsValid {
   return {
     unit: args ? args.unit : 'rem',
     values: args ? args.values : [],

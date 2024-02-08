@@ -1,4 +1,4 @@
-import {ScatterPlotValid} from "../../../points";
+import {ScatterPlotValid} from "../../../point";
 import {Selection} from "d3";
 import {layouterRender} from "../../layouter";
 import {updateCSSForSelection} from "../../data/breakpoint/breakpoint";

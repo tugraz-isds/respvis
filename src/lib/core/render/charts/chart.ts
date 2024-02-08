@@ -1,6 +1,6 @@
 import {Selection} from "d3";
 import {SVGHTMLElement} from "../../constants/types";
-import {ChartWindowArgs, ChartWindowValid, validateChartWindow} from "../chart-window";
+import {ChartWindowArgs, ChartWindowValid, chartWindowValidation} from "../chart-window";
 import {ChartBaseValid} from "./chart-base";
 import {Renderer} from "./renderer";
 import {resizeEventListener} from "../../resize-event-dispatcher";
@@ -21,7 +21,7 @@ export abstract class Chart implements Renderer {
   legendSelection?: Selection<SVGHTMLElement>
 
   protected constructor(data: Omit<ChartWindowArgs, 'renderer'>) {
-    this.initialWindowData = validateChartWindow({...data, renderer: this})
+    this.initialWindowData = chartWindowValidation({...data, renderer: this})
   }
 
 

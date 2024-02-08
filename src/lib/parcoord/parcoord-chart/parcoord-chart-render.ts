@@ -1,7 +1,7 @@
 import {axisSequenceRender, AxisValid, chartBaseRender} from "../../core";
 import {select, Selection} from "d3";
 import {ParcoordChartValid} from "./parcoord-chart-validation";
-import {Line, lineSeriesJoin} from "../../lines";
+import {Line, lineSeriesJoin} from "../../line";
 import {combineKeys} from "../../core/utilities/dom/key";
 import {defaultStyleClass} from "../../core/constants/other";
 

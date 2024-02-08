@@ -8,7 +8,7 @@ export type ZoomValid = ZoomArgs & {
   behaviour: ZoomBehavior<Element, unknown>
 }
 
-export function validateZoom(args: ZoomArgs): ZoomValid {
+export function zoomValidation(args: ZoomArgs): ZoomValid {
   return {
     ...args,
     behaviour: zoom()

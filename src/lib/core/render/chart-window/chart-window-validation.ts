@@ -1,26 +1,22 @@
 import {LayoutBreakpoints} from "../../data/breakpoint/breakpoint";
-import {Selection} from "d3";
 import {RenderArgs} from "../charts/renderer";
 import {ChartType} from "../../constants/types";
-import {validateBreakpoints} from "../../data/breakpoint/breakpoint-validation";
+import {breakPointsValidation} from "../../data/breakpoint/breakpoint-validation";
 
-export type ChartWindowSelection = Selection<HTMLDivElement, ChartWindowValid>
 export type ChartWindowArgs = RenderArgs & {
   type: ChartType,
   bounds?: Partial<LayoutBreakpoints>
-  //toolbar stuff comes here
-  //wrapper for container queries stuff
 }
 
 export type ChartWindowValid = Required<Omit<ChartWindowArgs, 'bounds'>> & {
   bounds: LayoutBreakpoints,
 }
 
-export function validateChartWindow(args: ChartWindowArgs): ChartWindowValid {
+export function chartWindowValidation(args: ChartWindowArgs): ChartWindowValid {
   return {...args,
     bounds: {
-      width: validateBreakpoints(args.bounds?.width),
-      height: validateBreakpoints(args.bounds?.height)
+      width: breakPointsValidation(args.bounds?.width),
+      height: breakPointsValidation(args.bounds?.height)
     },
   }
 }
