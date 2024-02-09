@@ -1,10 +1,9 @@
 import {Selection} from "d3";
 import {SVGHTMLElement} from "../../constants/types";
-import {ChartWindowValid} from "../chart-window";
-import {ChartBaseValid} from "./chart-base";
+import {ChartWindowedValid} from "./chart/chart";
 
 export type Renderer = {
-    windowSelection: Selection<SVGHTMLElement, ChartWindowValid & ChartBaseValid>
+    windowSelection: Selection<SVGHTMLElement, ChartWindowedValid>
     chartSelection?: Selection<SVGHTMLElement>
     drawAreaSelection?: Selection<SVGHTMLElement>
     xAxisSelection?: Selection<SVGHTMLElement>

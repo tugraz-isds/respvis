@@ -1,10 +1,10 @@
 import {Selection} from "d3";
-import {chartWindowRender, ChartWindowValid, layouterCompute, toolbarRender} from "../../core";
+import {WindowValid} from "../../core";
 import {BarChartArgs, BarChartValid, barChartValidation} from "./bar-chart-validation";
 import {barChartRender} from "./bar-chart-render";
-import {CartesianChart} from "../../core/render/charts/chart-cartesian/cartesian-chart";
+import {CartesianChart} from "../../core/render/chart/chart-cartesian/cartesian-chart";
 
-export type BarChartData = ChartWindowValid & BarChartValid
+export type BarChartData = WindowValid & BarChartValid
 export type BarChartSelection = Selection<HTMLDivElement, BarChartData>
 
 export type BarChartUserArgs = Omit<BarChartArgs, 'renderer'>
@@ -18,16 +18,9 @@ export class BarChart extends CartesianChart {
     this.windowSelection.datum({...this.initialWindowData, ...chartData})
   }
 
-  public render(): void {
-    super.render()
-    const {
-      chartS,
-      layouterS
-    } = chartWindowRender(this.windowSelection)
-    toolbarRender(this.windowSelection)
-    barChartRender(chartS)
-    const boundsChanged = layouterCompute(layouterS)
-    if (boundsChanged) this.initializeRender()
+  protected override mainRender() {
+    super.mainRender()
+    barChartRender(this.chartSelection)
   }
 
   protected override addBuiltInListeners() {

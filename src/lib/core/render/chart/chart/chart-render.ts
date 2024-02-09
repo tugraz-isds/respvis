@@ -1,5 +1,5 @@
 import {Selection} from 'd3';
-import {ChartBaseValid} from "./chart-base-validation";
+import {ChartValid} from "./chart-validation";
 import {elementFromSelection} from "../../../utilities/d3/util";
 import {updateCSSForSelection} from "../../../data/breakpoint/breakpoint";
 import {ScatterPlotValid} from "../../../../point";
@@ -8,9 +8,9 @@ import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value
 
 
 type ChartBaseElement = SVGSVGElement | SVGGElement
-export type ChartBaseSelection<T extends ChartBaseElement, D extends ChartBaseValid> = Selection<T, D>;
+export type ChartBaseSelection<T extends ChartBaseElement, D extends ChartValid> = Selection<T, D>;
 
-export function chartBaseRender<T extends ChartBaseElement, D extends ChartBaseValid>(chartS: ChartBaseSelection<T, D>) {
+export function chartRender<T extends ChartBaseElement, D extends ChartValid>(chartS: ChartBaseSelection<T, D>) {
   updateCSSForSelection(chartS)
 
   chartS.classed('chart', true)
@@ -29,7 +29,7 @@ export function chartBaseRender<T extends ChartBaseElement, D extends ChartBaseV
   return {chartS, paddingWrapperS, header, title, subTitle, drawArea, background}
 }
 
-function paddingWrapperRender<T extends ChartBaseElement, D extends ChartBaseValid>(chartS: ChartBaseSelection<T, D>) {
+function paddingWrapperRender<T extends ChartBaseElement, D extends ChartValid>(chartS: ChartBaseSelection<T, D>) {
   return chartS
     .selectAll<SVGSVGElement, D>('.padding-wrapper')
     .data([chartS.datum()])
@@ -38,7 +38,7 @@ function paddingWrapperRender<T extends ChartBaseElement, D extends ChartBaseVal
 }
 
 
-function drawAreaRender<T extends ChartBaseElement, D extends ChartBaseValid>(paddingS: ChartBaseSelection<T, D>) {
+function drawAreaRender<T extends ChartBaseElement, D extends ChartValid>(paddingS: ChartBaseSelection<T, D>) {
   const drawArea = paddingS
     .selectAll<SVGHTMLElement, T>('.draw-area')
     .data([paddingS.datum()])
@@ -53,7 +53,7 @@ function drawAreaRender<T extends ChartBaseElement, D extends ChartBaseValid>(pa
   return {drawArea, background}
 }
 
-function headerRender(selection: Selection<SVGSVGElement | SVGGElement, ChartBaseValid>) {
+function headerRender(selection: Selection<SVGSVGElement | SVGGElement, ChartValid>) {
   return selection
     .selectAll<SVGSVGElement, ScatterPlotValid>('.header')
     .data((d) => [d])

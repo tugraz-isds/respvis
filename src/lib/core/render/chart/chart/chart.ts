@@ -1,33 +1,35 @@
 import {Selection} from "d3";
-import {SVGHTMLElement} from "../../constants/types";
-import {ChartWindowArgs, ChartWindowValid, chartWindowValidation} from "../chart-window";
-import {ChartBaseValid} from "./chart-base";
-import {Renderer} from "./renderer";
-import {resizeEventListener} from "../../resize-event-dispatcher";
+import {SVGHTMLElement} from "../../../constants/types";
+import {WindowArgs, windowRender, WindowValid, windowValidation} from "../../window";
+import {ChartValid} from "./chart-validation";
+import {Renderer} from "../renderer";
+import {resizeEventListener} from "../../../resize-event-dispatcher";
+import {layouterCompute} from "../../../layouter";
+import {toolbarRender} from "../../toolbar/toolbar-render";
 
-export type ChartValid = ChartWindowValid & ChartBaseValid
+export type ChartWindowedValid = WindowValid & ChartValid
 
 export abstract class Chart implements Renderer {
   private addedListeners = false
   protected initialRenderHappened = false
-  abstract windowSelection: Selection<SVGHTMLElement, ChartValid>
-  protected readonly initialWindowData: ChartWindowValid
+  abstract windowSelection: Selection<SVGHTMLElement, ChartWindowedValid>
+  protected readonly initialWindowData: WindowValid
   protected renderCountSinceResize = 0
-  protected renderInitialized? : NodeJS.Timeout
-  chartSelection?: Selection<SVGHTMLElement>
+  protected renderInitialized?: NodeJS.Timeout
+  chartSelection?: Selection<SVGSVGElement>
   drawAreaSelection?: Selection<SVGHTMLElement>
+  layouterSelection?: Selection<HTMLDivElement>
   xAxisSelection?: Selection<SVGHTMLElement>
   yAxisSelection?: Selection<SVGHTMLElement>
   legendSelection?: Selection<SVGHTMLElement>
 
-  protected constructor(data: Omit<ChartWindowArgs, 'renderer'>) {
-    this.initialWindowData = chartWindowValidation({...data, renderer: this})
+  protected constructor(data: Omit<WindowArgs, 'renderer'>) {
+    this.initialWindowData = windowValidation({...data, renderer: this})
   }
 
 
   buildChart() {
     this.render()
-    this.initialRenderHappened = true
     if (this.addedListeners) return
     this.addBuiltInListeners()
     this.addFinalListeners()
@@ -38,7 +40,7 @@ export abstract class Chart implements Renderer {
    * Adds custom event listener. Be sure to add custom event listeners before calling {@link Chart.buildChart}
    * as the method also adds listeners and the order matters.
    */
-  addCustomListener<T extends ChartValid>(name: string, callback: (event: Event, data: T) => void) {
+  addCustomListener<T extends ChartWindowedValid>(name: string, callback: (event: Event, data: T) => void) {
     this.windowSelection.on(name, callback)
   }
 
@@ -56,7 +58,7 @@ export abstract class Chart implements Renderer {
 
   protected abstract addBuiltInListeners(): void
 
-  protected initializeRender() {
+  private initializeRender() {
     clearTimeout(this.renderInitialized)
     const instance = this
     if (this.renderCountSinceResize > 2) {
@@ -73,9 +75,32 @@ export abstract class Chart implements Renderer {
     // }, 20)
   }
 
+  private render() {
+    this.preRender()
+    this.mainRender()
+    this.postRender()
+    this.initialRenderHappened = true
+  }
+
   protected preRender() {}
 
-  protected render() {
-    this.preRender()
+  protected mainRender() {
+    const {
+      chartS,
+      layouterS
+    } = windowRender(this.windowSelection)
+    this.chartSelection = chartS
+    this.layouterSelection = layouterS
+    //TODO: abstract type chartS must meet type requirements
+    //TODO: parcoord must meet type requirements
+    if (this.windowSelection.datum().type === 'parcoord') return
+    toolbarRender(chartS)
+  }
+
+  protected postRender() {
+    if (this.layouterSelection) {
+      const boundsChanged = layouterCompute(this.layouterSelection)
+      if (boundsChanged) this.initializeRender()
+    }
   }
 }

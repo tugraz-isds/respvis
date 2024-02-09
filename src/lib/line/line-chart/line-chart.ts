@@ -1,10 +1,10 @@
 import {Selection} from 'd3';
-import {chartWindowRender, ChartWindowValid, layouterCompute, toolbarRender,} from '../../core';
-import {CartesianChart} from "../../core/render/charts/chart-cartesian/cartesian-chart";
+import {WindowValid,} from '../../core';
+import {CartesianChart} from "../../core/render/chart/chart-cartesian/cartesian-chart";
 import {LineChartArgs, LineChartValid, lineChartValidation} from "./line-chart-validation";
 import {lineChartRender} from "./line-chart-render";
 
-export type LineChartSelection = Selection<HTMLDivElement, ChartWindowValid & LineChartValid>;
+export type LineChartSelection = Selection<HTMLDivElement, WindowValid & LineChartValid>;
 export type LineChartUserArgs = Omit<LineChartArgs, 'renderer'>
 
 export class LineChart extends CartesianChart {
@@ -16,19 +16,8 @@ export class LineChart extends CartesianChart {
     this.windowSelection.datum({...this.initialWindowData, ...chartData})
   }
 
-  public render(): void {
-    super.render()
-    const {
-      chartS,
-      layouterS
-    } = chartWindowRender(this.windowSelection)
-    toolbarRender(this.windowSelection)
-    lineChartRender(chartS)
-    const boundsChanged = layouterCompute(layouterS)
-    if (boundsChanged) this.initializeRender()
-  }
-
-  protected override addBuiltInListeners() {
-    super.addBuiltInListeners()
+  protected override mainRender() {
+    super.mainRender()
+    lineChartRender(this.chartSelection)
   }
 }

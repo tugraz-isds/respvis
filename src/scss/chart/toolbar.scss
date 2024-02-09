@@ -1,11 +1,11 @@
-.chart-window .toolbar {
+.window-rv .toolbar {
   grid-area: toolbar;
   display: none;
   flex-direction: row;
   justify-content: flex-end;
 }
 
-.chart-window:hover .toolbar, .chart-window:active .toolbar {
+.window-rv:hover .toolbar, .window-rv:active .toolbar {
   display: flex;
   position: absolute;
   right: 0;

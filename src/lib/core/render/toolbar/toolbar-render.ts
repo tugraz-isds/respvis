@@ -3,7 +3,7 @@ import {menuDropdownRender} from "../../menu-dropdown";
 import {toolDownloadSVGRender} from "./tool-download-svg";
 import {AxisValid} from "../axis";
 import {ToolFilterNominal, toolFilterNominalRender} from "./tool-filter-nominal";
-import {RenderArgs} from "../charts/renderer";
+import {RenderArgs} from "../chart/renderer";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {LegendValid} from "../legend";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";

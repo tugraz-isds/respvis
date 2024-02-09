@@ -1,4 +1,4 @@
-import {RenderArgs} from "../charts/renderer";
+import {RenderArgs} from "../chart/renderer";
 import {AxisDomainRV, axisScaledValuesValidation} from "../../data/scale/axis-scaled-values-validation";
 import {alignScaledValuesLengths, ScaledValuesUserArgs} from "../../data/scale/scaled-values";
 import {combineKeys} from "../../utilities/dom/key";

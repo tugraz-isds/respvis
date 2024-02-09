@@ -4,18 +4,18 @@
   min-height: 25rem;
 }
 
-#scatterplot-reusable-wide-0 .chart-window {
+#scatterplot-reusable-wide-0 .window-rv {
   --layout-width-factor: 1;
   --layout-width-offset-factor: 0;
 }
 
-#scatterplot-reusable-wide-1 .chart-window {
+#scatterplot-reusable-wide-1 .window-rv {
   --font-size-base: 1.5rem;
   --layout-width-factor: 1.2;
   --layout-width-offset-factor: 0;
 }
 
-#scatterplot-reusable-wide-2 .chart-window {
+#scatterplot-reusable-wide-2 .window-rv {
   --layout-width-factor: 1.4;
   --layout-width-offset-factor: 0;
 }

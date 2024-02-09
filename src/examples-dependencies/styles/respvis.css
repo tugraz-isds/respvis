@@ -84,7 +84,7 @@
   font-size: var(--font-size-axis-label);
 }
 
-.chart-window {
+.window-rv {
   display: grid;
   position: relative;
   grid-template: min-content 1fr/1fr;
@@ -198,18 +198,18 @@
   opacity: 0;
 }
 
-.chart-window .layouter {
+.window-rv .layouter {
   grid-area: chart;
 }
 
-.chart-window .toolbar {
+.window-rv .toolbar {
   grid-area: toolbar;
   display: none;
   flex-direction: row;
   justify-content: flex-end;
 }
 
-.chart-window:hover .toolbar, .chart-window:active .toolbar {
+.window-rv:hover .toolbar, .window-rv:active .toolbar {
   display: flex;
   position: absolute;
   right: 0;
@@ -476,7 +476,7 @@ path.line.highlight {
   dominant-baseline: middle;
 }
 
-.chart-window {
+.window-rv {
   --root-size: 1rem;
   --font-size-base: calc(1 * var(--root-size));
   --font-size-title: calc(1.5 * var(--font-size-base));

@@ -2,7 +2,7 @@ import {CategoryUserArgs} from "../../data/category";
 import {SeriesConfigTooltips, seriesConfigTooltipsData} from "../../../tooltip";
 import {Point} from "../../../point";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
-import {RenderArgs, Renderer} from "../charts/renderer";
+import {RenderArgs, Renderer} from "../chart/renderer";
 import {ActiveKeyMap, SeriesKey} from "../../constants/types";
 import {Size} from "../../utilities/size";
 import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";

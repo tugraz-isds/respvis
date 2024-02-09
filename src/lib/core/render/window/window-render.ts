@@ -3,13 +3,13 @@ import {Selection} from "d3";
 import {layouterRender} from "../../layouter";
 import {updateCSSForSelection} from "../../data/breakpoint/breakpoint";
 import {SVGHTMLElement} from "../../constants/types";
-import {ChartWindowValid} from "./chart-window-validation";
+import {WindowValid} from "./window-validation";
 
-export function chartWindowRender<D extends ChartWindowValid>(selection: Selection<SVGHTMLElement, D>) {
+export function windowRender<D extends WindowValid>(selection: Selection<SVGHTMLElement, D>) {
   const data = selection.datum()
   selection.datum(data)
-    .classed('chart-window', true)
-    .classed(`chart-window-${data.type}`, true)
+    .classed('window-rv', true)
+    .classed(`window-rv-${data.type}`, true)
   updateCSSForSelection(selection)
 
   const layouterS = selection
@@ -22,7 +22,5 @@ export function chartWindowRender<D extends ChartWindowValid>(selection: Selecti
     .selectAll<SVGSVGElement, ScatterPlotValid>(`svg.chart-${data.type}`)
     .data([data])
     .join('svg')
-
-  data.renderer.chartSelection = chartS
   return {chartWindowS: selection, layouterS, chartS}
 }

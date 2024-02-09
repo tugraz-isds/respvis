@@ -1,12 +1,12 @@
 import {Selection} from "d3";
-import {chartWindowRender, ChartWindowValid, layouterCompute, rectFromString} from "../../core";
-import {Chart} from "../../core/render/charts/chart";
+import {rectFromString, WindowValid} from "../../core";
+import {Chart} from "../../core/render/chart/chart/chart";
 import {ParcoordChartUserArgs, ParcoordChartValid, parcoordChartValidation} from "./parcoord-chart-validation";
 import {parCoordChartRender} from "./parcoord-chart-render";
 import {elementFromSelection} from "../../core/utilities/d3/util";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 
-export type ParcoordChartSelection = Selection<HTMLDivElement, ChartWindowValid & ParcoordChartValid> // & LineChartValid
+export type ParcoordChartSelection = Selection<HTMLDivElement, WindowValid & ParcoordChartValid>
 
 export class ParcoordChart extends Chart {
   windowSelection: ParcoordChartSelection
@@ -22,16 +22,9 @@ export class ParcoordChart extends Chart {
     // throw new Error("Method not implemented.");
   }
 
-  protected render(): void {
-    super.render()
-    const {
-      chartS,
-      layouterS
-    } = chartWindowRender(this.windowSelection)
-    // toolbarRender(this.windowSelection)
-    parCoordChartRender(chartS)
-    const boundsChanged = layouterCompute(layouterS)
-    if (boundsChanged) this.initializeRender()
+  protected mainRender(): void {
+    super.mainRender()
+    parCoordChartRender(this.chartSelection)
   }
 
   protected preRender() {
@@ -55,6 +48,4 @@ export class ParcoordChart extends Chart {
     axes.forEach(axis => axis.scaledValues.scale.range(renderState.originalYRange()))
     axesScale.range(renderState.originalXRange())
   }
-
-
 }

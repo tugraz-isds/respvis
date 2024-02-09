@@ -1,5 +1,5 @@
 import {pathRect, rectFromSize, Size} from '../../index';
-import {RenderArgs} from "../charts/renderer";
+import {RenderArgs} from "../chart/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
 import {CartesianSeriesValid} from "../cartesian-series";
 

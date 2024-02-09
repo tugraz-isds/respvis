@@ -1,8 +1,8 @@
-import {Chart} from "../chart";
+import {Chart} from "../chart/chart";
 import {rectFromString} from "../../../utilities/rect";
 import {select, Selection} from "d3";
 import {SVGHTMLElement} from "../../../constants/types";
-import {ChartWindowValid} from "../../chart-window";
+import {WindowValid} from "../../window";
 import {ChartCartesianValid} from "./chart-cartesian-validation";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {elementFromSelection} from "../../../utilities/d3/util";
@@ -10,7 +10,7 @@ import {addZoom} from "../../../data/zoom";
 
 export abstract class CartesianChart extends Chart {
 
-  abstract windowSelection: Selection<HTMLDivElement, ChartCartesianValid & ChartWindowValid>
+  abstract windowSelection: Selection<HTMLDivElement, ChartCartesianValid & WindowValid>
   protected addBuiltInListeners() {
     this.addFilterListener()
     this.addZoomListeners()
@@ -28,6 +28,7 @@ export abstract class CartesianChart extends Chart {
   }
 
   private addFilterListener() {
+    const renderer = this
     this.addCustomListener('change', (e) => {
       if (!e.target) return
       const changeS = select(e.target as SVGHTMLElement)
@@ -43,7 +44,7 @@ export abstract class CartesianChart extends Chart {
       categories?.setKeyActiveIfDefined(currentKey, changeS.property('checked'))
       x.setKeyActiveIfDefined(currentKey, changeS.property('checked'))
       y.setKeyActiveIfDefined(currentKey, changeS.property('checked'))
-      this.render()
+      renderer.windowSelection.dispatch('resize')
     })
   }
 

@@ -1,11 +1,11 @@
 import {Selection} from 'd3';
 import {AxisUserArgs, AxisValid, axisValidation} from "../../axis";
-import {ChartBaseArgs, ChartBaseValid, chartBaseValidation} from "../chart-base";
+import {ChartArgs, ChartValid, chartValidation} from "../chart";
 import {ZoomArgs, ZoomValid, zoomValidation} from "../../../data/zoom";
 import {LegendUserArgs, LegendValid, legendValidation} from "../../legend";
 import {CartesianSeries, CartesianSeriesUserArgs} from "../../cartesian-series";
 
-export type ChartCartesianUserArgs = ChartBaseArgs & {
+export type ChartCartesianUserArgs = ChartArgs & {
   series: CartesianSeriesUserArgs
   // additionalSeries:
   x: AxisUserArgs
@@ -18,7 +18,7 @@ export type ChartCartesianArgs = Omit<ChartCartesianUserArgs, 'series'> & {
   series: CartesianSeries
 }
 
-export type ChartCartesianValid = ChartBaseValid & {
+export type ChartCartesianValid = ChartValid & {
   series: CartesianSeries
   x: AxisValid
   y: AxisValid
@@ -36,7 +36,7 @@ export function chartCartesianValidation(cartesianArgs: ChartCartesianArgs): Cha
     x: axisValidation({...x, renderer, scaledValues: series.x}),
     y: axisValidation({...y, renderer, scaledValues: series.y}),
     legend: legendValidation({...cartesianArgs.legend, renderer, series}),
-    ...chartBaseValidation(cartesianArgs),
+    ...chartValidation(cartesianArgs),
     zoom: zoom ? zoomValidation(zoom) : undefined
   };
 }

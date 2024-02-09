@@ -1,7 +1,7 @@
 import {Axis as D3Axis, AxisDomain} from 'd3';
 import {AxisDomainRV} from "../../data/scale/axis-scaled-values-validation";
 import {LayoutBreakpoints} from "../../data/breakpoint/breakpoint";
-import {RenderArgs} from "../charts/renderer";
+import {RenderArgs} from "../chart/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
 import {breakPointsValidation} from "../../data/breakpoint/breakpoint-validation";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";

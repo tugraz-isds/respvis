@@ -4,7 +4,7 @@
   min-height: 25rem;
 }
 
-#scatterplot-reusable-wide-0 .chart-window {
+#scatterplot-reusable-wide-0 .window-rv {
   --font-size-element-label: 1rem;
   --font-size-axis-label: 1rem;
   --font-size-axis-title: 1.4rem;

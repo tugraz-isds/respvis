@@ -43,6 +43,7 @@ async function bundleJS(mode) {
       name: 'respVis',
       plugins: c.plugins,
       sourcemap: true,
+      inlineDynamicImports: true,
     }).then(() => {
       const fileData = fs.readFileSync(`${location}/respvis.${c.extension}`, 'utf8');
       const formatString = format === 'iife' ? 'IIFE' :

@@ -26,3 +26,6 @@ export {ScaleAny} from "./data/scale/scales";
 export {ScaleContinuous} from "./data/scale/scales";
 export {convertToPx} from "./utilities/dom/units";
 
+
+export * from './packagesDeps'
+

@@ -1,5 +1,5 @@
 import {select, Selection} from "d3";
-import {chartBaseRender, chartCartesianAxisRender} from "../../core";
+import {chartCartesianAxisRender, chartRender} from "../../core";
 import {BarChartValid, chartBarHoverBar, ChartBarSelection} from "./bar-chart-validation";
 import {legendRender} from "../../core/render/legend";
 import {legendAddHover} from "../../core/render/legend/legend-event";
@@ -9,7 +9,7 @@ export type BarChartChartSelection = Selection<SVGSVGElement | SVGGElement, BarC
 
 export function barChartRender(selection: BarChartChartSelection) {
   const { legend } = selection.datum()
-  const {chartS } = chartBaseRender(selection)
+  const {chartS } = chartRender(selection)
   chartS.classed('chart-bar', true).call(renderBars)
   const legendS = legendRender(selection, legend)
   legendAddHover(legendS)

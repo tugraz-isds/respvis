@@ -2,39 +2,39 @@
   width: 100%;
 }
 
-.chart-window {
+.window-rv {
   container-type: inline-size;
 }
 @container style(--layout-width: 0) or style(--layout-width: 1) or style(--layout-width: 2) {
-  .chart-window .series-label {
+  .window-rv .series-label {
     transform: translate(5px, -40px);
   }
-  .chart-window .axis-y .tick {
+  .window-rv .axis-y .tick {
     display: none;
   }
-  .chart-window .axis-y .tick:nth-of-type(2n + 1), .chart-window .axis-y .tick:first-of-type, .chart-window .axis-y .tick:last-of-type {
+  .window-rv .axis-y .tick:nth-of-type(2n + 1), .window-rv .axis-y .tick:first-of-type, .window-rv .axis-y .tick:last-of-type {
     display: block;
   }
 }
 @container style(--layout-width: 0) or style(--layout-width: 1) {
-  .chart-window .chart {
+  .window-rv .chart {
     grid-template: auto 1fr auto/1fr;
     grid-template-areas: "header" "padding-wrapper" "legend";
   }
-  .chart-window .legend {
+  .window-rv .legend {
     width: 100%;
     margin-bottom: 2rem;
     margin-left: 0.5rem;
     flex-direction: row;
     justify-content: center;
   }
-  .chart-window .legend .items {
+  .window-rv .legend .items {
     display: grid;
     width: 100%;
     justify-content: space-between;
     grid-template-columns: auto auto auto;
   }
-  .chart-window .legend .items .legend-item {
+  .window-rv .legend .items .legend-item {
     justify-content: flex-start;
   }
 }

@@ -1,16 +1,16 @@
 import {Selection} from 'd3';
-import {chartWindowRender, ChartWindowValid, layouterCompute, rectFromString, toolbarRender,} from '../../core';
+import {rectFromString, WindowValid,} from '../../core';
 import {scatterPlotRender} from "./scatter-plot-render";
 import {ScatterPlotArgs, ScatterPlotValid, scatterPlotValidation} from "./scatter-plot-validation";
 import {getMaxRadius} from "../../core/data/radius/radius-util";
 import {elementFromSelection} from "../../core/utilities/d3/util";
-import {CartesianChart} from "../../core/render/charts/chart-cartesian/cartesian-chart";
+import {CartesianChart} from "../../core/render/chart/chart-cartesian/cartesian-chart";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 
-export type ScatterplotSelection = Selection<HTMLDivElement, ChartWindowValid & ScatterPlotValid>;
+export type ScatterplotSelection = Selection<HTMLDivElement, WindowValid & ScatterPlotValid>;
 export type ScatterPlotUserArgs = Omit<ScatterPlotArgs, 'renderer'>
 
-export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseRenderer
+export class ScatterPlot extends CartesianChart {
   public windowSelection: ScatterplotSelection
   constructor(windowSelection: Selection<HTMLDivElement>, data: ScatterPlotUserArgs) {
     super({...data, type: 'point'})
@@ -19,23 +19,13 @@ export class ScatterPlot extends CartesianChart { //implements IWindowChartBaseR
     this.windowSelection.datum({...this.initialWindowData, ...chartData})
   }
 
-  public render(): void {
-    super.render()
-    const {
-      chartS,
-      layouterS
-    } = chartWindowRender(this.windowSelection)
-    toolbarRender(this.windowSelection)
-    scatterPlotRender(chartS)
-    const boundsChanged = layouterCompute(layouterS)
-    if (boundsChanged) this.initializeRender()
-  }
-
-  protected override addBuiltInListeners() {
-    super.addBuiltInListeners()
+  protected override mainRender() {
+    super.mainRender()
+    scatterPlotRender(this.chartSelection)
   }
 
   protected override preRender() {
+    super.preRender()
     if (!this.initialRenderHappened) return
     const { series} = this.windowSelection.datum()
     const { radii} = series

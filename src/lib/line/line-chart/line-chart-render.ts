@@ -1,5 +1,5 @@
 import {Selection} from "d3";
-import {chartBaseRender, chartCartesianAxisRender} from "../../core";
+import {chartCartesianAxisRender, chartRender} from "../../core";
 import {legendRender} from "../../core/render/legend";
 import {legendAddHover} from "../../core/render/legend/legend-event";
 import {LineChartValid} from "./line-chart-validation";
@@ -10,7 +10,7 @@ export type LineChartSVGChartSelection = Selection<SVGSVGElement | SVGGElement, 
 
 export function lineChartRender(selection: LineChartSVGChartSelection) {
   const { legend } = selection.datum()
-  chartBaseRender(selection).chartS
+  chartRender(selection).chartS
     .classed('chart-line', true)
     .call(renderAllSeriesOfLines)
   const legendS = legendRender(selection, legend)

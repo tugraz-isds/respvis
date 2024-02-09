@@ -1,5 +1,5 @@
 import {Selection} from 'd3';
-import {chartBaseRender, chartCartesianAxisRender} from '../../core';
+import {chartCartesianAxisRender, chartRender} from '../../core';
 import {PointSeries} from '../point-series/point-series-validation';
 import {legendRender} from "../../core/render/legend";
 import {ScatterPlotValid} from "./scatter-plot-validation";
@@ -10,7 +10,7 @@ export type ScatterplotSVGChartSelection = Selection<SVGSVGElement | SVGGElement
 
 export function scatterPlotRender(selection: ScatterplotSVGChartSelection) {
   const { legend } = selection.datum()
-  chartBaseRender(selection).chartS
+  chartRender(selection).chartS
     .classed('chart-point', true)
     .call(renderAllSeriesOfPoints)
   const legendS = legendRender(selection, legend)

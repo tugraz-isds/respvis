@@ -1,4 +1,4 @@
-import {axisSequenceRender, AxisValid, chartBaseRender} from "../../core";
+import {axisSequenceRender, AxisValid, chartRender} from "../../core";
 import {select, Selection} from "d3";
 import {ParcoordChartValid} from "./parcoord-chart-validation";
 import {Line, lineSeriesJoin} from "../../line";
@@ -9,7 +9,7 @@ export type ParcoordChartSVGChartSelection = Selection<SVGSVGElement | SVGGEleme
 
 export function parCoordChartRender(selection: ParcoordChartSVGChartSelection) {
   // const { legend } = selection.datum()
-  chartBaseRender(selection).chartS
+  chartRender(selection).chartS
     .classed('chart-parcoord', true)
     .call(renderLineSeries)
     .call(renderAxisSeries)
