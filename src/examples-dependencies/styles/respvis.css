@@ -96,8 +96,8 @@
 
 .chart {
   display: grid;
-  grid-template: auto 1fr/1fr;
-  grid-template-areas: "header" "padding-wrapper";
+  grid-template: auto 1fr/1fr auto;
+  grid-template-areas: "header header" "padding-wrapper legend";
 }
 
 .chart .header {
@@ -115,10 +115,6 @@
     -webkit-user-select: none;
     user-select: none;
   }
-}
-.chart-cartesian, .chart-cartesian[data-legend-position=right] {
-  grid-template: auto 1fr/1fr auto;
-  grid-template-areas: "header header" "padding-wrapper legend";
 }
 .chart-cartesian .padding-wrapper, .chart-cartesian[data-legend-position=right] .padding-wrapper {
   display: grid;
