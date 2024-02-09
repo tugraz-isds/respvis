@@ -1,11 +1,11 @@
-import {ChartCartesianUserArgs, ChartCartesianValid, chartCartesianValidation} from "../../core";
+import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "../../core";
 import {PointSeries, SeriesPointUserArgs} from "../point-series/point-series-validation";
 
-export type ScatterPlotArgs = Omit<ChartCartesianUserArgs, 'series'> & {
+export type ScatterPlotArgs = Omit<CartesianChartUserArgs, 'series'> & {
   series: SeriesPointUserArgs
 }
 
-export type ScatterPlotValid = ChartCartesianValid & {
+export type ScatterPlotValid = CartesianChartValid & {
   series: PointSeries;
 }
 
@@ -16,7 +16,7 @@ export function scatterPlotValidation(scatterArgs: ScatterPlotArgs): ScatterPlot
   } = scatterArgs
   const series = new PointSeries({...scatterArgs.series, key: 's-0', renderer})
   const cartesianData =
-    chartCartesianValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
+    cartesianChartValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
 
   return {
     ...cartesianData,

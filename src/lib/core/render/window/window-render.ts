@@ -1,4 +1,3 @@
-import {ScatterPlotValid} from "../../../point";
 import {Selection} from "d3";
 import {layouterRender} from "../../layouter";
 import {updateCSSForSelection} from "../../data/breakpoint/breakpoint";
@@ -19,8 +18,11 @@ export function windowRender<D extends WindowValid>(selection: Selection<SVGHTML
     .call((s) => layouterRender(s));
 
   const chartS = layouterS
-    .selectAll<SVGSVGElement, ScatterPlotValid>(`svg.chart-${data.type}`)
+    .selectAll<SVGSVGElement, D>(`svg.chart-${data.type}`)
     .data([data])
     .join('svg')
+
+  data.renderer.chartSelection = chartS
+  data.renderer.layouterSelection = layouterS
   return {chartWindowS: selection, layouterS, chartS}
 }

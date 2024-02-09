@@ -4,24 +4,27 @@ import {scatterPlotRender} from "./scatter-plot-render";
 import {ScatterPlotArgs, ScatterPlotValid, scatterPlotValidation} from "./scatter-plot-validation";
 import {getMaxRadius} from "../../core/data/radius/radius-util";
 import {elementFromSelection} from "../../core/utilities/d3/util";
-import {CartesianChart} from "../../core/render/chart/chart-cartesian/cartesian-chart";
+import {CartesianChart} from "../../core/render/chart/cartesian-chart/cartesian-chart";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 
-export type ScatterplotSelection = Selection<HTMLDivElement, WindowValid & ScatterPlotValid>;
+type WindowSelection = Selection<HTMLDivElement, WindowValid & ScatterPlotValid>;
+type ChartSelection = Selection<SVGSVGElement, WindowValid & ScatterPlotValid>;
 export type ScatterPlotUserArgs = Omit<ScatterPlotArgs, 'renderer'>
 
 export class ScatterPlot extends CartesianChart {
-  public windowSelection: ScatterplotSelection
+  public windowSelection: WindowSelection
+  public chartSelection?: ChartSelection
   constructor(windowSelection: Selection<HTMLDivElement>, data: ScatterPlotUserArgs) {
     super({...data, type: 'point'})
     const chartData = scatterPlotValidation({...data, renderer: this})
-    this.windowSelection = windowSelection as ScatterplotSelection
+    this.windowSelection = windowSelection as WindowSelection
     this.windowSelection.datum({...this.initialWindowData, ...chartData})
   }
 
   protected override mainRender() {
     super.mainRender()
-    scatterPlotRender(this.chartSelection)
+    scatterPlotRender(this.chartSelection!)
+    this.renderAxes()
   }
 
   protected override preRender() {

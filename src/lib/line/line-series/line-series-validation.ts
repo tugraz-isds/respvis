@@ -1,4 +1,4 @@
-import {CartesianSeriesArgs, CartesianSeriesUserArgs} from "../../core/render/cartesian-series";
+import {CartesianSeriesArgs, CartesianSeriesUserArgs} from "../../core/render/series/cartesian-series";
 import {PointSeries} from "../../point";
 
 export type LineSeriesUserArgs = CartesianSeriesUserArgs & {}

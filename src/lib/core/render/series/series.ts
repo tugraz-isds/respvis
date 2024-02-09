@@ -20,15 +20,7 @@ export type SeriesArgs = SeriesUserArgs & RenderArgs & {
   bounds?: Size,
 }
 
-export type SeriesValid = Required<Omit<SeriesArgs, 'markerTooltips' | 'flipped' | 'categories'>> & {
-  categories?: ScaledValuesCategorical
-  markerTooltips: SeriesConfigTooltips<SVGCircleElement, Point>
-  flipped: RespValByValueOptional<boolean>
-  keysActive: ActiveKeyMap,
-  getCombinedKey: (i: number) => string
-}
-
-export abstract class Series implements RenderArgs, SeriesValid {
+export abstract class Series implements RenderArgs {
   categories?: ScaledValuesCategorical
   key: SeriesKey;
   keysActive: ActiveKeyMap

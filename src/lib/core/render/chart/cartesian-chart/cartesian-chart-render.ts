@@ -1,13 +1,13 @@
 import {Selection} from "d3";
 import {axisBottomRender, axisLeftRender, AxisSelection, AxisValid} from "../../axis";
-import {ChartCartesianSelection} from "./chart-cartesian-validation";
+import {CartesianChartSelection} from "./cartesian-chart-validation";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {elementFromSelection} from "../../../utilities/d3/util";
 import {ScaledValuesAggregation} from "../../../data/scale/scaled-values-aggregation";
 import {ScaledValuesLinear} from "../../../data/scale/scaled-values-linear";
 import {BarSeries} from "../../../../bar";
 
-export function chartCartesianAxisRender<T extends ChartCartesianSelection>(chartS: T): void {
+export function cartesianChartAxisRender<T extends CartesianChartSelection>(chartS: T): void {
   const {renderer, ...data} = chartS.datum()
   const flipped = getCurrentRespVal(data.series.flipped, {chart: elementFromSelection(chartS)})
   const leftAxisD = flipped ? data.x : data.y

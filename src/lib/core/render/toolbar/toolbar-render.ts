@@ -3,22 +3,21 @@ import {menuDropdownRender} from "../../menu-dropdown";
 import {toolDownloadSVGRender} from "./tool-download-svg";
 import {AxisValid} from "../axis";
 import {ToolFilterNominal, toolFilterNominalRender} from "./tool-filter-nominal";
-import {RenderArgs} from "../chart/renderer";
 import {elementFromSelection} from "../../utilities/d3/util";
-import {LegendValid} from "../legend";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {categoryOrderMapToArray} from "../../data/category";
 import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";
 import {mergeKeys} from "../../utilities/dom/key";
+import {Series} from "../series";
+import {SeriesChartValid} from "../chart/series-chart/series-chart-validation";
 
-type ToolbarValid = RenderArgs & {
-  x: AxisValid,
-  y: AxisValid,
-  legend: LegendValid
-}
+type ToolbarValid = SeriesChartValid
 
-export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLDivElement, D>): void {
-  const toolbarS = selection
+export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
+  const series = args.getSeries()
+  const axes = args.getAxes()
+  console.log(series, axes)
+  const toolbarS = chartS
     .selectAll<HTMLDivElement, any>('.toolbar')
     .data([null])
     .join('div')
@@ -26,9 +25,8 @@ export function toolbarRender<D extends ToolbarValid>(selection: Selection<HTMLD
   menuToolsRender(toolbarS)
   const menuToolsItems = toolbarS.selectAll('.menu-tools > .items')
   toolDownloadSVGRender(menuToolsItems)
-  categorySeriesRender(menuToolsItems, selection.datum())
-  categoryAxisRender(menuToolsItems, selection.datum(), 'x')
-  categoryAxisRender(menuToolsItems, selection.datum(), 'y')
+  series.forEach(series => categorySeriesRender(menuToolsItems, series))
+  axes.forEach(axis => categoryAxisRender(menuToolsItems, axis))
 }
 
 function menuToolsRender(selection: Selection<HTMLDivElement>) {
@@ -43,9 +41,8 @@ function menuToolsRender(selection: Selection<HTMLDivElement>) {
   return menuTools
 }
 
-function categorySeriesRender(menuToolsItemsS: Selection, toolbarValid: ToolbarValid) {
-  const {renderer, legend} = toolbarValid
-  const {categories, key} = legend.series
+function categorySeriesRender(menuToolsItemsS: Selection, series: Series) {
+  const {renderer, categories, key} = series
   const chartElement = elementFromSelection(renderer.chartSelection)
 
   toolFilterNominalRender(menuToolsItemsS, {text: 'Main Series', options: ['Series'], keys: [key], class: 'filter-series'})
@@ -63,16 +60,18 @@ function categorySeriesRender(menuToolsItemsS: Selection, toolbarValid: ToolbarV
   }
 }
 
-function categoryAxisRender(menuToolsItemsS: Selection, toolbarValid: ToolbarValid, axis: 'x' | 'y') {
-  const {renderer} = toolbarValid
-  const axisScaledValues = toolbarValid[axis].scaledValues
+function categoryAxisRender(menuToolsItemsS: Selection, axis: AxisValid) {
+  const {renderer} = axis
+  const axisScaledValues = axis.scaledValues
   const chartElement = elementFromSelection(renderer.chartSelection)
+  const title = getCurrentRespVal(axis.title, {chart: chartElement})
   if(axisScaledValues instanceof ScaledValuesCategorical) {
+    const parentKey = axisScaledValues.parentKey
     const filterOptions: ToolFilterNominal = {
-      text: getCurrentRespVal( `${axis.toUpperCase()}-Axis Categories`, {chart: chartElement}),
+      text: getCurrentRespVal( `${title ?? parentKey}-Axis`, {chart: chartElement}),
       options: categoryOrderMapToArray(axisScaledValues.categories.categoryOrderMap),
-      keys: axisScaledValues.categories.keyOrder.map(oKey => `${axisScaledValues.parentKey}-${oKey}`),
-      class: `filter-axis-${axis}`
+      keys: axisScaledValues.categories.keyOrder.map(oKey => `${parentKey}-${oKey}`),
+      class: `filter-axis-${title}`
     }
     toolFilterNominalRender(menuToolsItemsS, filterOptions)
   }

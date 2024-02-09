@@ -4,6 +4,7 @@ import {ChartWindowedValid} from "./chart/chart";
 
 export type Renderer = {
     windowSelection: Selection<SVGHTMLElement, ChartWindowedValid>
+    layouterSelection?: Selection<SVGHTMLElement>
     chartSelection?: Selection<SVGHTMLElement>
     drawAreaSelection?: Selection<SVGHTMLElement>
     xAxisSelection?: Selection<SVGHTMLElement>

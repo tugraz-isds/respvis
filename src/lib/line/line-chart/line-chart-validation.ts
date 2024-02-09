@@ -1,11 +1,11 @@
-import {ChartCartesianUserArgs, ChartCartesianValid, chartCartesianValidation} from "../../core";
+import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "../../core";
 import {LineSeries, LineSeriesUserArgs} from "../line-series/line-series-validation";
 
-export type LineChartArgs = Omit<ChartCartesianUserArgs, 'series'> & {
+export type LineChartArgs = Omit<CartesianChartUserArgs, 'series'> & {
   series: LineSeriesUserArgs
 }
 
-export type LineChartValid = ChartCartesianValid & {
+export type LineChartValid = CartesianChartValid & {
   series: LineSeries;
 }
 
@@ -16,7 +16,7 @@ export function lineChartValidation(lineArgs: LineChartArgs): LineChartValid {
   } = lineArgs
   const series = new LineSeries({...lineArgs.series, key: 's-0', renderer})
   const cartesianData =
-    chartCartesianValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
+    cartesianChartValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
 
   return {
     ...cartesianData,

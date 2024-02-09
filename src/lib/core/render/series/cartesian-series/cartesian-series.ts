@@ -1,10 +1,9 @@
-import {RenderArgs} from "../chart/renderer";
-import {AxisDomainRV, axisScaledValuesValidation} from "../../data/scale/axis-scaled-values-validation";
-import {alignScaledValuesLengths, ScaledValuesUserArgs} from "../../data/scale/scaled-values";
-import {combineKeys} from "../../utilities/dom/key";
-import {ScaledValuesBase} from "../../data/scale/scaled-values-base";
-import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";
-import {Series, SeriesArgs, SeriesUserArgs, SeriesValid} from "../series";
+import {AxisDomainRV, axisScaledValuesValidation} from "../../../data/scale/axis-scaled-values-validation";
+import {alignScaledValuesLengths, ScaledValuesUserArgs} from "../../../data/scale/scaled-values";
+import {combineKeys} from "../../../utilities/dom/key";
+import {ScaledValuesBase} from "../../../data/scale/scaled-values-base";
+import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
+import {Series, SeriesArgs, SeriesUserArgs} from "../index";
 
 export type CartesianSeriesUserArgs = SeriesUserArgs & {
   x: ScaledValuesUserArgs<AxisDomainRV>
@@ -13,12 +12,7 @@ export type CartesianSeriesUserArgs = SeriesUserArgs & {
 
 export type CartesianSeriesArgs = SeriesArgs & CartesianSeriesUserArgs
 
-export type CartesianSeriesValid = SeriesValid & {
-  x: ScaledValuesBase<AxisDomainRV>
-  y: ScaledValuesBase<AxisDomainRV>
-}
-
-export class CartesianSeries extends Series implements RenderArgs, CartesianSeriesValid {
+export class CartesianSeries extends Series {
   x: ScaledValuesBase<AxisDomainRV>
   y: ScaledValuesBase<AxisDomainRV>
 

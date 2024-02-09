@@ -1,5 +1,5 @@
 import {RadiusArg} from "../../core/data/radius/radius-validation";
-import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "../../core/render/cartesian-series";
+import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "../../core/render/series/cartesian-series";
 import {ColorContinuous} from "../../core/data/color-continuous/color-continuous";
 
 export type SeriesPointUserArgs = CartesianSeriesUserArgs & {

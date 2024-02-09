@@ -1,5 +1,5 @@
 import {select, Selection} from "d3";
-import {chartCartesianAxisRender, chartRender} from "../../core";
+import {cartesianChartAxisRender, chartRender} from "../../core";
 import {BarChartValid, chartBarHoverBar, ChartBarSelection} from "./bar-chart-validation";
 import {legendRender} from "../../core/render/legend";
 import {legendAddHover} from "../../core/render/legend/legend-event";
@@ -13,7 +13,7 @@ export function barChartRender(selection: BarChartChartSelection) {
   chartS.classed('chart-bar', true).call(renderBars)
   const legendS = legendRender(selection, legend)
   legendAddHover(legendS)
-  chartS.call(chartCartesianAxisRender)
+  chartS.call(cartesianChartAxisRender)
 }
 
 export function renderBars(chartS: BarChartChartSelection) {

@@ -5,7 +5,7 @@ import {ChartValid} from "./chart-validation";
 import {Renderer} from "../renderer";
 import {resizeEventListener} from "../../../resize-event-dispatcher";
 import {layouterCompute} from "../../../layouter";
-import {toolbarRender} from "../../toolbar/toolbar-render";
+import {chartRender} from "./chart-render";
 
 export type ChartWindowedValid = WindowValid & ChartValid
 
@@ -16,7 +16,7 @@ export abstract class Chart implements Renderer {
   protected readonly initialWindowData: WindowValid
   protected renderCountSinceResize = 0
   protected renderInitialized?: NodeJS.Timeout
-  chartSelection?: Selection<SVGSVGElement>
+  chartSelection?: Selection<SVGSVGElement, ChartWindowedValid>
   drawAreaSelection?: Selection<SVGHTMLElement>
   layouterSelection?: Selection<HTMLDivElement>
   xAxisSelection?: Selection<SVGHTMLElement>
@@ -85,16 +85,10 @@ export abstract class Chart implements Renderer {
   protected preRender() {}
 
   protected mainRender() {
-    const {
-      chartS,
-      layouterS
-    } = windowRender(this.windowSelection)
-    this.chartSelection = chartS
-    this.layouterSelection = layouterS
-    //TODO: abstract type chartS must meet type requirements
-    //TODO: parcoord must meet type requirements
-    if (this.windowSelection.datum().type === 'parcoord') return
-    toolbarRender(chartS)
+    const data = this.windowSelection.datum()
+    windowRender(this.windowSelection)
+    chartRender(this.chartSelection!).chartS
+      .classed(`chart-${data.type}`, true)
   }
 
   protected postRender() {

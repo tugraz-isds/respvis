@@ -1,7 +1,7 @@
 import {pathRect, rectFromSize, Size} from '../../index';
 import {RenderArgs} from "../chart/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
-import {CartesianSeriesValid} from "../cartesian-series";
+import {Series} from "../series";
 
 export enum LegendOrientation {
   Vertical = 'vertical',
@@ -17,7 +17,7 @@ export type LegendUserArgs =  {
 }
 
 export type LegendArgs = LegendUserArgs & RenderArgs & {
-  series: CartesianSeriesValid
+  series: Series
 }
 
 export type LegendValid = Required<LegendArgs> & {

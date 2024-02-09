@@ -1,13 +1,13 @@
 import {Selection} from 'd3';
-import {ChartCartesianUserArgs, ChartCartesianValid, chartCartesianValidation} from "../../core";
+import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "../../core";
 import {BarSeries, SeriesBarUserArgs} from "../bar-series/bar-series-validation";
 import {Bar} from "../bar-series/bar";
 
-export type BarChartArgs = ChartCartesianUserArgs & {
+export type BarChartArgs = CartesianChartUserArgs & {
   series: SeriesBarUserArgs
 }
 
-export type BarChartValid = ChartCartesianValid & {
+export type BarChartValid = CartesianChartValid & {
   series: BarSeries
 }
 
@@ -18,7 +18,7 @@ export function barChartValidation(chartArgs: BarChartArgs): BarChartValid {
   } = chartArgs
   const series = new BarSeries({...chartArgs.series, key: 's-0', renderer})
   const cartesianData =
-    chartCartesianValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
+    cartesianChartValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
   return {
     ...cartesianData,
     series

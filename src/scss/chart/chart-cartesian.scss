@@ -1,10 +1,5 @@
 .chart-cartesian, .chart-cartesian[data-legend-position='right'] {
-  grid-template: auto 1fr / 1fr auto;
-  grid-template-areas:
-      'header header'
-      'padding-wrapper legend';
-
-  .padding-wrapper { //.draw-area
+  .padding-wrapper {
     display: grid;
     grid-area: padding-wrapper;
     grid-template: 1fr auto / auto 1fr;
@@ -12,10 +7,6 @@
     'axis-left draw-area'
     '. axis-bottom';
     overflow: visible;
-    //.draw-area {
-    //  display: grid;
-    //  width: 100%;
-    //}
   }
 }
 

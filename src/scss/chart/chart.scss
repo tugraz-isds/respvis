@@ -12,10 +12,10 @@
 
 .chart {
   display: grid;
-  grid-template: auto 1fr / 1fr;
-    grid-template-areas:
-    'header'
-    'padding-wrapper';
+  grid-template: auto 1fr / 1fr auto;
+  grid-template-areas:
+      'header header'
+      'padding-wrapper legend';
 }
 
 .chart .header {

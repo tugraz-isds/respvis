@@ -1,6 +1,4 @@
-import {Selection} from "d3";
 import {LayoutBreakpoints} from "../../../data/breakpoint/breakpoint";
-import {SVGHTMLElement} from "../../../constants/types";
 import {RenderArgs} from "../renderer";
 import {RespValOptional} from "../../../data/responsive-value/responsive-value";
 import {breakPointsValidation} from "../../../data/breakpoint/breakpoint-validation";
@@ -13,7 +11,6 @@ export type ChartArgs = RenderArgs & {
 
 export type ChartValid = Required<Omit<ChartArgs, 'bounds'>> & {
   bounds: LayoutBreakpoints,
-  selection?: Selection<SVGHTMLElement>
 }
 
 export function chartValidation(args: ChartArgs): ChartValid {

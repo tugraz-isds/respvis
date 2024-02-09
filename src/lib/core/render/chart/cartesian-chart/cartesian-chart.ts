@@ -1,16 +1,18 @@
-import {Chart} from "../chart/chart";
 import {rectFromString} from "../../../utilities/rect";
 import {select, Selection} from "d3";
 import {SVGHTMLElement} from "../../../constants/types";
 import {WindowValid} from "../../window";
-import {ChartCartesianValid} from "./chart-cartesian-validation";
+import {CartesianChartValid} from "./cartesian-chart-validation";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {elementFromSelection} from "../../../utilities/d3/util";
 import {addZoom} from "../../../data/zoom";
+import {SeriesChart} from "../series-chart/series-chart";
+import {cartesianChartAxisRender} from "./cartesian-chart-render";
 
-export abstract class CartesianChart extends Chart {
+export abstract class CartesianChart extends SeriesChart {
 
-  abstract windowSelection: Selection<HTMLDivElement, ChartCartesianValid & WindowValid>
+  abstract windowSelection: Selection<HTMLDivElement, CartesianChartValid & WindowValid>
+  abstract chartSelection?: Selection<SVGSVGElement, CartesianChartValid & WindowValid>
   protected addBuiltInListeners() {
     this.addFilterListener()
     this.addZoomListeners()
@@ -70,5 +72,9 @@ export abstract class CartesianChart extends Chart {
 
       renderer.windowSelection.dispatch('resize')
     })
+  }
+
+  protected renderAxes() {
+    this.chartSelection!.call(cartesianChartAxisRender)
   }
 }

@@ -1,27 +1,27 @@
-import {ChartArgs, ChartValid, chartValidation} from "../../core";
+import {chartValidation} from "../../core";
 import {ParcoordSeries, ParcoordSeriesUserArgs} from "../parcoord-series";
+import {SeriesChartUserArgs, SeriesChartValid} from "../../core/render/chart/series-chart/series-chart-validation";
+import {legendValidation} from "../../core/render/legend";
 
 export type ParcoordChartUserArgs = Omit<ParcoordChartArgs, 'renderer'>
 
-export type ParcoordChartArgs = ChartArgs & {
+export type ParcoordChartArgs = SeriesChartUserArgs & {
   series: ParcoordSeriesUserArgs
-  // legend?: LegendUserArgs
-  // zoom?: ZoomArgs
 }
 
-//TODO: create own parcoord series from arguments
-export type ParcoordChartValid = ChartValid & {
+export type ParcoordChartValid = SeriesChartValid & {
   series: ParcoordSeries
-  // legend: LegendValid
-  // zoom?: ZoomValid
 }
 
 
 export function parcoordChartValidation(args: ParcoordChartArgs): ParcoordChartValid {
-  const {series, renderer} = args
-
+  const {renderer} = args
+  const series = new ParcoordSeries({...args.series, renderer, key: 's-0'})
   return {
-    series: new ParcoordSeries({...series, renderer, key: 's-0'}),
+    getAxes: function () { return series.axes },
+    getSeries: function () { return [series] },
+    series,
+    legend: legendValidation({...args.legend, renderer, series}),
     ...chartValidation(args),
   }
 }

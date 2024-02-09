@@ -1,19 +1,21 @@
 import {Selection} from "d3";
 import {rectFromString, WindowValid} from "../../core";
-import {Chart} from "../../core/render/chart/chart/chart";
 import {ParcoordChartUserArgs, ParcoordChartValid, parcoordChartValidation} from "./parcoord-chart-validation";
 import {parCoordChartRender} from "./parcoord-chart-render";
 import {elementFromSelection} from "../../core/utilities/d3/util";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
+import {SeriesChart} from "../../core/render/chart/series-chart/series-chart";
 
-export type ParcoordChartSelection = Selection<HTMLDivElement, WindowValid & ParcoordChartValid>
+type WindowSelection = Selection<HTMLDivElement, WindowValid & ParcoordChartValid>
+type ChartSelection = Selection<SVGSVGElement, WindowValid & ParcoordChartValid>
 
-export class ParcoordChart extends Chart {
-  windowSelection: ParcoordChartSelection
+export class ParcoordChart extends SeriesChart {
+  windowSelection: WindowSelection
+  chartSelection?: ChartSelection
 
   constructor(windowSelection: Selection<HTMLDivElement>, data: ParcoordChartUserArgs) {
     super({...data, type: 'parcoord'})
-    this.windowSelection = windowSelection as ParcoordChartSelection
+    this.windowSelection = windowSelection as WindowSelection
     const chartData = parcoordChartValidation({...data, renderer: this})
     this.windowSelection.datum({...this.initialWindowData, ...chartData})
   }
@@ -24,7 +26,7 @@ export class ParcoordChart extends Chart {
 
   protected mainRender(): void {
     super.mainRender()
-    parCoordChartRender(this.chartSelection)
+    parCoordChartRender(this.chartSelection!)
   }
 
   protected preRender() {

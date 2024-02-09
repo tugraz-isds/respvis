@@ -1,2 +1,2 @@
 export * from './chart'
-export * from './chart-cartesian'
+export * from './cartesian-chart'
