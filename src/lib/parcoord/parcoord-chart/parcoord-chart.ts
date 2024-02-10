@@ -20,9 +20,9 @@ export class ParcoordChart extends SeriesChart {
     this.windowSelection.datum({...this.initialWindowData, ...chartData})
   }
 
-  protected addBuiltInListeners() {
-    // throw new Error("Method not implemented.");
-  }
+  // protected addBuiltInListeners() {
+  //   // throw new Error("Method not implemented.");
+  // }
 
   protected mainRender(): void {
     super.mainRender()

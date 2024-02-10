@@ -1,23 +1,16 @@
 import {Series, SeriesArgs, SeriesUserArgs} from "../../core/render/series";
-import {AxisKey, SeriesKey} from "../../core/constants/types";
-import {
-  arrayAlignLengths,
-  AxisDomainRV,
-  axisScaledValuesValidation,
-  AxisUserArgs,
-  AxisValid,
-  axisValidation,
-  Size
-} from "../../core";
+import {SeriesKey} from "../../core/constants/types";
+import {arrayAlignLengths, AxisBaseUserArgs, AxisDomainRV, axisScaledValuesValidation, Size} from "../../core";
 import {ScaledValuesUserArgs} from "../../core/data/scale/scaled-values";
 import {scalePoint, ScalePoint} from "d3";
 import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
-import {combineKeys, mergeKeys} from "../../core/utilities/dom/key";
+import {combineKeys} from "../../core/utilities/dom/key";
+import {KeyedAxisValid, keyedAxisValidation} from "../../core/render/axis/keyed-axis-validation";
 
 export type ParcoordSeriesUserArgs = SeriesUserArgs & {
   dimensions: {
     scaledValues: ScaledValuesUserArgs<AxisDomainRV>
-    axis: AxisUserArgs
+    axis: AxisBaseUserArgs
   }[]
 }
 
@@ -27,9 +20,8 @@ export type ParcoordArgs = SeriesArgs & ParcoordSeriesUserArgs & {
 }
 
 export class ParcoordSeries extends Series {
-  axes: AxisValid[]
+  axes: KeyedAxisValid[]
   axesScale: ScalePoint<string>
-  axisKeys: AxisKey[]
 
   constructor(args: ParcoordArgs | ParcoordSeries) {
     super(args)
@@ -37,9 +29,10 @@ export class ParcoordSeries extends Series {
 
     //TODO: data aligning
     this.axes = args instanceof ParcoordSeries ? args.axes : args.dimensions.map((dimension, index) => {
-      return axisValidation({
+      return keyedAxisValidation({
         ...dimension.axis, renderer,
-        scaledValues: axisScaledValuesValidation(dimension.scaledValues, `a-${index}`)
+        scaledValues: axisScaledValuesValidation(dimension.scaledValues, `a-${index}`),
+        key: `a-${index}`
       })
     })
 
@@ -54,18 +47,17 @@ export class ParcoordSeries extends Series {
     }
 
     this.axesScale = scalePoint()
-      .domain(this.axes.map((_, index) => `a-${index}`))
+      .domain(this.axes.map((axis) => axis.key))
 
     const instance = this
-    this.axisKeys = this.axes.map((axis, index) => `a-${index}` as const)
-    this.axisKeys.forEach((key) => {
-      instance.keysActive[mergeKeys([instance.key, key])] = true
+    this.axes.forEach((axis) => {
+      instance.keysActive[axis.key] = true
     })
   }
 
   getCombinedKey(i: number): string {
     const seriesCategoryKey = this.categories ? this.categories.getCategoryData(i).combinedKey : undefined
-    return combineKeys([this.key, this.axisKeys[i], seriesCategoryKey])
+    return combineKeys([this.key, this.axes[i].key, seriesCategoryKey])
   }
   clone(): ParcoordSeries {
     return new ParcoordSeries(this);

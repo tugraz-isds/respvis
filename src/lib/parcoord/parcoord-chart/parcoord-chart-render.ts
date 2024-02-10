@@ -1,23 +1,79 @@
-import {axisSequenceRender, AxisValid, chartRender} from "../../core";
+import {axisSequenceRender, AxisValid, chartRender, Position} from "../../core";
 import {select, Selection} from "d3";
 import {ParcoordChartValid} from "./parcoord-chart-validation";
 import {Line, lineSeriesJoin} from "../../line";
 import {combineKeys} from "../../core/utilities/dom/key";
 import {defaultStyleClass} from "../../core/constants/other";
+import {KeyedAxisValid} from "../../core/render/axis/keyed-axis-validation";
+import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
 
 export type ParcoordChartSVGChartSelection = Selection<SVGSVGElement | SVGGElement, ParcoordChartValid>;
 
 export function parCoordChartRender(selection: ParcoordChartSVGChartSelection) {
-  // const { legend } = selection.datum()
   chartRender(selection).chartS
     .classed('chart-parcoord', true)
     .call(renderLineSeries)
     .call(renderAxisSeries)
-  // const legendS = legendRender(selection, legend)
-  // legendAddHover(legendS)
-  // selection.call(chartCartesianAxisRender)
 }
 
+function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>) {
+  const { series} = chartS.datum()
+
+  const lineSeriesS = chartS.selectAll('.draw-area')
+    .selectAll<SVGGElement, AxisValid>(`.series-parcoord-lines`)
+    .data([series])
+    .join('g')
+    .classed(`series-parcoord-lines`, true)
+    .attr('data-ignore-layout-children', true)
+
+  if (!lineSeriesS.attr('bounds') || !series.axes[0]) return
+
+  const activeAxes = series.axes.filter(axis => {
+    return series.keysActive[axis.key]
+  }).map(axis => {
+    return {...axis, scaledValues: axis.scaledValues.cloneFiltered()}
+  })
+
+  series.axesScale.domain(activeAxes.map(axis => axis.key))
+
+  const lines: Line[] = []
+  for(let valueIndex = 0; valueIndex < activeAxes[0].scaledValues.values.length; valueIndex++) {
+    if(!series.keysActive[series.key]) break
+    if (series.categories && !series.categories.isKeyActiveByIndex(valueIndex)) continue
+    const positions: Position[] = []
+    let containsInactiveAxisCategory = false
+
+    for(let axisIndex = 0; axisIndex < activeAxes.length; axisIndex++) {
+      const axis = activeAxes[axisIndex]
+      const vals = axis.scaledValues
+      if (!vals.isKeyActiveByIndex(valueIndex)) {
+        containsInactiveAxisCategory = true
+        break
+      }
+      const yBandWidth = vals instanceof ScaledValuesCategorical ? vals.scale.bandwidth() / 2 : 0
+      positions.push({
+        y: vals.getScaledValue(valueIndex) + yBandWidth,
+        x: series.axesScale(activeAxes[axisIndex].key)!
+      })
+    }
+    if (containsInactiveAxisCategory) continue
+
+    // if (valueIndex === 0) {
+    //   console.log(series.key)
+    //   console.log(combineKeys([series.key, `i-${valueIndex}`], true))
+    // }
+    lines.push({
+      key: combineKeys([series.key, `i-${valueIndex}`]), //TODO
+      styleClass: series.categories ? series.categories.categories.styleClassValues[valueIndex] : defaultStyleClass,
+      positions
+    })
+
+  }
+
+  lineSeriesS.selectAll<SVGPathElement, Line>('path')
+    .data(lines, (d) => d.key)
+    .call(s => lineSeriesJoin(lineSeriesS, s))
+}
 
 function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>) {
   const { series} = chartS.datum()
@@ -31,43 +87,18 @@ function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>) {
   const boundsAttr = axisSeriesS.attr('bounds')
   if (!boundsAttr) return
 
+  const activeAxes = !series.keysActive[series.key] ? [] :
+    series.axes.filter(axis => {
+    return series.keysActive[axis.key]
+  })
+
   axisSeriesS
-    .selectAll<SVGGElement, AxisValid>('.axis.axis-sequence')
-    .data(series.axes)
+    .selectAll<SVGGElement, KeyedAxisValid>('.axis.axis-sequence')
+    .data(activeAxes, (d) => d.key)
     .join('g')
     .each((d, i, g) => axisSequenceRender(select(g[i])))
     .attr('transform', (d, i) => {
-      const x = series.axesScale(series.axisKeys[i]) ?? 0
+      const x = series.axesScale(activeAxes[i].key) ?? 0
       return `translate(${x}, ${0})`
     })
-}
-
-function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>) {
-  const { series} = chartS.datum()
-
-  const lineSeriesS = chartS.selectAll('.draw-area')
-    .selectAll<SVGGElement, AxisValid>(`.series-parcoord-lines`)
-    .data([series])
-    .join('g')
-    .classed(`series-parcoord-lines`, true)
-  .attr('data-ignore-layout-children', true)
-
-  if (!lineSeriesS.attr('bounds') || !series.axes[0]) return
-
-  const lines: Line[] = series.axes[0].scaledValues.values.map((_, valueIndex) => {
-    return {
-      key: combineKeys([series.key, `i-${valueIndex}`]), //TODO
-      styleClass: series.categories ? series.categories.categories.styleClassValues[valueIndex] : defaultStyleClass,
-      positions: series.axes.map((axis, axisIndex) => {
-        return {
-          y: axis.scaledValues.getScaledValue(valueIndex),
-          x: series.axesScale(series.axisKeys[axisIndex])!
-        }
-      })
-    }
-  })
-
-  lineSeriesS.selectAll<SVGPathElement, Line>('path')
-    .data(lines, (d) => d.key)
-    .call(s => lineSeriesJoin(lineSeriesS, s))
 }

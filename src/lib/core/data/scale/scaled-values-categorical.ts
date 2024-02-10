@@ -1,28 +1,25 @@
 import {ScaledValuesCategoricalUserArgs} from "./scaled-values";
-import {ScaledValuesBase} from "./scaled-values-base";
+import {ScaledValuesBase, ScaledValuesBaseArgs} from "./scaled-values-base";
 import {scaleBand, ScaleBand} from "d3";
 import {categoriesValidation, CategoryValid} from "../category";
 import {ActiveKeyMap} from "../../constants/types";
 import {RespValOptional} from "../responsive-value/responsive-value";
 
-type ScaledValuesCategoricalArgs = ScaledValuesCategoricalUserArgs & {
-  parentKey: string
+type ScaledValuesCategoricalArgs = ScaledValuesCategoricalUserArgs & ScaledValuesBaseArgs & {
   title: RespValOptional<string>
 }
 export class ScaledValuesCategorical extends ScaledValuesBase<string> {
   tag = 'categorical' as const
   readonly values: string[]
   readonly scale: ScaleBand<string>
-  readonly parentKey: string
   readonly title: RespValOptional<string>
   readonly categories: CategoryValid
   readonly keysActive: ActiveKeyMap
 
   constructor(args: ScaledValuesCategoricalArgs | ScaledValuesCategorical) {
-    super()
+    super(args)
     this.values = args.values
     this.scale = args.scale ?? scaleBand([0, 600]).domain(this.values).padding(0.1)
-    this.parentKey = args.parentKey
     this.title = args.title
 
     //TODO: this is no real alignment validation. Fix this!

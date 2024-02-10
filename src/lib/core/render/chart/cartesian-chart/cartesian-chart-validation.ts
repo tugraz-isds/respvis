@@ -1,5 +1,5 @@
 import {Selection} from 'd3';
-import {AxisUserArgs, AxisValid, axisValidation} from "../../axis";
+import {AxisBaseUserArgs, axisBaseValidation, AxisValid} from "../../axis";
 import {chartValidation} from "../chart";
 import {zoomValidation} from "../../../data/zoom";
 import {legendValidation} from "../../legend";
@@ -9,8 +9,8 @@ import {SeriesChartUserArgs, SeriesChartValid} from "../series-chart/series-char
 export type CartesianChartUserArgs = SeriesChartUserArgs & {
   series: CartesianSeriesUserArgs
   // additionalSeries:
-  x: AxisUserArgs
-  y: AxisUserArgs
+  x: AxisBaseUserArgs
+  y: AxisBaseUserArgs
 }
 
 export type CartesianChartArgs = Omit<CartesianChartUserArgs, 'series'> & {
@@ -31,8 +31,8 @@ export function cartesianChartValidation(cartesianArgs: CartesianChartArgs): Car
 
   return {
     series,
-    x: axisValidation({...x, renderer, scaledValues: series.x}),
-    y: axisValidation({...y, renderer, scaledValues: series.y}),
+    x: axisBaseValidation({...x, renderer, scaledValues: series.x}),
+    y: axisBaseValidation({...y, renderer, scaledValues: series.y}),
     getAxes: function () { return [this.x, this.y] },
     getSeries: function () { return [this.series] },
     legend: legendValidation({...cartesianArgs.legend, renderer, series}),

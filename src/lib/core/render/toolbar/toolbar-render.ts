@@ -16,7 +16,6 @@ type ToolbarValid = SeriesChartValid
 export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
   const series = args.getSeries()
   const axes = args.getAxes()
-  console.log(series, axes)
   const toolbarS = chartS
     .selectAll<HTMLDivElement, any>('.toolbar')
     .data([null])
@@ -25,8 +24,8 @@ export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
   menuToolsRender(toolbarS)
   const menuToolsItems = toolbarS.selectAll('.menu-tools > .items')
   toolDownloadSVGRender(menuToolsItems)
-  series.forEach(series => categorySeriesRender(menuToolsItems, series))
-  axes.forEach(axis => categoryAxisRender(menuToolsItems, axis))
+  series.forEach(series => filterCategoriesRender(menuToolsItems, series))
+  axes.forEach(axis => filterAxisRender(menuToolsItems, axis))
 }
 
 function menuToolsRender(selection: Selection<HTMLDivElement>) {
@@ -41,7 +40,7 @@ function menuToolsRender(selection: Selection<HTMLDivElement>) {
   return menuTools
 }
 
-function categorySeriesRender(menuToolsItemsS: Selection, series: Series) {
+function filterCategoriesRender(menuToolsItemsS: Selection, series: Series) {
   const {renderer, categories, key} = series
   const chartElement = elementFromSelection(renderer.chartSelection)
 
@@ -60,19 +59,31 @@ function categorySeriesRender(menuToolsItemsS: Selection, series: Series) {
   }
 }
 
-function categoryAxisRender(menuToolsItemsS: Selection, axis: AxisValid) {
+function filterAxisRender(menuToolsItemsS: Selection, axis: AxisValid) {
   const {renderer} = axis
   const axisScaledValues = axis.scaledValues
   const chartElement = elementFromSelection(renderer.chartSelection)
   const title = getCurrentRespVal(axis.title, {chart: chartElement})
-  if(axisScaledValues instanceof ScaledValuesCategorical) {
-    const parentKey = axisScaledValues.parentKey
-    const filterOptions: ToolFilterNominal = {
-      text: getCurrentRespVal( `${title ?? parentKey}-Axis`, {chart: chartElement}),
-      options: categoryOrderMapToArray(axisScaledValues.categories.categoryOrderMap),
-      keys: axisScaledValues.categories.keyOrder.map(oKey => `${parentKey}-${oKey}`),
-      class: `filter-axis-${title}`
-    }
-    toolFilterNominalRender(menuToolsItemsS, filterOptions)
+  const {keys, options} = getAxisCategoryProps(axis)
+  if ('key' in axis) {
+    keys.push(axis.key)
+    options.push('Remove Axis')
+  }
+  if (keys.length === 0) return
+
+  const filterOptions: ToolFilterNominal = { options, keys,
+    text: getCurrentRespVal( `${title ?? axisScaledValues.parentKey.toUpperCase()}-Axis`, {chart: chartElement}),
+    class: `filter-axis-${axisScaledValues.parentKey}`
+  }
+  toolFilterNominalRender(menuToolsItemsS, filterOptions)
+}
+
+function getAxisCategoryProps(axis: AxisValid) {
+  const axisScaledValues = axis.scaledValues
+  return {
+    keys: axisScaledValues instanceof ScaledValuesCategorical ?
+      axisScaledValues.categories.keyOrder.map(oKey => `${axisScaledValues.parentKey}-${oKey}`) : [],
+    options: axisScaledValues instanceof ScaledValuesCategorical ?
+      categoryOrderMapToArray(axisScaledValues.categories.categoryOrderMap) : []
   }
 }

@@ -5,7 +5,7 @@ import {getTopMakesData} from "./data/sold-cars-germany.js";
 // import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
 export function renderParcoord(selector: string) {
-  const {horsePower, prices, mileages, makes} = getTopMakesData(5)
+  const {horsePower, prices, mileages, makes, fuel} = getTopMakesData(5)
 
   // const hpScale = d3.scaleLinear()
   //   .domain([0, Math.max(...allHorsePower)])
@@ -39,6 +39,12 @@ export function renderParcoord(selector: string) {
           axis: {
             title: "Mileage",
             subTitle: "[km]"
+          }
+        },
+        {
+          scaledValues: { values: fuel},
+          axis: {
+            title: "Fuel",
           }
         },
       ],

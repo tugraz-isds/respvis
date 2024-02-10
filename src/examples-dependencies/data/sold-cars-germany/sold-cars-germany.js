@@ -5528,6 +5528,7 @@ export function getTopMakesData(numberTopMakes) {
  const horsePower = []
  const mileages = []
  const makes = []
+ const fuel = []
 
  carData.forEach(entry => {
   let index = topMakesNames.findIndex((value) => value === entry.make)
@@ -5535,8 +5536,9 @@ export function getTopMakesData(numberTopMakes) {
   prices.push(parseInt(entry.price))
   horsePower.push(parseInt(entry.hp))
   mileages.push(parseInt(entry.mileage))
+  fuel.push(entry.fuel)
   makes.push(index === 5 ? 'Other' : entry.make)
  })
- return {prices, horsePower, mileages, makes, topMakesNames}
+ return {prices, horsePower, mileages, makes, topMakesNames, fuel}
 }
 

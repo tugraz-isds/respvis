@@ -11,20 +11,20 @@ import {mergeKeys} from "../../utilities/dom/key";
 export type SeriesUserArgs = {
   categories?: CategoryUserArgs
   markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>
-  labelCallback?: (category: string) => string,
+  labelCallback?: (category: string) => string
   flipped?: RespValByValueOptional<boolean>
 }
 
 export type SeriesArgs = SeriesUserArgs & RenderArgs & {
   key: SeriesKey
-  bounds?: Size,
+  bounds?: Size
 }
 
 export abstract class Series implements RenderArgs {
   categories?: ScaledValuesCategorical
-  key: SeriesKey;
+  key: SeriesKey
   keysActive: ActiveKeyMap
-  bounds: Size;
+  bounds: Size
   markerTooltips: SeriesConfigTooltips<SVGCircleElement, Point>
   labelCallback: (category: string) => string
   flipped: RespValByValueOptional<boolean>

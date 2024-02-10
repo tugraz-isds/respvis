@@ -1,6 +1,5 @@
 import {rectFromString} from "../../../utilities/rect";
-import {select, Selection} from "d3";
-import {SVGHTMLElement} from "../../../constants/types";
+import {Selection} from "d3";
 import {WindowValid} from "../../window";
 import {CartesianChartValid} from "./cartesian-chart-validation";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
@@ -13,8 +12,9 @@ export abstract class CartesianChart extends SeriesChart {
 
   abstract windowSelection: Selection<HTMLDivElement, CartesianChartValid & WindowValid>
   abstract chartSelection?: Selection<SVGSVGElement, CartesianChartValid & WindowValid>
+
   protected addBuiltInListeners() {
-    this.addFilterListener()
+    super.addBuiltInListeners()
     this.addZoomListeners()
   }
 
@@ -27,27 +27,6 @@ export abstract class CartesianChart extends SeriesChart {
     const flipped = getCurrentRespVal(restArgs.series.flipped, {chart: chartElement})
     x.scaledValues.scale.range(flipped ? [height, 0] : [0, width])
     y.scaledValues.scale.range(flipped ? [0, width] : [height, 0])
-  }
-
-  private addFilterListener() {
-    const renderer = this
-    this.addCustomListener('change', (e) => {
-      if (!e.target) return
-      const changeS = select(e.target as SVGHTMLElement)
-      if (changeS.attr('type') !== 'checkbox') return
-      const parentS = changeS.select(function() {return this.parentElement})
-      const currentKey = parentS.attr('data-key')
-      if (!currentKey) return
-
-      const {keysActive, x, y, categories} = this.windowSelection.datum().series
-      if (keysActive[currentKey] !== undefined) {
-        keysActive[currentKey] = changeS.property('checked')
-      }
-      categories?.setKeyActiveIfDefined(currentKey, changeS.property('checked'))
-      x.setKeyActiveIfDefined(currentKey, changeS.property('checked'))
-      y.setKeyActiveIfDefined(currentKey, changeS.property('checked'))
-      renderer.windowSelection.dispatch('resize')
-    })
   }
 
   private addZoomListeners() {

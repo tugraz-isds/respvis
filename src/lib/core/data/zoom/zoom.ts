@@ -10,7 +10,6 @@ export function addZoom(selection: ZoomSelection, callback: (props: {
   x: ScaledValuesBase<AxisDomainRV>, y: ScaledValuesBase<AxisDomainRV>
 }) => void, throttleMs = 50) {
   const {series, zoom} = selection.datum()
-  const drawArea = selection.selectAll('.draw-area')
   const pWrapper = selection.selectAll('.padding-wrapper')
   function updateScales() {
     if (!zoom) return
@@ -21,7 +20,6 @@ export function addZoom(selection: ZoomSelection, callback: (props: {
       callback({x, y})
     }
     const throttledZoom = throttle(onZoom, throttleMs)
-    console.log(drawArea, zoom)
     pWrapper.call(
       zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom.autozoom', throttledZoom)
     )

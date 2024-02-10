@@ -5,6 +5,8 @@ import {getRadiusScaledValues} from "../../core/data/radius/radius-util";
 import {PointScaleHandler} from "../../core/data/scale/geometry-scale-handler/point-scale-handler";
 import {PointSeries} from "./point-series-validation";
 import {defaultStyleClass} from "../../core/constants/other";
+import {Series} from "../../core/render/series";
+import {ColorContinuous} from "../../core/data/color-continuous/color-continuous";
 
 export function seriesPointCreatePoints<T extends boolean, R = T extends false ? Point[] : Point[][]>
 (seriesData: PointSeries, grouped: T) : R {
@@ -27,16 +29,7 @@ export function seriesPointCreatePoints<T extends boolean, R = T extends false ?
   for (let i = 0; i < x.values.length; i++) {
     if (categories && !categories.isKeyActiveByIndex(i)) continue
     if (!x.isKeyActiveByIndex(i) || !y.isKeyActiveByIndex(i)) continue
-    const point: Point = {
-      ...geometryHandler.getPointCircle(i),
-      xValue: geometryHandler.getCurrentXValues().getScaledValue(i),
-      yValue: geometryHandler.getCurrentYValues().getScaledValue(i),
-      color: color?.scale(color?.values[i]),
-      radiusValue: geometryHandler.getRadius(i),
-      key: seriesData.getCombinedKey(i) + ` i-${i}`,
-      styleClass: seriesData.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
-      label: seriesData.labelCallback(seriesData.categories?.values[i] ?? ''),
-    }
+    const point = createPoint({geometryHandler, seriesData, i, color})
     pointsSingleGroup.push(point)
     if (pointsGrouped && categories) {
       const category = categories.values[i]
@@ -46,4 +39,26 @@ export function seriesPointCreatePoints<T extends boolean, R = T extends false ?
   }
 
   return (grouped === false) ? pointsSingleGroup as R : pointsGrouped! as R
+}
+
+
+
+type CreatePointProps = {
+  geometryHandler: PointScaleHandler
+  i: number
+  color?: ColorContinuous,
+  seriesData: Series
+}
+function createPoint(props: CreatePointProps): Point {
+  const {geometryHandler, i, color, seriesData} = props
+  return  {
+    ...geometryHandler.getPointCircle(i),
+    xValue: geometryHandler.getCurrentXValues().getScaledValue(i),
+    yValue: geometryHandler.getCurrentYValues().getScaledValue(i),
+    color: color?.scale(color?.values[i]),
+    radiusValue: geometryHandler.getRadius(i),
+    key: seriesData.getCombinedKey(i) + ` i-${i}`,
+    styleClass: seriesData.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
+    label: seriesData.labelCallback(seriesData.categories?.values[i] ?? ''),
+  }
 }

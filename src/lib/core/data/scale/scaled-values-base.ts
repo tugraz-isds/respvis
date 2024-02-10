@@ -3,11 +3,16 @@ import {AxisDomainRV} from "./axis-scaled-values-validation";
 import {ScaleBase} from "./scales";
 import {ZoomTransform} from "d3";
 
+export type ScaledValuesBaseArgs = { parentKey: string }
+
 export abstract class ScaledValuesBase<T extends AxisDomainRV> {
   abstract readonly tag: ScaledValueTag
   abstract readonly values: ToArray<T>
   abstract readonly scale: ScaleBase<T>
-  protected constructor() {}
+  readonly parentKey: string
+  protected constructor(args: ScaledValuesBaseArgs) {
+    this.parentKey = args.parentKey
+  }
   getScaleInverseRanged() {
     const originalRange = this.scale.range()
     return this.scale.copy().range([originalRange[1], originalRange[0]])

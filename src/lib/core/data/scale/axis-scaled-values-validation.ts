@@ -18,7 +18,7 @@ export function axisScaledValuesValidation(axisScaleArgs: ScaledValuesUserArgs<A
 
   if (isDateArray(values)) {
     if (scale && !isScaleTime(scale)) throw new Error(ErrorMessages.invalidScaledValuesCombination)
-    return new ScaledValuesDate({values, scale})
+    return new ScaledValuesDate({values, scale, parentKey: axisKey})
   }
 
   if (isNumberArray(values) || hasValueOf(values)) {
@@ -28,7 +28,7 @@ export function axisScaledValuesValidation(axisScaleArgs: ScaledValuesUserArgs<A
     const valuesNum = isNumberArray(values) ?
       values.map(value => Number(value)) :
       values.map(value => parseFloat(value.valueOf()))
-    return new ScaledValuesLinear({values: valuesNum, scale})
+    return new ScaledValuesLinear({values: valuesNum, scale, parentKey: axisKey})
   }
 
   if (scale && !isScaleCategory(scale)) throw new Error(ErrorMessages.invalidScaledValuesCombination)

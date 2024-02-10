@@ -14,7 +14,7 @@ export function getSubKey(subkeys: string[], type: KeyType) {
 export function combineKeys(keys: (string | undefined)[]): string {
   return keys.reduce((prev, current) => {
     return prev + (current ? ' ' + current : '' )
-  }, '') as string
+  }, '')?.trimStart() as string
 }
 
 export function mergeKeys(keys: string[]) {

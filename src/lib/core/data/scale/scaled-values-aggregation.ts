@@ -47,6 +47,10 @@ export class ScaledValuesAggregation {
     console.assert(aggregatedValuesOrder.length === categoricalValues.categories.categoryOrder.length)
     const aggregatedDomain = [linearValues.scale.domain()[0], Math.max(...aggregatedValuesOrder)]
 
-    return new ScaledValuesLinear({values: cumulativeValues, scale: scaleLinear().domain(aggregatedDomain).nice()})
+    return new ScaledValuesLinear({
+      values: cumulativeValues,
+      scale: scaleLinear().domain(aggregatedDomain).nice(),
+      parentKey: linearValues.parentKey
+    })
   }
 }

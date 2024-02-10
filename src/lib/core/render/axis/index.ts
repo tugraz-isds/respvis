@@ -1,2 +1,2 @@
-export * from './axis-validation'
+export * from './axis-base-validation'
 export * from './axis-render'
