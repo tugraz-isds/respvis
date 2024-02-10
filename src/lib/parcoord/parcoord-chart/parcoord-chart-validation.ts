@@ -18,8 +18,8 @@ export function parcoordChartValidation(args: ParcoordChartArgs): ParcoordChartV
   const {renderer} = args
   const series = new ParcoordSeries({...args.series, renderer, key: 's-0'})
   return {
-    getAxes: function () { return series.axes },
-    getSeries: function () { return [series] },
+    getAxes: function () { return this.series.axes },
+    getSeries: function () { return [this.series] },
     series,
     legend: legendValidation({...args.legend, renderer, series}),
     ...chartValidation(args),

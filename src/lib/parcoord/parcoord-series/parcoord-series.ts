@@ -28,18 +28,20 @@ export class ParcoordSeries extends Series {
     const {renderer} = args
 
     //TODO: data aligning
-    this.axes = args instanceof ParcoordSeries ? args.axes : args.dimensions.map((dimension, index) => {
-      return keyedAxisValidation({
-        ...dimension.axis, renderer,
-        scaledValues: axisScaledValuesValidation(dimension.scaledValues, `a-${index}`),
-        key: `a-${index}`
+    this.axes = 'class' in args ? args.axes :
+      args.dimensions.map((dimension, index) => {
+        return keyedAxisValidation({
+          ...dimension.axis, renderer,
+          scaledValues: axisScaledValuesValidation(dimension.scaledValues, `a-${index}`),
+          key: `a-${index}`
+        })
       })
-    })
 
-    if (args instanceof ParcoordSeries) this.categories = args.categories
+    if ('class' in args) this.categories = args.categories
     else {
       //TODO: index check
-      const alignedCategories = args.categories ? {...args.categories,
+      const alignedCategories = args.categories ? {
+        ...args.categories,
         values: arrayAlignLengths(args.categories.values, this.axes[0].scaledValues.values)[0]
       } : undefined
       this.categories = alignedCategories ? new ScaledValuesCategorical({...alignedCategories, parentKey: 's-0'}) :
@@ -59,7 +61,14 @@ export class ParcoordSeries extends Series {
     const seriesCategoryKey = this.categories ? this.categories.getCategoryData(i).combinedKey : undefined
     return combineKeys([this.key, this.axes[i].key, seriesCategoryKey])
   }
+
   clone(): ParcoordSeries {
-    return new ParcoordSeries(this);
+    return new ParcoordSeries({
+      ...this,
+      axes: this.axes.map(axis => {
+        return {...axis, scaledValues: axis.scaledValues.clone()}
+      }),
+      axesScale: this.axesScale.copy(),
+    });
   }
 }

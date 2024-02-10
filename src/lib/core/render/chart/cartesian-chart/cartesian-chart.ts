@@ -41,9 +41,6 @@ export abstract class CartesianChart extends SeriesChart {
       seriesUpdated.y = y
       cartesianData.x.scaledValues = x
       cartesianData.y.scaledValues = y
-      // The below code does not work
-      // scatterPlotData.series.x = x
-      // scatterPlotData.series.y = y
 
       renderer.windowSelection.data([{
         ...cartesianData, series: seriesUpdated

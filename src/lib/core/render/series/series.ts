@@ -21,6 +21,7 @@ export type SeriesArgs = SeriesUserArgs & RenderArgs & {
 }
 
 export abstract class Series implements RenderArgs {
+  class = true
   categories?: ScaledValuesCategorical
   key: SeriesKey
   keysActive: ActiveKeyMap
@@ -34,7 +35,7 @@ export abstract class Series implements RenderArgs {
     const {key, labelCallback} = args
 
     //TODO: pass correct parameters here
-    if (args instanceof Series) this.categories = args.categories
+    if ('class' in args) this.categories = args.categories
     else this.categories = args.categories ? new ScaledValuesCategorical({
       ...args.categories, parentKey: key,
     }) : undefined
@@ -42,13 +43,13 @@ export abstract class Series implements RenderArgs {
     this.bounds = args.bounds || {width: 600, height: 400}
     this.key = args.key
 
-    if (args instanceof Series) this.keysActive = args.keysActive
+    if ('class' in args) this.keysActive = args.keysActive
     else {
       this.keysActive = {}
       this.keysActive[key] = true
     }
-    this.markerTooltips = args instanceof Series ? args.markerTooltips : seriesConfigTooltipsData(args.markerTooltips)
-    this.labelCallback = args instanceof Series ? args.labelCallback : (labelCallback ?? ((label: string) => label))
+    this.markerTooltips = 'class' in args ? args.markerTooltips : seriesConfigTooltipsData(args.markerTooltips)
+    this.labelCallback = 'class' in args ? args.labelCallback : (labelCallback ?? ((label: string) => label))
     this.renderer = args.renderer
     this.flipped = args.flipped ?? false
   }

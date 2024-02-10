@@ -2,10 +2,10 @@ import {axisSequenceRender, AxisValid, chartRender, Position} from "../../core";
 import {select, Selection} from "d3";
 import {ParcoordChartValid} from "./parcoord-chart-validation";
 import {Line, lineSeriesJoin} from "../../line";
-import {combineKeys} from "../../core/utilities/dom/key";
-import {defaultStyleClass} from "../../core/constants/other";
 import {KeyedAxisValid} from "../../core/render/axis/keyed-axis-validation";
 import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
+import {combineKeys} from "../../core/utilities/dom/key";
+import {defaultStyleClass} from "../../core/constants/other";
 
 export type ParcoordChartSVGChartSelection = Selection<SVGSVGElement | SVGGElement, ParcoordChartValid>;
 
@@ -58,10 +58,6 @@ function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>) {
     }
     if (containsInactiveAxisCategory) continue
 
-    // if (valueIndex === 0) {
-    //   console.log(series.key)
-    //   console.log(combineKeys([series.key, `i-${valueIndex}`], true))
-    // }
     lines.push({
       key: combineKeys([series.key, `i-${valueIndex}`]), //TODO
       styleClass: series.categories ? series.categories.categories.styleClassValues[valueIndex] : defaultStyleClass,
@@ -92,7 +88,7 @@ function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>) {
     return series.keysActive[axis.key]
   })
 
-  axisSeriesS
+  const axisSequenceS = axisSeriesS
     .selectAll<SVGGElement, KeyedAxisValid>('.axis.axis-sequence')
     .data(activeAxes, (d) => d.key)
     .join('g')
