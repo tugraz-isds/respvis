@@ -34,6 +34,7 @@ export abstract class Chart implements Renderer {
     this.addBuiltInListeners()
     this.addFinalListeners()
     this.addedListeners = true
+    this.render()
   }
 
   /**
@@ -75,7 +76,7 @@ export abstract class Chart implements Renderer {
     // }, 20)
   }
 
-  private render() {
+  protected render() {
     this.preRender()
     this.mainRender()
     this.postRender()

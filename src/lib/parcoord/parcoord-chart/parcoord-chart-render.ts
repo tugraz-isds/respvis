@@ -17,7 +17,7 @@ export function parCoordChartRender(selection: ParcoordChartSVGChartSelection) {
 }
 
 function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>) {
-  const { series} = chartS.datum()
+  const {series} = chartS.datum()
 
   const lineSeriesS = chartS.selectAll('.draw-area')
     .selectAll<SVGGElement, AxisValid>(`.series-parcoord-lines`)
@@ -37,13 +37,13 @@ function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>) {
   series.axesScale.domain(activeAxes.map(axis => axis.key))
 
   const lines: Line[] = []
-  for(let valueIndex = 0; valueIndex < activeAxes[0].scaledValues.values.length; valueIndex++) {
-    if(!series.keysActive[series.key]) break
+  for (let valueIndex = 0; valueIndex < activeAxes[0].scaledValues.values.length; valueIndex++) {
+    if (!series.keysActive[series.key]) break
     if (series.categories && !series.categories.isKeyActiveByIndex(valueIndex)) continue
     const positions: Position[] = []
     let containsInactiveAxisCategory = false
 
-    for(let axisIndex = 0; axisIndex < activeAxes.length; axisIndex++) {
+    for (let axisIndex = 0; axisIndex < activeAxes.length; axisIndex++) {
       const axis = activeAxes[axisIndex]
       const vals = axis.scaledValues
       if (!vals.isKeyActiveByIndex(valueIndex)) {
@@ -72,7 +72,7 @@ function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>) {
 }
 
 function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>) {
-  const { series} = chartS.datum()
+  const {series} = chartS.datum()
 
   const axisSeriesS = chartS.selectAll('.draw-area')
     .selectAll<SVGGElement, AxisValid>(`.series-parcoord-axes`)
@@ -85,10 +85,10 @@ function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>) {
 
   const activeAxes = !series.keysActive[series.key] ? [] :
     series.axes.filter(axis => {
-    return series.keysActive[axis.key]
-  })
+      return series.keysActive[axis.key]
+    })
 
-  const axisSequenceS = axisSeriesS
+  axisSeriesS
     .selectAll<SVGGElement, KeyedAxisValid>('.axis.axis-sequence')
     .data(activeAxes, (d) => d.key)
     .join('g')
@@ -97,4 +97,7 @@ function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>) {
       const x = series.axesScale(activeAxes[i].key) ?? 0
       return `translate(${x}, ${0})`
     })
+    .each((d, i, g) => axisSeriesS.dispatch('enter', {
+      detail: {selection: select(g[i])}
+    }))
 }

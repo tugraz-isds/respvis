@@ -6,11 +6,13 @@ import {scalePoint, ScalePoint} from "d3";
 import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
 import {combineKeys} from "../../core/utilities/dom/key";
 import {KeyedAxisValid, keyedAxisValidation} from "../../core/render/axis/keyed-axis-validation";
+import {ZoomArgs, ZoomValid, zoomValidation} from "../../core/data/zoom";
 
 export type ParcoordSeriesUserArgs = SeriesUserArgs & {
   dimensions: {
     scaledValues: ScaledValuesUserArgs<AxisDomainRV>
     axis: AxisBaseUserArgs
+    zoom?: ZoomArgs
   }[]
 }
 
@@ -22,6 +24,7 @@ export type ParcoordArgs = SeriesArgs & ParcoordSeriesUserArgs & {
 export class ParcoordSeries extends Series {
   axes: KeyedAxisValid[]
   axesScale: ScalePoint<string>
+  zooms: (ZoomValid | undefined)[]
 
   constructor(args: ParcoordArgs | ParcoordSeries) {
     super(args)
@@ -51,9 +54,12 @@ export class ParcoordSeries extends Series {
     this.axesScale = scalePoint()
       .domain(this.axes.map((axis) => axis.key))
 
-    const instance = this
     this.axes.forEach((axis) => {
-      instance.keysActive[axis.key] = true
+      this.keysActive[axis.key] = true
+    })
+    
+    this.zooms = 'class' in args ? args.zooms : args.dimensions.map(dimension => {
+      return dimension.zoom ? zoomValidation(dimension.zoom) : undefined
     })
   }
 

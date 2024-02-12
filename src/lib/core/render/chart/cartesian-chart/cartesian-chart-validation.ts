@@ -1,7 +1,7 @@
 import {Selection} from 'd3';
 import {AxisBaseUserArgs, axisBaseValidation, AxisValid} from "../../axis";
 import {chartValidation} from "../chart";
-import {zoomValidation} from "../../../data/zoom";
+import {ZoomArgs, ZoomValid, zoomValidation} from "../../../data/zoom";
 import {legendValidation} from "../../legend";
 import {CartesianSeries, CartesianSeriesUserArgs} from "../../series/cartesian-series";
 import {SeriesChartUserArgs, SeriesChartValid} from "../series-chart/series-chart-validation";
@@ -11,6 +11,7 @@ export type CartesianChartUserArgs = SeriesChartUserArgs & {
   // additionalSeries:
   x: AxisBaseUserArgs
   y: AxisBaseUserArgs
+  zoom?: ZoomArgs
 }
 
 export type CartesianChartArgs = Omit<CartesianChartUserArgs, 'series'> & {
@@ -21,6 +22,7 @@ export type CartesianChartValid = SeriesChartValid & {
   series: CartesianSeries
   x: AxisValid
   y: AxisValid
+  zoom?: ZoomValid
 }
 
 export type CartesianChartSelection = Selection<SVGSVGElement | SVGGElement, CartesianChartValid>

@@ -22,13 +22,23 @@ export function renderParcoord(selector: string) {
       dimensions: [
         {
           scaledValues: { values: horsePower},
+          zoom: {
+            in: 10,
+            out: 1
+          },
           axis: {
             title: "Horsepower",
             subTitle: "[PS]"
           }
         },
         {
-          scaledValues: { values: prices},
+          scaledValues: {
+            values: prices
+          },
+          zoom: {
+            in: 20,
+            out: 1
+          },
           axis: {
             title: "Price",
             subTitle: "[EU]"
@@ -36,6 +46,10 @@ export function renderParcoord(selector: string) {
         },
         {
           scaledValues: { values: mileages},
+          zoom: {
+            in: 20,
+            out: 1
+          },
           axis: {
             title: "Mileage",
             subTitle: "[km]"
