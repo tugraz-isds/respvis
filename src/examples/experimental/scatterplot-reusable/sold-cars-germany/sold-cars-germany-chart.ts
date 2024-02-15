@@ -1,6 +1,6 @@
 import * as d3 from '../libs/d3-7.6.0/d3.js'
 import {format} from '../libs/d3-7.6.0/d3.js'
-import {ChartPointUserArgs, formatWithDecimalZero, ScatterPlot} from '../libs/respvis/respvis.js'
+import {formatWithDecimalZero, ScatterPlot, ScatterPlotUserArgs} from '../libs/respvis/respvis.js'
 import {getTopMakesData} from './data/sold-cars-germany.js';
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
@@ -23,7 +23,7 @@ export function createChartSoldCarsGermany(selector: string) {
     radiusScale
   }
 
-  const data: ChartPointUserArgs = {
+  const data: ScatterPlotUserArgs = {
     series: {
       x: {
         values: horsePower,

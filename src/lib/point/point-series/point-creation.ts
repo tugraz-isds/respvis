@@ -53,10 +53,10 @@ function createPoint(props: CreatePointProps): Point {
   const {geometryHandler, i, color, seriesData} = props
   return  {
     ...geometryHandler.getPointCircle(i),
-    xValue: geometryHandler.getCurrentXValues().getScaledValue(i),
-    yValue: geometryHandler.getCurrentYValues().getScaledValue(i),
+    xValue: geometryHandler.getCurrentXValues().values[i],
+    yValue: geometryHandler.getCurrentYValues().values[i],
     color: color?.scale(color?.values[i]),
-    radiusValue: geometryHandler.getRadius(i),
+    radiusValue: geometryHandler.getRadiusValue(i),
     key: seriesData.getCombinedKey(i) + ` i-${i}`,
     styleClass: seriesData.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
     label: seriesData.labelCallback(seriesData.categories?.values[i] ?? ''),

@@ -6,6 +6,9 @@ body {
   width: 100%;
   height: 75vh;
   min-height: 25rem;
+  .padding-wrapper {
+    padding-right: 1rem;
+  }
 
   .series-label .label {
     display: none;

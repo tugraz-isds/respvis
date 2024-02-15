@@ -2,8 +2,14 @@
   display: grid;
 }
 .chart-cartesian .axis-left {
+  display: grid;
   grid-area: axis-left;
-  grid-template-areas: "title subtitle ticks";
+  grid-template-areas: "title-wrapper ticks";
+}
+.chart-cartesian .axis-left .title-wrapper {
+  display: grid;
+  grid-area: title-wrapper;
+  grid-template-areas: "title subtitle";
 }
 .chart-cartesian .axis-left .ticks-transform {
   margin-left: 0.5em;

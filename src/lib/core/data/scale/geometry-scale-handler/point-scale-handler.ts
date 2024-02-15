@@ -19,6 +19,10 @@ export class PointScaleHandler extends GeometryScaleHandler {
   getRadius(i: number) {
     return typeof this.radii === "number" ? this.radii : this.radii.getScaledValue(i)
   }
+
+  getRadiusValue(i: number) {
+    return typeof this.radii === "number" ? undefined : this.radii.values[i]
+  }
   getPointCircle(i: number): Circle {
     const currentX = this.getCurrentXValues()
     const currentY = this.getCurrentYValues()

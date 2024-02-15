@@ -1,7 +1,5 @@
-import {
-  BarChart, BarChartUserArgs
-} from './libs/respvis/respvis.js';
-import {sites, compensations, years} from './data/compensation-employees.js';
+import {BarChart, BarChartUserArgs} from './libs/respvis/respvis.js';
+import {compensations, sites, years} from './data/compensation-employees.js';
 import * as d3 from './libs/d3-7.6.0/d3.js'
 
 export function renderGroupedBarChart(selector: string) {
@@ -75,7 +73,11 @@ export function renderGroupedBarChart(selector: string) {
       },
       // tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,
-      // configureAxis: (axis) => axis.tickFormat(d3.format('.2s')),
+      configureAxis: {
+        dependentOn: 'width',
+        scope: 'chart',
+        mapping: {0: (axis) => axis.tickFormat(d3.format('.2s')), 3: (axis) => axis.tickFormat()}
+      },
     }
   }
 

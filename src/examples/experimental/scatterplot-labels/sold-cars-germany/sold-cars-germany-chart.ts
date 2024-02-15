@@ -1,8 +1,8 @@
 import * as d3 from '../libs/d3-7.6.0/d3.js'
-import {ScatterPlot, formatWithDecimalZero, ChartPointUserArgs} from '../libs/respvis/respvis.js'
+import {format} from '../libs/d3-7.6.0/d3.js'
+import {formatWithDecimalZero, ScatterPlot, ScatterPlotUserArgs} from '../libs/respvis/respvis.js'
 import {getTopMakesData} from './data/sold-cars-germany.js';
 import {chooseResponsiveData} from "./chooseResponsiveData.js";
-import {format} from "../libs/d3-7.6.0/d3.js";
 
 export function createChartSoldCarsGermany(selector) {
   const {mileages: mileagesAll, horsePower: horsePowerAll, prices: pricesAll, makes: makesAll} = getTopMakesData(5)
@@ -26,7 +26,7 @@ export function createChartSoldCarsGermany(selector) {
   // }
 
 
-  const data: ChartPointUserArgs = {
+  const data: ScatterPlotUserArgs = {
     series: {
       x: {
         values: makes

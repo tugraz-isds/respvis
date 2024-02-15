@@ -14,30 +14,9 @@ export function renderStackedBarChart(selector: string) {
   const yearsWhole = [...years, ...years, ...years]
   const sharesWhole = [...desktop, ...phone, ...tablet]
   const platformsWhole = [...desktopCategory, ...phoneCategory, ...tabletCategory]
-  const calcData = () => {
-    return {
-      categoryEntity: 'Years',
-      categories: years,
-      values: desktop.map((d, i) => [desktop[i], phone[i], tablet[i]]),
-      valuesAsRatios: true,
-      valueDomain: [0, 100],
-      subcategoryEntity: 'Platform',
-      // subcategories: platforms,
-      labels: {},
-      legend: {reverse: true},
-      tooltips: (e, {category, subcategory, value}) =>
-        `Year: ${category}<br/>Platform: ${subcategory}<br/>Market Share: ${d3.format('.2f')(
-          value
-        )}%`,
-      xAxis: {
-        title: 'Year'
-      },
-      yAxis: {
-        title: 'Market Share',
-        configureAxis: (a) => a.tickFormat((v) => `${v}%`),
-      }
-    };
-  }
+  yearsWhole.forEach((_, i) => {
+    console.log(desktop[i] + phone[i] + tablet[i])
+  })
 
   const tickOrientationHorizontal = {
     scope: 'self',
@@ -64,7 +43,7 @@ export function renderStackedBarChart(selector: string) {
       y: { values: sharesWhole },
       categories: {
         values: platformsWhole,
-        title: 'Platforms'
+        title: 'Device Types'
       },
       markerTooltips: {
         tooltips: ((e, d) => {
@@ -85,14 +64,10 @@ export function renderStackedBarChart(selector: string) {
       }
     },
     legend: {
-      title: 'Year'
+      title: 'Device Types'
     },
-    // title: {
-    //   dependentOn: 'width',
-    //   mapping: {0: 'Population of Austria', 2: 'Population of Austrian Cities'},
-    // },
     x: {
-      title: 'Country',
+      title: 'Year',
       bounds: {
         width: axisBoundsWidth,
         height: axisBoundsHeight
@@ -101,8 +76,8 @@ export function renderStackedBarChart(selector: string) {
       // tickOrientationFlipped: tickOrientationVertical
     },
     y: {
-      title: 'Total Remuneration',
-      subTitle: '[EU]',
+      title: 'Market Share',
+      configureAxis: (a) => a.tickFormat((v) => `${v}%`),
       bounds: {
         height: axisBoundsHeight,
         width: axisBoundsWidth
@@ -111,6 +86,10 @@ export function renderStackedBarChart(selector: string) {
       tickOrientationFlipped: tickOrientationHorizontal,
       // configureAxis: (axis) => axis.tickFormat(d3.format('.2s')),
     },
+    title: {
+      dependentOn: 'width',
+      mapping: {0: 'Device Types', 2: 'Market Share of Device Types'}
+    }
     // zoom: { //TODO: make stacked bar chart work with zooming!
     //   in: 20,
     //   out: 1
