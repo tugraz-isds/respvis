@@ -1,9 +1,5 @@
 import {BaseType, select, Selection, ValueFn} from 'd3';
-import {
-  elementComputedStyleWithoutDefaults,
-  elementSVGPresentationAttrs,
-} from '../../utilities/element';
-import {SVGHTMLElement} from "../../constants/types";
+import {elementComputedStyleWithoutDefaults, elementSVGPresentationAttrs,} from '../../utilities/element';
 
 // TODO: maybe SVGO could be used to optimize the downloaded SVG? https://github.com/svg/svgo
 
@@ -15,7 +11,7 @@ export function toolDownloadSVGRender(selection: Selection<BaseType>): void {
     .classed('tool-download-svg', true)
     .text('Download SVG')
     .on('click', function () {
-      select(this.closest('.chart-window'))
+      select(this.closest('.window-rv'))
         .selectAll<SVGSVGElement, unknown>('.layouter > svg.chart')
         .call((s) => chartDownload(s, 'chart.svg'));
     });
@@ -27,7 +23,6 @@ export function chartDownload<Datum>(
 ): void {
   chartSelection.each((d, i, g) => {
     const clonedChart = <Element>g[i].cloneNode(true);
-
     const width = clonedChart.getAttribute('width');
     const height = clonedChart.getAttribute('height');
     clonedChart.setAttribute('viewBox', `0, 0, ${width}, ${height}`);

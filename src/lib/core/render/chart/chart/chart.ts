@@ -63,9 +63,9 @@ export abstract class Chart implements Renderer {
     clearTimeout(this.renderInitialized)
     const instance = this
     if (this.renderCountSinceResize > 2) {
-      //TODO: Use this only in production to protect users against infinite loop.
-      //Use error message to detect this in dev mode!
+      /* DEV_MODE_ONLY_START */
       console.log('TOO MANY RENDERS. THERE MUST BE A PROBLEM')
+      /* DEV_MODE_ONLY_END */
       return
     }
     this.renderCountSinceResize++

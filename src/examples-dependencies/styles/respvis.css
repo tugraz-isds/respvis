@@ -154,6 +154,7 @@
   translate: 0 -3px;
 }
 .chart.chart-parcoord .axis.axis-sequence .title-wrapper .title, .chart.chart-parcoord .axis.axis-sequence .title-wrapper .subtitle {
+  display: block;
   --fit-height: true;
   --fit-width: true;
 }

@@ -14,6 +14,7 @@ const exampleDirList = [
   `${exampleDir}/article`,
 
   `${exampleDir}/barcharts/barchart`,
+  `${exampleDir}/barcharts/aggregated-barchart`,
   `${exampleDir}/barcharts/grouped-barchart`,
   `${exampleDir}/barcharts/stacked-barchart`,
 

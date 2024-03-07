@@ -9,4 +9,4 @@ cars. We've collected car data from 2011 to 2021.
 
 Edits:
 
-Randomly selected 500 cars from 46,405 cars.
+Randomly sampled 500 cars from 46,405 cars.

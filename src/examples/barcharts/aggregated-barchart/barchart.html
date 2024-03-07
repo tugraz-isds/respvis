@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-  <title>RespVis - Parallel Coordinates Chart</title>
+  <title>RespVis - Bar Chart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta charset="UTF-8"/>
   <link rel="stylesheet" href="./styles/respvis.css"/>
-  <link rel="stylesheet" href="./parcoord.css"/>
+  <link rel="stylesheet" href="./barchart.css"/>
 </head>
+
 <body>
-<h1>Parallel Coordinates Chart</h1>
+<h1>Bar Chart</h1>
 <noscript>Please enable JavaScript!</noscript>
-<div id="chart"> </div>
+<div id="chart-standard"> </div>
+<div id="chart-aggregated"> </div>
 
 <script type="module">
-  import {renderParcoordGeneralized, renderParcoord} from "./parcoord.ts";
-  renderParcoord('#chart')
+  import {createBarChart, createBarChartAggregated} from "./barchart.ts";
+  createBarChart('#chart-standard')
+  createBarChartAggregated('#chart-aggregated')
 </script>
 </body>
 </html>

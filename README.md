@@ -46,7 +46,10 @@ defines three public tasks:
   initialize a live server which serves the `dist` directory. Then,
   file watchers are initiated which automatically update the `dist`
   folder when making any relevant changes in the `src` folder and
-  notify browsers to reload the page.
+  notify browsers to reload the page. The serve task can be invoked 
+  in production (--prod) or developer (--dev) mode. The default is
+  production mode. The non-secret enviroment variables for production and
+  development can be found in `.env.prod` and `.env.dev` respectively.
 
 The public tasks can be invoked either by directly running gulp via npx or
 by running the equivalent scripts in package.json:

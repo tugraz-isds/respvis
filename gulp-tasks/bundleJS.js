@@ -6,6 +6,7 @@ const {terser: rollupTerser} = require("rollup-plugin-terser");
 const {default: rollupGzip} = require("rollup-plugin-gzip");
 const fs = require("fs");
 const {rootDir, srcDir} = require('./paths')
+const {stripCode} = require('./codeStripPlugin');
 
 async function bundleJSDevelopment() {
   await bundleJS("development")
@@ -24,7 +25,11 @@ async function bundleJS(mode) {
       rollupTypescript({
         tsconfig: `${rootDir}/tsconfig.json`,
       }),
-    ]
+      process.env.STRIP_CODE === 'true' ? stripCode({
+        startComment: '/* DEV_MODE_ONLY_START */',
+        endComment: '/* DEV_MODE_ONLY_END */'
+      }) : null,
+    ].filter(plugin => plugin)
   });
 
   const minPlugins = [rollupTerser()];

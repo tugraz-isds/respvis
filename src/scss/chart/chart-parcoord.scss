@@ -18,6 +18,7 @@
         translate: 0 -3px;
       }
       .title, .subtitle {
+        display: block;
         --fit-height: true;
         --fit-width: true;
         text {

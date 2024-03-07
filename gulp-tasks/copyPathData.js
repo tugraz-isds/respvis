@@ -49,13 +49,21 @@ const dataStudentsTuGrazPaths = {
   ]
 }
 
+const dataTemperatureAnomaliesPaths = {
+  src: `${dataDepsDir}/global-temperature-anomalies/**/*`,
+  target: [
+    `${exampleDir}/barcharts/aggregated-barchart/data`
+  ]
+}
+
 const dataPaths = [
   dataAustrianCitiesPaths,
   dataCompensationEmployeesPaths,
   dataDesktopPhoneTabletPaths,
   dataElectricPowerConsumptionPaths,
   dataSoldCarsGermanyPaths,
-  dataStudentsTuGrazPaths
+  dataStudentsTuGrazPaths,
+  dataTemperatureAnomaliesPaths
 ]
 
 module.exports = {

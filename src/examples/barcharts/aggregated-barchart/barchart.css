@@ -1,0 +1,21 @@
+#chart-standard, #chart-aggregated {
+  width: calc(100% - 1.5rem);
+  height: 40vh;
+  min-height: 25rem;
+}
+
+#chart-standard {
+  margin-bottom: 2rem;
+}
+#chart-standard .window-rv {
+  container-type: inline-size;
+}
+@container (width < 30rem) {
+  #chart-standard .window-rv .axis-left .tick:nth-of-type(2n) {
+    display: none;
+  }
+}
+
+body {
+  background-color: floralwhite;
+}
