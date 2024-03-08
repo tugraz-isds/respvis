@@ -7,59 +7,66 @@ body {
   height: 75vh;
   min-height: 25rem;
 
-  .legend {
-    align-items: flex-start;
-    .title {
-      margin: 0;
-    }
-  }
-}
+  .window-rv {
+    container-type: inline-size;
 
-@media (min-width: 60rem) {
-  .tick {
-    display: block;
-  }
-}
+    .legend {
+      align-items: flex-start;
 
-//Legend To Bottom
-@media (width < 40rem) {
-  .chart {
-    grid-template: auto 1fr auto auto / auto 1fr auto;
-    grid-template-areas:
-        'header  header  header'
-        'axis-left draw-area draw-area'
-        ' . axis-bottom . '
-        ' . legend .';
-  }
-
-  .legend {
-    width: 100%;
-    margin-bottom: 2rem;
-    margin-left: 0.5rem;
-    flex-direction: row;
-    justify-content: center;
-    .items {
-      display: grid;
-      width: 100%;
-      justify-content: space-between;
-      grid-template-columns: auto auto auto;
-      .legend-item {
-        justify-content: flex-start;
+      .title {
+        margin: 0;
       }
     }
-  }
 
-  .axis-x .tick {
-    display: none;
-    &:nth-of-type(2n), &:first-of-type, &:last-of-type {
-      display: block;
+    @container (min-width: 60rem) {
+      .tick {
+        display: block;
+      }
     }
-  }
 
-  .axis-y .tick {
-    display: none;
-    &:nth-of-type(2n + 1), &:first-of-type, &:last-of-type {
-      display: block;
+    @container (width < 40rem) {
+      .chart {
+        grid-template: auto 1fr auto / 1fr;
+        grid-template-areas:
+      'header'
+      'padding-wrapper'
+      'legend';
+      }
+
+      .legend {
+        width: 100%;
+        margin-bottom: 2rem;
+        margin-left: 0.5rem;
+        flex-direction: row;
+        justify-content: center;
+
+        .items {
+          display: grid;
+          width: 100%;
+          justify-content: space-between;
+          grid-template-columns: auto auto auto;
+
+          .legend-item {
+            justify-content: flex-start;
+          }
+        }
+      }
+
+      .axis-x .tick {
+        display: none;
+
+        &:nth-of-type(2n), &:first-of-type, &:last-of-type {
+          display: block;
+        }
+      }
+
+      .axis-y .tick {
+        display: none;
+
+        &:nth-of-type(2n + 1), &:first-of-type, &:last-of-type {
+          display: block;
+        }
+      }
     }
   }
 }

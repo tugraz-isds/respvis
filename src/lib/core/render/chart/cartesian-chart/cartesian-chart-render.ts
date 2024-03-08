@@ -20,13 +20,17 @@ export function cartesianChartAxisRender<T extends CartesianChartSelection>(char
     .attr('data-flipped', flipped)
 
   //TODO: clean this stacked bar chart mess up
+  const aggregationScale = data.series instanceof BarSeries ? data.series.aggregationScale : undefined
   const aggScaledValues = new ScaledValuesAggregation(
-    leftAxisD.scaledValues, bottomAxisD.scaledValues, data.series.categories).aggregateIfPossible()
+    leftAxisD.scaledValues, bottomAxisD.scaledValues, data.series.categories, aggregationScale).aggregateIfPossible()
 
   const bottomAxisDAgg = (aggScaledValues && bottomAxisD.scaledValues instanceof ScaledValuesLinear &&
     data.series instanceof BarSeries && data.series.type === 'stacked') ?
     {...bottomAxisD, scaledValues: aggScaledValues} : bottomAxisD
   bottomAxisDAgg.scaledValues.scale.range(bottomAxisD.scaledValues.scale.range())
+  // if (data.series instanceof BarSeries && data.series.type === 'stacked') {
+  //   bottomAxisDAgg.scaledValues.scale =
+  // }
 
   const leftAxisDAgg = (aggScaledValues && leftAxisD.scaledValues instanceof ScaledValuesLinear &&
     data.series instanceof BarSeries && data.series.type === 'stacked') ?

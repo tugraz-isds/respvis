@@ -14,9 +14,6 @@ export function renderStackedBarChart(selector: string) {
   const yearsWhole = [...years, ...years, ...years]
   const sharesWhole = [...desktop, ...phone, ...tablet]
   const platformsWhole = [...desktopCategory, ...phoneCategory, ...tabletCategory]
-  yearsWhole.forEach((_, i) => {
-    console.log(desktop[i] + phone[i] + tablet[i])
-  })
 
   const tickOrientationHorizontal = {
     scope: 'self',
@@ -39,6 +36,7 @@ export function renderStackedBarChart(selector: string) {
   const barChartArgs: BarChartUserArgs = {
     series: {
       type: 'stacked',
+      aggregationScale: d3.scaleLinear().domain([0, 100]).nice(),
       x: { values: yearsWhole },
       y: { values: sharesWhole },
       categories: {

@@ -22,6 +22,9 @@ footer {
       'padding-wrapper'
       'legend';
   }
+  .padding-wrapper {
+    padding-right: 1rem;
+  }
 
   .legend .items {
     flex-direction: row;

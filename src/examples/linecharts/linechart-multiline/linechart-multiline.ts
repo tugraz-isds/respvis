@@ -22,7 +22,6 @@ export const renderMultiLineChart = (selector: string) => {
       },
       markerTooltips: {
         tooltips: (_, point) => {
-          console.log(point)
           return `Year: ${point.xValue}<br/>Pow. Consumption: ${point.yValue}kWh`
         }
       },

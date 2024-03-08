@@ -10,14 +10,13 @@ import {ScaledValuesAggregation} from "../../../core/data/scale/scaled-values-ag
 import {Bar} from "../bar";
 
 export function seriesBarCreateBars(seriesData: BarSeries): Bar[] {
-  const {renderer, keysActive, key: seriesKey, categories} = seriesData
+  const {renderer, keysActive, key: seriesKey, categories, aggregationScale} = seriesData
   const data: Bar[] = []
 
   const flipped = getCurrentRespVal(seriesData.flipped, {chart: elementFromSelection(renderer.chartSelection)})
   const [x, y] = [seriesData.x.cloneFiltered(), seriesData.y.cloneFiltered()]
   const geometryHandler = new RectScaleHandler({originalYValues: y, originalXValues: x, flipped})
-
-  const aggScaledValues = new ScaledValuesAggregation(x, y, categories).aggregateIfPossible()
+  const aggScaledValues = new ScaledValuesAggregation(x, y, categories, aggregationScale).aggregateIfPossible()
 
   if (!keysActive[seriesKey]) return data
   for (let i = 0; i < seriesData.y.values.length; ++i) {

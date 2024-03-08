@@ -1,6 +1,6 @@
 import {AxisDomainRV} from "./axis-scaled-values-validation";
 import {sum} from "../../utilities/array";
-import {scaleLinear} from "d3";
+import {ScaleLinear, scaleLinear} from "d3";
 import {ScaledValuesBase} from "./scaled-values-base";
 import {ScaledValuesLinear} from "./scaled-values-linear";
 import {ScaledValuesCategorical} from "./scaled-values-categorical";
@@ -10,12 +10,15 @@ export class ScaledValuesAggregation {
   linearValues?: ScaledValuesLinear
   categoricalValues?: ScaledValuesCategorical
   additionalCategories?: ScaledValuesCategorical
+  aggregatedScale?: ScaleLinear<number, number, never>
   constructor(val1: ScaledValuesBase<AxisDomainRV>,
               val2: ScaledValuesBase<AxisDomainRV>,
-              additionalCategories?: ScaledValuesCategorical) {
+              additionalCategories?: ScaledValuesCategorical,
+              aggregatedScale?: ScaleLinear<number, number, never>) {
     this.setValues(val1)
     this.setValues(val2)
     this.additionalCategories = additionalCategories
+    this.aggregatedScale = aggregatedScale
   }
   private setValues(values: ScaledValuesBase<AxisDomainRV>) {
     if (values instanceof ScaledValuesLinear) this.linearValues = values
@@ -49,7 +52,7 @@ export class ScaledValuesAggregation {
 
     return new ScaledValuesLinear({
       values: cumulativeValues,
-      scale: scaleLinear().domain(aggregatedDomain).nice(),
+      scale: this.aggregatedScale ? this.aggregatedScale : scaleLinear().domain(aggregatedDomain).nice(),
       parentKey: linearValues.parentKey
     })
   }
