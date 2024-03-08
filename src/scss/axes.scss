@@ -1,27 +1,35 @@
 .chart-cartesian  {
   .axis {
     display: grid;
-  }
-
-  .axis-left {
-    display: grid;
-    grid-area: axis-left;
-    grid-template-areas: 'title-wrapper ticks';
     .title-wrapper {
       display: grid;
       grid-area: title-wrapper;
-      grid-template-areas: 'title subtitle';
     }
     .ticks-transform {
+      grid-area: ticks;
+    }
+  }
+
+  .axis-left {
+    grid-area: axis-left;
+    grid-template-areas: 'title-wrapper ticks';
+    .title-wrapper {
+      display: flex;
+      align-items: flex-end;
+      --fit-width: true;
+      margin-left: 0.2em;
+      text {
+        dominant-baseline: hanging;
+      }
+    }
+    .ticks-transform {
+      display: flex;
+      justify-content: flex-end;
       margin-left: 0.5em;
-    }
-    .tick text {
-      text-anchor: end;
-    }
-    .ticks {
-      width: 100%;
-      height: 100%;
-      margin-left: 100%;
+      .ticks {
+        --fit-width: true;
+        margin-left: 100%;
+      }
     }
   }
   .axis-right {
@@ -48,13 +56,17 @@
     grid-area: axis-bottom;
     grid-template-areas:
     'ticks'
-    'title'
-    'subtitle';
+    'title-wrapper';
     .ticks-transform {
-      margin-bottom: 1em;
+      margin-bottom: 0.5em;
     }
     .tick text {
       text-anchor: middle;
+    }
+    .title-wrapper {
+      text {
+        dominant-baseline: hanging;
+      }
     }
   }
   .axis-top {
@@ -77,10 +89,6 @@
         text-anchor: middle;
       }
     }
-  }
-
-  .ticks-transform {
-    grid-area: ticks;
   }
 }
 

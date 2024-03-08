@@ -1,25 +1,33 @@
 .chart-cartesian .axis {
   display: grid;
 }
-.chart-cartesian .axis-left {
+.chart-cartesian .axis .title-wrapper {
   display: grid;
+  grid-area: title-wrapper;
+}
+.chart-cartesian .axis .ticks-transform {
+  grid-area: ticks;
+}
+.chart-cartesian .axis-left {
   grid-area: axis-left;
   grid-template-areas: "title-wrapper ticks";
 }
 .chart-cartesian .axis-left .title-wrapper {
-  display: grid;
-  grid-area: title-wrapper;
-  grid-template-areas: "title subtitle";
+  display: flex;
+  align-items: flex-end;
+  --fit-width: true;
+  margin-left: 0.2em;
+}
+.chart-cartesian .axis-left .title-wrapper text {
+  dominant-baseline: hanging;
 }
 .chart-cartesian .axis-left .ticks-transform {
+  display: flex;
+  justify-content: flex-end;
   margin-left: 0.5em;
 }
-.chart-cartesian .axis-left .tick text {
-  text-anchor: end;
-}
-.chart-cartesian .axis-left .ticks {
-  width: 100%;
-  height: 100%;
+.chart-cartesian .axis-left .ticks-transform .ticks {
+  --fit-width: true;
   margin-left: 100%;
 }
 .chart-cartesian .axis-right {
@@ -43,13 +51,16 @@
 }
 .chart-cartesian .axis-bottom {
   grid-area: axis-bottom;
-  grid-template-areas: "ticks" "title" "subtitle";
+  grid-template-areas: "ticks" "title-wrapper";
 }
 .chart-cartesian .axis-bottom .ticks-transform {
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
 }
 .chart-cartesian .axis-bottom .tick text {
   text-anchor: middle;
+}
+.chart-cartesian .axis-bottom .title-wrapper text {
+  dominant-baseline: hanging;
 }
 .chart-cartesian .axis-top {
   grid-template-areas: "title" "subtitle" "ticks";
@@ -68,9 +79,6 @@
 }
 .chart-cartesian .axis-bottom .title text, .chart-cartesian .axis-bottom .subtitle text, .chart-cartesian .axis-top .title text, .chart-cartesian .axis-top .subtitle text {
   text-anchor: middle;
-}
-.chart-cartesian .ticks-transform {
-  grid-area: ticks;
 }
 
 .axis .title text {
@@ -146,21 +154,26 @@
 .chart.chart-parcoord .padding-wrapper .draw-area {
   overflow: visible;
 }
-.chart.chart-parcoord .axis.axis-sequence .title-wrapper {
-  position: absolute;
-  translate: 0 -10px;
+.chart.chart-parcoord .axis.axis-sequence {
+  position: relative;
 }
-.chart.chart-parcoord .axis.axis-sequence .title-wrapper .subtitle {
+.chart.chart-parcoord .axis.axis-sequence div.title-wrapper {
+  position: absolute;
+  bottom: 100%;
+}
+.chart.chart-parcoord .axis.axis-sequence div.title-wrapper .subtitle {
   translate: 0 -3px;
 }
+.chart.chart-parcoord .axis.axis-sequence .title-wrapper {
+  --fit-height: true;
+}
 .chart.chart-parcoord .axis.axis-sequence .title-wrapper .title, .chart.chart-parcoord .axis.axis-sequence .title-wrapper .subtitle {
-  display: block;
   --fit-height: true;
   --fit-width: true;
 }
 .chart.chart-parcoord .axis.axis-sequence .title-wrapper .title text, .chart.chart-parcoord .axis.axis-sequence .title-wrapper .subtitle text {
   text-anchor: middle;
-  dominant-baseline: auto;
+  dominant-baseline: hanging;
 }
 .chart.chart-parcoord .axis.axis-sequence .ticks-transform {
   grid-area: ticks-transform;
