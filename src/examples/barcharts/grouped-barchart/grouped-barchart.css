@@ -26,7 +26,9 @@ body [data-style=categorical-2] {
     display: none;
   }
   .legend .items {
+    width: 100%;
     flex-direction: row;
+    justify-content: space-evenly;
   }
   .axis-y .tick:nth-of-type(2n) {
     display: none;

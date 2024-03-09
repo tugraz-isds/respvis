@@ -81,7 +81,7 @@
       sed dolor sit amet, lacinia varius augue. Aenean sollicitudin
       eleifend enim, sagittis viverra eros fringilla eget.
     </p>
-    <div id="electric-power-consumption" class="chart-container"> </div>
+    <div id="electric-power-consumption-chart" class="chart-container"> </div>
   </div>
 
   <div class="article" id="article-4">
@@ -103,7 +103,7 @@
   <div class="article" id="article-5">
     <h2>Posuere ac ut consequat semper. Feugiat in ante metus dictum
       at tempor commodo ullamcorper a.</h2>
-    <div id="sold-cars-germany" class="chart-container"> </div>
+    <div id="sold-cars-germany-chart" class="chart-container"> </div>
     <p>
       A iaculis at erat pellentesque adipiscing. Iaculis urna id
       volutpat lacus laoreet non curabitur gravida arcu. Neque aliquam
@@ -157,8 +157,14 @@
   <a href="https://gs.statcounter.com/platform-market-share/desktop-mobile-tablet/worldwide/" target="_blank">https://gs.statcounter.com</a>
 </footer>
 
-<script type="module" src="./charts/market-shares/market-shares-chart.js"> </script>
-<script type="module" src="./charts/electric-power-consumption/electric-power-consumption.js"> </script>
-<script type="module" src="./charts/sold-cars-germany/sold-cars-germany-chart.js"> </script>
+<script type="module">
+  import {createMarketSharesChart} from "./charts/market-shares/market-shares-chart.ts"
+  import {createSoldCarsGermanyChart} from "./charts/sold-cars-germany/sold-cars-germany-chart.ts"
+  import {createPowerConsumptionChart} from "./charts/electric-power-consumption/electric-power-consumption.ts"
+
+  createMarketSharesChart('#market-shares-chart')
+  createSoldCarsGermanyChart('#sold-cars-germany-chart')
+  createPowerConsumptionChart('#electric-power-consumption-chart')
+</script>
 </body>
 </html>

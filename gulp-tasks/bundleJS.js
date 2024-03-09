@@ -6,7 +6,7 @@ const {terser: rollupTerser} = require("rollup-plugin-terser");
 const {default: rollupGzip} = require("rollup-plugin-gzip");
 const fs = require("fs");
 const {rootDir, srcDir} = require('./paths')
-const {stripCode} = require('./codeStripPlugin');
+const {stripCode} = require('./rollup-plugin/codeStripPlugin');
 
 async function bundleJSDevelopment() {
   await bundleJS("development")

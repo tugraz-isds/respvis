@@ -32,7 +32,7 @@ export const renderMultiLineChart = (selector: string) => {
     },
     bounds: {
       width: {
-        values: [20, 30, 50],
+        values: [25, 30, 50],
         unit: 'rem'
       }
     },

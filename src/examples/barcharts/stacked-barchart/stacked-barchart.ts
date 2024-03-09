@@ -45,9 +45,9 @@ export function renderStackedBarChart(selector: string) {
       },
       markerTooltips: {
         tooltips: ((e, d) => {
-          return `Site: ${d.xValue}<br/>
-                Total Remuneration: $${d3.format(',')(d.yValue)}<br/>
-                Year: ${d.label}<br/>`
+          return `Device Type: ${d.label}<br/>
+                Market Share: ${d3.format(',')(d.yValue)}%<br/>
+                Year: ${d.xValue}<br/>`
         })
       },
       flipped: {
