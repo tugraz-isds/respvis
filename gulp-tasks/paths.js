@@ -14,19 +14,20 @@ const exampleDirList = [
   `${exampleDir}/article`,
 
   `${exampleDir}/barcharts/barchart`,
-  `${exampleDir}/barcharts/aggregated-barchart`,
   `${exampleDir}/barcharts/grouped-barchart`,
   `${exampleDir}/barcharts/stacked-barchart`,
 
-  `${exampleDir}/experimental/parcoord`,
-  `${exampleDir}/experimental/scatterplot-colourscale`,
-  `${exampleDir}/experimental/scatterplot-reusable`,
-  `${exampleDir}/experimental/scatterplot-labels`,
+  `${exampleDir}/parcoords/parcoord`,
 
   `${exampleDir}/linecharts/linechart`,
   `${exampleDir}/linecharts/linechart-multiline`,
 
   `${exampleDir}/scatterplots/scatterplot`,
+  `${exampleDir}/scatterplots/scatterplot-style-container-queries`,
+  `${exampleDir}/scatterplots/scatterplot-labels`,
+
+  `${exampleDir}/experimental/aggregated-barchart`,
+  `${exampleDir}/experimental/scatterplot-colourscale`,
 ]
 
 module.exports = {

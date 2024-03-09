@@ -1,13 +1,14 @@
-const through = require('through2');
 const { Transform } = require('stream');
 
 function stripHtml(options = {}) {
   const startComment = options.startComment || '<!-- START_REMOVE_CODE -->';
   const endComment = options.endComment || '<!-- END_REMOVE_CODE -->';
-
+  console.log(startComment)
+  console.log(endComment)
   return new Transform({
     objectMode: true,
     transform(file, encoding, callback) {
+      console.log(file.dirname)
       if (file.isNull()) {
         // Pass along empty files
         return callback(null, file);

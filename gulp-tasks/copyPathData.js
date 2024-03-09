@@ -34,10 +34,10 @@ const dataSoldCarsGermanyPaths = {
   src: `${dataDepsDir}/sold-cars-germany/**/*`,
   target: [
     `${exampleDir}/scatterplots/scatterplot/data`,
-    `${exampleDir}/experimental/parcoord/data`,
+    `${exampleDir}/parcoords/parcoord/data`,
     `${exampleDir}/experimental/scatterplot-colourscale/data`,
-    `${exampleDir}/experimental/scatterplot-reusable/sold-cars-germany/data`,
-    `${exampleDir}/experimental/scatterplot-labels/sold-cars-germany/data`,
+    `${exampleDir}/scatterplots/scatterplot-style-container-queries/sold-cars-germany/data`,
+    `${exampleDir}/scatterplots/scatterplot-labels/sold-cars-germany/data`,
     `${exampleDir}/article/charts/sold-cars-germany/data`
   ]
 }
@@ -52,7 +52,7 @@ const dataStudentsTuGrazPaths = {
 const dataTemperatureAnomaliesPaths = {
   src: `${dataDepsDir}/global-temperature-anomalies/**/*`,
   target: [
-    `${exampleDir}/barcharts/aggregated-barchart/data`
+    `${exampleDir}/experimental/aggregated-barchart/data`
   ]
 }
 

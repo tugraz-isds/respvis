@@ -2,7 +2,6 @@ import * as d3 from '../libs/d3-7.6.0/d3.js'
 import {format} from '../libs/d3-7.6.0/d3.js'
 import {formatWithDecimalZero, ScatterPlot, ScatterPlotUserArgs} from '../libs/respvis/respvis.js'
 import {getTopMakesData} from './data/sold-cars-germany.js';
-import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
 export function createChartSoldCarsGermany(selector: string) {
   const {mileages, horsePower, prices, makes} = getTopMakesData(5)
@@ -114,8 +113,5 @@ export function createChartSoldCarsGermany(selector: string) {
 
   const chartWindow = d3.select(selector).append('div')
   const renderer = new ScatterPlot(chartWindow, data)
-  renderer.addCustomListener('resize.custom', (event, data) => {
-    chooseResponsiveData(event.target, data)
-  })
   renderer.buildChart()
 }

@@ -2,7 +2,6 @@ import * as d3 from '../libs/d3-7.6.0/d3.js'
 import {format} from '../libs/d3-7.6.0/d3.js'
 import {formatWithDecimalZero, ScatterPlot, ScatterPlotUserArgs} from '../libs/respvis/respvis.js'
 import {getTopMakesData} from './data/sold-cars-germany.js';
-import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
 export function createChartSoldCarsGermany(selector) {
   const {mileages: mileagesAll, horsePower: horsePowerAll, prices: pricesAll, makes: makesAll} = getTopMakesData(5)
@@ -20,11 +19,6 @@ export function createChartSoldCarsGermany(selector) {
   const radiusScale = d3.scaleLinear()
     .domain([0, Math.max(...prices)])
     .range([15, 15])
-
-  // const scales = {
-  //   radiusScale
-  // }
-
 
   const data: ScatterPlotUserArgs = {
     series: {
@@ -111,88 +105,8 @@ export function createChartSoldCarsGermany(selector) {
     }
   };
 
-  //'#sold-cars-germany'
   const chartWindow = d3.select(selector).append('div')
   const renderer = new ScatterPlot(chartWindow, data)
-  renderer.addCustomListener('resize.custom', (event, data) => {
-    chooseResponsiveData(event.target, data)
-  })
   renderer.buildChart()
-  // const chartWindowData = validateChartWindow(data)
-  // renderChartWindow(chartWindow, chartWindowData)
 }
-
-// bounds: {
-//   width: {
-//     values: [20, 30, 50],
-//       unit: 'rem'
-//   }
-// },
-// title: {
-//   dependentOn: 'width',
-//     mapping: {0: 'Car Chars.', 1 : 'Car Characteristics', 3: 'Car Characteristics from AutoScout24 in Germany'}
-// },
-// x: {
-//   values: horsePower,
-//     scale: scales.xScale,
-//     title: {
-//     dependentOn: 'width',
-//       mapping: {0: 'HP in [PS]', 1: 'Horse P. [PS]', 2: 'Horse Power in [PS]'}
-//   },
-//   bounds: {
-//     width: {
-//       values: [10, 30, 50],
-//         unit: 'rem'
-//     }
-//   },
-//   configureAxis: (axis) => axis.tickFormat(format('.3d'))
-// },
-// y: {
-//   values: prices,
-//     categories: makes,
-//     scale: scales.yScale,
-//     title: 'Car Price [EU]',
-//     configureAxis: {
-//     dependentOn: 'width',
-//       scope: 'chart',
-//       mapping: {0: (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s'))),
-//       2: (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))
-//     }
-//   }
-// },
-// legend: {
-//   title: {
-//     dependentOn: 'width',
-//       scope: 'chart',
-//       mapping: {0: '', 3: 'Legend'}
-//   },
-//   // labelCallback: (label: string) => {
-//   //   console.log(label)
-//   //   return label + '1'
-//   // }
-// },
-// radii: {
-//   values: mileages,
-//     scale: {
-//     dependentOn: 'width',
-//       value: scales.radiusScale,
-//       mapping: {
-//       0: s => s.range([3, 12]),
-//         2: s => s.range([4, 16]),
-//         3: s => s.range([5, 20])
-//     }
-//   },
-// },
-// markerTooltips: {
-//   tooltips: ((e, d) => {
-//     return `Car Price: ${d.yValue}€<br/>
-// Horse Power: ${d.xValue}PS<br/>
-// Make: ${d.label}<br/>
-// Mileage: ${d.radiusValue}km<br/>`
-//   })
-// },
-// zoom: {
-// in: 20,
-//     out: 1
-// },
 
