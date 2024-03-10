@@ -4,3 +4,4 @@ export * from './window';
 export * from './toolbar/tool-download-svg';
 export * from './toolbar/tool-filter-nominal';
 export {toolbarRender} from "./toolbar/toolbar-render";
+export {getActiveCSSRulesForElement} from "./toolbar/tool-download-svg/getActiveCSSRules";
