@@ -1,4 +1,4 @@
-export function getUnRestrainedSelectors(root: Element, cssStyleRule: CSSStyleRule) {
+export function getUnRestrainedSelectors(root: Element, cssStyleRule: CSSStyleRule | CSSPageRule) {
   const selectors = cssStyleRule.selectorText.split(',')
   return selectors.map(selector => {
     const selectorParts = selector.trim().split(/\s+/);
