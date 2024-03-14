@@ -14,13 +14,14 @@ export abstract class SeriesChart extends Chart {
   abstract windowSelection: WindowSelection
   chartSelection?: ChartSelection
 
-  protected addBuiltInListeners() {
+  protected override addBuiltInListeners() {
+    super.addBuiltInListeners()
     this.addFilterListener()
   }
 
   private addFilterListener() {
     const renderer = this
-    this.addCustomListener('change', (e) => {
+    this.addCustomListener('change.filter', (e) => {
       if (!e.target) return
       const changeS = select(e.target as SVGHTMLElement)
       if (changeS.attr('type') !== 'checkbox') return

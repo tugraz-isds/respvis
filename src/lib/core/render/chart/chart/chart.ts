@@ -6,6 +6,8 @@ import {Renderer} from "../renderer";
 import {resizeEventListener} from "../../../resize-event-dispatcher";
 import {layouterCompute} from "../../../layouter";
 import {chartRender} from "./chart-render";
+import {Events} from "../../../constants/events";
+import {WindowSettings, windowSettingsKeys} from "../../window/window-settings";
 
 export type ChartWindowedValid = WindowValid & ChartValid
 
@@ -57,7 +59,45 @@ export abstract class Chart implements Renderer {
     this.windowSelection.on('resize.final', rerender)
   }
 
-  protected abstract addBuiltInListeners(): void
+  protected addBuiltInListeners() {
+    this.addSettingsListener()
+  }
+
+  private addSettingsListener() {
+    this.addCustomListener(Events.changeSettings + '.chart', (e) => {
+      console.log(e)
+      if (!('detail' in e) || !e.target || !(e.target instanceof HTMLInputElement)) return
+      const type = e.detail.type as keyof WindowSettings
+      const setting = windowSettingsKeys[type]
+      if (!setting) return
+      console.log('Before', this.windowSelection.datum().windowSettings)
+      this.windowSelection.datum().windowSettings[setting] = e.target.value
+      console.log('After', this.windowSelection.datum().windowSettings)
+
+      // if (changeS.attr('type') === 'checkbox') {
+      //   //DO CHECKBOX STUFF
+      // }
+      // if (changeS.attr('type') === 'radio') {
+      //   //DO RADIO STUFF
+      // }
+      // renderer.windowSelection.dispatch('resize')
+    })
+
+    // this.addCustomListener(Events.changeSettings, (e) => {
+    //   if (!e.target) return
+    //   console.log(e)
+    //   const changeS = select(e.target as SVGHTMLElement)
+    //
+    //   if (changeS.attr('type') === 'checkbox') {
+    //     //DO CHECKBOX STUFF
+    //   }
+    //   if (changeS.attr('type') === 'radio') {
+    //     //DO RADIO STUFF
+    //   }
+    //
+    //   // renderer.windowSelection.dispatch('resize')
+    // })
+  }
 
   private initializeRender() {
     clearTimeout(this.renderInitialized)

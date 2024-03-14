@@ -5,10 +5,12 @@ export function roundSVGAttributes(selection: Selection<SVGElement>, decimals = 
     const elementS = select(g[i])
       elementS.each(function () {
       for (let i = 0; i < this.attributes.length; i++) {
+        const regex = /(\d+\.\d+)|(\.\d+)/g
         const attribute = this.attributes[i]
-        const val = Number.parseFloat(attribute.value)
-        if (isNaN(val)) continue
-        elementS.attr(attribute.name, val.toFixed(decimals))
+        const modifiedValue = this.attributes[i].value.replace(regex, match => {
+          return parseFloat(match).toFixed(decimals)
+        })
+        elementS.attr(attribute.name, modifiedValue)
       }
     })
   })

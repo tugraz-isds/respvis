@@ -10,8 +10,9 @@ import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorica
 import {mergeKeys} from "../../utilities/dom/key";
 import {Series} from "../series";
 import {SeriesChartValid} from "../chart/series-chart/series-chart-validation";
+import {downloadToolRender} from "./download-tool/download-tool-render";
 
-type ToolbarValid = SeriesChartValid
+type ToolbarValid = Pick<SeriesChartValid, 'renderer' | 'legend' | 'getSeries' | 'getAxes'>
 
 export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
   const series = args.getSeries()
@@ -21,20 +22,24 @@ export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
     .data([null])
     .join('div')
     .classed('toolbar', true)
+
   menuToolsRender(toolbarS)
   const menuToolsItems = toolbarS.selectAll('.menu-tools > .items')
   toolDownloadSVGRender(menuToolsItems)
   series.forEach(series => filterCategoriesRender(menuToolsItems, series))
   axes.forEach(axis => filterAxisRender(menuToolsItems, axis))
+
+
+  downloadToolRender(toolbarS, args.renderer)
 }
 
 function menuToolsRender(selection: Selection<HTMLDivElement>) {
   const menuTools = selection
-    .selectAll<HTMLDivElement, any>('.menu-tools')
+    .selectAll<HTMLDivElement, any>('.tool.menu-tools')
     .data([null])
     .join('div')
   menuDropdownRender(menuTools)
-    .classed('menu-tools', true)
+    .classed('tool menu-tools', true)
     .selectChildren('.chevron').remove()
   menuTools.selectChildren('.text').text('☰')
   return menuTools

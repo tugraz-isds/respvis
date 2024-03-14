@@ -1,16 +1,78 @@
-.window-rv .toolbar {
-  grid-area: toolbar;
-  display: none;
-  flex-direction: row;
-  justify-content: flex-end;
+.window-rv { //TODO: Replace window-rv wrapper with @scope once it is supported
+  &:hover .toolbar, &:active .toolbar {
+    display: flex;
+  }
+  .toolbar {
+    grid-area: toolbar;
+    //display: none;
+    display: flex; //TODO: change this on check in!!!
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgb(239, 239, 239);
+    padding: 0.5em;
+    & > .tool + .tool {
+      margin-left: 1rem;
+    }
+    .tool {
+      height: 100%;
+    }
+
+    dialog {
+      left: 0;
+      width: 100%;
+      margin: 0;
+      margin-top: 1rem;
+      opacity: 0;
+      background-color: white;
+      padding: 0.5em;
+      box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 1px 3px 1px;
+      translate: 0 -1rem;
+      transition: opacity 300ms ease-in-out, translate 300ms ease-in-out;
+      &[transition='enter'] {
+        opacity: 1;
+        translate: 0 0;
+      }
+      > .item + .item { margin-top: 0.5em }
+    }
+
+    .dialog-opener {
+      display: flex;
+      align-items: center;
+      height: 2rem;
+      padding: 0.25rem;
+      background-color: rgb(239, 239, 239);
+      transition: filter 100ms ease-in-out;
+      svg {
+        height: 100%;
+        width: auto;
+      }
+      &:hover { filter: brightness(80%); }
+    }
+
+    .item {
+      label {
+        display: flex;
+        align-items: center;
+      }
+      input {
+        margin-right: 0.5em;
+      }
+    }
+  }
+  .toolbar-download-tool {
+
+  }
 }
 
-.window-rv:hover .toolbar, .window-rv:active .toolbar {
-  display: flex;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
+
+
+
+
+
 
 .menu {
   position: relative;
@@ -36,7 +98,6 @@
   display: none;
 }
 
-.menu,
 .menu > .items > li {
   white-space: nowrap;
   padding: 0.5em;

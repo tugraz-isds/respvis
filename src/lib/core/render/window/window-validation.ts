@@ -2,6 +2,7 @@ import {LayoutBreakpoints} from "../../data/breakpoint/breakpoint";
 import {RenderArgs} from "../chart/renderer";
 import {ChartType} from "../../constants/types";
 import {breakPointsValidation} from "../../data/breakpoint/breakpoint-validation";
+import {defaultWindowSettings, WindowSettings} from "./window-settings";
 
 export type WindowArgs = RenderArgs & {
   type: ChartType,
@@ -10,6 +11,7 @@ export type WindowArgs = RenderArgs & {
 
 export type WindowValid = Required<Omit<WindowArgs, 'bounds'>> & {
   bounds: LayoutBreakpoints,
+  windowSettings: WindowSettings
 }
 
 export function windowValidation(args: WindowArgs): WindowValid {
@@ -18,5 +20,6 @@ export function windowValidation(args: WindowArgs): WindowValid {
       width: breakPointsValidation(args.bounds?.width),
       height: breakPointsValidation(args.bounds?.height)
     },
+    windowSettings: { ...defaultWindowSettings }
   }
 }

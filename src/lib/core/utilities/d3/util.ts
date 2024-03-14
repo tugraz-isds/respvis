@@ -18,3 +18,12 @@ export function throttle<T extends (...args: any[]) => K, K>(func: T, delayMs: n
     }
   } as T
 }
+
+export function addRawSVGToSelection(selection: Selection, rawSVG: string) {
+  const parser = new DOMParser()
+  const svgDocument = parser.parseFromString(rawSVG, 'image/svg+xml')
+  const svgElement = svgDocument.documentElement.cloneNode(true) as SVGSVGElement
+  const downLoadSVGS = selection.selectAll('svg')
+    .data([null])
+    .join(enter => enter.append(() => svgElement))
+}

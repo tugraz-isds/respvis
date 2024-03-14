@@ -1,3 +1,28 @@
+.window-rv {
+  box-sizing: border-box;
+}
+.window-rv button, .window-rv input, .window-rv output, .window-rv textarea, .window-rv dialog {
+  background-color: transparent;
+  outline: none;
+  border-width: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  padding: 0;
+}
+.window-rv button, .window-rv input, .window-rv output, .window-rv textarea {
+  cursor: pointer;
+}
+.window-rv img, .window-rv svg {
+  max-width: 100%;
+  max-height: 100%;
+}
+.window-rv * {
+  box-sizing: inherit;
+}
+
 .chart-cartesian .axis {
   display: grid;
 }
@@ -218,20 +243,68 @@
   grid-area: chart;
 }
 
-.window-rv .toolbar {
-  grid-area: toolbar;
-  display: none;
-  flex-direction: row;
-  justify-content: flex-end;
-}
-
 .window-rv:hover .toolbar, .window-rv:active .toolbar {
   display: flex;
-  position: absolute;
-  right: 0;
-  top: 0;
 }
-
+.window-rv .toolbar {
+  grid-area: toolbar;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: rgb(239, 239, 239);
+  padding: 0.5em;
+}
+.window-rv .toolbar > .tool + .tool {
+  margin-left: 1rem;
+}
+.window-rv .toolbar .tool {
+  height: 100%;
+}
+.window-rv .toolbar dialog {
+  left: 0;
+  width: 100%;
+  margin: 0;
+  margin-top: 1rem;
+  opacity: 0;
+  background-color: white;
+  padding: 0.5em;
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 1px 3px 1px;
+  translate: 0 -1rem;
+  transition: opacity 300ms ease-in-out, translate 300ms ease-in-out;
+}
+.window-rv .toolbar dialog[transition=enter] {
+  opacity: 1;
+  translate: 0 0;
+}
+.window-rv .toolbar dialog > .item + .item {
+  margin-top: 0.5em;
+}
+.window-rv .toolbar .dialog-opener {
+  display: flex;
+  align-items: center;
+  height: 2rem;
+  padding: 0.25rem;
+  background-color: rgb(239, 239, 239);
+  transition: filter 100ms ease-in-out;
+}
+.window-rv .toolbar .dialog-opener svg {
+  height: 100%;
+  width: auto;
+}
+.window-rv .toolbar .dialog-opener:hover {
+  filter: brightness(80%);
+}
+.window-rv .toolbar .item label {
+  display: flex;
+  align-items: center;
+}
+.window-rv .toolbar .item input {
+  margin-right: 0.5em;
+}
 .menu {
   position: relative;
   display: flex;
@@ -256,7 +329,6 @@
   display: none;
 }
 
-.menu,
 .menu > .items > li {
   white-space: nowrap;
   padding: 0.5em;

@@ -1,6 +1,8 @@
 import {BaseType, select, Selection, ValueFn} from 'd3';
 import {elementComputedStyleWithoutDefaults, elementSVGPresentationAttrs,} from '../../utilities/element';
-import {roundSVGAttributes} from "./tool-download-svg/optimize-svg";
+import {roundSVGAttributes} from "./download-tool/optimize-svg";
+import {getActiveCSSRulesForElement} from "./download-tool/getActiveCSSRules";
+import {elementFromSelection} from "../../utilities/d3/util";
 
 // TODO: maybe SVGO could be used to optimize the downloaded SVG? https://github.com/svg/svgo
 
@@ -34,15 +36,15 @@ export function chartDownload<Datum>(
 
     //TODO: Create options for what should finally be included in downloaded svg
 
-    // const activeCSSRules = getActiveCSSRulesForElement(elementFromSelection(chartSelection))
-    // const styleTag = document.createElement("style")
-    // activeCSSRules.forEach((rule) => {
-    //   styleTag.appendChild(document.createTextNode(rule))
-    // })
-    // clonedChart.appendChild(styleTag);
-    // copyInlineStyles(clonedChart, g[i])
+    const activeCSSRules = getActiveCSSRulesForElement(elementFromSelection(chartSelection))
+    const styleTag = document.createElement("style")
+    activeCSSRules.forEach((rule) => {
+      styleTag.appendChild(document.createTextNode(rule))
+    })
+    clonedChart.appendChild(styleTag);
+    copyInlineStyles(clonedChart, g[i])
 
-    attrsFromComputedStyle(clonedChart, g[i]);
+    // attrsFromComputedStyle(clonedChart, g[i]);
 
     roundSVGAttributes(select(clonedChart), 1)
 
