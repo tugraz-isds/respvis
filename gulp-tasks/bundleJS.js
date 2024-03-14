@@ -7,6 +7,7 @@ const {default: rollupGzip} = require("rollup-plugin-gzip");
 const fs = require("fs");
 const {rootDir} = require('./paths')
 const {stripCode} = require('./rollup-plugin/codeStripPlugin');
+const { string } = require("rollup-plugin-string");
 
 async function bundleJSDevelopment() {
   await bundleJS("development")
@@ -22,6 +23,9 @@ async function bundleJS(mode) {
     plugins: [
       rollupNodeResolve({ browser: true }),
       rollupCommonJs(),
+      string({
+        include: "**/*.svg"
+      }),
       rollupTypescript({
         tsconfig: `${rootDir}/tsconfig.json`,
       }),

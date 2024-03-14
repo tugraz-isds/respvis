@@ -13,6 +13,6 @@
     "declaration": true,
     "declarationDir": "types"
   },
-  "include": ["src/lib/**/*"],
+  "include": ["src/lib/**/*", "module-specs.d.ts"],
   "exclude": ["node_modules", "dist", "**/*.spec.ts"]
 }
