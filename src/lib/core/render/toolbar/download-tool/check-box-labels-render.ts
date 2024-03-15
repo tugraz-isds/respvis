@@ -22,9 +22,10 @@ export function checkBoxLabelsRender(itemsS: Selection<any, CheckboxLabelsData>)
 type LabelData = {
   label: string,
   type: string,
-  defaultVal: boolean,
+  dataKey?: string
+  defaultVal?: boolean,
   class?: string
-  onChange: (e: InputEvent, type: string) => void
+  onChange?: (e: InputEvent, type: string) => void
 }
 function renderLabel(labelS: Selection<any, LabelData>) {
   const data = labelS.datum()
@@ -34,9 +35,10 @@ function renderLabel(labelS: Selection<any, LabelData>) {
     .join('input')
     .attr('type', 'checkbox')
     .on('change', function (e) {
-      data.onChange(e, data.type)
+      data.onChange?.(e, data.type)
     })
   if (data.defaultVal) inputS.attr('checked', data.defaultVal)
+  if (data.dataKey) inputS.attr('data-key', data.dataKey)
 
   labelS.selectAll('span')
     .data([data])

@@ -25,8 +25,9 @@ export abstract class SeriesChart extends Chart {
       if (!e.target) return
       const changeS = select(e.target as SVGHTMLElement)
       if (changeS.attr('type') !== 'checkbox') return
-      const parentS = changeS.select(function() {return this.parentElement})
-      const currentKey = parentS.attr('data-key')
+      // const parentS = changeS.select(function() {return this.parentElement})
+      // const currentKey = parentS.attr('data-key')
+      const currentKey = changeS.attr('data-key')
       if (!currentKey) return
 
       const newActive = changeS.property('checked')

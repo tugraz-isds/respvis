@@ -1,9 +1,12 @@
 import {Selection} from "d3";
+import {classesForSelection} from "../../../utilities/d3/util";
 
-export function dialogRender(parentS: Selection) {
+export function dialogRender(parentS: Selection, ...classes: string[]) {
+  const {names} = classesForSelection(classes)
   return parentS.selectAll<HTMLButtonElement, any>('dialog')
     .data([null])
     .join('dialog')
+    .classed(names, true)
 }
 
 export function dialogOpenerRender(parentS: Selection) {

@@ -21,7 +21,7 @@ type LabelData = {
   type: string,
   name: string,
   defaultVal: string,
-  onChange: (event: InputEvent, type: string) => void
+  onChange?: (event: InputEvent, type: string) => void
 }
 
 function renderLabel(labelS: Selection<any, LabelData>) {
@@ -32,7 +32,7 @@ function renderLabel(labelS: Selection<any, LabelData>) {
     .attr('type', 'radio')
     .attr('value', value)
     .attr('name', name)
-    .on('change', (e) => onChange(e, type))
+    .on('change', (e) => onChange?.(e, type))
   if (defaultVal === value) inputS.attr('checked', true)
   labelS.selectAll('span')
     .data([null])

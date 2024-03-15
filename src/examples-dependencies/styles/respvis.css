@@ -248,7 +248,7 @@
 }
 .window-rv .toolbar {
   grid-area: toolbar;
-  display: flex;
+  display: none;
   align-items: center;
   flex-direction: row;
   width: 100%;
@@ -271,6 +271,8 @@
 .window-rv .toolbar dialog {
   left: 0;
   width: 100%;
+  max-height: 50vh;
+  overflow-y: scroll;
   margin: 0;
   margin-top: 1rem;
   opacity: 0;
@@ -283,6 +285,9 @@
 .window-rv .toolbar dialog[transition=enter] {
   opacity: 1;
   translate: 0 0;
+}
+.window-rv .toolbar dialog.dialog--filter {
+  width: min-content;
 }
 .window-rv .toolbar dialog > .item + .item {
   margin-top: 0.5em;
@@ -302,9 +307,13 @@
 .window-rv .toolbar .dialog-opener:hover {
   filter: brightness(80%);
 }
+.window-rv .toolbar .collapsable-opener {
+  cursor: pointer;
+}
 .window-rv .toolbar .item label {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 .window-rv .toolbar .item > label + label {
   margin-top: 0.5em;
@@ -312,6 +321,18 @@
 .window-rv .toolbar .item input {
   margin-right: 0.5em;
 }
+.window-rv .collapsable-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 500ms;
+}
+.window-rv .collapsable-wrapper.expanded {
+  grid-template-rows: 1fr;
+}
+.window-rv .collapsable-wrapper .collapsable {
+  overflow: hidden;
+}
+
 .menu {
   position: relative;
   display: flex;
@@ -331,7 +352,6 @@
   padding: 0;
   position: absolute;
   top: -1px;
-  right: 100%;
   border: 1px solid rgb(118, 118, 118);
   display: none;
 }
@@ -361,8 +381,8 @@
   font-size: 1.25rem;
 }
 
-.menu-tools > .items {
-  right: 0;
+.menu > .items {
+  left: 0;
   top: 100%;
 }
 
