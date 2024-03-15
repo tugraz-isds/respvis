@@ -25,7 +25,7 @@ export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
 
   menuToolsRender(toolbarS)
   const menuToolsItems = toolbarS.selectAll('.menu-tools > .items')
-  toolDownloadSVGRender(menuToolsItems)
+  toolDownloadSVGRender(menuToolsItems, args.renderer)
   series.forEach(series => filterCategoriesRender(menuToolsItems, series))
   axes.forEach(axis => filterAxisRender(menuToolsItems, axis))
 

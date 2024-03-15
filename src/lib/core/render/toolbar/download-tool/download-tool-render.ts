@@ -1,13 +1,14 @@
 import {Selection} from "d3";
 import downloadSVGRaw from '../../../assets/download.svg'
-import {RadioItemData, radioItemsRender} from "../tool/radio-items-render";
+import {radioLabelsRender} from "../tool/radio-labels-render";
 import {uniqueId} from "../../../utilities/unique";
 import {Renderer} from "../../chart/renderer";
 import {windowSettingsKeys} from "../../window/window-settings";
-import {checkBoxItemsRender} from "./checkbox-items-render";
+import {checkBoxLabelsRender} from "./check-box-labels-render";
 import {addRawSVGToSelection} from "../../../utilities/d3/util";
 import {bindOpenerToDialog, dialogOpenerRender, dialogRender} from "../tool/dialog-render";
 import {toolRender} from "../tool/tool-render";
+import {fieldsetRender} from "../tool/fieldset-render";
 
 export function downloadToolRender(selection: Selection<HTMLDivElement>, renderer: Renderer) {
   const downloadToolS = toolRender(selection, 'tool--download')
@@ -17,48 +18,65 @@ export function downloadToolRender(selection: Selection<HTMLDivElement>, rendere
   const dialogS = dialogRender(downloadToolS)
   bindOpenerToDialog(dialogOpenerS, dialogS)
 
-  radioItemsBindData(dialogS, renderer)
-    .call(radioItemsRender)
+  radioItemRender(dialogS, renderer)
+    .call(radioLabelsRender)
 
-  checkBoxItemsBindData(dialogS)
-    .call(checkBoxItemsRender)
+  checkBoxSeriesItemRender(dialogS, renderer)
+    .call(checkBoxLabelsRender)
 }
 
-function radioItemsBindData(selection: Selection, renderer: Renderer) {
+function radioItemRender(selection: Selection, renderer: Renderer) {
   const currentSettings = renderer.windowSelection.datum().windowSettings
   const onChange = (e: InputEvent, type: string) => {
     currentSettings[type] = (e.target as HTMLInputElement).value
-    console.log(currentSettings)
+    renderer.windowSelection.dispatch('resize')
   }
   const groupName = uniqueId()
-  return selection.selectAll<any, RadioItemData>('.item.item--radio')
-    .data([
-      {
-        legend: 'Style Type:',
-        defaultVal: currentSettings.downloadStyleType,
-        type: windowSettingsKeys.downloadStyleType,
-        name: groupName,
-        onChange,
-        options: [
-          { value: 'inline', label: 'Inline CSS'},
-          { value: 'embedded', label: 'Embedded CSS'},
-        ]
-      }
-    ])
-    .join('fieldset')
-    .classed('item item--radio', true)
+  const data = [{
+      legend: 'Style Type:',
+      defaultVal: currentSettings.downloadStyleType,
+      type: windowSettingsKeys.downloadStyleType,
+      name: groupName,
+      onChange,
+      options: [
+        {value: 'inline', label: 'Inline CSS'},
+        {value: 'embedded', label: 'Embedded CSS'},
+      ]
+  }]
+  return fieldsetRender(selection, data, 'item', 'item--radio')
 }
 
-function checkBoxItemsBindData(selection: Selection) {
-  const items = [
-    'Inline CSS',
-    'Remove Data Key Attributes',
-    'Remove Class Attributes (only for inline CSS)',
-    'Remove Data Style Attributes (only for inline CSS)'
-  ]
+function checkBoxSeriesItemRender(selection: Selection, renderer: Renderer) {
+  const currentSettings = renderer.windowSelection.datum().windowSettings
+  const onChange = (e: InputEvent, type: string) => {
+    currentSettings[type] = (e.target as HTMLInputElement).checked
+    renderer.windowSelection.dispatch('resize')
+  }
 
-  return selection.selectAll('.item.item--checkbox')
-    .data(items)
-    .join('div')
-    .classed('item item--checkbox', true)
+// .classed('item--disabled', currentSettings.downloadStyleType !== 'inline')
+
+  const data = [{
+    legend: 'Removal of Attributes',
+    labelData: [
+      {
+        label: 'Remove Data Key Attributes',
+        type: windowSettingsKeys.downloadRemoveDataKeys,
+        defaultVal: currentSettings.downloadRemoveDataKeys,
+        onChange,
+      }, {
+        label: 'Remove Class Attributes (only for inline CSS)',
+        type: windowSettingsKeys.downloadRemoveClasses,
+        defaultVal: currentSettings.downloadRemoveClasses,
+        onChange,
+        class: currentSettings.downloadStyleType === 'embedded' ? 'disabled' : ''
+      }, {
+        label: 'Remove Data Style Attributes (only for inline CSS)',
+        type: windowSettingsKeys.downloadRemoveDataStyles,
+        defaultVal: currentSettings.downloadRemoveDataStyles,
+        onChange,
+        class: currentSettings.downloadStyleType === 'embedded' ? 'disabled' : ''
+      }
+    ]
+  }]
+  return fieldsetRender(selection, data, 'item', 'item--checkbox-series')
 }

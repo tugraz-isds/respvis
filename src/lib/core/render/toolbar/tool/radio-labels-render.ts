@@ -1,17 +1,11 @@
 import {select, Selection} from "d3";
 
-export type RadioItemData = Omit<LabelData, 'value' | 'label'> & {
-  legend: string,
+export type RadioLabelsData = Omit<LabelData, 'value' | 'label'> & {
   options: Pick<LabelData, 'value' | 'label'>[]
 }
-export function radioItemsRender(itemsS: Selection<any, RadioItemData>) {
-  itemsS.each(function (d, i, g) {
-    const { legend, options, type, name, defaultVal, onChange } = d
-    select(g[i]).selectAll('legend')
-      .data([legend])
-      .join('legend')
-      .text(d => d)
-
+export function radioLabelsRender(itemS: Selection<any, RadioLabelsData>) {
+  itemS.each(function (d, i, g) {
+    const { options, type, name, defaultVal, onChange } = d
     select(g[i]).selectAll('label')
       .data(options.map(option => ({...option, type, name, defaultVal, onChange })))
       .join('label')

@@ -1,14 +1,13 @@
 type DownloadStyleType = 'inline' | 'embedded'
-type BooleanString = 'true' | 'false'
 type ZoomType = 'geometric' | 'semantic' | 'fish-eye' | 'cartesian'
 type DownloadType = 'svg' | 'jpg' | 'png' //TODO: add support for raster images
 
 export type WindowSettings = {
   // downloadType: DownloadType
   downloadStyleType: DownloadStyleType
-  downloadRemoveClasses: BooleanString
-  downloadRemoveDataKeys: BooleanString
-  downloadRemoveDataStyles: BooleanString
+  downloadRemoveClasses: boolean
+  downloadRemoveDataKeys: boolean
+  downloadRemoveDataStyles: boolean
 
   // zoomXActive: BooleanString
   // zoomYActive: BooleanString
@@ -28,9 +27,9 @@ export const windowSettingsKeys: Record<keyof WindowSettings, keyof WindowSettin
 
 export const defaultWindowSettings: WindowSettings = {
   downloadStyleType: 'inline',
-  downloadRemoveClasses: 'true',
-  downloadRemoveDataKeys: 'true',
-  downloadRemoveDataStyles: 'true'
+  downloadRemoveClasses: true,
+  downloadRemoveDataKeys: true,
+  downloadRemoveDataStyles: true
 } as const
 
 

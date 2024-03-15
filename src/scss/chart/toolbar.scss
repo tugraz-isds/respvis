@@ -20,6 +20,10 @@
     .tool {
       height: 100%;
     }
+    .disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
 
     dialog {
       left: 0;
@@ -58,6 +62,7 @@
         display: flex;
         align-items: center;
       }
+      > label + label { margin-top: 0.5em }
       input {
         margin-right: 0.5em;
       }

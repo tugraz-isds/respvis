@@ -264,6 +264,10 @@
 .window-rv .toolbar .tool {
   height: 100%;
 }
+.window-rv .toolbar .disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
 .window-rv .toolbar dialog {
   left: 0;
   width: 100%;
@@ -301,6 +305,9 @@
 .window-rv .toolbar .item label {
   display: flex;
   align-items: center;
+}
+.window-rv .toolbar .item > label + label {
+  margin-top: 0.5em;
 }
 .window-rv .toolbar .item input {
   margin-right: 0.5em;
