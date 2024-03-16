@@ -12,7 +12,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    background-color: rgb(239, 239, 239);
+    background-color: var(--conrol-elements-color);
     padding: 0.5em;
     & > .tool + .tool {
       margin-left: 1rem;
@@ -42,8 +42,12 @@
         opacity: 1;
         translate: 0 0;
       }
-      &.dialog--filter { width: min-content }
-      > .item + .item { margin-top: 0.5em }
+      &.dialog--filter {
+        width: min-content;
+        .collapsable-wrapper, .collapsable, label { width: min-content}
+      }
+
+      > .item + .item, > .item + button  { margin-top: 0.5em }
     }
 
     .dialog-opener {
@@ -51,13 +55,14 @@
       align-items: center;
       height: 2rem;
       padding: 0.25rem;
-      background-color: rgb(239, 239, 239);
-      transition: filter 100ms ease-in-out;
+      background-color: var(--conrol-elements-color);
+      transition: filter 100ms ease-in-out, scale 150ms ease-in-out;
       svg {
         height: 100%;
         width: auto;
       }
-      &:hover { filter: brightness(80%); }
+      &:hover, &[transition='enter'] { filter: brightness(80%); }
+      &:active { scale: 0.75 }
     }
 
     .collapsable-opener {
@@ -81,69 +86,9 @@
     display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows 500ms;
-    //padding: var(--space-sm);
     &.expanded { grid-template-rows: 1fr; }
     .collapsable {
       overflow: hidden;
     }
   }
-}
-
-
-
-
-
-
-
-.menu {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.menu > .chevron {
-  font-size: 0.7em;
-  margin-right: 0.5em;
-}
-
-.menu > .items {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  top: -1px;
-  border: 1px solid rgb(118, 118, 118);
-  display: none;
-}
-
-.menu > .items > li {
-  white-space: nowrap;
-  padding: 0.5em;
-  background-color: rgb(239, 239, 239);
-}
-
-.menu:hover,
-.menu > .items > li:hover {
-  filter: brightness(95%);
-}
-
-.menu:hover > .items {
-  display: block;
-  filter: brightness(105.26%);
-}
-
-.menu-tools {
-  z-index: 10;
-  cursor: default;
-}
-
-.menu-tools > .text {
-  font-size: 1.25rem;
-}
-
-.menu > .items {
-  left: 0;
-  top: 100%;
 }

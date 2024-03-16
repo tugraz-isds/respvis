@@ -1,23 +1,7 @@
-import {BaseType, select, Selection, ValueFn} from 'd3';
-import {roundSVGAttributes} from "./download-tool/optimize-svg";
-import {Renderer} from "../chart/renderer";
-import {applyDownloadStyle} from "./download-tool/apply-download-style";
-
-// TODO: maybe SVGO could be used to optimize the downloaded SVG? https://github.com/svg/svgo
-
-export function toolDownloadSVGRender(selection: Selection<BaseType>, renderer: Renderer): void {
-  selection
-    .selectAll<HTMLLIElement, any>('.tool-download-svg')
-    .data([null])
-    .join('li')
-    .classed('tool-download-svg', true)
-    .text('Download SVG')
-    .on('click', function () {
-      select(this.closest('.window-rv'))
-        .selectAll<SVGSVGElement, unknown>('.layouter > svg.chart')
-        .call((s) => chartDownload(s, 'chart.svg', renderer));
-    });
-}
+import {select, Selection, ValueFn} from 'd3';
+import {roundSVGAttributes} from "./optimize-svg";
+import {Renderer} from "../../chart/renderer";
+import {applyDownloadStyle} from "./apply-download-style";
 
 export function chartDownload<Datum>(
   chartSelection: Selection<SVGSVGElement, Datum>,

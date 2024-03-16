@@ -11,7 +11,7 @@ import {categoryOrderMapToArray} from "../../../data/category";
 import {mergeKeys} from "../../../utilities/dom/key";
 import {AxisValid} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
-import {checkBoxLabelsRender} from "../download-tool/check-box-labels-render";
+import {checkboxLabelsRender} from "../tool/checkbox-labels-render";
 
 export function filterToolRender(selection: Selection<HTMLDivElement>, args: ToolbarValid) {
   const series = args.getSeries()
@@ -41,7 +41,7 @@ function seriesControlRender(menuToolsItemsS: Selection, series: Series) {
     ]
   }]
   const fieldSetS = collapsableFieldsetRender(menuToolsItemsS, data, 'item', 'item--checkbox-series', 'filter-series')
-  checkBoxLabelsRender(fieldSetS)
+  checkboxLabelsRender(fieldSetS)
 }
 
 function categoryControlsRender(menuToolsItemsS: Selection, series: Series) {
@@ -63,7 +63,7 @@ function categoryControlsRender(menuToolsItemsS: Selection, series: Series) {
     })
   }]
   const fieldSetS = collapsableFieldsetRender(menuToolsItemsS, data, 'item', 'item--checkbox-series', 'filter-categories')
-  checkBoxLabelsRender(fieldSetS)
+  checkboxLabelsRender(fieldSetS)
 }
 
 function axisControlsRender(menuToolsItemsS: Selection, axis: AxisValid) {
@@ -85,7 +85,7 @@ function axisControlsRender(menuToolsItemsS: Selection, axis: AxisValid) {
     })
   }]
   const fieldSetS = collapsableFieldsetRender(menuToolsItemsS, data, 'item', 'item--checkbox-series', `filter-axis-${axisScaledValues.parentKey}`)
-  checkBoxLabelsRender(fieldSetS)
+  checkboxLabelsRender(fieldSetS)
 }
 
 function getAxisCategoryProps(axis: AxisValid) {

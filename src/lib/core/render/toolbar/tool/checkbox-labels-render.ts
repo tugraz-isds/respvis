@@ -4,7 +4,7 @@ export type CheckboxLabelsData = {
   labelData: LabelData[]
 }
 
-export function checkBoxLabelsRender(itemsS: Selection<any, CheckboxLabelsData>) {
+export function checkboxLabelsRender(itemsS: Selection<any, CheckboxLabelsData>) {
   itemsS.each(function (d, i, g) {
     const { labelData } = d
     select(g[i]).selectAll('label')

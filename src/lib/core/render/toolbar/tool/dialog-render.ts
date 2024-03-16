@@ -18,6 +18,7 @@ export function dialogOpenerRender(parentS: Selection) {
 
 export function bindOpenerToDialog(dialogOpenerS: Selection, dialogS: Selection) {
   const dialogE = dialogS.node() as HTMLDialogElement
+  const dialogOpenerE = dialogOpenerS.node() as HTMLDialogElement
   let timeout
   dialogOpenerS
     .on('click', function () {
@@ -25,12 +26,15 @@ export function bindOpenerToDialog(dialogOpenerS: Selection, dialogS: Selection)
       clearTimeout(timeout)
       if (currentTransition === 'enter') {
         dialogE.setAttribute('transition', 'exit')
+        dialogOpenerE.setAttribute('transition', 'exit')
+
         timeout = setTimeout(() => {
           dialogE.close()
         }, 600)
       } else {
         dialogE.show()
         dialogE.setAttribute('transition', 'enter')
+        dialogOpenerE.setAttribute('transition', 'enter')
       }
     })
 }
