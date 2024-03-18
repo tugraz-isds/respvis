@@ -1,6 +1,6 @@
 import {Selection} from "d3";
 import {toolRender} from "../tool/tool-render";
-import {bindOpenerToDialog, dialogOpenerRender, dialogRender} from "../tool/dialog-render";
+import {bindOpenerToDialog, dialogRender} from "../tool/dialog-render";
 import {addRawSVGToSelection, elementFromSelection} from "../../../utilities/d3/util";
 import filterSVGRaw from "../../../assets/filter.svg";
 import {collapsableFieldsetRender} from "../tool/fieldset-render";
@@ -12,13 +12,14 @@ import {mergeKeys} from "../../../utilities/dom/key";
 import {AxisValid} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
 import {checkboxLabelsRender} from "../tool/checkbox-labels-render";
+import {buttonRender} from "../tool/button-render";
 
 export function filterToolRender(selection: Selection<HTMLDivElement>, args: ToolbarValid) {
   const series = args.getSeries()
   const axes = args.getAxes()
 
   const filterToolS = toolRender(selection, 'tool--filter')
-  const dialogOpenerS = dialogOpenerRender(filterToolS)
+  const dialogOpenerS = buttonRender(filterToolS, 'toolbar__btn')
   addRawSVGToSelection(dialogOpenerS, filterSVGRaw)
   const dialogS = dialogRender(filterToolS, 'dialog--filter')
   bindOpenerToDialog(dialogOpenerS, dialogS)

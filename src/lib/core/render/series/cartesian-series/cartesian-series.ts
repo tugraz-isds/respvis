@@ -30,6 +30,13 @@ export class CartesianSeries extends Series {
     return combineKeys([this.key, seriesCategoryKey, xKey, yKey])
   }
 
+  getScaledValuesAtScreenPosition(x: number, y: number) {
+    return {
+      x: this.x.scaledValueAtScreenPosition(x),
+      y: this.y.scaledValueAtScreenPosition(y)
+    }
+  }
+
   clone() {
     return new CartesianSeries(this)
   }

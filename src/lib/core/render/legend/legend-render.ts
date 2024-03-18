@@ -1,16 +1,13 @@
-import {rectFromString} from "../../index";
 import {select, Selection} from "d3";
-import {elementFromSelection} from "../../utilities/d3/util";
-import {LegendItem} from "./legend-item-validation";
+import {elementFromSelection, throttle} from "../../utilities/d3/util";
 import {SVGHTMLElement} from "../../constants/types";
-import {legendItemData} from "./legend-item-validation";
 import {LegendValid} from "./legend-validation";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
+import {legendItemsRender} from "./legend-items-render";
 
 export type LegendSelection = Selection<SVGHTMLElement, LegendValid>
 
 export function legendRender(parentS: Selection, data: LegendValid): LegendSelection {
-  const chartElement = elementFromSelection(data.renderer.chartSelection)
   const legendS = parentS
     .selectAll<SVGGElement, LegendValid>('.legend')
     .data([data])
@@ -20,45 +17,10 @@ export function legendRender(parentS: Selection, data: LegendValid): LegendSelec
 
   legendS.each((legendD, i, g) => {
     const legendS = select<SVGHTMLElement, LegendValid>(g[i])
-    const legendElement = elementFromSelection(legendS)
-
-    legendS
-      .selectAll('.title')
-      .data([null])
-      .join('text')
-      .classed('title', true)
-      .text(getCurrentRespVal(legendD.title, {chart: chartElement, self: legendElement}));
-
-    const itemS = legendS.selectAll('.items').data([null]).join('g').classed('items', true);
-
-    itemS
-      .selectAll<SVGGElement, LegendItem>('.legend-item')
-      .data(legendItemData(legendD), (d) => d.label)
-      .join(
-        (enter) =>
-          enter
-            .append('g')
-            .classed('legend-item', true)
-            .call((itemS) => itemS.append('path').classed('symbol', true))
-            .call((itemS) => itemS.append('text').classed('label', true))
-            .call((s) => legendS.dispatch('enter', {detail: {selection: s}})),
-        undefined,
-        (exit) => exit.remove().call((s) => legendS.dispatch('exit', {detail: {selection: s}}))
-      )
-      .each((itemD, i, g) => {
-        const itemS = select(g[i]);
-        itemS.selectAll('.label').text(itemD.label);
-        itemS.selectAll<SVGPathElement, any>('.symbol').call((symbolS) => {
-          const boundsAttr = symbolS.attr('bounds');
-          if (!boundsAttr) return;
-          itemD.symbol(symbolS.node()!, rectFromString(boundsAttr));
-        });
-      })
-      .attr('data-style', (d) => d.styleClass)
-      .attr('data-key', (d) => d.key)
-      .call((s) => legendS.dispatch('update', {detail: {selection: s}}));
+    legendTitleRender(legendS)
+    legendItemsRender(legendS)
+    legendCrossStateRender(legendS)
   })
-
   legendS.on('pointerover.legend pointerout.legend', (e: PointerEvent) => {
     const item = (<Element>e.target).closest('.legend-item');
     if (item) {
@@ -67,4 +29,53 @@ export function legendRender(parentS: Selection, data: LegendValid): LegendSelec
   })
 
   return legendS
+}
+
+function legendTitleRender(selection: LegendSelection) {
+  const legendD = selection.datum()
+  const chartElement = elementFromSelection(legendD.renderer.chartSelection)
+  const legendElement = elementFromSelection(selection)
+  selection
+    .selectAll('.title')
+    .data([null])
+    .join('text')
+    .classed('title', true)
+    .text(getCurrentRespVal(legendD.title, {chart: chartElement, self: legendElement}))
+}
+
+function legendCrossStateRender(selection: LegendSelection) {
+  const { renderer, series } = selection.datum()
+  const active = renderer.windowSelection.datum().windowSettings.movableCrossActive
+  const drawAreaS = renderer.drawAreaSelection
+  const backgroundS = drawAreaS?.selectChild('.background')
+  const flipped = getCurrentRespVal(series.flipped, {chart: elementFromSelection(renderer.chartSelection)})
+
+  const crossStateTextS = selection
+    .selectAll('.cross-state')
+    .data(active ? [null] : [])
+    .join('g')
+    .classed('cross-state', true)
+    .selectAll('text')
+    .data(active ? [null, null] : [])
+    .join('text')
+
+  drawAreaS?.classed('cursor-cross', active)
+
+  if (!active || !drawAreaS || !backgroundS) return
+
+  const onMouseMove = (e) => {
+    const backgroundE = elementFromSelection(backgroundS) as Element
+    const rect = backgroundE.getBoundingClientRect()
+    const x = flipped ? e.clientY - rect.top : e.clientX - rect.left
+    const y = flipped ? e.clientX - rect.left : e.clientY - rect.top
+
+    const scaledVals = series.getScaledValuesAtScreenPosition(x, y)
+    const firstText = crossStateTextS.filter(function(d, i) { return i === 0; })
+    const secondText = crossStateTextS.filter(function(d, i) { return i === 1; })
+    firstText.text(scaledVals.x ? "X: " + scaledVals.x : firstText.text())
+    secondText.text(scaledVals.y ? "Y: " + scaledVals.y : secondText.text())
+    renderer.windowSelection.dispatch('resize')
+  }
+
+  drawAreaS.on('mousemove.crossInfo', throttle(onMouseMove, 50))
 }

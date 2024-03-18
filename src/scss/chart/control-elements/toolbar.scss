@@ -50,7 +50,7 @@
       > .item + .item, > .item + button  { margin-top: 0.5em }
     }
 
-    .dialog-opener {
+    &__btn {
       display: flex;
       align-items: center;
       height: 2rem;

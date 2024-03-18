@@ -22,6 +22,10 @@ export class ScaledValuesLinear extends ScaledValuesBase<number> {
     return new ScaledValuesLinear({...this, scale})
   }
 
+  scaledValueAtScreenPosition(value: number): string {
+    return this.scale.invert(value).toString()
+  }
+
   clone(): ScaledValuesLinear {
     return new ScaledValuesLinear({...this, scale: this.scale.copy()})
   }

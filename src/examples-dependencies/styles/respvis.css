@@ -295,7 +295,7 @@
 .window-rv .toolbar dialog > .item + .item, .window-rv .toolbar dialog > .item + button {
   margin-top: 0.5em;
 }
-.window-rv .toolbar .dialog-opener {
+.window-rv .toolbar__btn {
   display: flex;
   align-items: center;
   height: 2rem;
@@ -303,14 +303,14 @@
   background-color: var(--conrol-elements-color);
   transition: filter 100ms ease-in-out, scale 150ms ease-in-out;
 }
-.window-rv .toolbar .dialog-opener svg {
+.window-rv .toolbar__btn svg {
   height: 100%;
   width: auto;
 }
-.window-rv .toolbar .dialog-opener:hover, .window-rv .toolbar .dialog-opener[transition=enter] {
+.window-rv .toolbar__btn:hover, .window-rv .toolbar__btn[transition=enter] {
   filter: brightness(80%);
 }
-.window-rv .toolbar .dialog-opener:active {
+.window-rv .toolbar__btn:active {
   scale: 0.75;
 }
 .window-rv .toolbar .collapsable-opener {
@@ -389,6 +389,11 @@
 }
 .legend .items .legend-item .label {
   font-size: var(--font-size-legend-label);
+}
+.legend .cross-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 [data-legend-position=right] .legend,
@@ -596,6 +601,10 @@ path.line.highlight {
 .series-label .label {
   font-size: var(--font-size-element-label);
   pointer-events: none;
+}
+
+.cursor-cross {
+  cursor: crosshair;
 }
 
 .bar {

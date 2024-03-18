@@ -64,5 +64,7 @@ export abstract class Series implements RenderArgs {
     return [this.key]
   }
 
+  abstract getScaledValuesAtScreenPosition(x: number, y: number) : { x: string, y: string }
+
   abstract clone(): Series
 }

@@ -9,6 +9,7 @@ type ScaledValuesCategoricalArgs = ScaledValuesCategoricalUserArgs & ScaledValue
   title: RespValOptional<string>
 }
 export class ScaledValuesCategorical extends ScaledValuesBase<string> {
+
   tag = 'categorical' as const
   readonly values: string[]
   readonly scale: ScaleBand<string>
@@ -68,6 +69,17 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     const clone = this.clone()
     clone.scale.domain(activeDomain)
     return clone
+  }
+
+  scaledValueAtScreenPosition(value: number): string {
+    const activeValues = this.cloneFiltered()
+    const domain = activeValues.scale.domain()
+    const currentValue = domain.find(category => {
+      const lower = activeValues.scale(category)!
+      const upper = lower + activeValues.scale.bandwidth()
+      return value > lower && value < upper
+    })
+    return currentValue ? currentValue : ''
   }
 
   clone(): ScaledValuesCategorical {

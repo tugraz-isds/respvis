@@ -16,6 +16,11 @@
       }
     }
   }
+  .cross-state {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
 }
 
 [data-legend-position='right'] .legend,

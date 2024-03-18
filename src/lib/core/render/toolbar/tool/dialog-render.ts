@@ -9,13 +9,6 @@ export function dialogRender(parentS: Selection, ...classes: string[]) {
     .classed(names, true)
 }
 
-export function dialogOpenerRender(parentS: Selection) {
-  return parentS.selectAll<HTMLButtonElement, any>('.dialog-opener')
-    .data([null])
-    .join('button')
-    .classed('dialog-opener', true)
-}
-
 export function bindOpenerToDialog(dialogOpenerS: Selection, dialogS: Selection) {
   const dialogE = dialogS.node() as HTMLDialogElement
   const dialogOpenerE = dialogOpenerS.node() as HTMLDialogElement

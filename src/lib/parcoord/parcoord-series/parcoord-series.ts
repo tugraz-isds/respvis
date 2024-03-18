@@ -7,6 +7,8 @@ import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categ
 import {combineKeys} from "../../core/utilities/dom/key";
 import {KeyedAxisValid, keyedAxisValidation} from "../../core/render/axis/keyed-axis-validation";
 import {ZoomArgs, ZoomValid, zoomValidation} from "../../core/data/zoom";
+import {elementFromSelection} from "../../core/utilities/d3/util";
+import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 
 export type ParcoordSeriesUserArgs = SeriesUserArgs & {
   dimensions: {
@@ -66,6 +68,37 @@ export class ParcoordSeries extends Series {
   getCombinedKey(i: number): string {
     const seriesCategoryKey = this.categories ? this.categories.getCategoryData(i).combinedKey : undefined
     return combineKeys([this.key, this.axes[i].key, seriesCategoryKey])
+  }
+
+  getScaledValuesAtScreenPosition(x: number, y: number) {
+    const activeSeries = this.cloneFiltered()
+    const chartE = elementFromSelection(activeSeries.axes[0].renderer.chartSelection)
+    function axisDiff(axis: KeyedAxisValid) {
+      const currentAxisPosition = activeSeries.axesScale(axis.key)!
+      return Math.abs(currentAxisPosition - x)
+    }
+    const { axis } = activeSeries.axes.reduce((prev, current) => {
+      const currentDiff = axisDiff(current)
+      return currentDiff < prev.diff ? {
+        axis: current, diff: currentDiff
+      } : prev
+    }, { axis: activeSeries.axes[0], diff: axisDiff(activeSeries.axes[0]) })
+
+    return {
+      x: getCurrentRespVal(axis.title, {chart: chartE}),
+      y: axis.scaledValues.scaledValueAtScreenPosition(y)
+    }
+  }
+
+  cloneFiltered() {
+    const activeAxes = !this.keysActive[this.key] ? [] :
+      this.axes.filter(axis => this.keysActive[axis.key])
+    const activeDomain = activeAxes.map(axis => axis.key)
+    const clone = this.clone()
+    clone.axes = activeAxes
+    clone.axesScale.domain(activeDomain)
+    clone.axesScale.range(this.axesScale.range())
+    return clone
   }
 
   clone(): ParcoordSeries {

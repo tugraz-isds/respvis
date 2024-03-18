@@ -14,7 +14,7 @@ export type WindowSettings = {
   // zoomStateVisible: BooleanString
   // zoomType: ZoomType
 
-  // movableCrossActive: BooleanString
+  movableCrossActive: boolean
   // gridActive: BooleanString
 }
 
@@ -23,13 +23,15 @@ export const windowSettingsKeys: Record<keyof WindowSettings, keyof WindowSettin
   downloadRemoveClasses: 'downloadRemoveClasses',
   downloadRemoveDataKeys: 'downloadRemoveDataKeys',
   downloadRemoveDataStyles: 'downloadRemoveDataStyles',
+  movableCrossActive: "movableCrossActive"
 }
 
 export const defaultWindowSettings: WindowSettings = {
   downloadStyleType: 'inline',
   downloadRemoveClasses: true,
   downloadRemoveDataKeys: true,
-  downloadRemoveDataStyles: true
+  downloadRemoveDataStyles: true,
+  movableCrossActive: false
 } as const
 
 

@@ -22,6 +22,8 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
     return this.scale(this.values[i] as any)!
   }
 
+  abstract scaledValueAtScreenPosition(value: number): string
+
   isKeyActiveByKey(key: string) { return true }
 
   isKeyActiveByIndex(i: number) { return true }

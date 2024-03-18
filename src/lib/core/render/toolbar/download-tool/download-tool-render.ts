@@ -6,15 +6,16 @@ import {Renderer} from "../../chart/renderer";
 import {windowSettingsKeys} from "../../window/window-settings";
 import {checkboxLabelsRender} from "../tool/checkbox-labels-render";
 import {addRawSVGToSelection} from "../../../utilities/d3/util";
-import {bindOpenerToDialog, dialogOpenerRender, dialogRender} from "../tool/dialog-render";
+import {bindOpenerToDialog, dialogRender} from "../tool/dialog-render";
 import {toolRender} from "../tool/tool-render";
 import {fieldsetRender} from "../tool/fieldset-render";
 import {chartDownload} from "./chart-download";
+import {buttonRender} from "../tool/button-render";
 
 export function downloadToolRender(selection: Selection<HTMLDivElement>, renderer: Renderer) {
   const downloadToolS = toolRender(selection, 'tool--download')
 
-  const dialogOpenerS = dialogOpenerRender(downloadToolS)
+  const dialogOpenerS = buttonRender(downloadToolS, 'toolbar__btn')
   addRawSVGToSelection(dialogOpenerS, downloadSVGRaw)
   const dialogS = dialogRender(downloadToolS)
   bindOpenerToDialog(dialogOpenerS, dialogS)
