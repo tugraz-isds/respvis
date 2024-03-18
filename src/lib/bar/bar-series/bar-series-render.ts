@@ -1,7 +1,7 @@
 import {select, Selection} from "d3";
 import {rectFromString} from "../../core";
 import {seriesConfigTooltipsHandleEvents} from "../../tooltip";
-import {BarSeries} from "./bar-series-validation";
+import {BarSeries} from "./bar-series";
 import {seriesBarCreateBars} from "./bar-creation.ts/bar-creation";
 import {Bar} from "./bar";
 import {barSeriesJoin} from "./bar-series-join";

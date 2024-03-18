@@ -1,14 +1,13 @@
 import {Selection, ZoomTransform} from "d3";
 import {elementFromSelection, throttle} from "../../utilities/d3/util";
-import {AxisDomainRV} from "../scale/axis-scaled-values-validation";
-import {ScaledValuesBase} from "../scale/scaled-values-base";
+import {ScaledValues} from "../scale/scaled-values-base";
 import {CartesianChartValid} from "../../render";
 import {getCurrentRespVal} from "../responsive-value/responsive-value";
 
 type ZoomSelection = Selection<HTMLDivElement, Pick<CartesianChartValid, 'zoom' | 'series'>>
 
 export function addZoom(selection: ZoomSelection, callback: (props: {
-  x: ScaledValuesBase<AxisDomainRV>, y: ScaledValuesBase<AxisDomainRV>
+  x: ScaledValues, y: ScaledValues
 }) => void, throttleMs = 50) {
   const {series, zoom} = selection.datum()
   const {renderer} = series

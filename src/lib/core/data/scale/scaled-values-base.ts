@@ -2,8 +2,13 @@ import {AxisType, ScaledValueTag, ToArray} from "../../constants/types";
 import {AxisDomainRV} from "./axis-scaled-values-validation";
 import {ScaleBase} from "./scales";
 import {ZoomTransform} from "d3";
+import {ScaledValuesLinear} from "./scaled-values-linear";
+import {ScaledValuesDate} from "./scaled-values-date";
+import {ScaledValuesCategorical} from "./scaled-values-categorical";
 
 export type ScaledValuesBaseArgs = { parentKey: string }
+
+export type ScaledValues = ScaledValuesLinear | ScaledValuesDate | ScaledValuesCategorical
 
 export abstract class ScaledValuesBase<T extends AxisDomainRV> {
   abstract readonly tag: ScaledValueTag

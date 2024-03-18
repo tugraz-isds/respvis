@@ -27,7 +27,8 @@ export interface SeriesLabelBar {
 export function seriesLabelBarData(data: Partial<SeriesLabelBar>): SeriesLabelBar {
   return {
     barContainer: data.barContainer || select('.chart'),
-    labels: data.labels || ((bar) => bar.value.toString()),
+    //maybe bar.value instead
+    labels: data.labels || ((bar) => bar.xValue.toString()),
     relativePositions: data.relativePositions || { x: 0.5, y: 0.5 },
     offsets: data.offsets || 3,
   };

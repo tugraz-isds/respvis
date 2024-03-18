@@ -1,15 +1,14 @@
 import {ScaledValuesCategoricalUserArgs} from "./scaled-values";
 import {ScaledValuesBase, ScaledValuesBaseArgs} from "./scaled-values-base";
-import {scaleBand, ScaleBand} from "d3";
+import {scaleBand, ScaleBand, ZoomTransform} from "d3";
 import {categoriesValidation, CategoryValid} from "../category";
-import {ActiveKeyMap} from "../../constants/types";
+import {ActiveKeyMap, AxisType} from "../../constants/types";
 import {RespValOptional} from "../responsive-value/responsive-value";
 
 type ScaledValuesCategoricalArgs = ScaledValuesCategoricalUserArgs & ScaledValuesBaseArgs & {
   title: RespValOptional<string>
 }
 export class ScaledValuesCategorical extends ScaledValuesBase<string> {
-
   tag = 'categorical' as const
   readonly values: string[]
   readonly scale: ScaleBand<string>
@@ -59,6 +58,10 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     const combinedKey = parentKey + '-' + categoryKey
     const styleClass = this.categories.styleClassOrder[i]
     return {categoryKey, parentKey, combinedKey, styleClass}
+  }
+
+  cloneZoomed(transform: ZoomTransform, axisType: AxisType) {
+    return this.clone()
   }
 
   cloneFiltered() {

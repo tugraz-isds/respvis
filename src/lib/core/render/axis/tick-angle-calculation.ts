@@ -6,6 +6,7 @@ import {elementFromSelection} from "../../utilities/d3/util";
 import {BreakpointsValid, getActiveBreakpoints} from "../../data/breakpoint/breakpoint-validation";
 import {cssLengthInPx} from "../../utilities/dom/units";
 import {AxisSelection} from "./axis-render";
+import {CSSAbsoluteLengthUnit, CSSEMUnit, UnitValue} from "../../constants/types";
 
 
 export function tickAngleCalculation(axisS: AxisSelection) {
@@ -72,7 +73,11 @@ function getInterpolationBreakpoints(props: getInterPolationArgs) {
   const {element, postLayoutIndex, preLayoutIndex, breakpoints} = props
   const [, breakStart] = getActiveBreakpoints(preLayoutIndex, breakpoints)
   const [breakEnd,] = getActiveBreakpoints(postLayoutIndex, breakpoints)
-  const breakStartPx = cssLengthInPx(breakStart, element)
-  const breakEndPx = cssLengthInPx(breakEnd, element)
+  const breakStartPx = breakStart.endsWith('em') ?
+    cssLengthInPx(breakStart as UnitValue<CSSEMUnit>, element) :
+    cssLengthInPx(breakStart as UnitValue<CSSAbsoluteLengthUnit>)
+  const breakEndPx = breakEnd.endsWith('em') ?
+    cssLengthInPx(breakEnd as UnitValue<CSSEMUnit>, element) :
+    cssLengthInPx(breakEnd as UnitValue<CSSAbsoluteLengthUnit>)
   return [breakStartPx, breakEndPx] as const
 }

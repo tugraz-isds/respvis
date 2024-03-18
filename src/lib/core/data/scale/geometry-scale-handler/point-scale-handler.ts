@@ -2,14 +2,14 @@ import {GeometryScaleHandler, RenderState} from "./geometry-scale-handler";
 import {ScaledValuesLinear} from "../scaled-values-linear";
 import {AxisDomainRV} from "../axis-scaled-values-validation";
 import {Circle} from "../../../utilities/circle";
-import {ScaledValuesBase} from "../scaled-values-base";
+import {ScaledValues, ScaledValuesBase} from "../scaled-values-base";
 import {ScaledValuesCategorical} from "../scaled-values-categorical";
 
-type RenderStatePoint = RenderState & {
+type RenderStatePoint = RenderState<ScaledValues, ScaledValues> & {
   radii: ScaledValuesLinear | number
 }
 
-export class PointScaleHandler extends GeometryScaleHandler {
+export class PointScaleHandler extends GeometryScaleHandler<ScaledValues, ScaledValues> {
   public radii: ScaledValuesLinear | number
   constructor(state: RenderStatePoint) {
     super(state);

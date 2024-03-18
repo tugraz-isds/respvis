@@ -12,8 +12,8 @@ export function createGroupedBar(props: createGroupedBarProps) {
   const {i, originalScaleHandler, categories} = props
 
   // TODO: assumes original x to be categorical axis
-  const categoryGroupValues = originalScaleHandler.renderState.originalXValues
-  const flipped = originalScaleHandler.renderState.flipped
+  const categoryGroupValues = originalScaleHandler.originalXValues
+  const flipped = originalScaleHandler.currentlyFlipped()
   const wholeBarRect = originalScaleHandler.getBarRect(i)
 
   const innerScaleDomain = getActiveKeys(categories.keysActive)

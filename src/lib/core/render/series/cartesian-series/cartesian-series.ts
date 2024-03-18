@@ -1,7 +1,7 @@
 import {AxisDomainRV, axisScaledValuesValidation} from "../../../data/scale/axis-scaled-values-validation";
 import {alignScaledValuesLengths, ScaledValuesUserArgs} from "../../../data/scale/scaled-values";
 import {combineKeys} from "../../../utilities/dom/key";
-import {ScaledValuesBase} from "../../../data/scale/scaled-values-base";
+import {ScaledValues} from "../../../data/scale/scaled-values-base";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
 import {Series, SeriesArgs, SeriesUserArgs} from "../index";
 
@@ -13,15 +13,18 @@ export type CartesianSeriesUserArgs = SeriesUserArgs & {
 export type CartesianSeriesArgs = SeriesArgs & CartesianSeriesUserArgs
 
 export class CartesianSeries extends Series {
-  x: ScaledValuesBase<AxisDomainRV>
-  y: ScaledValuesBase<AxisDomainRV>
+  x: ScaledValues
+  y: ScaledValues
 
   constructor(args: CartesianSeriesArgs | CartesianSeries) {
     super(args)
-    const [xAligned, yAligned] = alignScaledValuesLengths(args.x, args.y)
-    this.x = xAligned instanceof ScaledValuesBase ? xAligned : axisScaledValuesValidation(xAligned, 'a-0')
-    this.y = yAligned instanceof ScaledValuesBase ? yAligned : axisScaledValuesValidation(yAligned, 'a-1')
+    const [xAligned, yAligned] = ('tag' in args.x && 'tag' in args.y) ? [args.x, args.y] :
+      alignScaledValuesLengths(args.x, args.y)
+    this.x = 'tag' in xAligned ? xAligned : axisScaledValuesValidation(xAligned, 'a-0')
+    this.y = 'tag' in yAligned ? yAligned : axisScaledValuesValidation(yAligned, 'a-1')
   }
+
+  getScaledValues() { return {x: this.x, y: this.y} }
 
   getCombinedKey(i: number) {
     const xKey = this.x instanceof ScaledValuesCategorical ? this.x.getCategoryData(i).combinedKey : undefined

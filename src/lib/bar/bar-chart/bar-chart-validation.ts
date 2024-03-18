@@ -1,10 +1,13 @@
 import {Selection} from 'd3';
 import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "../../core";
-import {BarSeries, SeriesBarUserArgs} from "../bar-series/bar-series-validation";
+import {BarSeries, BarSeriesUserArgs} from "../bar-series/bar-series";
 import {Bar} from "../bar-series/bar";
+import {BarStackedSeries} from "../bar-series/bar-stacked-series";
+import {BarGroupedSeries} from "../bar-series/bar-grouped-series";
+import {BarStandardSeries} from "../bar-series";
 
 export type BarChartArgs = CartesianChartUserArgs & {
-  series: SeriesBarUserArgs
+  series: BarSeriesUserArgs
 }
 
 export type BarChartValid = CartesianChartValid & {
@@ -16,7 +19,10 @@ export function barChartValidation(chartArgs: BarChartArgs): BarChartValid {
     legend, bounds,
     title, subTitle
   } = chartArgs
-  const series = new BarSeries({...chartArgs.series, key: 's-0', renderer})
+  const series = chartArgs.series.type === 'stacked' ?
+    new BarStackedSeries({...chartArgs.series, key: 's-0', renderer}) : chartArgs.series.type === 'grouped' ?
+    new BarGroupedSeries({...chartArgs.series, key: 's-0', renderer}) :
+    new BarStandardSeries({...chartArgs.series, key: 's-0', renderer})
   const cartesianData =
     cartesianChartValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
   return {

@@ -1,6 +1,4 @@
-import {getCurrentRespVal} from "../../../core/data/responsive-value/responsive-value";
-import {elementFromSelection} from "../../../core/utilities/d3/util";
-import {BarSeries} from "../bar-series-validation";
+import {BarSeries} from "../bar-series";
 import {createGroupedBar} from "./bar-grouped-creation";
 // import {aggregateScaledValues} from "../../../core/data/scale/scaled-values-aggregation";
 import {createStackedBar} from "./bar-stacked-creation";
@@ -8,14 +6,16 @@ import {RectScaleHandler} from "../../../core/data/scale/geometry-scale-handler/
 import {defaultStyleClass} from "../../../core/constants/other";
 import {ScaledValuesAggregation} from "../../../core/data/scale/scaled-values-aggregation";
 import {Bar} from "../bar";
+import {BarStackedSeries} from "../bar-stacked-series";
 
 export function seriesBarCreateBars(seriesData: BarSeries): Bar[] {
-  const {renderer, keysActive, key: seriesKey, categories, aggregationScale} = seriesData
+  const {renderer, keysActive, key: seriesKey, categories, flipped} = seriesData
+  const aggregationScale = seriesData instanceof BarStackedSeries ? seriesData.aggregationScale : undefined
   const data: Bar[] = []
 
-  const flipped = getCurrentRespVal(seriesData.flipped, {chart: elementFromSelection(renderer.chartSelection)})
+  // const flipped = getCurrentRespVal(seriesData.flipped, {chart: elementFromSelection(renderer.chartSelection)})
   const [x, y] = [seriesData.x.cloneFiltered(), seriesData.y.cloneFiltered()]
-  const geometryHandler = new RectScaleHandler({originalYValues: y, originalXValues: x, flipped})
+  const geometryHandler = new RectScaleHandler({originalYValues: y, originalXValues: x, renderer, flipped})
   const aggScaledValues = new ScaledValuesAggregation(x, y, categories, aggregationScale).aggregateIfPossible()
 
   if (!keysActive[seriesKey]) return data

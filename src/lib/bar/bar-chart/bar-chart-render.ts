@@ -3,7 +3,7 @@ import {cartesianChartAxisRender, chartRender} from "../../core";
 import {BarChartValid, chartBarHoverBar, ChartBarSelection} from "./bar-chart-validation";
 import {legendRender} from "../../core/render/legend";
 import {legendAddHover} from "../../core/render/legend/legend-event";
-import {BarSeries, barSeriesRender} from "../bar-series";
+import {barSeriesRender, BarStandardSeries} from "../bar-series";
 
 export type BarChartChartSelection = Selection<SVGSVGElement | SVGGElement, BarChartValid>;
 
@@ -23,7 +23,7 @@ export function renderBars(chartS: BarChartChartSelection) {
       const drawAreaS = chartS.selectAll('.draw-area');
 
       drawAreaS
-        .selectAll<SVGGElement, BarSeries>('.series-bar')
+        .selectAll<SVGGElement, BarStandardSeries>('.series-bar')
         .data([chartD.series])
         .join('g')
         .call((s) => barSeriesRender(s))

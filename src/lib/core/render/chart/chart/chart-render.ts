@@ -61,7 +61,8 @@ function headerRender(selection: Selection<SVGSVGElement | SVGGElement, ChartVal
     .classed('header', true);
 }
 
-function titleRender(header: ChartBaseSelection, chart: ChartBaseSelection){
+function titleRender<T extends ChartBaseElement, D extends ChartValid>
+(header: ChartBaseSelection<T, D>, chart: ChartBaseSelection<T, D>){
   const chartElement = elementFromSelection(chart)
    return header
     .selectAll('.title')
@@ -75,7 +76,8 @@ function titleRender(header: ChartBaseSelection, chart: ChartBaseSelection){
     .text((d) => d);
 }
 
-function subTitleRender(header: ChartBaseSelection, chart: ChartBaseSelection) {
+function subTitleRender<T extends ChartBaseElement, D extends ChartValid>
+(header: ChartBaseSelection<T, D>, chart: ChartBaseSelection<T, D>){
   const chartElement = elementFromSelection(chart)
   return header
     .selectAll('.subtitle')

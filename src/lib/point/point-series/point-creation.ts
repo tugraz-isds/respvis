@@ -17,7 +17,7 @@ export function seriesPointCreatePoints<T extends boolean, R = T extends false ?
   const [x, y] = [seriesData.x.cloneFiltered(), seriesData.y.cloneFiltered()]
   const drawAreaElement = elementFromSelection(renderer.drawAreaSelection)
   const radii = getRadiusScaledValues(seriesData.radii, {chart: chartElement, self: drawAreaElement})
-  const geometryHandler = new PointScaleHandler({originalYValues: y, originalXValues: x, flipped, radii})
+  const geometryHandler = new PointScaleHandler({originalYValues: y, originalXValues: x, flipped, radii, renderer})
 
   const pointsSingleGroup: Point[] = []
   const pointsGrouped: Point[][] = new Array(categories ? categories.categories.keyOrder.length : 1)

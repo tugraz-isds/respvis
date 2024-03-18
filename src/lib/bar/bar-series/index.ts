@@ -1,5 +1,7 @@
-// export * from './bar-series-render'
-export * from './bar-series-validation'
+export * from './bar-series'
+export * from './bar-standard-series'
+export * from './bar-grouped-series'
+export * from './bar-stacked-series'
 export {barSeriesRender} from "./bar-series-render";
 export {seriesBarCreateBars} from "./bar-creation.ts/bar-creation";
 export {Bar} from "./bar";
