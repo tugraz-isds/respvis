@@ -3,7 +3,6 @@ export * from './bar-standard-series'
 export * from './bar-grouped-series'
 export * from './bar-stacked-series'
 export {barSeriesRender} from "./bar-series-render";
-export {seriesBarCreateBars} from "./bar-creation.ts/bar-creation";
 export {Bar} from "./bar";
 export {barSeriesJoin} from "./bar-series-join";
 export {JoinTransitionEvent} from "./bar-series-join";

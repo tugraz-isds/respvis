@@ -1,35 +1,29 @@
-import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "../../core/render/series/cartesian-series";
-import {RectScaleHandler} from "../../core/data/scale/geometry-scale-handler/rect-scale-handler";
 import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
-import {ScaledValuesLinear} from "../../core/data/scale/scaled-values-linear";
 import {ErrorMessages} from "../../core/utilities/error";
-import {ScaledValuesCategoricalUserArgs} from "../../core/data/scale/scaled-values";
+import {createGroupedBar} from "./bar-creation.ts/bar-grouped-creation";
+import {CategoryUserArgs} from "../../core/data/category";
+import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "./bar-base-series";
 
-export type BarGroupedSeriesUserArgs = CartesianSeriesUserArgs & {
+export type BarGroupedSeriesUserArgs = BarBaseSeriesUserArgs & {
   type: 'grouped'
-  x: ScaledValuesCategoricalUserArgs
+  categories: CategoryUserArgs
 }
 
-export type BarGroupedSeriesArgs = BarGroupedSeriesUserArgs & CartesianSeriesArgs
-export class BarGroupedSeries extends CartesianSeries {
+export type BarGroupedSeriesArgs = BarBaseSeriesArgs & BarGroupedSeriesUserArgs
+export class BarGroupedSeries extends BarBaseSeries {
   type: 'grouped'
-  x: ScaledValuesCategorical
-  y: ScaledValuesLinear
-  geometryScaleHandler: RectScaleHandler
+  categories: ScaledValuesCategorical
 
   constructor(args: BarGroupedSeriesArgs | BarGroupedSeries) {
     super(args);
     this.type = 'grouped'
-    const { x, y } = this.getScaledValues()
-    if(!(x instanceof ScaledValuesCategorical) ||
-      !(y instanceof ScaledValuesLinear)) throw new Error(ErrorMessages.invalidScaledValuesCombination)
-    this.x = x
-    this.y = y
-    this.geometryScaleHandler = new RectScaleHandler({
-      originalXValues: this.x,
-      originalYValues: this.y,
-      renderer: this.renderer,
-      flipped: this.flipped
+    this.categories = super.getCategories() as ScaledValuesCategorical
+    if (!this.categories) throw new Error(ErrorMessages.missingArgumentForSeries)
+  }
+
+  getRect(i: number) {
+    return createGroupedBar({
+      originalScaleHandler: this.geometryScaleHandler, i, categories: this.categories
     })
   }
 

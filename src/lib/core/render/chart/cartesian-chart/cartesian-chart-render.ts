@@ -3,9 +3,7 @@ import {axisBottomRender, axisLeftRender, AxisSelection, AxisValid} from "../../
 import {CartesianChartSelection} from "./cartesian-chart-validation";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {elementFromSelection} from "../../../utilities/d3/util";
-import {ScaledValuesAggregation} from "../../../data/scale/scaled-values-aggregation";
 import {ScaledValuesLinear} from "../../../data/scale/scaled-values-linear";
-import {BarStandardSeries} from "../../../../bar";
 import {BarStackedSeries} from "../../../../bar/bar-series/bar-stacked-series";
 
 export function cartesianChartAxisRender<T extends CartesianChartSelection>(chartS: T): void {
@@ -21,20 +19,13 @@ export function cartesianChartAxisRender<T extends CartesianChartSelection>(char
     .attr('data-flipped', flipped)
 
   //TODO: clean this stacked bar chart mess up
-  const aggregationScale = data.series instanceof BarStackedSeries ? data.series.aggregationScale : undefined
-  const aggScaledValues = new ScaledValuesAggregation(
-    leftAxisD.scaledValues, bottomAxisD.scaledValues, data.series.categories, aggregationScale).aggregateIfPossible()
+  const aggScaledValues = data.series instanceof BarStackedSeries ? data.series.aggScaledValues.aggregateCached() : undefined
 
-  const bottomAxisDAgg = (aggScaledValues && bottomAxisD.scaledValues instanceof ScaledValuesLinear &&
-    data.series instanceof BarStandardSeries && data.series.type === 'stacked') ?
+  const bottomAxisDAgg = (aggScaledValues && bottomAxisD.scaledValues instanceof ScaledValuesLinear) ?
     {...bottomAxisD, scaledValues: aggScaledValues} : bottomAxisD
   bottomAxisDAgg.scaledValues.scale.range(bottomAxisD.scaledValues.scale.range())
-  // if (data.series instanceof BarSeries && data.series.type === 'stacked') {
-  //   bottomAxisDAgg.scaledValues.scale =
-  // }
 
-  const leftAxisDAgg = (aggScaledValues && leftAxisD.scaledValues instanceof ScaledValuesLinear &&
-    data.series instanceof BarStandardSeries && data.series.type === 'stacked') ?
+  const leftAxisDAgg = (aggScaledValues && leftAxisD.scaledValues instanceof ScaledValuesLinear) ?
     {...leftAxisD, scaledValues: aggScaledValues} : leftAxisD
   leftAxisDAgg.scaledValues.scale.range(leftAxisD.scaledValues.scale.range())
 

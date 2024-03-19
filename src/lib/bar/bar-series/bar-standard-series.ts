@@ -1,25 +1,27 @@
-import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "../../core/render/series/cartesian-series";
 import {BarSeriesType} from "../../core/constants/types";
 import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
-import {ScaledValuesCategoricalUserArgs} from "../../core/data/scale/scaled-values";
 import {ErrorMessages} from "../../core/utilities/error";
+import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "./bar-base-series";
+import {Rect} from "../../core";
 
-export type BarStandardSeriesUserArgs = CartesianSeriesUserArgs & {
+export type BarStandardSeriesUserArgs = BarBaseSeriesUserArgs & {
   type?: 'standard'
-  x: ScaledValuesCategoricalUserArgs
 }
 
-export type BarStandardSeriesArgs = BarStandardSeriesUserArgs & CartesianSeriesArgs
+export type BarStandardSeriesArgs = BarBaseSeriesArgs & BarStandardSeriesUserArgs
 
-export class BarStandardSeries extends CartesianSeries {
+export class BarStandardSeries extends BarBaseSeries {
   type: BarSeriesType
-  x: ScaledValuesCategorical
   constructor(args: BarStandardSeriesArgs | BarStandardSeries) {
     super(args);
     this.type = args.type ?? 'standard'
-    const { x, y } = this.getScaledValues()
+    const { x } = this.getScaledValues()
     if(!(x instanceof ScaledValuesCategorical)) throw new Error(ErrorMessages.invalidScaledValuesCombination)
     this.x = x
+  }
+
+  getRect(i: number): Rect {
+    return this.geometryScaleHandler.getBarRect(i)
   }
 
   clone() {
