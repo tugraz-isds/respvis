@@ -37,7 +37,7 @@ function renderLabel(labelS: Selection<any, LabelData>) {
     .on('change', function (e) {
       data.onChange?.(e, data.type)
     })
-  if (data.defaultVal) inputS.attr('checked', data.defaultVal)
+  if (data.defaultVal !== undefined) inputS.property('checked', data.defaultVal)
   if (data.dataKey) inputS.attr('data-key', data.dataKey)
 
   labelS.selectAll('span')

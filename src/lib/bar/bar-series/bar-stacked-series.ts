@@ -7,6 +7,7 @@ import {ScaledValuesAggregation} from "../../core/data/scale/scaled-values-aggre
 import {createStackedBar} from "./bar-creation.ts/bar-stacked-creation";
 import {CategoryUserArgs} from "../../core/data/category";
 import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "./bar-base-series";
+import {Bar} from "./bar";
 
 export type BarStackedSeriesUserArgs = BarBaseSeriesUserArgs & {
   type: 'stacked'
@@ -36,6 +37,11 @@ export class BarStackedSeries extends BarBaseSeries {
     this.categories = super.getCategories() as ScaledValuesCategorical
     if (!this.categories) throw new Error(ErrorMessages.missingArgumentForSeries)
     this.aggScaledValues = new ScaledValuesAggregation(this.y, this.x, this.categories, this.aggregationScale)
+  }
+
+  override getBarRects(): Bar[] {
+    this.aggScaledValues = new ScaledValuesAggregation(this.y.cloneFiltered(), this.x.cloneFiltered(), this.categories, this.aggregationScale)
+    return super.getBarRects();
   }
 
   getRect(i: number) {

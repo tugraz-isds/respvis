@@ -21,12 +21,6 @@ export function legendRender(parentS: Selection, data: LegendValid): LegendSelec
     legendItemsRender(legendS)
     legendCrossStateRender(legendS)
   })
-  legendS.on('pointerover.legend pointerout.legend', (e: PointerEvent) => {
-    const item = (<Element>e.target).closest('.legend-item');
-    if (item) {
-      item.classList.toggle('highlight', e.type.endsWith('over'));
-    }
-  })
 
   return legendS
 }
@@ -61,8 +55,6 @@ function legendCrossStateRender(selection: LegendSelection) {
 
   drawAreaS?.classed('cursor-cross', active)
 
-  if (!active || !drawAreaS || !backgroundS) return
-
   const onMouseMove = (e) => {
     const backgroundE = elementFromSelection(backgroundS) as Element
     const rect = backgroundE.getBoundingClientRect()
@@ -72,10 +64,10 @@ function legendCrossStateRender(selection: LegendSelection) {
     const scaledVals = series.getScaledValuesAtScreenPosition(x, y)
     const firstText = crossStateTextS.filter(function(d, i) { return i === 0; })
     const secondText = crossStateTextS.filter(function(d, i) { return i === 1; })
+    // console.log("HIHO", firstText, secondText)
     firstText.text(scaledVals.x ? "X: " + scaledVals.x : firstText.text())
     secondText.text(scaledVals.y ? "Y: " + scaledVals.y : secondText.text())
-    renderer.windowSelection.dispatch('resize')
   }
 
-  drawAreaS.on('mousemove.crossInfo', throttle(onMouseMove, 50))
+  drawAreaS?.on('mousemove.crossInfo', active ? throttle(onMouseMove, 50) : null as any)
 }

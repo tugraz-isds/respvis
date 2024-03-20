@@ -1,4 +1,4 @@
-import {Selection} from "d3";
+import {dispatch, Selection} from "d3";
 import {SVGHTMLElement} from "../../../constants/types";
 import {WindowArgs, windowRender, WindowValid, windowValidation} from "../../window";
 import {ChartValid} from "./chart-validation";
@@ -6,6 +6,7 @@ import {Renderer} from "../renderer";
 import {resizeEventListener} from "../../../resize-event-dispatcher";
 import {layouterCompute} from "../../../layouter";
 import {chartRender} from "./chart-render";
+import {throttle} from "../../../utilities/d3/util";
 
 export type ChartWindowedValid = WindowValid & ChartValid
 
@@ -13,9 +14,11 @@ export abstract class Chart implements Renderer {
   private addedListeners = false
   protected initialRenderHappened = false
   abstract windowSelection: Selection<SVGHTMLElement, ChartWindowedValid>
+  public readonly filterDispatch = dispatch<{ dataKey: string }>('filter')
   protected readonly initialWindowData: WindowValid
   protected renderCountSinceResize = 0
   protected renderInitialized?: NodeJS.Timeout
+  protected resizeObserver?: ResizeObserver
   chartSelection?: Selection<SVGSVGElement, ChartWindowedValid>
   drawAreaSelection?: Selection<SVGHTMLElement>
   layouterSelection?: Selection<HTMLDivElement>
@@ -32,7 +35,7 @@ export abstract class Chart implements Renderer {
     this.render()
     if (this.addedListeners) return
     this.addBuiltInListeners()
-    this.addFinalListeners()
+    this.resizeObserver = resizeEventListener(this.windowSelection)
     this.addedListeners = true
     this.render()
   }
@@ -46,15 +49,14 @@ export abstract class Chart implements Renderer {
   }
 
   private addFinalListeners() {
-    const instance = this
-    resizeEventListener(this.windowSelection)
     const rerender = () => {
-      // console.log('RERENDER!')
-      instance.renderCountSinceResize = 0
-      instance.initializeRender()
+      this.renderCountSinceResize = 0
+      this.initializeRender()
     }
-    // const throttledRerender = throttle(rerender, 50)
     this.windowSelection.on('resize.final', rerender)
+    //TODO: maybe add variant of throtteling which allows scheduling exactly one job?
+    this.windowSelection.on('pointermove.final pointerleave.final pointerdown.final pointerup.final',
+      throttle(() => this.windowSelection.dispatch('resize'), 50))
   }
 
   protected addBuiltInListeners() {}
@@ -80,6 +82,7 @@ export abstract class Chart implements Renderer {
     this.preRender()
     this.mainRender()
     this.postRender()
+    this.addFinalListeners()
     this.initialRenderHappened = true
   }
 

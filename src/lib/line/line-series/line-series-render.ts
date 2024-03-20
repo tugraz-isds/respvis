@@ -1,4 +1,4 @@
-import {Selection} from "d3";
+import {select, Selection} from "d3";
 import {Point, seriesPointCreatePoints, seriesPointJoin} from "../../point";
 import {rectFromString} from "../../core";
 import {LineSeries} from "./line-series-validation";
@@ -15,9 +15,16 @@ export function lineSeriesRender(pointLineS: Selection<Element, LineSeries>): vo
 
 function lineSeriesPointsRender(pointS: Selection<Element, LineSeries>, pointGroups: Point[][]) {
   if (!pointS.attr('bounds')) return
-  pointS.selectAll<SVGCircleElement, Point>('.point')
-    .data(pointGroups.flat(), (d) => d.key)
-    .call((s) => seriesPointJoin(pointS, s))
+  pointS.selectAll('.point-category')
+    .data(pointGroups)
+    .join('g')
+    .classed('point-category', true)
+    .each(function (d, i, g) {
+      select(g[i]).selectAll<SVGCircleElement, Point>('.point')
+        .data(pointGroups[i], (d) => d.key)
+        .call((s) => seriesPointJoin(pointS, s))
+    })
+
   pointS.on('pointerover.seriespointhighlight pointerout.seriespointhighlight', (e: PointerEvent) =>
     (<Element>e.target).classList.toggle('highlight', e.type.endsWith('over'))
   ).call((s) => seriesConfigTooltipsHandleEvents(s))

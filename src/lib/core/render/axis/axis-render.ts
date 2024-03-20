@@ -14,8 +14,7 @@ import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {axisTicksPostGenerationRender, axisTicksPreGenerationRender} from "./axis-ticks-render";
 import {tickAngleConfiguration} from "./tick-angle-configuration";
 import {getFilteredScaledValues} from "../../data/scale/axis-scaled-values-validation";
-import {backgroundSVGOnly} from "../../constants/dom/classes";
-import {ignoreBounds} from "../../constants/dom/attributes";
+import {backgrounSVGOnlyRender} from "../util/bg-svg-only-render";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
@@ -32,18 +31,7 @@ export function axisBottomRender(axisS: AxisSelection) {
 }
 
 export function axisSequenceRender(axisS: AxisSelection) {
-  //TODO: factor out own component for svgonly background rects
-  const { width, height, x, y } = axisS.node()!.getBBox()
-  axisS.selectAll(`.${backgroundSVGOnly}`)
-    .data([null])
-    .join('rect')
-    .classed(backgroundSVGOnly, true)
-    .attr('x', Math.floor(x))
-    .attr('y', Math.floor(y))
-    .attr('width', Math.floor(width))
-    .attr('height', Math.floor(height))
-    .attr('fill', 'transparent')
-    .attr(ignoreBounds, true)
+  backgrounSVGOnlyRender(axisS)
   axisS.classed('axis axis-sequence', true)
   return axisRender(axisS, d3Axis(d3AxisLeft, axisS))
 }

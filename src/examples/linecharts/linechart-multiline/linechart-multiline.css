@@ -27,15 +27,24 @@ body {
   #chart .point, #chart .axis-x .tick {
     display: none;
   }
-  #chart .point:first-of-type, #chart .point:last-of-type {
+  #chart .point-category .point:first-of-type, #chart .point-category .point:last-of-type {
     display: block;
   }
-  #chart .point:nth-of-type(4n), #chart .point:first-of-type, #chart .point:last-of-type, #chart .axis-x .tick:nth-of-type(4n) {
+  #chart .point-category .point:nth-of-type(4n) {
+    display: block;
+  }
+  #chart .axis-x .tick:nth-of-type(4n) {
     display: block;
   }
 }
 @media (min-width: 30rem) {
-  #chart .point:nth-of-type(2n), #chart .point:first-of-type, #chart .point:last-of-type, #chart .axis-x .tick:nth-of-type(2n) {
+  #chart .point-category .point:first-of-type, #chart .point-category .point:last-of-type {
+    display: block;
+  }
+  #chart .point-category .point:nth-of-type(2n) {
+    display: block;
+  }
+  #chart .axis-x .tick:nth-of-type(2n) {
     display: block;
   }
 }

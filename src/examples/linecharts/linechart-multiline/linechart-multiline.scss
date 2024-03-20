@@ -32,20 +32,23 @@ body {
     .point, .axis-x .tick {
       display: none;
     }
-    .point:first-of-type, .point:last-of-type {
-      display: block;
+
+    .point-category {
+      .point:first-of-type, .point:last-of-type { display: block; }
+      .point:nth-of-type(4n) { display: block }
     }
-    .point:nth-of-type(4n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(4n) {
-      display: block;
-    }
+    .axis-x .tick:nth-of-type(4n) { display: block}
+
   }
 }
 
 @media (min-width: 30rem) {
   #chart {
-    .point:nth-of-type(2n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(2n) {
-      display: block;
+    .point-category {
+      .point:first-of-type, .point:last-of-type { display: block; }
+      .point:nth-of-type(2n) { display: block }
     }
+    .axis-x .tick:nth-of-type(2n) { display: block}
   }
 }
 

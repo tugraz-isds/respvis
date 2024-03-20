@@ -4,6 +4,7 @@ import {rectFromString} from "../../utilities/rect";
 import {LegendSelection} from "./legend-render";
 import {SVGHTMLElement} from "../../constants/types";
 import {LegendValid} from "./legend-validation";
+import {backgrounSVGOnlyRender} from "../util/bg-svg-only-render";
 
 export function legendItemsRender(legendS: LegendSelection) {
   const itemS = legendS.selectAll<SVGHTMLElement, LegendValid>('.items')
@@ -31,7 +32,16 @@ export function legendItemsRender(legendS: LegendSelection) {
         if (!boundsAttr) return;
         itemD.symbol(symbolS.node()!, rectFromString(boundsAttr));
       });
+      backgrounSVGOnlyRender(itemS)
     })
     .attr('data-style', (d) => d.styleClass)
     .attr('data-key', (d) => d.key)
+    .on('click.filter', function (e, d) {
+      legendS.datum().renderer.filterDispatch
+        .call('filter', { dataKey: d.key }, this)
+    })
+    .on('pointerover.legend-item pointerout.legend-item', (e: PointerEvent) => {
+      const item = (<Element>e.currentTarget)
+      if (item) item.classList.toggle('highlight', e.type.endsWith('over'))
+    })
 }

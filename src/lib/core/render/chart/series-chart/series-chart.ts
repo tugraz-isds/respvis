@@ -1,5 +1,5 @@
 import {Chart} from "../chart";
-import {select, Selection} from "d3";
+import {Selection} from "d3";
 import {SVGHTMLElement} from "../../../constants/types";
 import {SeriesChartValid} from "./series-chart-validation";
 import {WindowValid} from "../../window";
@@ -21,26 +21,19 @@ export abstract class SeriesChart extends Chart {
 
   private addFilterListener() {
     const renderer = this
-    this.addCustomListener('change.filter', (e) => {
-      if (!e.target) return
-      const changeS = select(e.target as SVGHTMLElement)
-      if (changeS.attr('type') !== 'checkbox') return
-      // const parentS = changeS.select(function() {return this.parentElement})
-      // const currentKey = parentS.attr('data-key')
-      const currentKey = changeS.attr('data-key')
-      if (!currentKey) return
+    this.filterDispatch.on('filter', function() {
+      const currentKey = this.dataKey
+      const chartD = renderer.windowSelection.datum()
 
-      const newActive = changeS.property('checked')
-
-      this.windowSelection.datum().getAxes().forEach(axis => {
-        axis.scaledValues.setKeyActiveIfDefined(currentKey, newActive)
+      chartD.getAxes().forEach(axis => {
+        axis.scaledValues.setKeyActiveIfDefined(currentKey, !axis.scaledValues.isKeyActiveByKey(currentKey))
       })
 
-      this.windowSelection.datum().getSeries().forEach(series => {
+      chartD.getSeries().forEach(series => {
         if (series.keysActive[currentKey] !== undefined) {
-          series.keysActive[currentKey] = newActive
+          series.keysActive[currentKey] = !series.keysActive[currentKey]
         }
-        series.categories?.setKeyActiveIfDefined(currentKey, changeS.property('checked'))
+        series.categories?.setKeyActiveIfDefined(currentKey, !series.categories?.keysActive[currentKey])
       })
       renderer.windowSelection.dispatch('resize')
     })
