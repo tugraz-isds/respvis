@@ -15,15 +15,18 @@ export function classesForSelection(classes: string[], leadingSpace = false) {
 }
 
 // type WrapperFunction<T extends (...args: any[]) => K, K> = (func: T, delay: number) => T
-export function throttle<T extends (...args: any[]) => K, K>(func: T, delayMs: number): T {
-  let lastTime = 0;
-  return function (...args) {
-    const currentTime = new Date().getTime();
-    if (currentTime - lastTime >= delayMs) {
-      func.apply(this, args);
-      lastTime = currentTime;
+export function throttle<T extends (...args: any[]) => K, K>(func: T, delayMs: number) {
+  return {
+    lastTime: 0,
+    func: function (...args: any[]) {
+      const currentTime = new Date().getTime();
+      if (currentTime - this.lastTime >= delayMs) {
+        // console.trace('Func Works!?', currentTime - this.lastTime)
+        func.apply(this, args);
+        this.lastTime = currentTime;
+      }
     }
-  } as T
+  }
 }
 
 export function addRawSVGToSelection(selection: Selection, rawSVG: string) {

@@ -69,5 +69,6 @@ function legendCrossStateRender(selection: LegendSelection) {
     secondText.text(scaledVals.y ? "Y: " + scaledVals.y : secondText.text())
   }
 
-  drawAreaS?.on('mousemove.crossInfo', active ? throttle(onMouseMove, 50) : null as any)
+  const throttleObj = throttle(onMouseMove, 50)
+  drawAreaS?.on('mousemove.crossInfo', active ? (e) => throttleObj.func(e) : null as any)
 }

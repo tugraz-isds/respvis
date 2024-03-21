@@ -24,7 +24,8 @@ export function addZoom(selection: ZoomSelection, callback: (props: {
     }
     const throttledZoom = throttle(onZoom, throttleMs)
     pWrapper.call(
-      zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom.autozoom', throttledZoom)
+      zoom.behaviour.scaleExtent([zoom.out, zoom.in])
+        .on('zoom.autozoom', (e) => throttledZoom.func(e))
     )
   }
   function updateRangeExtent() {

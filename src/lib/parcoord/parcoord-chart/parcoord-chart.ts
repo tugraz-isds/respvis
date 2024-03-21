@@ -101,7 +101,7 @@ function addZoom(selection: ParcoordChartSVGChartSelection,
 
     const axisS = selection.selectAll<SVGGElement, any>(`.series-parcoord-axes > g.axis.axis-sequence:nth-of-type(${index + 1})`)
     axisS.call(
-      zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom.autozoom', throttledZoom)
+      zoom.behaviour.scaleExtent([zoom.out, zoom.in]).on('zoom.autozoom', (e) => throttledZoom.func(e))
     )
 
   }

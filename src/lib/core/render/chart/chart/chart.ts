@@ -19,6 +19,7 @@ export abstract class Chart implements Renderer {
   protected renderCountSinceResize = 0
   protected renderInitialized?: NodeJS.Timeout
   protected resizeObserver?: ResizeObserver
+  private resizeThrottle?: ReturnType<typeof throttle>
   chartSelection?: Selection<SVGSVGElement, ChartWindowedValid>
   drawAreaSelection?: Selection<SVGHTMLElement>
   layouterSelection?: Selection<HTMLDivElement>
@@ -53,10 +54,11 @@ export abstract class Chart implements Renderer {
       this.renderCountSinceResize = 0
       this.initializeRender()
     }
-    this.windowSelection.on('resize.final', rerender)
+    if (!this.resizeThrottle) this.resizeThrottle = throttle(() => this.windowSelection.dispatch('resize'), 30)
+    this.windowSelection.on('resize.final', () => rerender())
     //TODO: maybe add variant of throtteling which allows scheduling exactly one job?
     this.windowSelection.on('pointermove.final pointerleave.final pointerdown.final pointerup.final',
-      throttle(() => this.windowSelection.dispatch('resize'), 50))
+      () => this.resizeThrottle?.func())
   }
 
   protected addBuiltInListeners() {}

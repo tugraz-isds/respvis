@@ -30,8 +30,8 @@ export class ScatterPlot extends CartesianChart {
   protected override preRender() {
     super.preRender()
     if (!this.initialRenderHappened) return
-    const { series} = this.windowSelection.datum()
-    const { radii} = series
+    const { series } = this.windowSelection.datum()
+    const { radii } = series
     const { x, y } = series
     const drawArea = this.windowSelection.selectAll('.draw-area')
     const chartElement = elementFromSelection(this.chartSelection)
