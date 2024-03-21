@@ -35,12 +35,9 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^23.0.2",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-strip": "^3.0.4",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11",
     "@types/d3": "^7.1.0",
-    "@types/to-px": "^1.1.2",
-    "@types/uuid": "^8.3.0",
     "browser-sync": "^2.27.5",
     "del": "^6.0.0",
     "dotenv": "^16.4.5",
@@ -60,9 +57,6 @@
     "typescript": "^5.4.2"
   },
   "dependencies": {
-    "d3": "^7.2.1",
-    "debounce": "^1.2.1",
-    "to-px": "^1.1.0",
-    "uuid": "^8.3.2"
+    "d3": "^7.2.1"
   }
 }

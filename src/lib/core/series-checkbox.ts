@@ -1,5 +1,5 @@
 import {create, EnterElement, select, Selection, ValueFn} from 'd3';
-import {v4 as uuid} from 'uuid';
+import {uniqueId} from "./utilities/unique";
 
 export interface Checkbox {
   container: string | ValueFn<EnterElement, Checkbox, HTMLElement>;
@@ -71,7 +71,7 @@ export function seriesCheckboxJoin(
           .classed('checkbox', true)
           .each((d, i, g) => {
             const s = select(g[i]),
-              id = uuid();
+              id = uniqueId()
             const inputS = s.append('input').attr('type', 'checkbox').attr('id', id).attr('checked', true)
             inputS.on('click.categorycheck', (e) => onClick(e, d))
             s.append('label').attr('for', id);

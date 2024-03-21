@@ -1,19 +1,16 @@
 import {
-  CSSAbsoluteLengthUnit,
   CSSBreakPointLengthUnit,
-  CSSEMUnit,
   CSSLengthRegex,
   CSSLengthUnit,
-  CSSPERUnit,
   LengthDimension,
   UnitValue
 } from "../../constants/types";
 import {ErrorMessages} from "../error";
 
-
-export function cssLengthInPx(length: UnitValue<CSSAbsoluteLengthUnit>): number
-export function cssLengthInPx(length: UnitValue<CSSEMUnit>, element: Element): number
-export function cssLengthInPx(length: UnitValue<CSSPERUnit>, element: Element, dim: LengthDimension): number
+//TODO: maybe add additional units like ch, vh, etc.
+// export function cssLengthInPx(length: UnitValue<CSSAbsoluteLengthUnit>): number
+// export function cssLengthInPx(length: UnitValue<CSSEMUnit>, element: Element): number
+// export function cssLengthInPx(length: UnitValue<CSSPERUnit>, element: Element, dim: LengthDimension): number
 export function cssLengthInPx(length: UnitValue<CSSLengthUnit>, element?: Element, dim?: LengthDimension) {
   const match = length.match(CSSLengthRegex)
   if (!match) return 0

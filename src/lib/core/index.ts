@@ -1,4 +1,3 @@
-export { v4 as uuid } from 'uuid';
 export * from './utilities/size';
 export * from './utilities/position';
 export * from './utilities/array';

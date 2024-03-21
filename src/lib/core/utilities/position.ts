@@ -1,7 +1,4 @@
-import { ValueFn } from 'd3';
-import { Circle } from './circle';
-import { Rect } from './rect';
-import { isTransition, SelectionOrTransition } from './d3/selection';
+import {SelectionOrTransition} from './d3/selection';
 
 export interface Position {
   x: number;

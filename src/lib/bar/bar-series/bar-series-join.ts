@@ -1,7 +1,8 @@
 import {easeCubicOut, select, Selection, Transition} from "d3";
 import {Bar} from "./bar";
 import {rectFitStroke, rectMinimized, rectToAttrs} from "../../core";
-import toPX from "to-px";
+import {cssLengthInPx} from "../../core/utilities/dom/units";
+import {CSSLengthUnit, UnitValue} from "../../core/constants/types";
 
 export interface JoinEvent<GElement extends Element, Datum>
   extends CustomEvent<{ selection: Selection<GElement, Datum> }> {
@@ -41,7 +42,11 @@ export function barSeriesJoin(
         .transition('position')
         .duration(250)
         .ease(easeCubicOut)
-        .call((t) => rectToAttrs(t, rectFitStroke(d, toPX(select(g[i]).style('stroke-width')!)!)))
+        .call((t) => {
+          const cssLength = select(g[i]).style('stroke-width')! as UnitValue<CSSLengthUnit>
+          const strokeSize = cssLengthInPx(cssLength, select(g[i]).node()!)
+          return rectToAttrs(t, rectFitStroke(d, strokeSize))
+        })
     )
     .attr('data-style', (d) => d.styleClass)
     .attr('data-key', (d) => d.key)

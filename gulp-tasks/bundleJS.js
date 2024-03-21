@@ -33,7 +33,8 @@ async function bundleJS(mode) {
         startComment: '/* DEV_MODE_ONLY_START */',
         endComment: '/* DEV_MODE_ONLY_END */'
       }) : null,
-    ].filter(plugin => plugin)
+    ].filter(plugin => plugin),
+    // external: ['d3']
   });
 
   const minPlugins = [rollupTerser()];
