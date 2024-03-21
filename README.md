@@ -43,7 +43,7 @@ defines three public tasks:
 - The `serve` task first executes the build task, then additionally
   executes a private task called watcher which has two
   responsibilities: First, the browser-sync package is used to
-  initialize a live server which serves the `dist` directory. Then,
+  initialise a live server which serves the `dist` directory. Then,
   file watchers are initiated which automatically update the `dist`
   folder when making any relevant changes in the `src` folder and
   notify browsers to reload the page.

@@ -1,7 +1,7 @@
 {
   "name": "respvis",
   "version": "0.2.0",
-  "description": "A library to build responsive SVG-based visualizations.",
+  "description": "A library to build responsive SVG-based visualisations.",
   "main": "./package/cjs/index.js",
   "module": "./package/esm/index.js",
   "files": [
@@ -21,8 +21,8 @@
     "d3",
     "responsive",
     "svg",
-    "information-visualization",
-    "visualization",
+    "information-visualisation",
+    "visualisation",
     "chart"
   ],
   "author": "David Egger, Peter Oberrauner",
