@@ -1,5 +1,49 @@
 .chart.chart-parcoord {
-  text, text[data-orientation='horizontal'] {
-    dominant-baseline: central;
+  .padding-wrapper { //.draw-area
+    display: grid;
+    grid-area: padding-wrapper;
+    grid-template: 1fr / 1fr;
+    grid-template-areas: 'draw-area';
+    padding: 3rem;
+    overflow: hidden;
+    .draw-area {
+      overflow: visible
+    }
+  }
+  .axis.axis-sequence {
+    position: relative;
+    div.title-wrapper {
+      position: absolute;
+      bottom: 100%;
+      .subtitle {
+        translate: 0 -3px;
+        //margin-top: -3px;
+      }
+    }
+    .title-wrapper {
+      --fit-height: true;
+      .title, .subtitle {
+        --fit-height: true;
+        --fit-width: true;
+        text {
+          text-anchor: middle;
+          dominant-baseline: hanging;
+        }
+      }
+    }
+
+    .ticks-transform {
+      grid-area: ticks-transform;
+    }
+    //.ticks text {
+    //  text-anchor: end;
+    //  dominant-baseline: middle;
+    //}
   }
 }
+
+//.chart.chart-parcoord {
+//  text, text[data-orientation='horizontal'] {
+//    dominant-baseline: central;
+//  }
+//}

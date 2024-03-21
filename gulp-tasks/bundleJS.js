@@ -2,10 +2,12 @@ const rollup = require("rollup");
 const {default: rollupNodeResolve} = require("@rollup/plugin-node-resolve");
 const rollupCommonJs = require("@rollup/plugin-commonjs");
 const rollupTypescript = require("@rollup/plugin-typescript");
-const {terser: rollupTerser} = require("rollup-plugin-terser");
+const rollupTerser = require("@rollup/plugin-terser");
 const {default: rollupGzip} = require("rollup-plugin-gzip");
 const fs = require("fs");
 const {rootDir} = require('./paths')
+const {stripCode} = require('./rollup-plugin/codeStripPlugin');
+const { string } = require("rollup-plugin-string");
 
 async function bundleJSDevelopment() {
   await bundleJS("development")
@@ -21,8 +23,17 @@ async function bundleJS(mode) {
     plugins: [
       rollupNodeResolve({ browser: true }),
       rollupCommonJs(),
-      rollupTypescript({ tsconfig: `${rootDir}/tsconfig.json` })
-    ]
+      string({
+        include: "**/*.svg"
+      }),
+      rollupTypescript({
+        tsconfig: `${rootDir}/tsconfig.json`,
+      }),
+      process.env.STRIP_CODE === 'true' ? stripCode({
+        startComment: '/* DEV_MODE_ONLY_START */',
+        endComment: '/* DEV_MODE_ONLY_END */'
+      }) : null,
+    ].filter(plugin => plugin)
   });
 
   const minPlugins = [rollupTerser()];
@@ -41,6 +52,7 @@ async function bundleJS(mode) {
       name: 'respVis',
       plugins: c.plugins,
       sourcemap: true,
+      inlineDynamicImports: true,
     }).then(() => {
       const fileData = fs.readFileSync(`${location}/respvis.${c.extension}`, 'utf8');
       const formatString = format === 'iife' ? 'IIFE' :

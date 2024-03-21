@@ -17,13 +17,17 @@ const exampleDirList = [
   `${exampleDir}/barcharts/grouped-barchart`,
   `${exampleDir}/barcharts/stacked-barchart`,
 
-  `${exampleDir}/experimental/parcoord`,
-  `${exampleDir}/experimental/scatterplot-colourscale`,
+  `${exampleDir}/parcoords/parcoord`,
 
   `${exampleDir}/linecharts/linechart`,
   `${exampleDir}/linecharts/linechart-multiline`,
 
   `${exampleDir}/scatterplots/scatterplot`,
+  `${exampleDir}/scatterplots/scatterplot-style-container-queries`,
+  `${exampleDir}/scatterplots/scatterplot-labels`,
+
+  `${exampleDir}/experimental/aggregated-barchart`,
+  `${exampleDir}/experimental/scatterplot-colourscale`,
 ]
 
 module.exports = {

@@ -1,0 +1,13 @@
+#chart {
+  width: 100%;
+  height: 75vh;
+  min-height: 25rem;
+}
+#chart .padding-wrapper {
+  padding-right: 6rem;
+  padding-left: 4rem;
+}
+
+body {
+  background-color: floralwhite;
+}

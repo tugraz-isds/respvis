@@ -14,35 +14,8 @@
 <div id="chart"> </div>
 
 <script type="module">
-  import {chartWindowLineData, chartWindowLineRender} from './libs/respvis/respvis.js';
-
-  import {years, students} from './data/students-tugraz.js';
-  import * as d3 from './libs/d3-7.6.0/d3.js'
-  import {chooseResponsiveData} from "./chooseResponsiveData.js";
-
-  const calcData = () => {
-    return {
-      xValues: years,
-      yValues: [students],
-      xAxis: {title: 'Year', subtitle: '[2012 to 2021]'},
-      yAxis: {title: 'Students', subtitle: '[Winter Semester]'},
-      markerTooltips: {
-        tooltips: (_, {xValue, yValue}) =>
-          `Year: ${xValue}<br/>Students: ${d3.format('.2f')(yValue)}`,
-      },
-      markerLabels: (_, {xValue, yValue}) => `${xValue}: ${d3.format('.2s')(yValue)}`,
-    };
-  }
-
-  const chart = d3
-    .select('#chart')
-    .append('div')
-    .datum(chartWindowLineData(calcData()))
-    .call(chartWindowLineRender)
-    .on('resize', (e, d) => {
-      chooseResponsiveData(document.documentElement, d)
-      chart.datum(chartWindowLineData(d)).call(chartWindowLineRender);
-    });
+  import {createLineChart} from "./linechart.ts"
+  createLineChart('#chart')
 </script>
 </body>
 </html>

@@ -24,10 +24,7 @@ body {
   .chart {
     padding: 1rem 3rem 0 3rem;
   }
-  .chart .header .subtitle {
-    display: none;
-  }
-  .axis {
+  .chart .axis > * {
     display: none !important;
   }
   .point:first-of-type,

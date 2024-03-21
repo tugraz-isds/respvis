@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <title>RespVis - Parallel Coordinates Chart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="styles/respvis.css"/>
+  <link rel="stylesheet" href="parcoord.css"/>
+</head>
+<body>
+<h1>Parallel Coordinates Chart</h1>
+<noscript>Please enable JavaScript!</noscript>
+<div id="chart"> </div>
+
+<script type="module">
+  import {renderParcoord} from "./parcoord.ts";
+  renderParcoord('#chart')
+</script>
+</body>
+</html>

@@ -8,7 +8,7 @@ async function bundleDeclaration() {
     plugins: [dts.default()]
   });
   await bundle.write({
-    file: `${rootDir}/package/index.d.ts`,
+    file: `${rootDir}/package/respvis.d.ts`,
     format: "esm"
   })
 }

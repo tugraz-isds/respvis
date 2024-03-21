@@ -9,21 +9,6 @@ const bounds = [
 
 export function chooseResponsiveData(element, data) {
   const index = findMatchingBoundsIndex(element, bounds)
-  switch (index) {
-    case 0:
-      data.title = 'Students Registered at TU Graz';
-      data.subtitle = '';
-      break
-    case 1:
-    case 2:
-      data.title = 'Registered Students';
-      data.subtitle = 'TU Graz';
-      break;
-    default:
-      data.title = 'Students at TU Graz';
-      data.subtitle = '';
-      break
-  }
 
   switch (index) {
     case 0:

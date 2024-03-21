@@ -6,26 +6,44 @@
 
 body {
   background-color: floralwhite;
-  --color-categorical-0: #4f8c9d;
-  --color-categorical-1: #e23209;
-  --color-categorical-2: #539322;
+  [data-style=categorical-0] { --color-categorical-0: #4f8c9d; }
+  [data-style=categorical-1] { --color-categorical-1: #e23209; }
+  [data-style=categorical-2] { --color-categorical-2: #539322; }
+}
+
+#chart {
+  .legend .items {
+    .legend-item {
+      width: auto;
+    }
+    align-items: flex-end;
+  }
 }
 
 @media (width < 45rem) {
   .chart {
-    grid-template:
-        'header header'
-        'axis-left draw-area' 1fr
-        '. axis-bottom' auto
-        '. legend' auto / auto 1fr;
+    grid-template: auto 1fr auto / 1fr;
+    grid-template-areas:
+      'header'
+      'padding-wrapper'
+      'legend';
+    .legend {
+      padding: 1rem;
+      .items {
+        align-items: center;
+      }
+    }
   }
+
 
   .legend .title {
     display: none;
   }
 
   .legend .items {
+    width: 100%;
     flex-direction: row;
+    justify-content: space-evenly;
   }
 
   .axis-y .tick:nth-of-type(2n) {

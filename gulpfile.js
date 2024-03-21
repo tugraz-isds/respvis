@@ -9,6 +9,10 @@ const {buildLibSCSS} = require("./gulp-tasks/buildSCSS");
 const {copyExamples} = require("./gulp-tasks/copyExamples");
 const {watcher} = require("./gulp-tasks/watcher");
 
+const mode = process.argv.includes('--dev') ? 'dev' : 'prod'
+const envFile = '.env.' + mode
+require('dotenv').config({path: envFile})
+
 function cleanDist() {
   return del('dist', { force: true });
 }

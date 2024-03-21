@@ -3,11 +3,14 @@ const mergeStream = require('merge-stream')
 const {libsDepsDir, stylesDepsDir} = require('./paths')
 
 function createExampleDependencies() {
-  return mergeStream([createGlobalStyleDependency(), createRespvisDependency()])
+  return mergeStream([createGlobalStyleDependency(), ...createRespvisDependencies()])
 }
 
-function createRespvisDependency() {
-  return gulp.src('./package/esm/respvis.js').pipe(gulp.dest(`${libsDepsDir}/respvis`));
+function createRespvisDependencies() {
+  return [
+    gulp.src('./package/esm/respvis.js').pipe(gulp.dest(`${libsDepsDir}/respvis`)),
+    gulp.src('./package/respvis.d.ts').pipe(gulp.dest(`${libsDepsDir}/respvis`))
+  ];
 }
 
 function createGlobalStyleDependency() {

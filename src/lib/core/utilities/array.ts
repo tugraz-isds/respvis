@@ -23,3 +23,13 @@ export function arrayPartition<T>(array: T[], size: number): T[][] {
   for (let i = 0; i < array.length; i += size) partitions.push(array.slice(i, i + size));
   return partitions;
 }
+
+export function arrayAlignLengths<T1, T2>(array1: T1, array2: T2): [T1, T2] {
+  if (!Array.isArray(array1) || !Array.isArray(array2)) throw new Error('Wrong usage of array util!')
+  const lowerLength = array1.length < array2.length ? array1.length : array2.length
+  return [array1.slice(0, lowerLength) as T1, array2.slice(0, lowerLength) as T2]
+}
+
+export function sum(array: number[]) {
+  return array.reduce((sum, val) => sum + val, 0)
+}

@@ -7,21 +7,25 @@ export * from './utilities/rect';
 export * from './utilities/circle';
 export * from './utilities/path';
 export * from './utilities/formats';
-export * from './utilities/resizing/matchBounds';
+export * from './data/breakpoint/matchBounds';
 
-export * from './utilities/selection';
+export * from './utilities/d3/selection';
 export * from './layouter';
 export * from './resize-event-dispatcher';
 
-export * from './utilities/scale';
+export * from './data/scale/axis-scaled-values-validation';
 
-export * from './axis';
-export * from './charts';
+export * from './render';
 
 export * from './utilities/text';
 
 export * from './series-checkbox';
 export * from './menu-dropdown';
 
-export * from './tools/tool-download-svg';
-export * from './tools/tool-filter-nominal';
+export {ScaleAny} from "./data/scale/scales";
+export {ScaleContinuous} from "./data/scale/scales";
+export {convertToPx} from "./utilities/dom/units";
+
+
+export * from './packagesDeps'
+

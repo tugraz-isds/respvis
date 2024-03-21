@@ -7,6 +7,9 @@ body {
   height: 75vh;
   min-height: 25rem;
 }
+#chart .padding-wrapper {
+  padding-right: 1rem;
+}
 #chart .series-label .label {
   display: none;
 }
@@ -24,22 +27,31 @@ body {
   #chart .point, #chart .axis-x .tick {
     display: none;
   }
-  #chart .point:first-of-type, #chart .point:last-of-type {
+  #chart .point-category .point:first-of-type, #chart .point-category .point:last-of-type {
     display: block;
   }
-  #chart .point:nth-of-type(4n), #chart .point:first-of-type, #chart .point:last-of-type, #chart .axis-x .tick:nth-of-type(4n) {
+  #chart .point-category .point:nth-of-type(4n) {
+    display: block;
+  }
+  #chart .axis-x .tick:nth-of-type(4n) {
     display: block;
   }
 }
 @media (min-width: 30rem) {
-  #chart .point:nth-of-type(2n), #chart .point:first-of-type, #chart .point:last-of-type, #chart .axis-x .tick:nth-of-type(2n) {
+  #chart .point-category .point:first-of-type, #chart .point-category .point:last-of-type {
+    display: block;
+  }
+  #chart .point-category .point:nth-of-type(2n) {
+    display: block;
+  }
+  #chart .axis-x .tick:nth-of-type(2n) {
     display: block;
   }
 }
 @media (max-width: 50rem) {
   .chart {
-    grid-template: auto auto 1fr auto/auto 1fr auto;
-    grid-template-areas: "header  header  header" "legend legend legend" "axis-left draw-area draw-area" " . axis-bottom . ";
+    grid-template: auto auto 1fr/1fr;
+    grid-template-areas: "header" "legend" "padding-wrapper";
   }
   .legend {
     width: 100%;

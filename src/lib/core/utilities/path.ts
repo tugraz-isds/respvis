@@ -1,4 +1,4 @@
-import { SelectionOrTransition } from './selection';
+import { SelectionOrTransition } from './d3/selection';
 import { Circle } from './circle';
 import { Rect } from './rect';
 import { elementIs } from './element';

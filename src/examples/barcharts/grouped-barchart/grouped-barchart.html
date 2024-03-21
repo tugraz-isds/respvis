@@ -14,51 +14,8 @@
 <div id="chart"> </div>
 
 <script type="module">
-  import {
-    chartWindowBarGroupedData,
-    chartWindowBarGroupedRender,
-    chartWindowBarGroupedAutoFilterCategories,
-    chartWindowBarGroupedAutoFilterSubcategories,
-  } from './libs/respvis/respvis.js';
-
-  import {sites, compensations, years} from './data/compensation-employees.js';
-  import * as d3 from './libs/d3-7.6.0/d3.js'
-  import {chooseResponsiveData} from "./chooseResponsiveData.js";
-
-  const calcData = () => {
-    return {
-      categoryEntity: 'Countries',
-      categories: sites,
-      subcategoryEntity: 'Years',
-      subcategories: years,
-      values: compensations,
-      labels: {labels: compensations.flat().map((r) => d3.format('.2s')(r))},
-      legend: {title: 'Year'},
-      tooltips: (e, {category, subcategory, value}) =>
-        `Site: ${category}<br/>Year: ${subcategory}<br/>Total Remuneration: $${d3.format(',')(value)}`,
-      xAxis: {
-        title: 'Country',
-      },
-      yAxis: {
-        title: 'Total Remuneration',
-        subtitle: '[EU]'
-      }
-    };
-  }
-
-  const data = calcData()
-
-  const chartWindow = d3
-    .select('#chart')
-    .append('div')
-    .datum(chartWindowBarGroupedData(data))
-    .call(chartWindowBarGroupedRender)
-    .call(chartWindowBarGroupedAutoFilterCategories(data))
-    .call(chartWindowBarGroupedAutoFilterSubcategories(data))
-    .on('resize', function (e, d) {
-      chooseResponsiveData(document.documentElement, d)
-      chartWindow.datum(chartWindowBarGroupedData(d)).call(chartWindowBarGroupedRender);
-    });
+  import {renderGroupedBarChart} from './grouped-barchart.ts'
+  renderGroupedBarChart('#chart')
 </script>
 </body>
 </html>

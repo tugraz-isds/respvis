@@ -1,15 +1,11 @@
-import { select, Selection } from 'd3';
-import { elementRelativeBounds } from './utilities/element';
-import { positionToTransformAttr } from './utilities/position';
-import {
-  rectBottomLeft,
-  rectEquals,
-  rectFromString,
-  rectToAttrs,
-  rectTopRight,
-  rectToString,
-} from './utilities/rect';
-import { circleInsideRect, circleToAttrs } from './utilities/circle';
+import {select, Selection} from 'd3';
+import {elementRelativeBounds} from './utilities/element';
+import {positionToTransformAttr} from './utilities/position';
+import {rectBottomLeft, rectEquals, rectFromString, rectToAttrs, rectTopRight, rectToString,} from './utilities/rect';
+import {circleInsideRect, circleToAttrs} from './utilities/circle';
+import {cssVars} from "./constants/cssVars";
+import {backgroundSVGOnly} from "./constants/dom/classes";
+import {ignoreBounds} from "./constants/dom/attributes";
 
 function layoutNodeRoot(layouter: HTMLDivElement): Selection<HTMLDivElement, SVGElement> {
   return select(layouter)
@@ -21,9 +17,10 @@ function layoutNodeRoot(layouter: HTMLDivElement): Selection<HTMLDivElement, SVG
 function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGElement>): void {
   selection.each((d, i, g) => {
     const propTrue = (p: string) => p.trim() === 'true';
-    const computedStyle = window.getComputedStyle(g[i]);
-    const fitWidth = propTrue(computedStyle.getPropertyValue('--fit-width'));
-    const fitHeight = propTrue(computedStyle.getPropertyValue('--fit-height'));
+    const computedStyleHTMLElement = window.getComputedStyle(g[i]);
+    const computedStyleSVGElement = window.getComputedStyle(d);
+    const fitWidth = propTrue(computedStyleHTMLElement.getPropertyValue('--fit-width'));
+    const fitHeight = propTrue(computedStyleHTMLElement.getPropertyValue('--fit-height'));
 
     let style = '';
     if (fitWidth || fitHeight) {
@@ -32,6 +29,9 @@ function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGElement>): 
       if (fitHeight) style += `height: ${bbox.height}px; `;
     }
     g[i].setAttribute('style', style);
+    for (let varIndex= 0, len= cssVars.length; varIndex < len; varIndex++) {
+      g[i].style.setProperty(cssVars[varIndex], computedStyleSVGElement.getPropertyValue(cssVars[varIndex]))
+    }
   });
 }
 
@@ -70,8 +70,30 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGElement>): boo
     const svgS = select(svgE);
     const prevBounds = rectFromString(svgS.attr('bounds') || '0, 0, 0, 0');
     const bounds = elementRelativeBounds(this);
-    const changed = !rectEquals(prevBounds, bounds, 0.1);
+    const changed = !rectEquals(prevBounds, bounds, 1);
+
+    // if (svgE.classList.contains('axis-y')) {
+    //   const epsilon = 1
+    //   const xAbs = Math.abs(bounds.x - prevBounds.x)
+    //   const yAbs = Math.abs(bounds.y - prevBounds.y)
+    //   const heightAbs = Math.abs(bounds.height - prevBounds.height)
+    //   const widthAbs = Math.abs(bounds.width - prevBounds.width)
+    //   if (xAbs > epsilon)  {
+    //     console.log(svgE.classList, xAbs, 'X')
+    //   }
+    //   if (yAbs > epsilon)  {
+    //     console.log(svgE.classList, yAbs, 'Y')
+    //   }
+    //   if (widthAbs > epsilon)  {
+    //     console.log(svgE.classList, widthAbs, 'WIDTH')
+    //   }
+    //   if (heightAbs > epsilon)  {
+    //     console.log(svgE.classList, heightAbs, 'Height')
+    //   }
+    // }
+    if (svgE.hasAttribute(ignoreBounds)) return
     anyChanged = anyChanged || changed;
+    if (svgE.classList.contains(backgroundSVGOnly)) return
     if (changed) {
       svgS.attr('bounds', rectToString(bounds));
       switch (svgE.tagName) {
@@ -119,7 +141,9 @@ export function layouterRender(selection: Selection<HTMLDivElement>): void {
   selection.classed('layouter', true);
 }
 
-export function layouterCompute(selection: Selection<HTMLDivElement>): void {
+export function layouterCompute(selection: Selection<HTMLDivElement>, dispatch = true) {
+  let anyBoundsChanged = false;
+
   selection.each(function () {
     const layouterS = select(this);
     const layoutRootS = layoutNodeRoot(this);
@@ -132,7 +156,6 @@ export function layouterCompute(selection: Selection<HTMLDivElement>): void {
       layoutS = layoutNodeChildren(layoutS);
     }
 
-    let anyBoundsChanged = false;
     layouterS.selectAll<HTMLDivElement, SVGElement>('.layout').each(function () {
       const layoutS = select<HTMLDivElement, SVGElement>(this);
       const boundsChanged = layoutNodeBounds(layoutS);
@@ -150,7 +173,11 @@ export function layouterCompute(selection: Selection<HTMLDivElement>): void {
         .attr('height', null)
         .attr('viewBox', rectToString({ ...bounds, x: 0, y: 0 }));
 
-      layouterS.dispatch('boundschange');
+      //TODO: Think about better solution and layouter process in general than using flag here
+      if (dispatch) layouterS.dispatch('boundschange');
     }
   });
+
+
+  return anyBoundsChanged
 }

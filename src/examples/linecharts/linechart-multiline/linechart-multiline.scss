@@ -6,6 +6,9 @@ body {
   width: 100%;
   height: 75vh;
   min-height: 25rem;
+  .padding-wrapper {
+    padding-right: 1rem;
+  }
 
   .series-label .label {
     display: none;
@@ -29,31 +32,33 @@ body {
     .point, .axis-x .tick {
       display: none;
     }
-    .point:first-of-type, .point:last-of-type {
-      display: block;
+
+    .point-category {
+      .point:first-of-type, .point:last-of-type { display: block; }
+      .point:nth-of-type(4n) { display: block }
     }
-    .point:nth-of-type(4n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(4n) {
-      display: block;
-    }
+    .axis-x .tick:nth-of-type(4n) { display: block}
+
   }
 }
 
 @media (min-width: 30rem) {
   #chart {
-    .point:nth-of-type(2n), .point:first-of-type, .point:last-of-type, .axis-x .tick:nth-of-type(2n) {
-      display: block;
+    .point-category {
+      .point:first-of-type, .point:last-of-type { display: block; }
+      .point:nth-of-type(2n) { display: block }
     }
+    .axis-x .tick:nth-of-type(2n) { display: block}
   }
 }
 
 @media (max-width: 50rem) {
   .chart {
-    grid-template: auto auto 1fr auto / auto 1fr auto;
+    grid-template: auto auto 1fr / 1fr;
     grid-template-areas:
-        'header  header  header'
-        'legend legend legend'
-        'axis-left draw-area draw-area'
-        ' . axis-bottom . ';
+      'header'
+      'legend'
+      'padding-wrapper';
   }
 
   .legend {

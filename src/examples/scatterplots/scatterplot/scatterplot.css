@@ -7,49 +7,51 @@ body {
   height: 75vh;
   min-height: 25rem;
 }
-#chart .legend {
+#chart .window-rv {
+  container-type: inline-size;
+}
+#chart .window-rv .legend {
   align-items: flex-start;
 }
-#chart .legend .title {
+#chart .window-rv .legend .title {
   margin: 0;
 }
-
-@media (min-width: 60rem) {
-  .tick {
+@container (min-width: 60rem) {
+  #chart .window-rv .tick {
     display: block;
   }
 }
-@media (width < 40rem) {
-  .chart {
-    grid-template: auto 1fr auto auto/auto 1fr auto;
-    grid-template-areas: "header  header  header" "axis-left draw-area draw-area" " . axis-bottom . " " . legend .";
+@container (width < 40rem) {
+  #chart .window-rv .chart {
+    grid-template: auto 1fr auto/1fr;
+    grid-template-areas: "header" "padding-wrapper" "legend";
   }
-  .legend {
+  #chart .window-rv .legend {
     width: 100%;
     margin-bottom: 2rem;
     margin-left: 0.5rem;
     flex-direction: row;
     justify-content: center;
   }
-  .legend .items {
+  #chart .window-rv .legend .items {
     display: grid;
     width: 100%;
     justify-content: space-between;
     grid-template-columns: auto auto auto;
   }
-  .legend .items .legend-item {
+  #chart .window-rv .legend .items .legend-item {
     justify-content: flex-start;
   }
-  .axis-x .tick {
+  #chart .window-rv .axis-x .tick {
     display: none;
   }
-  .axis-x .tick:nth-of-type(2n), .axis-x .tick:first-of-type, .axis-x .tick:last-of-type {
+  #chart .window-rv .axis-x .tick:nth-of-type(2n), #chart .window-rv .axis-x .tick:first-of-type, #chart .window-rv .axis-x .tick:last-of-type {
     display: block;
   }
-  .axis-y .tick {
+  #chart .window-rv .axis-y .tick {
     display: none;
   }
-  .axis-y .tick:nth-of-type(2n + 1), .axis-y .tick:first-of-type, .axis-y .tick:last-of-type {
+  #chart .window-rv .axis-y .tick:nth-of-type(2n + 1), #chart .window-rv .axis-y .tick:first-of-type, #chart .window-rv .axis-y .tick:last-of-type {
     display: block;
   }
 }
