@@ -9,6 +9,7 @@
   ],
   "types": "./package/index.d.ts",
   "scripts": {
+    "cleanAll": "npx gulp cleanAll",
     "clean": "npx gulp clean",
     "build": "npx gulp build",
     "dev": "npx gulp serve --dev",

@@ -21,9 +21,19 @@ function cleanPackage() {
   return del('package', { force: true });
 }
 
+function cleanPackageLock() {
+  return del('package-lock.json', { force: true });
+}
+
+function cleanNodeModules() {
+  return del('node_modules', { force: true });
+}
+
 // # Public tasks
 
 exports.clean = gulp.parallel(cleanDist, cleanPackage);
+
+exports.cleanAll = gulp.parallel(exports.clean, cleanPackageLock, cleanNodeModules)
 
 // TODO: add proxy respvis.js for typescript support in all concerned directories
 exports.build = gulp.series(
