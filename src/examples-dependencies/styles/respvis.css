@@ -421,30 +421,19 @@
 .legend-item {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
   gap: 0.6em;
-  width: 100%;
   font-size: var(--font-size-legend-label);
   --fit-height: false;
 }
-.legend-item.highlight {
-  font-size: calc(1.4 * var(--font-size-legend-label));
-}
 .legend-item:active {
   font-weight: bold;
-}
-.legend-item .text {
-  --fit-height: false;
 }
 .legend-item .symbol {
   stroke: #000;
   stroke-width: 1px;
   width: 1em;
   height: 1em;
-}
-.legend-item .label {
-  dominant-baseline: central;
 }
 
 .highlight.legend-item .symbol {
@@ -536,7 +525,7 @@ text[data-align-v=bottom] {
 
 text,
 text[data-orientation=horizontal] {
-  dominant-baseline: hanging;
+  dominant-baseline: central;
   text-anchor: start;
 }
 

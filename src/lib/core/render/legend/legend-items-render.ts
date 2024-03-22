@@ -5,6 +5,7 @@ import {LegendSelection} from "./legend-render";
 import {SVGHTMLElement} from "../../constants/types";
 import {LegendValid} from "./legend-validation";
 import {backgrounSVGOnlyRender} from "../util/bg-svg-only-render";
+import {Size} from "../../utilities/size";
 
 export function legendItemsRender(legendS: LegendSelection) {
   const itemS = legendS.selectAll<SVGHTMLElement, LegendValid>('.items')
@@ -30,7 +31,9 @@ export function legendItemsRender(legendS: LegendSelection) {
       itemS.selectAll<SVGPathElement, any>('.symbol').call((symbolS) => {
         const boundsAttr = symbolS.attr('bounds');
         if (!boundsAttr) return;
-        itemD.symbol(symbolS.node()!, rectFromString(boundsAttr));
+        //TODO: this is only a temporary fix as layouter does also apply translation which
+        // would make it double
+        itemD.symbol(symbolS.node()!, {...rectFromString(boundsAttr), x: 0, y: 0} as Size);
       });
       backgrounSVGOnlyRender(itemS)
     })

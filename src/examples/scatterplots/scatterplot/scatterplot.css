@@ -29,9 +29,11 @@ body {
   #chart .window-rv .legend {
     width: 100%;
     margin-bottom: 2rem;
-    margin-left: 0.5rem;
     flex-direction: row;
     justify-content: center;
+  }
+  #chart .window-rv .legend .title {
+    display: none;
   }
   #chart .window-rv .legend .items {
     display: grid;

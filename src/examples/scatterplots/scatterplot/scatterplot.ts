@@ -97,7 +97,7 @@ export function createScatterplot(selector: string) {
       title: {
         dependentOn: 'width',
         scope: 'chart',
-        mapping: {0: '', 1: 'Legend'}
+        mapping: {0: '', 1: 'Makes'}
       },
     },
     zoom: {

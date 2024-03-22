@@ -64,7 +64,7 @@ function legendCrossStateRender(selection: LegendSelection) {
     const scaledVals = series.getScaledValuesAtScreenPosition(x, y)
     const firstText = crossStateTextS.filter(function(d, i) { return i === 0; })
     const secondText = crossStateTextS.filter(function(d, i) { return i === 1; })
-    // console.log("HIHO", firstText, secondText)
+
     firstText.text(scaledVals.x ? "X: " + scaledVals.x : firstText.text())
     secondText.text(scaledVals.y ? "Y: " + scaledVals.y : secondText.text())
   }

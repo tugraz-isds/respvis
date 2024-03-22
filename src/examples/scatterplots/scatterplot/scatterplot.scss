@@ -36,9 +36,9 @@ body {
       .legend {
         width: 100%;
         margin-bottom: 2rem;
-        margin-left: 0.5rem;
         flex-direction: row;
         justify-content: center;
+        .title { display: none; }
 
         .items {
           display: grid;

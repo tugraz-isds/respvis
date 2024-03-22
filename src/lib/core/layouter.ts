@@ -1,6 +1,6 @@
 import {select, Selection} from 'd3';
 import {elementRelativeBounds} from './utilities/element';
-import {positionToTransformAttr} from './utilities/position';
+import {centerSVGTextBaseline, positionToTransformAttr} from './utilities/position';
 import {rectBottomLeft, rectEquals, rectFromString, rectToAttrs, rectTopRight, rectToString,} from './utilities/rect';
 import {circleInsideRect, circleToAttrs} from './utilities/circle';
 import {cssVars} from "./constants/cssVars";
@@ -112,6 +112,11 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGElement>): boo
             .attr('y1', bottomLeft.y)
             .attr('x2', topRight.x)
             .attr('y2', topRight.y);
+          break;
+        case 'text':
+          select(this)
+          svgS.call(((s) => positionToTransformAttr(s, bounds)));
+          centerSVGTextBaseline(svgS as Selection<SVGTextElement>, select(this))
           break;
         default:
           svgS.call((s) => positionToTransformAttr(s, bounds));

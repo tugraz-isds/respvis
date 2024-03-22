@@ -47,20 +47,16 @@
 .legend-item {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
   gap: 0.6em;
-  width: 100%;
+  //width: 100%;
   font-size: var(--font-size-legend-label);
   --fit-height: false;
-  &.highlight {
-    font-size: calc(1.4 * var(--font-size-legend-label));
-  }
   &:active {
     font-weight: bold;
   }
   .text {
-    --fit-height: false;
+    //--fit-height: false;
   }
   .symbol {
     stroke: #000;
@@ -69,9 +65,9 @@
     height: 1em;
   }
 
-  .label {
-    dominant-baseline: central;
-  }
+  //.label {
+  //  dominant-baseline: central;
+  //}
 }
 
 //.label.highlight, .legend-item.highlight {

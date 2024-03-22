@@ -2,6 +2,9 @@
   width: calc(100% - 1.5rem);
   height: 75vh;
   min-height: 25rem;
+  .padding-wrapper {
+    padding-top: 1rem;
+  }
 }
 
 body {

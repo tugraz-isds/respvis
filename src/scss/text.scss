@@ -1,4 +1,4 @@
-
+//TODO: Scope to respvis window
 .text {
   --fit-width: true;
   --fit-height: true;
@@ -34,7 +34,7 @@ text[data-align-v='bottom'] {
 
 text,
 text[data-orientation='horizontal'] {
-  dominant-baseline: hanging;
+  dominant-baseline: central;
   text-anchor: start;
 }
 

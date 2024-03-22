@@ -3,6 +3,9 @@
   height: 75vh;
   min-height: 25rem;
 }
+#chart svg.chart {
+  --font-size-legend-label: 1rem;
+}
 
 body {
   background-color: floralwhite;
@@ -21,7 +24,13 @@ body [data-style=categorical-2] {
   align-items: flex-end;
 }
 #chart .legend .items .legend-item {
-  width: auto;
+  width: 5rem;
+  height: 1.5rem;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+#chart .legend .items .legend-item.highlight {
+  font-size: calc(1.4 * var(--font-size-legend-label));
 }
 
 @media (width < 45rem) {
