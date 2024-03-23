@@ -39,6 +39,7 @@ export function legendItemsRender(legendS: LegendSelection) {
     })
     .attr('data-style', (d) => d.styleClass)
     .attr('data-key', (d) => d.key)
+    .classed('filter-out', (d) => legendS.datum().series.categories?.isKeyActiveByKey(d.key) === false)
     .on('click.filter', function (e, d) {
       legendS.datum().renderer.filterDispatch
         .call('filter', { dataKey: d.key }, this)
