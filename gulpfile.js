@@ -8,6 +8,7 @@ const {bundleDeclaration} = require("./gulp-tasks/bundleDeclaration");
 const {buildLibSCSS} = require("./gulp-tasks/buildSCSS");
 const {copyExamples} = require("./gulp-tasks/copyExamples");
 const {watcher} = require("./gulp-tasks/watcher");
+const {cleanExampleDependencies} = require("./gulp-tasks/cleanExampleDependencies")
 
 const mode = process.argv.includes('--dev') ? 'dev' : 'prod'
 const envFile = '.env.' + mode
@@ -31,9 +32,11 @@ function cleanNodeModules() {
 
 // # Public tasks
 
-exports.clean = gulp.parallel(cleanDist, cleanPackage);
+exports.clean = gulp.parallel(cleanDist, cleanPackage)
 
-exports.cleanAll = gulp.parallel(exports.clean, cleanPackageLock, cleanNodeModules)
+exports.cleanExampleDeps = gulp.series(cleanExampleDependencies)
+
+exports.cleanAll = gulp.parallel(exports.clean, cleanExampleDependencies, cleanPackageLock, cleanNodeModules)
 
 // TODO: add proxy respvis.js for typescript support in all concerned directories
 exports.build = gulp.series(

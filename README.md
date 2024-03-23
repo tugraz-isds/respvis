@@ -31,14 +31,20 @@ npm install
 ## Gulp Build And Development
 
 Gulp is used to automate repeatable tasks. The file [gulpfile.js](gulpfile.js)
-defines four public tasks:
+defines five public tasks:
 
 - The `clean` task removes existing `package` and `dist` directories in
   order to enable a clean rebuild of the project.
 
-- The `cleanAll` task executes the `clean` task and additionally removes
-  the `node_modules` directory and `package-lock.json` in
-  order to enable a clean rebuild of the project including 
+- The `cleanExampleDeps` task removes dependencies which were copied from 
+  `example-dependencies` to `src/examples/**`. The process of copying
+  these dependencies is necessary to keep control over all dependencies
+  in one place and to avoid muliple slighly different versions of e.g. the
+  same data file or library.
+
+- The `cleanAll` task executes the `clean` task, `cleanExampleDeps` task  
+  and additionally removes the `node_modules` directory and 
+  `package-lock.json` in order to enable a clean rebuild of the project including 
   the re-installation of dependencies.
 
 - The `build` task first executes the clean task, then creates a new
@@ -60,11 +66,14 @@ The public tasks can be invoked either by directly running gulp via npx or
 by running the equivalent scripts in package.json:
 
 ```
-npm run cleanAll
-npx gulp cleanAll
-
 npm run clean
 npx gulp clean
+
+npm run cleanExampleDeps
+npx gulp cleanExampleDeps
+
+npm run cleanAll
+npx gulp cleanAll
 
 npm run build
 npx gulp build

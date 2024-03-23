@@ -6,7 +6,6 @@ const srcDir = `${rootDir}/src`
 const exampleDepsDir = `${srcDir}/examples-dependencies`
 const dataDepsDir = `${exampleDepsDir}/data`
 const libsDepsDir = `${exampleDepsDir}/libs`
-const stylesDepsDir = `${exampleDepsDir}/styles`
 
 const exampleDir = `${srcDir}/examples`
 
@@ -37,6 +36,5 @@ module.exports = {
   dataDepsDir,
   libsDepsDir,
   exampleDir,
-  exampleDirList,
-  stylesDepsDir
+  exampleDirList
 }
