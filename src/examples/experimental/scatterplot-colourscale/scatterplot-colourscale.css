@@ -2,12 +2,12 @@
   width: 100%;
   height: 75vh;
   min-height: 25rem;
-}
-#chart .legend {
-  align-items: flex-start;
-}
-#chart .legend .title {
-  margin: 0;
+  .legend {
+    align-items: flex-start;
+    .title {
+      margin: 0;
+    }
+  }
 }
 
 body {

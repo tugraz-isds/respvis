@@ -1,41 +1,46 @@
 #electric-power-consumption-chart {
+//display: none;
   container-type: inline-size;
-}
-#electric-power-consumption-chart .layouter {
-  width: 100%;
-}
-#electric-power-consumption-chart .point, #electric-power-consumption-chart .axis-x .tick, #electric-power-consumption-chart .axis-y .tick, #electric-power-consumption-chart .series-label .label {
-  display: none;
-}
-#electric-power-consumption-chart .point:first-of-type, #electric-power-consumption-chart .point:last-of-type, #electric-power-consumption-chart .point:nth-of-type(5n), #electric-power-consumption-chart .axis-x .tick:nth-of-type(5n), #electric-power-consumption-chart .axis-y .tick:nth-of-type(2n) {
-  display: block;
-}
-@container (max-width: 41.25rem) {
-  #electric-power-consumption-chart .chart {
-    grid-template: auto auto 1fr/1fr;
-    grid-template-areas: "header" "legend" "padding-wrapper";
-  }
-  #electric-power-consumption-chart .legend-item {
-    margin-top: 1rem;
-  }
-  #electric-power-consumption-chart .legend {
-    margin: 0;
-    margin-bottom: 1rem;
-  }
-  #electric-power-consumption-chart .legend .items {
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-evenly;
-  }
-}
-@container (max-width: 23.75rem) {
-  #electric-power-consumption-chart .padding-wrapper {
-    grid-template: 1fr/1fr;
-  }
-  #electric-power-consumption-chart .point, #electric-power-consumption-chart .axis {
+  .layouter {width: 100%}
+  .point, .axis-x .tick, .axis-y .tick, .series-label .label {
     display: none;
   }
-  #electric-power-consumption-chart .point:first-of-type, #electric-power-consumption-chart .point:last-of-type {
+  .point:first-of-type, .point:last-of-type, .point:nth-of-type(5n), .axis-x .tick:nth-of-type(5n), .axis-y .tick:nth-of-type(2n) {
     display: block;
+  }
+
+  @container (max-width: 41.25rem) {
+    .chart {
+      grid-template: auto auto 1fr / 1fr;
+      grid-template-areas:
+      'header'
+      'legend'
+      'padding-wrapper';
+    }
+    .legend-item {
+      margin-top: 1rem;
+    }
+    .legend {
+      margin: 0;
+      margin-bottom: 1rem;
+    }
+    .legend .items {
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-evenly;
+    }
+  }
+
+  @container (max-width: 23.75rem) {
+    .padding-wrapper {
+      grid-template: 1fr / 1fr;
+    }
+    .point, .axis {
+      display: none;
+    }
+
+    .point:first-of-type, .point:last-of-type {
+      display: block;
+    }
   }
 }

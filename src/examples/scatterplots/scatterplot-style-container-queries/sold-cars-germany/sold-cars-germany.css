@@ -4,40 +4,48 @@
 
 .window-rv {
   container-type: inline-size;
-}
+/*//Legend To Bottom*/
 @container style(--layout-width: 0) or style(--layout-width: 1) or style(--layout-width: 2) {
-  .window-rv .chart {
-    grid-template: auto 1fr auto/1fr;
-    grid-template-areas: "header" "padding-wrapper" "legend";
+  .chart {
+    grid-template: auto 1fr auto / 1fr;
+    grid-template-areas:
+      'header'
+      'padding-wrapper'
+      'legend';
   }
-  .window-rv .legend {
+
+  .legend {
     width: 100%;
     margin-bottom: 2rem;
     margin-left: 0.5rem;
     flex-direction: row;
     justify-content: center;
+    .items {
+      display: grid;
+      width: 100%;
+      justify-content: space-between;
+      grid-template-columns: auto auto auto;
+      .legend-item {
+        justify-content: flex-start;
+      }
+    }
   }
-  .window-rv .legend .items {
-    display: grid;
-    width: 100%;
-    justify-content: space-between;
-    grid-template-columns: auto auto auto;
-  }
-  .window-rv .legend .items .legend-item {
-    justify-content: flex-start;
-  }
-  .window-rv .axis-y .tick {
+  .axis-y .tick {
     display: none;
-  }
-  .window-rv .axis-y .tick:nth-of-type(2n + 1), .window-rv .axis-y .tick:first-of-type, .window-rv .axis-y .tick:last-of-type {
-    display: block;
+    &:nth-of-type(2n + 1), &:first-of-type, &:last-of-type {
+      display: block;
+    }
   }
 }
-@container style(--layout-width: 0) or style(--layout-width: 1) {
-  .window-rv .axis-x .tick {
-    display: none;
-  }
-  .window-rv .axis-x .tick:nth-of-type(2n), .window-rv .axis-x .tick:first-of-type, .window-rv .axis-x .tick:last-of-type {
-    display: block;
+/*//@container style(--transform-index: wide-3) {*/
+
+  @container style(--layout-width: 0) or style(--layout-width: 1) {
+    .axis-x .tick {
+      display: none;
+      &:nth-of-type(2n), &:first-of-type, &:last-of-type {
+        display: block;
+      }
+    }
   }
 }
+

@@ -2,9 +2,9 @@
   width: calc(100% - 1.5rem);
   height: 75vh;
   min-height: 25rem;
-}
-#chart .padding-wrapper {
-  padding-top: 1rem;
+  .padding-wrapper {
+    padding-top: 1rem;
+  }
 }
 
 body {
