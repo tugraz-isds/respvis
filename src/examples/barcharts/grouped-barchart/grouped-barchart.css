@@ -17,16 +17,8 @@ body {
     .legend-item {
       width: 5rem;
       height: 1.5rem;
-    //align-items: center;
       gap: 0.5rem;
       justify-content: flex-end;
-      .symbol {
-      //height: 1em;
-      //width: 1em;
-      }
-    //.label {
-    //  dominant-baseline: central;
-    //}
       &.highlight {
         font-size: calc(1.4 * var(--font-size-legend-label));
       }
@@ -34,6 +26,8 @@ body {
     align-items: flex-end;
   }
 }
+
+.chart .legend { margin-top: 1.5rem; }
 
 @media (width < 45rem) {
   .chart {
@@ -43,6 +37,7 @@ body {
       'padding-wrapper'
       'legend';
     .legend {
+      margin-top: 0;
       padding: 1rem;
       .items {
         align-items: center;

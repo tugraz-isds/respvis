@@ -10,5 +10,6 @@ export type SeriesChartUserArgs = ChartArgs & {
 export type SeriesChartValid = ChartValid & {
   getAxes: () => AxisValid[]
   getSeries: () => Series[]
+  getMainSeries: () => Series
   legend: LegendValid
 }

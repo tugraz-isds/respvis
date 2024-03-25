@@ -20,6 +20,7 @@ export function parcoordChartValidation(args: ParcoordChartArgs): ParcoordChartV
   return {
     getAxes: function () { return this.series.axes },
     getSeries: function () { return [this.series] },
+    getMainSeries: function () { return this.series },
     series,
     legend: legendValidation({...args.legend, renderer, series}),
     ...chartValidation(args),

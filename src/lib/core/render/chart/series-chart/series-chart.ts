@@ -42,9 +42,10 @@ export abstract class SeriesChart extends Chart {
   protected mainRender() {
     super.mainRender()
     const chartSelection = this.chartSelection!
-    const { legend } = chartSelection.datum()
-    const legendS = legendRender(chartSelection, legend)
+    const chartD = chartSelection.datum()
+    const legendS = legendRender(chartSelection, chartD.legend)
     legendAddHover(legendS)
+
     toolbarRender(this.windowSelection!, chartSelection.datum())
   }
 }

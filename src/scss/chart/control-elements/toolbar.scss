@@ -1,53 +1,38 @@
 .window-rv { //TODO: Replace window-rv wrapper with @scope once it is supported
-  &:hover .toolbar, &:active .toolbar {
-    display: flex;
-  }
   .toolbar {
     grid-area: toolbar;
-    display: none;
-    //display: flex; //comment out when testing
-    align-items: center;
-    flex-direction: row;
+    display: grid;
     width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    background-color: var(--conrol-elements-color);
-    padding: 0.5em;
-    & > .tool + .tool {
-      margin-left: 1rem;
-    }
-    .tool {
-      height: 100%;
-    }
-    .disabled {
-      pointer-events: none;
-      opacity: 0.5;
-    }
+    grid-template-rows: 0fr;
+    position: relative;
+    transition: grid-template-rows 300ms;
+    //position: absolute;
+    //left: 0;
+    //top: 0;
 
-    dialog {
-      left: 0;
-      width: 100%;
-      max-height: 50vh;
-      overflow-y: scroll;
-      margin: 0;
-      margin-top: 1rem;
-      opacity: 0;
-      background-color: white;
-      padding: 0.5em;
-      box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 1px 3px 1px;
-      translate: 0 -1rem;
-      transition: opacity 300ms ease-in-out, translate 300ms ease-in-out;
-      &[transition='enter'] {
-        opacity: 1;
+    &.visible {
+      grid-template-rows: 1fr;
+      .toolbar__content { padding: 0.5em; }
+      & > .toolbar__opener {
         translate: 0 0;
+        & > svg { rotate: 180deg; }
       }
-      &.dialog--filter {
-        width: min-content;
-        .collapsable-wrapper, .collapsable, label { width: min-content}
-      }
+    }
 
-      > .item + .item, > .item + button  { margin-top: 0.5em }
+    &__opener {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      translate: 0 100%;
+      background-color: var(--conrol-elements-color);
+      height: 2rem;
+      padding: 0.25rem;
+      transition: translate 500ms;
+      svg {
+        height: 100%;
+        width: auto;
+        transition: rotate 500ms;
+      }
     }
 
     &__btn {
@@ -63,6 +48,29 @@
       }
       &:hover, &[transition='enter'] { filter: brightness(80%); }
       &:active { scale: 0.75 }
+    }
+  }
+
+  .toolbar__content {
+    //display: none;
+    display: flex; //comment out when testing
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding-inline: 0.5em;
+    background-color: var(--conrol-elements-color);
+    overflow-y: hidden;
+    transition: padding-block 500ms ease-in-out;
+
+    & > .tool + .tool {
+      margin-left: 1rem;
+    }
+    .tool {
+      height: 100%;
+    }
+    .disabled {
+      pointer-events: none;
+      opacity: 0.5;
     }
 
     .collapsable-opener {
@@ -80,6 +88,34 @@
         margin-right: 0.5em;
       }
     }
+  }
+
+  dialog {
+    left: 0;
+    width: 100%;
+    max-height: 50vh;
+    overflow-y: scroll;
+    margin: 0;
+    margin-top: 1rem;
+    opacity: 0;
+    background-color: white;
+    padding: 0.5em;
+    box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 1px 3px 1px;
+    translate: 0 -1rem;
+    transition: opacity 300ms ease-in-out, translate 300ms ease-in-out;
+    &[transition='enter'] {
+      opacity: 1;
+      translate: 0 0;
+    }
+    &.dialog--filter {
+      width: min-content;
+      .collapsable-wrapper, .collapsable, label { width: min-content }
+      .collapsable-opener {
+        span:nth-of-type(2) { white-space: nowrap }
+      }
+    }
+
+    > .item + .item, > .item + button  { margin-top: 0.5em }
   }
 
   .collapsable-wrapper {

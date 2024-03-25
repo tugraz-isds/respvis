@@ -37,6 +37,7 @@ export function cartesianChartValidation(cartesianArgs: CartesianChartArgs): Car
     y: axisBaseValidation({...y, renderer, scaledValues: series.y}),
     getAxes: function () { return [this.x, this.y] },
     getSeries: function () { return [this.series] },
+    getMainSeries: function () { return this.series },
     legend: legendValidation({...cartesianArgs.legend, renderer, series}),
     ...chartValidation(cartesianArgs),
     zoom: zoom ? zoomValidation(zoom) : undefined

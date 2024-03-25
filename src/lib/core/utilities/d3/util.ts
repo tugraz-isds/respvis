@@ -34,7 +34,7 @@ export function addRawSVGToSelection(selection: Selection, rawSVG: string) {
   const svgDocument = parser.parseFromString(rawSVG, 'image/svg+xml')
   const svgElement = svgDocument.documentElement.cloneNode(true) as SVGSVGElement
   selection.selectAll('svg')
-    .data([null])
-    .join(enter => enter.append(() => svgElement))
+    .data([svgElement])
+    .join(enter => enter.append(() => enter.datum()))
   return selection
 }

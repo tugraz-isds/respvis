@@ -2,8 +2,12 @@ import {select, Selection} from "d3";
 import {RadioLabelsData} from "./radio-labels-render";
 import {classesForSelection} from "../../../utilities/d3/util";
 
-type WithLegend = {legend: string}
-export function fieldsetRender<D extends WithLegend>(
+type FieldSetProps = {
+  legend: string,
+  applyText?: boolean
+}
+
+export function fieldsetRender<D extends FieldSetProps>(
   parentS: Selection, data: D[], ...classes: string[]) {
 
   const {names, selector} = classesForSelection(classes)
@@ -13,18 +17,22 @@ export function fieldsetRender<D extends WithLegend>(
     .classed(names, true)
 
   itemS.each(function (d, i, g) {
-    select(g[i]).selectAll('legend')
+    const legendS = select(g[i]).selectAll('legend')
       .data([d.legend])
       .join('legend')
-      .text(d => d)
+    if (d.applyText !== false) {
+      legendS.text(d => d)
+    }
   })
 
   return itemS
 }
 
-export function collapsableFieldsetRender<D extends WithLegend>(
+export function collapsableFieldsetRender<D extends FieldSetProps>(
   parentS: Selection, data: D[], ...classes: string[]) {
-  const fieldsetS = fieldsetRender(parentS, data, ...classes)
+  const collapseData = data.map(d => ({...d, applyText: false}))
+  const fieldsetS = fieldsetRender(parentS, collapseData, ...classes)
+
   fieldsetS.each(function(d, i, g) {
     const collapsableWrapperS = select(g[i]).selectAll('.collapsable-wrapper')
       .data([null])
@@ -40,15 +48,24 @@ export function collapsableFieldsetRender<D extends WithLegend>(
     .each(function (d, i, g) {
       const collapsableWrapperS = select(g[i].parentElement).select('.collapsable-wrapper')
       const currentlyCollapsed = collapsableWrapperS.classed('collapsed')
-      const legendS = select(g[i])
-      legendS.text(legendS.text() + ' - ')
-      legendS.text(alterCollapseEnd(legendS.text(), currentlyCollapsed))
+      const legendS = select<HTMLLegendElement, string>(g[i])
+      const textSplit = legendS.datum().split(/\s+/)
+      const head = textSplit.slice(0, textSplit.length - 1).join(' ')
+      const tail = `${head ? ' ' : ''}${textSplit[textSplit.length - 1]}`
+      legendS.selectAll("span")
+        .data([head, tail + ' - '])
+        .join('span')
+        .text(d => d)
+
+      const tailS = legendS.selectAll(":nth-child(2)");
+      tailS.text(alterCollapseEnd(tailS.text(), currentlyCollapsed))
       collapsableWrapperS.classed('expanded', () => !currentlyCollapsed)
-      select(g[i]).on('click', () => {
+
+      legendS.on('click.hope', () => {
         collapsableWrapperS.classed('expanded', () => !collapsableWrapperS.classed('expanded'))
         collapsableWrapperS.classed('collapsed', () => !collapsableWrapperS.classed('collapsed'))
         const currentlyCollapsed = collapsableWrapperS.classed('collapsed')
-        legendS.text(alterCollapseEnd(legendS.text(), currentlyCollapsed))
+        tailS.text(alterCollapseEnd(tailS.text(), currentlyCollapsed))
       })
     })
 

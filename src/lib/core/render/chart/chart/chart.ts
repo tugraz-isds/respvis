@@ -36,7 +36,9 @@ export abstract class Chart implements Renderer {
     this.render()
     if (this.addedListeners) return
     this.addBuiltInListeners()
-    this.resizeObserver = resizeEventListener(this.windowSelection)
+    const chartDivS = this.layouterSelection?.selectChild('div.chart')
+    if (chartDivS) this.resizeObserver = resizeEventListener(
+      chartDivS as Selection<Element>, this.windowSelection)
     this.addedListeners = true
     this.render()
   }
