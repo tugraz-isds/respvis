@@ -64,7 +64,7 @@ export class ParcoordChart extends SeriesChart {
 
     const drawArea = this.windowSelection.selectAll('.draw-area')
     const {series} = this.windowSelection.datum()
-    const {axes, axesScale} = series
+    const {axes, axesScale, percentageScreenScale} = series
     const {width, height} = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
     const chartElement = elementFromSelection(this.chartSelection)
 
@@ -79,6 +79,7 @@ export class ParcoordChart extends SeriesChart {
     }
 
     axes.forEach(axis => axis.scaledValues.scale.range(renderState.originalYRange()))
+    percentageScreenScale.range(renderState.originalXRange())
     axesScale.range(renderState.originalXRange())
   }
 }

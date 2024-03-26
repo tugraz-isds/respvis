@@ -43,7 +43,7 @@ export abstract class Series implements RenderArgs {
     this.bounds = args.bounds || {width: 600, height: 400}
     this.key = args.key
 
-    if ('class' in args) this.keysActive = args.keysActive
+    if ('class' in args) this.keysActive = {...args.keysActive}
     else {
       this.keysActive = {}
       this.keysActive[key] = true

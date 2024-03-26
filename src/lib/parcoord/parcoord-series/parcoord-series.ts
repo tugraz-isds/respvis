@@ -2,7 +2,7 @@ import {Series, SeriesArgs, SeriesUserArgs} from "../../core/render/series";
 import {SeriesKey} from "../../core/constants/types";
 import {arrayAlignLengths, AxisBaseUserArgs, AxisDomainRV, axisScaledValuesValidation, Size} from "../../core";
 import {ScaledValuesUserArgs} from "../../core/data/scale/scaled-values";
-import {scalePoint, ScalePoint} from "d3";
+import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal, scalePoint, ScalePoint} from "d3";
 import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
 import {combineKeys} from "../../core/utilities/dom/key";
 import {KeyedAxisValid, keyedAxisValidation} from "../../core/render/axis/keyed-axis-validation";
@@ -26,6 +26,8 @@ export type ParcoordArgs = SeriesArgs & ParcoordSeriesUserArgs & {
 export class ParcoordSeries extends Series {
   axes: KeyedAxisValid[]
   axesScale: ScalePoint<string>
+  axesPercentageScale: ScaleOrdinal<string, number>
+  percentageScreenScale: ScaleLinear<number, number>
   zooms: (ZoomValid | undefined)[]
 
   constructor(args: ParcoordArgs | ParcoordSeries) {
@@ -42,6 +44,10 @@ export class ParcoordSeries extends Series {
         })
       })
 
+    /* DEV_MODE_ONLY_START */
+    if (this.axes.length < 2) throw new Error('Parcoord Chart must have a minimal axis count of 2!')
+    /* DEV_MODE_ONLY_END */
+
     if ('class' in args) this.categories = args.categories
     else {
       //TODO: index check
@@ -53,11 +59,18 @@ export class ParcoordSeries extends Series {
         undefined
     }
 
+    const denominator = this.axes.length > 1 ? this.axes.length - 1 : 1
+    this.axesPercentageScale = ('class' in args) ? args.axesPercentageScale : scaleOrdinal<string, number>()
+      .domain(this.axes.map((axis) => axis.key))
+      .range(this.axes.map((axis, index) => index / denominator))
+
+    this.percentageScreenScale = ('class' in args) ? args.percentageScreenScale : scaleLinear().domain([0, 1])
+
     this.axesScale = scalePoint()
       .domain(this.axes.map((axis) => axis.key))
 
     this.axes.forEach((axis) => {
-      this.keysActive[axis.key] = true
+      this.keysActive[axis.key] = true //('class' in args) ? args.keysActive[axis.key] :
     })
     
     this.zooms = 'class' in args ? args.zooms : args.dimensions.map(dimension => {
@@ -68,6 +81,12 @@ export class ParcoordSeries extends Series {
   getCombinedKey(i: number): string {
     const seriesCategoryKey = this.categories ? this.categories.getCategoryData(i).combinedKey : undefined
     return combineKeys([this.key, this.axes[i].key, seriesCategoryKey])
+  }
+
+  getAxesDragDropOrdered() {
+    return [...this.axes].sort((axis1, axis2) => {
+      return this.axesPercentageScale(axis1.key) < this.axesPercentageScale(axis2.key) ? -1 : 1
+    })
   }
 
   getScaledValuesAtScreenPosition(x: number, y: number) {
@@ -94,10 +113,14 @@ export class ParcoordSeries extends Series {
     const activeAxes = !this.keysActive[this.key] ? [] :
       this.axes.filter(axis => this.keysActive[axis.key])
     const activeDomain = activeAxes.map(axis => axis.key)
+    const activeRange = activeAxes.map(axis => this.axesPercentageScale(axis.key))
     const clone = this.clone()
     clone.axes = activeAxes
     clone.axesScale.domain(activeDomain)
     clone.axesScale.range(this.axesScale.range())
+    clone.axesPercentageScale
+      .domain(activeDomain)
+      .range(activeRange)
     return clone
   }
 
@@ -108,6 +131,8 @@ export class ParcoordSeries extends Series {
         return {...axis, scaledValues: axis.scaledValues.clone()}
       }),
       axesScale: this.axesScale.copy(),
+      axesPercentageScale: this.axesPercentageScale.copy(),
+      percentageScreenScale: this.percentageScreenScale.copy(),
     });
   }
 }
