@@ -26,6 +26,9 @@ export abstract class SeriesChart extends Chart {
       const chartD = renderer.windowSelection.datum()
 
       chartD.getAxes().forEach(axis => {
+        if ('key' in axis) {
+          axis.setKeyActiveIfDefined(currentKey, !axis.isKeyActiveByKey(currentKey))
+        }
         axis.scaledValues.setKeyActiveIfDefined(currentKey, !axis.scaledValues.isKeyActiveByKey(currentKey))
       })
 

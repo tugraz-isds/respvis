@@ -13,6 +13,7 @@ import {AxisValid} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
 import {CheckboxLabelsData, checkboxLabelsRender} from "../tool/checkbox-labels-render";
 import {buttonRender} from "../tool/button-render";
+import {ParcoordSeries} from "../../../../parcoord";
 
 export function filterToolRender(selection: Selection<HTMLDivElement>, args: ToolbarValid) {
   const series = args.getSeries()
@@ -85,18 +86,24 @@ function axisControlsRender(menuToolsItemsS: Selection, axis: AxisValid) {
   const chartElement = elementFromSelection(renderer.chartSelection)
   const title = getCurrentRespVal(axis.title, {chart: chartElement})
   const {keys, options} = getAxisCategoryProps(axis)
+  let filteredSeries: ParcoordSeries
   if ('key' in axis) {
     keys.push(axis.key)
     options.push('Remove Axis')
+    filteredSeries = axis.series.cloneFiltered()
   }
   if (keys.length === 0) return
 
   const data: (CheckboxLabelsData & { legend: string })[] = [{
     legend: getCurrentRespVal( `${title ?? axisScaledValues.parentKey.toUpperCase()}-Axis`, {chart: chartElement}),
     labelData: options.map((option, index) => {
+      const isKeyedAxisOption = 'key' in axis && index === options.length - 1
+      const defaultVal = isKeyedAxisOption ? axis.keysActive[keys[index]] : axis.scaledValues.isKeyActiveByKey(keys[index])
+      const axisNecessary = (isKeyedAxisOption && filteredSeries?.axes.length <= 2 && defaultVal)
       return {
         label: option, type: 'category',
-        dataKey: keys[index], defaultVal: axis.scaledValues.isKeyActiveByKey(keys[index]),
+        dataKey: keys[index], defaultVal,
+        class: axisNecessary ? 'disabled' : undefined,
         onChange: () => {
           renderer.filterDispatch.call('filter', { dataKey: keys[index] }, this)
         }

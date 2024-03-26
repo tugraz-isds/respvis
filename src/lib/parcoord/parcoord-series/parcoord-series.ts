@@ -9,6 +9,7 @@ import {KeyedAxisValid, keyedAxisValidation} from "../../core/render/axis/keyed-
 import {ZoomArgs, ZoomValid, zoomValidation} from "../../core/data/zoom";
 import {elementFromSelection} from "../../core/utilities/d3/util";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
+import {ErrorMessages} from "../../core/utilities/error";
 
 export type ParcoordSeriesUserArgs = SeriesUserArgs & {
   dimensions: {
@@ -39,14 +40,13 @@ export class ParcoordSeries extends Series {
       args.dimensions.map((dimension, index) => {
         return keyedAxisValidation({
           ...dimension.axis, renderer,
+          series: this,
           scaledValues: axisScaledValuesValidation(dimension.scaledValues, `a-${index}`),
           key: `a-${index}`
         })
       })
 
-    /* DEV_MODE_ONLY_START */
-    if (this.axes.length < 2) throw new Error('Parcoord Chart must have a minimal axis count of 2!')
-    /* DEV_MODE_ONLY_END */
+    if (this.axes.length < 2) throw new Error(ErrorMessages.parcoordMinAxesCount)
 
     if ('class' in args) this.categories = args.categories
     else {
@@ -68,10 +68,6 @@ export class ParcoordSeries extends Series {
 
     this.axesScale = scalePoint()
       .domain(this.axes.map((axis) => axis.key))
-
-    this.axes.forEach((axis) => {
-      this.keysActive[axis.key] = true //('class' in args) ? args.keysActive[axis.key] :
-    })
     
     this.zooms = 'class' in args ? args.zooms : args.dimensions.map(dimension => {
       return dimension.zoom ? zoomValidation(dimension.zoom) : undefined
@@ -110,10 +106,14 @@ export class ParcoordSeries extends Series {
   }
 
   cloneFiltered() {
-    const activeAxes = !this.keysActive[this.key] ? [] :
-      this.axes.filter(axis => this.keysActive[axis.key])
+    const activeIndices = !this.keysActive[this.key] ? [] :
+      this.axes
+        .map((axis, index) => index)
+        .filter(index => this.axes[index].isKeyActiveByKey(this.axes[index].key))
+    const activeAxes = activeIndices.map(index => this.axes[index])
     const activeDomain = activeAxes.map(axis => axis.key)
     const activeRange = activeAxes.map(axis => this.axesPercentageScale(axis.key))
+    const activeZooms = activeIndices.map(index => this.zooms[index])
     const clone = this.clone()
     clone.axes = activeAxes
     clone.axesScale.domain(activeDomain)
@@ -121,6 +121,8 @@ export class ParcoordSeries extends Series {
     clone.axesPercentageScale
       .domain(activeDomain)
       .range(activeRange)
+    clone.zooms = activeZooms
+    if (clone.axes.length === 1) throw new Error(ErrorMessages.parcoordMinAxesCount)
     return clone
   }
 

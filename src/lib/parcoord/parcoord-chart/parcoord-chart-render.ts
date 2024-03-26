@@ -18,7 +18,6 @@ export function parCoordChartRender(selection: ParcoordChartSVGChartSelection) {
 
 function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>) {
   const {series} = chartS.datum()
-  console.log(series.keysActive)
 
   const lineSeriesS = chartS.selectAll('.draw-area')
     .selectAll<SVGGElement, AxisValid>(`.series-parcoord-lines`)
@@ -27,13 +26,14 @@ function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>) {
     .classed(`series-parcoord-lines`, true)
     .attr('data-ignore-layout-children', true)
 
-  if (!lineSeriesS.attr('bounds') || !series.axes[0]) return
+  if (!lineSeriesS.attr('bounds')) return
 
   const filteredSeries = series.cloneFiltered()
   const activeAxes = filteredSeries.getAxesDragDropOrdered()
 
   const lines: Line[] = []
-  for (let valueIndex = 0; valueIndex < activeAxes[0].scaledValues.values.length; valueIndex++) {
+  const maxIndex = activeAxes.length > 0 ? activeAxes[0].scaledValues.values.length : 0
+  for (let valueIndex = 0; valueIndex < maxIndex; valueIndex++) {
     if (!series.keysActive[series.key]) break
     if (series.categories && !series.categories.isKeyActiveByIndex(valueIndex)) continue
     const positions: Position[] = []
@@ -86,6 +86,7 @@ function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>) {
   const filteredSeries = series.cloneFiltered()
   const activeAxes = !series.keysActive[series.key] ? [] : filteredSeries.axes
 
+  console.log(series)
   axisSeriesS
     .selectAll<SVGGElement, KeyedAxisValid>('.axis.axis-sequence')
     .data(activeAxes, (d) => d.key)
@@ -94,7 +95,9 @@ function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>) {
       const axisS = select<SVGGElement, KeyedAxisValid>(g[i])
       axisSequenceRender(axisS)
       const dragB = drag()
+
       const onDrag = (e) => {
+        console.log("Drag")
         const rect = (drawAreaBackgroundS.node() as Element)?.getBoundingClientRect();
         const event = e.sourceEvent
         if (!rect || !event) return
@@ -111,9 +114,11 @@ function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>) {
         series.axesPercentageScale.range(newPercentageRange)
       }
 
-      // const throttledDrag =
+      // if (i === 3) {
+      //   console.log(axisS, onDrag, dragB)
+      // }
       axisS.call(dragB
-        .on("drag", onDrag)
+        .on("drag.dragAxis", onDrag)
       )
     })
     .attr('transform', (d, i) => {
