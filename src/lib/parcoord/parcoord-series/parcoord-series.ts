@@ -46,7 +46,7 @@ export class ParcoordSeries extends Series {
         })
       })
 
-    if (this.axes.length < 2) throw new Error(ErrorMessages.parcoordMinAxesCount)
+    if (this.axes.length === 1) throw new Error(ErrorMessages.parcoordMinAxesCount)
 
     if ('class' in args) this.categories = args.categories
     else {
@@ -124,6 +124,18 @@ export class ParcoordSeries extends Series {
     clone.zooms = activeZooms
     if (clone.axes.length === 1) throw new Error(ErrorMessages.parcoordMinAxesCount)
     return clone
+  }
+
+  cloneZoomed() {
+    const zoomedAxes = this.axes.map((axis, index) => {
+      const zoom = this.zooms[index]
+      if (!zoom) return axis
+      return {...axis, scaledValues: axis.scaledValues.cloneZoomed(zoom.currentTransform, 'y')}
+    })
+    const clone = this.clone()
+    clone.axes = zoomedAxes
+    return clone
+    // const valsZoomed = series.axes[axisIndex].scaledValues.cloneZoomed(transform, 'y')
   }
 
   clone(): ParcoordSeries {

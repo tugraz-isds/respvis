@@ -2,10 +2,10 @@ import {Selection} from "d3";
 import {backgroundSVGOnly} from "../../constants/dom/classes";
 import {ignoreBounds} from "../../constants/dom/attributes";
 
-export function backgrounSVGOnlyRender(parentS: Selection<SVGGraphicsElement>) {
+export function backgroundSVGOnlyRender<D>(parentS: Selection<SVGGraphicsElement>, data?: D[]) {
   const { width, height, x, y } = parentS.node()!.getBBox()
   return parentS.selectAll(`.${backgroundSVGOnly}`)
-    .data([null])
+    .data(data ?? [null])
     .join('rect')
     .classed(backgroundSVGOnly, true)
     .attr('x', Math.floor(x))
