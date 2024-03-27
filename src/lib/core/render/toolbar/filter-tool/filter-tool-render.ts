@@ -14,6 +14,7 @@ import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categor
 import {CheckboxLabelsData, checkboxLabelsRender} from "../tool/checkbox-labels-render";
 import {buttonRender} from "../tool/button-render";
 import {ParcoordSeries} from "../../../../parcoord";
+import {tooltipSimpleRender} from "../tool/tooltip-simple-render";
 
 export function filterToolRender(selection: Selection<HTMLDivElement>, args: ToolbarValid) {
   const series = args.getSeries()
@@ -22,6 +23,7 @@ export function filterToolRender(selection: Selection<HTMLDivElement>, args: Too
   const filterToolS = toolRender(selection, 'tool--filter')
   const dialogOpenerS = buttonRender(filterToolS, 'toolbar__btn')
   addRawSVGToSelection(dialogOpenerS, filterSVGRaw)
+  tooltipSimpleRender(dialogOpenerS, {text: 'Filter'})
   const dialogS = dialogRender(filterToolS, 'dialog--filter')
   bindOpenerToDialog(dialogOpenerS, dialogS)
 

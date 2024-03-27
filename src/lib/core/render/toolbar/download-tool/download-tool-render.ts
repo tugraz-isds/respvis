@@ -11,12 +11,14 @@ import {toolRender} from "../tool/tool-render";
 import {fieldsetRender} from "../tool/fieldset-render";
 import {chartDownload} from "./chart-download";
 import {buttonRender} from "../tool/button-render";
+import {tooltipSimpleRender} from "../tool/tooltip-simple-render";
 
 export function downloadToolRender(selection: Selection<HTMLDivElement>, renderer: Renderer) {
   const downloadToolS = toolRender(selection, 'tool--download')
 
   const dialogOpenerS = buttonRender(downloadToolS, 'toolbar__btn')
   addRawSVGToSelection(dialogOpenerS, downloadSVGRaw)
+  tooltipSimpleRender(dialogOpenerS, {text: 'Download'})
   const dialogS = dialogRender(downloadToolS)
   bindOpenerToDialog(dialogOpenerS, dialogS)
 
