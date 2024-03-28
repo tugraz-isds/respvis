@@ -9,6 +9,6 @@ export function onDragAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid, 
   const oldPercentageDomain = series.axesPercentageScale.domain()
   const index = oldPercentageDomain.indexOf(d.key)
   const newPercentageRange = series.axesPercentageScale.range()
-  newPercentageRange[index] = dragWay.percentX
+  newPercentageRange[index] = d.series.responsiveState.currentlyFlipped ? 1 - dragWay.fromTopPercent : dragWay.fromLeftPercent
   series.axesPercentageScale.range(newPercentageRange)
 }

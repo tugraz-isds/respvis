@@ -8,6 +8,7 @@ import {defaultStyleClass} from "../../../core/constants/other";
 
 export function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>) {
   const {series} = chartS.datum()
+  const flipped = series.responsiveState.currentlyFlipped
 
   const lineSeriesS = chartS.selectAll('.draw-area')
     .selectAll<SVGGElement, AxisValid>(`.series-parcoord-lines`)
@@ -32,16 +33,18 @@ export function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>)
     for (let axisIndex = 0; axisIndex < activeAxes.length; axisIndex++) {
       const axis = activeAxes[axisIndex]
       const vals = axis.scaledValues
-      const yBandWidth = vals instanceof ScaledValuesCategorical ? vals.scale.bandwidth() / 2 : 0
-      const y = vals.getScaledValue(valueIndex) + yBandWidth
-      // console.log(y, axis.lowerRangeLimitPercent, axis.upperRangeLimitPercent)
-      if (!vals.isKeyActiveByIndex(valueIndex) || !axis.isValueInRangeLimit(y)) {
+      const valBandWidth = vals instanceof ScaledValuesCategorical ? vals.scale.bandwidth() / 2 : 0
+      const valPos = vals.getScaledValue(valueIndex) + valBandWidth
+      if (!vals.isKeyActiveByIndex(valueIndex) || !axis.isValueInRangeLimit(valPos)) {
         containsInactiveAxisCategory = true
         break
       }
-      const xPercent = filteredSeries.axesPercentageScale(activeAxes[axisIndex].key)
-      const xReal = filteredSeries.percentageScreenScale(xPercent)
-      positions.push({ y, x: xReal })
+      const axisPosPercent = filteredSeries.axesPercentageScale(activeAxes[axisIndex].key)
+      const axisPosReal = filteredSeries.percentageScreenScale(axisPosPercent)
+      positions.push({
+        y: flipped ? axisPosReal : valPos,
+        x: flipped ? valPos : axisPosReal
+      })
     }
     if (containsInactiveAxisCategory) continue
 

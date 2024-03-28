@@ -37,8 +37,14 @@ export function keyedAxisValidation(args:KeyedAxisArgs): KeyedAxisValid {
       return this.keysActive[key] !== false
     },
     isValueInRangeLimit: function (val: number) {
+      const flipped = this.series.responsiveState.currentlyFlipped
       const scaledValues = this.scaledValues
       const range = scaledValues.scale.range()
+      if (flipped) {
+        const maxRangeGraphical = range[1] * this.upperRangeLimitPercent
+        const minRangeGraphical = range[1] * this.lowerRangeLimitPercent
+        return val >= minRangeGraphical && val <= maxRangeGraphical
+      }
       const maxRangeGraphical = range[0] - range[0] * this.upperRangeLimitPercent
       const minRangeGraphical = range[0] - range[0] * this.lowerRangeLimitPercent
       return val <= minRangeGraphical && val >= maxRangeGraphical

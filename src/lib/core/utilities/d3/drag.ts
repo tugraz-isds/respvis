@@ -5,11 +5,11 @@ export function relateDragWayToSelection(e: D3ZoomEvent<any, any> | D3DragEvent<
   const event = e.sourceEvent
   if (!rect || !event) return undefined
 
-  let mouseX = event.clientX - rect.left
-  let mouseY = event.clientY - rect.top
-  mouseX = mouseX < 0 ? 0 : mouseX > rect.width ? rect.width : mouseX
-  mouseY = mouseY < 0 ? 0 : mouseY > rect.height ? rect.height : mouseY
-  const percentX = mouseX / rect.width
-  const percentY = mouseY / rect.height
-  return {percentX, percentY}
+  let fromLeftTotal = event.clientX - rect.left
+  let fromTopTotal = event.clientY - rect.top
+  fromLeftTotal = fromLeftTotal < 0 ? 0 : fromLeftTotal > rect.width ? rect.width : fromLeftTotal
+  fromTopTotal = fromTopTotal < 0 ? 0 : fromTopTotal > rect.height ? rect.height : fromTopTotal
+  const fromLeftPercent = fromLeftTotal / rect.width
+  const fromTopPercent = fromTopTotal / rect.height
+  return {fromLeftPercent, fromTopPercent}
 }

@@ -12,7 +12,8 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>)
   const drawAreaS = chartS.selectAll('.draw-area')
   const drawAreaBackgroundS = drawAreaS.selectChild<SVGRectElement>('.background')
 
-  const axisPosition = series.responsiveState.currentlyFlipped ? 'bottom' : 'left'
+  const flipped = series.responsiveState.currentlyFlipped
+  const axisPosition = flipped ? 'bottom' : 'left'
 
   const axisSeriesS = drawAreaS
     .selectAll<SVGGElement, AxisValid>(`.series-parcoord-axes`)
@@ -58,8 +59,9 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>)
     })
     .attr('transform', (d, i) => {
       const percentage = filteredSeries.axesPercentageScale(activeAxes[i].key) ?? 0
-      const x = filteredSeries.percentageScreenScale(percentage)
-      return `translate(${x}, ${0})`
+      const x = flipped ? 0 : filteredSeries.percentageScreenScale(percentage)
+      const y = flipped ? filteredSeries.percentageScreenScale(percentage) : 0
+      return `translate(${x}, ${y})`
     })
     .each((d, i, g) => axisSeriesS.dispatch('enter', {
       detail: {selection: select(g[i])}

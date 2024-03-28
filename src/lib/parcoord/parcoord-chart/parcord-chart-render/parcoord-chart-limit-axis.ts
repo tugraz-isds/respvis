@@ -12,15 +12,17 @@ export function parcoordChartLimitAxis(axisS: Selection<SVGGElement, KeyedAxisVa
                                        drawAreaBackgroundS: Selection<SVGRectElement>,
                                        series: ParcoordSeries) {
   chevronSlidersRender(axisS)
-  //series horizontal
-  horizontalChartAlignSliders(axisS)
-  horizontalChartDrag(axisS, drawAreaBackgroundS, series)
+  if (series.responsiveState.currentlyFlipped) verticalChartAlignSliders(axisS)
+  else horizontalChartAlignSliders(axisS)
+  addSliderDrag(axisS, drawAreaBackgroundS, series)
 }
 
 function chevronSlidersRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
-  const upperChevronS = pathChevronRender(axisS, 'slider-up')
+  const flipped = axisS.datum().series.responsiveState.currentlyFlipped
+  const direction = (flipped ? 'right' : 'down')
+  const upperChevronS = pathChevronRender(axisS, ['slider-up'], [direction])
   bgSVGOnlyRender(upperChevronS, [{scale: 2}], upperChevronS.select('path'))
-  const lowerChevronS = pathChevronRender(axisS, 'slider-down')
+  const lowerChevronS = pathChevronRender(axisS, ['slider-down'], [direction])
   bgSVGOnlyRender(lowerChevronS, [{scale: 2}], lowerChevronS.select('path'))
 }
 
@@ -30,6 +32,7 @@ function horizontalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisVali
   const lowerChevronS = axisS.selectAll('.slider-down')
   const domainS = axisS.select<SVGPathElement>('.domain')
   const {leftCornersXDiff, bbox1, bbox2} = bboxDiffSVG(domainS, upperChevronS.select('path'))
+
   const translateX = -leftCornersXDiff + bbox1.width - bbox2.width / 2
 
   const range = scaledValues.scale.range()
@@ -42,7 +45,32 @@ function horizontalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisVali
   lowerChevronS.attr('transform', `translate(${translateX}, ${translateYLower}) ${mirrorYLower}`)
 }
 
-function horizontalChartDrag(axisS: Selection<SVGGElement, KeyedAxisValid>,
+function verticalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+  //TODO: fuse with horizontal function (only small differences)
+  const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues} = axisS.datum()
+  const upperChevronS= axisS.selectAll<SVGGElement, any>('.slider-up')
+  const lowerChevronS = axisS.selectAll<SVGGElement, any>('.slider-down')
+  const domainS = axisS.select<SVGPathElement>('.domain')
+
+  const range = scaledValues.scale.range()
+  const rangeXUpper = range[1] * upperRangeLimitPercent
+  const rangeXLower = range[1] * lowerRangeLimitPercent
+
+  const {leftCornersXDiff, leftCornersYDiff, bbox2: bboxPath} =
+    bboxDiffSVG(domainS, upperChevronS.select('path'))
+
+  let translateX = -leftCornersXDiff - bboxPath.width
+  let translateY = -leftCornersYDiff - bboxPath.height / 2
+  const translateAlign = `translate(${translateX}, ${translateY})`
+  const mirrorXLower = `scale(-1, 1)`
+  const translateXUpper = `translate(${-rangeXUpper})`
+  const translateXLower = `translate(${rangeXLower})`
+
+  upperChevronS.attr('transform', `${mirrorXLower} ${translateAlign} ${translateXUpper}`) // //  //rotate(90)
+  lowerChevronS.attr('transform', `${translateAlign} ${translateXLower}`)
+}
+
+function addSliderDrag(axisS: Selection<SVGGElement, KeyedAxisValid>,
                              drawAreaBackgroundS: Selection<SVGRectElement>,
                              series: ParcoordSeries) {
   const axisD = series.axes.find(axis => axis.key === axisS.datum().key)
@@ -50,20 +78,27 @@ function horizontalChartDrag(axisS: Selection<SVGGElement, KeyedAxisValid>,
 
   const upperChevronBackgroundS = axisS.selectAll('.slider-up').selectAll(`.${backgroundSVGOnly}`)
   const lowerChevronBackgroundS = axisS.selectAll('.slider-down').selectAll(`.${backgroundSVGOnly}`)
+
+  function getPercent(e) {
+    const dragDown = relateDragWayToSelection(e, drawAreaBackgroundS)
+    if (dragDown === undefined) return undefined
+    return series.responsiveState.currentlyFlipped ? dragDown.fromLeftPercent : 1 - dragDown.fromTopPercent
+  }
+
   const onDrag = (e, limit: 'upper' | 'lower') => {
-    const dragDown = relateDragWayToSelection(e, drawAreaBackgroundS)?.percentY
-    if (dragDown === undefined) return
-    const percentY = 1 - dragDown
+    const percent = getPercent(e)
+    if (percent === undefined) return
     if (limit === 'upper') {
-      axisD.upperRangeLimitPercent = percentY >= axisD.lowerRangeLimitPercent ? percentY : axisD.lowerRangeLimitPercent
+      axisD.upperRangeLimitPercent = percent >= axisD.lowerRangeLimitPercent ? percent : axisD.lowerRangeLimitPercent
     }
     if (limit === 'lower') {
-      axisD.lowerRangeLimitPercent = percentY <= axisD.upperRangeLimitPercent ? percentY : axisD.upperRangeLimitPercent
+      axisD.lowerRangeLimitPercent = percent <= axisD.upperRangeLimitPercent ? percent : axisD.upperRangeLimitPercent
     }
     if (e.type === 'end') {
       series.renderer.windowSelection.dispatch('resize')
     }
   }
+
   const throttledDrag = throttle(onDrag, 25)
 
   upperChevronBackgroundS.call(drag()

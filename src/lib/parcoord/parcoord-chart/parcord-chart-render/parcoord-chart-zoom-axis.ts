@@ -10,11 +10,12 @@ export function onZoomAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid, 
 
   zoom.currentTransform = transform
 
-  const [y1, heightTranslate] = series.axes[axisIndex].scaledValues.scale.range()
-  const [x1, widthTranslate] = series.axesScale.range()
+  const flipped = series.responsiveState.currentlyFlipped
+  const [y2, y1] = flipped ? series.axesScale.range() : series.axes[axisIndex].scaledValues.scale.range()
+  const [x1, x2] = flipped ? series.axes[axisIndex].scaledValues.scale.range() : series.axesScale.range()
   const extent: [[number, number], [number, number]] = [
-    [x1, heightTranslate],
-    [widthTranslate, y1],
+    [x1, y1],
+    [x2, y2],
   ];
   zoom.behaviour.extent(extent).translateExtent(extent);
 }
