@@ -12,6 +12,8 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>)
   const drawAreaS = chartS.selectAll('.draw-area')
   const drawAreaBackgroundS = drawAreaS.selectChild<SVGRectElement>('.background')
 
+  const axisPosition = series.responsiveState.currentlyFlipped ? 'bottom' : 'left'
+
   const axisSeriesS = drawAreaS
     .selectAll<SVGGElement, AxisValid>(`.series-parcoord-axes`)
     .data([series])
@@ -30,7 +32,7 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>)
     .join('g')
     .each((d, i, g) => {
       const axisS = select<SVGGElement, KeyedAxisValid>(g[i])
-      axisSequenceRender(axisS)
+      axisSequenceRender(axisS, axisPosition)
       parcoordChartLimitAxis(axisS, drawAreaBackgroundS, series)
 
 

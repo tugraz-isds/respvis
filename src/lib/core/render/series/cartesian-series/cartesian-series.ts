@@ -4,6 +4,7 @@ import {combineKeys} from "../../../utilities/dom/key";
 import {ScaledValues} from "../../../data/scale/scaled-values-base";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
 import {Series, SeriesArgs, SeriesUserArgs} from "../index";
+import {CartesianSeriesResponsiveState} from "./responsive-state";
 
 export type CartesianSeriesUserArgs = SeriesUserArgs & {
   x: ScaledValuesUserArgs<AxisDomainRV>
@@ -15,6 +16,7 @@ export type CartesianSeriesArgs = SeriesArgs & CartesianSeriesUserArgs
 export class CartesianSeries extends Series {
   x: ScaledValues
   y: ScaledValues
+  responsiveState: CartesianSeriesResponsiveState
 
   constructor(args: CartesianSeriesArgs | CartesianSeries) {
     super(args)
@@ -22,6 +24,9 @@ export class CartesianSeries extends Series {
       alignScaledValuesLengths(args.x, args.y)
     this.x = 'tag' in xAligned ? xAligned : axisScaledValuesValidation(xAligned, 'a-0')
     this.y = 'tag' in yAligned ? yAligned : axisScaledValuesValidation(yAligned, 'a-1')
+    this.responsiveState = 'class' in args ? args.responsiveState : new CartesianSeriesResponsiveState({
+      flipped: args.flipped, series: this
+    })
   }
 
   getScaledValues() { return {x: this.x, y: this.y} }

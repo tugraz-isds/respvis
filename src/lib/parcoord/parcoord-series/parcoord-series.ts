@@ -10,6 +10,7 @@ import {ZoomArgs, ZoomValid, zoomValidation} from "../../core/data/zoom";
 import {elementFromSelection} from "../../core/utilities/d3/util";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 import {ErrorMessages} from "../../core/utilities/error";
+import {ParcoordSeriesResponsiveState} from "./responsive-state";
 
 export type ParcoordSeriesUserArgs = SeriesUserArgs & {
   dimensions: {
@@ -30,6 +31,7 @@ export class ParcoordSeries extends Series {
   axesPercentageScale: ScaleOrdinal<string, number>
   percentageScreenScale: ScaleLinear<number, number>
   zooms: (ZoomValid | undefined)[]
+  responsiveState: ParcoordSeriesResponsiveState
 
   constructor(args: ParcoordArgs | ParcoordSeries) {
     super(args)
@@ -71,6 +73,10 @@ export class ParcoordSeries extends Series {
     
     this.zooms = 'class' in args ? args.zooms : args.dimensions.map(dimension => {
       return dimension.zoom ? zoomValidation(dimension.zoom) : undefined
+    })
+
+    this.responsiveState = 'class' in args ? args.responsiveState : new ParcoordSeriesResponsiveState({
+      flipped: args.flipped, series: this
     })
   }
 
@@ -127,10 +133,11 @@ export class ParcoordSeries extends Series {
   }
 
   cloneZoomed() {
+    const zoomDirection = this.responsiveState.currentlyFlipped ? 'x' : 'y'
     const zoomedAxes = this.axes.map((axis, index) => {
       const zoom = this.zooms[index]
       if (!zoom) return axis
-      return {...axis, scaledValues: axis.scaledValues.cloneZoomed(zoom.currentTransform, 'y')}
+      return {...axis, scaledValues: axis.scaledValues.cloneZoomed(zoom.currentTransform, zoomDirection)}
     })
     const clone = this.clone()
     clone.axes = zoomedAxes

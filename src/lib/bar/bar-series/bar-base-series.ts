@@ -25,7 +25,7 @@ export abstract class BarBaseSeries extends CartesianSeries {
       originalXValues: this.x,
       originalYValues: this.y,
       renderer: this.renderer,
-      flipped: this.flipped
+      flipped: this.responsiveState.flipped
     })
   }
 

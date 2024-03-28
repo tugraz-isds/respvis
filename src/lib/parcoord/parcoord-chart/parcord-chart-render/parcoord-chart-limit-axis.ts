@@ -1,5 +1,5 @@
 import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
-import {drag, selectAll, Selection} from "d3";
+import {drag, Selection} from "d3";
 import {pathChevronRender} from "../../../core";
 import {bboxDiffSVG} from "../../../core/utilities/position/diff";
 import {throttle} from "../../../core/utilities/d3/util";
@@ -74,8 +74,4 @@ function horizontalChartDrag(axisS: Selection<SVGGElement, KeyedAxisValid>,
     .on("drag.dragAxisLimitLower", (e) => throttledDrag.func(e, 'lower'))
     .on("end.dragAxisLimitLower", (e) => onDrag(e, 'lower'))
   )
-
-  selectAll('html').on('mouseup', () => {
-    console.log('MouseUP!')
-  })
 }

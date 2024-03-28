@@ -46,6 +46,7 @@ export abstract class SeriesChart extends Chart {
     super.mainRender()
     const chartSelection = this.chartSelection!
     const chartD = chartSelection.datum()
+    chartD.getSeries().forEach(series => series.responsiveState.update())
     const legendS = legendRender(chartSelection, chartD.legend)
     legendAddHover(legendS)
 

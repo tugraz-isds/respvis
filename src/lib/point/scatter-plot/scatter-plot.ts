@@ -5,7 +5,6 @@ import {ScatterPlotArgs, ScatterPlotValid, scatterPlotValidation} from "./scatte
 import {getMaxRadius} from "../../core/data/radius/radius-util";
 import {elementFromSelection} from "../../core/utilities/d3/util";
 import {CartesianChart} from "../../core/render/chart/cartesian-chart/cartesian-chart";
-import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 
 type WindowSelection = Selection<HTMLDivElement, WindowValid & ScatterPlotValid>;
 type ChartSelection = Selection<SVGSVGElement, WindowValid & ScatterPlotValid>;
@@ -37,7 +36,7 @@ export class ScatterPlot extends CartesianChart {
     const chartElement = elementFromSelection(this.chartSelection)
     const maxRadius = getMaxRadius(radii, {chart: chartElement})
     const drawAreaBounds = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
-    const flipped = getCurrentRespVal(series.flipped, {chart: chartElement})
+    const flipped = series.responsiveState.currentlyFlipped
     //TODO: resizing is also necessary if no zoom
     x.scale.range(flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius])
     y.scale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])

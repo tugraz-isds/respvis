@@ -49,6 +49,7 @@ export type CategoryKey = `c-${number}`
 export type IndividualKey = `i-${number}`
 
 export type AxisType = 'x' | 'y'
+export type AxisPosition = 'bottom' | 'left'
 
 export type ActiveKeyMap = {[p: string]: boolean}
 

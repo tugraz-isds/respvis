@@ -42,7 +42,7 @@ function legendCrossStateRender(selection: LegendSelection) {
   const active = renderer.windowSelection.datum().windowSettings.movableCrossActive
   const drawAreaS = renderer.drawAreaSelection
   const backgroundS = drawAreaS?.selectChild('.background')
-  const flipped = getCurrentRespVal(series.flipped, {chart: elementFromSelection(renderer.chartSelection)})
+  const flipped = series.responsiveState.flipped
 
   const crossStateTextS = selection
     .selectAll('.cross-state')

@@ -15,6 +15,7 @@ import {axisTicksPostGenerationRender, axisTicksPreGenerationRender} from "./axi
 import {tickAngleConfiguration} from "./tick-angle-configuration";
 import {getFilteredScaledValues} from "../../data/scale/axis-scaled-values-validation";
 import {bgSVGOnlyRender} from "../util/bg-svg-only-render";
+import {AxisPosition} from "../../constants/types";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
@@ -30,10 +31,13 @@ export function axisBottomRender(axisS: AxisSelection) {
   return axisRender(axisS, d3Axis(d3AxisBottom, axisS))
 }
 
-export function axisSequenceRender(axisS: AxisSelection) {
+export function axisSequenceRender(axisS: AxisSelection, axisPosition?: AxisPosition) {
   bgSVGOnlyRender(axisS)
-  axisRender(axisS, d3Axis(d3AxisLeft, axisS))
-  axisS.classed('axis axis-sequence', true)
+  switch (axisPosition) {
+    case "bottom": axisBottomRender(axisS); break;
+    default: axisLeftRender(axisS)
+  }
+  axisS.classed('axis-sequence', true)
   return axisS
 }
 
