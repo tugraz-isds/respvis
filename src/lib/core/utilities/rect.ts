@@ -1,4 +1,4 @@
-import { SelectionOrTransition } from './d3/selection';
+import {SelectionOrTransition} from './d3/selection';
 import {
   Position,
   positionEquals,
@@ -6,8 +6,8 @@ import {
   positionRound,
   positionToAttrs,
   positionToString,
-} from './position';
-import { Size, sizeEquals, sizeFromAttrs, sizeRound, sizeToAttrs, sizeToString } from './size';
+} from './position/position';
+import {Size, sizeEquals, sizeFromAttrs, sizeRound, sizeToAttrs, sizeToString} from './size';
 
 export interface Rect extends Position, Size {}
 

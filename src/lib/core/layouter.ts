@@ -1,6 +1,6 @@
 import {select, Selection} from 'd3';
 import {elementRelativeBounds} from './utilities/element';
-import {centerSVGTextBaseline, positionToTransformAttr} from './utilities/position';
+import {centerSVGTextBaseline, positionToTransformAttr} from './utilities/position/position';
 import {rectBottomLeft, rectEquals, rectFromString, rectToAttrs, rectTopRight, rectToString,} from './utilities/rect';
 import {circleInsideRect, circleToAttrs} from './utilities/circle';
 import {cssVars} from "./constants/cssVars";

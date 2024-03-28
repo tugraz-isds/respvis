@@ -1,9 +1,10 @@
-import { SelectionOrTransition } from './d3/selection';
-import { Circle } from './circle';
-import { Rect } from './rect';
-import { elementIs } from './element';
-import { select } from 'd3';
-import { Position } from '..';
+import {SelectionOrTransition} from './d3/selection';
+import {Circle} from './circle';
+import {Rect} from './rect';
+import {elementIs} from './element';
+import {select, Selection} from 'd3';
+import {Position} from '..';
+import {classesForSelection} from './d3/util';
 
 export function pathRect(selectionOrTransition: SelectionOrTransition | Element, rect: Rect): void {
   const { x, y, width: w, height: h } = rect;
@@ -45,4 +46,24 @@ export function pathLine(
     : selectionOrTransition;
 
   selectionOrTransition.attr('d', `M${positions.map((p) => `${p.x},${p.y}`).join('L')}`);
+}
+
+//src: https://tablericons.com/
+export function pathChevronRender(selection: Selection, ...classes: string[]) {
+  const {selector, names} = classesForSelection(classes)
+  const group = selection.selectAll<SVGGElement, any>(selector)
+    .data([null])
+    .join('g')
+    .classed(names, true)
+  group.selectAll('path')
+    .data([null])
+    .join('path')
+    .attr('d', "M6,0.8 l6,6 l6,-6")
+    .attr('stroke-width', 1.5)
+    .attr('fill', 'none')
+    .attr('stroke-linecap', 'round')
+    .attr('stroke-linejoin', 'round')
+    .attr('stroke', '#2c3e50')
+    .attr('pointer-events', 'none')
+  return group
 }

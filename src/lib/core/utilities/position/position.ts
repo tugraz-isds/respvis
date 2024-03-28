@@ -1,7 +1,7 @@
-import {SelectionOrTransition} from './d3/selection';
+import {SelectionOrTransition} from '../d3/selection';
 import {Selection} from "d3";
-import {cssLengthInPx} from "./dom/units";
-import {CSSLengthUnit, UnitValue} from "../constants/types";
+import {cssLengthInPx} from "../dom/units";
+import {CSSLengthUnit, UnitValue} from "../../constants/types";
 
 export interface Position {
   x: number;
@@ -61,7 +61,7 @@ export function positionToTransformAttr(
 }
 
 export function centerSVGTextBaseline(svgS: Selection<SVGTextElement>, htmlS: Selection<HTMLElement>) {
-  svgS.attr('dy', (d, i, g) => {
+  svgS.attr('dy', () => {
     return cssLengthInPx(htmlS.style('height') as UnitValue<CSSLengthUnit>) / 2
   })
 }

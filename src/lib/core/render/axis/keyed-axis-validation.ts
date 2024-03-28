@@ -13,6 +13,8 @@ export type KeyedAxisValid = AxisBaseValid & {
   keysActive: ActiveKeyMap
   setKeyActiveIfDefined: (key: string, value: boolean) => void
   isKeyActiveByKey: (key: string) => boolean
+  upperRangeLimitPercent: number
+  lowerRangeLimitPercent: number
 }
 
 export function keyedAxisValidation(args:KeyedAxisArgs): KeyedAxisValid {
@@ -23,6 +25,8 @@ export function keyedAxisValidation(args:KeyedAxisArgs): KeyedAxisValid {
     series: args.series,
     key: args.key,
     keysActive,
+    upperRangeLimitPercent: 1,
+    lowerRangeLimitPercent: 0,
     setKeyActiveIfDefined: function(key: string, value: boolean) {
       if (this.keysActive[key] !== undefined) this.keysActive[key] = value
     },

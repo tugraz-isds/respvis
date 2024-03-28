@@ -5,6 +5,7 @@ import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
 import {throttle} from "../../../core/utilities/d3/util";
 import {onZoomAxisParcoord} from "./parcoord-chart-zoom-axis";
 import {onDragAxisParcoord} from "./parcoord-chart-drag-axis";
+import {parcoordChartLimitAxis} from "./parcoord-chart-limit-axis";
 
 export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>) {
   const {series} = chartS.datum()
@@ -30,6 +31,8 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>)
     .each((d, i, g) => {
       const axisS = select<SVGGElement, KeyedAxisValid>(g[i])
       axisSequenceRender(axisS)
+      parcoordChartLimitAxis(axisS, drawAreaBackgroundS, series)
+
 
       const throttledZoom = throttle((e) => onZoomAxisParcoord(e, d, series), 50)
       const onZoom = (e) => {
@@ -49,6 +52,7 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>)
         return
       }
       axisS.call(zoomB.behaviour.scaleExtent([zoomB.out, zoomB.in]).on('zoom.zoomAndDrag', onZoom))
+
     })
     .attr('transform', (d, i) => {
       const percentage = filteredSeries.axesPercentageScale(activeAxes[i].key) ?? 0
