@@ -32,17 +32,16 @@ export function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>)
     for (let axisIndex = 0; axisIndex < activeAxes.length; axisIndex++) {
       const axis = activeAxes[axisIndex]
       const vals = axis.scaledValues
-      if (!vals.isKeyActiveByIndex(valueIndex)) {
+      const yBandWidth = vals instanceof ScaledValuesCategorical ? vals.scale.bandwidth() / 2 : 0
+      const y = vals.getScaledValue(valueIndex) + yBandWidth
+      // console.log(y, axis.lowerRangeLimitPercent, axis.upperRangeLimitPercent)
+      if (!vals.isKeyActiveByIndex(valueIndex) || !axis.isValueInRangeLimit(y)) {
         containsInactiveAxisCategory = true
         break
       }
-      const yBandWidth = vals instanceof ScaledValuesCategorical ? vals.scale.bandwidth() / 2 : 0
       const xPercent = filteredSeries.axesPercentageScale(activeAxes[axisIndex].key)
       const xReal = filteredSeries.percentageScreenScale(xPercent)
-      positions.push({
-        y: vals.getScaledValue(valueIndex) + yBandWidth,
-        x: xReal
-      })
+      positions.push({ y, x: xReal })
     }
     if (containsInactiveAxisCategory) continue
 

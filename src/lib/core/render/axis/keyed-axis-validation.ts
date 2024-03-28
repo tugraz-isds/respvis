@@ -15,11 +15,13 @@ export type KeyedAxisValid = AxisBaseValid & {
   isKeyActiveByKey: (key: string) => boolean
   upperRangeLimitPercent: number
   lowerRangeLimitPercent: number
+  isValueInRangeLimit: (val: any) => boolean
 }
 
 export function keyedAxisValidation(args:KeyedAxisArgs): KeyedAxisValid {
   const keysActive = {}
   keysActive[args.key] = true
+
   return {
     ...axisBaseValidation(args),
     series: args.series,
@@ -33,6 +35,13 @@ export function keyedAxisValidation(args:KeyedAxisArgs): KeyedAxisValid {
     isKeyActiveByKey: function(key: string) {
       // noinspection PointlessBooleanExpressionJS
       return this.keysActive[key] !== false
+    },
+    isValueInRangeLimit: function (val: number) {
+      const scaledValues = this.scaledValues
+      const range = scaledValues.scale.range()
+      const maxRangeGraphical = range[0] - range[0] * this.upperRangeLimitPercent
+      const minRangeGraphical = range[0] - range[0] * this.lowerRangeLimitPercent
+      return val <= minRangeGraphical && val >= maxRangeGraphical
     }
   }
 }
