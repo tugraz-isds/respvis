@@ -31,6 +31,7 @@ export class ParcoordSeries extends Series {
   axesPercentageScale: ScaleOrdinal<string, number>
   percentageScreenScale: ScaleLinear<number, number>
   zooms: (ZoomValid | undefined)[]
+  axesInverted: boolean[]
   responsiveState: ParcoordSeriesResponsiveState
 
   constructor(args: ParcoordArgs | ParcoordSeries) {
@@ -78,6 +79,8 @@ export class ParcoordSeries extends Series {
     this.responsiveState = 'class' in args ? args.responsiveState : new ParcoordSeriesResponsiveState({
       flipped: args.flipped, series: this
     })
+
+    this.axesInverted = 'class' in args ? args.axesInverted : this.axes.map(() => false)
   }
 
   getCombinedKey(i: number): string {
@@ -119,7 +122,6 @@ export class ParcoordSeries extends Series {
     const activeAxes = activeIndices.map(index => this.axes[index])
     const activeDomain = activeAxes.map(axis => axis.key)
     const activeRange = activeAxes.map(axis => this.axesPercentageScale(axis.key))
-    const activeZooms = activeIndices.map(index => this.zooms[index])
     const clone = this.clone()
     clone.axes = activeAxes
     clone.axesScale.domain(activeDomain)
@@ -127,7 +129,8 @@ export class ParcoordSeries extends Series {
     clone.axesPercentageScale
       .domain(activeDomain)
       .range(activeRange)
-    clone.zooms = activeZooms
+    clone.zooms = activeIndices.map(index => this.zooms[index])
+    clone.axesInverted = activeIndices.map(index => this.axesInverted[index])
     if (clone.axes.length === 1) throw new Error(ErrorMessages.parcoordMinAxesCount)
     return clone
   }
@@ -143,6 +146,16 @@ export class ParcoordSeries extends Series {
     clone.axes = zoomedAxes
     return clone
     // const valsZoomed = series.axes[axisIndex].scaledValues.cloneZoomed(transform, 'y')
+  }
+
+  cloneInverted() {
+    const invertedAxes = this.axes.map((axis, index) => {
+      if (!this.axesInverted[index]) return axis
+      return {...axis, scaledValues: axis.scaledValues.cloneRangeInversed()}
+    })
+    const clone = this.clone()
+    clone.axes = invertedAxes
+    return clone
   }
 
   clone(): ParcoordSeries {

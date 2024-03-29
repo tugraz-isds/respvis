@@ -12,38 +12,27 @@
   }
   .axis.axis-sequence {
     position: relative;
+    .title-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      --fit-width: true;
+      --fit-height: true;
+      .title, .subtitle, .axis-inverter {
+        --fit-width: true;
+        --fit-height: true;
+      }
+    }
     div.title-wrapper {
       position: absolute;
       bottom: 100%;
-      .subtitle {
-        translate: 0 -3px;
-        //margin-top: -3px;
-      }
-    }
-    .title-wrapper {
-      --fit-height: true;
-      .title, .subtitle {
-        --fit-height: true;
-        --fit-width: true;
-        text {
-          text-anchor: middle;
-          dominant-baseline: hanging;
-        }
-      }
+      translate: -50% -30%;
+      column-gap: 0.25em;
     }
 
     .ticks-transform {
       grid-area: ticks-transform;
     }
-    //.ticks text {
-    //  text-anchor: end;
-    //  dominant-baseline: middle;
-    //}
   }
 }
-
-//.chart.chart-parcoord {
-//  text, text[data-orientation='horizontal'] {
-//    dominant-baseline: central;
-//  }
-//}

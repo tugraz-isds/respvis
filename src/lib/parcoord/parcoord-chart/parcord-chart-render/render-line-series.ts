@@ -19,7 +19,7 @@ export function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>)
 
   if (!lineSeriesS.attr('bounds')) return
 
-  const filteredSeries = series.cloneFiltered().cloneZoomed()
+  const filteredSeries = series.cloneFiltered().cloneZoomed().cloneInverted()
   const activeAxes = filteredSeries.getAxesDragDropOrdered()
 
   const lines: Line[] = []

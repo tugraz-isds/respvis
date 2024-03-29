@@ -18,13 +18,14 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
   protected constructor(args: ScaledValuesBaseArgs) {
     this.parentKey = args.parentKey
   }
-  getScaleInverseRanged() {
-    const originalRange = this.scale.range()
-    return this.scale.copy().range([originalRange[1], originalRange[0]])
-  }
 
   getScaledValue(i: number) {
     return this.scale(this.values[i] as any)!
+  }
+
+  getRangeInversed() {
+    const originalRange = this.scale.range()
+    return [originalRange[1], originalRange[0]]
   }
 
   abstract scaledValueAtScreenPosition(value: number): string
@@ -41,6 +42,12 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
 
   cloneZoomed(transform: ZoomTransform, axisType: AxisType): ScaledValuesBase<T> {
     return this.clone()
+  }
+
+  cloneRangeInversed() {
+    const clone = this.clone()
+    clone.scale.range(this.getRangeInversed())
+    return clone
   }
 
   abstract clone(): ScaledValuesBase<T>

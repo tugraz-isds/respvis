@@ -33,6 +33,7 @@ export function axisBottomRender(axisS: AxisSelection) {
 
 export function axisSequenceRender(axisS: AxisSelection, axisPosition?: AxisPosition) {
   bgSVGOnlyRender(axisS)
+  axisS.attr('class', null)
   switch (axisPosition) {
     case "bottom": axisBottomRender(axisS); break;
     default: axisLeftRender(axisS)
@@ -57,7 +58,6 @@ function axisRender(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
     .data([null])
     .join('g')
     .classed('title', true)
-    .attr('data-ignore-layout-children', true)
     .selectAll('text')
     .data([null])
     .join('text')
@@ -67,7 +67,6 @@ function axisRender(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
     .data([null])
     .join('g')
     .classed('subtitle', true)
-    .attr('data-ignore-layout-children', true)
     .selectAll('text')
     .data([null])
     .join('text')

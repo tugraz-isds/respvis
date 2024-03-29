@@ -58,31 +58,39 @@ export function pathChevronRender(selection: Selection, classes: string[], data?
     .data([null])
     .join('g')
     .classed(names, true)
+    .attr('data-ignore-layout-children', true)
   group.selectAll('path')
     .data(data ?? [null])
     .join('path')
     .attr('d', d => d === 'right' ?
       "M9 6l6 6l-6 6" :
-      "M6,0.8 l6,6 l6,-6"
+      "M0,0.8 l6,6 l6,-6"
     ).attr('stroke-width', 1.5)
     .attr('fill', 'none')
     .attr('stroke-linecap', 'round')
     .attr('stroke-linejoin', 'round')
     .attr('stroke', '#2c3e50')
     .attr('pointer-events', 'none')
+
+  // M6,0.8 l6,6 l6,-6
   return group
 }
 
-export function pathChevronRightRender(selection: Selection, ...classes: string[]) {
+export function pathArrowsUpDownRender(selection: Selection, classes: string[]) {
   const {selector, names} = classesForSelection(classes)
+  const paths = [
+    "M17 3l0 18", "M10 18l-3 3l-3 -3",
+    "M7 21l0 -18", "M20 6l-3 -3l-3 3"
+  ]
   const group = selection.selectAll<SVGGElement, any>(selector)
     .data([null])
     .join('g')
     .classed(names, true)
+    .attr('data-ignore-layout-children', true)
   group.selectAll('path')
-    .data([null])
+    .data(paths)
     .join('path')
-    .attr('d', "M6,0.8 l6,6 l6,-6")
+    .attr('d', d => d)
     .attr('stroke-width', 1.5)
     .attr('fill', 'none')
     .attr('stroke-linecap', 'round')

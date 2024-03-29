@@ -5,7 +5,8 @@ import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
 import {throttle} from "../../../core/utilities/d3/util";
 import {onZoomAxisParcoord} from "./parcoord-chart-zoom-axis";
 import {onDragAxisParcoord} from "./parcoord-chart-drag-axis";
-import {parcoordChartLimitAxis} from "./parcoord-chart-limit-axis";
+import {parcoordChartAxisLimiterRender} from "./axis-limiter-render";
+import {axisInverterRender} from "./axis-inverter-render";
 
 export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>) {
   const {series} = chartS.datum()
@@ -24,7 +25,7 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>)
   const boundsAttr = axisSeriesS.attr('bounds')
   if (!boundsAttr) return
 
-  const filteredSeries = series.cloneFiltered().cloneZoomed()
+  const filteredSeries = series.cloneFiltered().cloneZoomed().cloneInverted()
   const activeAxes = !series.keysActive[series.key] ? [] : filteredSeries.axes
 
   axisSeriesS
@@ -32,30 +33,39 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>)
     .data(activeAxes, (d) => d.key)
     .join('g')
     .each((d, i, g) => {
+      // console.log(d.scaledValues.scale.range())
       const axisS = select<SVGGElement, KeyedAxisValid>(g[i])
+      resetTickLines()
       axisSequenceRender(axisS, axisPosition)
-      parcoordChartLimitAxis(axisS, drawAreaBackgroundS, series)
+      parcoordChartAxisLimiterRender(axisS, drawAreaBackgroundS, series)
+      handleAxisZoomAndDrag()
+      axisInverterRender(axisS)
 
-
-      const throttledZoom = throttle((e) => onZoomAxisParcoord(e, d, series), 50)
-      const onZoom = (e) => {
-        throttledZoom.func(e)
-        if (e.sourceEvent.type === "mousemove" || e.sourceEvent.type === "touchmove") {
-          throttledDrag.func(e)
-        }
-        if (e.sourceEvent.type === "wheel") {
-          series.renderer.windowSelection.dispatch('resize')
-        }
+      function resetTickLines() {
+        const tickLinesS = axisS.selectAll('.tick > line');
+        ['x1', 'x2', 'y1', 'y2']
+          .forEach(attr => tickLinesS.attr(attr, null))
       }
-      const throttledDrag = throttle((e) => onDragAxisParcoord(e, d, drawAreaBackgroundS, series), 50)
 
-      const zoomB = filteredSeries.zooms[i]
-      if (!zoomB) {
-        axisS.call(drag().on("drag.dragAxis", (e) => throttledDrag.func(e)))
-        return
+      function handleAxisZoomAndDrag() {
+        const throttledZoom = throttle((e) => onZoomAxisParcoord(e, d, series), 50)
+        const throttledDrag = throttle((e) => onDragAxisParcoord(e, d, drawAreaBackgroundS, series), 50)
+        const onZoom = (e) => {
+          throttledZoom.func(e)
+          if (e.sourceEvent.type === "mousemove" || e.sourceEvent.type === "touchmove") {
+            throttledDrag.func(e)
+          }
+          if (e.sourceEvent.type === "wheel") {
+            series.renderer.windowSelection.dispatch('resize')
+          }
+        }
+        const zoomB = filteredSeries.zooms[i]
+        if (!zoomB) {
+          axisS.call(drag().on("drag.dragAxis", (e) => throttledDrag.func(e)))
+          return
+        }
+        axisS.call(zoomB.behaviour.scaleExtent([zoomB.out, zoomB.in]).on('zoom.zoomAndDrag', onZoom))
       }
-      axisS.call(zoomB.behaviour.scaleExtent([zoomB.out, zoomB.in]).on('zoom.zoomAndDrag', onZoom))
-
     })
     .attr('transform', (d, i) => {
       const percentage = filteredSeries.axesPercentageScale(activeAxes[i].key) ?? 0

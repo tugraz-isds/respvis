@@ -8,9 +8,9 @@ import {ParcoordSeries} from "../../parcoord-series";
 import {bgSVGOnlyRender} from "../../../core/render/util/bg-svg-only-render";
 import {backgroundSVGOnly} from "../../../core/constants/dom/classes";
 
-export function parcoordChartLimitAxis(axisS: Selection<SVGGElement, KeyedAxisValid>,
-                                       drawAreaBackgroundS: Selection<SVGRectElement>,
-                                       series: ParcoordSeries) {
+export function parcoordChartAxisLimiterRender(axisS: Selection<SVGGElement, KeyedAxisValid>,
+                                               drawAreaBackgroundS: Selection<SVGRectElement>,
+                                               series: ParcoordSeries) {
   chevronSlidersRender(axisS)
   if (series.responsiveState.currentlyFlipped) verticalChartAlignSliders(axisS)
   else horizontalChartAlignSliders(axisS)
@@ -27,7 +27,7 @@ function chevronSlidersRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
 }
 
 function horizontalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
-  const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues} = axisS.datum()
+  const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues, series} = axisS.datum()
   const upperChevronS= axisS.selectAll('.slider-up')
   const lowerChevronS = axisS.selectAll('.slider-down')
   const domainS = axisS.select<SVGPathElement>('.domain')
@@ -35,10 +35,11 @@ function horizontalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisVali
 
   const translateX = -leftCornersXDiff + bbox1.width - bbox2.width / 2
 
-  const range = scaledValues.scale.range()
-  const translateYUpper = range[0] - range[0] * upperRangeLimitPercent - bbox2.height
-
-  const translateYLower = range[0] - range[0] * lowerRangeLimitPercent + bbox2.height
+  const axisIndex = series.axes.findIndex(axis => axis.key === axisS.datum().key)
+  const inverted = series.axesInverted[axisIndex]
+  const rangeMax = scaledValues.scale.range()[inverted ? 1 : 0]
+  const translateYUpper = rangeMax - rangeMax * upperRangeLimitPercent - bbox2.height
+  const translateYLower = rangeMax - rangeMax * lowerRangeLimitPercent + bbox2.height
   const mirrorYLower = `scale(1, -1)`
 
   upperChevronS.attr('transform', `translate(${translateX}, ${translateYUpper})`)
@@ -47,14 +48,16 @@ function horizontalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisVali
 
 function verticalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   //TODO: fuse with horizontal function (only small differences)
-  const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues} = axisS.datum()
+  const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues, series} = axisS.datum()
   const upperChevronS= axisS.selectAll<SVGGElement, any>('.slider-up')
   const lowerChevronS = axisS.selectAll<SVGGElement, any>('.slider-down')
   const domainS = axisS.select<SVGPathElement>('.domain')
+  const axisIndex = series.axes.findIndex(axis => axis.key === axisS.datum().key)
+  const inverted = series.axesInverted[axisIndex]
 
-  const range = scaledValues.scale.range()
-  const rangeXUpper = range[1] * upperRangeLimitPercent
-  const rangeXLower = range[1] * lowerRangeLimitPercent
+  const rangeMax = scaledValues.scale.range()[inverted ? 0 : 1]
+  const rangeXUpper = rangeMax * upperRangeLimitPercent
+  const rangeXLower = rangeMax * lowerRangeLimitPercent
 
   const {leftCornersXDiff, leftCornersYDiff, bbox2: bboxPath} =
     bboxDiffSVG(domainS, upperChevronS.select('path'))
