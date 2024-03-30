@@ -22,7 +22,5 @@ export function windowRender<D extends WindowValid>(selection: Selection<SVGHTML
     .data([data])
     .join('svg')
 
-  data.renderer.chartSelection = chartS
-  data.renderer.layouterSelection = layouterS
   return {chartWindowS: selection, layouterS, chartS}
 }

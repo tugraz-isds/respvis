@@ -4,7 +4,7 @@ import {elementComputedStyleWithoutDefaults, elementSVGPresentationAttrs} from "
 import {ErrorMessages} from "../../../utilities/error";
 
 export function applyDownloadStyle(original: SVGSVGElement, clone: SVGSVGElement, renderer: Renderer) {
-  const { windowSettings } = renderer.windowSelection.datum()
+  const { windowSettings } = renderer.windowS.datum()
   switch (windowSettings.downloadStyleType) {
     case "embedded": embedCSS(original, clone); break
     case "inline": attrsFromComputedStyle(clone, original); break

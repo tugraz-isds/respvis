@@ -15,15 +15,21 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
   abstract readonly values: ToArray<T>
   abstract readonly scale: ScaleBase<T>
   readonly parentKey: string
+  inverted: boolean
   protected constructor(args: ScaledValuesBaseArgs) {
     this.parentKey = args.parentKey
+    this.inverted = false
   }
 
   getScaledValue(i: number) {
     return this.scale(this.values[i] as any)!
   }
 
-  getRangeInversed() {
+  getOriginalRange() {
+    return this.inverted ? this.getCurrentRangeInversed() : this.scale.range()
+  }
+
+  getCurrentRangeInversed() {
     const originalRange = this.scale.range()
     return [originalRange[1], originalRange[0]]
   }
@@ -46,7 +52,8 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
 
   cloneRangeInversed() {
     const clone = this.clone()
-    clone.scale.range(this.getRangeInversed())
+    clone.scale.range(this.getCurrentRangeInversed())
+    clone.inverted = !this.inverted
     return clone
   }
 

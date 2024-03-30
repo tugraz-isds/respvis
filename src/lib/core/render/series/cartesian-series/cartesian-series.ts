@@ -11,22 +11,30 @@ export type CartesianSeriesUserArgs = SeriesUserArgs & {
   y: ScaledValuesUserArgs<AxisDomainRV>
 }
 
-export type CartesianSeriesArgs = SeriesArgs & CartesianSeriesUserArgs
+export type CartesianSeriesArgs = SeriesArgs & CartesianSeriesUserArgs & {
+  originalSeries?: CartesianSeries
+}
 
 export class CartesianSeries extends Series {
+  originalSeries: CartesianSeries
   x: ScaledValues
   y: ScaledValues
   responsiveState: CartesianSeriesResponsiveState
 
   constructor(args: CartesianSeriesArgs | CartesianSeries) {
     super(args)
+    this.originalSeries = args.originalSeries ?? this
     const [xAligned, yAligned] = ('tag' in args.x && 'tag' in args.y) ? [args.x, args.y] :
       alignScaledValuesLengths(args.x, args.y)
     this.x = 'tag' in xAligned ? xAligned : axisScaledValuesValidation(xAligned, 'a-0')
     this.y = 'tag' in yAligned ? yAligned : axisScaledValuesValidation(yAligned, 'a-1')
-    this.responsiveState = 'class' in args ? args.responsiveState : new CartesianSeriesResponsiveState({
-      flipped: args.flipped, series: this
-    })
+
+    this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
+      new CartesianSeriesResponsiveState({
+        series: this,
+        originalSeries: this.originalSeries,
+        flipped: ('flipped' in args) ? args.flipped : false
+      })
   }
 
   getScaledValues() { return {x: this.x, y: this.y} }
@@ -46,6 +54,6 @@ export class CartesianSeries extends Series {
   }
 
   clone() {
-    return new CartesianSeries(this)
+    return new CartesianSeries({...this})
   }
 }

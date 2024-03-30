@@ -5,10 +5,15 @@ import {addZoom} from "../../../data/zoom";
 import {SeriesChart} from "../series-chart/series-chart";
 import {cartesianChartAxisRender} from "./cartesian-chart-render";
 
-export abstract class CartesianChart extends SeriesChart {
+type ChartSelection = Selection<SVGSVGElement, CartesianChartValid & WindowValid>
 
-  abstract windowSelection: Selection<HTMLDivElement, CartesianChartValid & WindowValid>
-  abstract chartSelection?: Selection<SVGSVGElement, CartesianChartValid & WindowValid>
+export abstract class CartesianChart extends SeriesChart {
+  abstract windowS: Selection<HTMLDivElement, CartesianChartValid & WindowValid>
+  get chartS(): ChartSelection {
+    return ((this._chartS && !this._chartS.empty()) ? this._chartS :
+      this.layouterS.selectAll('svg.chart')) as ChartSelection
+  }
+
 
   protected addBuiltInListeners() {
     super.addBuiltInListeners()
@@ -28,26 +33,26 @@ export abstract class CartesianChart extends SeriesChart {
 
   private addZoomListeners() {
     const renderer = this
-    const chartWindowD = this.windowSelection.datum()
+    const chartWindowD = this.windowS.datum()
     if (!chartWindowD.zoom) return
 
-    addZoom(this.windowSelection, ({x, y}) => {
-      const cartesianData = renderer.windowSelection.datum()
+    addZoom(this.windowS, ({x, y}) => {
+      const cartesianData = renderer.windowS.datum()
       const seriesUpdated = cartesianData.series.clone()
       seriesUpdated.x = x
       seriesUpdated.y = y
       cartesianData.x.scaledValues = x
       cartesianData.y.scaledValues = y
 
-      renderer.windowSelection.data([{
+      renderer.windowS.data([{
         ...cartesianData, series: seriesUpdated
       }])
 
-      renderer.windowSelection.dispatch('resize')
+      renderer.windowS.dispatch('resize')
     })
   }
 
   protected renderAxes() {
-    this.chartSelection!.call(cartesianChartAxisRender)
+    this.chartS!.call(cartesianChartAxisRender)
   }
 }

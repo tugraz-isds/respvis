@@ -25,7 +25,7 @@ export class GeometryScaleHandler<X extends ScaledValues, Y extends ScaledValues
   }
 
   currentlyFlipped() {
-    return getCurrentRespVal( this.flipped, { chart: elementFromSelection(this.renderer.chartSelection) })
+    return getCurrentRespVal( this.flipped, { chart: elementFromSelection(this.renderer.chartS) })
   }
 
   getCurrentXValues() {

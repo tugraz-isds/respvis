@@ -14,7 +14,7 @@ export function axisInverterRender(axisS: Selection<SVGGElement, KeyedAxisValid>
   upperChevronBgS.on('click', () => {
     const axisIndex = series.axes.findIndex(axis => axis.key === axisS.datum().key)
     series.axesInverted[axisIndex] = !series.axesInverted[axisIndex]
-    series.renderer.windowSelection.dispatch('resize')
+    series.renderer.windowS.dispatch('resize')
   })
 
   // titleWrapperS

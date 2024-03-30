@@ -8,18 +8,22 @@ type WindowSelection = Selection<HTMLDivElement, WindowValid & ParcoordChartVali
 type ChartSelection = Selection<SVGSVGElement, WindowValid & ParcoordChartValid>
 
 export class ParcoordChart extends SeriesChart {
-  windowSelection: WindowSelection
-  chartSelection?: ChartSelection
+  windowS: WindowSelection
 
   constructor(windowSelection: Selection<HTMLDivElement>, data: ParcoordChartUserArgs) {
     super({...data, type: 'parcoord'})
-    this.windowSelection = windowSelection as WindowSelection
+    this.windowS = windowSelection as WindowSelection
     const chartData = parcoordChartValidation({...data, renderer: this})
-    this.windowSelection.datum({...this.initialWindowData, ...chartData})
+    this.windowS.datum({...this.initialWindowData, ...chartData})
+  }
+
+  get chartS(): ChartSelection {
+    return ((this._chartS && !this._chartS.empty()) ? this._chartS :
+      this.layouterS.selectAll('svg.chart')) as ChartSelection
   }
 
   protected mainRender(): void {
     super.mainRender()
-    parCoordChartRender(this.chartSelection!)
+    parCoordChartRender(this.chartS!)
   }
 }

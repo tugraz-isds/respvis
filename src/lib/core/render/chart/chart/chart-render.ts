@@ -22,10 +22,6 @@ export function chartRender<T extends ChartBaseElement, D extends ChartValid>(ch
   const title = titleRender(header, chartS)
   const subTitle = subTitleRender(header, chartS)
 
-  const data = chartS.datum()
-  data.renderer.chartSelection = chartS
-  data.renderer.drawAreaSelection = drawArea
-
   return {chartS, paddingWrapperS, header, title, subTitle, drawArea, background}
 }
 

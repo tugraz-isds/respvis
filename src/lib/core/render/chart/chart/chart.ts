@@ -13,22 +13,40 @@ export type ChartWindowedValid = WindowValid & ChartValid
 export abstract class Chart implements Renderer {
   private addedListeners = false
   protected initialRenderHappened = false
-  abstract windowSelection: Selection<SVGHTMLElement, ChartWindowedValid>
+  abstract windowS: Selection<SVGHTMLElement, ChartWindowedValid>
   public readonly filterDispatch = dispatch<{ dataKey: string }>('filter')
   protected readonly initialWindowData: WindowValid
   protected renderCountSinceResize = 0
   protected renderInitialized?: NodeJS.Timeout
   protected resizeObserver?: ResizeObserver
   private resizeThrottle?: ReturnType<typeof throttle>
-  chartSelection?: Selection<SVGSVGElement, ChartWindowedValid>
-  drawAreaSelection?: Selection<SVGHTMLElement>
-  layouterSelection?: Selection<HTMLDivElement>
-  xAxisSelection?: Selection<SVGHTMLElement>
-  yAxisSelection?: Selection<SVGHTMLElement>
-  legendSelection?: Selection<SVGHTMLElement>
+  xAxisS?: Selection<SVGHTMLElement>
+  yAxisS?: Selection<SVGHTMLElement>
+  legendS?: Selection<SVGHTMLElement>
 
   protected constructor(data: Omit<WindowArgs, 'renderer'>) {
     this.initialWindowData = windowValidation({...data, renderer: this})
+  }
+
+  _layouterS?: Selection<HTMLDivElement>
+  get layouterS(): Selection<HTMLDivElement> {
+    return (this._layouterS && !this._layouterS.empty()) ? this._layouterS :
+      this.windowS.selectAll<HTMLDivElement, any>('.layouter')
+  }
+  _chartS?: Selection<SVGSVGElement, ChartWindowedValid>
+  get chartS(): Selection<SVGSVGElement, ChartWindowedValid> {
+    return (this._chartS && !this._chartS.empty()) ? this._chartS :
+      this.layouterS.selectAll<SVGSVGElement, ChartWindowedValid>('svg.chart')
+  }
+  _drawAreaS?: Selection<SVGHTMLElement>
+  get drawAreaS(): Selection<SVGHTMLElement> {
+    return (this._drawAreaS && !this._drawAreaS.empty()) ? this._drawAreaS :
+      this.chartS.selectAll<SVGHTMLElement, any>('.draw-area')
+  }
+  _drawAreaBgS?: Selection<SVGRectElement>
+  get drawAreaBgS(): Selection<SVGRectElement> {
+    return (this._drawAreaBgS && !this._drawAreaBgS.empty()) ? this._drawAreaBgS :
+      this.drawAreaS.selectChildren<SVGRectElement, any>('.background')
   }
 
 
@@ -36,9 +54,9 @@ export abstract class Chart implements Renderer {
     this.render()
     if (this.addedListeners) return
     this.addBuiltInListeners()
-    const chartDivS = this.layouterSelection?.selectChild('div.chart')
+    const chartDivS = this.layouterS.selectChild('div.chart')
     if (chartDivS) this.resizeObserver = resizeEventListener(
-      chartDivS as Selection<Element>, this.windowSelection)
+      chartDivS as Selection<Element>, this.windowS)
     this.addedListeners = true
     this.render()
   }
@@ -48,7 +66,7 @@ export abstract class Chart implements Renderer {
    * as the method also adds listeners and the order matters.
    */
   addCustomListener<T extends ChartWindowedValid>(name: string, callback: (event: Event, data: T) => void) {
-    this.windowSelection.on(name, callback)
+    this.windowS.on(name, callback)
   }
 
   private addFinalListeners() {
@@ -56,10 +74,10 @@ export abstract class Chart implements Renderer {
       this.renderCountSinceResize = 0
       this.initializeRender()
     }
-    if (!this.resizeThrottle) this.resizeThrottle = throttle(() => this.windowSelection.dispatch('resize'), 30)
-    this.windowSelection.on('resize.final', () => rerender())
+    if (!this.resizeThrottle) this.resizeThrottle = throttle(() => this.windowS.dispatch('resize'), 30)
+    this.windowS.on('resize.final', () => rerender())
     //TODO: maybe add variant of throtteling which allows scheduling exactly one job?
-    this.windowSelection.on('pointermove.final pointerleave.final pointerdown.final pointerup.final',
+    this.windowS.on('pointermove.final pointerleave.final pointerdown.final pointerup.final',
       () => this.resizeThrottle?.func())
   }
 
@@ -93,15 +111,15 @@ export abstract class Chart implements Renderer {
   protected preRender() {}
 
   protected mainRender() {
-    const data = this.windowSelection.datum()
-    windowRender(this.windowSelection)
-    chartRender(this.chartSelection!).chartS
-      .classed(`chart-${data.type}`, true)
+    const data = this.windowS.datum()
+    const {chartS} = windowRender(this.windowS)
+    chartRender(chartS)
+    chartS.classed(`chart-${data.type}`, true)
   }
 
   protected postRender() {
-    if (this.layouterSelection) {
-      const boundsChanged = layouterCompute(this.layouterSelection)
+    if (this.layouterS) {
+      const boundsChanged = layouterCompute(this.layouterS)
       if (boundsChanged) this.initializeRender()
     }
   }

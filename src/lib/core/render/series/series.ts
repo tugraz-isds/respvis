@@ -17,12 +17,14 @@ export type SeriesUserArgs = {
 }
 
 export type SeriesArgs = SeriesUserArgs & RenderArgs & {
+  originalSeries?: Series
   key: SeriesKey
   bounds?: Size
 }
 
 export abstract class Series implements RenderArgs {
   class = true
+  originalSeries: Series
   categories?: ScaledValuesCategorical
   key: SeriesKey
   keysActive: ActiveKeyMap
@@ -34,6 +36,8 @@ export abstract class Series implements RenderArgs {
 
   constructor(args: SeriesArgs | Series) {
     const {key, labelCallback} = args
+
+    this.originalSeries = args.originalSeries ?? this
 
     //TODO: pass correct parameters here
     if ('class' in args) this.categories = args.categories
@@ -52,8 +56,9 @@ export abstract class Series implements RenderArgs {
     this.markerTooltips = 'class' in args ? args.markerTooltips : seriesConfigTooltipsData(args.markerTooltips)
     this.labelCallback = 'class' in args ? args.labelCallback : (labelCallback ?? ((label: string) => label))
     this.renderer = args.renderer
-    this.responsiveState = new SeriesResponsiveState({
+    this.responsiveState = 'class' in args ? args.responsiveState : new SeriesResponsiveState({
       series: this,
+      originalSeries: this.originalSeries,
       flipped: ('flipped' in args) ? args.flipped : false
     })
   }

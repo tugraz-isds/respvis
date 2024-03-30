@@ -4,17 +4,14 @@ import {pathChevronRender} from "../../../core";
 import {bboxDiffSVG} from "../../../core/utilities/position/diff";
 import {throttle} from "../../../core/utilities/d3/util";
 import {relateDragWayToSelection} from "../../../core/utilities/d3/drag";
-import {ParcoordSeries} from "../../parcoord-series";
 import {bgSVGOnlyRender} from "../../../core/render/util/bg-svg-only-render";
 import {backgroundSVGOnly} from "../../../core/constants/dom/classes";
 
-export function parcoordChartAxisLimiterRender(axisS: Selection<SVGGElement, KeyedAxisValid>,
-                                               drawAreaBackgroundS: Selection<SVGRectElement>,
-                                               series: ParcoordSeries) {
+export function parcoordChartAxisLimiterRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   chevronSlidersRender(axisS)
-  if (series.responsiveState.currentlyFlipped) verticalChartAlignSliders(axisS)
+  if (axisS.datum().series.responsiveState.currentlyFlipped) verticalChartAlignSliders(axisS)
   else horizontalChartAlignSliders(axisS)
-  addSliderDrag(axisS, drawAreaBackgroundS, series)
+  addSliderDrag(axisS)
 }
 
 function chevronSlidersRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
@@ -27,7 +24,7 @@ function chevronSlidersRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
 }
 
 function horizontalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
-  const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues, series} = axisS.datum()
+  const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues} = axisS.datum()
   const upperChevronS= axisS.selectAll('.slider-up')
   const lowerChevronS = axisS.selectAll('.slider-down')
   const domainS = axisS.select<SVGPathElement>('.domain')
@@ -35,9 +32,7 @@ function horizontalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisVali
 
   const translateX = -leftCornersXDiff + bbox1.width - bbox2.width / 2
 
-  const axisIndex = series.axes.findIndex(axis => axis.key === axisS.datum().key)
-  const inverted = series.axesInverted[axisIndex]
-  const rangeMax = scaledValues.scale.range()[inverted ? 1 : 0]
+  const rangeMax = scaledValues.getOriginalRange()[0]
   const translateYUpper = rangeMax - rangeMax * upperRangeLimitPercent - bbox2.height
   const translateYLower = rangeMax - rangeMax * lowerRangeLimitPercent + bbox2.height
   const mirrorYLower = `scale(1, -1)`
@@ -48,14 +43,12 @@ function horizontalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisVali
 
 function verticalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   //TODO: fuse with horizontal function (only small differences)
-  const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues, series} = axisS.datum()
+  const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues} = axisS.datum()
   const upperChevronS= axisS.selectAll<SVGGElement, any>('.slider-up')
   const lowerChevronS = axisS.selectAll<SVGGElement, any>('.slider-down')
   const domainS = axisS.select<SVGPathElement>('.domain')
-  const axisIndex = series.axes.findIndex(axis => axis.key === axisS.datum().key)
-  const inverted = series.axesInverted[axisIndex]
 
-  const rangeMax = scaledValues.scale.range()[inverted ? 0 : 1]
+  const rangeMax = scaledValues.getOriginalRange()[1]
   const rangeXUpper = rangeMax * upperRangeLimitPercent
   const rangeXLower = rangeMax * lowerRangeLimitPercent
 
@@ -73,19 +66,18 @@ function verticalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>
   lowerChevronS.attr('transform', `${translateAlign} ${translateXLower}`)
 }
 
-function addSliderDrag(axisS: Selection<SVGGElement, KeyedAxisValid>,
-                             drawAreaBackgroundS: Selection<SVGRectElement>,
-                             series: ParcoordSeries) {
-  const axisD = series.axes.find(axis => axis.key === axisS.datum().key)
+function addSliderDrag(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+  const originalSeries = axisS.datum().series.originalSeries
+  const axisD = originalSeries.axes.find(axis => axis.key === axisS.datum().key)
   if (!axisD) return
 
   const upperChevronBackgroundS = axisS.selectAll('.slider-up').selectAll(`.${backgroundSVGOnly}`)
   const lowerChevronBackgroundS = axisS.selectAll('.slider-down').selectAll(`.${backgroundSVGOnly}`)
 
   function getPercent(e) {
-    const dragDown = relateDragWayToSelection(e, drawAreaBackgroundS)
+    const dragDown = relateDragWayToSelection(e, originalSeries.renderer.drawAreaBgS)
     if (dragDown === undefined) return undefined
-    return series.responsiveState.currentlyFlipped ? dragDown.fromLeftPercent : 1 - dragDown.fromTopPercent
+    return originalSeries.responsiveState.currentlyFlipped ? dragDown.fromLeftPercent : 1 - dragDown.fromTopPercent
   }
 
   const onDrag = (e, limit: 'upper' | 'lower') => {
@@ -98,7 +90,7 @@ function addSliderDrag(axisS: Selection<SVGGElement, KeyedAxisValid>,
       axisD.lowerRangeLimitPercent = percent <= axisD.upperRangeLimitPercent ? percent : axisD.upperRangeLimitPercent
     }
     if (e.type === 'end') {
-      series.renderer.windowSelection.dispatch('resize')
+      originalSeries.renderer.windowS.dispatch('resize')
     }
   }
 

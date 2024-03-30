@@ -13,8 +13,8 @@ export function crossToolRender(selection: Selection<HTMLDivElement>, renderer: 
   tooltipSimpleRender(crossActivatorS, {text: 'Inspect Chart'})
   buttonAddEnterExitAttributes(crossActivatorS)
   crossActivatorS.on('click.settings', () => {
-    const settings = renderer.windowSelection.datum().windowSettings
+    const settings = renderer.windowS.datum().windowSettings
     settings.movableCrossActive = !settings.movableCrossActive
-    renderer.windowSelection.dispatch('resize')
+    renderer.windowS.dispatch('resize')
   })
 }

@@ -21,11 +21,13 @@ export type ParcoordSeriesUserArgs = SeriesUserArgs & {
 }
 
 export type ParcoordArgs = SeriesArgs & ParcoordSeriesUserArgs & {
+  originalSeries?: ParcoordSeries
   key: SeriesKey
   bounds?: Size,
 }
 
 export class ParcoordSeries extends Series {
+  originalSeries: ParcoordSeries
   axes: KeyedAxisValid[]
   axesScale: ScalePoint<string>
   axesPercentageScale: ScaleOrdinal<string, number>
@@ -37,6 +39,7 @@ export class ParcoordSeries extends Series {
   constructor(args: ParcoordArgs | ParcoordSeries) {
     super(args)
     const {renderer} = args
+    this.originalSeries = args.originalSeries ?? this
 
     //TODO: data aligning
     this.axes = 'class' in args ? args.axes :
@@ -76,8 +79,11 @@ export class ParcoordSeries extends Series {
       return dimension.zoom ? zoomValidation(dimension.zoom) : undefined
     })
 
-    this.responsiveState = 'class' in args ? args.responsiveState : new ParcoordSeriesResponsiveState({
-      flipped: args.flipped, series: this
+    this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
+      new ParcoordSeriesResponsiveState({
+      series: this,
+      originalSeries: this.originalSeries,
+      flipped: ('flipped' in args) ? args.flipped : false
     })
 
     this.axesInverted = 'class' in args ? args.axesInverted : this.axes.map(() => false)
@@ -96,7 +102,7 @@ export class ParcoordSeries extends Series {
 
   getScaledValuesAtScreenPosition(x: number, y: number) {
     const activeSeries = this.cloneFiltered()
-    const chartE = elementFromSelection(activeSeries.axes[0].renderer.chartSelection)
+    const chartE = elementFromSelection(activeSeries.axes[0].renderer.chartS)
     function axisDiff(axis: KeyedAxisValid) {
       const currentAxisPosition = activeSeries.axesScale(axis.key)!
       return Math.abs(currentAxisPosition - x)

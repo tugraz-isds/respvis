@@ -28,7 +28,7 @@ export function chartDownload<Datum>(
     cloneContainer.append(clonedChart);
 
     const { downloadStyleType, downloadRemoveClasses,
-      downloadRemoveDataKeys, downloadRemoveDataStyles } = renderer.windowSelection.datum().windowSettings
+      downloadRemoveDataKeys, downloadRemoveDataStyles } = renderer.windowS.datum().windowSettings
 
     //prev regex / (layout|bounds|data-ignore-layout|data-ignore-layout-children)=".*?"/g
     const classString =  (downloadStyleType === 'inline' && downloadRemoveClasses) ? '|class' : ''

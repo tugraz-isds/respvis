@@ -56,7 +56,7 @@ function seriesControlRender(menuToolsItemsS: Selection, series: Series) {
 
 function categoryControlsRender(menuToolsItemsS: Selection, series: Series) {
   const {categories, renderer} = series
-  const chartElement = elementFromSelection(renderer.chartSelection)
+  const chartElement = elementFromSelection(renderer.chartS)
 
   if (!categories) return
 
@@ -85,7 +85,7 @@ function categoryControlsRender(menuToolsItemsS: Selection, series: Series) {
 function axisControlsRender(menuToolsItemsS: Selection, axis: AxisValid) {
   const {renderer} = axis
   const axisScaledValues = axis.scaledValues
-  const chartElement = elementFromSelection(renderer.chartSelection)
+  const chartElement = elementFromSelection(renderer.chartS)
   const title = getCurrentRespVal(axis.title, {chart: chartElement})
   const {keys, options} = getAxisCategoryProps(axis)
   let filteredSeries: ParcoordSeries

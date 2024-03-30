@@ -3,14 +3,18 @@ import {SVGHTMLElement} from "../../constants/types";
 import {ChartWindowedValid} from "./chart/chart";
 
 export type Renderer = {
-    windowSelection: Selection<SVGHTMLElement, ChartWindowedValid>
+    windowS: Selection<SVGHTMLElement, ChartWindowedValid>
     readonly filterDispatch: Dispatch<{ dataKey: string }>
-    layouterSelection?: Selection<SVGHTMLElement>
-    chartSelection?: Selection<SVGHTMLElement>
-    drawAreaSelection?: Selection<SVGHTMLElement>
-    xAxisSelection?: Selection<SVGHTMLElement>
-    yAxisSelection?: Selection<SVGHTMLElement>
-    legendSelection?: Selection<SVGHTMLElement>
+    xAxisS?: Selection<SVGHTMLElement>
+    yAxisS?: Selection<SVGHTMLElement>
+    legendS?: Selection<SVGHTMLElement>
+
+    get chartS(): Selection<SVGHTMLElement>
+    get layouterS(): Selection<SVGHTMLElement>
+    get drawAreaS(): Selection<SVGHTMLElement>
+    get drawAreaBgS(): Selection<SVGRectElement>
+
+    //TODO: implement methods for selections
 }
 
 export type RenderArgs = {

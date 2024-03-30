@@ -15,7 +15,7 @@ import {axisTicksPostGenerationRender, axisTicksPreGenerationRender} from "./axi
 import {tickAngleConfiguration} from "./tick-angle-configuration";
 import {getFilteredScaledValues} from "../../data/scale/axis-scaled-values-validation";
 import {bgSVGOnlyRender} from "../util/bg-svg-only-render";
-import {AxisPosition} from "../../constants/types";
+import {AxisLayout} from "../../constants/types";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
@@ -31,7 +31,7 @@ export function axisBottomRender(axisS: AxisSelection) {
   return axisRender(axisS, d3Axis(d3AxisBottom, axisS))
 }
 
-export function axisSequenceRender(axisS: AxisSelection, axisPosition?: AxisPosition) {
+export function axisSequenceRender(axisS: AxisSelection, axisPosition?: AxisLayout) {
   bgSVGOnlyRender(axisS)
   axisS.attr('class', null)
   switch (axisPosition) {
@@ -45,7 +45,7 @@ export function axisSequenceRender(axisS: AxisSelection, axisPosition?: AxisPosi
 function axisRender(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
   const axisD = axisS.datum()
   const axisElement = elementFromSelection(axisS)
-  const chartElement = elementFromSelection(axisD.renderer.chartSelection)
+  const chartElement = elementFromSelection(axisD.renderer.chartS)
 
   const titleWrapperS = axisS
     .selectAll('.title-wrapper')
@@ -86,7 +86,7 @@ function d3Axis(
   const {scaledValues, bounds, configureAxis, renderer} = selection.datum()
   const axisElement = elementFromSelection(selection)
   updateBreakpointStatesInCSS(axisElement, bounds)
-  const chartElement = elementFromSelection(renderer.chartSelection)
+  const chartElement = elementFromSelection(renderer.chartS)
   const configureAxisValid = getCurrentRespVal(configureAxis, {chart: chartElement, self: axisElement})
 
   const filteredScaledValues = getFilteredScaledValues(scaledValues)

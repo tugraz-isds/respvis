@@ -41,8 +41,8 @@ export function cartesianChartAxisRender<T extends CartesianChartSelection>(char
     .classed(bottomAxisClass, true)
     .classed(leftAxisClass, false)
 
-  renderer.yAxisSelection = flipped ? bottomAxisS: leftAxisS
-  renderer.xAxisSelection = flipped ? leftAxisS : bottomAxisS
+  renderer.yAxisS = flipped ? bottomAxisS: leftAxisS
+  renderer.xAxisS = flipped ? leftAxisS : bottomAxisS
 }
 
 export enum LegendPosition {
