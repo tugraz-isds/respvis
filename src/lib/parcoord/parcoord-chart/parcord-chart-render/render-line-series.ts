@@ -33,6 +33,7 @@ export function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>)
     for (let axisIndex = 0; axisIndex < activeAxes.length; axisIndex++) {
       const axis = activeAxes[axisIndex]
       const vals = axis.scaledValues
+      //TODO: Dynamic function for scaledvalues with bandwith() etc.
       const valBandWidth = vals instanceof ScaledValuesCategorical ? vals.scale.bandwidth() / 2 : 0
       const valPos = vals.getScaledValue(valueIndex) + valBandWidth
       if (!vals.isKeyActiveByIndex(valueIndex) || !axis.isValueInRangeLimit(valPos)) {

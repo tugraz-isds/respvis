@@ -18,10 +18,9 @@ export class CartesianSeriesResponsiveState extends SeriesResponsiveState {
   update() {
     super.update();
     const {horizontal, vertical} = this.drawAreaRange()
-    const currentYRange = this.currentlyFlipped ? horizontal : vertical
-    const currentXRange = this.currentlyFlipped ? vertical : horizontal
-    this._originalSeries.x.scale.range(currentXRange)
-    this._originalSeries.y.scale.range(currentYRange)
+    const [xOrientation, yOrientation] = this.currentlyFlipped ? ['vertical', 'horizontal'] as const : ['horizontal', 'vertical'] as const
+    this._originalSeries.x.updateRange(horizontal, vertical, xOrientation)
+    this._originalSeries.y.updateRange(horizontal, vertical, yOrientation)
   }
 
   cloneProps(): CartesianSeriesResponsiveStateArgs {

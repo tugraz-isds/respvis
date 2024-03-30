@@ -12,6 +12,7 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
   tag = 'categorical' as const
   readonly values: string[]
   readonly scale: ScaleBand<string>
+  readonly flippedScale: ScaleBand<string>
   readonly title: RespValOptional<string>
   readonly categories: CategoryValid
   readonly keysActive: ActiveKeyMap
@@ -20,6 +21,7 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     super(args)
     this.values = args.values
     this.scale = args.scale ?? scaleBand([0, 600]).domain(this.values).padding(0.1)
+    this.flippedScale = this.scale.copy()
     this.title = args.title
 
     //TODO: this is no real alignment validation. Fix this!

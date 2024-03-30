@@ -28,24 +28,15 @@ export class ParcoordSeriesResponsiveState extends SeriesResponsiveState {
       { x: this._series.percentageScreenScale(percentage), y: 0 }
   }
 
-  // getAxisRange(axisIndex: number) {
-  //   const inverted = this._series.axesInverted[axisIndex]
-  //   const range = this._series.axes[axisIndex].scaledValues.scale.range()
-  //   return inverted ? [range[1], range[0]] : [range[], range[0]]
-  //   const rangeMax = this._series.axes[axisIndex].scaledValues.scale.range()[inverted ? 1 : 0]
-  //   return this.currentlyFlipped ? { x: 0, y: this._series.percentageScreenScale(percentage)} :
-  //     { x: this._series.percentageScreenScale(percentage), y: 0 }
-  // }
-
   update() {
     super.update();
     const {horizontal, vertical} = this.drawAreaRange()
-    const currentSingleAxisRange = this.currentlyFlipped ? horizontal : vertical
     const currentAxesSpaceRange = this.currentlyFlipped ? vertical : horizontal
     this._axisLayout = this.currentlyFlipped ? 'bottom' : 'left'
+    const orientation = this.currentlyFlipped ? 'horizontal' : 'vertical'
 
     const {axes, axesScale, percentageScreenScale} = this._originalSeries
-    axes.forEach(axis => axis.scaledValues.scale.range(currentSingleAxisRange))
+    axes.forEach(axis => axis.scaledValues.updateRange(horizontal, vertical, orientation))
     percentageScreenScale.range(currentAxesSpaceRange)
     axesScale.range(currentAxesSpaceRange)
   }

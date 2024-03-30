@@ -9,8 +9,7 @@ import {backgroundSVGOnly} from "../../../core/constants/dom/classes";
 
 export function parcoordChartAxisLimiterRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   chevronSlidersRender(axisS)
-  if (axisS.datum().series.responsiveState.currentlyFlipped) verticalChartAlignSliders(axisS)
-  else horizontalChartAlignSliders(axisS)
+  chartAlignSliders(axisS)
   addSliderDrag(axisS)
 }
 
@@ -23,47 +22,34 @@ function chevronSlidersRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   bgSVGOnlyRender(lowerChevronS, [{scale: 2}], lowerChevronS.select('path'))
 }
 
-function horizontalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
-  const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues} = axisS.datum()
-  const upperChevronS= axisS.selectAll('.slider-up')
-  const lowerChevronS = axisS.selectAll('.slider-down')
-  const domainS = axisS.select<SVGPathElement>('.domain')
-  const {leftCornersXDiff, bbox1, bbox2} = bboxDiffSVG(domainS, upperChevronS.select('path'))
-
-  const translateX = -leftCornersXDiff + bbox1.width - bbox2.width / 2
-
-  const rangeMax = scaledValues.getOriginalRange()[0]
-  const translateYUpper = rangeMax - rangeMax * upperRangeLimitPercent - bbox2.height
-  const translateYLower = rangeMax - rangeMax * lowerRangeLimitPercent + bbox2.height
-  const mirrorYLower = `scale(1, -1)`
-
-  upperChevronS.attr('transform', `translate(${translateX}, ${translateYUpper})`)
-  lowerChevronS.attr('transform', `translate(${translateX}, ${translateYLower}) ${mirrorYLower}`)
-}
-
-function verticalChartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
-  //TODO: fuse with horizontal function (only small differences)
-  const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues} = axisS.datum()
+function chartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+  const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues, series} = axisS.datum()
   const upperChevronS= axisS.selectAll<SVGGElement, any>('.slider-up')
   const lowerChevronS = axisS.selectAll<SVGGElement, any>('.slider-down')
   const domainS = axisS.select<SVGPathElement>('.domain')
-
-  const rangeMax = scaledValues.getOriginalRange()[1]
-  const rangeXUpper = rangeMax * upperRangeLimitPercent
-  const rangeXLower = rangeMax * lowerRangeLimitPercent
-
-  const {leftCornersXDiff, leftCornersYDiff, bbox2: bboxPath} =
+  const {leftCornersXDiff, leftCornersYDiff, bbox2: bboxPath, bbox1: bboxDomain} =
     bboxDiffSVG(domainS, upperChevronS.select('path'))
+  
+  if (series.responsiveState.currentlyFlipped) {
+    const rangeXUpper = scaledValues.getRangeByPercent(upperRangeLimitPercent, false, 'horizontal')
+    const rangeXLower = scaledValues.getRangeByPercent(lowerRangeLimitPercent, false, 'horizontal')
 
-  let translateX = -leftCornersXDiff - bboxPath.width
-  let translateY = -leftCornersYDiff - bboxPath.height / 2
-  const translateAlign = `translate(${translateX}, ${translateY})`
-  const mirrorXLower = `scale(-1, 1)`
-  const translateXUpper = `translate(${-rangeXUpper})`
-  const translateXLower = `translate(${rangeXLower})`
+    const translateAlign = `translate(${-leftCornersXDiff - bboxPath.width}, ${-leftCornersYDiff - bboxPath.height / 2})`
+    const mirrorXLower = `scale(-1, 1)`
+    const translateXUpper = `translate(${-rangeXUpper})`
+    const translateXLower = `translate(${rangeXLower})`
 
-  upperChevronS.attr('transform', `${mirrorXLower} ${translateAlign} ${translateXUpper}`) // //  //rotate(90)
-  lowerChevronS.attr('transform', `${translateAlign} ${translateXLower}`)
+    upperChevronS.attr('transform', `${mirrorXLower} ${translateAlign} ${translateXUpper}`)
+    lowerChevronS.attr('transform', `${translateAlign} ${translateXLower}`)
+  } else {
+    const translateX = -leftCornersXDiff + bboxDomain.width - bboxPath.width / 2
+    const translateYUpper = scaledValues.getRangeByPercent(upperRangeLimitPercent, false, 'vertical') - bboxPath.height
+    const translateYLower = scaledValues.getRangeByPercent(lowerRangeLimitPercent, false, 'vertical') + bboxPath.height
+    const mirrorYLower = `scale(1, -1)`
+
+    upperChevronS.attr('transform', `translate(${translateX}, ${translateYUpper})`)
+    lowerChevronS.attr('transform', `translate(${translateX}, ${translateYLower}) ${mirrorYLower}`)
+  }
 }
 
 function addSliderDrag(axisS: Selection<SVGGElement, KeyedAxisValid>) {

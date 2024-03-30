@@ -16,9 +16,4 @@ export function axisInverterRender(axisS: Selection<SVGGElement, KeyedAxisValid>
     series.axesInverted[axisIndex] = !series.axesInverted[axisIndex]
     series.renderer.windowS.dispatch('resize')
   })
-
-  // titleWrapperS
-  //   .selectAll('.axis-inverter')
-  //   .data([null])
-  //   .join('g')
 }

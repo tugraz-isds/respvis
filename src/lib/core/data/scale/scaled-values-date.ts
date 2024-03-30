@@ -9,11 +9,13 @@ export class ScaledValuesDate extends ScaledValuesBase<Date> {
   tag = 'date' as const
   values: Date[]
   scale: ScaleTime<number, number, never>
+  flippedScale: ScaleTime<number, number, never>
 
   constructor(args: ScaledValuesDateArgs) {
     super(args)
     this.values = args.values
     this.scale = args.scale ?? scaleTime(this.values, [0, 600]).nice()
+    this.flippedScale = this.scale.copy()
   }
 
   cloneZoomed(transform: ZoomTransform, axisType: AxisType): ScaledValuesDate {

@@ -33,12 +33,10 @@ function onZoomAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid) {
 
   zoom.currentTransform = transform
 
-  const flipped = originalSeries.responsiveState.currentlyFlipped
-  const [y2, y1] = flipped ? originalSeries.axesScale.range() : originalSeries.axes[axisIndex].scaledValues.scale.range()
-  const [x1, x2] = flipped ? originalSeries.axes[axisIndex].scaledValues.scale.range() : originalSeries.axesScale.range()
+  const {horizontal, verticalInverted} = originalSeries.responsiveState.drawAreaRange()
   const extent: [[number, number], [number, number]] = [
-    [x1, y1],
-    [x2, y2],
+    [horizontal[0], verticalInverted[0]],
+    [horizontal[1], verticalInverted[1]],
   ];
   zoom.behaviour.extent(extent).translateExtent(extent);
 }
