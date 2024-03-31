@@ -1,28 +1,28 @@
 import {scaleBand} from "d3";
-import {RectScaleHandler} from "../../../core/data/scale/geometry-scale-handler/rect-scale-handler";
 import {getActiveKeys} from "../../../core/utilities/dom/key";
 import {ScaledValuesCategorical} from "../../../core/data/scale/scaled-values-categorical";
+import {BarGroupedSeries} from "../bar-grouped-series";
 
 type createGroupedBarProps = {
-  originalScaleHandler: RectScaleHandler
-  i: number,
-  categories: ScaledValuesCategorical,
+  series: BarGroupedSeries
+  i: number
 }
 export function createGroupedBar(props: createGroupedBarProps) {
-  const {i, originalScaleHandler, categories} = props
+  const {i, series} = props
 
-  // TODO: assumes original x to be categorical axis
-  const categoryGroupValues = originalScaleHandler.originalXValues
-  const flipped = originalScaleHandler.currentlyFlipped()
-  const wholeBarRect = originalScaleHandler.getBarRect(i)
+  const flipped = series.responsiveState.currentlyFlipped
+  const categoryGroupValues = flipped ? series.responsiveState.currentYVals : series.responsiveState.currentXVals
+  const wholeBarRect = series.responsiveState.getBarRect(i)
 
-  const innerScaleDomain = getActiveKeys(categories.keysActive)
+  const innerScaleDomain = getActiveKeys(series.categories.keysActive)
   const innerScale = scaleBand<string>()
     .domain(innerScaleDomain)
-    .range([0, categoryGroupValues.scale.bandwidth()])
+    .range([0, (categoryGroupValues as ScaledValuesCategorical).scale.bandwidth()])
     .padding(0.1); //TODO: create parameter for this
 
-  const categoryKey = categories.getCombinedKey(i)
+  console.log(innerScale.domain(), innerScale.range())
+
+  const categoryKey = series.categories.getCombinedKey(i)
   const innerValue = innerScale(categoryKey) ?? 0
 
   return  {

@@ -37,6 +37,18 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     }, {})
   }
 
+  getScaledValueStart(i: number) {
+    return valByIndexFormula[this.orientation].start(i, this)
+  }
+
+  getScaledValue(i: number) {
+    return valByIndexFormula[this.orientation].middle(i, this)
+  }
+
+  getScaledValueEnd(i: number) {
+    return valByIndexFormula[this.orientation].end(i, this)
+  }
+
   isKeyActiveByKey(key: string) {
     // noinspection PointlessBooleanExpressionJS
     return this.keysActive[key] !== false
@@ -91,3 +103,32 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     return new ScaledValuesCategorical({...this, scale: this.scale.copy()})
   }
 }
+
+const valByIndexFormulaCategoricalHorizontal = {
+  start: (index: number, scaledValues: ScaledValuesCategorical) => {
+    return scaledValues.scale(scaledValues.values[index])!
+  },
+  middle: (index: number, scaledValues: ScaledValuesCategorical) => {
+    return scaledValues.scale(scaledValues.values[index])! + scaledValues.scale.bandwidth() / 2
+  },
+  end: (index: number, scaledValues: ScaledValuesCategorical) => {
+    return scaledValues.scale(scaledValues.values[index])! + scaledValues.scale.bandwidth()
+  }
+} as const
+
+const valByIndexFormulaCategoricalVertical = {
+  start: (index: number, scaledValues: ScaledValuesCategorical) => {
+    return scaledValues.scale(scaledValues.values[index])! - scaledValues.scale.bandwidth()
+  },
+  middle: (index: number, scaledValues: ScaledValuesCategorical) => {
+    return scaledValues.scale(scaledValues.values[index])! - scaledValues.scale.bandwidth() / 2
+  },
+  end: (index: number, scaledValues: ScaledValuesCategorical) => {
+    return scaledValues.scale(scaledValues.values[index])!
+  }
+} as const
+
+const valByIndexFormula = {
+  horizontal: valByIndexFormulaCategoricalHorizontal,
+  vertical: valByIndexFormulaCategoricalVertical
+} as const

@@ -2,14 +2,13 @@ import {Selection} from "d3";
 import {ParcoordChartValid} from "../parcoord-chart-validation";
 import {AxisValid, Position} from "../../../core";
 import {Line, lineSeriesJoin} from "../../../line";
-import {ScaledValuesCategorical} from "../../../core/data/scale/scaled-values-categorical";
 import {combineKeys} from "../../../core/utilities/dom/key";
 import {defaultStyleClass} from "../../../core/constants/other";
+import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
+import {ParcoordSeries} from "../../parcoord-series";
 
 export function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>) {
   const {series} = chartS.datum()
-  const flipped = series.responsiveState.currentlyFlipped
-
   const lineSeriesS = chartS.selectAll('.draw-area')
     .selectAll<SVGGElement, AxisValid>(`.series-parcoord-lines`)
     .data([series])
@@ -21,43 +20,48 @@ export function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>)
 
   const filteredSeries = series.cloneFiltered().cloneZoomed().cloneInverted()
   const activeAxes = filteredSeries.getAxesDragDropOrdered()
+  const lines = activeAxes.length > 0 ? createLines(activeAxes) : []
 
+
+
+  lineSeriesS.selectAll<SVGPathElement, Line>('path')
+    .data(lines, (d) => d.key)
+    .call(s => lineSeriesJoin(lineSeriesS, s))
+}
+
+function createLines(activeAxes: KeyedAxisValid[]) {
   const lines: Line[] = []
-  const maxIndex = activeAxes.length > 0 ? activeAxes[0].scaledValues.values.length : 0
+  const series = activeAxes[0].series
+  const maxIndex = activeAxes[0].scaledValues.values.length
+  if (!series.keysActive[series.key]) return lines
+
   for (let valueIndex = 0; valueIndex < maxIndex; valueIndex++) {
-    if (!series.keysActive[series.key]) break
     if (series.categories && !series.categories.isKeyActiveByIndex(valueIndex)) continue
-    const positions: Position[] = []
-    let containsInactiveAxisCategory = false
-
-    for (let axisIndex = 0; axisIndex < activeAxes.length; axisIndex++) {
-      const axis = activeAxes[axisIndex]
-      const vals = axis.scaledValues
-      //TODO: Dynamic function for scaledvalues with bandwith() etc.
-      const valBandWidth = vals instanceof ScaledValuesCategorical ? vals.scale.bandwidth() / 2 : 0
-      const valPos = vals.getScaledValue(valueIndex) + valBandWidth
-      if (!vals.isKeyActiveByIndex(valueIndex) || !axis.isValueInRangeLimit(valPos)) {
-        containsInactiveAxisCategory = true
-        break
-      }
-      const axisPosPercent = filteredSeries.axesPercentageScale(activeAxes[axisIndex].key)
-      const axisPosReal = filteredSeries.percentageScreenScale(axisPosPercent)
-      positions.push({
-        y: flipped ? axisPosReal : valPos,
-        x: flipped ? valPos : axisPosReal
-      })
-    }
-    if (containsInactiveAxisCategory) continue
-
+    const positions = createLinePositions(activeAxes, valueIndex, series)
+    if (positions.length === 0) continue
     lines.push({
       key: combineKeys([series.key, `i-${valueIndex}`]), //TODO
       styleClass: series.categories ? series.categories.categories.styleClassValues[valueIndex] : defaultStyleClass,
       positions
     })
-
   }
+  return lines
+}
 
-  lineSeriesS.selectAll<SVGPathElement, Line>('path')
-    .data(lines, (d) => d.key)
-    .call(s => lineSeriesJoin(lineSeriesS, s))
+function createLinePositions(activeAxes: KeyedAxisValid[], valueIndex: number, series: ParcoordSeries) {
+  const positions: Position[] = []
+  const flipped = series.responsiveState.currentlyFlipped
+  for (let axisIndex = 0; axisIndex < activeAxes.length; axisIndex++) {
+    const axis = activeAxes[axisIndex]
+    const valPos = axis.scaledValues.getScaledValue(valueIndex)
+    if (!axis.scaledValues.isKeyActiveByIndex(valueIndex) || !axis.isValueInRangeLimit(valPos)) return []
+
+    const axisPosPercent = series.originalSeries.axesPercentageScale(axis.key)
+    const axisPosReal = series.percentageScreenScale(axisPosPercent)
+    positions.push({
+      y: flipped ? axisPosReal : valPos,
+      x: flipped ? valPos : axisPosReal
+    })
+  }
+  return positions
 }

@@ -36,6 +36,14 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
     return this.scale(this.values[i] as any)!
   }
 
+  getScaledValueStart(i: number) {
+    return this.scale(this.values[i] as any)!
+  }
+
+  getScaledValueEnd(i: number) {
+    return this.scale(this.values[i] as any)!
+  }
+
   getRangeByPercent(percent: number, considerInverse = true, orientationArg?: Orientation) {
     const orientation = orientationArg ?? this.orientation
     return considerInverse ? percentRangeFormulaWithInverse[orientation](percent, this) :

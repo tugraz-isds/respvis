@@ -126,6 +126,7 @@ export class ParcoordSeries extends Series {
         .map((axis, index) => index)
         .filter(index => this.axes[index].isKeyActiveByKey(this.axes[index].key))
     const activeAxes = activeIndices.map(index => this.axes[index])
+    activeAxes.map(axis => axis.scaledValues = axis.scaledValues.cloneFiltered())
     const activeDomain = activeAxes.map(axis => axis.key)
     const activeRange = activeAxes.map(axis => this.axesPercentageScale(axis.key))
     const clone = this.clone()
@@ -151,7 +152,6 @@ export class ParcoordSeries extends Series {
     const clone = this.clone()
     clone.axes = zoomedAxes
     return clone
-    // const valsZoomed = series.axes[axisIndex].scaledValues.cloneZoomed(transform, 'y')
   }
 
   cloneInverted() {

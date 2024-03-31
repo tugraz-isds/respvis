@@ -22,9 +22,7 @@ export class BarGroupedSeries extends BarBaseSeries {
   }
 
   getRect(i: number) {
-    return createGroupedBar({
-      originalScaleHandler: this.geometryScaleHandler, i, categories: this.categories
-    })
+    return createGroupedBar({series: this, i})
   }
 
   clone() {

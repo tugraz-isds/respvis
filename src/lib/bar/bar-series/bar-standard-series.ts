@@ -21,7 +21,7 @@ export class BarStandardSeries extends BarBaseSeries {
   }
 
   getRect(i: number): Rect {
-    return this.geometryScaleHandler.getBarRect(i)
+    return this.responsiveState.getBarRect(i)
   }
 
   clone() {

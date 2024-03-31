@@ -1,21 +1,19 @@
-import {CategoryValid} from "../../../core/data/category";
-import {RectScaleHandler} from "../../../core/data/scale/geometry-scale-handler/rect-scale-handler";
 import {ScaledValuesLinear} from "../../../core/data/scale/scaled-values-linear";
 import {ScaledValuesDate} from "../../../core/data/scale/scaled-values-date";
+import {BarStackedSeries} from "../bar-stacked-series";
 
 type createStackedBarProps = {
-  originalScaleHandler: RectScaleHandler
-  aggScaledValues: ScaledValuesLinear
-  i: number,
-  categoryDataSeries: CategoryValid,
-  keysActive: {[p: string]: boolean}
+  series: BarStackedSeries
+  i: number
 }
 export function createStackedBar(props: createStackedBarProps) {
-  const {i, originalScaleHandler, aggScaledValues} = props
+  const {i, series} = props
+  const {responsiveState} = series
+  const aggScaledValues = series.aggScaledValues.aggregateCached()
 
-  const scaledValuesOriginalY = originalScaleHandler.originalYValues
-  const flipped = originalScaleHandler.currentlyFlipped()
-  const wholeBarRect = originalScaleHandler.getBarRect(i)
+  const scaledValuesOriginalY = series.y
+  const flipped = responsiveState.currentlyFlipped
+  const wholeBarRect = responsiveState.getBarRect(i)
 
 
   const scaledValuesOriginalYRange = scaledValuesOriginalY.scale.range()
@@ -28,7 +26,7 @@ export function createStackedBar(props: createStackedBarProps) {
   const innerValueStart = aggScaledValues.scale(aggScaledValues.values[i])
 
   function getHorizontalStackedBar() {
-    const x = originalScaleHandler.getCurrentXValues() as (ScaledValuesLinear | ScaledValuesDate)
+    const x = series.y as (ScaledValuesLinear | ScaledValuesDate)
     return  {
       x: wholeBarRect.x + innerValueStart,
       y: wholeBarRect.y,
@@ -38,7 +36,7 @@ export function createStackedBar(props: createStackedBarProps) {
   }
 
   function getVerticalStackedBar() {
-    const y = originalScaleHandler.getCurrentYValues() as (ScaledValuesLinear | ScaledValuesDate)
+    const y = series.y as (ScaledValuesLinear | ScaledValuesDate)
     return  {
       x: wholeBarRect.x,
       y: aggScaledValues.scale.range()[1] - innerValueStart - aggScaledValues.scale(y.values[i]),
@@ -47,5 +45,5 @@ export function createStackedBar(props: createStackedBarProps) {
     }
   }
 
-  return  flipped ? getHorizontalStackedBar() : getVerticalStackedBar()
+  return flipped ? getHorizontalStackedBar() : getVerticalStackedBar()
 }
