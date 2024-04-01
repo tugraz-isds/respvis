@@ -5,41 +5,41 @@ import {ErrorMessages} from "../../core/utilities/error";
 import {Bar} from "./bar";
 import {defaultStyleClass} from "../../core/constants/other";
 import {Rect} from "../../core";
-import {RectScaleHandler} from "../../core/data/scale/geometry-scale-handler/rect-scale-handler";
+import {BarBaseResponsiveState} from "./bar-base-series/responsive-state";
 
 export type BarBaseSeriesUserArgs = CartesianSeriesUserArgs & {
   x: ScaledValuesCategoricalUserArgs
+  originalSeries?: BarBaseSeries
 }
 
 export type BarBaseSeriesArgs = BarBaseSeriesUserArgs & CartesianSeriesArgs
 
 export abstract class BarBaseSeries extends CartesianSeries {
   x: ScaledValuesCategorical
-  geometryScaleHandler: RectScaleHandler
+  responsiveState: BarBaseResponsiveState
+  originalSeries: BarBaseSeries
   protected constructor(args: BarBaseSeriesArgs | BarBaseSeries) {
     super(args);
+    this.originalSeries = args.originalSeries ?? this
     const { x } = this.getScaledValues()
     if(!(x instanceof ScaledValuesCategorical)) throw new Error(ErrorMessages.invalidScaledValuesCombination)
     this.x = x
-    this.geometryScaleHandler = new RectScaleHandler({
-      originalXValues: this.x,
-      originalYValues: this.y,
-      renderer: this.renderer,
-      flipped: this.flipped
-    })
+    this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
+      new BarBaseResponsiveState({
+        series: this,
+        originalSeries: this.originalSeries,
+        flipped: ('flipped' in args) ? args.flipped : false
+      })
   }
 
   getBarRects(): Bar[] {
     const data: Bar[] = []
     const [x, y] = [this.x.cloneFiltered(), this.y.cloneFiltered()]
-    this.geometryScaleHandler.originalXValues = x
-    this.geometryScaleHandler.originalYValues = y
 
     if (!this.keysActive[this.key]) return data
     for (let i = 0; i < this.y.values.length; ++i) {
       if (this.categories && !this.categories.isKeyActiveByIndex(i)) continue
       if (!x.isKeyActiveByIndex(i) || !y.isKeyActiveByIndex(i)) continue
-
       data.push({
         ...this.getRect(i),
         xValue: this.x.values[i],

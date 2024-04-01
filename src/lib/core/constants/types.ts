@@ -49,6 +49,7 @@ export type CategoryKey = `c-${number}`
 export type IndividualKey = `i-${number}`
 
 export type AxisType = 'x' | 'y'
+export type AxisLayout = 'bottom' | 'left'
 
 export type ActiveKeyMap = {[p: string]: boolean}
 
@@ -59,3 +60,10 @@ export const categoryRegex = /^c-\d+$/
 // util types
 
 export type ToArray<T> = T extends any ? T[] : never;
+
+
+type AllInstanceKeys<T> = T extends { new(...args: any[]): infer I } ? keyof I : never;
+// Filter out methods and protected properties
+export type PropertiesOnly<T> = {
+  [K in AllInstanceKeys<T>]: T[K] extends Function | number ? never : K extends keyof T ? T[K] : never;
+}[AllInstanceKeys<T>];

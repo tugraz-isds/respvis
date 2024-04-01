@@ -7,5 +7,6 @@ export const ErrorMessages = {
   invalidWindowsSetting: 'Currently a setting is set to an invalid value!',
   evaluatingCSSUnitError: 'Evaluating CSS unit was not successful. Make sure to pass necessary context information!',
   convertingInvalidUnit: `Invalid unit cannot be converted!`,
-  emptyValueArrayProvided: `The array of values passed to RespVis was empty!`
+  emptyValueArrayProvided: `The array of values passed to RespVis was empty!`,
+  parcoordMinAxesCount: 'Parcoord Chart must have a minimal axis count of 2!'
 }

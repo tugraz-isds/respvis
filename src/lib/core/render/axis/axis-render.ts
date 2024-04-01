@@ -14,7 +14,8 @@ import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {axisTicksPostGenerationRender, axisTicksPreGenerationRender} from "./axis-ticks-render";
 import {tickAngleConfiguration} from "./tick-angle-configuration";
 import {getFilteredScaledValues} from "../../data/scale/axis-scaled-values-validation";
-import {backgrounSVGOnlyRender} from "../util/bg-svg-only-render";
+import {bgSVGOnlyRender} from "../util/bg-svg-only-render";
+import {AxisLayout} from "../../constants/types";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
@@ -30,16 +31,21 @@ export function axisBottomRender(axisS: AxisSelection) {
   return axisRender(axisS, d3Axis(d3AxisBottom, axisS))
 }
 
-export function axisSequenceRender(axisS: AxisSelection) {
-  backgrounSVGOnlyRender(axisS)
-  axisS.classed('axis axis-sequence', true)
-  return axisRender(axisS, d3Axis(d3AxisLeft, axisS))
+export function axisSequenceRender(axisS: AxisSelection, axisPosition?: AxisLayout) {
+  bgSVGOnlyRender(axisS)
+  axisS.attr('class', null)
+  switch (axisPosition) {
+    case "bottom": axisBottomRender(axisS); break;
+    default: axisLeftRender(axisS)
+  }
+  axisS.classed('axis-sequence', true)
+  return axisS
 }
 
 function axisRender(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
   const axisD = axisS.datum()
   const axisElement = elementFromSelection(axisS)
-  const chartElement = elementFromSelection(axisD.renderer.chartSelection)
+  const chartElement = elementFromSelection(axisD.renderer.chartS)
 
   const titleWrapperS = axisS
     .selectAll('.title-wrapper')
@@ -52,7 +58,6 @@ function axisRender(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
     .data([null])
     .join('g')
     .classed('title', true)
-    .attr('data-ignore-layout-children', true)
     .selectAll('text')
     .data([null])
     .join('text')
@@ -62,7 +67,6 @@ function axisRender(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
     .data([null])
     .join('g')
     .classed('subtitle', true)
-    .attr('data-ignore-layout-children', true)
     .selectAll('text')
     .data([null])
     .join('text')
@@ -82,7 +86,7 @@ function d3Axis(
   const {scaledValues, bounds, configureAxis, renderer} = selection.datum()
   const axisElement = elementFromSelection(selection)
   updateBreakpointStatesInCSS(axisElement, bounds)
-  const chartElement = elementFromSelection(renderer.chartSelection)
+  const chartElement = elementFromSelection(renderer.chartS)
   const configureAxisValid = getCurrentRespVal(configureAxis, {chart: chartElement, self: axisElement})
 
   const filteredScaledValues = getFilteredScaledValues(scaledValues)

@@ -11,12 +11,14 @@ import {toolRender} from "../tool/tool-render";
 import {fieldsetRender} from "../tool/fieldset-render";
 import {chartDownload} from "./chart-download";
 import {buttonRender} from "../tool/button-render";
+import {tooltipSimpleRender} from "../tool/tooltip-simple-render";
 
 export function downloadToolRender(selection: Selection<HTMLDivElement>, renderer: Renderer) {
   const downloadToolS = toolRender(selection, 'tool--download')
 
   const dialogOpenerS = buttonRender(downloadToolS, 'toolbar__btn')
   addRawSVGToSelection(dialogOpenerS, downloadSVGRaw)
+  tooltipSimpleRender(dialogOpenerS, {text: 'Download'})
   const dialogS = dialogRender(downloadToolS)
   bindOpenerToDialog(dialogOpenerS, dialogS)
 
@@ -30,10 +32,10 @@ export function downloadToolRender(selection: Selection<HTMLDivElement>, rendere
 }
 
 function radioItemRender(selection: Selection, renderer: Renderer) {
-  const currentSettings = renderer.windowSelection.datum().windowSettings
+  const currentSettings = renderer.windowS.datum().windowSettings
   const onChange = (e: InputEvent, type: string) => {
     currentSettings[type] = (e.target as HTMLInputElement).value
-    renderer.windowSelection.dispatch('resize')
+    renderer.windowS.dispatch('resize')
   }
   const groupName = uniqueId()
   const data = [{
@@ -51,10 +53,10 @@ function radioItemRender(selection: Selection, renderer: Renderer) {
 }
 
 function checkBoxSeriesItemRender(selection: Selection, renderer: Renderer) {
-  const currentSettings = renderer.windowSelection.datum().windowSettings
+  const currentSettings = renderer.windowS.datum().windowSettings
   const onChange = (e: InputEvent, type: string) => {
     currentSettings[type] = (e.target as HTMLInputElement).checked
-    renderer.windowSelection.dispatch('resize')
+    renderer.windowS.dispatch('resize')
   }
 
 // .classed('item--disabled', currentSettings.downloadStyleType !== 'inline')

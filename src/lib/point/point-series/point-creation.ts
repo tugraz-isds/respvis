@@ -1,6 +1,5 @@
 import {Point} from "./point";
 import {elementFromSelection} from "../../core/utilities/d3/util";
-import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 import {getRadiusScaledValues} from "../../core/data/radius/radius-util";
 import {PointScaleHandler} from "../../core/data/scale/geometry-scale-handler/point-scale-handler";
 import {PointSeries} from "./point-series-validation";
@@ -10,12 +9,12 @@ import {ColorContinuous} from "../../core/data/color-continuous/color-continuous
 
 export function seriesPointCreatePoints<T extends boolean, R = T extends false ? Point[] : Point[][]>
 (seriesData: PointSeries, grouped: T) : R {
-  const {key: seriesKey, keysActive, color, renderer, categories} = seriesData
-  const chartElement = elementFromSelection(renderer.chartSelection)
-  const flipped = getCurrentRespVal(seriesData.flipped, {chart: chartElement})
+  const {key: seriesKey, keysActive, color, renderer, categories, responsiveState} = seriesData
+  const chartElement = elementFromSelection(renderer.chartS)
+  const flipped = responsiveState.currentlyFlipped
 
   const [x, y] = [seriesData.x.cloneFiltered(), seriesData.y.cloneFiltered()]
-  const drawAreaElement = elementFromSelection(renderer.drawAreaSelection)
+  const drawAreaElement = elementFromSelection(renderer.drawAreaS)
   const radii = getRadiusScaledValues(seriesData.radii, {chart: chartElement, self: drawAreaElement})
   const geometryHandler = new PointScaleHandler({originalYValues: y, originalXValues: x, flipped, radii, renderer})
 

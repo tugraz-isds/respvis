@@ -1,122 +1,70 @@
-.chart-cartesian  {
+.axis {
+  .title text { font-size: var(--font-size-axis-title); }
+  .subtitle text { font-size: var(--font-size-axis-subtitle); }
+  .domain {
+    stroke: currentColor;
+    fill: none;
+  }
+  .tick {
+    line { stroke: currentColor; }
+    text { font-size: var(--font-size-axis-label); }
+  }
+}
+
+.chart-cartesian {
   .axis {
     display: grid;
-    .title-wrapper {
-      display: grid;
-      grid-area: title-wrapper;
-    }
-    .ticks-transform {
-      grid-area: ticks;
-    }
+    .title-wrapper { grid-area: title-wrapper; }
+    .ticks-transform { grid-area: ticks; }
   }
 
-  .axis-left {
+  .axis-left, .axis-right {
     grid-area: axis-left;
     grid-template-areas: 'title-wrapper ticks';
+    grid-template-columns: auto auto;
     .title-wrapper {
       display: flex;
-      align-items: flex-end;
-      --fit-width: true;
-      margin-left: 0.2em;
+      align-items: center;
       text {
-        dominant-baseline: hanging;
-      }
-    }
-    .ticks-transform {
-      display: flex;
-      justify-content: flex-end;
-      margin-left: 0.5em;
-      .ticks {
-        --fit-width: true;
-        margin-left: 100%;
-      }
-    }
-  }
-  .axis-right {
-    grid-template-areas: 'ticks title subtitle';
-  }
-  .axis-left, .axis-right {
-    grid-template-rows: 100%;
-    grid-template-columns: auto auto auto;
-    align-items: center;
-    .title, .subtitle {
-      --fit-width: true;
-      text {
-        text-anchor: middle;
+        text-anchor: end;
         transform: rotate(-90deg);
       }
     }
     .ticks-transform {
-      height: 100%;
       --fit-width: true;
+      margin-left: 0.5em;
+      .ticks { margin-left: 100%; }
     }
   }
 
-  .axis-bottom {
-    grid-area: axis-bottom;
-    grid-template-areas:
-    'ticks'
-    'title-wrapper';
-    .ticks-transform {
-      margin-bottom: 0.5em;
-    }
-    .tick text {
-      text-anchor: middle;
-    }
+  .axis-right {
+    grid-area: axis-right;
+    grid-template-areas: 'ticks title-wrapper';
     .title-wrapper {
       text {
-        dominant-baseline: hanging;
+        transform: rotate(90deg);
       }
     }
   }
-  .axis-top {
-    grid-template-areas:
-    'title'
-    'subtitle'
-    'ticks';
-  }
-  .axis-bottom, .axis-top {
-    grid-template-rows: auto auto auto;
-    grid-template-columns:100%;
-    justify-items: center;
-    .ticks-transform {
-      width: 100%;
-      --fit-height: true;
-    }
-    .title, .subtitle {
-      --fit-height: true;
-      text {
-        text-anchor: middle;
-      }
-    }
-  }
-}
 
-.axis {
-  .title {
-    text {
-      font-size: var(--font-size-axis-title);
+
+  .axis-bottom, .axis-top {
+    grid-area: axis-bottom;
+    grid-template-areas: 'ticks' 'title-wrapper';
+    grid-template-rows: auto auto;
+    .title .text, .subtitle .text { margin: 0 auto; }
+    .ticks-transform {
+      --fit-height: true;
+      margin-bottom: 0.5em;
     }
   }
-  .subtitle {
-    text {
-      font-size: var(--font-size-axis-subtitle);
-    }
-  }
-  .ticks-transform {
-    .ticks {
-      .domain {
-        stroke: currentColor;
-        fill: none;
-      }
-      .tick {
-        line {
-          stroke: currentColor;
-        }
-        text {
-          font-size: var(--font-size-axis-label);
-        }
-      }
+
+  .axis-top {
+    grid-area: axis-top;
+    grid-template-areas: 'title-wrapper' 'ticks';
+    .ticks-transform {
+      margin-bottom: 0;
+      margin-top: 0.5em;
     }
   }
 }

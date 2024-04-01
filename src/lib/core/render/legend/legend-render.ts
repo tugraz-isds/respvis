@@ -13,7 +13,7 @@ export function legendRender(parentS: Selection, data: LegendValid): LegendSelec
     .data([data])
     .join('g')
     .classed('legend', true)
-  data.renderer.legendSelection = legendS
+  data.renderer.legendS = legendS
 
   legendS.each((legendD, i, g) => {
     const legendS = select<SVGHTMLElement, LegendValid>(g[i])
@@ -27,7 +27,7 @@ export function legendRender(parentS: Selection, data: LegendValid): LegendSelec
 
 function legendTitleRender(selection: LegendSelection) {
   const legendD = selection.datum()
-  const chartElement = elementFromSelection(legendD.renderer.chartSelection)
+  const chartElement = elementFromSelection(legendD.renderer.chartS)
   const legendElement = elementFromSelection(selection)
   selection
     .selectAll('.title')
@@ -39,10 +39,8 @@ function legendTitleRender(selection: LegendSelection) {
 
 function legendCrossStateRender(selection: LegendSelection) {
   const { renderer, series } = selection.datum()
-  const active = renderer.windowSelection.datum().windowSettings.movableCrossActive
-  const drawAreaS = renderer.drawAreaSelection
-  const backgroundS = drawAreaS?.selectChild('.background')
-  const flipped = getCurrentRespVal(series.flipped, {chart: elementFromSelection(renderer.chartSelection)})
+  const active = renderer.windowS.datum().windowSettings.movableCrossActive
+  const flipped = series.responsiveState.flipped
 
   const crossStateTextS = selection
     .selectAll('.cross-state')
@@ -53,10 +51,10 @@ function legendCrossStateRender(selection: LegendSelection) {
     .data(active ? [null, null] : [])
     .join('text')
 
-  drawAreaS?.classed('cursor-cross', active)
+  renderer.drawAreaS.classed('cursor-cross', active)
 
   const onMouseMove = (e) => {
-    const backgroundE = elementFromSelection(backgroundS) as Element
+    const backgroundE = elementFromSelection(renderer.drawAreaBgS) as Element
     const rect = backgroundE.getBoundingClientRect()
     const x = flipped ? e.clientY - rect.top : e.clientX - rect.left
     const y = flipped ? e.clientX - rect.left : e.clientY - rect.top
@@ -70,5 +68,6 @@ function legendCrossStateRender(selection: LegendSelection) {
   }
 
   const throttleObj = throttle(onMouseMove, 50)
-  drawAreaS?.on('mousemove.crossInfo', active ? (e) => throttleObj.func(e) : null as any)
+  renderer.drawAreaS
+    .on('mousemove.crossInfo', active ? (e) => throttleObj.func(e) : null as any)
 }

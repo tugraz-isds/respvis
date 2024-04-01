@@ -45,12 +45,7 @@ export class BarStackedSeries extends BarBaseSeries {
   }
 
   getRect(i: number) {
-    return createStackedBar({
-      originalScaleHandler: this.geometryScaleHandler, i,
-      keysActive: this.keysActive,
-      aggScaledValues: this.aggScaledValues.aggregateCached(),
-      categoryDataSeries: this.categories.categories
-    })
+    return createStackedBar({ series: this, i })
   }
 
   clone() {

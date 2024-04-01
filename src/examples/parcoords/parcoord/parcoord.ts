@@ -53,11 +53,15 @@ export function renderParcoord(selector: string) {
       categories: {
         values: makes,
         title: 'Makes'
+      },
+      flipped: {
+        mapping: {0: true, 3: false},
+        dependentOn: 'width'
       }
     },
     bounds: {
       width: {
-        values: [20, 30, 50],
+        values: [20, 30, 70],
         unit: 'rem'
       }
     },

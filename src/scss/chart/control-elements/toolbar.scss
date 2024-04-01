@@ -12,7 +12,13 @@
 
     &.visible {
       grid-template-rows: 1fr;
-      .toolbar__content { padding: 0.5em; }
+      .toolbar__content {
+        &:hover {
+          //necessary because of tooltip hover
+          overflow-y: visible;
+        }
+        padding: 0.5em;
+      }
       & > .toolbar__opener {
         translate: 0 0;
         & > svg { rotate: 180deg; }
@@ -67,10 +73,10 @@
     }
     .tool {
       height: 100%;
-    }
-    .disabled {
-      pointer-events: none;
-      opacity: 0.5;
+      & > .toolbar__btn:hover .tooltip-simple {
+        visibility: visible;
+        opacity: 1;
+      }
     }
 
     .collapsable-opener {

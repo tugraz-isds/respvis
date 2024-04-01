@@ -9,12 +9,14 @@ export class ScaledValuesLinear extends ScaledValuesBase<number> {
   tag = 'linear' as const
   values: number[]
   scale: ScaleLinear<number, number, never>
+  flippedScale: ScaleLinear<number, number, never>
 
   constructor(args: ScaledValuesLinearArgs) {
     super(args)
     this.values = args.values
     const extent = [Math.min(...this.values), Math.max(...this.values)]
     this.scale = args.scale ?? scaleLinear().domain(extent).nice()
+    this.flippedScale = this.scale.copy()
   }
 
   cloneZoomed(transform: ZoomTransform, axisType: AxisType): ScaledValuesLinear {

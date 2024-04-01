@@ -1,5 +1,5 @@
 export * from './utilities/size';
-export * from './utilities/position';
+export * from './utilities/position/position';
 export * from './utilities/array';
 export * from './utilities/element';
 export * from './utilities/rect';

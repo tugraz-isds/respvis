@@ -1,8 +1,7 @@
 import {Selection, ZoomTransform} from "d3";
-import {elementFromSelection, throttle} from "../../utilities/d3/util";
+import {throttle} from "../../utilities/d3/util";
 import {ScaledValues} from "../scale/scaled-values-base";
 import {CartesianChartValid} from "../../render";
-import {getCurrentRespVal} from "../responsive-value/responsive-value";
 
 type ZoomSelection = Selection<HTMLDivElement, Pick<CartesianChartValid, 'zoom' | 'series'>>
 
@@ -10,14 +9,12 @@ export function addZoom(selection: ZoomSelection, callback: (props: {
   x: ScaledValues, y: ScaledValues
 }) => void, throttleMs = 50) {
   const {series, zoom} = selection.datum()
-  const {renderer} = series
   const pWrapper = selection.selectAll('.draw-area')
-  const chartE = elementFromSelection(renderer.chartSelection)
   function updateScales() {
     if (!zoom) return
     const onZoom = function (e) {
       const transform: ZoomTransform = e.transform
-      const flipped = getCurrentRespVal(series.flipped, {chart: chartE})
+      const flipped = series.responsiveState.currentlyFlipped
       const x = series.x.cloneZoomed(transform, flipped ? 'y' : 'x')
       const y = series.y.cloneZoomed(transform, flipped ? 'x' : 'y')
       callback({x, y})
@@ -33,7 +30,7 @@ export function addZoom(selection: ZoomSelection, callback: (props: {
     selection.on('resize.autozoom', () => {
       const [x1, widthTranslate] = series.x.scale.range()
       const [y1, heightTranslate] = series.y.scale.range()
-      const flipped = getCurrentRespVal(series.flipped, {chart: chartE})
+      const flipped = series.responsiveState.currentlyFlipped
       const extent: [[number, number], [number, number]] = [
         flipped ? [widthTranslate, y1] : [x1, heightTranslate], // [x1, heightTranslate], //
         flipped ? [x1, heightTranslate] : [widthTranslate, y1], //[widthTranslate, y1] //

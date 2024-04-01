@@ -1,14 +1,12 @@
 import {Selection} from "d3";
 import {axisBottomRender, axisLeftRender, AxisSelection, AxisValid} from "../../axis";
 import {CartesianChartSelection} from "./cartesian-chart-validation";
-import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
-import {elementFromSelection} from "../../../utilities/d3/util";
 import {ScaledValuesLinear} from "../../../data/scale/scaled-values-linear";
 import {BarStackedSeries} from "../../../../bar/bar-series/bar-stacked-series";
 
 export function cartesianChartAxisRender<T extends CartesianChartSelection>(chartS: T): void {
   const {renderer, ...data} = chartS.datum()
-  const flipped = getCurrentRespVal(data.series.flipped, {chart: elementFromSelection(chartS)})
+  const flipped = data.series.responsiveState.currentlyFlipped
   const leftAxisD = flipped ? data.x : data.y
   const leftAxisClass = flipped ? 'axis-x' : 'axis-y'
   const bottomAxisD = flipped ? data.y : data.x
@@ -43,8 +41,8 @@ export function cartesianChartAxisRender<T extends CartesianChartSelection>(char
     .classed(bottomAxisClass, true)
     .classed(leftAxisClass, false)
 
-  renderer.yAxisSelection = flipped ? bottomAxisS: leftAxisS
-  renderer.xAxisSelection = flipped ? leftAxisS : bottomAxisS
+  renderer.yAxisS = flipped ? bottomAxisS: leftAxisS
+  renderer.xAxisS = flipped ? leftAxisS : bottomAxisS
 }
 
 export enum LegendPosition {

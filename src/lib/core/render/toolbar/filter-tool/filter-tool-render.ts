@@ -13,6 +13,8 @@ import {AxisValid} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
 import {CheckboxLabelsData, checkboxLabelsRender} from "../tool/checkbox-labels-render";
 import {buttonRender} from "../tool/button-render";
+import {ParcoordSeries} from "../../../../parcoord";
+import {tooltipSimpleRender} from "../tool/tooltip-simple-render";
 
 export function filterToolRender(selection: Selection<HTMLDivElement>, args: ToolbarValid) {
   const series = args.getSeries()
@@ -21,6 +23,7 @@ export function filterToolRender(selection: Selection<HTMLDivElement>, args: Too
   const filterToolS = toolRender(selection, 'tool--filter')
   const dialogOpenerS = buttonRender(filterToolS, 'toolbar__btn')
   addRawSVGToSelection(dialogOpenerS, filterSVGRaw)
+  tooltipSimpleRender(dialogOpenerS, {text: 'Filter'})
   const dialogS = dialogRender(filterToolS, 'dialog--filter')
   bindOpenerToDialog(dialogOpenerS, dialogS)
 
@@ -53,7 +56,7 @@ function seriesControlRender(menuToolsItemsS: Selection, series: Series) {
 
 function categoryControlsRender(menuToolsItemsS: Selection, series: Series) {
   const {categories, renderer} = series
-  const chartElement = elementFromSelection(renderer.chartSelection)
+  const chartElement = elementFromSelection(renderer.chartS)
 
   if (!categories) return
 
@@ -82,21 +85,27 @@ function categoryControlsRender(menuToolsItemsS: Selection, series: Series) {
 function axisControlsRender(menuToolsItemsS: Selection, axis: AxisValid) {
   const {renderer} = axis
   const axisScaledValues = axis.scaledValues
-  const chartElement = elementFromSelection(renderer.chartSelection)
+  const chartElement = elementFromSelection(renderer.chartS)
   const title = getCurrentRespVal(axis.title, {chart: chartElement})
   const {keys, options} = getAxisCategoryProps(axis)
+  let filteredSeries: ParcoordSeries
   if ('key' in axis) {
     keys.push(axis.key)
     options.push('Remove Axis')
+    filteredSeries = axis.series.cloneFiltered()
   }
   if (keys.length === 0) return
 
   const data: (CheckboxLabelsData & { legend: string })[] = [{
     legend: getCurrentRespVal( `${title ?? axisScaledValues.parentKey.toUpperCase()}-Axis`, {chart: chartElement}),
     labelData: options.map((option, index) => {
+      const isKeyedAxisOption = 'key' in axis && index === options.length - 1
+      const defaultVal = isKeyedAxisOption ? axis.keysActive[keys[index]] : axis.scaledValues.isKeyActiveByKey(keys[index])
+      const axisNecessary = (isKeyedAxisOption && filteredSeries?.axes.length <= 2 && defaultVal)
       return {
         label: option, type: 'category',
-        dataKey: keys[index], defaultVal: axis.scaledValues.isKeyActiveByKey(keys[index]),
+        dataKey: keys[index], defaultVal,
+        class: axisNecessary ? 'disabled' : undefined,
         onChange: () => {
           renderer.filterDispatch.call('filter', { dataKey: keys[index] }, this)
         }

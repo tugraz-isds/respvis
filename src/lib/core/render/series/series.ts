@@ -7,6 +7,7 @@ import {ActiveKeyMap, SeriesKey} from "../../constants/types";
 import {Size} from "../../utilities/size";
 import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";
 import {mergeKeys} from "../../utilities/dom/key";
+import {SeriesResponsiveState} from "./responsive-state";
 
 export type SeriesUserArgs = {
   categories?: CategoryUserArgs
@@ -16,23 +17,27 @@ export type SeriesUserArgs = {
 }
 
 export type SeriesArgs = SeriesUserArgs & RenderArgs & {
+  originalSeries?: Series
   key: SeriesKey
   bounds?: Size
 }
 
 export abstract class Series implements RenderArgs {
   class = true
+  originalSeries: Series
   categories?: ScaledValuesCategorical
   key: SeriesKey
   keysActive: ActiveKeyMap
   bounds: Size
   markerTooltips: SeriesConfigTooltips<SVGCircleElement, Point>
   labelCallback: (category: string) => string
-  flipped: RespValByValueOptional<boolean>
   renderer: Renderer
+  responsiveState: SeriesResponsiveState
 
   constructor(args: SeriesArgs | Series) {
     const {key, labelCallback} = args
+
+    this.originalSeries = args.originalSeries ?? this
 
     //TODO: pass correct parameters here
     if ('class' in args) this.categories = args.categories
@@ -43,7 +48,7 @@ export abstract class Series implements RenderArgs {
     this.bounds = args.bounds || {width: 600, height: 400}
     this.key = args.key
 
-    if ('class' in args) this.keysActive = args.keysActive
+    if ('class' in args) this.keysActive = {...args.keysActive}
     else {
       this.keysActive = {}
       this.keysActive[key] = true
@@ -51,7 +56,11 @@ export abstract class Series implements RenderArgs {
     this.markerTooltips = 'class' in args ? args.markerTooltips : seriesConfigTooltipsData(args.markerTooltips)
     this.labelCallback = 'class' in args ? args.labelCallback : (labelCallback ?? ((label: string) => label))
     this.renderer = args.renderer
-    this.flipped = args.flipped ?? false
+    this.responsiveState = 'class' in args ? args.responsiveState : new SeriesResponsiveState({
+      series: this,
+      originalSeries: this.originalSeries,
+      flipped: ('flipped' in args) ? args.flipped : false
+    })
   }
 
   abstract getCombinedKey(i: number): string

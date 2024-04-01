@@ -12,6 +12,7 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
   tag = 'categorical' as const
   readonly values: string[]
   readonly scale: ScaleBand<string>
+  readonly flippedScale: ScaleBand<string>
   readonly title: RespValOptional<string>
   readonly categories: CategoryValid
   readonly keysActive: ActiveKeyMap
@@ -20,6 +21,7 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     super(args)
     this.values = args.values
     this.scale = args.scale ?? scaleBand([0, 600]).domain(this.values).padding(0.1)
+    this.flippedScale = this.scale.copy()
     this.title = args.title
 
     //TODO: this is no real alignment validation. Fix this!
@@ -33,6 +35,18 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
       prev[`${args.parentKey}-${c}`] = true
       return prev
     }, {})
+  }
+
+  getScaledValueStart(i: number) {
+    return valByIndexFormula[this.orientation].start(i, this)
+  }
+
+  getScaledValue(i: number) {
+    return valByIndexFormula[this.orientation].middle(i, this)
+  }
+
+  getScaledValueEnd(i: number) {
+    return valByIndexFormula[this.orientation].end(i, this)
   }
 
   isKeyActiveByKey(key: string) {
@@ -89,3 +103,32 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     return new ScaledValuesCategorical({...this, scale: this.scale.copy()})
   }
 }
+
+const valByIndexFormulaCategoricalHorizontal = {
+  start: (index: number, scaledValues: ScaledValuesCategorical) => {
+    return scaledValues.scale(scaledValues.values[index])!
+  },
+  middle: (index: number, scaledValues: ScaledValuesCategorical) => {
+    return scaledValues.scale(scaledValues.values[index])! + scaledValues.scale.bandwidth() / 2
+  },
+  end: (index: number, scaledValues: ScaledValuesCategorical) => {
+    return scaledValues.scale(scaledValues.values[index])! + scaledValues.scale.bandwidth()
+  }
+} as const
+
+const valByIndexFormulaCategoricalVertical = {
+  start: (index: number, scaledValues: ScaledValuesCategorical) => {
+    return scaledValues.scale(scaledValues.values[index])! - scaledValues.scale.bandwidth()
+  },
+  middle: (index: number, scaledValues: ScaledValuesCategorical) => {
+    return scaledValues.scale(scaledValues.values[index])! - scaledValues.scale.bandwidth() / 2
+  },
+  end: (index: number, scaledValues: ScaledValuesCategorical) => {
+    return scaledValues.scale(scaledValues.values[index])!
+  }
+} as const
+
+const valByIndexFormula = {
+  horizontal: valByIndexFormulaCategoricalHorizontal,
+  vertical: valByIndexFormulaCategoricalVertical
+} as const

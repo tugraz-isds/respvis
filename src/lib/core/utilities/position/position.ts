@@ -1,7 +1,5 @@
-import {SelectionOrTransition} from './d3/selection';
+import {SelectionOrTransition} from '../d3/selection';
 import {Selection} from "d3";
-import {cssLengthInPx} from "./dom/units";
-import {CSSLengthUnit, UnitValue} from "../constants/types";
 
 export interface Position {
   x: number;
@@ -60,8 +58,15 @@ export function positionToTransformAttr(
   );
 }
 
-export function centerSVGTextBaseline(svgS: Selection<SVGTextElement>, htmlS: Selection<HTMLElement>) {
-  svgS.attr('dy', (d, i, g) => {
-    return cssLengthInPx(htmlS.style('height') as UnitValue<CSSLengthUnit>) / 2
-  })
+export function centerSVGTextBaseline(svgS: Selection<SVGTextElement>) {
+  const textElement = svgS.node()
+  if (!textElement) return
+
+  const textSVGHeight = textElement.getBBox().height
+  svgS.attr('dy', () => textSVGHeight / 2)
+
+  // const hmtlHeight = htmlS.style('height'
+  // svgS.attr('dy', () => {
+  //   return cssLengthInPx(htmlS.style('height') as UnitValue<CSSLengthUnit>) / 2
+  // })
 }

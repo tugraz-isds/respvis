@@ -11,8 +11,11 @@ type WindowSelection = Selection<SVGHTMLElement, WindowValid & SeriesChartValid>
 type ChartSelection = Selection<SVGSVGElement, WindowValid & SeriesChartValid>
 
 export abstract class SeriesChart extends Chart {
-  abstract windowSelection: WindowSelection
-  chartSelection?: ChartSelection
+  abstract windowS: WindowSelection
+  get chartS(): ChartSelection {
+    return ((this._chartS && !this._chartS.empty()) ? this._chartS :
+      this.layouterS.selectAll('svg.chart')) as ChartSelection
+  }
 
   protected override addBuiltInListeners() {
     super.addBuiltInListeners()
@@ -23,9 +26,12 @@ export abstract class SeriesChart extends Chart {
     const renderer = this
     this.filterDispatch.on('filter', function() {
       const currentKey = this.dataKey
-      const chartD = renderer.windowSelection.datum()
+      const chartD = renderer.windowS.datum()
 
       chartD.getAxes().forEach(axis => {
+        if ('key' in axis) {
+          axis.setKeyActiveIfDefined(currentKey, !axis.isKeyActiveByKey(currentKey))
+        }
         axis.scaledValues.setKeyActiveIfDefined(currentKey, !axis.scaledValues.isKeyActiveByKey(currentKey))
       })
 
@@ -35,17 +41,18 @@ export abstract class SeriesChart extends Chart {
         }
         series.categories?.setKeyActiveIfDefined(currentKey, !series.categories?.keysActive[currentKey])
       })
-      renderer.windowSelection.dispatch('resize')
+      renderer.windowS.dispatch('resize')
     })
   }
 
   protected mainRender() {
     super.mainRender()
-    const chartSelection = this.chartSelection!
+    const chartSelection = this.chartS!
     const chartD = chartSelection.datum()
+    chartD.getSeries().forEach(series => series.responsiveState.update())
     const legendS = legendRender(chartSelection, chartD.legend)
     legendAddHover(legendS)
 
-    toolbarRender(this.windowSelection!, chartSelection.datum())
+    toolbarRender(this.windowS!, chartSelection.datum())
   }
 }
