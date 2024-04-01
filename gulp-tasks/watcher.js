@@ -1,6 +1,6 @@
 const gulp = require("gulp");
 const browserSync = require('browser-sync').create();
-const {bundleJSDevelopment} = require("./bundleJS");
+const {bundleJS} = require("./bundleJS");
 const {createExampleDependencies} = require("./createExampleDependencies");
 const {copyExampleDependencies} = require("./copyExampleDependencies");
 const {buildExamplesSCSS, buildLibSCSS} = require("./buildSCSS");
@@ -20,7 +20,7 @@ function watcher(cb) {
 
   const watchOptions = { ignoreInitial: true };
   gulp.watch(`${rootDir}/src/lib/**/*`, watchOptions,
-    gulp.series(bundleJSDevelopment, createExampleDependencies, copyExampleDependencies, reloadBrowser));
+    gulp.series(bundleJS, createExampleDependencies, copyExampleDependencies, reloadBrowser));
 
   gulp.watch(`${rootDir}/src/examples/**/*!(.scss)`, watchOptions, gulp.series(copyExamples, reloadBrowser));
 

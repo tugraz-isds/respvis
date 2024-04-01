@@ -3,7 +3,7 @@ const del = require('del');
 
 const {copyExampleDependencies} = require("./gulp-tasks/copyExampleDependencies");
 const {createExampleDependencies} = require("./gulp-tasks/createExampleDependencies");
-const {bundleJSProduction} = require("./gulp-tasks/bundleJS");
+const {bundleJS} = require("./gulp-tasks/bundleJS");
 const {bundleDeclaration} = require("./gulp-tasks/bundleDeclaration");
 const {buildLibSCSS} = require("./gulp-tasks/buildSCSS");
 const {copyExamples} = require("./gulp-tasks/copyExamples");
@@ -42,7 +42,7 @@ exports.cleanAll = gulp.parallel(exports.clean, cleanExampleDependencies, cleanP
 exports.build = gulp.series(
   exports.clean,
   gulp.parallel(
-    gulp.series(bundleJSProduction, bundleDeclaration),
+    gulp.series(bundleJS, bundleDeclaration),
     buildLibSCSS
   ),
   createExampleDependencies,
