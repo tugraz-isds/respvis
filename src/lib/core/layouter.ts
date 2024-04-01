@@ -116,7 +116,7 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGElement>): boo
         case 'text':
           select(this)
           svgS.call(((s) => positionToTransformAttr(s, bounds)));
-          centerSVGTextBaseline(svgS as Selection<SVGTextElement>, select(this))
+          centerSVGTextBaseline(svgS as Selection<SVGTextElement>)
           break;
         default:
           svgS.call((s) => positionToTransformAttr(s, bounds));
