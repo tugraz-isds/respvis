@@ -65,6 +65,8 @@ async function getRollupBundle(config) {
       }),
       rollupTypescript({
         tsconfig: `${rootDir}/tsconfig.json`,
+        include: ["src/lib/**/*", "module-specs.d.ts"], //override tsconfig for library bundling
+        exclude: ["node_modules", "dist", "**/*.spec.ts", "src/stories"]
       }),
       process.env.STRIP_CODE === 'true' ? stripCode({
         startComment: '/* DEV_MODE_ONLY_START */',

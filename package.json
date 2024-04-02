@@ -14,7 +14,9 @@
     "clean": "npx gulp clean",
     "build": "npx gulp build",
     "dev": "npx gulp serve --dev",
-    "prod": "npx gulp serve --prod"
+    "prod": "npx gulp serve --prod",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "repository": {
     "type": "git",
@@ -35,10 +37,18 @@
   },
   "homepage": "https://github.com/tugraz-isds/respvis#readme",
   "devDependencies": {
+    "@chromatic-com/storybook": "^1.2.25",
     "@rollup/plugin-commonjs": "^23.0.2",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11",
+    "@storybook/addon-essentials": "^8.0.5",
+    "@storybook/addon-interactions": "^8.0.5",
+    "@storybook/addon-links": "^8.0.5",
+    "@storybook/blocks": "^8.0.5",
+    "@storybook/html": "^8.0.5",
+    "@storybook/html-vite": "^8.0.5",
+    "@storybook/test": "^8.0.5",
     "@types/d3": "^7.1.0",
     "browser-sync": "^2.27.5",
     "del": "^6.0.0",
@@ -55,6 +65,7 @@
     "rollup-plugin-gzip": "^2.5.0",
     "rollup-plugin-string": "^3.0.0",
     "sass": "^1.62.0",
+    "storybook": "^8.0.5",
     "tslib": "^2.2.0",
     "typescript": "^5.4.2"
   },
