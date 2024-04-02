@@ -49,7 +49,6 @@ export abstract class Chart implements Renderer {
       this.drawAreaS.selectChildren<SVGRectElement, any>('.background')
   }
 
-
   buildChart() {
     this.render()
     if (this.addedListeners) return
@@ -101,6 +100,7 @@ export abstract class Chart implements Renderer {
   }
 
   protected render() {
+    if (!(this.windowS.node() as Element).isConnected) return
     this.preRender()
     this.mainRender()
     this.postRender()

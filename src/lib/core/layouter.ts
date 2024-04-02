@@ -147,6 +147,7 @@ export function layouterRender(selection: Selection<HTMLDivElement>): void {
 }
 
 export function layouterCompute(selection: Selection<HTMLDivElement>, dispatch = true) {
+  if (!(selection.node() as Element).isConnected) return
   let anyBoundsChanged = false;
 
   selection.each(function () {
