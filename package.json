@@ -59,6 +59,7 @@
     "gulp-replace": "^1.1.4",
     "gulp-sass": "^5.1.0",
     "gulp-typescript": "^6.0.0-alpha.1",
+    "madge": "^6.1.0",
     "merge-stream": "^2.0.0",
     "rollup": "^3",
     "rollup-plugin-dts": "^5",

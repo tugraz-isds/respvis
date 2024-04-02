@@ -31,22 +31,6 @@ export function getExactLayoutIndex<T>(val: RespVal<T>, mapping: BreakpointScope
   return layoutIndices[val.dependentOn]
 }
 
-export function getPreLayoutIndex<T>(exactBreakpoint: number, respVal: RespVal<T>) {
-  for (let i = exactBreakpoint - 1; i >= 0; i--) {
-    if (respVal.mapping[i] !== undefined) return i
-  }
-  return null
-}
-
-export function getPostLayoutIndex<T>(exactBreakpoint: number, respVal: RespVal<T>) {
-  const keys = Object.keys(respVal.mapping)
-  for (let i = 0; i < keys.length; i++) {
-    const index = parseInt(keys[i])
-    if (index > exactBreakpoint) return index
-  }
-  return null
-}
-
 function estimateRespVal<T>(exactBreakpoint: number, respVal: RespVal<T>) {
   if (isRespValByCallback(respVal)) {
     return estimateRespValByCallback(exactBreakpoint, respVal)

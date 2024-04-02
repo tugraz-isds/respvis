@@ -1,2 +1,3 @@
-export {updateBreakpointStatesInCSS, getLayoutStatesFromCSS, LayoutStates,
-  LayoutBreakpoints, WithBreakpoints} from "./breakpoint/breakpoint";
+export * from './breakpoint/matchBounds';
+export * from './breakpoint/breakpoint';
+export * from './scale/axis-scaled-values-validation';

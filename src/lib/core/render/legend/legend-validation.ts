@@ -1,4 +1,6 @@
-import {pathRect, rectFromSize, Size} from '../../index';
+import {pathRect} from "../../utilities/path";
+import {rectFromSize} from "../../utilities/rect";
+import {Size} from "../../utilities/size";
 import {RenderArgs} from "../chart/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
 import {Series} from "../series";
