@@ -10,7 +10,7 @@ export function scatterPlotRender(selection: ScatterplotSVGChartSelection) {
 }
 
 function renderAllSeriesOfPoints(chartS: ScatterplotSVGChartSelection) {
-  const {series} = chartS.datum()
+  const series = chartS.datum().series.cloneFiltered().cloneZoomed() as PointSeries
   chartS
     .selectAll('.draw-area')
     .selectAll<SVGSVGElement, ScatterPlotValid>('.series-point')

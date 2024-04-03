@@ -24,6 +24,10 @@ const meta = {
           flipped: {
             dependentOn: 'width',
             mapping: {0: true, 2: false}
+          },
+          zoom: {
+            in: 20,
+            out: 1
           }
         },
         bounds: {
@@ -61,10 +65,6 @@ const meta = {
           //     2: (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))
           //   }
           // }
-        },
-        zoom: {
-          in: 20,
-          out: 1
         }
       }
       const linechart = new LineChart(chartS, linchartArgs)

@@ -34,7 +34,7 @@ export abstract class BarBaseSeries extends CartesianSeries {
 
   getBarRects(): Bar[] {
     const data: Bar[] = []
-    const [x, y] = [this.x.cloneFiltered(), this.y.cloneFiltered()]
+    const {x, y} = this
 
     if (!this.keysActive[this.key]) return data
     for (let i = 0; i < this.y.values.length; ++i) {

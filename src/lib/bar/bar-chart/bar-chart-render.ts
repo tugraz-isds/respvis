@@ -3,7 +3,7 @@ import {cartesianChartAxisRender, chartRender} from "../../core";
 import {BarChartValid, chartBarHoverBar, ChartBarSelection} from "./bar-chart-validation";
 import {legendRender} from "../../core/render/legend";
 import {legendAddHover} from "../../core/render/legend/legend-event";
-import {barSeriesRender, BarStandardSeries} from "../bar-series";
+import {BarSeries, barSeriesRender, BarStandardSeries} from "../bar-series";
 
 export type BarChartChartSelection = Selection<SVGSVGElement | SVGGElement, BarChartValid>;
 
@@ -19,12 +19,13 @@ export function barChartRender(selection: BarChartChartSelection) {
 export function renderBars(chartS: BarChartChartSelection) {
   chartS
     .each((chartD, i, g) => {
+      const series = chartD.series.cloneFiltered().cloneZoomed() as BarSeries
       const chartS = <ChartBarSelection>select(g[i]);
       const drawAreaS = chartS.selectAll('.draw-area');
 
       drawAreaS
         .selectAll<SVGGElement, BarStandardSeries>('.series-bar')
-        .data([chartD.series])
+        .data([series])
         .join('g')
         .call((s) => barSeriesRender(s))
         .on('pointerover.chartbarhighlight', (e) => chartBarHoverBar(chartS, select(e.target), true))

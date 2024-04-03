@@ -3,7 +3,7 @@ import * as d3 from './libs/d3-7.6.0/d3.js'
 import {carData, getTopMakesData} from "./data/sold-cars-germany.js";
 
 export function createScatterplot(selector: string) {
-  const {topMakesNames, mileages, horsePower, prices, makes} = getTopMakesData(5)
+  const {mileages, horsePower, prices, makes} = getTopMakesData(5)
   const allHorsePower = carData.map(entry => entry.hp)
   const allPrices = carData.map(entry => entry.price)
   const allMileages = carData.map(entry => entry.mileage)
@@ -57,6 +57,10 @@ export function createScatterplot(selector: string) {
                 Make: ${d.label}<br/>
                 Mileage: ${d.radiusValue}km<br/>`
         })
+      },
+      zoom: {
+        in: 20,
+        out: 1
       }
     },
     bounds: {
@@ -99,10 +103,6 @@ export function createScatterplot(selector: string) {
         scope: 'chart',
         mapping: {0: '', 1: 'Makes'}
       },
-    },
-    zoom: {
-      in: 20,
-      out: 1
     }
   }
 

@@ -1,7 +1,6 @@
 import {Selection} from "d3";
 import {WindowValid} from "../../window";
 import {CartesianChartValid} from "./cartesian-chart-validation";
-import {addZoom} from "../../../data/zoom";
 import {SeriesChart} from "../series-chart/series-chart";
 import {cartesianChartAxisRender} from "./cartesian-chart-render";
 
@@ -14,10 +13,8 @@ export abstract class CartesianChart extends SeriesChart {
       this.layouterS.selectAll('svg.chart')) as ChartSelection
   }
 
-
   protected addBuiltInListeners() {
     super.addBuiltInListeners()
-    this.addZoomListeners()
   }
 
   protected preRender() {
@@ -31,26 +28,26 @@ export abstract class CartesianChart extends SeriesChart {
     // y.scaledValues.scale.range(flipped ? [0, width] : [height, 0])
   }
 
-  private addZoomListeners() {
-    const renderer = this
-    const chartWindowD = this.windowS.datum()
-    if (!chartWindowD.zoom) return
-
-    addZoom(this.windowS, ({x, y}) => {
-      const cartesianData = renderer.windowS.datum()
-      const seriesUpdated = cartesianData.series.clone()
-      seriesUpdated.x = x
-      seriesUpdated.y = y
-      cartesianData.x.scaledValues = x
-      cartesianData.y.scaledValues = y
-
-      renderer.windowS.data([{
-        ...cartesianData, series: seriesUpdated
-      }])
-
-      renderer.windowS.dispatch('resize')
-    })
-  }
+  // private addZoomListeners() {
+  //   const renderer = this
+  //   const chartWindowD = this.windowS.datum()
+  //   if (!chartWindowD.zoom) return
+  //
+  //   addZoom(this.windowS, ({x, y}) => {
+  //     const cartesianData = renderer.windowS.datum()
+  //     const seriesUpdated = cartesianData.series.clone()
+  //     seriesUpdated.x = x
+  //     seriesUpdated.y = y
+  //     cartesianData.x.scaledValues = x
+  //     cartesianData.y.scaledValues = y
+  //
+  //     renderer.windowS.data([{
+  //       ...cartesianData, series: seriesUpdated
+  //     }])
+  //
+  //     renderer.windowS.dispatch('resize')
+  //   })
+  // }
 
   protected renderAxes() {
     this.chartS!.call(cartesianChartAxisRender)

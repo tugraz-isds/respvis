@@ -33,6 +33,10 @@ export function createBarCart(selector: string) {
         dependentOn: 'width',
         mapping: {0: true, 2: false}
       },
+      zoom: {
+        in: 20,
+        out: 1
+      }
     },
     bounds: {
       width: {

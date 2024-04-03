@@ -140,9 +140,11 @@ export const LineChartFlipping: Story = {
 
 export const LineChartZoomable: Story = {
   args: { ...LineChartFlipping.args,
-    zoom: {
-      in: 20,
-      out: 1
+    series: { ...LineChartFlipping.args!.series!,
+      zoom: {
+        in: 20,
+        out: 1
+      }
     }
   },
   render: args => {

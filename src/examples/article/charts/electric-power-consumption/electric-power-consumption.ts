@@ -22,6 +22,10 @@ export const createPowerConsumptionChart = (selector: string) => {
                 tooltips: (_, point) => {
                     return `Year: ${point.xValue}<br/>Pow. Consumption: ${point.yValue}kWh`
                 }
+            },
+            zoom: {
+                in: 20,
+                out: 1
             }
         },
         bounds: {
@@ -68,10 +72,6 @@ export const createPowerConsumptionChart = (selector: string) => {
                 scope: 'self',
                 mapping: {0: 90, 3: 0},
             },
-        },
-        zoom: {
-            in: 20,
-            out: 1
         }
     }
 

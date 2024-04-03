@@ -28,6 +28,10 @@ export const renderMultiLineChart = (selector: string) => {
       flipped: {
         dependentOn: 'width',
         mapping: {0: true, 2: false}
+      },
+      zoom: {
+        in: 20,
+        out: 1
       }
     },
     bounds: {
@@ -74,18 +78,11 @@ export const renderMultiLineChart = (selector: string) => {
         scope: 'self',
         mapping: {0: 90, 3: 0},
       },
-    },
-    zoom: {
-      in: 20,
-      out: 1
     }
   }
 
   const chartWindow = select(selector).append('div')
   const renderer = new LineChart(chartWindow, data)
-  renderer.addCustomListener('resize.custom', (event, data) => {
-    // chooseResponsiveData(event.target, data)
-  })
   renderer.buildChart()
 }
 

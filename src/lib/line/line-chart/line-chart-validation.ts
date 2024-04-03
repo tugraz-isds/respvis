@@ -10,13 +10,13 @@ export type LineChartValid = CartesianChartValid & {
 }
 
 export function lineChartValidation(lineArgs: LineChartArgs): LineChartValid {
-  const {renderer, x, y, zoom,
+  const {renderer, x, y,
     legend, bounds,
     title, subTitle
   } = lineArgs
   const series = new LineSeries({...lineArgs.series, key: 's-0', renderer})
   const cartesianData =
-    cartesianChartValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
+    cartesianChartValidation({renderer, series, x, y, legend, bounds, title, subTitle})
 
   return {
     ...cartesianData,

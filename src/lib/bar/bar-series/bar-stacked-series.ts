@@ -40,12 +40,24 @@ export class BarStackedSeries extends BarBaseSeries {
   }
 
   override getBarRects(): Bar[] {
-    this.aggScaledValues = new ScaledValuesAggregation(this.y.cloneFiltered(), this.x.cloneFiltered(), this.categories, this.aggregationScale)
+    this.aggScaledValues = new ScaledValuesAggregation(this.y, this.x, this.categories, this.aggregationScale)
     return super.getBarRects();
   }
 
   getRect(i: number) {
     return createStackedBar({ series: this, i })
+  }
+
+  cloneZoomed(): BarStackedSeries {
+    return this.clone()
+    //TODO: implement correct zooming for stacked bar series
+    // if (!this.zoom || !this.aggregationScale) return super.cloneZoomed()
+    // const clone = this.clone()
+    // const flipped = this.responsiveState.currentlyFlipped
+    // const aggScaleZoomed = flipped ?
+    //   this.zoom.currentTransform.rescaleX(this.aggregationScale) : this.zoom.currentTransform.rescaleY(this.aggregationScale)
+    // clone.aggregationScale = aggScaleZoomed
+    // return clone
   }
 
   clone() {
