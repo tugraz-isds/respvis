@@ -20,8 +20,6 @@ export function createGroupedBar(props: createGroupedBarProps) {
     .range([0, (categoryGroupValues as ScaledValuesCategorical).scale.bandwidth()])
     .padding(0.1); //TODO: create parameter for this
 
-  console.log(innerScale.domain(), innerScale.range())
-
   const categoryKey = series.categories.getCombinedKey(i)
   const innerValue = innerScale(categoryKey) ?? 0
 

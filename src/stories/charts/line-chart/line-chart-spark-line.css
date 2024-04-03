@@ -1,12 +1,4 @@
-.axis .ticks .tick {
-  display: none;
-}
-
-.point {
-  opacity: 0;
-}
-
-.label {
+.axis .ticks .tick, .label {
   display: none;
 }
 

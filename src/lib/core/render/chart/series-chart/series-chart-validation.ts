@@ -3,6 +3,7 @@ import {AxisValid} from "../../axis";
 import {Series} from "../../series";
 import {LegendUserArgs, LegendValid} from "../../legend";
 
+//TODO: SeriesChartUserArgs should omit renderer propterty etc.
 export type SeriesChartUserArgs = ChartArgs & {
   legend?: LegendUserArgs
 }
