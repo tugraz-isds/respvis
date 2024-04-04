@@ -4,8 +4,6 @@ import {centerSVGTextBaseline, positionToTransformAttr} from './utilities/positi
 import {rectBottomLeft, rectEquals, rectFromString, rectToAttrs, rectTopRight, rectToString,} from './utilities/rect';
 import {circleInsideRect, circleToAttrs} from './utilities/circle';
 import {cssVars} from "./constants/cssVars";
-import {backgroundSVGOnly} from "./constants/dom/classes";
-import {ignoreBounds} from "./constants/dom/attributes";
 
 function layoutNodeRoot(layouter: HTMLDivElement): Selection<HTMLDivElement, SVGElement> {
   return select(layouter)
@@ -91,9 +89,7 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGElement>): boo
     //     console.log(svgE.classList, heightAbs, 'Height')
     //   }
     // }
-    if (svgE.hasAttribute(ignoreBounds)) return
     anyChanged = anyChanged || changed;
-    if (svgE.classList.contains(backgroundSVGOnly)) return
     if (changed) {
       svgS.attr('bounds', rectToString(bounds));
       switch (svgE.tagName) {

@@ -1,6 +1,6 @@
 import {select, Selection, ValueFn} from 'd3';
-import {roundSVGAttributes} from "./optimize-svg";
-import {Renderer} from "../../chart/renderer";
+import {optimizeSVG} from "./optimize-svg";
+import {Renderer} from "../../../chart/renderer";
 import {applyDownloadStyle} from "./apply-download-style";
 
 export function chartDownload<Datum>(
@@ -22,7 +22,7 @@ export function chartDownload<Datum>(
     applyDownloadStyle(g[i], clonedChart, renderer)
 
     //TODO: Maybe include decimals in settings
-    roundSVGAttributes(select(clonedChart), 1)
+    optimizeSVG(select(clonedChart), renderer)
 
     const cloneContainer = document.createElement('div');
     cloneContainer.append(clonedChart);
@@ -35,7 +35,7 @@ export function chartDownload<Datum>(
     const dataKeyString =  (downloadRemoveDataKeys) ? '|data-key' : ''
     const dataStyleString =  (downloadStyleType === 'inline' && downloadRemoveDataStyles) ? '|data-style' : ''
     const optionalAttrs = classString + dataKeyString + dataStyleString
-    const regex = new RegExp(`(layout|bounds|data-ignore-layout|data-ignore-layout-children${optionalAttrs})=".*?"`, 'g')
+    const regex = new RegExp(`\\s(layout|bounds|data-ignore-layout|data-ignore-layout-children${optionalAttrs})=".*?"`, 'g')
 
     const cloneHTML = cloneContainer.innerHTML.replace(regex, '')
     const blobType = 'image/svg+xml;charset=utf-8';

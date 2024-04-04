@@ -5,9 +5,16 @@ type DownloadType = 'svg' | 'jpg' | 'png' //TODO: add support for raster images
 export type WindowSettings = {
   // downloadType: DownloadType
   downloadStyleType: DownloadStyleType
+
   downloadRemoveClasses: boolean
   downloadRemoveDataKeys: boolean
   downloadRemoveDataStyles: boolean
+
+  downloadRemoveBgElements: boolean
+
+  downloadAttributeMaxDecimals: string
+  downloadAttributeMaxDecimalsActive: boolean
+
 
   // zoomXActive: BooleanString
   // zoomYActive: BooleanString
@@ -22,8 +29,11 @@ export const windowSettingsKeys: Record<keyof WindowSettings, keyof WindowSettin
   downloadStyleType: 'downloadStyleType',
   downloadRemoveClasses: 'downloadRemoveClasses',
   downloadRemoveDataKeys: 'downloadRemoveDataKeys',
+  downloadRemoveBgElements: 'downloadRemoveBgElements',
   downloadRemoveDataStyles: 'downloadRemoveDataStyles',
-  movableCrossActive: "movableCrossActive"
+  movableCrossActive: "movableCrossActive",
+  downloadAttributeMaxDecimals: "downloadAttributeMaxDecimals",
+  downloadAttributeMaxDecimalsActive: "downloadAttributeMaxDecimalsActive"
 }
 
 export const defaultWindowSettings: WindowSettings = {
@@ -31,7 +41,10 @@ export const defaultWindowSettings: WindowSettings = {
   downloadRemoveClasses: true,
   downloadRemoveDataKeys: true,
   downloadRemoveDataStyles: true,
-  movableCrossActive: false
+  downloadRemoveBgElements: true,
+  movableCrossActive: false,
+  downloadAttributeMaxDecimals: '1',
+  downloadAttributeMaxDecimalsActive: true
 } as const
 
 

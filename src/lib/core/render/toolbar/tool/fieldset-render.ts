@@ -1,6 +1,6 @@
 import {select, Selection} from "d3";
-import {RadioLabelsData} from "./radio-labels-render";
 import {classesForSelection} from "../../../utilities/d3/util";
+import {InputLabel} from "./input-label/input-label";
 
 type FieldSetProps = {
   legend: string,
@@ -11,7 +11,7 @@ export function fieldsetRender<D extends FieldSetProps>(
   parentS: Selection, data: D[], ...classes: string[]) {
 
   const {names, selector} = classesForSelection(classes)
-  const itemS = parentS.selectAll<HTMLFieldSetElement, RadioLabelsData>(selector)
+  const itemS = parentS.selectAll<HTMLFieldSetElement, InputLabel>(selector)
     .data(data)
     .join('fieldset')
     .classed(names, true)
