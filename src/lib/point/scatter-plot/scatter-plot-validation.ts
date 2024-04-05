@@ -1,5 +1,5 @@
 import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "../../core";
-import {PointSeries, SeriesPointUserArgs} from "../point-series/point-series-validation";
+import {PointSeries, SeriesPointUserArgs} from "../point-series/point-series";
 
 export type ScatterPlotArgs = Omit<CartesianChartUserArgs, 'series'> & {
   series: SeriesPointUserArgs

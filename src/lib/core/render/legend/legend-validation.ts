@@ -1,5 +1,5 @@
 import {pathRect} from "../../utilities/path";
-import {rectFromSize} from "../../utilities/rect";
+import {rectFromSize} from "../../utilities/graphic-elements/rect";
 import {Size} from "../../utilities/size";
 import {RenderArgs} from "../chart/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";

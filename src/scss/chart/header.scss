@@ -1,17 +1,8 @@
-.header {
-  .title, .subtitle {
-    --fit-width: true;
-    --fit-height: true;
-  }
-  .title {
-    text {
-      font-size: var(--font-size-title);
-      letter-spacing: 0.1em;
-    }
-  }
-  .subtitle {
-    text {
-      font-size: var(--font-size-subtitle);
-    }
-  }
+.header .title text {
+  font-size: var(--font-size-title);
+  letter-spacing: 0.1em;
+}
+
+.header .subtitle text {
+  font-size: var(--font-size-subtitle);
 }

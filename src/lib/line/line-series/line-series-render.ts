@@ -1,5 +1,5 @@
 import {select, Selection} from "d3";
-import {Point, seriesPointCreatePoints, seriesPointJoin} from "../../point";
+import {Point, pointsCreate, pointSeriesJoin} from "../../point";
 import {rectFromString} from "../../core";
 import {LineSeries} from "./line-series-validation";
 import {defaultStyleClass} from "../../core/constants/other";
@@ -8,7 +8,7 @@ import {Line} from "./line";
 import {lineSeriesJoin} from "./line-series-join";
 
 export function lineSeriesRender(pointLineS: Selection<Element, LineSeries>): void {
-  const pointGroups = seriesPointCreatePoints(pointLineS.datum(), true)
+  const pointGroups = pointsCreate(pointLineS.datum(), true)
   lineSeriesPointsRender(pointLineS.filter('.series-point-line'), pointGroups)
   lineSeriesLinesRender(pointLineS.filter('.series-line'), pointGroups)
 }
@@ -22,7 +22,7 @@ function lineSeriesPointsRender(pointS: Selection<Element, LineSeries>, pointGro
     .each(function (d, i, g) {
       select(g[i]).selectAll<SVGCircleElement, Point>('.point')
         .data(pointGroups[i], (d) => d.key)
-        .call((s) => seriesPointJoin(pointS, s))
+        .call((s) => pointSeriesJoin(pointS, s))
     })
 
   pointS.on('pointerover.seriespointhighlight pointerout.seriespointhighlight', (e: PointerEvent) =>

@@ -36,7 +36,8 @@ export function createBarCart(selector: string) {
       zoom: {
         in: 20,
         out: 1
-      }
+      },
+      labels: data.populations
     },
     bounds: {
       width: {

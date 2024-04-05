@@ -12,6 +12,7 @@ import {RespValByValueOptional} from "../../data/responsive-value/responsive-val
 
 export type SeriesUserArgs = {
   categories?: CategoryUserArgs
+  labels?: string[]
   markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>
   labelCallback?: (category: string) => string
   flipped?: RespValByValueOptional<boolean>
@@ -27,6 +28,7 @@ export abstract class Series implements RenderArgs {
   class = true
   originalSeries: Series
   categories?: ScaledValuesCategorical
+  labels?: string[]
   key: SeriesKey
   keysActive: ActiveKeyMap
   bounds: Size
@@ -45,6 +47,8 @@ export abstract class Series implements RenderArgs {
     else this.categories = args.categories ? new ScaledValuesCategorical({
       ...args.categories, parentKey: key,
     }) : undefined
+
+    this.labels = args.labels
 
     this.bounds = args.bounds || {width: 600, height: 400}
     this.key = args.key

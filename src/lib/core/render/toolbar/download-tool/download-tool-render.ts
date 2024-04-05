@@ -12,7 +12,7 @@ import {fieldsetRender} from "../tool/fieldset-render";
 import {chartDownload} from "./chart-download/chart-download";
 import {buttonRender} from "../tool/button-render";
 import {tooltipSimpleRender} from "../tool/tooltip-simple-render";
-import {labelsRender} from "../tool/input-label/labels-render";
+import {inputLabelsRender} from "../tool/input-label/input-labels-render";
 import {NumberLabel} from "../tool/input-label/number-label";
 
 export function downloadToolRender(selection: Selection<HTMLDivElement>, renderer: Renderer) {
@@ -24,10 +24,10 @@ export function downloadToolRender(selection: Selection<HTMLDivElement>, rendere
   const dialogS = dialogRender(downloadToolS)
   bindOpenerToDialog(dialogOpenerS, dialogS)
 
-  styleTypeOptionsRender(dialogS, renderer).call(labelsRender)
-  attributeRemovalOptionsRender(dialogS, renderer).call(labelsRender)
-  elementRemovalOptionsRender(dialogS, renderer).call(labelsRender)
-  decimalNumberOptionsRender(dialogS, renderer).call(labelsRender)
+  styleTypeOptionsRender(dialogS, renderer).call(inputLabelsRender)
+  attributeRemovalOptionsRender(dialogS, renderer).call(inputLabelsRender)
+  elementRemovalOptionsRender(dialogS, renderer).call(inputLabelsRender)
+  decimalNumberOptionsRender(dialogS, renderer).call(inputLabelsRender)
   downloadButtonRender(dialogS, renderer)
 }
 

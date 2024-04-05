@@ -1,31 +1,15 @@
 import {easeCubicOut, select, Selection} from "d3";
-import {circleMinimized, circleToAttrs, rectFromString} from "../../core";
-import {seriesConfigTooltipsHandleEvents} from "../../tooltip";
-import {PointSeries} from "./point-series-validation";
+import {circleMinimized, circleToAttrs} from "../../core";
 import {Point} from "./point";
-import {seriesPointCreatePoints} from "./point-creation";
 
-export function pointSeriesRender(selection: Selection<Element, PointSeries>): void {
-  selection
-    .classed('series-point', true)
-    .attr('data-ignore-layout-children', true)
-    .each((d, i, g) => {
-      const seriesS = select<Element, PointSeries>(g[i]);
-      const boundsAttr = seriesS.attr('bounds');
-      if (!boundsAttr) return;
-      d.bounds = rectFromString(boundsAttr);
-      seriesS
-        .selectAll<SVGCircleElement, Point>('.point')
-        .data(seriesPointCreatePoints(d, false), (d) => d.key)
-        .call((s) => seriesPointJoin(seriesS, s));
-    })
-    .on('pointerover.seriespointhighlight pointerout.seriespointhighlight', (e: PointerEvent) =>
-      (<Element>e.target).classList.toggle('highlight', e.type.endsWith('over'))
-    )
-    .call((s) => seriesConfigTooltipsHandleEvents(s));
+export function pointsRender(seriesS: Selection, points: Point[]) {
+  seriesS.selectAll<SVGCircleElement, Point>('.point')
+    .data(points, (d) => d.key)
+    .call((s) => pointSeriesJoin(seriesS, s));
+  return seriesS
 }
 
-export function seriesPointJoin(
+export function pointSeriesJoin(
   seriesSelection: Selection,
   joinSelection: Selection<Element, Point>
 ): void {

@@ -2,8 +2,8 @@ export * from './utilities/size';
 export * from './utilities/position/position';
 export * from './utilities/array';
 export * from './utilities/element';
-export * from './utilities/rect';
-export * from './utilities/circle';
+export * from './utilities/graphic-elements/rect';
+export * from './utilities/graphic-elements/circle';
 export * from './utilities/path';
 export * from './utilities/formats';
 

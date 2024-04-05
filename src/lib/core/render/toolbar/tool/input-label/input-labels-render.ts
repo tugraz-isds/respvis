@@ -5,7 +5,7 @@ export type LabelsParentData = {
   labelData: InputLabel[]
 }
 
-export function labelsRender(itemsS: Selection<any, LabelsParentData>) {
+export function inputLabelsRender(itemsS: Selection<any, LabelsParentData>) {
   itemsS.each(function (d, i, g) {
     const {labelData} = d
     select(g[i]).selectAll('label')

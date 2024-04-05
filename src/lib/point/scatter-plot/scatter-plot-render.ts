@@ -1,39 +1,26 @@
 import {Selection} from 'd3';
-import {PointSeries} from '../point-series/point-series-validation';
+import {PointSeries} from '../point-series/point-series';
 import {ScatterPlotValid} from "./scatter-plot-validation";
-import {pointSeriesRender} from "../point-series/point-series-render";
+import {pointsRender} from "../point-series/points-render";
+import {pointsCreate} from "../point-series/points-create";
+import {seriesConfigTooltipsHandleEvents} from "../../tooltip";
+import {labelSeriesFromElementsRender} from "../../core/render/label/todo/series-label";
+import {addHighlight} from "../../core/render/series/series-add-highlight";
 
 export type ScatterplotSVGChartSelection = Selection<SVGSVGElement | SVGGElement, ScatterPlotValid>;
 
-export function scatterPlotRender(selection: ScatterplotSVGChartSelection) {
-  selection.call(renderAllSeriesOfPoints)
-}
-
-function renderAllSeriesOfPoints(chartS: ScatterplotSVGChartSelection) {
+export function scatterPlotRender(chartS: ScatterplotSVGChartSelection) {
   const series = chartS.datum().series.cloneFiltered().cloneZoomed() as PointSeries
-  chartS
-    .selectAll('.draw-area')
-    .selectAll<SVGSVGElement, ScatterPlotValid>('.series-point')
-    .data<PointSeries>([series])
+  const points = pointsCreate(series, false)
+  const drawAreaS = chartS.datum().renderer.drawAreaS
+
+  drawAreaS.selectAll<SVGGElement, PointSeries>('.series-point')
+    .data([series])
     .join('g')
-    .call(pointSeriesRender)
-
-
-  //TODO: improve this improvised label series
-  // const points = seriesPointCreatePoints(pointSeries)
-  // const labelData = seriesLabelData({
-  //   positions: points.map((p) => {
-  //     return {x: p.center.x + 13, y: p.center.y + 13}
-  //   }),
-  //   keys: points.map((p) => p.key),
-  //   texts: points.map((p, markerI) =>
-  //     p.radiusValue.toString() + '€'
-  //   ),
-  // });
-  // chartS
-  //   .selectAll('.draw-area')
-  //   .selectAll<SVGGElement, SeriesLabel>('.series-label')
-  //   .data([labelData])
-  //   .join('g')
-  //   .call((s) => seriesLabelRender(s));
+    .classed('series-point', true)
+    .attr('data-ignore-layout-children', true)
+    .call(s => pointsRender(s, points))
+    .call(addHighlight)
+    .call(seriesConfigTooltipsHandleEvents)
+    .call(() => labelSeriesFromElementsRender(drawAreaS, points, ['series-label']))
 }
