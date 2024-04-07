@@ -1,10 +1,8 @@
-import {LengthDimension} from "../../constants/types";
-
-import {getPostLayoutIndex, getPreLayoutIndex, RespValOptional} from "./responsive-value";
 import {ErrorMessages} from "../../utilities/error";
 import {defaultScope, maxBreakpointCount} from "../../constants/other";
 import {BreakpointScope, BreakpointScopeMapping} from "../breakpoint/breakpoint-scope";
 import {getLayoutStateFromCSS} from "../breakpoint/breakpoint";
+import {LengthDimension} from "../../constants/types";
 
 //TODO: Simultaneous Interpretation of multiple breakpoint indexes
 // Change dependentOn to be inside mapping
@@ -18,15 +16,10 @@ export type RespValByValue<T> = {
 }
 export type RespValByValueOptional<T> = RespValByValue<T> | T
 
-export function respValByValueValidation() {
-
-}
-
-export function isResponsiveValueByValue<T>(arg: RespValOptional<T>): arg is RespValByValue<T> {
+export function isResponsiveValueByValue<T>(arg: any): arg is RespValByValue<T> {
   return typeof arg === 'object' && arg !== null && 'mapping' in arg && 'dependentOn' in arg && !('value' in arg)
 }
 
-export type ResponsiveValueInformation = ReturnType<typeof getResponsiveValueInformation>
 export function getResponsiveValueInformation<T>(respVal: RespValByValue<T>, scopes: BreakpointScopeMapping) {
   const desiredElement = respVal.scope ? scopes[respVal.scope] : undefined
   const element = desiredElement ? desiredElement : scopes[defaultScope]
@@ -63,4 +56,20 @@ export function estimateResponsiveValueByValue<T>(exactBreakpoint: number, respV
 
 export function getExactResponsiveValueByValue<T>(exactBreakpoint: number, respVal: RespValByValue<T>) {
   return respVal.mapping[exactBreakpoint] ?? null
+}
+
+export function getPreLayoutIndex<T>(exactBreakpoint: number, respVal: RespValByValue<T>) {
+  for (let i = exactBreakpoint - 1; i >= 0; i--) {
+    if (respVal.mapping[i] !== undefined) return i
+  }
+  return null
+}
+
+export function getPostLayoutIndex<T>(exactBreakpoint: number, respVal: RespValByValue<T>) {
+  const keys = Object.keys(respVal.mapping)
+  for (let i = 0; i < keys.length; i++) {
+    const index = parseInt(keys[i])
+    if (index > exactBreakpoint) return index
+  }
+  return null
 }

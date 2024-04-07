@@ -4,14 +4,6 @@ import * as d3 from './libs/d3-7.6.0/d3.js'
 import {format} from './libs/d3-7.6.0/d3.js'
 
 export function createLineChart(selector: string) {
-  const calcData = () => {
-    return {
-      //TODO
-      markerLabels: (_, {xValue, yValue}) => `${xValue}: ${d3.format('.2s')(yValue)}`,
-    };
-  }
-
-
   const data: LineChartUserArgs = {
     series: {
       x: { values: years },
@@ -23,6 +15,10 @@ export function createLineChart(selector: string) {
       flipped: {
         dependentOn: 'width',
         mapping: {0: true, 2: false}
+      },
+      zoom: {
+        in: 20,
+        out: 1
       }
       // labelCallback: (label: string) => {
       //   // console.log(label)
@@ -64,17 +60,10 @@ export function createLineChart(selector: string) {
           2: (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))
         }
       }
-    },
-    zoom: {
-      in: 20,
-      out: 1
     }
   }
 
   const chartWindow = d3.select(selector).append('div')
   const renderer = new LineChart(chartWindow, data)
-  renderer.addCustomListener('resize.custom', (event, data) => {
-    // chooseResponsiveData(event.target, data)
-  })
   renderer.buildChart()
 }

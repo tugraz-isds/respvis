@@ -1,11 +1,16 @@
 import {select, Selection} from 'd3';
 import {elementRelativeBounds} from './utilities/element';
 import {centerSVGTextBaseline, positionToTransformAttr} from './utilities/position/position';
-import {rectBottomLeft, rectEquals, rectFromString, rectToAttrs, rectTopRight, rectToString,} from './utilities/rect';
-import {circleInsideRect, circleToAttrs} from './utilities/circle';
+import {
+  rectBottomLeft,
+  rectEquals,
+  rectFromString,
+  rectToAttrs,
+  rectTopRight,
+  rectToString,
+} from './utilities/graphic-elements/rect';
+import {circleInsideRect, circleToAttrs} from './utilities/graphic-elements/circle';
 import {cssVars} from "./constants/cssVars";
-import {backgroundSVGOnly} from "./constants/dom/classes";
-import {ignoreBounds} from "./constants/dom/attributes";
 
 function layoutNodeRoot(layouter: HTMLDivElement): Selection<HTMLDivElement, SVGElement> {
   return select(layouter)
@@ -91,9 +96,7 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGElement>): boo
     //     console.log(svgE.classList, heightAbs, 'Height')
     //   }
     // }
-    if (svgE.hasAttribute(ignoreBounds)) return
     anyChanged = anyChanged || changed;
-    if (svgE.classList.contains(backgroundSVGOnly)) return
     if (changed) {
       svgS.attr('bounds', rectToString(bounds));
       switch (svgE.tagName) {
@@ -147,6 +150,7 @@ export function layouterRender(selection: Selection<HTMLDivElement>): void {
 }
 
 export function layouterCompute(selection: Selection<HTMLDivElement>, dispatch = true) {
+  if (!(selection.node() as Element).isConnected) return
   let anyBoundsChanged = false;
 
   selection.each(function () {

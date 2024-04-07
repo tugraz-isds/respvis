@@ -1,5 +1,5 @@
-import {SelectionOrTransition} from './d3/selection';
-import {Position, positionEquals, positionRound} from './position/position';
+import {SelectionOrTransition} from '../d3/selection';
+import {Position, positionEquals, positionRound} from '../position/position';
 import {Rect, rectCenter} from './rect';
 
 export interface Circle {

@@ -1,7 +1,7 @@
 import {Selection} from 'd3';
 import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "../../core";
 import {BarSeries, BarSeriesUserArgs} from "../bar-series/bar-series";
-import {Bar} from "../bar-series/bar";
+import {BarArgs} from "../bar-series/bar";
 import {BarStackedSeries} from "../bar-series/bar-stacked-series";
 import {BarGroupedSeries} from "../bar-series/bar-grouped-series";
 import {BarStandardSeries} from "../bar-series";
@@ -15,7 +15,7 @@ export type BarChartValid = CartesianChartValid & {
 }
 
 export function barChartValidation(chartArgs: BarChartArgs): BarChartValid {
-  const {renderer, x, y, zoom,
+  const {renderer, x, y,
     legend, bounds,
     title, subTitle
   } = chartArgs
@@ -24,7 +24,7 @@ export function barChartValidation(chartArgs: BarChartArgs): BarChartValid {
     new BarGroupedSeries({...chartArgs.series, key: 's-0', renderer}) :
     new BarStandardSeries({...chartArgs.series, key: 's-0', renderer})
   const cartesianData =
-    cartesianChartValidation({renderer, series, x, y, zoom, legend, bounds, title, subTitle})
+    cartesianChartValidation({renderer, series, x, y, legend, bounds, title, subTitle})
   return {
     ...cartesianData,
     series
@@ -33,7 +33,7 @@ export function barChartValidation(chartArgs: BarChartArgs): BarChartValid {
 
 export type ChartBarSelection = Selection<SVGSVGElement | SVGGElement, BarChartValid>;
 
-export function chartBarHoverBar(chart: Selection, bar: Selection<Element, Bar>, hover: boolean) {
+export function chartBarHoverBar(chart: Selection, bar: Selection<Element, BarArgs>, hover: boolean) {
   bar.each((barD) => {
     chart.selectAll(`.label[data-key="${barD.key}"]`).classed('highlight', hover);
   });

@@ -23,6 +23,7 @@ export abstract class Chart implements Renderer {
   xAxisS?: Selection<SVGHTMLElement>
   yAxisS?: Selection<SVGHTMLElement>
   legendS?: Selection<SVGHTMLElement>
+  private unmounted: boolean = false;
 
   protected constructor(data: Omit<WindowArgs, 'renderer'>) {
     this.initialWindowData = windowValidation({...data, renderer: this})
@@ -48,7 +49,6 @@ export abstract class Chart implements Renderer {
     return (this._drawAreaBgS && !this._drawAreaBgS.empty()) ? this._drawAreaBgS :
       this.drawAreaS.selectChildren<SVGRectElement, any>('.background')
   }
-
 
   buildChart() {
     this.render()
@@ -101,6 +101,7 @@ export abstract class Chart implements Renderer {
   }
 
   protected render() {
+    if (!(this.windowS.node() as Element).isConnected || this.unmounted) return
     this.preRender()
     this.mainRender()
     this.postRender()
@@ -122,5 +123,11 @@ export abstract class Chart implements Renderer {
       const boundsChanged = layouterCompute(this.layouterS)
       if (boundsChanged) this.initializeRender()
     }
+  }
+
+  unmountChart() {
+    this.unmounted = true
+    this.windowS.remove()
+    // delete this
   }
 }

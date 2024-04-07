@@ -1,5 +1,5 @@
 import {select, Selection} from 'd3';
-import {Bar, JoinEvent} from '../../../../bar';
+import {BarArgs, JoinEvent} from '../../../../bar';
 import {
   arrayIs,
   HorizontalAlignment,
@@ -12,16 +12,16 @@ import {
 import {Label, seriesLabelJoin} from './series-label';
 
 export interface LabelBar extends Label {
-  bar: Selection<SVGRectElement, Bar>;
+  bar: Selection<SVGRectElement, BarArgs>;
   relativePosition: Position;
   offset: Position;
 }
 
 export interface SeriesLabelBar {
   barContainer: Selection<Element>;
-  labels: string[] | ((bar: Bar) => string);
-  relativePositions: Position | Position[] | ((bar: Bar) => Position);
-  offsets: number | Position | Position[] | ((bar: Bar) => Position);
+  labels: string[] | ((bar: BarArgs) => string);
+  relativePositions: Position | Position[] | ((bar: BarArgs) => Position);
+  offsets: number | Position | Position[] | ((bar: BarArgs) => Position);
 }
 
 export function seriesLabelBarData(data: Partial<SeriesLabelBar>): SeriesLabelBar {
@@ -37,10 +37,10 @@ export function seriesLabelBarData(data: Partial<SeriesLabelBar>): SeriesLabelBa
 export function seriesLabelBarCreateLabels(seriesData: SeriesLabelBar): LabelBar[] {
   const { barContainer, labels, relativePositions, offsets } = seriesData;
   return barContainer
-    .selectAll<SVGRectElement, Bar>('.bar:not(.exiting)')
+    .selectAll<SVGRectElement, BarArgs>('.bar:not(.exiting)')
     .nodes()
     .map((barNode, i): LabelBar => {
-      const barS = select<SVGRectElement, Bar>(barNode);
+      const barS = select<SVGRectElement, BarArgs>(barNode);
       const barD = barS.datum();
       const relativePosition =
         relativePositions instanceof Function

@@ -1,6 +1,6 @@
 import {LegendItem, legendItemData} from "./legend-item-validation";
 import {select} from "d3";
-import {rectFromString} from "../../utilities/rect";
+import {rectFromString} from "../../utilities/graphic-elements/rect";
 import {LegendSelection} from "./legend-render";
 import {SVGHTMLElement} from "../../constants/types";
 import {LegendValid} from "./legend-validation";

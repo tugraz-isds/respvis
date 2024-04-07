@@ -1,6 +1,4 @@
 import {LengthDimension} from "../../constants/types";
-
-import {RespValOptional} from "./responsive-value";
 import {BreakpointScope} from "../breakpoint/breakpoint-scope";
 
 export type RespValByCallback<T> = {
@@ -9,9 +7,8 @@ export type RespValByCallback<T> = {
   dependentOn: LengthDimension,
   scope?: BreakpointScope
 }
-export type RespValByCallbackOptional<T> = RespValByCallback<T> | T
 
-export function isRespValByCallback<T>(arg: RespValOptional<T>): arg is RespValByCallback<T> {
+export function isRespValByCallback<T>(arg: any): arg is RespValByCallback<T> {
   return typeof arg === 'object' && arg !== null && 'mapping' in arg && 'dependentOn' in arg && 'value' in arg;
 }
 

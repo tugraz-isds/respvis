@@ -4,9 +4,9 @@ import {LayoutBreakpoints} from "../../data/breakpoint/breakpoint";
 import {RenderArgs} from "../chart/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
 import {breakPointsValidation} from "../../data/breakpoint/breakpoint-validation";
-import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 import {ScaledValuesBase} from "../../data/scale/scaled-values-base";
 import {KeyedAxisValid} from "./keyed-axis-validation";
+import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 
 export type AxisBaseUserArgs = {
   bounds?: Partial<LayoutBreakpoints>

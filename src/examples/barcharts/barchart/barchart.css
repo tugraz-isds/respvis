@@ -3,7 +3,10 @@
   height: 75vh;
   min-height: 25rem;
   .padding-wrapper {
-    padding-top: 1rem;
+    padding-top: 3rem;
+  }
+  .draw-area {
+    overflow: visible;
   }
 }
 

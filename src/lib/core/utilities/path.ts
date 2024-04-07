@@ -1,6 +1,6 @@
 import {SelectionOrTransition} from './d3/selection';
-import {Circle} from './circle';
-import {Rect} from './rect';
+import {Circle} from './graphic-elements/circle';
+import {Rect} from './graphic-elements/rect';
 import {elementIs} from './element';
 import {select, Selection} from 'd3';
 import {Position} from '..';

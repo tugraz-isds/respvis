@@ -1,7 +1,7 @@
 import {GeometryScaleHandler, RenderState} from "./geometry-scale-handler";
 import {ScaledValuesLinear} from "../scaled-values-linear";
 import {AxisDomainRV} from "../axis-scaled-values-validation";
-import {Circle} from "../../../utilities/circle";
+import {Circle} from "../../../utilities/graphic-elements/circle";
 import {ScaledValues, ScaledValuesBase} from "../scaled-values-base";
 import {ScaledValuesCategorical} from "../scaled-values-categorical";
 

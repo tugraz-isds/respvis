@@ -105,6 +105,7 @@ dist
 
 # VS Code
 *.code-workspace
+.vscode
 
 package-lock.json
 
@@ -117,3 +118,5 @@ package/
 
 notes
 notes/notes.txt
+
+*storybook.log

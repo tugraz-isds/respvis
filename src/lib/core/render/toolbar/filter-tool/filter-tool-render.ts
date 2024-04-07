@@ -11,10 +11,11 @@ import {categoryOrderMapToArray} from "../../../data/category";
 import {mergeKeys} from "../../../utilities/dom/key";
 import {AxisValid} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
-import {CheckboxLabelsData, checkboxLabelsRender} from "../tool/checkbox-labels-render";
+import {CheckBoxLabel} from "../tool/input-label/checkbox-label";
 import {buttonRender} from "../tool/button-render";
 import {ParcoordSeries} from "../../../../parcoord";
 import {tooltipSimpleRender} from "../tool/tooltip-simple-render";
+import {inputLabelsRender, LabelsParentData} from "../tool/input-label/input-labels-render";
 
 export function filterToolRender(selection: Selection<HTMLDivElement>, args: ToolbarValid) {
   const series = args.getSeries()
@@ -40,18 +41,17 @@ function seriesControlRender(menuToolsItemsS: Selection, series: Series) {
   const {key, renderer} = series
   const data = [{
     legend: 'Main Series',
-    labelData: [
-      {
+    labelData: [ new CheckBoxLabel({
         label: 'Series', type: 'series',
         dataKey: key, defaultVal: series.keysActive[key] ? true : false,
         onChange: () => {
           renderer.filterDispatch.call('filter', { dataKey: key }, this)
         }
-      }
+      })
     ]
   }]
   const fieldSetS = collapsableFieldsetRender(menuToolsItemsS, data, 'item', 'item--checkbox-series', 'filter-series')
-  checkboxLabelsRender(fieldSetS)
+  inputLabelsRender(fieldSetS)
 }
 
 function categoryControlsRender(menuToolsItemsS: Selection, series: Series) {
@@ -66,20 +66,20 @@ function categoryControlsRender(menuToolsItemsS: Selection, series: Series) {
   const options = categoryOrderMapToArray(categoryOrderMap)
   const keys = keyOrder.map(key => mergeKeys([categories.parentKey, key]))
 
-  const data: (CheckboxLabelsData & { legend: string })[] = [{
+  const data: (LabelsParentData & { legend: string })[] = [{
     legend: categoryText,
     labelData: options.map((option, index) => {
-      return {
+      return new CheckBoxLabel({
         label: option, type: 'category',
         dataKey: keys[index], defaultVal: categories.isKeyActiveByKey(keys[index]),
         onChange: () => {
           renderer.filterDispatch.call('filter', { dataKey: keys[index] }, this)
         }
-      }
+      })
     })
   }]
   const fieldSetS = collapsableFieldsetRender(menuToolsItemsS, data, 'item', 'item--checkbox-series', 'filter-categories')
-  checkboxLabelsRender(fieldSetS)
+  inputLabelsRender(fieldSetS)
 }
 
 function axisControlsRender(menuToolsItemsS: Selection, axis: AxisValid) {
@@ -96,24 +96,24 @@ function axisControlsRender(menuToolsItemsS: Selection, axis: AxisValid) {
   }
   if (keys.length === 0) return
 
-  const data: (CheckboxLabelsData & { legend: string })[] = [{
+  const data: (LabelsParentData & { legend: string })[] = [{
     legend: getCurrentRespVal( `${title ?? axisScaledValues.parentKey.toUpperCase()}-Axis`, {chart: chartElement}),
     labelData: options.map((option, index) => {
       const isKeyedAxisOption = 'key' in axis && index === options.length - 1
       const defaultVal = isKeyedAxisOption ? axis.keysActive[keys[index]] : axis.scaledValues.isKeyActiveByKey(keys[index])
       const axisNecessary = (isKeyedAxisOption && filteredSeries?.axes.length <= 2 && defaultVal)
-      return {
+      return new CheckBoxLabel({
         label: option, type: 'category',
         dataKey: keys[index], defaultVal,
         class: axisNecessary ? 'disabled' : undefined,
         onChange: () => {
           renderer.filterDispatch.call('filter', { dataKey: keys[index] }, this)
         }
-      }
+      })
     })
   }]
   const fieldSetS = collapsableFieldsetRender(menuToolsItemsS, data, 'item', 'item--checkbox-series', `filter-axis-${axisScaledValues.parentKey}`)
-  checkboxLabelsRender(fieldSetS)
+  inputLabelsRender(fieldSetS)
 }
 
 function getAxisCategoryProps(axis: AxisValid) {

@@ -1,6 +1,6 @@
 import * as d3 from '../libs/d3-7.6.0/d3.js'
 import {format} from '../libs/d3-7.6.0/d3.js'
-import {formatWithDecimalZero, ScatterPlot, ScatterPlotUserArgs} from '../libs/respvis/respvis.js'
+import {formatWithDecimalZero, Point, ScatterPlot, ScatterPlotUserArgs} from '../libs/respvis/respvis.js'
 import {getTopMakesData} from './data/sold-cars-germany.js';
 
 export function createChartSoldCarsGermany(selector) {
@@ -38,13 +38,17 @@ export function createChartSoldCarsGermany(selector) {
         scale: radiusScale,
       },
       markerTooltips: {
-        tooltips: ((e, d) => {
+        tooltips: ((e, d: Point) => {
           return `Car Price: ${d.yValue}€<br/>
                 Horse Power: ${d.xValue}PS<br/>
-                Make: ${d.label}<br/>
+                Make: ${d.tooltipLabel}<br/>
                 Mileage: ${d.radiusValue}km<br/>`
         })
       },
+      zoom: {
+        in: 20,
+        out: 1
+      }
       // labelCallback: (label: string) => {
       //   // console.log(label)
       //   return label + '1'
@@ -98,10 +102,6 @@ export function createChartSoldCarsGermany(selector) {
         scope: 'chart',
         mapping: {0: '', 2: 'Car Make'}
       },
-    },
-    zoom: {
-      in: 20,
-      out: 1
     }
   };
 

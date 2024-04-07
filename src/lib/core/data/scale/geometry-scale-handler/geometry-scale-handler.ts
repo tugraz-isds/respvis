@@ -1,8 +1,8 @@
 import {ScaledValues} from "../scaled-values-base";
 import {Renderer} from "../../../render/chart/renderer";
-import {RespValByValueOptional} from "../../responsive-value/responsive-value-value";
 import {getCurrentRespVal} from "../../responsive-value/responsive-value";
 import {elementFromSelection} from "../../../utilities/d3/util";
+import {RespValByValueOptional} from "../../responsive-value/responsive-value-value";
 
 export type RenderState<X extends ScaledValues, Y extends ScaledValues> = {
   flipped: RespValByValueOptional<boolean>

@@ -1,44 +1,28 @@
 import {easeCubicOut, select, Selection} from 'd3';
 import {Position, positionToTransformAttr} from '../../../index';
+import {classesForSelection} from "../../../utilities/d3/util";
+import {RenderElement} from "../../../utilities/graphic-elements/render-element";
 
 export interface Label extends Position {
-  text: string;
-  key: string;
+  text: string
+  key: string
 }
 
-export interface SeriesLabel {
-  texts: string[];
-  positions: Position[];
-  keys?: string[];
+export function labelSeriesFromElementsRender(parentS: Selection, elements: RenderElement[], classes: string[]) {
+  const {selector, names} = classesForSelection(classes)
+  const labels = elements.flatMap(point => point.getLabel())
+  return parentS.selectAll<SVGGElement, any>(selector)
+    .data([null])
+    .join('g')
+    .classed(names, true)
+    .attr('data-ignore-layout-children', true)
+    .call((s) => labelsRender(s, labels))
 }
 
-export function seriesLabelData(data: Partial<SeriesLabel>): SeriesLabel {
-  return {
-    texts: data.texts || [],
-    positions: data.positions || [],
-    keys: data.keys,
-  };
-}
-
-export function seriesLabelCreateLabels(seriesData: SeriesLabel): Label[] {
-  const { texts, keys, positions } = seriesData;
-  return texts.map((text, i) => ({
-    text: text,
-    key: keys?.[i] || text,
-    ...positions[i],
-  }));
-}
-
-export function seriesLabelRender(selection: Selection<Element, SeriesLabel>): void {
-  selection.classed('series-label', true).attr('data-ignore-layout-children', true);
-
-  selection.each((d, i, g) => {
-    const seriesS = select(g[i]);
-    seriesS
-      .selectAll<SVGTextElement, Label>('text')
-      .data(seriesLabelCreateLabels(d), (d) => d.key)
-      .call((s) => seriesLabelJoin(seriesS, s));
-  });
+export function labelsRender(seriesS: Selection, labels: Label[]): void {
+  seriesS.selectAll<SVGTextElement, Label>('text')
+    .data(labels, (d) => d.key)
+    .call((s) => seriesLabelJoin(seriesS, s));
 }
 
 export function seriesLabelJoin(

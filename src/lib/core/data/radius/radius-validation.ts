@@ -1,6 +1,7 @@
 import {ScaleLinear} from "d3";
-import {RespValByValueOptional} from "../responsive-value/responsive-value-value";
+
 import {RespValByCallback} from "../responsive-value/responsive-value-callback";
+import {RespValByValueOptional} from "../responsive-value/responsive-value-value";
 
 export type RadiusUnifiedArg = RespValByValueOptional<number>
 export type RadiusVaryingArg = {

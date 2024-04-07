@@ -1,4 +1,4 @@
-import {AxisDomain,} from 'd3';
+import {AxisDomain} from 'd3';
 import {isScaleCategory, isScaleLinear, isScaleTime, ScaledValuesUserArgs} from "./scaled-values";
 import {ErrorMessages} from "../../utilities/error";
 import {AxisKey} from "../../constants/types";

@@ -1,6 +1,5 @@
 import {Selection} from "d3";
 import {backgroundSVGOnly} from "../../constants/dom/classes";
-import {ignoreBounds} from "../../constants/dom/attributes";
 
 type bgSVGOnlyData = {
   scale?: number
@@ -14,7 +13,6 @@ export function bgSVGOnlyRender<D extends bgSVGOnlyData>(parentS: Selection<SVGG
     .attr('stroke', 'transparent')
     .attr('stroke-width', 0)
     .attr('data-ignore-layout', true)
-    .attr(ignoreBounds, true)
     .attr('x', 0) //reset dimensions to not influence BBox()
     .attr('y', 0)
     .attr('width', 0)

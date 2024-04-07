@@ -1,0 +1,43 @@
+.axis .ticks .tick, .label {
+  display: none;
+}
+
+@media (max-width: 40rem) {
+  .chart {
+    padding: 1rem 3rem 0 3rem;
+    .axis > * {
+      display: none !important;
+    }
+  }
+
+  .point:first-of-type,
+  .point:last-of-type {
+    opacity: 1;
+  }
+
+  .label:first-of-type,
+  .label:last-of-type {
+    display: block;
+  }
+}
+
+@media (min-width: 40rem) {
+  .ticks .tick:nth-of-type(2n + 1) {
+    display: block;
+  }
+  .ticks .tick {
+    &:nth-of-type(2n + 1), &:first-of-type, &:last-of-type {
+      display: block;
+    }
+  }
+
+  .point {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 80rem) {
+  .axis .ticks .tick {
+    display: block;
+  }
+}

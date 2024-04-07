@@ -28,10 +28,10 @@ export class BarBaseResponsiveState extends CartesianSeriesResponsiveState {
   getBarRect(i: number) {
     const barOrientation = this.currentlyFlipped ? 'horizontal' : 'vertical'
     return {
-      x: barRectFormula[barOrientation].x(this.currentXVals, i),
-      y: barRectFormula[barOrientation].y(this.currentYVals, i),
-      width: barRectFormula[barOrientation].width(this.currentXVals as ScaledValuesCategorical, i),
-      height: barRectFormula[barOrientation].height(this.currentYVals as ScaledValuesCategorical, i),
+      x: barRectFormula[barOrientation].x(this.currentXVals(), i),
+      y: barRectFormula[barOrientation].y(this.currentYVals(), i),
+      width: barRectFormula[barOrientation].width(this.currentXVals() as ScaledValuesCategorical, i),
+      height: barRectFormula[barOrientation].height(this.currentYVals() as ScaledValuesCategorical, i),
     }
   }
 

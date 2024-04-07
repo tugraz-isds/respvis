@@ -1,5 +1,5 @@
 import {easeCubicOut, select, Selection, Transition} from "d3";
-import {Bar} from "./bar";
+import {BarArgs} from "./bar";
 import {rectFitStroke, rectMinimized, rectToAttrs} from "../../core";
 import {cssLengthInPx} from "../../core/utilities/dom/units";
 import {CSSLengthUnit, UnitValue} from "../../core/constants/types";
@@ -14,7 +14,7 @@ export interface JoinTransitionEvent<GElement extends Element, Datum>
 
 export function barSeriesJoin(
   seriesSelection: Selection,
-  joinSelection: Selection<SVGRectElement, Bar>
+  joinSelection: Selection<SVGRectElement, BarArgs>
 ): void {
   joinSelection
     .join(

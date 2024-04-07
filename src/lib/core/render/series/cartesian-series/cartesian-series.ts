@@ -5,10 +5,13 @@ import {ScaledValues} from "../../../data/scale/scaled-values-base";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
 import {Series, SeriesArgs, SeriesUserArgs} from "../index";
 import {CartesianSeriesResponsiveState} from "./responsive-state";
+import {ZoomArgs, ZoomValid, zoomValidation} from "../../../data/zoom";
+import {AxisType} from "../../../constants/types";
 
 export type CartesianSeriesUserArgs = SeriesUserArgs & {
   x: ScaledValuesUserArgs<AxisDomainRV>
   y: ScaledValuesUserArgs<AxisDomainRV>
+  zoom?: ZoomArgs
 }
 
 export type CartesianSeriesArgs = SeriesArgs & CartesianSeriesUserArgs & {
@@ -20,6 +23,7 @@ export class CartesianSeries extends Series {
   x: ScaledValues
   y: ScaledValues
   responsiveState: CartesianSeriesResponsiveState
+  zoom?: ZoomValid
 
   constructor(args: CartesianSeriesArgs | CartesianSeries) {
     super(args)
@@ -35,6 +39,7 @@ export class CartesianSeries extends Series {
         originalSeries: this.originalSeries,
         flipped: ('flipped' in args) ? args.flipped : false
       })
+    this.zoom = 'class' in args ? args.zoom : args.zoom ? zoomValidation(args.zoom) : undefined
   }
 
   getScaledValues() { return {x: this.x, y: this.y} }
@@ -51,6 +56,25 @@ export class CartesianSeries extends Series {
       x: this.x.scaledValueAtScreenPosition(x),
       y: this.y.scaledValueAtScreenPosition(y)
     }
+  }
+
+  cloneZoomed() {
+    if (!this.zoom) return this.clone()
+    const [xDirection, yDirection]: [AxisType, AxisType] =
+      this.responsiveState.currentlyFlipped ? ['y', 'x'] : ['x', 'y']
+    const xZoomed = this.x.cloneZoomed(this.zoom.currentTransform, xDirection)
+    const yZoomed = this.y.cloneZoomed(this.zoom.currentTransform, yDirection)
+    const clone = this.clone()
+    clone.x = xZoomed
+    clone.y = yZoomed
+    return clone
+  }
+
+  cloneFiltered() {
+    const clone = this.clone()
+    clone.x = this.x.cloneFiltered()
+    clone.y = this.y.cloneFiltered()
+    return clone
   }
 
   clone() {

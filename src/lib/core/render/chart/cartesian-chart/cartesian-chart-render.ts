@@ -6,10 +6,11 @@ import {BarStackedSeries} from "../../../../bar/bar-series/bar-stacked-series";
 
 export function cartesianChartAxisRender<T extends CartesianChartSelection>(chartS: T): void {
   const {renderer, ...data} = chartS.datum()
-  const flipped = data.series.responsiveState.currentlyFlipped
-  const leftAxisD = flipped ? data.x : data.y
+  const series = data.series.cloneZoomed().cloneFiltered()
+  const flipped = series.responsiveState.currentlyFlipped
+  const leftAxisD = flipped ? {...data.x, scaledValues: series.x} : {...data.y, scaledValues: series.y}
   const leftAxisClass = flipped ? 'axis-x' : 'axis-y'
-  const bottomAxisD = flipped ? data.y : data.x
+  const bottomAxisD = flipped ? {...data.y, scaledValues: series.y} : {...data.x, scaledValues: series.x}
   const bottomAxisClass = flipped ? 'axis-y' : 'axis-x'
   const paddingWrapperS = chartS.selectAll('.padding-wrapper')
 
@@ -17,7 +18,7 @@ export function cartesianChartAxisRender<T extends CartesianChartSelection>(char
     .attr('data-flipped', flipped)
 
   //TODO: clean this stacked bar chart mess up
-  const aggScaledValues = data.series instanceof BarStackedSeries ? data.series.aggScaledValues.aggregateCached() : undefined
+  const aggScaledValues = series instanceof BarStackedSeries ? series.aggScaledValues.aggregateCached() : undefined
 
   const bottomAxisDAgg = (aggScaledValues && bottomAxisD.scaledValues instanceof ScaledValuesLinear) ?
     {...bottomAxisD, scaledValues: aggScaledValues} : bottomAxisD

@@ -1,7 +1,6 @@
 import {CategoryUserArgs} from "../../data/category";
 import {SeriesConfigTooltips, seriesConfigTooltipsData} from "../../../tooltip";
 import {Point} from "../../../point";
-import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 import {RenderArgs, Renderer} from "../chart/renderer";
 import {ActiveKeyMap, SeriesKey} from "../../constants/types";
 import {Size} from "../../utilities/size";
@@ -9,8 +8,11 @@ import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorica
 import {mergeKeys} from "../../utilities/dom/key";
 import {SeriesResponsiveState} from "./responsive-state";
 
+import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
+
 export type SeriesUserArgs = {
   categories?: CategoryUserArgs
+  labels?: string[]
   markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>
   labelCallback?: (category: string) => string
   flipped?: RespValByValueOptional<boolean>
@@ -26,6 +28,7 @@ export abstract class Series implements RenderArgs {
   class = true
   originalSeries: Series
   categories?: ScaledValuesCategorical
+  labels?: string[]
   key: SeriesKey
   keysActive: ActiveKeyMap
   bounds: Size
@@ -44,6 +47,8 @@ export abstract class Series implements RenderArgs {
     else this.categories = args.categories ? new ScaledValuesCategorical({
       ...args.categories, parentKey: key,
     }) : undefined
+
+    this.labels = args.labels
 
     this.bounds = args.bounds || {width: 600, height: 400}
     this.key = args.key

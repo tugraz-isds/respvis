@@ -1,4 +1,4 @@
-import {rectFromString} from "../../utilities/rect";
+import {rectFromString} from "../../utilities/graphic-elements/rect";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {Series} from "./index";

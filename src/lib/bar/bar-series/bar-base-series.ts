@@ -34,20 +34,21 @@ export abstract class BarBaseSeries extends CartesianSeries {
 
   getBarRects(): Bar[] {
     const data: Bar[] = []
-    const [x, y] = [this.x.cloneFiltered(), this.y.cloneFiltered()]
+    const {x, y} = this
 
     if (!this.keysActive[this.key]) return data
     for (let i = 0; i < this.y.values.length; ++i) {
       if (this.categories && !this.categories.isKeyActiveByIndex(i)) continue
       if (!x.isKeyActiveByIndex(i) || !y.isKeyActiveByIndex(i)) continue
-      data.push({
+      data.push(new Bar({
         ...this.getRect(i),
         xValue: this.x.values[i],
         yValue: this.y.values[i],
         styleClass: this.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
-        label: this.labelCallback(this.categories?.values[i] ?? ''),
+        tooltipLabel: this.labelCallback(this.categories?.values[i] ?? ''),
+        label: this.labels?.[i],
         key: this.getCombinedKey(i) + ` i-${i}`,
-      });
+      }));
     }
     return data
   }

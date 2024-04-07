@@ -59,6 +59,10 @@ export function createChartSoldCarsGermany(selector: string) {
       flipped: {
         dependentOn: 'width',
         mapping: {0: true, 2: false}
+      },
+      zoom: {
+        in: 20,
+        out: 1
       }
       // labelCallback: (label: string) => {
       //   // console.log(label)
@@ -104,10 +108,6 @@ export function createChartSoldCarsGermany(selector: string) {
         scope: 'chart',
         mapping: {0: '', 3: 'Legend'}
       },
-    },
-    zoom: {
-      in: 20,
-      out: 1
     }
   };
 
