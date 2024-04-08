@@ -9,10 +9,10 @@ export type DialogData = {
 }
 
 export function dialogRender(parentS: Selection, ...classes: string[]) {
-  const {names} = classesForSelection(classes)
-  const dialogS = parentS.selectAll<HTMLDialogElement, DialogData>('dialog')
+  const {names, selector} = classesForSelection(classes)
+  const dialogS = parentS.selectAll<HTMLDialogElement, DialogData>(selector)
   const toggleTimeout = dialogS.empty() ? undefined : dialogS.datum().toggleTimeout
-  return parentS.selectAll<HTMLDialogElement, DialogData>('dialog')
+  return dialogS
     .data([{
       triggerEnter: () => {},
       triggerExit: () => {},
@@ -22,10 +22,18 @@ export function dialogRender(parentS: Selection, ...classes: string[]) {
     .classed(names, true)
 }
 
-export function bindOpenerToDialog(dialogOpenerS: Selection, dialogS: Selection<HTMLDialogElement, DialogData>) {
+type OpenDialogOptions = {
+  dialogOpenerS: Selection<HTMLElement>,
+  dialogS: Selection<HTMLElement, DialogData>,
+  transitionMS: number,
+  type?: 'modal' | 'modeless'
+}
+
+export function bindOpenerToDialog(props: OpenDialogOptions) {
+  const {dialogOpenerS, dialogS, transitionMS, type = 'modeless'} = props
   const dialogE = dialogS.node() as HTMLDialogElement
-  const dialogOpenerE = dialogOpenerS.node() as HTMLDialogElement
-  dialogOpenerS.on('click', function () {
+
+  dialogOpenerS.on('click.dialog', function () {
       dialogS.datum().onOpenerClick?.()
       const currentTransition = dialogE.getAttribute('transition')
       if (currentTransition === 'enter') exit()
@@ -34,33 +42,22 @@ export function bindOpenerToDialog(dialogOpenerS: Selection, dialogS: Selection<
 
   function enter() {
     clearTimeout(dialogS.datum().toggleTimeout)
-    dialogE.show()
-    dialogE.setAttribute('transition', 'enter')
-    dialogOpenerE.setAttribute('transition', 'enter')
+    type === 'modal' ? dialogE.showModal() : dialogE.show()
+    dialogS.attr('transition', 'enter')
+    dialogS.datum().toggleTimeout = setTimeout(() => {
+      dialogS.attr('transition-state', 'enter-done')
+    }, transitionMS)
   }
 
   function exit() {
     clearTimeout(dialogS.datum().toggleTimeout)
-    dialogE.setAttribute('transition', 'exit')
-    dialogOpenerE.setAttribute('transition', 'exit')
-
+    dialogS.attr('transition', 'exit')
     dialogS.datum().toggleTimeout = setTimeout(() => {
+      dialogS.attr('transition-state', 'exit-done')
       dialogE.close()
-    }, 600)
+    }, transitionMS)
   }
 
   dialogS.datum().triggerEnter = () => enter()
   dialogS.datum().triggerExit = () => exit()
 }
-
-// function closeDialog(dialogS: Selection) {
-//   const dialogE = dialogS.node() as HTMLDialogElement
-//   const dialogOpenerE = dialogOpenerS.node() as HTMLDialogElement
-//
-//   dialogE.setAttribute('transition', 'exit')
-//   dialogOpenerE.setAttribute('transition', 'exit')
-//
-//   timeout = setTimeout(() => {
-//     dialogE.close()
-//   }, 600)
-// }

@@ -6,6 +6,7 @@ import {crossToolRender} from "./cross-tool/cross-tool-render";
 import {addRawSVGToSelection} from "../../utilities/d3/util";
 import ChevronsDown from "../../assets/chevrons-down.svg"
 import {DialogData} from "./tool/dialog-render";
+import {clickSAddEnterExitAttributes} from "./tool/animation/animtation";
 
 export type ToolbarValid = Pick<SeriesChartValid, 'renderer' | 'legend' | 'getSeries' | 'getAxes'>
 
@@ -16,29 +17,42 @@ export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
     .join('div')
     .classed('toolbar', true)
 
-  const toolbarContentS = toolbarS
+  const toolbarBarS = toolbarS
+    .selectAll<HTMLDivElement, any>('.toolbar__bar')
+    .data([null])
+    .join('div')
+    .classed('toolbar__bar', true)
+
+  toolbarBarS
+    .selectAll<HTMLDivElement, any>('.toolbar__content-wrapper')
+    .data([null])
+    .join('div')
+    .classed('toolbar__content-wrapper', true)
     .selectAll<HTMLDivElement, any>('.toolbar__content')
     .data([null])
     .join('div')
     .classed('toolbar__content', true)
 
-  const toolbarOpenerS = toolbarS
+  const toolbarOpenerS = toolbarBarS
     .selectAll<HTMLDivElement, any>('.toolbar__opener')
     .data([null])
     .join('div')
     .classed('toolbar__opener', true)
-    .on('click', () => {
-      toolbarS.classed('visible', !toolbarS.classed('visible'))
-    })
+  clickSAddEnterExitAttributes(toolbarOpenerS, toolbarS, 600)
+
+  toolbarS
+    .selectAll<HTMLDivElement, any>('.toolbar__dialog-container')
+    .data([null])
+    .join('div')
+    .classed('toolbar__dialog-container', true)
 
   addRawSVGToSelection(toolbarOpenerS, ChevronsDown)
-  // toolbarOpenerS
 
-  filterToolRender(toolbarContentS, args)
-  downloadToolRender(toolbarContentS, args.renderer)
-  crossToolRender(toolbarContentS, args.renderer)
+  filterToolRender(toolbarS, args)
+  downloadToolRender(toolbarS, args.renderer)
+  crossToolRender(toolbarS, args.renderer)
 
-  const dialogS = toolbarContentS.selectAll<HTMLDialogElement, DialogData>('dialog')
+  const dialogS = toolbarS.selectAll<HTMLDialogElement, DialogData>('dialog')
   dialogS.each(function (d, i) {
     const otherElements = dialogS.filter((d, j) => i !== j)
     d.onOpenerClick = () => {

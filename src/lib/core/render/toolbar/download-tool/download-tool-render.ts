@@ -1,12 +1,13 @@
 import {select, Selection} from "d3";
 import downloadSVGRaw from '../../../assets/download.svg'
+import cancelSVGRaw from '../../../assets/x-circle.svg'
 import {RadioLabel} from "../tool/input-label/radio-label";
 import {uniqueId} from "../../../utilities/unique";
 import {Renderer} from "../../chart/renderer";
 import {windowSettingsKeys} from "../../window/window-settings";
 import {CheckBoxLabel} from "../tool/input-label/checkbox-label";
 import {addRawSVGToSelection} from "../../../utilities/d3/util";
-import {bindOpenerToDialog, dialogRender} from "../tool/dialog-render";
+import {bindOpenerToDialog, DialogData, dialogRender} from "../tool/dialog-render";
 import {toolRender} from "../tool/tool-render";
 import {fieldsetRender} from "../tool/fieldset-render";
 import {chartDownload} from "./chart-download/chart-download";
@@ -15,20 +16,28 @@ import {tooltipSimpleRender} from "../tool/tooltip-simple-render";
 import {inputLabelsRender} from "../tool/input-label/input-labels-render";
 import {NumberLabel} from "../tool/input-label/number-label";
 
-export function downloadToolRender(selection: Selection<HTMLDivElement>, renderer: Renderer) {
-  const downloadToolS = toolRender(selection, 'tool--download')
+export function downloadToolRender(toolbarS: Selection<HTMLDivElement>, renderer: Renderer) {
+  const contentS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__content')
+  const downloadToolS = toolRender(contentS, 'tool--download')
+  const dialogContainerS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__dialog-container')
 
   const dialogOpenerS = buttonRender(downloadToolS, 'toolbar__btn')
   addRawSVGToSelection(dialogOpenerS, downloadSVGRaw)
   tooltipSimpleRender(dialogOpenerS, {text: 'Download'})
-  const dialogS = dialogRender(downloadToolS)
-  bindOpenerToDialog(dialogOpenerS, dialogS)
+  const dialogS = dialogRender(dialogContainerS, 'dialog--center', 'dialog--download')
+  bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300, type: 'modal'})
 
   styleTypeOptionsRender(dialogS, renderer).call(inputLabelsRender)
   attributeRemovalOptionsRender(dialogS, renderer).call(inputLabelsRender)
   elementRemovalOptionsRender(dialogS, renderer).call(inputLabelsRender)
   decimalNumberOptionsRender(dialogS, renderer).call(inputLabelsRender)
   downloadButtonRender(dialogS, renderer)
+  cancelButtonRender(dialogS)
+
+  dialogS.on('cancel', function (e) {
+    e.preventDefault()
+    select<HTMLDialogElement, DialogData>(this.closest('dialog')!).datum()?.triggerExit()
+  });
 }
 
 function styleTypeOptionsRender(selection: Selection, renderer: Renderer) {
@@ -148,16 +157,17 @@ function decimalNumberOptionsRender(selection: Selection, renderer: Renderer) {
   return fieldsetRender(selection, data, 'item', 'item--decimal-options')
 }
 
-function downloadButtonRender(selection: Selection, renderer: Renderer) {
+function downloadButtonRender(selection: Selection<HTMLDialogElement, DialogData>, renderer: Renderer) {
   const buttonS = selection
-    .selectAll<HTMLLIElement, any>('.button--icon')
+    .selectAll<HTMLLIElement, any>('.button--icon.button--download')
     .data([null])
     .join('button')
-    .classed('button--icon', true)
+    .classed('button--icon button--download', true)
     .on('click', function () {
       select(this.closest('.window-rv'))
         .selectAll<SVGSVGElement, unknown>('.layouter > svg.chart')
         .call((s) => chartDownload(s, 'chart.svg', renderer));
+      select<HTMLDialogElement, DialogData>(this.closest('dialog')!).datum()?.triggerExit()
     });
 
   buttonS.selectAll('span')
@@ -165,4 +175,21 @@ function downloadButtonRender(selection: Selection, renderer: Renderer) {
     .join("span")
     .text('Download SVG')
   addRawSVGToSelection(buttonS, downloadSVGRaw)
+}
+
+function cancelButtonRender(selection: Selection<HTMLDialogElement, DialogData>) {
+  const buttonS = selection
+    .selectAll<HTMLLIElement, any>('.button--icon.button--cancel')
+    .data([null])
+    .join('button')
+    .classed('button--icon button--cancel', true)
+    .on('click.cancel', function () {
+      select<HTMLDialogElement, DialogData>(this.closest('dialog')!).datum()?.triggerExit()
+    });
+
+  buttonS.selectAll('span')
+    .data([null])
+    .join("span")
+    .text('Cancel')
+  addRawSVGToSelection(buttonS, cancelSVGRaw)
 }

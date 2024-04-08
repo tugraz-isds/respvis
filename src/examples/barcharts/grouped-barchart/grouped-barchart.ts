@@ -34,7 +34,7 @@ export function renderGroupedBarChart(selector: string) {
         tooltips: ((e, d) => {
           return `Site: ${d.xValue}<br/>
                 Total Remuneration: $${d3.format(',')(d.yValue)}<br/>
-                Year: ${d.label}<br/>`
+                Year: ${d.tooltipLabel}<br/>`
         })
       },
       flipped: {
@@ -87,8 +87,5 @@ export function renderGroupedBarChart(selector: string) {
 
   const chartWindow = d3.select(selector).append('div')
   const renderer = new BarChart(chartWindow, barChartArgs)
-  renderer.addCustomListener('resize.custom', (event, data) => {
-    // chooseResponsiveData(event.target, data)
-  })
   renderer.buildChart()
 }
