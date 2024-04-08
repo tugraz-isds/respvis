@@ -56,7 +56,6 @@ export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
   dialogS.each(function (d, i) {
     const otherElements = dialogS.filter((d, j) => i !== j)
     d.onOpenerClick = () => {
-      console.log('OPEN!!!')
       otherElements.each(d => d.triggerExit())
     }
   })

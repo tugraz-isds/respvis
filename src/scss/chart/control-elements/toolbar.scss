@@ -30,12 +30,14 @@
       background-color: var(--conrol-elements-color);
       height: 2.5rem;
       padding: 0.5rem;
-      transition: translate 500ms;
+      transition: filter 100ms ease-in-out, scale 150ms ease-in-out;
+      cursor: pointer;
       svg {
         height: 100%;
         width: auto;
         transition: rotate 500ms;
       }
+      &:hover, &[transition='enter'] { filter: brightness(80%); }
     }
 
     &__btn {
@@ -78,7 +80,7 @@
     translate: 100%;
     max-width: 100%;
     position: relative;
-    transition: translate 800ms ease-in-out;
+    transition: translate 600ms cubic-bezier(.45,.05,.55,.95);
 
     .tool {
       height: 100%;
@@ -86,20 +88,6 @@
         visibility: visible;
         opacity: 1;
       }
-    }
-  }
-
-  .collapsable-opener {
-    cursor: pointer;
-  }
-
-  .collapsable-wrapper {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 500ms;
-    &.expanded { grid-template-rows: 1fr; }
-    .collapsable {
-      overflow: hidden;
     }
   }
 }

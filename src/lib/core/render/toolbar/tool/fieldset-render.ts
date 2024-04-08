@@ -1,9 +1,10 @@
 import {select, Selection} from "d3";
-import {classesForSelection} from "../../../utilities/d3/util";
+import {addRawSVGToSelection, classesForSelection} from "../../../utilities/d3/util";
 import {InputLabel} from "./input-label/input-label";
+import CollapseDownRAW from '../../../assets/collapse-down.svg';
 
 type FieldSetProps = {
-  legend: string,
+  legend: string
   applyText?: boolean
 }
 
@@ -49,30 +50,18 @@ export function collapsableFieldsetRender<D extends FieldSetProps>(
       const collapsableWrapperS = select(g[i].parentElement).select('.collapsable-wrapper')
       const currentlyCollapsed = collapsableWrapperS.classed('collapsed')
       const legendS = select<HTMLLegendElement, string>(g[i])
-      const textSplit = legendS.datum().split(/\s+/)
-      const head = textSplit.slice(0, textSplit.length - 1).join(' ')
-      const tail = `${head ? ' ' : ''}${textSplit[textSplit.length - 1]}`
       legendS.selectAll("span")
-        .data([head, tail + ' - '])
+        .data([legendS.datum(), CollapseDownRAW])
         .join('span')
-        .text(d => d)
-
-      const tailS = legendS.selectAll(":nth-child(2)");
-      tailS.text(alterCollapseEnd(tailS.text(), currentlyCollapsed))
+      legendS.selectAll<any, string>('span').filter((d, i) => i === 0).text(d => d)
+      addRawSVGToSelection(legendS.selectAll<any, string>('span').filter((d, i) => i === 1), CollapseDownRAW)
       collapsableWrapperS.classed('expanded', () => !currentlyCollapsed)
 
       legendS.on('click.hope', () => {
         collapsableWrapperS.classed('expanded', () => !collapsableWrapperS.classed('expanded'))
         collapsableWrapperS.classed('collapsed', () => !collapsableWrapperS.classed('collapsed'))
-        const currentlyCollapsed = collapsableWrapperS.classed('collapsed')
-        tailS.text(alterCollapseEnd(tailS.text(), currentlyCollapsed))
       })
     })
-
-  function alterCollapseEnd(prev: string, currentlyCollapsed: boolean) {
-    if (currentlyCollapsed) return prev.slice(0, prev.length - 3) + ' + '
-    return prev.slice(0, prev.length - 3) + ' - '
-  }
 
   return fieldsetS.selectAll<HTMLDivElement, D>('.collapsable')
 }

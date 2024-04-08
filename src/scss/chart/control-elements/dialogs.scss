@@ -65,6 +65,38 @@
       }
     }
   }
+
+  .collapsable-opener {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5em;
+    width: 100%;
+    user-select: none;
+    svg {
+      height: 1.2em;
+      width: auto;
+      transition: rotate 600ms ease-in-out, transform 80ms ease-in-out;
+    }
+    &:has(+ .expanded) svg {
+      rotate: 180deg;
+    }
+    &:active svg {
+      transform: scale(0.9);
+    }
+  }
+
+  .collapsable-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 500ms;
+    &.expanded { grid-template-rows: 1fr; }
+    .collapsable {
+      overflow: hidden;
+    }
+  }
+
 }
 
 @media screen and (max-width: 50rem) {

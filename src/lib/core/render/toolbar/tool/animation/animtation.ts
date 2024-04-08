@@ -13,7 +13,6 @@ export function clickSAddEnterExitAttributes(clickS: Selection<HTMLElement>, ref
   function enter() {
     clearTimeout(timeout)
     refE.setAttribute('transition', 'enter')
-    console.log("SET ENTER!")
     timeout = setTimeout(() => {
       refE.setAttribute('transition-state', 'enter-done')
     }, delayMs)
