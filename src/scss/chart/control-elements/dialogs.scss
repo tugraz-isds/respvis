@@ -5,7 +5,12 @@
     box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 1px 3px 1px;
     max-height: 50vh;
     overflow-y: scroll;
+    visibility: hidden;
     transition: opacity 300ms ease-in-out, translate 300ms ease-in-out;
+
+    &[transition="enter"], &[transition="exit"][transition-state="enter-done"] {
+      visibility: visible;
+    }
 
     &.dialog--side {
       position: absolute;

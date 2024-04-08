@@ -45,7 +45,7 @@ export function renderStackedBarChart(selector: string) {
       },
       markerTooltips: {
         tooltips: ((e, d) => {
-          return `Device Type: ${d.label}<br/>
+          return `Device Type: ${d.tooltipLabel}<br/>
                 Market Share: ${d3.format(',')(d.yValue)}%<br/>
                 Year: ${d.xValue}<br/>`
         })
@@ -100,8 +100,5 @@ export function renderStackedBarChart(selector: string) {
 
   const chartWindow = d3.select(selector).append('div')
   const renderer = new BarChart(chartWindow, barChartArgs)
-  renderer.addCustomListener('resize.custom', (event, data) => {
-    // chooseResponsiveData(event.target, data)
-  })
   renderer.buildChart()
 }
