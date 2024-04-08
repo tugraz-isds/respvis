@@ -7,6 +7,7 @@ import {addRawSVGToSelection} from "../../utilities/d3/util";
 import ChevronsDown from "../../assets/chevrons-down.svg"
 import {DialogData} from "./tool/dialog-render";
 import {clickSAddEnterExitAttributes} from "./tool/animation/animtation";
+import {chartToolRender} from "./chart-tool/chart-tool-render";
 
 export type ToolbarValid = Pick<SeriesChartValid, 'renderer' | 'legend' | 'getSeries' | 'getAxes'>
 
@@ -51,6 +52,7 @@ export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
   filterToolRender(toolbarS, args)
   downloadToolRender(toolbarS, args.renderer)
   crossToolRender(toolbarS, args.renderer)
+  chartToolRender(toolbarS, args.getSeries())
 
   const dialogS = toolbarS.selectAll<HTMLDialogElement, DialogData>('dialog')
   dialogS.each(function (d, i) {

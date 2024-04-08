@@ -2,7 +2,7 @@ import {Series, SeriesArgs, SeriesUserArgs} from "../../core/render/series";
 import {SeriesKey} from "../../core/constants/types";
 import {arrayAlignLengths, AxisBaseUserArgs, AxisDomainRV, axisScaledValuesValidation, Size} from "../../core";
 import {ScaledValuesUserArgs} from "../../core/data/scale/scaled-values";
-import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal, scalePoint, ScalePoint} from "d3";
+import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal, scalePoint, ScalePoint, Selection} from "d3";
 import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
 import {combineKeys} from "../../core/utilities/dom/key";
 import {KeyedAxisValid, keyedAxisValidation} from "../../core/render/axis/keyed-axis-validation";
@@ -11,6 +11,7 @@ import {elementFromSelection} from "../../core/utilities/d3/util";
 import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
 import {ErrorMessages} from "../../core/utilities/error";
 import {ParcoordSeriesResponsiveState} from "./responsive-state";
+import {toolRender} from "./tool-render";
 
 export type ParcoordSeriesUserArgs = SeriesUserArgs & {
   dimensions: {
@@ -118,6 +119,10 @@ export class ParcoordSeries extends Series {
       x: getCurrentRespVal(axis.title, {chart: chartE}),
       y: axis.scaledValues.scaledValueAtScreenPosition(y)
     }
+  }
+
+  toolRender(toolbarS: Selection<HTMLDivElement>) {
+    toolRender(toolbarS, this)
   }
 
   cloneFiltered() {

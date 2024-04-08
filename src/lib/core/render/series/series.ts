@@ -9,6 +9,7 @@ import {mergeKeys} from "../../utilities/dom/key";
 import {SeriesResponsiveState} from "./responsive-state";
 
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
+import {Selection} from "d3";
 
 export type SeriesUserArgs = {
   categories?: CategoryUserArgs
@@ -81,6 +82,8 @@ export abstract class Series implements RenderArgs {
   getCategories() {
     return this.categories
   }
+
+  toolRender(toolbarS: Selection<HTMLDivElement>) {}
 
   abstract getScaledValuesAtScreenPosition(x: number, y: number) : { x: string, y: string }
 

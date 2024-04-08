@@ -3,6 +3,7 @@ type ZoomType = 'geometric' | 'semantic' | 'fish-eye' | 'cartesian'
 type DownloadType = 'svg' | 'jpg' | 'png' //TODO: add support for raster images
 
 export type WindowSettings = {
+  // ------------------ download
   // downloadType: DownloadType
   downloadStyleType: DownloadStyleType
 
@@ -15,6 +16,8 @@ export type WindowSettings = {
   downloadAttributeMaxDecimals: string
   downloadAttributeMaxDecimalsActive: boolean
 
+  // ------------------ parcoord
+  parcoordCatchAxes: boolean
 
   // zoomXActive: BooleanString
   // zoomYActive: BooleanString
@@ -33,7 +36,8 @@ export const windowSettingsKeys: Record<keyof WindowSettings, keyof WindowSettin
   downloadRemoveDataStyles: 'downloadRemoveDataStyles',
   movableCrossActive: "movableCrossActive",
   downloadAttributeMaxDecimals: "downloadAttributeMaxDecimals",
-  downloadAttributeMaxDecimalsActive: "downloadAttributeMaxDecimalsActive"
+  downloadAttributeMaxDecimalsActive: "downloadAttributeMaxDecimalsActive",
+  parcoordCatchAxes: "parcoordCatchAxes"
 }
 
 export const defaultWindowSettings: WindowSettings = {
@@ -44,7 +48,8 @@ export const defaultWindowSettings: WindowSettings = {
   downloadRemoveBgElements: true,
   movableCrossActive: false,
   downloadAttributeMaxDecimals: '1',
-  downloadAttributeMaxDecimalsActive: true
+  downloadAttributeMaxDecimalsActive: true,
+  parcoordCatchAxes: true
 } as const
 
 
