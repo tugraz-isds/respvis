@@ -23,7 +23,7 @@ export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
     .join('div')
     .classed('toolbar__bar', true)
 
-  const toolbarContentS = toolbarBarS
+  toolbarBarS
     .selectAll<HTMLDivElement, any>('.toolbar__content-wrapper')
     .data([null])
     .join('div')
@@ -38,9 +38,9 @@ export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
     .data([null])
     .join('div')
     .classed('toolbar__opener', true)
-  clickSAddEnterExitAttributes(toolbarOpenerS, toolbarS, 800)
+  clickSAddEnterExitAttributes(toolbarOpenerS, toolbarS, 600)
 
-  const dialogContainerS = toolbarS
+  toolbarS
     .selectAll<HTMLDivElement, any>('.toolbar__dialog-container')
     .data([null])
     .join('div')
@@ -56,6 +56,7 @@ export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
   dialogS.each(function (d, i) {
     const otherElements = dialogS.filter((d, j) => i !== j)
     d.onOpenerClick = () => {
+      console.log('OPEN!!!')
       otherElements.each(d => d.triggerExit())
     }
   })

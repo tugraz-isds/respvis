@@ -28,7 +28,7 @@ export function filterToolRender(toolbarS: Selection<HTMLDivElement>, args: Tool
   addRawSVGToSelection(dialogOpenerS, filterSVGRaw)
   tooltipSimpleRender(dialogOpenerS, {text: 'Filter'})
   const dialogS = dialogRender(dialogContainerS, 'dialog--side', 'dialog--filter')
-  bindOpenerToDialog(dialogOpenerS, dialogS)
+  bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300})
 
   series.forEach(series => {
     seriesControlRender(dialogS, series)

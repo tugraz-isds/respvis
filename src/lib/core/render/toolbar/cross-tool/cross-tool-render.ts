@@ -13,7 +13,7 @@ export function crossToolRender(toolbarS: Selection<HTMLDivElement>, renderer: R
   const crossActivatorS = buttonRender(downloadToolS, 'toolbar__btn')
   addRawSVGToSelection(crossActivatorS, crossSVGRaw)
   tooltipSimpleRender(crossActivatorS, {text: 'Inspect Chart'})
-  clickSAddEnterExitAttributes(crossActivatorS, crossActivatorS, 500)
+  clickSAddEnterExitAttributes(crossActivatorS, crossActivatorS, 600)
   crossActivatorS.on('click.settings', () => {
     const settings = renderer.windowS.datum().windowSettings
     settings.movableCrossActive = !settings.movableCrossActive

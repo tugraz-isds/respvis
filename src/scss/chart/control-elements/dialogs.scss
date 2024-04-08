@@ -1,0 +1,74 @@
+.window-rv {
+  dialog {
+    opacity: 0;
+    background-color: white;
+    box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 1px 3px 1px;
+    max-height: 50vh;
+    overflow-y: scroll;
+    transition: opacity 300ms ease-in-out, translate 300ms ease-in-out;
+
+    &.dialog--side {
+      position: absolute;
+      width: 50%;
+      right: 0;
+      margin: 0;
+      inset-inline-start: unset;
+      margin: 0;
+      margin-top: 1rem;
+      padding: 0.5em;
+      translate: 1rem 0;
+      &[transition='enter'] {
+        opacity: 1;
+        translate: 0 0;
+      }
+      > .item + .item, > .item + button  { margin-top: 0.5em }
+    }
+
+    &.dialog--center {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      max-width: 50vw;
+      translate: 0 -1rem;
+      padding: 1.5em;
+      gap: 0.5em;
+      &[transition='enter'] {
+        opacity: 1;
+        translate: 0 0;
+      }
+      > .item { grid-column: 1 / -1; }
+      button {
+        justify-self: flex-start;
+        width: fit-content;
+      }
+    }
+
+    &.dialog--filter {
+      width: min-content;
+      .collapsable-wrapper, .collapsable, label { width: min-content }
+      .collapsable-opener {
+        span:nth-of-type(2) { white-space: nowrap }
+      }
+    }
+
+    .item {
+      label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+      > label + label { margin-top: 0.5em }
+      input {
+        margin-right: 0.5em;
+      }
+      input[type='number'] {
+        width: 4ch;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 50rem) {
+  .window-rv dialog.dialog--center {
+    max-width: 98vw;
+  }
+}
