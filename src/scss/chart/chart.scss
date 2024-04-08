@@ -1,15 +1,3 @@
-.window-rv {
-  display: grid;
-  position: relative;
-  grid-template: min-content 1fr / 1fr;
-  grid-template-areas:
-    'toolbar'
-    'chart';
-  width: 100%;
-  height: 100%;
-  font-family: sans-serif;
-}
-
 .chart {
   display: grid;
   grid-template: auto 1fr / 1fr auto;

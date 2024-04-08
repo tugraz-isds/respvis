@@ -1,38 +1,35 @@
 .window-rv { //TODO: Replace window-rv wrapper with @scope once it is supported
   .toolbar {
-    grid-area: toolbar;
-    display: grid;
+    position: absolute;
+    align-items: start;
+    right: 0;
+    top: 0;
     width: 100%;
-    grid-template-rows: 0fr;
-    position: relative;
-    transition: grid-template-rows 300ms;
-    //position: absolute;
-    //left: 0;
-    //top: 0;
 
-    &.visible {
-      grid-template-rows: 1fr;
-      .toolbar__content {
-        &:hover {
-          //necessary because of tooltip hover
-          overflow-y: visible;
-        }
-        padding: 0.5em;
+    &[transition="enter"] {
+      .toolbar__content { translate: 0; }
+      & .toolbar__opener {
+        & > svg { rotate: 90deg; }
       }
-      & > .toolbar__opener {
-        translate: 0 0;
-        & > svg { rotate: 180deg; }
+      &[transition-state="enter-done"] {
+        .toolbar__content-wrapper { overflow-x: unset; }
       }
     }
 
+    &__bar {
+      display: flex;
+    }
+
+    &__dialog-container {
+      position: relative;
+      width: 100%;
+    }
+
+
     &__opener {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      translate: 0 100%;
       background-color: var(--conrol-elements-color);
-      height: 2rem;
-      padding: 0.25rem;
+      height: 2.5rem;
+      padding: 0.5rem;
       transition: translate 500ms;
       svg {
         height: 100%;
@@ -44,8 +41,8 @@
     &__btn {
       display: flex;
       align-items: center;
-      height: 2rem;
-      padding: 0.25rem;
+      height: 2.5rem;
+      padding: 0.5rem;
       background-color: var(--conrol-elements-color);
       transition: filter 100ms ease-in-out, scale 150ms ease-in-out;
       svg {
@@ -57,20 +54,32 @@
     }
   }
 
-  .toolbar__content {
-    //display: none;
-    display: flex; //comment out when testing
-    flex-direction: row;
-    align-items: center;
+  .toolbar__content-wrapper {
+    display: flex;
     width: 100%;
-    padding-inline: 0.5em;
-    background-color: var(--conrol-elements-color);
-    overflow-y: hidden;
-    transition: padding-block 500ms ease-in-out;
+    justify-content: flex-end;
+    align-items: center;
+    overflow-x: hidden;
 
-    & > .tool + .tool {
-      margin-left: 1rem;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer/Edge */
+    &::-webkit-scrollbar {
+      display: none;
     }
+  }
+
+  .toolbar__content {
+    flex-grow: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    grid-auto-flow: row dense;
+    align-items: center;
+    translate: 100%;
+    max-width: 100%;
+    position: relative;
+    transition: translate 800ms ease-in-out;
+
     .tool {
       height: 100%;
       & > .toolbar__btn:hover .tooltip-simple {
@@ -78,9 +87,38 @@
         opacity: 1;
       }
     }
+  }
 
-    .collapsable-opener {
-      cursor: pointer;
+  .collapsable-opener {
+    cursor: pointer;
+  }
+
+  .dialog--side {
+    position: absolute;
+    right: 0;
+    margin: 0;
+    inset-inline-start: unset;
+    width: 50%;
+    max-height: 50vh;
+    overflow-y: scroll;
+    margin: 0;
+    margin-top: 1rem;
+    opacity: 0;
+    background-color: white;
+    padding: 0.5em;
+    box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 1px 3px 1px;
+    translate: 1rem 0;
+    transition: opacity 300ms ease-in-out, translate 300ms ease-in-out;
+    &[transition='enter'] {
+      opacity: 1;
+      translate: 0 0;
+    }
+    &.dialog--filter {
+      width: min-content;
+      .collapsable-wrapper, .collapsable, label { width: min-content }
+      .collapsable-opener {
+        span:nth-of-type(2) { white-space: nowrap }
+      }
     }
 
     .item {
@@ -92,32 +130,6 @@
       > label + label { margin-top: 0.5em }
       input {
         margin-right: 0.5em;
-      }
-    }
-  }
-
-  dialog {
-    left: 0;
-    width: 100%;
-    max-height: 50vh;
-    overflow-y: scroll;
-    margin: 0;
-    margin-top: 1rem;
-    opacity: 0;
-    background-color: white;
-    padding: 0.5em;
-    box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 1px 3px 1px;
-    translate: 0 -1rem;
-    transition: opacity 300ms ease-in-out, translate 300ms ease-in-out;
-    &[transition='enter'] {
-      opacity: 1;
-      translate: 0 0;
-    }
-    &.dialog--filter {
-      width: min-content;
-      .collapsable-wrapper, .collapsable, label { width: min-content }
-      .collapsable-opener {
-        span:nth-of-type(2) { white-space: nowrap }
       }
     }
 

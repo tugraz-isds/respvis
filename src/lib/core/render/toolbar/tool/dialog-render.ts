@@ -9,10 +9,10 @@ export type DialogData = {
 }
 
 export function dialogRender(parentS: Selection, ...classes: string[]) {
-  const {names} = classesForSelection(classes)
-  const dialogS = parentS.selectAll<HTMLDialogElement, DialogData>('dialog')
+  const {names, selector} = classesForSelection(classes)
+  const dialogS = parentS.selectAll<HTMLDialogElement, DialogData>(selector)
   const toggleTimeout = dialogS.empty() ? undefined : dialogS.datum().toggleTimeout
-  return parentS.selectAll<HTMLDialogElement, DialogData>('dialog')
+  return dialogS
     .data([{
       triggerEnter: () => {},
       triggerExit: () => {},
@@ -22,7 +22,7 @@ export function dialogRender(parentS: Selection, ...classes: string[]) {
     .classed(names, true)
 }
 
-export function bindOpenerToDialog(dialogOpenerS: Selection, dialogS: Selection<HTMLDialogElement, DialogData>) {
+export function bindOpenerToDialog(dialogOpenerS: Selection, dialogS: Selection<HTMLElement, DialogData>) {
   const dialogE = dialogS.node() as HTMLDialogElement
   const dialogOpenerE = dialogOpenerS.node() as HTMLDialogElement
   dialogOpenerS.on('click', function () {

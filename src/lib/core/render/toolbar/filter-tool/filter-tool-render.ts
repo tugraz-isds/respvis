@@ -17,15 +17,17 @@ import {ParcoordSeries} from "../../../../parcoord";
 import {tooltipSimpleRender} from "../tool/tooltip-simple-render";
 import {inputLabelsRender, LabelsParentData} from "../tool/input-label/input-labels-render";
 
-export function filterToolRender(selection: Selection<HTMLDivElement>, args: ToolbarValid) {
+export function filterToolRender(toolbarS: Selection<HTMLDivElement>, args: ToolbarValid) {
   const series = args.getSeries()
   const axes = args.getAxes()
+  const contentS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__content')
+  const dialogContainerS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__dialog-container')
 
-  const filterToolS = toolRender(selection, 'tool--filter')
+  const filterToolS = toolRender(contentS, 'tool--filter')
   const dialogOpenerS = buttonRender(filterToolS, 'toolbar__btn')
   addRawSVGToSelection(dialogOpenerS, filterSVGRaw)
   tooltipSimpleRender(dialogOpenerS, {text: 'Filter'})
-  const dialogS = dialogRender(filterToolS, 'dialog--filter')
+  const dialogS = dialogRender(dialogContainerS, 'dialog--side', 'dialog--filter')
   bindOpenerToDialog(dialogOpenerS, dialogS)
 
   series.forEach(series => {

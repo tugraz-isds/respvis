@@ -8,11 +8,3 @@ export function buttonRender(parentS: Selection, ...classes: string[]) {
     .join('button')
     .classed(names, true)
 }
-
-export function buttonAddEnterExitAttributes(buttonS: Selection) {
-  const buttonE = buttonS.node() as HTMLDialogElement
-  buttonS.on('click.EnterExit', function () {
-    const currentTransition = buttonE.getAttribute('transition')
-    buttonE.setAttribute('transition', currentTransition === 'enter' ? 'exit' : 'enter')
-  })
-}

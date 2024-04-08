@@ -15,13 +15,15 @@ import {tooltipSimpleRender} from "../tool/tooltip-simple-render";
 import {inputLabelsRender} from "../tool/input-label/input-labels-render";
 import {NumberLabel} from "../tool/input-label/number-label";
 
-export function downloadToolRender(selection: Selection<HTMLDivElement>, renderer: Renderer) {
-  const downloadToolS = toolRender(selection, 'tool--download')
+export function downloadToolRender(toolbarS: Selection<HTMLDivElement>, renderer: Renderer) {
+  const contentS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__content')
+  const downloadToolS = toolRender(contentS, 'tool--download')
+  const dialogContainerS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__dialog-container')
 
   const dialogOpenerS = buttonRender(downloadToolS, 'toolbar__btn')
   addRawSVGToSelection(dialogOpenerS, downloadSVGRaw)
   tooltipSimpleRender(dialogOpenerS, {text: 'Download'})
-  const dialogS = dialogRender(downloadToolS)
+  const dialogS = dialogRender(dialogContainerS, 'dialog--side', 'dialog--download')
   bindOpenerToDialog(dialogOpenerS, dialogS)
 
   styleTypeOptionsRender(dialogS, renderer).call(inputLabelsRender)
