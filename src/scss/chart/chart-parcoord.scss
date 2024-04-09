@@ -12,27 +12,54 @@
   }
   .axis.axis-sequence {
     position: relative;
+
+    .axis-inverter, .rotation-group {
+      transform-origin: center;
+      transform-box: fill-box;
+    }
+    .rotation-group {
+      transition: transform 500ms;
+      transform: rotate(0deg);
+    }
+
+    &.axis-inverted .axis-inverter .rotation-group {
+      transform: rotate(180deg);
+    }
+
+    .title, .subtitle {
+      --fit-width: true;
+      --fit-height: true;
+    }
+
+    .axis-inverter {
+      width: 12px;
+      height: 15px;
+    }
+
     .title-wrapper {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      --fit-width: true;
-      --fit-height: true;
-      .title, .subtitle, .axis-inverter {
-        --fit-width: true;
-        --fit-height: true;
-      }
     }
     div.title-wrapper {
       position: absolute;
       bottom: 100%;
       translate: -50% -30%;
-      column-gap: 0.25em;
+      width: min-content;
     }
 
     .ticks-transform {
       grid-area: ticks-transform;
     }
+  }
+
+  .axis.axis-sequence.axis-bottom {
+    .title-wrapper .axis-inverter { display: none; }
+    //.axis-inverter {
+    //  position: absolute;
+    //  top: 0;
+    //  left: 0;
+    //}
   }
 }

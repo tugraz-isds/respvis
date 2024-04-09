@@ -26,4 +26,9 @@ export {convertToPx} from "./utilities/dom/units";
 
 export * from './data'
 export * from './packagesDeps'
+export {pathRect} from "./utilities/path/path-rect";
+export {pathCircle} from "./utilities/path/path-circle";
+export {pathLine} from "./utilities/path/path-line";
+export {pathChevronRender} from "./utilities/path/path-chevron";
+export {pathArrowsUpDownRender} from "./utilities/path/path-arrow";
 

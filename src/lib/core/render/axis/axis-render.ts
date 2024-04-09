@@ -33,7 +33,10 @@ export function axisBottomRender(axisS: AxisSelection) {
 
 export function axisSequenceRender(axisS: AxisSelection, axisPosition?: AxisLayout) {
   bgSVGOnlyRender(axisS)
-  axisS.attr('class', null)
+  axisS.classed('axis-bottom', false)
+  axisS.classed('axis-left', false)
+  axisS.classed('axis-right', false)
+  axisS.classed('axis-top', false)
   switch (axisPosition) {
     case "bottom": axisBottomRender(axisS); break;
     default: axisLeftRender(axisS)
