@@ -1,7 +1,11 @@
 import {Selection} from "d3";
 import {classesForSelection} from "../d3/util";
+import {pathScale} from "./path";
 
-type ChevronDirection = 'down' | 'right' | null
+type ChevronDirection = {
+  type: 'down' | 'right' | null
+  scale: number
+}
 
 export function pathChevronRender(selection: Selection, classes: string[], data?: ChevronDirection[]) {
   const {selector, names} = classesForSelection(classes)
@@ -12,11 +16,11 @@ export function pathChevronRender(selection: Selection, classes: string[], data?
     .classed(names, true)
     .attr('data-ignore-layout-children', true)
   group.selectAll('path')
-    .data(data ?? [null])
+    .data(data ?? [{type: "right", scale: 1}])
     .join('path')
-    .attr('d', d => d === 'right' ?
-      "M9 6l6 6l-6 6" :
-      "M0,0.8 l6,6 l6,-6"
+    .attr('d', d => d.type === 'right' ?
+        pathScale("M0,0 l6,6 l-6,6 l0,-12", d.scale) :
+        pathScale("M0,0 l6,6 l6,-6 l-12,0", d.scale)
     ).attr('stroke-width', 1.5)
     .attr('fill', 'none')
     .attr('stroke-linecap', 'round')
