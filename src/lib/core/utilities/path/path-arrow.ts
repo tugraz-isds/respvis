@@ -14,8 +14,8 @@ export function pathArrowBigDown(selection: Selection, classes: string[]) {
   return pathRender(selection, classes, paths)
 }
 
-export function pathArrowBigRight(selection: Selection, classes: string[]) {
-  const paths = ["M4 9h8v-3.586a1 1 0 0 1 1.707 -.707l6.586 6.586a1 1 0 0 1 0 1.414l-6.586 6.586a1 1 0 0 1 -1.707 -.707v-3.586h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1z"]
+export function pathArrowBigLeft(selection: Selection, classes: string[]) {
+  const paths = ["M20 15h-8v3.586a1 1 0 0 1 -1.707 .707l-6.586 -6.586a1 1 0 0 1 0 -1.414l6.586 -6.586a1 1 0 0 1 1.707 .707v3.586h8a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1z"]
   return pathRender(selection, classes, paths)
 }
 

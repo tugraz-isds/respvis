@@ -38,14 +38,5 @@
       transition: transform 500ms;
       transform: rotate(0deg);
     }
-    .axis-inverter {
-      width: 12px;
-      height: 15px;
-      .rotation-group path { fill: var(--control-elements-chart-color); }
-    }
-
-    .slider-up path, .slider-down path, .slider-ellipse {
-      fill: var(--control-elements-chart-color-40);
-    }
   }
 }

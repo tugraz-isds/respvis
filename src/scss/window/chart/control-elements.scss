@@ -1,0 +1,20 @@
+.slider-ellipse {
+  fill: var(--control-elements-chart-color-40);
+  &:active {
+    filter: brightness(150%);
+  }
+}
+
+.slider-up, .slider-down, .axis-inverter {
+  & path {
+    fill: var(--control-elements-chart-color);
+  }
+  &:active {
+    filter: brightness(150%);
+  }
+}
+
+.axis-inverter {
+  width: 12px;
+  height: 15px;
+}

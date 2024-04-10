@@ -1,4 +1,4 @@
-import {pathArrowBigDown, pathArrowBigRight} from "../../../core";
+import {pathArrowBigDown, pathArrowBigLeft} from "../../../core";
 import {Selection} from "d3";
 import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
 import {bgSVGOnlyRender} from "../../../core/render/util/bg-svg-only-render";
@@ -16,7 +16,7 @@ export function axisInverterRenderVerticalChart(axisS: Selection<SVGGElement, Ke
   const { series } = axisS.datum()
   axisS.selectAll('.title-wrapper .axis-inverter').remove()
   const originalSeries = series.originalSeries
-  const inverterIconS = pathArrowBigRight(axisS, ['axis-inverter'])
+  const inverterIconS = pathArrowBigLeft(axisS, ['axis-inverter'])
   inverterIconS.selectAll('path')
 
   const inverterIconRgroupBgS = bgSVGOnlyRender(inverterIconS.selectAll('.rotation-group'), [{ scale: 1.6, offsetX: 1, offsetY: 1 }], inverterIconS.selectAll('.rotation-group'))
