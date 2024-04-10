@@ -27,7 +27,7 @@
 
 
     &__opener {
-      background-color: var(--conrol-elements-color);
+      background-color: var(--control-elements-color);
       height: 2.5rem;
       padding: 0.5rem;
       transition: filter 100ms ease-in-out, scale 150ms ease-in-out;
@@ -45,7 +45,7 @@
       align-items: center;
       height: 2.5rem;
       padding: 0.5rem;
-      background-color: var(--conrol-elements-color);
+      background-color: var(--control-elements-color);
       transition: filter 100ms ease-in-out, scale 150ms ease-in-out;
       svg {
         height: 100%;

@@ -33,3 +33,14 @@ export function arrayAlignLengths<T1, T2>(array1: T1, array2: T2): [T1, T2] {
 export function sum(array: number[]) {
   return array.reduce((sum, val) => sum + val, 0)
 }
+
+export function arrayOrder(arr: number[]) {
+  const arrOrder = arr.map(() => 1)
+  for (let j = 0; j < arr.length; j++) {
+    for (let i = j + 1; i < arr.length; i++) {
+      if (arr[j] > arr[i]) arrOrder[j] = arrOrder[j] + 1
+      else arrOrder[i] = arrOrder[i] + 1
+    }
+  }
+  return arrOrder
+}

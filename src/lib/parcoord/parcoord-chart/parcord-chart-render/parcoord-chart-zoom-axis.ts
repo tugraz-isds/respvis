@@ -1,7 +1,7 @@
 import {D3ZoomEvent, drag, Selection} from "d3";
 import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
 import {throttle} from "../../../core/utilities/d3/util";
-import {onDragAxisParcoord} from "./parcoord-chart-drag-axis";
+import {onDragAxisParcoord, onDragEndAxisParcord} from "./parcoord-chart-drag-axis";
 
 export function handleAxisZoomAndDrag(axisS:  Selection<SVGGElement, KeyedAxisValid>, i: number) {
   const axisD = axisS.datum()
@@ -16,12 +16,21 @@ export function handleAxisZoomAndDrag(axisS:  Selection<SVGGElement, KeyedAxisVa
       axisD.series.originalSeries.renderer.windowS.dispatch('resize')
     }
   }
+  const onZoomEnd = (e) => {
+    if (e.sourceEvent.type === "mouseup") { onDragEndAxisParcord(e, axisD) }
+  }
   const zoomB = axisD.series.zooms[i]
   if (!zoomB) {
-    axisS.call(drag().on("drag.dragAxis", (e) => throttledDrag.func(e)))
+    axisS.call(drag()
+      .on("drag.dragAxis", (e) => throttledDrag.func(e))
+      .on("end.dragAxis", (e) => onDragEndAxisParcord(e, axisD))
+    )
     return
   }
-  axisS.call(zoomB.behaviour.scaleExtent([zoomB.out, zoomB.in]).on('zoom.zoomAndDrag', onZoom))
+  axisS.call(zoomB.behaviour.scaleExtent([zoomB.out, zoomB.in])
+    .on('zoom.zoomAndDrag', onZoom)
+    .on('end.zoomAndDrag', onZoomEnd)
+  )
 }
 
 function onZoomAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid) {

@@ -13,3 +13,11 @@ export function relateDragWayToSelection(e: D3ZoomEvent<any, any> | D3DragEvent<
   const fromTopPercent = fromTopTotal / rect.height
   return {fromLeftPercent, fromTopPercent}
 }
+
+export function relateDragWayToSelectionByDiff(e: D3DragEvent<any, any, any>, selection: Selection<Element>) {
+  const rect = selection.node()?.getBoundingClientRect()
+  if (!rect) return undefined
+  const dyRelative = e.dy / rect.height
+  const dxRelative = e.dx / rect.width
+  return {dyRelative, dxRelative}
+}
