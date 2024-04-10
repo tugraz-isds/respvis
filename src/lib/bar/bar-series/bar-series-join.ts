@@ -1,5 +1,5 @@
 import {easeCubicOut, select, Selection, Transition} from "d3";
-import {BarArgs} from "./bar";
+import {BarArgs} from "../bar";
 import {rectFitStroke, rectMinimized, rectToAttrs} from "../../core";
 import {cssLengthInPx} from "../../core/utilities/dom/units";
 import {CSSLengthUnit, UnitValue} from "../../core/constants/types";

@@ -40,6 +40,9 @@ export type Orientation = 'horizontal' | 'vertical'
 
 export type ScaledValueTag = 'categorical' | 'linear' | 'date'
 
+export type TextAnchor = 'start' | 'end' | 'middle'
+export type Sign = 'positive' | 'negative'
+
 
 
 export type KeyType = 'series' | 'axis' | 'category' | 'individual'

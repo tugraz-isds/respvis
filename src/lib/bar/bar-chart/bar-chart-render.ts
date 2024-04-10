@@ -20,7 +20,13 @@ export function barChartRender(chartS: BarChartChartSelection) {
     .call((s) => barSeriesRender(s))
     .call(addHighlight)
     .call(seriesConfigTooltipsHandleEvents)
-    .call(() => labelSeriesFromElementsRender(drawAreaS, bars, ['series-label']))
+    .call(() => labelSeriesFromElementsRender(drawAreaS, {
+      elements: bars,
+      classes: ['series-label'],
+      orientation: series.responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
+
+    }).attr( 'layout-strategy', bars[0]?.labelArg?.position ?? null)
+    )
 
   // drawAreaS
   //   .data([series])

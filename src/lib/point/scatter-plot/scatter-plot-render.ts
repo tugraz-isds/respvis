@@ -22,5 +22,11 @@ export function scatterPlotRender(chartS: ScatterplotSVGChartSelection) {
     .call(s => pointsRender(s, points))
     .call(addHighlight)
     .call(seriesConfigTooltipsHandleEvents)
-    .call(() => labelSeriesFromElementsRender(drawAreaS, points, ['series-label']))
+    .call(() => labelSeriesFromElementsRender(drawAreaS, {
+      elements: points,
+      classes: ['series-label'],
+      orientation: series.responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
+    }).attr( 'layout-strategy-horizontal', points[0]?.labelArg?.positionHorizontal ?? null)
+      .attr( 'layout-strategy-vertical', points[0]?.labelArg?.positionVertical ?? null)
+    )
 }

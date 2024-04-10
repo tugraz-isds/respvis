@@ -7,7 +7,7 @@ import {ScaledValuesAggregation} from "../../core/data/scale/scaled-values-aggre
 import {createStackedBar} from "./bar-creation.ts/bar-stacked-creation";
 import {CategoryUserArgs} from "../../core/data/category";
 import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "./bar-base-series";
-import {Bar} from "./bar";
+import {Bar} from "../bar";
 
 export type BarStackedSeriesUserArgs = BarBaseSeriesUserArgs & {
   type: 'stacked'

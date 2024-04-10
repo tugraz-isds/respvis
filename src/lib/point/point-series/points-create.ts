@@ -4,7 +4,6 @@ import {getRadiusScaledValues} from "../../core/data/radius/radius-util";
 import {PointScaleHandler} from "../../core/data/scale/geometry-scale-handler/point-scale-handler";
 import {PointSeries} from "./point-series";
 import {defaultStyleClass} from "../../core/constants/other";
-import {Series} from "../../core/render/series";
 import {ColorContinuous} from "../../core/data/color-continuous/color-continuous";
 
 export function pointsCreate<T extends boolean, R = T extends false ? Point[] : Point[][]>
@@ -44,7 +43,7 @@ type CreatePointProps = {
   geometryHandler: PointScaleHandler
   i: number
   color?: ColorContinuous,
-  seriesData: Series
+  seriesData: PointSeries
 }
 function createPoint(props: CreatePointProps) {
   const {geometryHandler, i, color, seriesData} = props
@@ -57,6 +56,6 @@ function createPoint(props: CreatePointProps) {
       key: seriesData.getCombinedKey(i) + ` i-${i}`,
       styleClass: seriesData.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
       tooltipLabel: seriesData.labelCallback(seriesData.categories?.values[i] ?? ''),
-      label: seriesData.labels?.[i]
+      labelArg: seriesData.labels?.getArgValid(i)
     })
 }

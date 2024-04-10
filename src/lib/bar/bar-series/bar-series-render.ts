@@ -2,7 +2,7 @@ import {select, Selection} from "d3";
 import {rectFromString} from "../../core";
 import {seriesConfigTooltipsHandleEvents} from "../../tooltip";
 import {BarSeries} from "./bar-series";
-import {BarArgs} from "./bar";
+import {BarArgs} from "../bar";
 import {barSeriesJoin} from "./bar-series-join";
 
 export function barSeriesRender(selection: Selection<Element, BarSeries>): void {

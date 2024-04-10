@@ -24,8 +24,8 @@ export function createBarChart(selector: string) {
   const barChartArgs: BarChartUserArgs = {
     series: {
       x: { values: data.months, scale: d3.scaleBand().domain(data.years).padding(0.1) },
-      y: { values: data.anomalies,
-        scale: d3.scaleLinear().domain([Math.min(...data.anomalies), Math.max(...data.anomalies)]).nice() },
+      y: { values: data.anomalies, scale: d3.scaleLinear().domain([-2, 3])},
+      //scale: d3.scaleLinear().domain([Math.min(...data.anomalies), Math.max(...data.anomalies)]).nice()
       // categoriesTitle: 'City',
       markerTooltips: {
         tooltips: (i, d) => `Month: ${d.xValue}<br/>Anomalie: ${d.yValue}°C`,
@@ -34,6 +34,11 @@ export function createBarChart(selector: string) {
         dependentOn: 'width',
         mapping: {0: true, 2: false}
       },
+      labels: {
+        values: data.anomalies,
+        position: 'dynamic',
+        offset: 3
+      }
     },
     bounds: {
       width: {
