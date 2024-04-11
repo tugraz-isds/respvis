@@ -37,7 +37,7 @@ export function createBarCart(selector: string) {
         in: 20,
         out: 1
       },
-      labels: data.populations
+      labels: { values: data.populations, offset: 6}
     },
     bounds: {
       width: {

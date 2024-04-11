@@ -19,11 +19,12 @@ export function createLineChart(selector: string) {
       zoom: {
         in: 20,
         out: 1
+      },
+      labels: {
+        values: students,
+        offset: 6,
+        format: (bar, label) => d3.format('.3s')(label)
       }
-      // labelCallback: (label: string) => {
-      //   // console.log(label)
-      //   return label + '1'
-      // }
     },
     bounds: {
       width: {

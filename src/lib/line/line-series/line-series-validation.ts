@@ -1,7 +1,10 @@
 import {CartesianSeriesArgs, CartesianSeriesUserArgs} from "../../core/render/series/cartesian-series";
 import {PointSeries} from "../../point";
+import {PointLabelsUserArgs} from "../../point/point-label";
 
-export type LineSeriesUserArgs = CartesianSeriesUserArgs & {}
+export type LineSeriesUserArgs = CartesianSeriesUserArgs & {
+  labels?: PointLabelsUserArgs
+}
 
 export type LineSeriesArgs = LineSeriesUserArgs & CartesianSeriesArgs
 

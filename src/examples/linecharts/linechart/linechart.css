@@ -16,10 +16,6 @@ body {
   opacity: 0;
 }
 
-.label {
-  display: none;
-}
-
 @media (max-width: 40rem) {
   .chart {
     padding: 1rem 3rem 0 3rem;
@@ -36,6 +32,9 @@ body {
   .label:first-of-type,
   .label:last-of-type {
     display: block;
+  }
+  .label {
+    display: none;
   }
 }
 

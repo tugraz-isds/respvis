@@ -44,6 +44,10 @@ export function renderGroupedBarChart(selector: string) {
       zoom: {
         in: 20,
         out: 1
+      },
+      labels: {
+        values: compensations.map(comp => d3.format('.2s')(comp)),
+        offset: 6, position: 'dynamic'
       }
     },
     bounds: {

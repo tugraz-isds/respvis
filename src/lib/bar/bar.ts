@@ -41,26 +41,30 @@ export class Bar implements BarArgs, RenderElement {
     return {
       ...(orientation === 'horizontal' ? this.labelPositionHorizontal() : this.labelPositionVertical()),
       key: this.key,
-      text: this.labelArg.value
+      text: this.labelArg.format(this, this.labelArg.value)
     }
   }
   private labelPositionVertical(): (Position & Pick<BarLabel, 'sign'>) {
-    const { offset, position } = this.labelArg!
+    const { offset, position, offsetX, offsetY, value } = this.labelArg!
     const yPositive = this.yValue >= 0
     const strategyPositive = (yPositive && position === 'dynamic') || position === 'positive'
     return {
-      x: this.x + this.width / 2,
-      y: strategyPositive ? this.y - offset : this.y + this.height + offset,
+      x: offsetX + this.x + this.width / 2,
+      y: offsetY + (strategyPositive ? this.y - offset :
+        position === 'center' ? this.y + this.height / 2 :
+          this.y + this.height + offset),
       sign: yPositive ? 'positive' : 'negative',
     }
   }
   private labelPositionHorizontal(): (Position & Pick<BarLabel, 'sign'>) {
-    const { offset, position } = this.labelArg!
+    const { offset, position, offsetX, offsetY } = this.labelArg!
     const yPositive = this.yValue >= 0
     const strategyPositive = (yPositive && position === 'dynamic') || position === 'positive'
     return {
-      x: strategyPositive ? this.x + this.width + offset : this.x - offset,
-      y: this.y + this.height / 2,
+      x: offsetX + ( strategyPositive ? this.x + this.width + offset :
+        position === 'center' ? this.x + this.width / 2 :
+          this.x - offset),
+      y: offsetY + this.y + this.height / 2,
       sign: yPositive ? 'positive' : 'negative',
     }
   }

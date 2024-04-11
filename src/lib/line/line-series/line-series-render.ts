@@ -6,10 +6,24 @@ import {defaultStyleClass} from "../../core/constants/other";
 import {seriesConfigTooltipsHandleEvents} from "../../tooltip";
 import {Line} from "./line";
 import {lineSeriesJoin} from "./line-series-join";
+import {addHighlight} from "../../core/render/series/series-add-highlight";
+import {labelSeriesFromElementsRender} from "../../core/render/label/todo/series-label";
 
 export function lineSeriesRender(pointLineS: Selection<Element, LineSeries>): void {
-  const pointGroups = pointsCreate(pointLineS.datum(), true)
-  lineSeriesPointsRender(pointLineS.filter('.series-point-line'), pointGroups)
+  const series = pointLineS.datum()
+  const pointGroups = pointsCreate(series, true)
+  const pointGroupsFlat = pointGroups.flat()
+  pointLineS.filter('.series-point-line')
+    .call((s) => lineSeriesPointsRender(s, pointGroups))
+    .call(addHighlight)
+    .call(seriesConfigTooltipsHandleEvents)
+    .call(() => labelSeriesFromElementsRender(series.renderer.drawAreaS, {
+        elements: pointGroupsFlat,
+        classes: ['series-label'],
+        orientation: pointLineS.datum().responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
+      }).attr( 'layout-strategy-horizontal', pointGroupsFlat[0]?.labelArg?.positionHorizontal ?? null)
+        .attr( 'layout-strategy-vertical', pointGroupsFlat[0]?.labelArg?.positionVertical ?? null)
+    )
   lineSeriesLinesRender(pointLineS.filter('.series-line'), pointGroups)
 }
 
@@ -24,10 +38,6 @@ function lineSeriesPointsRender(pointS: Selection<Element, LineSeries>, pointGro
         .data(pointGroups[i], (d) => d.key)
         .call((s) => pointSeriesJoin(pointS, s))
     })
-
-  pointS.on('pointerover.seriespointhighlight pointerout.seriespointhighlight', (e: PointerEvent) =>
-    (<Element>e.target).classList.toggle('highlight', e.type.endsWith('over'))
-  ).call((s) => seriesConfigTooltipsHandleEvents(s))
 }
 
 function lineSeriesLinesRender(lineS: Selection<Element, LineSeries>, pointGroups: Point[][]) {

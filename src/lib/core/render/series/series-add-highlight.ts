@@ -1,8 +1,15 @@
-import {Selection} from "d3";
+import {select, Selection} from "d3";
 import {Series} from "./series";
 
 export function addHighlight(seriesS: Selection<any, Series>) {
-  return seriesS.on('pointerover.seriespointhighlight pointerout.seriespointhighlight', (e: PointerEvent) =>
-    (<Element>e.target).classList.toggle('highlight', e.type.endsWith('over'))
+  return seriesS.on('pointerover.seriespointhighlight pointerout.seriespointhighlight', (e: PointerEvent) => {
+    const target = (<Element>e.target)
+    const key = select(target).attr('data-key')
+    const equalDataS = select(target.closest('.chart')).selectAll(`[data-key='${key}']`)
+
+    const toggleVal = e.type.endsWith('over')
+    equalDataS.classed('highlight', toggleVal)
+      // target.classList.toggle('highlight', toggleVal)
+    }
   )
 }

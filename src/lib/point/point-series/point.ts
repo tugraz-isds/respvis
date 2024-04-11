@@ -40,7 +40,7 @@ export class Point implements Circle, RenderElement {
       x: this.getLabelX(),
       y: this.getLabelY(),
       key: this.key,
-      text: this.labelArg.value,
+      text: this.labelArg.format(this, this.labelArg.value),
     }
   }
 
