@@ -7,6 +7,7 @@ import {resizeEventListener} from "../../../resize-event-dispatcher";
 import {layouterCompute} from "../../../layouter";
 import {chartRender} from "./chart-render";
 import {throttle} from "../../../utilities/d3/util";
+import {AxisValid} from "../../axis";
 
 export type ChartWindowedValid = WindowValid & ChartValid
 
@@ -20,8 +21,6 @@ export abstract class Chart implements Renderer {
   protected renderInitialized?: NodeJS.Timeout
   protected resizeObserver?: ResizeObserver
   private resizeThrottle?: ReturnType<typeof throttle>
-  xAxisS?: Selection<SVGHTMLElement>
-  yAxisS?: Selection<SVGHTMLElement>
   legendS?: Selection<SVGHTMLElement>
   private unmounted: boolean = false;
 
@@ -48,6 +47,26 @@ export abstract class Chart implements Renderer {
   get drawAreaBgS(): Selection<SVGRectElement> {
     return (this._drawAreaBgS && !this._drawAreaBgS.empty()) ? this._drawAreaBgS :
       this.drawAreaS.selectChildren<SVGRectElement, any>('.background')
+  }
+  _xAxisS?: Selection<SVGGElement, AxisValid>
+  get xAxisS(): Selection<SVGGElement, AxisValid> {
+    return (this._xAxisS && !this._xAxisS.empty()) ? this._xAxisS :
+      this.chartS.selectAll<SVGGElement, AxisValid>('.axis-x')
+  }
+  _yAxisS?: Selection<SVGGElement, AxisValid>
+  get yAxisS(): Selection<SVGGElement, AxisValid> {
+    return (this._yAxisS && !this._yAxisS.empty()) ? this._yAxisS :
+      this.chartS.selectAll<SVGGElement, AxisValid>('.axis-y')
+  }
+  _horizontalAxisS?: Selection<SVGGElement, AxisValid>
+  get horizontalAxisS(): Selection<SVGGElement, AxisValid> {
+    return (this._horizontalAxisS && !this._horizontalAxisS.empty()) ? this._horizontalAxisS :
+      this.chartS.selectAll<SVGGElement, AxisValid>('.axis-bottom, .axis-top')
+  }
+  _verticalAxisS?: Selection<SVGGElement, AxisValid>
+  get verticalAxisS(): Selection<SVGGElement, AxisValid> {
+    return (this._verticalAxisS && !this._verticalAxisS.empty()) ? this._verticalAxisS :
+      this.chartS.selectAll<SVGGElement, AxisValid>('.axis-left, .axis-right')
   }
 
   buildChart() {

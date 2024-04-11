@@ -1,0 +1,12 @@
+.element.bar {
+  stroke-width: 1;
+  stroke: var(--color-bar-stroke);
+}
+
+.highlight .bar,
+.highlight.bar,
+.highlight .point,
+.highlight.point {
+  filter: brightness(var(--highlight-brightness));
+  stroke-width: 1.2;
+}

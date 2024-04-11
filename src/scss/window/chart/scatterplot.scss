@@ -4,3 +4,7 @@
   .series-label[layout-strategy-vertical="top"] text { dominant-baseline: auto; }
   .series-label[layout-strategy-vertical="bottom"] text { dominant-baseline: hanging; }
 }
+
+.series-point {
+  overflow: hidden;
+}

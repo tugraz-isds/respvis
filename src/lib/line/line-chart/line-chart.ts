@@ -1,8 +1,9 @@
 import {Selection} from 'd3';
-import {WindowValid,} from '../../core';
+import {cartesianAxisRender, WindowValid,} from '../../core';
 import {CartesianChart} from "../../core/render/chart/cartesian-chart/cartesian-chart";
 import {LineChartArgs, LineChartValid, lineChartValidation} from "./line-chart-validation";
 import {lineChartRender} from "./line-chart-render";
+import {originLineRender} from "../../core/render/chart/cartesian-chart/cartesian-chart-render";
 
 export type WindowSelection = Selection<HTMLDivElement, WindowValid & LineChartValid>;
 export type ChartSelection = Selection<SVGSVGElement, WindowValid & LineChartValid>;
@@ -25,6 +26,7 @@ export class LineChart extends CartesianChart {
   protected override mainRender() {
     super.mainRender()
     lineChartRender(this.chartS!)
-    this.renderAxes()
+    this.chartS.call(cartesianAxisRender)
+    this.chartS.call(originLineRender)
   }
 }

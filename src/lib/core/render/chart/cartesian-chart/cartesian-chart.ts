@@ -2,7 +2,6 @@ import {Selection} from "d3";
 import {WindowValid} from "../../window";
 import {CartesianChartValid} from "./cartesian-chart-validation";
 import {SeriesChart} from "../series-chart/series-chart";
-import {cartesianChartAxisRender} from "./cartesian-chart-render";
 
 type ChartSelection = Selection<SVGSVGElement, CartesianChartValid & WindowValid>
 
@@ -19,9 +18,5 @@ export abstract class CartesianChart extends SeriesChart {
 
   protected preRender() {
     if (!this.initialRenderHappened) return
-  }
-
-  protected renderAxes() {
-    this.chartS!.call(cartesianChartAxisRender)
   }
 }

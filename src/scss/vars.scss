@@ -14,6 +14,13 @@
   --font-size-legend-label: calc(0.7 * var(--font-size-base));
 
 
+  --color-grid-line: black;
+  --color-axes-line: #7f7c77; //rgb(0, 0, 0, 0.5)
+  --color-origin-line: var(--color-axes-line);
+  --color-element-stroke: rgb(0, 0, 0, 0.6);
+  --color-bar-stroke: var(--color-element-stroke);
+  --color-point-stroke: var(--color-element-stroke);
+
   --color-categorical-0: #78b4c6;
   --color-categorical-1: #1c9820;
   --color-categorical-2: #ff0087;

@@ -1,10 +1,11 @@
 import {Selection} from 'd3';
-import {rectFromString, WindowValid,} from '../../core';
+import {cartesianAxisRender, rectFromString, WindowValid,} from '../../core';
 import {scatterPlotRender} from "./scatter-plot-render";
 import {ScatterPlotArgs, ScatterPlotValid, scatterPlotValidation} from "./scatter-plot-validation";
 import {getMaxRadius} from "../../core/data/radius/radius-util";
 import {elementFromSelection} from "../../core/utilities/d3/util";
 import {CartesianChart} from "../../core/render/chart/cartesian-chart/cartesian-chart";
+import {originLineRender} from "../../core/render/chart/cartesian-chart/cartesian-chart-render";
 
 type WindowSelection = Selection<HTMLDivElement, WindowValid & ScatterPlotValid>;
 type ChartSelection = Selection<SVGSVGElement, WindowValid & ScatterPlotValid>;
@@ -27,7 +28,8 @@ export class ScatterPlot extends CartesianChart {
   protected override mainRender() {
     super.mainRender()
     scatterPlotRender(this.chartS!)
-    this.renderAxes()
+    this.chartS.call(cartesianAxisRender)
+    this.chartS.call(originLineRender)
   }
 
   protected override preRender() {

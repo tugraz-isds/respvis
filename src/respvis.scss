@@ -1,18 +1,5 @@
 @use "./scss";
 
-.bar {
-  stroke-width: 1px;
-  stroke: #000;
-}
-
-.highlight .bar,
-.highlight.bar,
-.highlight .point,
-.highlight.point {
-  filter: brightness(var(--highlight-brightness));
-  stroke-width: 1.2;
-}
-
 .tooltip {
   opacity: 0;
   background-color: #fff;
@@ -25,13 +12,4 @@
 
 .tooltip.show {
   opacity: 1;
-}
-
-.series-point {
-  overflow: hidden;
-}
-
-.point {
-  stroke: #000;
-  stroke-width: 1px;
 }
