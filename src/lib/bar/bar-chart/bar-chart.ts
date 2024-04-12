@@ -1,8 +1,9 @@
 import {Selection} from "d3";
-import {WindowValid} from "../../core";
+import {cartesianAxisRender, WindowValid} from "../../core";
 import {BarChartArgs, BarChartValid, barChartValidation} from "./bar-chart-validation";
 import {barChartRender} from "./bar-chart-render";
 import {CartesianChart} from "../../core/render/chart/cartesian-chart/cartesian-chart";
+import {originLineRender} from "../../core/render/chart/cartesian-chart/cartesian-chart-render";
 
 type WindowSelection = Selection<HTMLDivElement, WindowValid & BarChartValid>
 type ChartSelection = Selection<SVGSVGElement, WindowValid & BarChartValid>
@@ -26,7 +27,8 @@ export class BarChart extends CartesianChart {
   protected override mainRender() {
     super.mainRender()
     barChartRender(this.chartS!)
-    this.renderAxes()
+    this.chartS.call(cartesianAxisRender)
+    this.chartS.call(originLineRender)
   }
 
   protected override addBuiltInListeners() {

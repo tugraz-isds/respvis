@@ -20,11 +20,10 @@ export function barChartRender(chartS: BarChartChartSelection) {
     .call((s) => barSeriesRender(s))
     .call(addHighlight)
     .call(seriesConfigTooltipsHandleEvents)
-    .call(() => labelSeriesFromElementsRender(drawAreaS, bars, ['series-label']))
-
-  // drawAreaS
-  //   .data([series])
-  //   .join('g')
-    // .on('pointerover.chartbarhighlight', (e) => chartBarHoverBar(chartS, select(e.target), true))
-    // .on('pointerout.chartbarhighlight', (e) => chartBarHoverBar(chartS, select(e.target), false));
+    .call(() => labelSeriesFromElementsRender(drawAreaS, {
+      elements: bars,
+      classes: ['series-label'],
+      orientation: series.responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
+    }).attr( 'layout-strategy', bars[0]?.labelArg?.position ?? null)
+    )
 }

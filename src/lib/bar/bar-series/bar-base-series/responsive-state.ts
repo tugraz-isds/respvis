@@ -3,8 +3,8 @@ import {
   CartesianSeriesResponsiveStateArgs
 } from "../../../core/render/series/cartesian-series/responsive-state";
 import {BarBaseSeries} from "../bar-base-series";
-import {ScaledValues} from "../../../core/data/scale/scaled-values-base";
 import {ScaledValuesCategorical} from "../../../core/data/scale/scaled-values-categorical";
+import {ScaledValuesLinear} from "../../../core/data/scale/scaled-values-linear";
 
 type BarBaseResponsiveStateArgs = CartesianSeriesResponsiveStateArgs & {
   series: BarBaseSeries
@@ -26,12 +26,26 @@ export class BarBaseResponsiveState extends CartesianSeriesResponsiveState {
   }
 
   getBarRect(i: number) {
-    const barOrientation = this.currentlyFlipped ? 'horizontal' : 'vertical'
+    return this.currentlyFlipped ?
+      this.getBarRectHorizontal(i, this.currentXVals() as ScaledValuesLinear, this.currentYVals() as ScaledValuesCategorical) :
+      this.getBarRectVertical(i, this.currentYVals() as ScaledValuesLinear, this.currentXVals() as ScaledValuesCategorical)
+  }
+
+  getBarRectVertical(i: number, linearVals: ScaledValuesLinear, categoryVals: ScaledValuesCategorical) {
     return {
-      x: barRectFormula[barOrientation].x(this.currentXVals(), i),
-      y: barRectFormula[barOrientation].y(this.currentYVals(), i),
-      width: barRectFormula[barOrientation].width(this.currentXVals() as ScaledValuesCategorical, i),
-      height: barRectFormula[barOrientation].height(this.currentYVals() as ScaledValuesCategorical, i),
+      x: barRectFormula.barCategoryStart(categoryVals, i),
+      y: barRectFormula.barLinearStart(linearVals, i),
+      width: barRectFormula.barCategoryLength(categoryVals, i),
+      height: barRectFormula.barLinearLength(linearVals, i),
+    }
+  }
+
+  getBarRectHorizontal(i: number, linearVals: ScaledValuesLinear, categoryVals: ScaledValuesCategorical) {
+    return {
+      x: barRectFormula.barLinearStart(linearVals, i),
+      y: barRectFormula.barCategoryStart(categoryVals, i),
+      width: barRectFormula.barLinearLength(linearVals, i),
+      height: barRectFormula.barCategoryLength(categoryVals, i),
     }
   }
 
@@ -46,16 +60,8 @@ export class BarBaseResponsiveState extends CartesianSeriesResponsiveState {
 }
 
 const barRectFormula = {
-  horizontal: {
-    x: (vals: ScaledValues, i: number) => vals.scale.range()[0],
-    y: (vals: ScaledValues, i: number) => vals.getScaledValueStart(i),
-    width: (vals: ScaledValues, i: number) => vals.getScaledValue(i),
-    height: (vals: ScaledValuesCategorical, i: number) => vals.scale.bandwidth()
-  },
-  vertical: {
-    x: (vals: ScaledValues, i: number) => vals.getScaledValueStart(i),
-    y: (vals: ScaledValues, i: number) => vals.getScaledValueEnd(i),
-    width: (vals: ScaledValuesCategorical, i: number) => vals.scale.bandwidth(),
-    height: (vals: ScaledValues, i: number) => Math.abs(vals.scale.range()[0]! - vals.getScaledValue(i))
-  }
+  barCategoryStart: (vals: ScaledValuesCategorical, i: number) => vals.getScaledValueStart(i),
+  barCategoryLength: (vals: ScaledValuesCategorical, i: number) => vals.scale.bandwidth(),
+  barLinearStart: (vals: ScaledValuesLinear, i: number) => Math.min(vals.getScaledValueEnd(i), vals.scale(0)!),
+  barLinearLength: (vals: ScaledValuesLinear, i: number) => Math.abs(vals.scale(0)! - vals.getScaledValue(i)),
 } as const

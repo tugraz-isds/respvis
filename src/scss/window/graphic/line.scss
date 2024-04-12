@@ -1,0 +1,13 @@
+path.line {
+  fill: none;
+  stroke-width: 2;
+  &.line--origin {
+    stroke: var(--color-origin-line);
+    stroke-width: 1;
+  }
+}
+
+.highlight path.line,
+path.line.highlight {
+  stroke-width: 4;
+}

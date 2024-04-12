@@ -1,11 +1,12 @@
 import {Circle, Position} from "../../core";
 import {RenderElement, RenderElementArgs} from "../../core/utilities/graphic-elements/render-element";
-import {Label} from "../../core/render/label/todo/series-label";
+import {PointLabel, PointLabelArgValid} from "../point-label";
 
 export type PointArgs = Circle & RenderElementArgs & {
   xValue: any
   yValue: any
   radiusValue?: any
+  labelArg?: PointLabelArgValid
 }
 
 export class Point implements Circle, RenderElement {
@@ -18,7 +19,7 @@ export class Point implements Circle, RenderElement {
   center: Position;
   radius: number;
   color?: string | undefined;
-  label?: string
+  labelArg?: PointLabelArgValid
 
   constructor(args: PointArgs) {
     this.xValue = args.xValue
@@ -30,15 +31,30 @@ export class Point implements Circle, RenderElement {
     this.center = args.center
     this.radius = args.radius
     this.color = args.color
-    this.label = args.label
+    this.labelArg = args.labelArg
   }
 
-  getLabel(): Label | [] {
-    return this.label ? {
-      x: this.center.x,
-      y: this.center.y - this.radius - 13,
+  getLabel(): PointLabel | [] {
+    if (!this.labelArg) return []
+    return {
+      x: this.getLabelX(),
+      y: this.getLabelY(),
       key: this.key,
-      text: this.label
-    } : []
+      text: this.labelArg.format(this, this.labelArg.value),
+    }
+  }
+
+  private getLabelX() {
+    const {positionHorizontal, offset} = this.labelArg!
+    return positionHorizontal === 'left' ? this.center.x - this.radius - offset :
+      positionHorizontal === 'right' ? this.center.x + this.radius + offset :
+        this.center.x
+  }
+
+  private getLabelY() {
+    const {positionVertical, offset} = this.labelArg!
+    return positionVertical === 'top' ? this.center.y - this.radius - offset :
+      positionVertical === 'bottom' ? this.center.y + this.radius + offset :
+        this.center.y
   }
 }

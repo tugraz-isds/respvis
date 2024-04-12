@@ -52,7 +52,7 @@ export function createChartSoldCarsGermany(selector: string) {
         tooltips: ((e, d) => {
         return `Car Price: ${d.yValue}€<br/>
                 Horse Power: ${d.xValue}PS<br/>
-                Make: ${d.label}<br/>
+                Make: ${d.tooltipLabel}<br/>
                 Mileage: ${d.radiusValue}km<br/>`
       })
     },

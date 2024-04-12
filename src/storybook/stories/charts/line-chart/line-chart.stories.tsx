@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {formatWithDecimalZero, LineChart, LineChartUserArgs} from "../../../lib";
+import {formatWithDecimalZero, LineChart, LineChartUserArgs} from "../../../../lib";
 import {format, select, Selection} from "d3";
-import {students, years} from "../../../examples/linecharts/linechart/data/students-tugraz";
+import {students, years} from "../../../../examples/linecharts/linechart/data/students-tugraz";
 import {renderChartWindow} from "../../util/render-chart-window";
 import {RawCSSHandler} from "../../util/raw-css-handler";
 import axisTransformations from './line-chart-axis-transformations.css?inline'
@@ -138,15 +138,16 @@ export const LineChartFlipping: Story = {
   }
 }
 
-export const LineChartZoomable: Story = {
-  args: { ...LineChartFlipping.args,
+const LineChartZoomableArgs = { ...LineChartFlipping.args,
     series: { ...LineChartFlipping.args!.series!,
       zoom: {
         in: 20,
         out: 1
       }
     }
-  },
+  }
+export const LineChartZoomable: Story = {
+  args: LineChartZoomableArgs,
   render: args => {
     removeCSSTagsFromDOM()
     tags.sparkLineTransformation.addToHead()
@@ -154,6 +155,12 @@ export const LineChartZoomable: Story = {
     applyYAxisFormatFunctions(args)
     applyXAxisFormatFunctions(args)
     return renderChartElementMeta(args)
+  },
+  parameters: {
+    sources: {
+      css: { title: 'CSS Code', code: sparkLineTransformation },
+      js: { title: 'JS Code', code: JSON.stringify(LineChartZoomableArgs, null, 2) }
+    }
   }
 }
 

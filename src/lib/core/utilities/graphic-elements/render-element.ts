@@ -1,12 +1,12 @@
 import {Label} from "../../render/label/todo/series-label";
+import {Orientation} from "../../constants/types";
 
 export type RenderElementArgs = {
-  label?: string
   tooltipLabel: string
   styleClass: string
   key: string
 }
 
 export type RenderElement = RenderElementArgs & {
-  getLabel: () => Label | []
+  getLabel: (orientation: Orientation) => Label | []
 }

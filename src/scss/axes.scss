@@ -2,11 +2,11 @@
   .title text { font-size: var(--font-size-axis-title); }
   .subtitle text { font-size: var(--font-size-axis-subtitle); }
   .domain {
-    stroke: currentColor;
+    stroke: var(--color-axes-line);
     fill: none;
   }
   .tick {
-    line { stroke: currentColor; }
+    line { stroke: var(--color-axes-line); }
     text { font-size: var(--font-size-axis-label); }
   }
 }

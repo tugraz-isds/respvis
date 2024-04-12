@@ -1,8 +1,7 @@
 import {select, Selection} from "d3";
 import {rectFromString} from "../../core";
-import {seriesConfigTooltipsHandleEvents} from "../../tooltip";
 import {BarSeries} from "./bar-series";
-import {BarArgs} from "./bar";
+import {BarArgs} from "../bar";
 import {barSeriesJoin} from "./bar-series-join";
 
 export function barSeriesRender(selection: Selection<Element, BarSeries>): void {
@@ -19,8 +18,4 @@ export function barSeriesRender(selection: Selection<Element, BarSeries>): void 
         .data(d.getBarRects(), (d) => d.key)
         .call((s) => barSeriesJoin(seriesS, s));
     })
-    .on('pointerover.seriesbarhighlight pointerout.seriesbarhighlight', (e: PointerEvent) =>
-      (<Element>e.target).classList.toggle('highlight', e.type.endsWith('over'))
-    )
-    .call((s) => seriesConfigTooltipsHandleEvents(s));
 }

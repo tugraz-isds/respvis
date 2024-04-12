@@ -72,11 +72,11 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
 
   setKeyActiveIfDefined(key: string, value: boolean) {}
 
-  cloneFiltered(): ScaledValuesBase<T> {
+  cloneFiltered(): ScaledValues {
     return this.clone()
   }
 
-  cloneZoomed(transform: ZoomTransform, axisType: AxisType): ScaledValuesBase<T> {
+  cloneZoomed(transform: ZoomTransform, axisType: AxisType): ScaledValues {
     return this.clone()
   }
 
@@ -87,7 +87,7 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
     return clone
   }
 
-  abstract clone(): ScaledValuesBase<T>
+  abstract clone(): ScaledValues
 }
 
 const percentRangeFormulaWithInverse = {

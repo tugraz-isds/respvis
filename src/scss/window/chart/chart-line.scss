@@ -1,0 +1,6 @@
+.chart-line {
+  .series-label[layout-strategy-horizontal="left"] text { text-anchor: end; }
+  .series-label[layout-strategy-horizontal="right"] text { text-anchor: start; }
+  .series-label[layout-strategy-vertical="top"] text { dominant-baseline: auto; }
+  .series-label[layout-strategy-vertical="bottom"] text { dominant-baseline: hanging; }
+}

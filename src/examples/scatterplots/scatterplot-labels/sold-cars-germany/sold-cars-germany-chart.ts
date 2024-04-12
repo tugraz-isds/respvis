@@ -48,6 +48,12 @@ export function createChartSoldCarsGermany(selector) {
       zoom: {
         in: 20,
         out: 1
+      },
+      labels: {
+        values: makes,
+        offset: 3,
+        positionHorizontal: 'center',
+        positionVertical: 'center'
       }
       // labelCallback: (label: string) => {
       //   // console.log(label)
