@@ -15,7 +15,7 @@
     "build": "npx gulp build",
     "dev": "npx gulp serve --dev",
     "prod": "npx gulp serve --prod",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006 -c ./src/storybook/config",
     "build-storybook": "storybook build"
   },
   "repository": {
@@ -62,6 +62,7 @@
     "gulp-typescript": "^6.0.0-alpha.1",
     "madge": "^6.1.0",
     "merge-stream": "^2.0.0",
+    "react": "^18.2.0",
     "rollup": "^3",
     "rollup-plugin-dts": "^5",
     "rollup-plugin-gzip": "^2.5.0",

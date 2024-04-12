@@ -1,4 +1,4 @@
-import {formatWithDecimalZero, LineChartUserArgs} from "../../../lib";
+import {formatWithDecimalZero, LineChartUserArgs} from "../../../../lib";
 import {format} from "d3";
 
 export const applyMarkerTooltipsFunction = (args: LineChartUserArgs) => {
