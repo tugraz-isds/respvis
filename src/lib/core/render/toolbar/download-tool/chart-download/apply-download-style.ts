@@ -19,10 +19,16 @@ export function applyDownloadStyle(original: SVGSVGElement, clone: SVGSVGElement
 
 function embedCSS(original: SVGSVGElement, clone: SVGSVGElement) {
   const activeCSSRules = getActiveCSSRulesForElement(original)
+  // TODO: check if this functionality is necessary for embedding css
+  // const relevantCSSVars = getRelevantCSSVars(getActiveCSSVars(original), [...activeCSSRules])
+  // Object.entries(relevantCSSVars).forEach(([key, value]) => {
+  //   clone.style[key] = value
+  // })
   const styleTag = document.createElement("style")
   activeCSSRules.forEach((rule) => {
     styleTag.appendChild(document.createTextNode(rule))
   })
+
   clone.appendChild(styleTag);
   copyInlineStyles(clone, original)
 }

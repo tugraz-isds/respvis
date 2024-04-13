@@ -18,7 +18,7 @@ import {tooltipSimpleRender} from "../tool/tooltip-simple-render";
 import {inputLabelsRender, LabelsParentData} from "../tool/input-label/input-labels-render";
 
 export function filterToolRender(toolbarS: Selection<HTMLDivElement>, args: ToolbarValid) {
-  const series = args.getSeries()
+  const seriesCollection = args.getSeries()
   const axes = args.getAxes()
   const contentS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__content')
   const dialogContainerS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__dialog-container')
@@ -30,8 +30,8 @@ export function filterToolRender(toolbarS: Selection<HTMLDivElement>, args: Tool
   const dialogS = dialogRender(dialogContainerS, 'dialog--side', 'dialog--filter')
   bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300})
 
-  series.forEach(series => {
-    seriesControlRender(dialogS, series)
+  seriesCollection.forEach(series => {
+    if (seriesCollection.length > 1) seriesControlRender(dialogS, series)
     categoryControlsRender(dialogS, series)
   })
   axes.forEach(axis => axisControlsRender(dialogS, axis))

@@ -55,10 +55,15 @@ export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
   chartToolRender(toolbarS, args.getSeries())
 
   const dialogS = toolbarS.selectAll<HTMLDialogElement, DialogData>('dialog')
+
   dialogS.each(function (d, i) {
     const otherElements = dialogS.filter((d, j) => i !== j)
     d.onOpenerClick = () => {
       otherElements.each(d => d.triggerExit())
     }
+  })
+
+  toolbarOpenerS.on('click.close', () => {
+    dialogS.each((d) => d.triggerExit())
   })
 }

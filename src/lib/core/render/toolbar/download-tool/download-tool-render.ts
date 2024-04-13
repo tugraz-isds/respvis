@@ -77,13 +77,13 @@ function attributeRemovalOptionsRender(selection: Selection, renderer: Renderer)
       defaultVal: currentSettings.downloadRemoveDataKeys,
       onChange,
     }), new CheckBoxLabel({
-      label: 'Remove Class Attributes (only for inline CSS)',
+      label: 'Remove Class Attributes',
       type: windowSettingsKeys.downloadRemoveClasses,
       defaultVal: currentSettings.downloadRemoveClasses,
       onChange,
       class: currentSettings.downloadStyleType === 'embedded' ? 'disabled' : ''
     }), new CheckBoxLabel({
-      label: 'Remove Data Style Attributes (only for inline CSS)',
+      label: 'Remove Data Style Attributes',
       type: windowSettingsKeys.downloadRemoveDataStyles,
       defaultVal: currentSettings.downloadRemoveDataStyles,
       onChange,
@@ -104,7 +104,7 @@ function elementRemovalOptionsRender(selection: Selection, renderer: Renderer) {
   const data = [{
     legend: 'Removal of Elements',
     labelData: [ new CheckBoxLabel({
-      label: 'Remove Background Elements',
+      label: 'Remove Interactive Elements',
       type: windowSettingsKeys.downloadRemoveBgElements,
       defaultVal: currentSettings.downloadRemoveBgElements,
       onChange,
@@ -137,14 +137,14 @@ function decimalNumberOptionsRender(selection: Selection, renderer: Renderer) {
   }
 
   const data = [{
-    legend: 'Decimal Count of Attributes',
+    legend: 'Number of Decimal Points',
     labelData: [ new CheckBoxLabel({
-        label: 'Reduce Decimals',
+        label: 'Limit Decimal Points',
         type: windowSettingsKeys.downloadAttributeMaxDecimalsActive,
         defaultVal: currentSettings.downloadAttributeMaxDecimalsActive,
         onChange: onChangeActive,
       }), new NumberLabel({
-      label: 'Decimal Count',
+      label: '',
       type: windowSettingsKeys.downloadAttributeMaxDecimals,
       value: currentSettings.downloadAttributeMaxDecimals,
       min: 1, max: 20, step: 1,
