@@ -6,7 +6,7 @@ import {elementFromSelection} from "../../utilities/d3/util";
 import {BreakpointsValid, getActiveBreakpoints} from "../../data/breakpoint/breakpoint-validation";
 import {cssLengthInPx} from "../../utilities/dom/units";
 import {AxisSelection} from "./axis-render";
-import {CSSAbsoluteLengthUnit, CSSEMUnit, UnitValue} from "../../constants/types";
+import {CSSAbsoluteLengthUnit, CSSEMUnit, SVGHTMLElement, UnitValue} from "../../constants/types";
 
 
 export function tickAngleCalculation(axisS: AxisSelection) {
@@ -37,8 +37,8 @@ function calcTickAngleOrInterpolationData(axisS: AxisSelection) {
   }
 
   const chartElement = elementFromSelection(renderer.chartS)
-  const axisElement = elementFromSelection(axisS)
-  const scopes = {chart: chartElement, self: axisElement}
+  const axisDomainElement = elementFromSelection(axisS.select<SVGHTMLElement>('.domain'))
+  const scopes = {chart: chartElement, self: axisDomainElement}
 
   const {
     element, layout, valueAtPreLayoutIndex,

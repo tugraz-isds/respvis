@@ -30,9 +30,9 @@ export function updateCSSForSelection<T extends SVGHTMLElement, D extends WithBr
 }
 
 export function getLayoutStateFromCSS(element: SVGHTMLElement, dimension: LengthDimension) : LayoutState {
-  const indexValueQueried = parseInt(element.style.getPropertyValue(`--layout-${dimension}`))
-  const preBreakValueQueried = element.style.getPropertyValue(`--layout-${dimension}-pre-breakpoint`)
-  const postBreakValueQueried = element.style.getPropertyValue(`--layout-${dimension}-post-breakpoint`)
+  const indexValueQueried = parseInt(getComputedStyle(element).getPropertyValue(`--layout-${dimension}`))
+  const preBreakValueQueried = getComputedStyle(element).getPropertyValue(`--layout-${dimension}-pre-breakpoint`)
+  const postBreakValueQueried = getComputedStyle(element).getPropertyValue(`--layout-${dimension}-post-breakpoint`)
   return {
     index: !isNaN(indexValueQueried) ? indexValueQueried : defaultLayoutIndex,
     postBreakValue: isCSSBreakpointLengthValue(postBreakValueQueried) ? postBreakValueQueried : pxUpperLimit,
