@@ -1,9 +1,17 @@
-export function prettifySVG(code: string) {
-  //TODO: Setting for enable disable prettify SVG
-  let prettifiedSVG = addNewLinesBeforeOpeningTags(code)
+import {Renderer} from "../../../chart/renderer";
+import {cssVars} from "../../../../constants/cssVars";
+
+export function prettifySVG(code: string, renderer: Renderer) {
+  const propertiesToRemove = cssVars.map(cssVar => cssVar)
+    .filter(cssVar => cssVar !== '--layout-width' && cssVar !== '--layout-height')
+  let prettifiedSVG = removePropertiesFromSVGStyle(code, propertiesToRemove)
+
+  if (!renderer.windowS.datum().windowSettings.downloadPrettifyActive) return prettifiedSVG
+  prettifiedSVG = addNewLinesBeforeOpeningTags(prettifiedSVG)
   prettifiedSVG = addNewlineBeforeGroupCloseTag(prettifiedSVG)
   prettifiedSVG = addTabsPerNestingLevel(prettifiedSVG)
-  return prettifyStyleTags(prettifiedSVG)
+  prettifiedSVG = prettifyStyleTags(prettifiedSVG)
+  return prettifiedSVG
 }
 
 function addNewLinesBeforeOpeningTags(code: string) {
@@ -12,17 +20,17 @@ function addNewLinesBeforeOpeningTags(code: string) {
 
 function addNewlineBeforeGroupCloseTag(code: string) {
   //text|tspan
-  const regexGroupTags = /(<\/(svg|g|defs|symbol|marker|a|switch|mask|clipPath|pattern|filter||textPath|use)>)/g;
+  const regexGroupTags = /(<\/(svg|g|defs|symbol|marker|a|switch|mask|clipPath|pattern|filter|textPath|use)>)/g;
   return code.replace(regexGroupTags, "\n$1")
 }
 
 function addTabsPerNestingLevel(code: string) {
   //text|tspan
-  const regexAllTags = /(<\/?(svg|g|defs|symbol|marker|a|switch|mask|clipPath|pattern|filter|textPath|use|rect|circle|ellipse|line|polyline|polygon|path|image|text|textPath|tspan|glyph|missing-glyph|foreignObject).*?>)/g
+  const regexAllTags = /(<\/?(svg|g|defs|symbol|marker|a|switch|mask|clipPath|pattern|filter|use|rect|circle|ellipse|line|polyline|polygon|path|image|text|textPath|tspan|glyph|missing-glyph|foreignObject).*?>)/g
   const regexNesting = /(<\/?(svg|g|defs|symbol|marker|a|switch|mask|clipPath|pattern|filter|textPath|use).*?>)/g
   const regexNonNesting = /(<\/?(rect|circle|ellipse|line|polyline|polygon|path|image|text|textPath|tspan|glyph|missing-glyph|foreignObject).*?>)/g
   let tabs = 0
-  return code.replace(regexAllTags, (match, p1, p2) => {
+  return code.replace(regexAllTags, (match, p1) => {
     if (p1.startsWith('</') && match.match(regexNesting)) {
       tabs--;
     }
@@ -59,4 +67,29 @@ function prettifyStyleTags(code: string) {
     const prettifiedCSS = prettifiedLines.join('\n');
     return `<style>\n${prettifiedCSS}\n</style>`;
   });
+}
+
+function removePropertiesFromSVGStyle(code: string, propertiesToRemove: string[]): string {
+  const styleRegex = /(\s)style\s*=\s*"([^"]*)"/g;
+
+  function removePropertiesFromStyle(style: string): string {
+    const propertyRegex = /([^:]+)\s*:\s*([^;]+);?/g
+    let updatedStyle = ''
+    let match
+    // console.log(style)
+    while ((match = propertyRegex.exec(style)) !== null) {
+      const propertyName = match[1].trim()
+      const propertyValue = match[2].trim()
+      console.log(`${propertyName}:${propertyValue};`)
+      if (!propertiesToRemove.includes(propertyName)) {
+        updatedStyle += `${propertyName}:${propertyValue};`
+      }
+    }
+    return updatedStyle
+  }
+
+  return code.replace(styleRegex, (_match, whiteSpace, styleAttr) => {
+    const modifiedStyle = removePropertiesFromStyle(styleAttr)
+    return ` style="${modifiedStyle}"`
+  })
 }

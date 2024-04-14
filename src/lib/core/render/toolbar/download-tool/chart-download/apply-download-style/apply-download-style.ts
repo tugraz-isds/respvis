@@ -1,7 +1,7 @@
 import {getActiveCSSRulesForElement} from "./getActiveCSSRules";
-import {Renderer} from "../../../chart/renderer";
-import {elementComputedStyleWithoutDefaults, elementSVGPresentationAttrs} from "../../../../utilities/element";
-import {ErrorMessages} from "../../../../utilities/error";
+import {Renderer} from "../../../../chart/renderer";
+import {elementComputedStyleWithoutDefaults, elementSVGPresentationAttrs} from "../../../../../utilities/element";
+import {ErrorMessages} from "../../../../../utilities/error";
 
 export function applyDownloadStyle(original: SVGSVGElement, clone: SVGSVGElement, renderer: Renderer) {
   const { windowSettings } = renderer.windowS.datum()

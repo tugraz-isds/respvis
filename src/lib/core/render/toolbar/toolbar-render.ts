@@ -1,6 +1,6 @@
 import {Selection} from "d3";
 import {SeriesChartValid} from "../chart/series-chart/series-chart-validation";
-import {downloadToolRender} from "./download-tool/download-tool-render";
+import {downloadToolRender} from "./download-tool/download-tool-render/download-tool-render";
 import {filterToolRender} from "./filter-tool/filter-tool-render";
 import {crossToolRender} from "./cross-tool/cross-tool-render";
 import {addRawSVGToSelection} from "../../utilities/d3/util";

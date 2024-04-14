@@ -1,7 +1,7 @@
 import {select, Selection, ValueFn} from 'd3';
 import {optimizeSVG} from "./optimize-svg";
 import {Renderer} from "../../../chart/renderer";
-import {applyDownloadStyle} from "./apply-download-style";
+import {applyDownloadStyle} from "./apply-download-style/apply-download-style";
 import {prettifySVG} from "./prettify-svg";
 
 export function chartDownload<Datum>(
@@ -38,10 +38,10 @@ export function chartDownload<Datum>(
     const optionalAttrs = classString + dataKeyString + dataStyleString
     const regex = new RegExp(`\\s(layout|bounds|data-ignore-layout|data-ignore-layout-children${optionalAttrs})=".*?"`, 'g')
 
-    const cloneHTML = cloneContainer.innerHTML.replace(regex, '')
-    const cloneHTMLPretty = prettifySVG(cloneHTML)
+    let cloneHTML = cloneContainer.innerHTML.replace(regex, '')
+    cloneHTML = prettifySVG(cloneHTML, renderer)
     const blobType = 'image/svg+xml;charset=utf-8';
-    const blob = new Blob([cloneHTMLPretty], { type: blobType });
+    const blob = new Blob([cloneHTML], { type: blobType });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     fileName = fileName instanceof Function ? fileName.call(g[i], d, i, g) : fileName;

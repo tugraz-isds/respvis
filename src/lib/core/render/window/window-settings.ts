@@ -16,6 +16,8 @@ export type WindowSettings = {
   downloadAttributeMaxDecimals: string
   downloadAttributeMaxDecimalsActive: boolean
 
+  downloadPrettifyActive: boolean
+
   // ------------------ parcoord
   parcoordCatchAxes: boolean
 
@@ -34,6 +36,7 @@ export const windowSettingsKeys: Record<keyof WindowSettings, keyof WindowSettin
   downloadRemoveDataKeys: 'downloadRemoveDataKeys',
   downloadRemoveBgElements: 'downloadRemoveBgElements',
   downloadRemoveDataStyles: 'downloadRemoveDataStyles',
+  downloadPrettifyActive: 'downloadPrettifyActive',
   movableCrossActive: "movableCrossActive",
   downloadAttributeMaxDecimals: "downloadAttributeMaxDecimals",
   downloadAttributeMaxDecimalsActive: "downloadAttributeMaxDecimalsActive",
@@ -46,6 +49,7 @@ export const defaultWindowSettings: WindowSettings = {
   downloadRemoveDataKeys: true,
   downloadRemoveDataStyles: true,
   downloadRemoveBgElements: true,
+  downloadPrettifyActive: true,
   movableCrossActive: false,
   downloadAttributeMaxDecimals: '1',
   downloadAttributeMaxDecimalsActive: true,

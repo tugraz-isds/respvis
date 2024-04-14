@@ -4,10 +4,6 @@
   min-height: 25rem;
 }
 
-body {
-  background-color: floralwhite;
-}
-
 .axis .ticks .tick {
   display: none;
 }

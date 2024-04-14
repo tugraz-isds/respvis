@@ -1,4 +1,4 @@
-import {SVGHTMLElement} from "../../../../constants/types";
+import {SVGHTMLElement} from "../../../../../constants/types";
 
 type CSSVarsEntries = Record<string, string>
 
