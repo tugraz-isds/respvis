@@ -32,10 +32,14 @@ export function axisInverterRenderVerticalChart(axisS: Selection<SVGGElement, Ke
   inverterIconS.attr('transform', `${translateAlign} scale(0.8) translate(-6, 0)`)
 
   axisS.classed('axis-inverted', originalSeries.axesInverted[axisIndex])
-  inverterIconBgS.on('click', function() {
+  inverterIconBgS
+    .classed('cursor cursor--invert-horizontal', true)
+    .classed('cursor--invert-right', originalSeries.axesInverted[axisIndex])
+    .on('click', function() {
     const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
     originalSeries.axesInverted[axisIndex] = !originalSeries.axesInverted[axisIndex]
     axisS.classed('axis-inverted', originalSeries.axesInverted[axisIndex])
+    inverterIconBgS.classed('cursor--invert-right', originalSeries.axesInverted[axisIndex])
     originalSeries.renderer.windowS.dispatch('resize')
     setTimeout(() => {
       originalSeries.renderer.windowS.dispatch('resize')
@@ -57,11 +61,15 @@ export function axisInverterRenderHorizontalChart(axisS: Selection<SVGGElement, 
   const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
 
   axisS.classed('axis-inverted', originalSeries.axesInverted[axisIndex])
-  inverterIconBgS.on('click', function() {
+  inverterIconBgS
+    .classed('cursor cursor--invert-vertical', true)
+    .classed('cursor--invert-up', originalSeries.axesInverted[axisIndex])
+    .on('click', function() {
     const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
     originalSeries.axesInverted[axisIndex] = !originalSeries.axesInverted[axisIndex]
-    axisS.classed('axis-inverted', originalSeries.axesInverted[axisIndex])
-    originalSeries.renderer.windowS.dispatch('resize')
+      axisS.classed('axis-inverted', originalSeries.axesInverted[axisIndex])
+      inverterIconBgS.classed('cursor--invert-up', originalSeries.axesInverted[axisIndex])
+      originalSeries.renderer.windowS.dispatch('resize')
     setTimeout(() => {
       originalSeries.renderer.windowS.dispatch('resize')
     }, 500)

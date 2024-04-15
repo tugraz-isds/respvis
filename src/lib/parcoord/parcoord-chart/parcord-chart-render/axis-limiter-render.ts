@@ -19,15 +19,24 @@ function chevronSlidersRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   const direction = (flipped ? 'right' : 'down')
   const upperChevronS = pathChevronRender(axisS, ['slider-up'], [{type: direction, scale: 1.5}])
   bgSVGOnlyRender(upperChevronS, [{scale: 2}], upperChevronS.select('path'))
+    .classed('cursor', true)
+    .classed('cursor--range-vertical', !flipped)
+    .classed('cursor--range-horizontal cursor--range-left', flipped)
   const lowerChevronS = pathChevronRender(axisS, ['slider-down'], [{type: direction, scale: 1.5}])
   bgSVGOnlyRender(lowerChevronS, [{scale: 2}], lowerChevronS.select('path'))
+    .classed('cursor', true)
+    .classed('cursor--range-horizontal ', flipped)
+    .classed('cursor--range-vertical cursor--range-up', !flipped)
 }
 
 function ellipseSliderRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+  const flipped = axisS.datum().series.responsiveState.currentlyFlipped
   axisS.selectAll('.slider-ellipse')
     .data([null])
-    .join('ellipse')
+    .join('rect')
     .classed('slider-ellipse', true)
+    .classed('cursor cursor--range-rect', true)
+    .classed('cursor--range-rect-horizontal', flipped)
 }
 
 function chartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
@@ -51,10 +60,10 @@ function chartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
     upperChevronS.attr('transform', `${mirrorXLower} ${translateAlign} ${translateXUpper}`)
     lowerChevronS.attr('transform', `${translateAlign} ${translateXLower}`)
     sliderEllipseS
-      .attr('rx', (upperRange - lowerRange) / 2)
-      .attr('ry', 30)
-      .attr('cx', lowerRange + (upperRange - lowerRange) / 2)
-      .attr('cy', 0)
+      .attr('x', lowerRange)
+      .attr('width', upperRange - lowerRange)
+      .attr('y', -15)
+      .attr('height', 30)
   } else {
     const translateX = -leftCornersXDiff + bboxDomain.width - bboxPath.width / 2
     const upperRange = scaledValues.getRangeByPercent(upperRangeLimitPercent, false, 'vertical')
@@ -66,10 +75,10 @@ function chartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
     upperChevronS.attr('transform', `translate(${translateX}, ${translateYUpper})`)
     lowerChevronS.attr('transform', `translate(${translateX}, ${translateYLower}) ${mirrorYLower}`)
     sliderEllipseS
-      .attr('rx', 30)
-      .attr('ry', (lowerRange - upperRange) / 2)
-      .attr('cx', 0)
-      .attr('cy', upperRange + (lowerRange - upperRange) / 2)
+      .attr('x', -15)
+      .attr('width', 30)
+      .attr('y', upperRange)
+      .attr('height', lowerRange - upperRange)
   }
 }
 

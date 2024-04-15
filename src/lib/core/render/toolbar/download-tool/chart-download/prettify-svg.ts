@@ -76,11 +76,9 @@ function removePropertiesFromSVGStyle(code: string, propertiesToRemove: string[]
     const propertyRegex = /([^:]+)\s*:\s*([^;]+);?/g
     let updatedStyle = ''
     let match
-    // console.log(style)
     while ((match = propertyRegex.exec(style)) !== null) {
       const propertyName = match[1].trim()
       const propertyValue = match[2].trim()
-      console.log(`${propertyName}:${propertyValue};`)
       if (!propertiesToRemove.includes(propertyName)) {
         updatedStyle += `${propertyName}:${propertyValue};`
       }

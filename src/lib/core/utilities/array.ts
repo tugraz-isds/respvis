@@ -39,7 +39,7 @@ export function arrayOrder(arr: number[]) {
   for (let j = 0; j < arr.length; j++) {
     for (let i = j + 1; i < arr.length; i++) {
       if (arr[j] > arr[i]) arrOrder[j] = arrOrder[j] + 1
-      else arrOrder[i] = arrOrder[i] + 1
+      else if (arr[j] < arr[i]) arrOrder[i] = arrOrder[i] + 1
     }
   }
   return arrOrder

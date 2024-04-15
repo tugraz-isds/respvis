@@ -114,6 +114,7 @@ src/examples/**/libs/
 src/examples/**/data/
 src/examples/**/styles/
 src/examples-dependencies/libs/respvis/
+src/examples-dependencies/util
 package/
 
 notes
