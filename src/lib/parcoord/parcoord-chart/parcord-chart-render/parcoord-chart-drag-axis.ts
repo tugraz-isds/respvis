@@ -26,8 +26,8 @@ export function onDragAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid, 
 export function onDragEndAxisParcord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid) {
   const originalSeries = d.series.originalSeries
 
-  const catchAxesActive = originalSeries.renderer.windowS.datum().windowSettings.parcoordCatchAxes
-  if (!catchAxesActive) return
+  const equidistantAxesActive = originalSeries.renderer.windowS.datum().windowSettings.parcoordEquidistantAxes
+  if (!equidistantAxesActive) return
   const percentageRange = originalSeries.axesPercentageScale.range()
   const order = arrayOrder(percentageRange)
 

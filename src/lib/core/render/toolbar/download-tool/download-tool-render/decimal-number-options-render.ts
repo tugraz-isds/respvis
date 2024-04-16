@@ -42,7 +42,8 @@ export function decimalNumberOptionsRender(selection: Selection, renderer: Rende
       min: 1, max: 20, step: 1,
       onInput: onNumberInput,
       onChange: onChangeNumber,
-      class: !currentSettings.downloadAttributeMaxDecimalsActive ? 'disabled' : ''
+      activeClasses: !currentSettings.downloadAttributeMaxDecimalsActive ? ['disabled'] : [],
+      inactiveClasses: currentSettings.downloadAttributeMaxDecimalsActive ? ['disabled'] : [],
     })
     ]
   }]

@@ -23,13 +23,15 @@ export function attributeRemovalOptionsRender(selection: Selection, renderer: Re
       type: windowSettingsKeys.downloadRemoveClasses,
       defaultVal: currentSettings.downloadRemoveClasses,
       onChange,
-      class: currentSettings.downloadStyleType === 'embedded' ? 'disabled' : ''
+      activeClasses: currentSettings.downloadStyleType === 'embedded' ? ['disabled'] : [],
+      inactiveClasses: [currentSettings.downloadStyleType === 'embedded' ? 'disabled': ''],
     }), new CheckBoxLabel({
       label: 'Remove Data Style Attributes',
       type: windowSettingsKeys.downloadRemoveDataStyles,
       defaultVal: currentSettings.downloadRemoveDataStyles,
       onChange,
-      class: currentSettings.downloadStyleType === 'embedded' ? 'disabled' : ''
+      activeClasses: currentSettings.downloadStyleType === 'embedded' ? ['disabled'] : [],
+      inactiveClasses: [currentSettings.downloadStyleType === 'embedded' ? 'disabled': ''],
     })
     ]
   }]

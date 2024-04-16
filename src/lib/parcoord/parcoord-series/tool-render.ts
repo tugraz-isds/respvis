@@ -11,11 +11,11 @@ import checkSVGRaw from "../../core/assets/check.svg";
 
 export function toolRender(toolbarS: Selection<HTMLDivElement>, series: ParcoordSeries) {
   const dialogS = toolbarS.selectAll<HTMLDialogElement, DialogData>('.dialog--center.dialog--chart')
-  catchAxesOptionsRender(dialogS, series.renderer).call(inputLabelsRender)
+  equidistantAxesOptionsRender(dialogS, series.renderer).call(inputLabelsRender)
   confirmButtonRender(dialogS)
 }
 
-function catchAxesOptionsRender(selection: Selection, renderer: Renderer) {
+function equidistantAxesOptionsRender(selection: Selection, renderer: Renderer) {
   const currentSettings = renderer.windowS.datum().windowSettings
   const onChange = (e: InputEvent, type: string) => {
     currentSettings[type] = (e.target as HTMLInputElement).checked
@@ -25,9 +25,9 @@ function catchAxesOptionsRender(selection: Selection, renderer: Renderer) {
   const data = [{
     legend: 'Parallel Coordinates Settings',
     labelData: [ new CheckBoxLabel({
-      label: 'Catch Axes on Drag & Drop',
-      type: windowSettingsKeys.parcoordCatchAxes,
-      defaultVal: currentSettings.parcoordCatchAxes,
+      label: 'Equidistant Axes',
+      type: windowSettingsKeys.parcoordEquidistantAxes,
+      defaultVal: currentSettings.parcoordEquidistantAxes,
       onChange,
     })
     ]

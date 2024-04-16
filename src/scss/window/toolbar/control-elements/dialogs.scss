@@ -58,6 +58,15 @@
       flex-direction: column;
       gap: 0.5em;
       &--decimal-options { flex-direction: row; }
+      legend {
+        display: flex;
+        cursor: pointer;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.5em;
+        width: 100%;
+        .active input { margin: 0; }
+      }
       label {
         display: flex;
         align-items: center;
@@ -73,22 +82,19 @@
   }
 
   .collapsable-opener {
-    display: flex;
-    cursor: pointer;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5em;
-    width: 100%;
     user-select: none;
+    .collapse-icon {
+      margin-left: auto;
+    }
     svg {
-      height: 1.2em;
-      width: auto;
+      min-width: 1.2em;
+      height: auto;
       transition: rotate 600ms ease-in-out, transform 80ms ease-in-out;
     }
     &:has(+ .expanded) svg {
       rotate: 180deg;
     }
-    &:active svg {
+    &:has(.text:active, .collapse-icon:active) svg {
       transform: scale(0.9);
     }
   }
