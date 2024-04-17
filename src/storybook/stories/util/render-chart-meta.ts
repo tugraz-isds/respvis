@@ -1,6 +1,6 @@
 import type {StoryContext} from "@storybook/html";
 import {RawCSSHandler} from "./raw-css-handler";
-import {copyFunctions} from "../charts/line-chart/apply-function-args";
+import {copyFunctions} from "./copy-functions";
 import {renderChartWindow} from "./render-chart-window";
 
 let onDocumentLoad: (e) => void
