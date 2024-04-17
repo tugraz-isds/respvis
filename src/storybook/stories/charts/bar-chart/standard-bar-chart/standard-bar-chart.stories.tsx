@@ -14,7 +14,7 @@ const meta = {
     docs: {
       story: {
         inline: false,
-        height: 400
+        height: 500
       },
     },
     sources: {
