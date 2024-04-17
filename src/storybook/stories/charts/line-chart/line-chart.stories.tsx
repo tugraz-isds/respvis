@@ -17,7 +17,8 @@ const renderLineChart = (args: LineChartUserArgs, context: StoryContext<LineChar
 
 const meta = {
   title: 'Charts/Line Chart',
-  tags: ['autodocs'],
+  // subtitle: 'Line Chart',
+  // tags: ['autodocs'],
   parameters: {
     docs: {
       story: {

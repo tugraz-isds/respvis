@@ -1,0 +1,20 @@
+.sb-controls-wrapper {
+  &.hidden {
+    display: none;
+  }
+}
+
+.sb-canvas-wrapper {
+  &.hidden {
+    & > div:nth-child(2) {
+      display: none;
+    }
+  }
+  .docs-story {
+    & > div:nth-child(2) {
+      & > button:first-of-type {
+        display: none;
+      }
+    }
+  }
+}

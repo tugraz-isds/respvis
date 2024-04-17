@@ -1,16 +1,15 @@
-import type {FC} from 'react';
-import React, {useContext} from 'react';
-import {DocsContext} from "@storybook/blocks";
-import {SourceCollapseBlock} from "./SourceCollapseBlock";
+import React, {FC, Fragment, useContext} from 'react';
+import {Description, DocsContext, Subtitle} from "@storybook/blocks";
+import {SourceCollapseBlock} from "./SourceCollapseBlock/SourceCollapseBlock";
 
 interface StoriesProps {
   includePrimary?: boolean;
 }
 
-export const SourceCollapseBlocks: FC<StoriesProps> = ({ includePrimary = true }) => {
-  const { componentStories, projectAnnotations, getStoryContext } = useContext(DocsContext);
+export const SourceCollapseBlocks: FC<StoriesProps> = ({includePrimary = true}) => {
+  const {componentStories, projectAnnotations, getStoryContext} = useContext(DocsContext);
   let stories = componentStories();
-  const { stories: { filter } = { filter: undefined } } = projectAnnotations.parameters?.docs || {};
+  const {stories: {filter} = {filter: undefined}} = projectAnnotations.parameters?.docs || {};
   if (filter) {
     stories = stories.filter((story) => filter(story, getStoryContext(story)));
   }
@@ -31,7 +30,11 @@ export const SourceCollapseBlocks: FC<StoriesProps> = ({ includePrimary = true }
     <>
       {stories.map(
         (story) =>
-          story && <SourceCollapseBlock key={story.id} of={story.moduleExport} id={story.id} __forceInitialArgs />
+          story && <Fragment key={story.id}>
+            <Subtitle children={story.name}/>
+            <Description of={story}/>
+            <SourceCollapseBlock of={story.moduleExport} id={story.id} __forceInitialArgs/>
+          </Fragment>
       )}
     </>
   );
