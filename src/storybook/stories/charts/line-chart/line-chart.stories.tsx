@@ -1,44 +1,50 @@
-import type {Meta, StoryObj} from '@storybook/html';
+import type {Meta, StoryContext, StoryObj} from '@storybook/html';
 import {formatWithDecimalZero, LineChart, LineChartUserArgs} from "../../../../lib";
 import {format, select, Selection} from "d3";
 import {students, years} from "../../../../examples/linecharts/linechart/data/students-tugraz";
-import {renderChartWindow} from "../../util/render-chart-window";
-import {RawCSSHandler} from "../../util/raw-css-handler";
 import axisTransformations from './line-chart-axis-transformations.css?inline'
 import sparkLineTransformation from './line-chart-spark-line.css?inline'
-import {applyMarkerTooltipsFunction, applyXAxisFormatFunctions, applyYAxisFormatFunctions} from "./apply-function-args";
+import {renderChartMeta} from "../../util/render-chart-meta";
+import {rawCode} from "../../util/raw-code";
 
-let onDocumentLoad: (e) => void
-const renderChartElementMeta = (args: LineChartUserArgs) => {
-  const {chartWindow, id} = renderChartWindow()
-  document.removeEventListener("DOMContentLoaded", onDocumentLoad)
-  onDocumentLoad = () => {
+const renderLineChart = (args: LineChartUserArgs, context: StoryContext<LineChartUserArgs>) => {
+  return renderChartMeta(args, context, (args, id) => {
     const chartS: Selection<any, any> = select(`#${id}`)
-    const lineChart = new LineChart(chartS, args)
-    lineChart.buildChart()
-  }
-  document.addEventListener("DOMContentLoaded", onDocumentLoad)
-  return chartWindow
-}
-
-const tags = {
-  axisTransformation: new RawCSSHandler(axisTransformations),
-  sparkLineTransformation: new RawCSSHandler(sparkLineTransformation)
-}
-function removeCSSTagsFromDOM() {
-  Object.values(tags).forEach(handler => {
-    handler.removeFromHead()
+    const chart = new LineChart(chartS, args)
+    chart.buildChart()
   })
 }
 
+const meta = {
+  title: 'Charts/Line Chart',
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        height: 400
+      },
+    },
+    sources: {
+      js: { title: 'JS Code', code: (args: object) => rawCode({args}) }
+    }
+  },
+  render: renderLineChart
+} satisfies Meta<LineChartUserArgs>;
 
 type Story = StoryObj<LineChartUserArgs>;
 
-export const LineChartBasic: Story = {
+export const Basic: Story = {
+  name: 'Basic',
   args: {
     series: {
       x: {values: years},
       y: {values: students},
+      markerTooltips: {
+        tooltips: function(_, {xValue, yValue}) {
+          return `Year: ${xValue}<br/>Students: ${format('.2f')(yValue)}`
+        }
+      }
     },
     title: 'Students Registered at TU Graz',
     subTitle: 'TU Graz',
@@ -53,9 +59,20 @@ export const LineChartBasic: Story = {
   },
 }
 
-export const LineChartAxisTransformations: Story = {
+export const SimpleAxisThinning: Story = {
+  name: 'Simple: Thinning out Axes',
   args: {
-    ...LineChartBasic.args,
+    ...Basic.args,
+    y: { ...Basic.args!.y,
+      configureAxis: {
+        dependentOn: 'width',
+        scope: 'chart',
+        mapping: {
+          0: (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s'))),
+          2: (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))
+        }
+      },
+    },
     bounds: {
       width: {
         values: [20, 30, 50],
@@ -63,33 +80,29 @@ export const LineChartAxisTransformations: Story = {
       }
     },
   },
-  render: args => {
-    removeCSSTagsFromDOM()
-    tags.axisTransformation.addToHead()
-    applyMarkerTooltipsFunction(args)
-    applyYAxisFormatFunctions(args)
-    applyXAxisFormatFunctions(args)
-    return renderChartElementMeta(args)
+  parameters: {
+    sources: {
+      css: { title: 'CSS Code', code: axisTransformations },
+    }
   }
 }
 
-export const LineChartSparkLineTransformation: Story = {
+export const SimpleSparkLine: Story = {
+  name: 'Simple: Spark Line',
   args: {
-    ...LineChartBasic.args,
+    ...Basic.args,
   },
-  render: args => {
-    removeCSSTagsFromDOM()
-    tags.sparkLineTransformation.addToHead()
-    applyMarkerTooltipsFunction(args)
-    applyYAxisFormatFunctions(args)
-    applyXAxisFormatFunctions(args)
-    return renderChartElementMeta(args)
+  parameters: {
+    sources: {
+      css: { title: 'CSS Code', code: sparkLineTransformation },
+    }
   }
 }
 
-export const LineChartResponsiveLabels: Story = {
+export const SimpleResponsiveLabels: Story = {
+  name: 'Simple: Responsive Labels',
   args: {
-    ...LineChartAxisTransformations.args,
+    ...SimpleAxisThinning.args,
     title: {
       dependentOn: 'width',
       mapping: {0: 'Registered Students', 1: 'Students at TU Graz', 3: 'Students Registered at TU Graz'}
@@ -98,87 +111,58 @@ export const LineChartResponsiveLabels: Story = {
       dependentOn: 'width',
       mapping: {0: 'TU Graz', 1: ''}
     },
-    y: { ...LineChartAxisTransformations.args!.y,
-      configureAxis: {
-        dependentOn: 'width',
-        scope: 'chart',
-        mapping: {0: (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s'))),
-          2: (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))
-        }
-      }
-    },
   },
-  render: args => {
-    removeCSSTagsFromDOM()
-    tags.sparkLineTransformation.addToHead()
-    applyMarkerTooltipsFunction(args)
-    applyYAxisFormatFunctions(args)
-    applyXAxisFormatFunctions(args)
-    return renderChartElementMeta(args)
+  parameters: {
+    sources: {
+      css: { title: 'CSS Code', code: sparkLineTransformation },
+    }
   }
 }
 
-export const LineChartFlipping: Story = {
-  args: { ...LineChartResponsiveLabels.args,
+export const SimpleFlipping: Story = {
+  args: { ...SimpleAxisThinning.args,
     series: {
-      ...LineChartResponsiveLabels.args!.series!,
+      ...SimpleResponsiveLabels.args!.series!,
       flipped: {
         dependentOn: 'width',
         mapping: {0: true, 2: false}
       }
     }
   },
-  render: args => {
-    removeCSSTagsFromDOM()
-    tags.sparkLineTransformation.addToHead()
-    applyMarkerTooltipsFunction(args)
-    applyYAxisFormatFunctions(args)
-    applyXAxisFormatFunctions(args)
-    return renderChartElementMeta(args)
+  parameters: {
+    sources: {
+      css: { title: 'CSS Code', code: sparkLineTransformation },
+    }
   }
 }
 
-const LineChartZoomableArgs = { ...LineChartFlipping.args,
-    series: { ...LineChartFlipping.args!.series!,
+const LineChartZoomableArgs = { ...SimpleFlipping.args,
+    series: { ...SimpleFlipping.args!.series!,
       zoom: {
         in: 20,
         out: 1
       }
     }
   }
+
 export const LineChartZoomable: Story = {
+  name: 'Simple: Zoomable',
   args: LineChartZoomableArgs,
-  render: args => {
-    removeCSSTagsFromDOM()
-    tags.sparkLineTransformation.addToHead()
-    applyMarkerTooltipsFunction(args)
-    applyYAxisFormatFunctions(args)
-    applyXAxisFormatFunctions(args)
-    return renderChartElementMeta(args)
-  },
   parameters: {
     sources: {
       css: { title: 'CSS Code', code: sparkLineTransformation },
-      js: { title: 'JS Code', code: JSON.stringify(LineChartZoomableArgs, null, 2) }
     }
   }
 }
 
-const meta = {
-  title: 'Charts/Line Chart',
-  // tags: ['autodocs'],
+export const Primary: Story = {
+  name: 'Fully Responsive',
+  args: LineChartZoomableArgs,
   parameters: {
-    docs: {
-      story: {
-        inline: false,
-        height: 400
-      },
-    },
-  },
-  render: (args) => {
-    removeCSSTagsFromDOM()
-    return renderChartElementMeta(args)
+    sources: {
+      css: { title: 'CSS Code', code: sparkLineTransformation },
+    }
   }
-} satisfies Meta<LineChartUserArgs>;
+}
 
 export default meta;
