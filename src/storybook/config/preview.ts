@@ -15,7 +15,18 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ['Charts', 'Chart-Components', '*']
+        order: [
+          'Charts',
+          [
+            'About Chart Stories',
+            'Line Charts',
+            ['Single Line Chart', 'Multi Line Chart', '*'],
+            'Bar Charts',
+            ['Standard Bar Chart', 'Grouped Bar Chart', 'Stacked Bar Chart', '*'],
+            'Scatterplot',
+            '*'],
+          'Chart-Components',
+          '*']
       }
     },
     viewport: {
