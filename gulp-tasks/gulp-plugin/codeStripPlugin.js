@@ -8,7 +8,6 @@ function stripHtml(options = {}) {
   return new Transform({
     objectMode: true,
     transform(file, encoding, callback) {
-      console.log(file.dirname)
       if (file.isNull()) {
         // Pass along empty files
         return callback(null, file);
