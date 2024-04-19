@@ -1,6 +1,6 @@
 import {Selection} from "d3";
 import {SeriesChartValid} from "../chart/series-chart/series-chart-validation";
-import {downloadToolRender} from "./download-tool/download-tool-render";
+import {downloadToolRender} from "./download-tool/download-tool-render/download-tool-render";
 import {filterToolRender} from "./filter-tool/filter-tool-render";
 import {crossToolRender} from "./cross-tool/cross-tool-render";
 import {addRawSVGToSelection} from "../../utilities/d3/util";
@@ -55,10 +55,15 @@ export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
   chartToolRender(toolbarS, args.getSeries())
 
   const dialogS = toolbarS.selectAll<HTMLDialogElement, DialogData>('dialog')
+
   dialogS.each(function (d, i) {
     const otherElements = dialogS.filter((d, j) => i !== j)
     d.onOpenerClick = () => {
       otherElements.each(d => d.triggerExit())
     }
+  })
+
+  toolbarOpenerS.on('click.close', () => {
+    dialogS.each((d) => d.triggerExit())
   })
 }

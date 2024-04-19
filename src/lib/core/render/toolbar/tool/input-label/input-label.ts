@@ -8,5 +8,6 @@ export type InputLabel = {
 export type InputLabelDataBase = {
   label: string,
   type: string,
-  class?: string
+  activeClasses?: string[]
+  inactiveClasses?: string[]
 }

@@ -7,6 +7,12 @@ export function elementFromSelection<T extends BaseType>(selection?: Selection<T
   return element
 }
 
+export function cssVarFromSelection<T extends BaseType>(selection: Selection<T>, cssVar: string) {
+  const element = selection?.node()
+  if (!element || !(element instanceof Element)) return undefined
+  return getComputedStyle(element).getPropertyValue(cssVar)
+}
+
 export function classesForSelection(classes: string[], leadingSpace = false) {
   const selector = classes.map(currentClass => '.' + currentClass).join('')
   const names = classes.map(currentClass => ' ' + currentClass).join('')

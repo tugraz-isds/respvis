@@ -6,6 +6,10 @@ const srcDir = `${rootDir}/src`
 const exampleDepsDir = `${srcDir}/examples-dependencies`
 const dataDepsDir = `${exampleDepsDir}/data`
 const libsDepsDir = `${exampleDepsDir}/libs`
+const respvisDepsDir = `${libsDepsDir}/respvis`
+const utilDepsDir = `${exampleDepsDir}/util`
+
+const iconsDir = `${srcDir}/lib/core/assets/cursor-icons`
 
 const exampleDir = `${srcDir}/examples`
 
@@ -35,6 +39,9 @@ module.exports = {
   exampleDepsDir,
   dataDepsDir,
   libsDepsDir,
+  respvisDepsDir,
+  utilDepsDir,
   exampleDir,
-  exampleDirList
+  exampleDirList,
+  iconsDir
 }

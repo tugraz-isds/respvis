@@ -4,7 +4,7 @@
     background-color: white;
     box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 1px 3px 1px;
     max-height: 50vh;
-    overflow-y: scroll;
+    overflow-y: auto;
     visibility: hidden;
     transition: opacity 300ms ease-in-out, translate 300ms ease-in-out;
 
@@ -18,9 +18,8 @@
       right: 0;
       inset-inline-start: unset;
       margin: 0;
-      margin-top: 1rem;
       padding: 0.5em;
-      translate: 1rem 0;
+      translate: 0 -1rem;
       &[transition='enter'] {
         opacity: 1;
         translate: 0 0;
@@ -55,12 +54,24 @@
     }
 
     .item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+      &--decimal-options { flex-direction: row; }
+      legend {
+        display: flex;
+        cursor: pointer;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.5em;
+        width: 100%;
+        .active input { margin: 0; }
+      }
       label {
         display: flex;
         align-items: center;
         cursor: pointer;
       }
-      > label + label { margin-top: 0.5em }
       input {
         margin-right: 0.5em;
       }
@@ -71,22 +82,19 @@
   }
 
   .collapsable-opener {
-    display: flex;
-    cursor: pointer;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5em;
-    width: 100%;
     user-select: none;
+    .collapse-icon {
+      margin-left: auto;
+    }
     svg {
-      height: 1.2em;
-      width: auto;
+      min-width: 1.2em;
+      height: auto;
       transition: rotate 600ms ease-in-out, transform 80ms ease-in-out;
     }
     &:has(+ .expanded) svg {
       rotate: 180deg;
     }
-    &:active svg {
+    &:has(.text:active, .collapse-icon:active) svg {
       transform: scale(0.9);
     }
   }

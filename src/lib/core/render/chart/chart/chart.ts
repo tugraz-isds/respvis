@@ -8,6 +8,7 @@ import {layouterCompute} from "../../../layouter";
 import {chartRender} from "./chart-render";
 import {throttle} from "../../../utilities/d3/util";
 import {AxisValid} from "../../axis";
+import {fixActiveCursor} from "../../util/fix-active-cursor";
 
 export type ChartWindowedValid = WindowValid & ChartValid
 
@@ -135,6 +136,7 @@ export abstract class Chart implements Renderer {
     const {chartS} = windowRender(this.windowS)
     chartRender(chartS)
     chartS.classed(`chart-${data.type}`, true)
+    fixActiveCursor(chartS)
   }
 
   protected postRender() {

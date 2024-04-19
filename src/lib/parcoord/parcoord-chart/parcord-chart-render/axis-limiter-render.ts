@@ -2,39 +2,48 @@ import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
 import {drag, Selection} from "d3";
 import {pathChevronRender} from "../../../core";
 import {bboxDiffSVG} from "../../../core/utilities/position/diff";
-import {throttle} from "../../../core/utilities/d3/util";
+import {cssVarFromSelection, throttle} from "../../../core/utilities/d3/util";
 import {relateDragWayToSelection, relateDragWayToSelectionByDiff} from "../../../core/utilities/d3/drag";
 import {bgSVGOnlyRender} from "../../../core/render/util/bg-svg-only-render";
 import {backgroundSVGOnly} from "../../../core/constants/dom/classes";
 
 export function parcoordChartAxisLimiterRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
-  chevronSlidersRender(axisS)
-  ellipseSliderRender(axisS)
-  chartAlignSliders(axisS)
+  slidersChevronRender(axisS)
+  sliderRectRender(axisS)
+  alignSliders(axisS)
   addSliderDrag(axisS)
 }
 
-function chevronSlidersRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+function slidersChevronRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   const flipped = axisS.datum().series.responsiveState.currentlyFlipped
   const direction = (flipped ? 'right' : 'down')
   const upperChevronS = pathChevronRender(axisS, ['slider-up'], [{type: direction, scale: 1.5}])
   bgSVGOnlyRender(upperChevronS, [{scale: 2}], upperChevronS.select('path'))
+    .classed('cursor', true)
+    .classed('cursor--range-vertical', !flipped)
+    .classed('cursor--range-horizontal cursor--range-left', flipped)
   const lowerChevronS = pathChevronRender(axisS, ['slider-down'], [{type: direction, scale: 1.5}])
   bgSVGOnlyRender(lowerChevronS, [{scale: 2}], lowerChevronS.select('path'))
+    .classed('cursor', true)
+    .classed('cursor--range-horizontal ', flipped)
+    .classed('cursor--range-vertical cursor--range-up', !flipped)
 }
 
-function ellipseSliderRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
-  axisS.selectAll('.slider-ellipse')
+function sliderRectRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+  const flipped = axisS.datum().series.responsiveState.currentlyFlipped
+  axisS.selectAll('.slider-rect')
     .data([null])
-    .join('ellipse')
-    .classed('slider-ellipse', true)
+    .join('rect')
+    .classed('slider-rect', true)
+    .classed('cursor cursor--range-rect', true)
+    .classed('cursor--range-rect-horizontal', flipped)
 }
 
-function chartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+function alignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues, series} = axisS.datum()
   const upperChevronS= axisS.selectAll<SVGGElement, any>('.slider-up')
   const lowerChevronS = axisS.selectAll<SVGGElement, any>('.slider-down')
-  const sliderEllipseS = axisS.selectAll<SVGEllipseElement, any>('.slider-ellipse')
+  const sliderRectS = axisS.selectAll<SVGRectElement, any>('.slider-rect')
   const domainS = axisS.select<SVGPathElement>('.domain')
   const {leftCornersXDiff, leftCornersYDiff, bbox2: bboxPath, bbox1: bboxDomain} =
     bboxDiffSVG(domainS, upperChevronS.select('path'))
@@ -50,11 +59,13 @@ function chartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
 
     upperChevronS.attr('transform', `${mirrorXLower} ${translateAlign} ${translateXUpper}`)
     lowerChevronS.attr('transform', `${translateAlign} ${translateXLower}`)
-    sliderEllipseS
-      .attr('rx', (upperRange - lowerRange) / 2)
-      .attr('ry', 30)
-      .attr('cx', lowerRange + (upperRange - lowerRange) / 2)
-      .attr('cy', 0)
+    const sliderRectBreadthString = cssVarFromSelection(sliderRectS, '--rect-slider-breadth') ?? '30'
+    const sliderRectBreadth = parseInt(sliderRectBreadthString)
+    sliderRectS
+      .attr('x', lowerRange)
+      .attr('width', upperRange - lowerRange)
+      .attr('y', -1 * sliderRectBreadth / 2)
+      .attr('height', sliderRectBreadth)
   } else {
     const translateX = -leftCornersXDiff + bboxDomain.width - bboxPath.width / 2
     const upperRange = scaledValues.getRangeByPercent(upperRangeLimitPercent, false, 'vertical')
@@ -65,11 +76,13 @@ function chartAlignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
 
     upperChevronS.attr('transform', `translate(${translateX}, ${translateYUpper})`)
     lowerChevronS.attr('transform', `translate(${translateX}, ${translateYLower}) ${mirrorYLower}`)
-    sliderEllipseS
-      .attr('rx', 30)
-      .attr('ry', (lowerRange - upperRange) / 2)
-      .attr('cx', 0)
-      .attr('cy', upperRange + (lowerRange - upperRange) / 2)
+    const sliderRectBreadthString = cssVarFromSelection(sliderRectS, '--rect-slider-breadth') ?? '30'
+    const sliderRectBreadth = parseInt(sliderRectBreadthString)
+    sliderRectS
+      .attr('x', -1 * sliderRectBreadth / 2)
+      .attr('width', sliderRectBreadth)
+      .attr('y', upperRange)
+      .attr('height', lowerRange - upperRange)
   }
 }
 
@@ -80,7 +93,7 @@ function addSliderDrag(axisS: Selection<SVGGElement, KeyedAxisValid>) {
 
   const upperChevronBackgroundS = axisS.selectAll('.slider-up').selectAll(`.${backgroundSVGOnly}`)
   const lowerChevronBackgroundS = axisS.selectAll('.slider-down').selectAll(`.${backgroundSVGOnly}`)
-  const ellipseSliderS = axisS.selectAll('.slider-ellipse')
+  const sliderRectS = axisS.selectAll('.slider-rect')
 
   function getPercent(e) {
     const dragDown = relateDragWayToSelection(e, originalSeries.renderer.drawAreaBgS)
@@ -94,7 +107,7 @@ function addSliderDrag(axisS: Selection<SVGGElement, KeyedAxisValid>) {
     return originalSeries.responsiveState.currentlyFlipped ? dragDown.dxRelative : -dragDown.dyRelative
   }
 
-  const onDrag = (e, limit: 'upper' | 'lower' | 'ellipse') => {
+  const onDrag = (e, limit: 'upper' | 'lower' | 'rect') => {
     const onUpperLower = () => {
       const percent = getPercent(e)
       if (percent === undefined) return
@@ -105,14 +118,14 @@ function addSliderDrag(axisS: Selection<SVGGElement, KeyedAxisValid>) {
         axisD.lowerRangeLimitPercent = percent <= axisD.upperRangeLimitPercent ? percent : axisD.upperRangeLimitPercent
       }
     }
-    const onEllipse = () => {
+    const onRect = () => {
       const percentDiff = getPercentDiff(e)
       if (percentDiff === undefined || axisD.lowerRangeLimitPercent + percentDiff < 0
         || axisD.upperRangeLimitPercent + percentDiff > 1 ) return
       axisD.upperRangeLimitPercent += percentDiff
       axisD.lowerRangeLimitPercent += percentDiff
     }
-    limit === 'ellipse' ? onEllipse() : onUpperLower()
+    limit === 'rect' ? onRect() : onUpperLower()
     if (e.type === 'end') {
       originalSeries.renderer.windowS.dispatch('resize')
     }
@@ -128,8 +141,8 @@ function addSliderDrag(axisS: Selection<SVGGElement, KeyedAxisValid>) {
     .on("drag.dragAxisLimitLower", (e) => throttledDrag.func(e, 'lower'))
     .on("end.dragAxisLimitLower", (e) => onDrag(e, 'lower'))
   )
-  ellipseSliderS.call(drag()
-    .on("drag.dragAxisLimitEllipse", (e) => throttledDrag.func(e, 'ellipse'))
-    .on("end.dragAxisLimitEllipse", (e) => onDrag(e, 'ellipse'))
+  sliderRectS.call(drag()
+    .on("drag.dragAxisLimitRect", (e) => throttledDrag.func(e, 'rect'))
+    .on("end.dragAxisLimitRect", (e) => onDrag(e, 'rect'))
   )
 }

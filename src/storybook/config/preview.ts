@@ -1,5 +1,5 @@
 import type {Preview} from "@storybook/html";
-// import {IndexEntry} from '@storybook/types'
+import ChartDocTemplate from '../stories/templates/ChartDocTemplate.mdx'
 import {INITIAL_VIEWPORTS} from "@storybook/addon-viewport"
 import '../../../package/respvis.css'
 import '../stories/global/general.css'
@@ -14,12 +14,26 @@ const preview: Preview = {
       },
     },
     options: {
-      // storySort: (a, b) => {
-      //   return a.id === b.id ? 0 : -1 * a.id.localeCompare(b.id, undefined, { numeric: true })
-      // },
+      storySort: {
+        order: [
+          'Charts',
+          [
+            'About Chart Stories',
+            'Line Charts',
+            ['Single Line Chart', 'Multi Line Chart', '*'],
+            'Bar Charts',
+            ['Standard Bar Chart', 'Grouped Bar Chart', 'Stacked Bar Chart', '*'],
+            'Scatterplot',
+            '*'],
+          'Chart-Components',
+          '*']
+      }
     },
     viewport: {
       viewports: INITIAL_VIEWPORTS
+    },
+    docs: {
+      page: ChartDocTemplate,
     }
   },
 };

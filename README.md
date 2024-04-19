@@ -31,7 +31,7 @@ npm install
 ## Gulp Build And Development
 
 Gulp is used to automate repeatable tasks. The file [gulpfile.js](gulpfile.js)
-defines five public tasks:
+defines six public tasks:
 
 - The `clean` task removes existing `package` and `dist` directories in
   order to enable a clean rebuild of the project.
@@ -62,6 +62,11 @@ defines five public tasks:
   production mode. The non-secret enviroment variables for production and
   development can be found in `.env.prod` and `.env.dev` respectively.
 
+- The `gen-base64` task converts svg files which are
+  meant to be used as icons automatically to base64 strings that can 
+  conviniently copy and pasted into style sheets. This is especially
+  helpful when creating styles for cursor icons.
+
 The public tasks can be invoked either by directly running gulp via npx or
 by running the equivalent scripts in package.json:
 
@@ -78,10 +83,31 @@ npx gulp cleanAll
 npm run build
 npx gulp build
 
-npm run start
-npx gulp serve
+npm run dev
+npx gulp serve --dev
+
+npm run prod
+npx gulp serve --prod
+
+npm run gen-base64
+npx gulp genBase64
 ```
 
+***
+
+# Documentation And Testing
+
+The famous frontend workshop Storybook is used to provide extensive
+documentation about RespVis. When running storybook one can conveniently
+navigate through different use cases of different RespVis components. On
+top of that there are many markdown files explaining the functionality of
+RespVis in depth. To run storybook one must execute the following command:
+
+
+
+```
+npm run storybook
+```
 
 ***
 

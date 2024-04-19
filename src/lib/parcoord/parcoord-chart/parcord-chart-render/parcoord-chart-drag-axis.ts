@@ -8,18 +8,29 @@ export function onDragAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid, 
   if (!dragWay) return
   const originalSeries = d.series.originalSeries
   const oldPercentageDomain = originalSeries.axesPercentageScale.domain()
-  const index = oldPercentageDomain.indexOf(d.key)
+  const axisIndex = oldPercentageDomain.indexOf(d.key)
   const newPercentageRange = originalSeries.axesPercentageScale.range()
-  newPercentageRange[index] = d.series.responsiveState.currentlyFlipped ? 1 - dragWay.fromTopPercent : dragWay.fromLeftPercent
+
+  const oldPercentage = originalSeries.axesPercentageScale.range()[axisIndex]
+  const newPercentage = d.series.responsiveState.currentlyFlipped ? 1 - dragWay.fromTopPercent : dragWay.fromLeftPercent
+  newPercentageRange.forEach((currP, currPI) => {
+    if (currP === newPercentage && currPI !== axisIndex) {
+      newPercentageRange[currPI] = currP + (oldPercentage > newPercentage ? 0.01 : -0.01)
+    }
+  })
+
+  newPercentageRange[axisIndex] = d.series.responsiveState.currentlyFlipped ? 1 - dragWay.fromTopPercent : dragWay.fromLeftPercent
   originalSeries.axesPercentageScale.range(newPercentageRange)
 }
 
 export function onDragEndAxisParcord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid) {
   const originalSeries = d.series.originalSeries
-  const catchAxesActive = originalSeries.renderer.windowS.datum().windowSettings.parcoordCatchAxes
-  if (!catchAxesActive) return
+
+  const equidistantAxesActive = originalSeries.renderer.windowS.datum().windowSettings.parcoordEquidistantAxes
+  if (!equidistantAxesActive) return
   const percentageRange = originalSeries.axesPercentageScale.range()
   const order = arrayOrder(percentageRange)
+
   const newPercentageRange = order.map((eOrder) => (eOrder - 1) / (order.length - 1))
   originalSeries.axesPercentageScale.range(newPercentageRange)
   originalSeries.renderer.windowS.dispatch('resize')

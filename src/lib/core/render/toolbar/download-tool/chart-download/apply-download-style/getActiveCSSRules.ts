@@ -29,8 +29,8 @@ export function getActiveCSSRulesForElement(target: Element) {
         } break
         case cssRule instanceof CSSStyleRule:
         case cssRule instanceof CSSPageRule: {
-          const styleRule = getStyleRule(cssRule as CSSStyleRule | CSSPageRule)
-          if (styleRule !== '') cssRules.add(styleRule)
+          const styleRules = getStyleRules(cssRule as CSSStyleRule | CSSPageRule)
+          styleRules.forEach(rule => cssRules.add(rule))
         } break
         default:
       }
@@ -38,18 +38,27 @@ export function getActiveCSSRulesForElement(target: Element) {
     return cssRules
   }
 
-  function getStyleRule(cssRule: CSSStyleRule | CSSPageRule) {
-    const activeElementSVGStandalone = targetClone.matches(cssRule.selectorText) ? targetClone : targetClone.querySelector(cssRule.selectorText)
+  function getWholeSelector(cssRule: CSSStyleRule | CSSPageRule) {
+    const includeParentSelector = (cssRule.parentRule && (cssRule instanceof CSSStyleRule || cssRule instanceof CSSPageRule))
+    return (includeParentSelector ? getWholeSelector(cssRule.parentRule as CSSStyleRule | CSSPageRule) : '') + ' ' + cssRule.selectorText
+  }
+
+  function getStyleRules(cssRule: CSSStyleRule | CSSPageRule) {
+    const selectorText = getWholeSelector(cssRule)
+    const activeElementSVGStandalone = targetClone.matches(selectorText) ? targetClone : targetClone.querySelector(selectorText)
     if (activeElementSVGStandalone) {
-      return cssRule.cssText
+      return new Set<string>().add(cssRule.cssText)
     }
-    const activeElementInDOM = target.matches(cssRule.selectorText) ? target : target.querySelector(cssRule.selectorText)
+    const activeElementInDOM = target.matches(selectorText) ? target : target.querySelector(selectorText)
     if (activeElementInDOM) {
-      if (cssRule.parentRule instanceof CSSContainerRule && CSSRuleHasEffect(cssRule, activeElementInDOM as HTMLElement)) return ''
+      if (cssRule.parentRule instanceof CSSContainerRule && CSSRuleHasEffect(cssRule, activeElementInDOM as HTMLElement)) return new Set<string>()
       const adaptedSelector = groundUnRestrainedSelectors(getUnRestrainedSelectors(targetClone, cssRule))
-      return adaptedSelector.trim() + ' {' + cssRule.style.cssText + '}'
+      return new Set<string>().add(adaptedSelector.trim() + ' {' + cssRule.style.cssText + '}')
     }
-    return ''
+    if (cssRule.cssRules && cssRule.cssRules.length > 0) {
+      return getActiveCSSRules(cssRule.cssRules)
+    }
+    return new Set<string>()
   }
 
   function CSSRuleHasEffect(rule: CSSStyleRule | CSSPageRule, element: HTMLElement) {

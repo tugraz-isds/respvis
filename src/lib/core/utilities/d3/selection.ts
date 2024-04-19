@@ -1,5 +1,4 @@
-import { BaseType, CustomEventParameters, selectAll, Selection } from 'd3';
-import { Transition } from 'd3';
+import {BaseType, CustomEventParameters, select, selectAll, Selection, Transition} from 'd3';
 
 declare module 'd3' {
   export interface Transition<
@@ -42,4 +41,18 @@ export function isTransition<GElement extends BaseType, Datum, PElement extends 
   selectionOrTransition: SelectionOrTransition<GElement, Datum, PElement, PDatum>
 ): selectionOrTransition is Transition<GElement, Datum, PElement, PDatum> {
   return !isSelection(selectionOrTransition);
+}
+
+export function mapSelection<E extends BaseType, D>(selection: Selection<any, D>, mapper: (selection: Selection<any, D>) => Selection<E, D>) {
+  let nodes: E[] = []
+  selection.each((d, i, g) => {
+    const mappingNode = mapper(select(g[i])).node()
+    if (mappingNode) nodes.push(mappingNode)
+  })
+  return selectAll<E, D>(nodes)
+}
+
+export function applyClassList(selection: Selection, classList: string[], active: boolean) {
+  classList.forEach(classToApply => selection.classed(classToApply, active))
+  return selection
 }

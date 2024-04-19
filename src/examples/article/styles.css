@@ -8,8 +8,7 @@
 }
 
 body {
-  background-color: floralwhite;
-//max-width: 61rem;
+/*//max-width: 61rem;*/
   margin: 3rem auto 0 auto;
   padding: 0 1rem;
 }
@@ -29,9 +28,9 @@ h1 {
 
 .article {
   padding: 1rem;
-  background: floralwhite;
-//border-right: 0.063rem solid #DADCE0;
-//border-bottom: 0.063rem solid #DADCE0;
+  background: white;
+/*//border-right: 0.063rem solid #DADCE0;*/
+/*//border-bottom: 0.063rem solid #DADCE0;*/
 }
 
 footer {

@@ -2,13 +2,16 @@ import {select, Selection} from "d3";
 import {addRawSVGToSelection, classesForSelection} from "../../../utilities/d3/util";
 import {InputLabel} from "./input-label/input-label";
 import CollapseDownRAW from '../../../assets/collapse-down.svg';
+import {mapSelection} from "../../../utilities/d3/selection";
+import {inputLabelRender} from "./input-label/input-labels-render";
 
-type FieldSetProps = {
+export type FieldSetData = {
   legend: string
-  applyText?: boolean
+  collapsable?: boolean
+  filterable?: InputLabel
 }
 
-export function fieldsetRender<D extends FieldSetProps>(
+export function fieldsetRender<D extends FieldSetData>(
   parentS: Selection, data: D[], ...classes: string[]) {
 
   const {names, selector} = classesForSelection(classes)
@@ -18,22 +21,41 @@ export function fieldsetRender<D extends FieldSetProps>(
     .classed(names, true)
 
   itemS.each(function (d, i, g) {
-    const legendS = select(g[i]).selectAll('legend')
-      .data([d.legend])
+    const currentItemS = select<HTMLFieldSetElement, typeof d>(g[i])
+    const legendS = currentItemS.selectAll<HTMLLegendElement, any>('legend')
+      .data([null])
       .join('legend')
-    if (d.applyText !== false) {
-      legendS.text(d => d)
-    }
+      .call((s) => fieldsetLegendRender(s, d))
+    if (d.collapsable) fieldsetCollapseWrapperRender(currentItemS)
   })
 
-  return itemS
+  return mapSelection(itemS, (currentS) => {
+    const collapsableS = currentS.selectAll<HTMLElement, D>('.collapsable')
+    return !collapsableS.empty() ? collapsableS : itemS
+  })
 }
 
-export function collapsableFieldsetRender<D extends FieldSetProps>(
-  parentS: Selection, data: D[], ...classes: string[]) {
-  const collapseData = data.map(d => ({...d, applyText: false}))
-  const fieldsetS = fieldsetRender(parentS, collapseData, ...classes)
+function fieldsetLegendRender(legendS: Selection<HTMLLegendElement>, data: FieldSetData) {
+  legendS.selectAll<any, InputLabel>('.active')
+    .data(data.filterable ? [data.filterable] : [])
+    .join('label')
+    .classed('active', true)
+    .each((d, i, g) => inputLabelRender(select<HTMLLabelElement, InputLabel>(g[i])))
+  legendS.selectAll<any, string>('.text')
+    .data([data.legend])
+    .join('span')
+    .classed('text', true)
+    .text(d => d)
 
+  legendS.selectAll(".collapse-icon")
+    .data(data.collapsable ? [CollapseDownRAW] : [])
+    .join('span')
+    .classed('collapse-icon', true)
+    .each((d,i,g) => addRawSVGToSelection(select(g[i]), CollapseDownRAW))
+}
+
+export function fieldsetCollapseWrapperRender<D extends FieldSetData>
+(fieldsetS: Selection<HTMLFieldSetElement, D>) {
   fieldsetS.each(function(d, i, g) {
     const collapsableWrapperS = select(g[i]).selectAll('.collapsable-wrapper')
       .data([null])
@@ -50,18 +72,11 @@ export function collapsableFieldsetRender<D extends FieldSetProps>(
       const collapsableWrapperS = select(g[i].parentElement).select('.collapsable-wrapper')
       const currentlyCollapsed = collapsableWrapperS.classed('collapsed')
       const legendS = select<HTMLLegendElement, string>(g[i])
-      legendS.selectAll("span")
-        .data([legendS.datum(), CollapseDownRAW])
-        .join('span')
-      legendS.selectAll<any, string>('span').filter((d, i) => i === 0).text(d => d)
-      addRawSVGToSelection(legendS.selectAll<any, string>('span').filter((d, i) => i === 1), CollapseDownRAW)
       collapsableWrapperS.classed('expanded', () => !currentlyCollapsed)
-
-      legendS.on('click.hope', () => {
+      legendS.selectChildren('.text, .collapse-icon').on('click.toggleCollapsable', () => {
         collapsableWrapperS.classed('expanded', () => !collapsableWrapperS.classed('expanded'))
         collapsableWrapperS.classed('collapsed', () => !collapsableWrapperS.classed('collapsed'))
       })
     })
-
-  return fieldsetS.selectAll<HTMLDivElement, D>('.collapsable')
+  return fieldsetS
 }

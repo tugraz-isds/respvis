@@ -1,7 +1,8 @@
 import {select, Selection, ValueFn} from 'd3';
 import {optimizeSVG} from "./optimize-svg";
 import {Renderer} from "../../../chart/renderer";
-import {applyDownloadStyle} from "./apply-download-style";
+import {applyDownloadStyle} from "./apply-download-style/apply-download-style";
+import {prettifySVG} from "./prettify-svg";
 
 export function chartDownload<Datum>(
   chartSelection: Selection<SVGSVGElement, Datum>,
@@ -37,7 +38,8 @@ export function chartDownload<Datum>(
     const optionalAttrs = classString + dataKeyString + dataStyleString
     const regex = new RegExp(`\\s(layout|bounds|data-ignore-layout|data-ignore-layout-children${optionalAttrs})=".*?"`, 'g')
 
-    const cloneHTML = cloneContainer.innerHTML.replace(regex, '')
+    let cloneHTML = cloneContainer.innerHTML.replace(regex, '')
+    cloneHTML = prettifySVG(cloneHTML, renderer)
     const blobType = 'image/svg+xml;charset=utf-8';
     const blob = new Blob([cloneHTML], { type: blobType });
     const url = URL.createObjectURL(blob);

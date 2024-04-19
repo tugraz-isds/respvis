@@ -14,6 +14,8 @@
   --font-size-legend-label: calc(0.7 * var(--font-size-base));
 
 
+  //colors
+
   --color-grid-line: black;
   --color-axes-line: #7f7c77; //rgb(0, 0, 0, 0.5)
   --color-origin-line: var(--color-axes-line);
@@ -34,6 +36,13 @@
   --highlight-brightness: 130%;
 
   --control-elements-color: rgb(239, 239, 239);
-  --control-elements-chart-color: rgb(248, 229, 121);
-  --control-elements-chart-color-40: rgb(248, 229, 121, 0.4);
+  --control-elements-chart-color1: rgb(248, 229, 121);
+  --control-elements-chart-color1-40: rgb(248, 229, 121, 0.4);
+  --control-elements-chart-color2: rgb(255, 255, 255);
+
+
+  //spacings and lengths
+  --rect-slider-breadth: 20;
+
+
 }

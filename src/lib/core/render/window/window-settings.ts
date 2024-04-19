@@ -16,8 +16,10 @@ export type WindowSettings = {
   downloadAttributeMaxDecimals: string
   downloadAttributeMaxDecimalsActive: boolean
 
+  downloadPrettifyActive: boolean
+
   // ------------------ parcoord
-  parcoordCatchAxes: boolean
+  parcoordEquidistantAxes: boolean
 
   // zoomXActive: BooleanString
   // zoomYActive: BooleanString
@@ -34,10 +36,11 @@ export const windowSettingsKeys: Record<keyof WindowSettings, keyof WindowSettin
   downloadRemoveDataKeys: 'downloadRemoveDataKeys',
   downloadRemoveBgElements: 'downloadRemoveBgElements',
   downloadRemoveDataStyles: 'downloadRemoveDataStyles',
+  downloadPrettifyActive: 'downloadPrettifyActive',
   movableCrossActive: "movableCrossActive",
   downloadAttributeMaxDecimals: "downloadAttributeMaxDecimals",
   downloadAttributeMaxDecimalsActive: "downloadAttributeMaxDecimalsActive",
-  parcoordCatchAxes: "parcoordCatchAxes"
+  parcoordEquidistantAxes: "parcoordEquidistantAxes"
 }
 
 export const defaultWindowSettings: WindowSettings = {
@@ -46,10 +49,11 @@ export const defaultWindowSettings: WindowSettings = {
   downloadRemoveDataKeys: true,
   downloadRemoveDataStyles: true,
   downloadRemoveBgElements: true,
+  downloadPrettifyActive: true,
   movableCrossActive: false,
   downloadAttributeMaxDecimals: '1',
   downloadAttributeMaxDecimalsActive: true,
-  parcoordCatchAxes: true
+  parcoordEquidistantAxes: true
 } as const
 
 

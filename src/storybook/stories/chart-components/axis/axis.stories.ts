@@ -1,7 +1,7 @@
 import type {StoryObj} from '@storybook/html';
-import {LineChart, LineChartUserArgs} from "../../../lib";
+import {LineChart, LineChartUserArgs} from "../../../../lib";
 import {format, select} from "d3";
-import {students, years} from "../../../examples/linecharts/linechart/data/students-tugraz";
+import {students, years} from "../../../../examples/linecharts/linechart/data/students-tugraz";
 
 const meta = {
   title: 'Chart-Components/Axis',
