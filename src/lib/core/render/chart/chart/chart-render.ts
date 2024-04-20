@@ -40,6 +40,7 @@ function drawAreaRender<T extends ChartBaseElement, D extends ChartValid>(paddin
     .data([paddingS.datum()])
     .join('svg')
     .classed('draw-area', true)
+    .attr('data-ignore-layout-children', true)
 
   const background = drawArea
     .selectAll<SVGHTMLElement, T>('.background')

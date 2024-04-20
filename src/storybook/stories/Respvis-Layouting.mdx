@@ -1,0 +1,22 @@
+import {Meta} from "@storybook/blocks";
+
+<Meta title='Respvis Layouting Mechanism'/>
+
+# Respvis Layouting Mechanism
+
+To make it possible to apply html layout techniques like
+CSS flexbox and CSS grid to layout certain svg elements,
+RespVis uses a non-trivial layout mechanism. This mechanism
+produces two DOM trees. The first one consists of the displayed
+svg elements itself, the SVG-DOM tree. The second one models the
+elements of the first tree that need to be layed out in html context,
+the HTML-DOM tree.
+
+The creation of the HTML-DOM tree is the tricky part of the layout
+mechanism. It includes several steps:
+TODO: explain in detail:
+1. Select elements which serve as HTML parent containers.
+   These elements(class: layout-container)
+2. (class: layout)
+3. (class: layout-ignore)
+4. (class: layout-ignore-children)

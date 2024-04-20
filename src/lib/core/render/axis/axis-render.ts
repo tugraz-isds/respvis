@@ -42,6 +42,30 @@ export function axisSequenceRender(axisS: AxisSelection, axisPosition?: AxisLayo
     default: axisLeftRender(axisS)
   }
   axisS.classed('axis-sequence', true)
+  axisS.selectAll('.title-wrapper')
+    .classed('layout-container', true)
+
+  //TODO REMOVE THIS WHEN FINISHED WITH TESTING!
+  axisS.selectAll('.test1')
+    .data([null])
+    .join('g')
+    .classed('test1', true)
+    .attr('data-ignore-layout-children', true)
+    .selectAll('.test11')
+    .data([null])
+    .join('g')
+    .classed('test11 layout-container', true)
+    // .attr('data-ignore-layout-children', true)
+  // axisS.classed('layout-container', true)
+  // axisS.selectAll('.ticks-transform')
+  //   .attr('data-ignore-layout-children', true)
+  // axisS.selectAll('.ticks-transform')
+  //   .selectAll('.ticks')
+  //   .attr('data-ignore-layout-children', null)
+  //   .attr('data-ignore-layout', null)
+  //   .selectAll('.tick')
+  //   .classed('layout-container', true)
+
   return axisS
 }
 

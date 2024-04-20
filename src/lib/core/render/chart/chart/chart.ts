@@ -4,7 +4,7 @@ import {WindowArgs, windowRender, WindowValid, windowValidation} from "../../win
 import {ChartValid} from "./chart-validation";
 import {Renderer} from "../renderer";
 import {resizeEventListener} from "../../../resize-event-dispatcher";
-import {layouterCompute} from "../../../layouter";
+import {layouterCompute} from "../../../layouter/layouter";
 import {chartRender} from "./chart-render";
 import {throttle} from "../../../utilities/d3/util";
 import {AxisValid} from "../../axis";
@@ -142,7 +142,9 @@ export abstract class Chart implements Renderer {
   protected postRender() {
     if (this.layouterS) {
       const boundsChanged = layouterCompute(this.layouterS)
-      if (boundsChanged) this.initializeRender()
+      //TODO: find a different way for updating css variables then to rerender everything evreytime
+      // maybe create resize job queue? only rerender a second time after all other resizings
+      // if (boundsChanged) this.initializeRender()
     }
   }
 

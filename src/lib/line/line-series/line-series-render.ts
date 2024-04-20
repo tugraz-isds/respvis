@@ -1,6 +1,5 @@
 import {select, Selection} from "d3";
 import {Point, pointsCreate, pointSeriesJoin} from "../../point";
-import {rectFromString} from "../../core";
 import {LineSeries} from "./line-series-validation";
 import {defaultStyleClass} from "../../core/constants/other";
 import {seriesConfigTooltipsHandleEvents} from "../../tooltip";
@@ -28,7 +27,6 @@ export function lineSeriesRender(pointLineS: Selection<Element, LineSeries>): vo
 }
 
 function lineSeriesPointsRender(pointS: Selection<Element, LineSeries>, pointGroups: Point[][]) {
-  if (!pointS.attr('bounds')) return
   pointS.selectAll('.point-category')
     .data(pointGroups)
     .join('g')
@@ -41,9 +39,6 @@ function lineSeriesPointsRender(pointS: Selection<Element, LineSeries>, pointGro
 }
 
 function lineSeriesLinesRender(lineS: Selection<Element, LineSeries>, pointGroups: Point[][]) {
-  const boundsAttr = lineS.attr('bounds')
-  if (!boundsAttr) return
-  lineS.datum().bounds = rectFromString(boundsAttr)
   const lineSeries = lineS.datum()
   const keySelectors = lineSeries.getMergedKeys()
   const lines: Line[] = keySelectors.map((key, i) => ({

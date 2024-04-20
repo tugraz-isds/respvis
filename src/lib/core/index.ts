@@ -8,7 +8,7 @@ export * from './utilities/path';
 export * from './utilities/formats';
 
 export * from './utilities/d3/selection';
-export * from './layouter';
+export * from './layouter/layouter';
 export * from './resize-event-dispatcher';
 
 
@@ -31,4 +31,3 @@ export {pathCircle} from "./utilities/path/path-circle";
 export {pathLine} from "./utilities/path/path-line";
 export {pathChevronRender} from "./utilities/path/path-chevron";
 export {pathArrowsUpDownRender} from "./utilities/path/path-arrow";
-

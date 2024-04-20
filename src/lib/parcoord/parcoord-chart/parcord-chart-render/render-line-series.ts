@@ -14,9 +14,6 @@ export function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>)
     .data([series])
     .join('g')
     .classed(`series-parcoord-lines`, true)
-    .attr('data-ignore-layout-children', true)
-
-  if (!lineSeriesS.attr('bounds')) return
 
   const filteredSeries = series.cloneFiltered().cloneZoomed().cloneInverted()
   const activeAxes = filteredSeries.getAxesDragDropOrdered()
