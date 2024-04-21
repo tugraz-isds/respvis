@@ -3,8 +3,8 @@ import {ChartValid} from "./chart-validation";
 import {elementFromSelection} from "../../../utilities/d3/util";
 import {updateCSSForSelection} from "../../../data/breakpoint/breakpoint";
 import {ScatterPlotValid} from "../../../../point";
-import {SVGHTMLElement} from "../../../constants/types";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
+import {bgSVGOnlyRender} from "../../util/bg-svg-only-render";
 
 
 type ChartBaseElement = SVGSVGElement | SVGGElement
@@ -36,16 +36,14 @@ function paddingWrapperRender<T extends ChartBaseElement, D extends ChartValid>(
 
 function drawAreaRender<T extends ChartBaseElement, D extends ChartValid>(paddingS: ChartBaseSelection<T, D>) {
   const drawArea = paddingS
-    .selectAll<SVGHTMLElement, T>('.draw-area')
+    .selectAll<SVGSVGElement, T>('.draw-area')
     .data([paddingS.datum()])
     .join('svg')
     .classed('draw-area', true)
     .attr('data-ignore-layout-children', true)
 
-  const background = drawArea
-    .selectAll<SVGHTMLElement, T>('.background')
-    .data([paddingS.datum()])
-    .join('rect')
+
+  const background = bgSVGOnlyRender(drawArea)
     .classed('background', true)
   return {drawArea, background}
 }

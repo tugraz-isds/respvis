@@ -6,8 +6,8 @@ import {arrayOrder} from "../../../core";
 
 export function handleAxisZoomAndDrag(axisS: Selection<SVGGElement, KeyedAxisValid>, i: number) {
   const axisD = axisS.datum()
-  const throttledZoom = throttle((e) => onZoomAxisParcoord(e, axisD), 50)
-  const throttledDrag = throttle((e) => onDragAxisParcoord(e, axisD, axisD.renderer.drawAreaBgS), 50)
+  const throttledZoom = throttle((e) => onZoomAxisParcoord(e, axisD), 30)
+  const throttledDrag = throttle((e) => onDragAxisParcoord(e, axisD, axisD.renderer.drawAreaBgS), 30)
   const onZoom = (e) => {
     throttledZoom.func(e)
     if (e.sourceEvent.type === "mousemove" || e.sourceEvent.type === "touchmove") {

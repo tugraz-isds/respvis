@@ -208,18 +208,15 @@ export function layouterRender(selection: Selection<HTMLDivElement>): void {
 
 export function layouterCompute(layouterS: Selection<HTMLDivElement>) {
   if (!(layouterS.node() as Element).isConnected) return
-  let anyBoundsChanged = false;
 
   const layouterChildDivS = layoutLayouter(layouterS.node()!)
-  layoutContainerCompute(layouterChildDivS, layouterS)
+  return layoutContainerCompute(layouterChildDivS, layouterS)
 
   // const layoutContainerS = layouterS.selectAll<SVGElement, any>('.layout-container:not(.layout)')
   // layoutContainerRoots(layoutContainerS, layouterS)
   //   .each(function (d, i, g) {
   //     anyBoundsChanged = layoutContainerCompute(select(g[i]), layouterS) || anyBoundsChanged
   //   })
-
-  return anyBoundsChanged
 }
 
 type SVGTwinInformation = {
