@@ -19,7 +19,7 @@ export abstract class Chart implements Renderer {
   public readonly filterDispatch = dispatch<{ dataKey: string }>('filter')
   protected readonly initialWindowData: WindowValid
   protected renderCountSinceResize = 0
-  protected renderInitialized?: NodeJS.Timeout
+  protected rerenderAfterLayoutChangeScheduled?: NodeJS.Timeout
   protected resizeObserver?: ResizeObserver
   private resizeThrottle?: ReturnType<typeof throttle>
   legendS?: Selection<SVGHTMLElement>
@@ -104,7 +104,7 @@ export abstract class Chart implements Renderer {
   protected addBuiltInListeners() {}
 
   private initializeRender() {
-    clearTimeout(this.renderInitialized)
+    clearTimeout(this.rerenderAfterLayoutChangeScheduled)
     const instance = this
     if (this.renderCountSinceResize > 2) {
       /* DEV_MODE_ONLY_START */
@@ -114,10 +114,6 @@ export abstract class Chart implements Renderer {
     }
     this.renderCountSinceResize++
     instance.render()
-    // this.renderInitialized = setTimeout(() => {
-    //   this.renderCountSinceResize++
-    //   instance.render()
-    // }, 20)
   }
 
   protected render() {
@@ -142,9 +138,12 @@ export abstract class Chart implements Renderer {
   protected postRender() {
     if (this.layouterS) {
       const boundsChanged = layouterCompute(this.layouterS)
-      //TODO: find a different way for updating css variables then to rerender everything evreytime
-      // maybe create resize job queue? only rerender a second time after all other resizings
-      if (boundsChanged) this.initializeRender()
+      if (boundsChanged) {
+        // Timout is necessary to detect subsequent resizes
+        this.rerenderAfterLayoutChangeScheduled = setTimeout(() => {
+          this.initializeRender()
+        }, 100)
+      }
     }
   }
 

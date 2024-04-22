@@ -212,12 +212,6 @@ export function layouterCompute(layouterS: Selection<HTMLDivElement>) {
 
   const layouterChildDivS = layoutLayouter(layouterS.node()!)
   return layoutContainerCompute(layouterChildDivS, layouterS)
-
-  // const layoutContainerS = layouterS.selectAll<SVGElement, any>('.layout-container:not(.layout)')
-  // layoutContainerRoots(layoutContainerS, layouterS)
-  //   .each(function (d, i, g) {
-  //     anyBoundsChanged = layoutContainerCompute(select(g[i]), layouterS) || anyBoundsChanged
-  //   })
 }
 
 type SVGTwinInformation = {
