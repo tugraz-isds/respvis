@@ -71,6 +71,7 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGTwinInformatio
   selection.each(function (svgTwin) {
     const svgE = svgTwin.element
     const svgS = select(svgE);
+    if (this.classList.contains('layout-container-positioner')) return
     const prevBounds = rectFromString(svgS.attr('bounds') || '0, 0, 0, 0');
     const bounds = elementRelativeBounds(this);
     const changed = !rectEquals(prevBounds, bounds, 1);
@@ -243,7 +244,7 @@ export function layoutContainerCompute(layoutContainerS: Selection<HTMLDivElemen
   if (!(layoutContainerS.node() as Element).isConnected) return false
   let anyBoundsChanged = false
 
-  layoutContainerS.each(function (d, i, g) {
+  layoutContainerS.each(function () {
     const layoutRootS = select<HTMLDivElement, SVGTwinInformation>(this)
 
     let layoutS: Selection<HTMLDivElement, SVGTwinInformation> = layoutRootS

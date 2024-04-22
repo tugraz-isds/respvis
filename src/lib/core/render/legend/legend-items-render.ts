@@ -4,7 +4,7 @@ import {rectFromString} from "../../utilities/graphic-elements/rect";
 import {LegendSelection} from "./legend-render";
 import {SVGHTMLElement} from "../../constants/types";
 import {LegendValid} from "./legend-validation";
-import {bgSVGOnlyRender} from "../util/bg-svg-only-render";
+import {bgSVGOnlyBBoxRender} from "../util/bg-svg-only-render";
 import {Size} from "../../utilities/size";
 
 export function legendItemsRender(legendS: LegendSelection) {
@@ -35,7 +35,7 @@ export function legendItemsRender(legendS: LegendSelection) {
         // would make it double
         itemD.symbol(symbolS.node()!, {...rectFromString(boundsAttr), x: 0, y: 0} as Size);
       });
-      bgSVGOnlyRender(itemS)
+      bgSVGOnlyBBoxRender(itemS)
     })
     .attr('data-style', (d) => d.styleClass)
     .attr('data-key', (d) => d.key)

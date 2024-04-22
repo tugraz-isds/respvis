@@ -4,7 +4,8 @@ import {elementFromSelection} from "../../../utilities/d3/util";
 import {updateCSSForSelection} from "../../../data/breakpoint/breakpoint";
 import {ScatterPlotValid} from "../../../../point";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
-import {bgSVGOnlyRender} from "../../util/bg-svg-only-render";
+import {bgSVGOnlyFixedRender} from "../../util/bg-svg-only-render";
+import {rectFromString} from "../../../utilities/graphic-elements/rect";
 
 
 type ChartBaseElement = SVGSVGElement | SVGGElement
@@ -29,7 +30,7 @@ function paddingWrapperRender<T extends ChartBaseElement, D extends ChartValid>(
   return chartS
     .selectAll<SVGSVGElement, D>('.padding-wrapper')
     .data([chartS.datum()])
-    .join('svg')
+    .join('g')
     .classed('padding-wrapper', true)
 }
 
@@ -38,12 +39,12 @@ function drawAreaRender<T extends ChartBaseElement, D extends ChartValid>(paddin
   const drawArea = paddingS
     .selectAll<SVGSVGElement, T>('.draw-area')
     .data([paddingS.datum()])
-    .join('svg')
+    .join('g')
     .classed('draw-area', true)
     .attr('data-ignore-layout-children', true)
 
-
-  const background = bgSVGOnlyRender(drawArea)
+  const boundsAttr = rectFromString(drawArea.attr('bounds') || '0 0 0 0');
+  const background = bgSVGOnlyFixedRender(drawArea, {...boundsAttr, x: 0, y:0})
     .classed('background', true)
   return {drawArea, background}
 }

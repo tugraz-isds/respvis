@@ -144,7 +144,7 @@ export abstract class Chart implements Renderer {
       const boundsChanged = layouterCompute(this.layouterS)
       //TODO: find a different way for updating css variables then to rerender everything evreytime
       // maybe create resize job queue? only rerender a second time after all other resizings
-      // if (boundsChanged) this.initializeRender()
+      if (boundsChanged) this.initializeRender()
     }
   }
 
