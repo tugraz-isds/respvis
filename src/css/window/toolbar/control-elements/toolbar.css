@@ -1,4 +1,5 @@
-.window-rv { //TODO: Replace window-rv wrapper with @scope once it is supported
+/*TODO: Replace window-rv wrapper with @scope once it is supported*/
+.window-rv {
   .toolbar {
     position: absolute;
     align-items: start;
@@ -16,17 +17,17 @@
       }
     }
 
-    &__bar {
+    .toolbar__bar {
       display: flex;
     }
 
-    &__dialog-container {
+    .toolbar__dialog-container {
       position: relative;
       width: 100%;
     }
 
 
-    &__opener {
+    .toolbar__opener {
       background-color: var(--control-elements-color);
       height: 2.5rem;
       padding: 0.5rem;
@@ -40,7 +41,7 @@
       &:hover, &[transition='enter'] { filter: brightness(80%); }
     }
 
-    &__btn {
+    .toolbar__btn {
       display: flex;
       align-items: center;
       height: 2.5rem;

@@ -1,5 +1,5 @@
 .chart.chart-parcoord {
-  .padding-wrapper { //.draw-area
+  .padding-wrapper {
     display: grid;
     grid-area: padding-wrapper;
     grid-template: 1fr / 1fr;

@@ -23,7 +23,7 @@
 .draw-area {
   display: grid;
 }
-.draw-area > * { //.draw-area
+.draw-area > * {
   grid-area: 1 / 1;
 }
 
@@ -31,7 +31,7 @@
   .layouter {
     grid-area: chart;
   }
-  .background { //.draw-area
+  .background {
     opacity: 0;
     grid-area: 1 / 1;
   }

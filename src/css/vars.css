@@ -1,5 +1,5 @@
 .window-rv, svg.chart {
-  //font-sizes
+  /*font-sizes*/
   --root-size: 1rem;
 
 
@@ -14,10 +14,10 @@
   --font-size-legend-label: calc(0.7 * var(--font-size-base));
 
 
-  //colors
+  /*colors*/
 
   --color-grid-line: black;
-  --color-axes-line: #7f7c77; //rgb(0, 0, 0, 0.5)
+  --color-axes-line: #7f7c77; //rgb(0, 0, 0, 0.5);
   --color-origin-line: var(--color-axes-line);
   --color-element-stroke: rgb(0, 0, 0, 0.6);
   --color-bar-stroke: var(--color-element-stroke);
@@ -41,7 +41,7 @@
   --control-elements-chart-color2: rgb(255, 255, 255);
 
 
-  //spacings and lengths
+  /*spacings and lengths*/
   --rect-slider-breadth: 20;
 
 

@@ -17,7 +17,6 @@
   .items {
     display: flex;
     flex-direction: column;
-    //justify-content: center;
     gap: 0.4rem;
   }
 }
@@ -49,14 +48,10 @@
   flex-direction: row;
   align-items: center;
   gap: 0.6em;
-  //width: 100%;
   font-size: var(--font-size-legend-label);
   --fit-height: false;
   &:active {
     font-weight: bold;
-  }
-  .text {
-    //--fit-height: false;
   }
   .symbol {
     stroke: #000;
@@ -64,15 +59,7 @@
     width: 1em;
     height: 1em;
   }
-
-  //.label {
-  //  dominant-baseline: central;
-  //}
 }
-
-//.label.highlight, .legend-item.highlight {
-//  font-size: 1.4em;
-//}
 
 .highlight.legend-item .symbol {
   filter: brightness(var(--highlight-brightness));

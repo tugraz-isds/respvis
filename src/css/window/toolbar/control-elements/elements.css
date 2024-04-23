@@ -7,7 +7,6 @@
     display: flex;
     align-items: center;
     border: 2px solid var(--control-elements-color);
-    //padding: 0.5em 0.25em;
     padding: 0.25em 0.5em;
     height: 2rem;
     gap: 0.5rem;
@@ -26,7 +25,7 @@
   }
 
   .tooltip-simple {
-    //Taken and modified from: https://www.w3schools.com/css/css_tooltip.asp
+    /*Taken and modified from: https://www.w3schools.com/css/css_tooltip.asp*/
     position: absolute;
     visibility: hidden;
     background-color: #555;

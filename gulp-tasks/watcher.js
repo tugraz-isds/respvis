@@ -3,7 +3,7 @@ const browserSync = require('browser-sync').create();
 const {bundleJS} = require("./bundleJS");
 const {createExampleDependencies} = require("./createExampleDependencies");
 const {copyExampleDependencies} = require("./copyExampleDependencies");
-const {buildExamplesSCSS, buildLibSCSS} = require("./buildSCSS");
+const {buildLibCSS} = require("./buildCSS");
 const {copyExamples} = require("./copyExamples");
 const {rootDir} = require('./paths')
 
@@ -22,15 +22,12 @@ function watcher(cb) {
   gulp.watch(`${rootDir}/src/lib/**/*`, watchOptions,
     gulp.series(bundleJS, createExampleDependencies, copyExampleDependencies, reloadBrowser));
 
-  gulp.watch(`${rootDir}/src/examples/**/*!(.scss)`, watchOptions, gulp.series(copyExamples, reloadBrowser));
+  gulp.watch(`${rootDir}/src/examples/**/*`, watchOptions, gulp.series(copyExamples, reloadBrowser));
 
-
-  const scssExamplesWatcher = gulp.watch(`${rootDir}/src/examples/**/*.scss`, watchOptions);
-  scssExamplesWatcher.on('change', buildExamplesSCSS)
-
-  const scssLibWatcher = gulp.watch([`${rootDir}/src/scss/**/*.scss`, `${rootDir}/src/*.scss`], watchOptions);
-  scssLibWatcher.on('change', async (fileName) => {
-    await buildLibSCSS(fileName)
+  const cssLibWatcher = gulp.watch([`${rootDir}/src/css/**/*.css`, `${rootDir}/src/*.css`], watchOptions);
+  cssLibWatcher.on('change', async (fileName) => {
+    await buildLibCSS()
+    gulp.series(buildLibCSS)
     createExampleDependencies().on('finish', () => {
       copyExampleDependencies()
     })

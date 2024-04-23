@@ -1,4 +1,5 @@
-.window-rv { //TODO: Replace window-rv wrapper with @scope once it is supported
+/*TODO: Replace window-rv wrapper with @scope once it is supported*/
+.window-rv {
   button, input, output, textarea, dialog {
     background-color: transparent;
     outline: none;
