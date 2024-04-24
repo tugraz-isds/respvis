@@ -1,6 +1,6 @@
 import {Series, SeriesArgs, SeriesUserArgs} from "../../core/render/series";
 import {SeriesKey} from "../../core/constants/types";
-import {arrayAlignLengths, AxisBaseUserArgs, AxisDomainRV, axisScaledValuesValidation, Size} from "../../core";
+import {arrayAlignLengths, AxisDomainRV, axisScaledValuesValidation, BaseAxisUserArgs, Size} from "../../core";
 import {ScaledValuesUserArgs} from "../../core/data/scale/scaled-values";
 import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal, scalePoint, ScalePoint, Selection} from "d3";
 import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
@@ -16,7 +16,7 @@ import {toolRender} from "./tool-render";
 export type ParcoordSeriesUserArgs = SeriesUserArgs & {
   dimensions: {
     scaledValues: ScaledValuesUserArgs<AxisDomainRV>
-    axis: AxisBaseUserArgs
+    axis: BaseAxisUserArgs
     zoom?: ZoomArgs
   }[]
 }

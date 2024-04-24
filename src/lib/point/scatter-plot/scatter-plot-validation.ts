@@ -1,4 +1,4 @@
-import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "../../core";
+import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "../../cartesian";
 import {PointSeries, SeriesPointUserArgs} from "../point-series/point-series";
 
 export type ScatterPlotArgs = Omit<CartesianChartUserArgs, 'series'> & {

@@ -1,4 +1,5 @@
 export type SVGHTMLElement = SVGGElement | HTMLElement
+export type SVGGroupingElement = SVGSVGElement | SVGGElement
 
 export const LengthDimensions = ['width', 'height'] as const
 export type LengthDimension = typeof LengthDimensions[number]
@@ -61,6 +62,8 @@ export const categoryRegex = /^c-\d+$/
 
 
 // util types
+
+export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 export type ToArray<T> = T extends any ? T[] : never;
 

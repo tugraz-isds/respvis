@@ -6,8 +6,9 @@ import {breakPointsValidation} from "../../data/breakpoint/breakpoint-validation
 import {ScaledValues} from "../../data/scale/scaled-values-base";
 import {KeyedAxisValid} from "./keyed-axis-validation";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
+import {CartesianAxisValid} from "../../../cartesian/cartesian-axis-validation";
 
-export type AxisBaseUserArgs = {
+export type BaseAxisUserArgs = {
   bounds?: Partial<LayoutBreakpoints>
   title?: RespValOptional<string>
   subTitle?: RespValOptional<string>
@@ -16,21 +17,22 @@ export type AxisBaseUserArgs = {
   tickOrientationFlipped?: RespValByValueOptional<number>
 }
 
-export type AxisBaseArgs = AxisBaseUserArgs & RenderArgs & {
+export type BaseAxisArgs = BaseAxisUserArgs & RenderArgs & {
   scaledValues: ScaledValues
 }
 
-export type AxisBaseValid = Required<Omit<AxisBaseArgs, 'bounds'>> & {
+export type BaseAxisValid = Required<Omit<BaseAxisArgs, 'bounds'>> & {
   bounds: LayoutBreakpoints,
+  d3Axis?: D3Axis<any> //axis available after first render
 }
 
-export type AxisValid = AxisBaseValid | KeyedAxisValid
+export type AxisValid = BaseAxisValid | CartesianAxisValid | KeyedAxisValid
 
 export interface ConfigureAxisFn {
   (axis: D3Axis<AxisDomain>): void;
 }
 
-export function axisBaseValidation(data: AxisBaseArgs): AxisValid {
+export function baseAxisValidation(data: BaseAxisArgs): AxisValid {
   return {
     renderer: data.renderer,
     scaledValues: data.scaledValues,

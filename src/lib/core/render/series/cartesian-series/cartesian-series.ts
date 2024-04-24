@@ -7,6 +7,7 @@ import {Series, SeriesArgs, SeriesUserArgs} from "../index";
 import {CartesianSeriesResponsiveState} from "./responsive-state";
 import {ZoomArgs, ZoomValid, zoomValidation} from "../../../data/zoom";
 import {AxisType} from "../../../constants/types";
+import {CartesianRenderer} from "../../../../cartesian/cartesian-renderer";
 
 export type CartesianSeriesUserArgs = SeriesUserArgs & {
   x: ScaledValuesUserArgs<AxisDomainRV>
@@ -24,6 +25,7 @@ export class CartesianSeries extends Series {
   y: ScaledValues
   responsiveState: CartesianSeriesResponsiveState
   zoom?: ZoomValid
+  renderer: CartesianRenderer
 
   constructor(args: CartesianSeriesArgs | CartesianSeries) {
     super(args)
@@ -40,6 +42,7 @@ export class CartesianSeries extends Series {
         flipped: ('flipped' in args) ? args.flipped : false
       })
     this.zoom = 'class' in args ? args.zoom : args.zoom ? zoomValidation(args.zoom) : undefined
+    this.renderer = args.renderer as CartesianRenderer
   }
 
   getScaledValues() { return {x: this.x, y: this.y} }

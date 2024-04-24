@@ -1,4 +1,4 @@
-import {dispatch, Selection} from "d3";
+import {dispatch, selection, Selection} from "d3";
 import {SVGHTMLElement} from "../../../constants/types";
 import {WindowArgs, windowRender, WindowValid, windowValidation} from "../../window";
 import {ChartValid} from "./chart-validation";
@@ -59,15 +59,11 @@ export abstract class Chart implements Renderer {
     return (this._yAxisS && !this._yAxisS.empty()) ? this._yAxisS :
       this.chartS.selectAll<SVGGElement, AxisValid>('.axis-y')
   }
-  _horizontalAxisS?: Selection<SVGGElement, AxisValid>
   get horizontalAxisS(): Selection<SVGGElement, AxisValid> {
-    return (this._horizontalAxisS && !this._horizontalAxisS.empty()) ? this._horizontalAxisS :
-      this.chartS.selectAll<SVGGElement, AxisValid>('.axis-bottom, .axis-top')
+    return selection() as unknown as Selection<SVGGElement, AxisValid>
   }
-  _verticalAxisS?: Selection<SVGGElement, AxisValid>
   get verticalAxisS(): Selection<SVGGElement, AxisValid> {
-    return (this._verticalAxisS && !this._verticalAxisS.empty()) ? this._verticalAxisS :
-      this.chartS.selectAll<SVGGElement, AxisValid>('.axis-left, .axis-right')
+    return selection() as unknown as Selection<SVGGElement, AxisValid>
   }
 
   buildChart() {

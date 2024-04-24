@@ -1,5 +1,5 @@
 import {Selection} from 'd3';
-import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "../../core";
+import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "../../cartesian";
 import {BarSeries, BarSeriesUserArgs} from "../bar-series/bar-series";
 import {BarArgs} from "../bar";
 import {BarStackedSeries} from "../bar-series/bar-stacked-series";

@@ -16,9 +16,9 @@
 
   /*colors*/
 
-  --color-grid-line: black;
-  --color-axes-line: #7f7c77; //rgb(0, 0, 0, 0.5);
+  --color-axes-line: #7f7c77; /*rgb(0, 0, 0, 0.5);*/
   --color-origin-line: var(--color-axes-line);
+  --color-grid-line: var(--color-origin-line);
   --color-element-stroke: rgb(0, 0, 0, 0.6);
   --color-bar-stroke: var(--color-element-stroke);
   --color-point-stroke: var(--color-element-stroke);

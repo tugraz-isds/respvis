@@ -6,12 +6,11 @@ import {ScatterPlotValid} from "../../../../point";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {bgSVGOnlyFixedRender} from "../../util/bg-svg-only-render";
 import {rectFromString} from "../../../utilities/graphic-elements/rect";
+import {SVGGroupingElement} from "../../../constants/types";
 
+export type ChartBaseSelection<T extends SVGGroupingElement, D extends ChartValid> = Selection<T, D>;
 
-type ChartBaseElement = SVGSVGElement | SVGGElement
-export type ChartBaseSelection<T extends ChartBaseElement, D extends ChartValid> = Selection<T, D>;
-
-export function chartRender<T extends ChartBaseElement, D extends ChartValid>(chartS: ChartBaseSelection<T, D>) {
+export function chartRender<T extends SVGGroupingElement, D extends ChartValid>(chartS: ChartBaseSelection<T, D>) {
   updateCSSForSelection(chartS)
 
   chartS.classed('chart', true)
@@ -26,7 +25,7 @@ export function chartRender<T extends ChartBaseElement, D extends ChartValid>(ch
   return {chartS, paddingWrapperS, header, title, subTitle, drawArea, background}
 }
 
-function paddingWrapperRender<T extends ChartBaseElement, D extends ChartValid>(chartS: ChartBaseSelection<T, D>) {
+function paddingWrapperRender<T extends SVGGroupingElement, D extends ChartValid>(chartS: ChartBaseSelection<T, D>) {
   return chartS
     .selectAll<SVGSVGElement, D>('.padding-wrapper')
     .data([chartS.datum()])
@@ -35,7 +34,7 @@ function paddingWrapperRender<T extends ChartBaseElement, D extends ChartValid>(
 }
 
 
-function drawAreaRender<T extends ChartBaseElement, D extends ChartValid>(paddingS: ChartBaseSelection<T, D>) {
+function drawAreaRender<T extends SVGGroupingElement, D extends ChartValid>(paddingS: ChartBaseSelection<T, D>) {
   const drawArea = paddingS
     .selectAll<SVGSVGElement, T>('.draw-area')
     .data([paddingS.datum()])
@@ -57,7 +56,7 @@ function headerRender(selection: Selection<SVGSVGElement | SVGGElement, ChartVal
     .classed('header', true);
 }
 
-function titleRender<T extends ChartBaseElement, D extends ChartValid>
+function titleRender<T extends SVGGroupingElement, D extends ChartValid>
 (header: ChartBaseSelection<T, D>, chart: ChartBaseSelection<T, D>){
   const chartElement = elementFromSelection(chart)
    return header
@@ -71,7 +70,7 @@ function titleRender<T extends ChartBaseElement, D extends ChartValid>
     .text((d) => d);
 }
 
-function subTitleRender<T extends ChartBaseElement, D extends ChartValid>
+function subTitleRender<T extends SVGGroupingElement, D extends ChartValid>
 (header: ChartBaseSelection<T, D>, chart: ChartBaseSelection<T, D>){
   const chartElement = elementFromSelection(chart)
   return header

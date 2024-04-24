@@ -5,6 +5,10 @@ path.line {
     stroke: var(--color-origin-line);
     stroke-width: 1;
   }
+  &.line--grid {
+    stroke: var(--color-grid-line);
+    stroke-width: 0.5;
+  }
 }
 
 .highlight path.line,

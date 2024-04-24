@@ -1,9 +1,9 @@
-import {axisBottomRender, axisLeftRender, AxisSelection, AxisValid} from "../../axis";
-import {CartesianChartSelection} from "./cartesian-chart-validation";
-import {ScaledValuesLinear} from "../../../data/scale/scaled-values-linear";
-import {BarStackedSeries} from "../../../../bar/bar-series/bar-stacked-series";
-import {ScaledValues} from "../../../data/scale/scaled-values-base";
-import {pathLine} from "../../../utilities/path";
+import {axisBottomRender, axisLeftRender, AxisSelection, AxisValid} from "../../../core/render/axis";
+import {CartesianChartSelection} from "../cartesian-chart-validation";
+import {ScaledValuesLinear} from "../../../core/data/scale/scaled-values-linear";
+import {BarStackedSeries} from "../../../bar/bar-series/bar-stacked-series";
+import {ScaledValues} from "../../../core/data/scale/scaled-values-base";
+import {pathLine} from "../../../core/utilities/path";
 
 export function cartesianAxisRender<T extends CartesianChartSelection>(chartS: T): void {
   const {renderer, ...data} = chartS.datum()

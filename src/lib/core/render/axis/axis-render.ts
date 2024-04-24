@@ -9,7 +9,7 @@ import {
 } from "d3";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {updateBreakpointStatesInCSS} from "../../data";
-import {AxisValid} from "./axis-base-validation";
+import {AxisValid} from "./base-axis-validation";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {axisTicksPostGenerationRender, axisTicksPreGenerationRender} from "./axis-ticks-render";
 import {tickAngleConfiguration} from "./tick-angle-configuration";
@@ -99,5 +99,6 @@ function d3Axis(
 
   const axis = axisGenerator(filteredScaledValues.scale)
   configureAxisValid(axis)
+  selection.datum().d3Axis = axis
   return axis;
 }
