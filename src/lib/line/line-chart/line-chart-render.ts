@@ -1,5 +1,4 @@
 import {Selection} from "d3";
-import {cartesianAxisRender} from "../../cartesian";
 import {legendRender} from "../../core/render/legend";
 import {legendAddHover} from "../../core/render/legend/legend-event";
 import {LineChartValid} from "./line-chart-validation";
@@ -16,7 +15,6 @@ export function lineChartRender(selection: LineChartSVGChartSelection) {
     .call(renderAllSeriesOfLines)
   const legendS = legendRender(selection, legend)
   legendAddHover(legendS)
-  selection.call(cartesianAxisRender)
 }
 
 function renderAllSeriesOfLines(chartS: LineChartSVGChartSelection) {

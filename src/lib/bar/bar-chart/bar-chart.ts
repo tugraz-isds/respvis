@@ -1,5 +1,5 @@
 import {Selection} from "d3";
-import {cartesianAxisRender} from "../../cartesian";
+import {cartesianAxisRender, cartesianGridRender} from "../../cartesian";
 import {BarChartArgs, BarChartValid, barChartValidation} from "./bar-chart-validation";
 import {barChartRender} from "./bar-chart-render";
 import {CartesianChart} from "../../cartesian/cartesian-chart/cartesian-chart";
@@ -29,8 +29,8 @@ export class BarChart extends CartesianChart {
     super.mainRender()
     barChartRender(this.chartS!)
     this.chartS.call(cartesianAxisRender)
-    this.chartS.call(cartesianAxisRender)
     this.chartS.call(originLineRender)
+    this.chartS.call(cartesianGridRender)
   }
 
   protected override addBuiltInListeners() {

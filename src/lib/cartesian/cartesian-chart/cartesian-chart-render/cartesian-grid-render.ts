@@ -6,11 +6,12 @@ import {select} from "d3";
 export function cartesianGridRender<T extends CartesianChartSelection>(chartS: T) {
   const {series} = chartS.datum()
   const {drawAreaS} = series.renderer
+  const gridAreaS = drawAreaS.selectAll('.grid-area')
   const horizontalAxisS = series.renderer.horizontalAxisS
   const verticalAxisS = series.renderer.verticalAxisS
-  const drawAreaE = series.renderer.drawAreaBgS.node() as SVGGElement
-  if (!drawAreaE) return
-  const drawAreaPos = drawAreaE.getBoundingClientRect()
+  const drawAreaBgE = series.renderer.drawAreaBgS.node() as SVGGElement
+  if (!drawAreaBgE) return
+  const drawAreaPos = drawAreaBgE.getBoundingClientRect()
 
   cartesianGridHorizontalLinesRender()
   cartesianGridVerticalLinesRender()
@@ -26,17 +27,19 @@ export function cartesianGridRender<T extends CartesianChartSelection>(chartS: T
       const tickPos = this.getBoundingClientRect()
       tickPositions.splice(0, 0, tickPos.y + tickPos.height / 2 - drawAreaPos.y)
     })
-    tickPositions.splice(0, 0, 0)
+    if (Math.min(...tickPositions) > 0) tickPositions.splice(0, 0, 0)
+    if (Math.max(...tickPositions) < drawAreaPos.height) tickPositions.push(drawAreaPos.height)
 
     let linePositions: number[] = []
     if (gridLineFactor !== undefined) {
       linePositions = linePositionsFromTickPositions(tickPositions, gridLineFactor)
+      const maxPosition = Math.max(...tickPositions)
+      linePositions = linePositions.filter(position => position >= 1 && position <= maxPosition - 1)
       linePositions.splice(0, 0, 0)
-      linePositions.pop()
     }
 
     const [x1, x2] = horizontalAxisS.datum().scaledValues.scale.range()
-    drawAreaS.selectAll('.line.line--grid.line--horizontal')
+    gridAreaS.selectAll('.line.line--grid.line--horizontal')
       .data(linePositions)
       .join('path')
       .each((d, i, g) => pathLine(select(g[i]), [
@@ -46,7 +49,6 @@ export function cartesianGridRender<T extends CartesianChartSelection>(chartS: T
 
   function cartesianGridVerticalLinesRender() {
     const gridLineFactor = horizontalAxisS.datum().gridLineFactor
-    if (!gridLineFactor) return
     const ticks = horizontalAxisS.selectAll<SVGLineElement, any>(".tick line").filter(function () {
       return this.checkVisibility()
     })
@@ -56,15 +58,20 @@ export function cartesianGridRender<T extends CartesianChartSelection>(chartS: T
       const tickPos = this.getBoundingClientRect()
       tickPositions.push(tickPos.x + tickPos.width / 2 - drawAreaPos.x)
     })
+    if (Math.min(...tickPositions) > 0) tickPositions.splice(0, 0, 0)
+    if (Math.max(...tickPositions) < drawAreaPos.width) tickPositions.push(drawAreaPos.width)
 
     let linePositions: number[] = []
     if (gridLineFactor !== undefined) {
       linePositions = linePositionsFromTickPositions(tickPositions, gridLineFactor)
-      linePositions.push(drawAreaPos.width)
+      const maxPosition = drawAreaPos.width
+      linePositions = linePositions.filter(position => position >= 1 && position <= maxPosition - 1)
+      linePositions.push(maxPosition)
     }
 
+
     const [y1, y2] = verticalAxisS.datum().scaledValues.scale.range()
-    drawAreaS.selectAll('.line.line--grid.line--vertical')
+    gridAreaS.selectAll('.line.line--grid.line--vertical')
       .data(linePositions)
       .join('path')
       .each((d, i, g) => pathLine(select(g[i]), [

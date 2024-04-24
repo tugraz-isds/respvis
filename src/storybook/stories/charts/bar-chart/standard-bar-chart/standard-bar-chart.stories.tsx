@@ -81,7 +81,8 @@ export const Primary: Story = {
         height: axisBoundsHeight
       },
       tickOrientation: tickOrientationHorizontal,
-      tickOrientationFlipped: tickOrientationVertical
+      tickOrientationFlipped: tickOrientationVertical,
+      gridLineFactor: 1
     },
     y: {
       title: 'Population',
@@ -92,6 +93,7 @@ export const Primary: Story = {
       tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,
       configureAxis: (axis) => axis.tickFormat(format('.2s')),
+      gridLineFactor: 1
     },
     // zoom: { //TODO: make bar chart work with zooming!
     //   in: 20,

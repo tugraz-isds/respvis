@@ -1,5 +1,5 @@
 import {Selection} from 'd3';
-import {cartesianAxisRender} from '../../cartesian';
+import {cartesianAxisRender, cartesianGridRender} from '../../cartesian';
 import {scatterPlotRender} from "./scatter-plot-render";
 import {ScatterPlotArgs, ScatterPlotValid, scatterPlotValidation} from "./scatter-plot-validation";
 import {getMaxRadius} from "../../core/data/radius/radius-util";
@@ -31,6 +31,7 @@ export class ScatterPlot extends CartesianChart {
     scatterPlotRender(this.chartS!)
     this.chartS.call(cartesianAxisRender)
     this.chartS.call(originLineRender)
+    this.chartS.call(cartesianGridRender)
   }
 
   protected override preRender() {

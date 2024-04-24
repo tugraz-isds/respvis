@@ -70,7 +70,6 @@ export function bindOpenerToDialog(props: OpenDialogOptions) {
       rect.left <= e.clientX && e.clientX <= rect.left + rect.width
 
     if (!clickedInDialog) {
-      console.log(rect, e.clientX, e.clientY)
       dialogS.datum().triggerExit()
     }
   }

@@ -57,6 +57,7 @@ export function createBarChart(selector: string) {
         height: axisBoundsHeight
       },
       tickOrientation: tickOrientationHorizontal,
+      gridLineFactor: 1
       // tickOrientationFlipped: tickOrientationVertical
     },
     y: {
@@ -69,6 +70,7 @@ export function createBarChart(selector: string) {
       // tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,
       configureAxis: (axis) => axis.tickFormat(d3.format('.2')),
+      gridLineFactor: 2
     },
     // zoom: { //TODO: make bar chart work with zooming!
     //   in: 20,
@@ -139,7 +141,8 @@ export function createBarChartAggregated(selector: string) {
         height: axisBoundsHeight
       },
       tickOrientation: tickOrientationHorizontal,
-      tickOrientationFlipped: tickOrientationVertical
+      tickOrientationFlipped: tickOrientationVertical,
+      gridLineFactor: 1,
     },
     y: {
       title: 'Anomalies',
@@ -151,6 +154,7 @@ export function createBarChartAggregated(selector: string) {
       tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,
       configureAxis: (axis) => axis.tickFormat(d3.format('.2')),
+      gridLineFactor: 1
     },
     // zoom: { //TODO: make bar chart work with zooming!
     //   in: 20,

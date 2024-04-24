@@ -18,11 +18,12 @@ export function chartRender<T extends SVGGroupingElement, D extends ChartValid>(
 
   const paddingWrapperS = paddingWrapperRender(chartS)
   const {drawArea, background} = drawAreaRender(paddingWrapperS)
+  const gridArea = gridAreaRender(drawArea)
   const header = headerRender(chartS)
   const title = titleRender(header, chartS)
   const subTitle = subTitleRender(header, chartS)
 
-  return {chartS, paddingWrapperS, header, title, subTitle, drawArea, background}
+  return {chartS, paddingWrapperS, header, title, subTitle, drawArea, background, gridArea}
 }
 
 function paddingWrapperRender<T extends SVGGroupingElement, D extends ChartValid>(chartS: ChartBaseSelection<T, D>) {
@@ -32,7 +33,6 @@ function paddingWrapperRender<T extends SVGGroupingElement, D extends ChartValid
     .join('g')
     .classed('padding-wrapper', true)
 }
-
 
 function drawAreaRender<T extends SVGGroupingElement, D extends ChartValid>(paddingS: ChartBaseSelection<T, D>) {
   const drawArea = paddingS
@@ -46,6 +46,13 @@ function drawAreaRender<T extends SVGGroupingElement, D extends ChartValid>(padd
   const background = bgSVGOnlyFixedRender(drawArea, {...boundsAttr, x: 0, y:0})
     .classed('background', true)
   return {drawArea, background}
+}
+
+function gridAreaRender(drawAreaS: Selection<SVGGroupingElement>) {
+  return drawAreaS.selectAll('.grid-area')
+    .data([null])
+    .join('g')
+    .classed('grid-area', true)
 }
 
 function headerRender(selection: Selection<SVGSVGElement | SVGGElement, ChartValid>) {
