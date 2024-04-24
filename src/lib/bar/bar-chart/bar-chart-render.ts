@@ -9,13 +9,15 @@ export type BarChartChartSelection = Selection<SVGSVGElement | SVGGElement, BarC
 
 export function barChartRender(chartS: BarChartChartSelection) {
   const series = chartS.datum().series.cloneFiltered().cloneZoomed() as BarSeries
-  const drawAreaS = chartS.selectAll('.draw-area');
+  const drawAreaS = chartS.selectAll('.draw-area')
+  const drawAreaClipPathS = chartS.datum().renderer.drawAreaClipPathS
   const bars = series.getBarRects()
 
   drawAreaS.selectAll<SVGGElement, BarStandardSeries>('.series-bar')
     .data([series])
     .join('g')
     .classed('series-bar', true)
+    .attr('clip-path', `url(#${drawAreaClipPathS.attr('id')})`)
     .call((s) => barSeriesRender(s))
     .call(addHighlight)
     .call(seriesConfigTooltipsHandleEvents)
@@ -23,6 +25,9 @@ export function barChartRender(chartS: BarChartChartSelection) {
       elements: bars,
       classes: ['series-label'],
       orientation: series.responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
-    }).attr( 'layout-strategy', bars[0]?.labelArg?.position ?? null)
+    })
+      .attr( 'layout-strategy', bars[0]?.labelArg?.position ?? null)
+      .attr('clip-path', `url(#${drawAreaClipPathS.attr('id')})`)
+
     )
 }

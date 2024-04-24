@@ -1,5 +1,6 @@
 export type SVGHTMLElement = SVGGElement | HTMLElement
-export type SVGGroupingElement = SVGSVGElement | SVGGElement
+export type SVGGroupingElement = SVGSVGElement | SVGGElement | SVGClipPathElement
+export type SVGHTMLGroupingElement = SVGGroupingElement | HTMLElement
 
 export const LengthDimensions = ['width', 'height'] as const
 export type LengthDimension = typeof LengthDimensions[number]
@@ -54,6 +55,7 @@ export type IndividualKey = `i-${number}`
 
 export type AxisType = 'x' | 'y'
 export type AxisLayout = 'bottom' | 'left'
+export type AxisOrientation = AxisLayout | 'top' | 'right'
 
 export type ActiveKeyMap = {[p: string]: boolean}
 

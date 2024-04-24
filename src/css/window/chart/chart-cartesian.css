@@ -2,10 +2,13 @@
   .padding-wrapper {
     display: grid;
     grid-area: padding-wrapper;
-    grid-template: 1fr auto / auto 1fr;
+    grid-template: auto auto 1fr auto auto / auto auto 1fr auto auto;
     grid-template-areas:
-    'axis-left draw-area'
-    '. axis-bottom';
+    '. . axis-top . .'
+    '. . padding-container--top . .'
+    'axis-left padding-container--left draw-area padding-container--right axis-right'
+    '. . padding-container--bottom . .'
+    '. . axis-bottom . .';
     overflow: visible;
   }
 }

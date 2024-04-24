@@ -43,6 +43,8 @@
 
   /*spacings and lengths*/
   --rect-slider-breadth: 20;
-
-
+  --chart-padding-left: 0;
+  --chart-padding-top: 0;
+  --chart-padding-right: 0;
+  --chart-padding-bottom: 0;
 }
