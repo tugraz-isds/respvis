@@ -5,7 +5,6 @@ export type ResizeEvent = CustomEvent<{ bounds: Rect }>;
 
 export function resizeEventListener(observeS: Selection<Element>, dispatchS?: Selection<Element>) {
   const resizeEventDispatcher = new ResizeObserver((entries) => {
-    // console.log("RESIZE", entries)
     for (let i = 0; i < entries.length; i++) {
       const finalDispatchS = dispatchS ? dispatchS : select(entries[i].target)
       finalDispatchS.dispatch('resize', {

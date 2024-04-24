@@ -1,4 +1,4 @@
-import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "../../core";
+import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "../../cartesian";
 import {LineSeries, LineSeriesUserArgs} from "../line-series/line-series-validation";
 
 export type LineChartArgs = Omit<CartesianChartUserArgs, 'series'> & {

@@ -5,6 +5,7 @@ export type DialogData = {
   toggleTimeout: NodeJS.Timeout | undefined
   triggerEnter: () => void
   triggerExit: () => void
+  onClickOutside: (e: MouseEvent) => void
   onOpenerClick?: () => void
 }
 
@@ -16,6 +17,7 @@ export function dialogRender(parentS: Selection, ...classes: string[]) {
     .data([{
       triggerEnter: () => {},
       triggerExit: () => {},
+      onClickOutside: () => {},
       toggleTimeout
     }])
     .join('dialog')
@@ -60,4 +62,19 @@ export function bindOpenerToDialog(props: OpenDialogOptions) {
 
   dialogS.datum().triggerEnter = () => enter()
   dialogS.datum().triggerExit = () => exit()
+  dialogS.datum().onClickOutside = (e: MouseEvent) => {
+    if (!e.target || !(e.target instanceof HTMLDialogElement)) return
+    const rect = e.target.getBoundingClientRect();
+
+    const clickedInDialog = rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+      rect.left <= e.clientX && e.clientX <= rect.left + rect.width
+
+    if (!clickedInDialog) {
+      dialogS.datum().triggerExit()
+    }
+  }
+
+  dialogS.on('click.Outside', (e: MouseEvent) => {
+    dialogS.datum().onClickOutside(e)
+  })
 }

@@ -152,7 +152,14 @@ export const LineChartZoomable: Story = {
 
 export const Primary: Story = {
   name: 'Fully Responsive',
-  args: LineChartZoomableArgs,
+  args: {...LineChartZoomableArgs,
+    x: {...LineChartZoomableArgs.x,
+      gridLineFactor: 2
+    },
+    y: {...LineChartZoomableArgs.y,
+      gridLineFactor: 1
+    }
+  },
   parameters: {
     sources: {
       css: { title: 'CSS Code', code: sparkLineTransformation },

@@ -1,10 +1,10 @@
-import {dispatch, Selection} from "d3";
+import {dispatch, selection, Selection} from "d3";
 import {SVGHTMLElement} from "../../../constants/types";
 import {WindowArgs, windowRender, WindowValid, windowValidation} from "../../window";
 import {ChartValid} from "./chart-validation";
 import {Renderer} from "../renderer";
 import {resizeEventListener} from "../../../resize-event-dispatcher";
-import {layouterCompute} from "../../../layouter";
+import {layouterCompute} from "../../../layouter/layouter";
 import {chartRender} from "./chart-render";
 import {throttle} from "../../../utilities/d3/util";
 import {AxisValid} from "../../axis";
@@ -19,7 +19,7 @@ export abstract class Chart implements Renderer {
   public readonly filterDispatch = dispatch<{ dataKey: string }>('filter')
   protected readonly initialWindowData: WindowValid
   protected renderCountSinceResize = 0
-  protected renderInitialized?: NodeJS.Timeout
+  protected rerenderAfterLayoutChangeScheduled?: NodeJS.Timeout
   protected resizeObserver?: ResizeObserver
   private resizeThrottle?: ReturnType<typeof throttle>
   legendS?: Selection<SVGHTMLElement>
@@ -59,15 +59,11 @@ export abstract class Chart implements Renderer {
     return (this._yAxisS && !this._yAxisS.empty()) ? this._yAxisS :
       this.chartS.selectAll<SVGGElement, AxisValid>('.axis-y')
   }
-  _horizontalAxisS?: Selection<SVGGElement, AxisValid>
   get horizontalAxisS(): Selection<SVGGElement, AxisValid> {
-    return (this._horizontalAxisS && !this._horizontalAxisS.empty()) ? this._horizontalAxisS :
-      this.chartS.selectAll<SVGGElement, AxisValid>('.axis-bottom, .axis-top')
+    return selection() as unknown as Selection<SVGGElement, AxisValid>
   }
-  _verticalAxisS?: Selection<SVGGElement, AxisValid>
   get verticalAxisS(): Selection<SVGGElement, AxisValid> {
-    return (this._verticalAxisS && !this._verticalAxisS.empty()) ? this._verticalAxisS :
-      this.chartS.selectAll<SVGGElement, AxisValid>('.axis-left, .axis-right')
+    return selection() as unknown as Selection<SVGGElement, AxisValid>
   }
 
   buildChart() {
@@ -104,7 +100,7 @@ export abstract class Chart implements Renderer {
   protected addBuiltInListeners() {}
 
   private initializeRender() {
-    clearTimeout(this.renderInitialized)
+    clearTimeout(this.rerenderAfterLayoutChangeScheduled)
     const instance = this
     if (this.renderCountSinceResize > 2) {
       /* DEV_MODE_ONLY_START */
@@ -114,10 +110,6 @@ export abstract class Chart implements Renderer {
     }
     this.renderCountSinceResize++
     instance.render()
-    // this.renderInitialized = setTimeout(() => {
-    //   this.renderCountSinceResize++
-    //   instance.render()
-    // }, 20)
   }
 
   protected render() {
@@ -142,7 +134,12 @@ export abstract class Chart implements Renderer {
   protected postRender() {
     if (this.layouterS) {
       const boundsChanged = layouterCompute(this.layouterS)
-      if (boundsChanged) this.initializeRender()
+      if (boundsChanged) {
+        // Timout is necessary to detect subsequent resizes
+        this.rerenderAfterLayoutChangeScheduled = setTimeout(() => {
+          this.initializeRender()
+        }, 100)
+      }
     }
   }
 

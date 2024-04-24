@@ -1,0 +1,94 @@
+/*TODO: Replace window-rv wrapper with @scope once it is supported*/
+.window-rv {
+  .toolbar {
+    position: absolute;
+    align-items: start;
+    right: 0;
+    top: 0;
+    width: 100%;
+
+    &[transition="enter"] {
+      .toolbar__content { translate: 0; }
+      & .toolbar__opener {
+        & > svg { rotate: 90deg; }
+      }
+      &[transition-state="enter-done"] {
+        .toolbar__content-wrapper { overflow-x: unset; }
+      }
+    }
+
+    .toolbar__bar {
+      display: flex;
+    }
+
+    .toolbar__dialog-container {
+      position: relative;
+      width: 100%;
+    }
+
+
+    .toolbar__opener {
+      background-color: var(--control-elements-color);
+      height: 2.5rem;
+      padding: 0.5rem;
+      transition: filter 100ms ease-in-out, scale 150ms ease-in-out;
+      cursor: pointer;
+      svg {
+        height: 100%;
+        width: auto;
+        transition: rotate 500ms;
+      }
+      &:hover, &[transition='enter'] { filter: brightness(80%); }
+    }
+
+    .toolbar__btn {
+      display: flex;
+      align-items: center;
+      height: 2.5rem;
+      padding: 0.5rem;
+      background-color: var(--control-elements-color);
+      transition: filter 100ms ease-in-out, scale 150ms ease-in-out;
+      svg {
+        height: 100%;
+        width: auto;
+      }
+      &:hover, &[transition='enter'] { filter: brightness(80%); }
+      &:active { scale: 0.75 }
+    }
+  }
+
+  .toolbar__content-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    overflow-x: hidden;
+
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer/Edge */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .toolbar__content {
+    flex-grow: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    grid-auto-flow: row dense;
+    align-items: center;
+    translate: 100%;
+    max-width: 100%;
+    position: relative;
+    transition: translate 600ms cubic-bezier(.45,.05,.55,.95);
+
+    .tool {
+      height: 100%;
+      & > .toolbar__btn:hover .tooltip-simple {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+}

@@ -16,7 +16,6 @@ export function barChartRender(chartS: BarChartChartSelection) {
     .data([series])
     .join('g')
     .classed('series-bar', true)
-    .attr('data-ignore-layout-children', true)
     .call((s) => barSeriesRender(s))
     .call(addHighlight)
     .call(seriesConfigTooltipsHandleEvents)

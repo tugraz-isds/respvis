@@ -1,0 +1,41 @@
+.chart.chart-parcoord {
+  .padding-wrapper {
+    display: grid;
+    grid-area: padding-wrapper;
+    grid-template: 1fr / 1fr;
+    grid-template-areas: 'draw-area';
+    padding: 3rem;
+    overflow: hidden;
+    .draw-area {
+      overflow: visible
+    }
+  }
+  .axis.axis-sequence {
+    position: relative;
+
+    &.axis-inverted .axis-inverter .rotation-group {
+      transform: rotate(180deg);
+    }
+
+    div.title-wrapper {
+      position: absolute;
+      display: flex;
+      bottom: 100%;
+      translate: -50% -30%;
+      width: min-content;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .axis-inverter, .rotation-group {
+      transform-origin: center;
+      transform-box: fill-box;
+    }
+
+    .rotation-group {
+      transition: transform 500ms;
+      transform: rotate(0deg);
+    }
+  }
+}

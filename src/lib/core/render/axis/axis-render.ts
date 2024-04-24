@@ -9,12 +9,12 @@ import {
 } from "d3";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {updateBreakpointStatesInCSS} from "../../data";
-import {AxisValid} from "./axis-base-validation";
+import {AxisValid} from "./base-axis-validation";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {axisTicksPostGenerationRender, axisTicksPreGenerationRender} from "./axis-ticks-render";
 import {tickAngleConfiguration} from "./tick-angle-configuration";
 import {getFilteredScaledValues} from "../../data/scale/axis-scaled-values-validation";
-import {bgSVGOnlyRender} from "../util/bg-svg-only-render";
+import {bgSVGOnlyBBoxRender} from "../util/bg-svg-only-render";
 import {AxisLayout} from "../../constants/types";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
@@ -32,7 +32,7 @@ export function axisBottomRender(axisS: AxisSelection) {
 }
 
 export function axisSequenceRender(axisS: AxisSelection, axisPosition?: AxisLayout) {
-  bgSVGOnlyRender(axisS)
+  bgSVGOnlyBBoxRender(axisS)
   axisS.classed('axis-bottom', false)
   axisS.classed('axis-left', false)
   axisS.classed('axis-right', false)
@@ -42,6 +42,9 @@ export function axisSequenceRender(axisS: AxisSelection, axisPosition?: AxisLayo
     default: axisLeftRender(axisS)
   }
   axisS.classed('axis-sequence', true)
+  axisS.selectAll('.title-wrapper')
+    .classed('layout-container', true)
+
   return axisS
 }
 
@@ -96,5 +99,6 @@ function d3Axis(
 
   const axis = axisGenerator(filteredScaledValues.scale)
   configureAxisValid(axis)
+  selection.datum().d3Axis = axis
   return axis;
 }

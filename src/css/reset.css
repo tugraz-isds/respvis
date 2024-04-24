@@ -1,0 +1,28 @@
+/*TODO: Replace window-rv wrapper with @scope once it is supported*/
+.window-rv {
+  button, input, output, textarea, dialog {
+    background-color: transparent;
+    outline: none;
+    border-width: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    padding: 0;
+  }
+
+  button, input, output, textarea {
+    cursor: pointer;
+  }
+
+  img, svg {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  box-sizing: border-box;
+  * {
+    box-sizing: inherit;
+  }
+}

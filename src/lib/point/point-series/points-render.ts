@@ -1,4 +1,4 @@
-import {easeCubicOut, select, Selection} from "d3";
+import {select, Selection} from "d3";
 import {circleMinimized, circleToAttrs} from "../../core";
 import {Point} from "./point";
 
@@ -43,10 +43,11 @@ export function pointSeriesJoin(
     )
     .each((d, i, g) => {
       const s = select(g[i])
-      const t = s.transition('update').ease(easeCubicOut)
-      t.attr('cx', d.center.x)
+      //TODO: find optimal way to configure transitions for points
+      // const t = s.transition('update').ease(easeCubicOut)
+      s.attr('cx', d.center.x)
         .attr('cy', d.center.y)
-      circleToAttrs(t, d)
+      circleToAttrs(s, d)
     })
     .attr('data-style', (d) => !d.color ? d.styleClass : null)
     .attr('data-key', (d) => d.key)

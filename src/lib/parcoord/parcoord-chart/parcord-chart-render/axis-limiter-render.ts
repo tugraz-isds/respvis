@@ -4,7 +4,7 @@ import {pathChevronRender} from "../../../core";
 import {bboxDiffSVG} from "../../../core/utilities/position/diff";
 import {cssVarFromSelection, throttle} from "../../../core/utilities/d3/util";
 import {relateDragWayToSelection, relateDragWayToSelectionByDiff} from "../../../core/utilities/d3/drag";
-import {bgSVGOnlyRender} from "../../../core/render/util/bg-svg-only-render";
+import {bgSVGOnlyBBoxRender} from "../../../core/render/util/bg-svg-only-render";
 import {backgroundSVGOnly} from "../../../core/constants/dom/classes";
 
 export function parcoordChartAxisLimiterRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
@@ -18,12 +18,12 @@ function slidersChevronRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   const flipped = axisS.datum().series.responsiveState.currentlyFlipped
   const direction = (flipped ? 'right' : 'down')
   const upperChevronS = pathChevronRender(axisS, ['slider-up'], [{type: direction, scale: 1.5}])
-  bgSVGOnlyRender(upperChevronS, [{scale: 2}], upperChevronS.select('path'))
+  bgSVGOnlyBBoxRender(upperChevronS, [{scale: 2}], upperChevronS.select('path'))
     .classed('cursor', true)
     .classed('cursor--range-vertical', !flipped)
     .classed('cursor--range-horizontal cursor--range-left', flipped)
   const lowerChevronS = pathChevronRender(axisS, ['slider-down'], [{type: direction, scale: 1.5}])
-  bgSVGOnlyRender(lowerChevronS, [{scale: 2}], lowerChevronS.select('path'))
+  bgSVGOnlyBBoxRender(lowerChevronS, [{scale: 2}], lowerChevronS.select('path'))
     .classed('cursor', true)
     .classed('cursor--range-horizontal ', flipped)
     .classed('cursor--range-vertical cursor--range-up', !flipped)

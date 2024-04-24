@@ -3,14 +3,14 @@ import {ChartValid} from "./chart-validation";
 import {elementFromSelection} from "../../../utilities/d3/util";
 import {updateCSSForSelection} from "../../../data/breakpoint/breakpoint";
 import {ScatterPlotValid} from "../../../../point";
-import {SVGHTMLElement} from "../../../constants/types";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
+import {bgSVGOnlyFixedRender} from "../../util/bg-svg-only-render";
+import {rectFromString} from "../../../utilities/graphic-elements/rect";
+import {SVGGroupingElement} from "../../../constants/types";
 
+export type ChartBaseSelection<T extends SVGGroupingElement, D extends ChartValid> = Selection<T, D>;
 
-type ChartBaseElement = SVGSVGElement | SVGGElement
-export type ChartBaseSelection<T extends ChartBaseElement, D extends ChartValid> = Selection<T, D>;
-
-export function chartRender<T extends ChartBaseElement, D extends ChartValid>(chartS: ChartBaseSelection<T, D>) {
+export function chartRender<T extends SVGGroupingElement, D extends ChartValid>(chartS: ChartBaseSelection<T, D>) {
   updateCSSForSelection(chartS)
 
   chartS.classed('chart', true)
@@ -18,35 +18,41 @@ export function chartRender<T extends ChartBaseElement, D extends ChartValid>(ch
 
   const paddingWrapperS = paddingWrapperRender(chartS)
   const {drawArea, background} = drawAreaRender(paddingWrapperS)
+  const gridArea = gridAreaRender(drawArea)
   const header = headerRender(chartS)
   const title = titleRender(header, chartS)
   const subTitle = subTitleRender(header, chartS)
 
-  return {chartS, paddingWrapperS, header, title, subTitle, drawArea, background}
+  return {chartS, paddingWrapperS, header, title, subTitle, drawArea, background, gridArea}
 }
 
-function paddingWrapperRender<T extends ChartBaseElement, D extends ChartValid>(chartS: ChartBaseSelection<T, D>) {
+function paddingWrapperRender<T extends SVGGroupingElement, D extends ChartValid>(chartS: ChartBaseSelection<T, D>) {
   return chartS
     .selectAll<SVGSVGElement, D>('.padding-wrapper')
     .data([chartS.datum()])
-    .join('svg')
+    .join('g')
     .classed('padding-wrapper', true)
 }
 
-
-function drawAreaRender<T extends ChartBaseElement, D extends ChartValid>(paddingS: ChartBaseSelection<T, D>) {
+function drawAreaRender<T extends SVGGroupingElement, D extends ChartValid>(paddingS: ChartBaseSelection<T, D>) {
   const drawArea = paddingS
-    .selectAll<SVGHTMLElement, T>('.draw-area')
+    .selectAll<SVGSVGElement, T>('.draw-area')
     .data([paddingS.datum()])
-    .join('svg')
+    .join('g')
     .classed('draw-area', true)
+    .attr('data-ignore-layout-children', true)
 
-  const background = drawArea
-    .selectAll<SVGHTMLElement, T>('.background')
-    .data([paddingS.datum()])
-    .join('rect')
+  const boundsAttr = rectFromString(drawArea.attr('bounds') || '0 0 0 0');
+  const background = bgSVGOnlyFixedRender(drawArea, {...boundsAttr, x: 0, y:0})
     .classed('background', true)
   return {drawArea, background}
+}
+
+function gridAreaRender(drawAreaS: Selection<SVGGroupingElement>) {
+  return drawAreaS.selectAll('.grid-area')
+    .data([null])
+    .join('g')
+    .classed('grid-area', true)
 }
 
 function headerRender(selection: Selection<SVGSVGElement | SVGGElement, ChartValid>) {
@@ -57,7 +63,7 @@ function headerRender(selection: Selection<SVGSVGElement | SVGGElement, ChartVal
     .classed('header', true);
 }
 
-function titleRender<T extends ChartBaseElement, D extends ChartValid>
+function titleRender<T extends SVGGroupingElement, D extends ChartValid>
 (header: ChartBaseSelection<T, D>, chart: ChartBaseSelection<T, D>){
   const chartElement = elementFromSelection(chart)
    return header
@@ -71,7 +77,7 @@ function titleRender<T extends ChartBaseElement, D extends ChartValid>
     .text((d) => d);
 }
 
-function subTitleRender<T extends ChartBaseElement, D extends ChartValid>
+function subTitleRender<T extends SVGGroupingElement, D extends ChartValid>
 (header: ChartBaseSelection<T, D>, chart: ChartBaseSelection<T, D>){
   const chartElement = elementFromSelection(chart)
   return header

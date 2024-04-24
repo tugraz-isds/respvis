@@ -106,7 +106,8 @@ export const Primary: Story = {
           unit: 'rem'
         }
       },
-      configureAxis: (axis) => axis.tickFormat(format('.3d'))
+      configureAxis: (axis) => axis.tickFormat(format('.3d')),
+      gridLineFactor: 1
     },
     y: {
       title: 'Car Price [EU]',
@@ -116,7 +117,8 @@ export const Primary: Story = {
         mapping: {0: (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s'))),
           2: (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))
         }
-      }
+      },
+      gridLineFactor: 1
     },
     legend: {
       title: {

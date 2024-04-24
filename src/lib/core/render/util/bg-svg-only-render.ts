@@ -6,7 +6,7 @@ type bgSVGOnlyData = {
   offsetX?: number
   offsetY?: number
 }
-export function bgSVGOnlyRender<D extends bgSVGOnlyData>(parentS: Selection<SVGGraphicsElement>, data?: D[], refS?: Selection<SVGGraphicsElement>) {
+export function bgSVGOnlyBBoxRender<D extends bgSVGOnlyData>(parentS: Selection<SVGGraphicsElement>, data?: D[], refS?: Selection<SVGGraphicsElement>) {
   const backgroundS = parentS.selectChildren<SVGRectElement, bgSVGOnlyData>(`.${backgroundSVGOnly}`)
     .data(data ?? [{} as bgSVGOnlyData])
     .join('rect')

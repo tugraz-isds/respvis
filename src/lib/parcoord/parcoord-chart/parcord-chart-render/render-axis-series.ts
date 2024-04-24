@@ -10,7 +10,6 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>)
   const {series, renderer} = chartS.datum()
 
   const axisSeriesS = axisSeriesRender()
-  if (!axisSeriesS.attr('bounds')) return
 
   const filteredSeries = series.cloneFiltered().cloneZoomed().cloneInverted()
 

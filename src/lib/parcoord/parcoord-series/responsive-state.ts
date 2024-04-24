@@ -32,6 +32,7 @@ export class ParcoordSeriesResponsiveState extends SeriesResponsiveState {
     super.update();
     const {horizontal, vertical} = this.drawAreaRange()
     const currentAxesSpaceRange = this.currentlyFlipped ? vertical : horizontal
+
     this._axisLayout = this.currentlyFlipped ? 'bottom' : 'left'
     const orientation = this.currentlyFlipped ? 'horizontal' : 'vertical'
 

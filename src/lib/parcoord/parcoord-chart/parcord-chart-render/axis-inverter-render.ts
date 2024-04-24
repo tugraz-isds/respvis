@@ -1,7 +1,7 @@
 import {pathArrowBigDown, pathArrowBigLeft} from "../../../core";
 import {Selection} from "d3";
 import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
-import {bgSVGOnlyRender} from "../../../core/render/util/bg-svg-only-render";
+import {bgSVGOnlyBBoxRender} from "../../../core/render/util/bg-svg-only-render";
 import {bboxDiffSVG} from "../../../core/utilities/position/diff";
 
 //TODO: Refactor out duplicated code
@@ -19,8 +19,8 @@ export function axisInverterRenderVerticalChart(axisS: Selection<SVGGElement, Ke
   const inverterIconS = pathArrowBigLeft(axisS, ['axis-inverter'])
   inverterIconS.selectAll('path')
 
-  const inverterIconRgroupBgS = bgSVGOnlyRender(inverterIconS.selectAll('.rotation-group'), [{ scale: 1.6, offsetX: 1, offsetY: 1 }], inverterIconS.selectAll('.rotation-group'))
-  const inverterIconBgS = bgSVGOnlyRender(inverterIconS, undefined, inverterIconS )
+  const inverterIconRgroupBgS = bgSVGOnlyBBoxRender(inverterIconS.selectAll('.rotation-group'), [{ scale: 1.6, offsetX: 1, offsetY: 1 }], inverterIconS.selectAll('.rotation-group'))
+  const inverterIconBgS = bgSVGOnlyBBoxRender(inverterIconS, undefined, inverterIconS )
   const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
 
   const domainS = axisS.select<SVGPathElement>('.domain')
@@ -56,8 +56,8 @@ export function axisInverterRenderHorizontalChart(axisS: Selection<SVGGElement, 
 
   inverterIconS.selectAll('path').attr('transform', 'scale(0.8) translate(-3, -3)')
 
-  const inverterIconRgroupBgS = bgSVGOnlyRender(inverterIconS.selectAll('.rotation-group'), [{ scale: 1.6, offsetX: 1, offsetY: 1 }], inverterIconS.selectAll('.rotation-group'))
-  const inverterIconBgS = bgSVGOnlyRender(inverterIconS, undefined, inverterIconS )
+  const inverterIconRgroupBgS = bgSVGOnlyBBoxRender(inverterIconS.selectAll('.rotation-group'), [{ scale: 1.6, offsetX: 1, offsetY: 1 }], inverterIconS.selectAll('.rotation-group'))
+  const inverterIconBgS = bgSVGOnlyBBoxRender(inverterIconS, undefined, inverterIconS )
   const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
 
   axisS.classed('axis-inverted', originalSeries.axesInverted[axisIndex])

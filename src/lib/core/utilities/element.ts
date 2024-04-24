@@ -16,6 +16,21 @@ export function elementRelativeBounds(element: Element): Rect {
   );
 }
 
+export function elementAbsoluteBounds(element: SVGGraphicsElement) {
+  const viewPortE = element.closest('svg')
+  console.assert(element.isConnected && viewPortE, 'Element needs to be attached to the DOM and must have SVG Ancestor.');
+  if (!viewPortE || !('getBBox' in element)) return rectRound(element.getBoundingClientRect(), 2)
+  const elementBoundsFromViewport = element.getBoundingClientRect()
+  const elementBoundsBBox = element.getBBox()
+  const finalBounds = {
+    x:  elementBoundsFromViewport.x - elementBoundsBBox.x,
+    y: elementBoundsFromViewport.y - elementBoundsBBox.y,
+    width: elementBoundsBBox.width,
+    height: elementBoundsBBox.height
+  }
+  return rectRound(finalBounds, 2);
+}
+
 // inspired by https://stackoverflow.com/a/22909984
 export function elementComputedStyleWithoutDefaults(
   element: Element,

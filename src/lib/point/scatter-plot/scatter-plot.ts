@@ -1,11 +1,12 @@
 import {Selection} from 'd3';
-import {cartesianAxisRender, rectFromString, WindowValid,} from '../../core';
+import {cartesianAxisRender, cartesianGridRender} from '../../cartesian';
 import {scatterPlotRender} from "./scatter-plot-render";
 import {ScatterPlotArgs, ScatterPlotValid, scatterPlotValidation} from "./scatter-plot-validation";
 import {getMaxRadius} from "../../core/data/radius/radius-util";
 import {elementFromSelection} from "../../core/utilities/d3/util";
-import {CartesianChart} from "../../core/render/chart/cartesian-chart/cartesian-chart";
-import {originLineRender} from "../../core/render/chart/cartesian-chart/cartesian-chart-render";
+import {CartesianChart} from "../../cartesian/cartesian-chart/cartesian-chart";
+import {originLineRender} from "../../cartesian/cartesian-chart/cartesian-chart-render/cartesian-chart-render";
+import {rectFromString, WindowValid} from "../../core";
 
 type WindowSelection = Selection<HTMLDivElement, WindowValid & ScatterPlotValid>;
 type ChartSelection = Selection<SVGSVGElement, WindowValid & ScatterPlotValid>;
@@ -30,6 +31,7 @@ export class ScatterPlot extends CartesianChart {
     scatterPlotRender(this.chartS!)
     this.chartS.call(cartesianAxisRender)
     this.chartS.call(originLineRender)
+    this.chartS.call(cartesianGridRender)
   }
 
   protected override preRender() {

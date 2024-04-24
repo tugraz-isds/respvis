@@ -1,5 +1,5 @@
 import {Selection} from "d3";
-import {layouterRender} from "../../layouter";
+import {layouterRender} from "../../layouter/layouter";
 import {updateCSSForSelection} from "../../data/breakpoint/breakpoint";
 import {SVGHTMLElement} from "../../constants/types";
 import {WindowValid} from "./window-validation";

@@ -5,7 +5,7 @@ const {copyExampleDependencies} = require("./gulp-tasks/copyExampleDependencies"
 const {createExampleDependencies} = require("./gulp-tasks/createExampleDependencies");
 const {bundleJS} = require("./gulp-tasks/bundleJS");
 const {bundleDeclaration} = require("./gulp-tasks/bundleDeclaration");
-const {buildLibSCSS} = require("./gulp-tasks/buildSCSS");
+const {buildLibCSS} = require("./gulp-tasks/buildCSS");
 const {copyExamples} = require("./gulp-tasks/copyExamples");
 const {watcher} = require("./gulp-tasks/watcher");
 const {cleanExampleDependencies} = require("./gulp-tasks/cleanExampleDependencies")
@@ -36,18 +36,18 @@ function cleanNodeModules() {
 
 exports.genBase64 = gulp.series(() => genBase64SVGs(`${iconsDir}/**/*.svg`, utilDepsDir))
 
-exports.clean = gulp.parallel(cleanDist, cleanPackage)
-
 exports.cleanExampleDeps = gulp.series(cleanExampleDependencies)
 
-exports.cleanAll = gulp.parallel(exports.clean, cleanExampleDependencies, cleanPackageLock, cleanNodeModules)
+exports.clean = gulp.parallel(cleanDist, cleanPackage, exports.cleanExampleDeps)
+
+exports.cleanAll = gulp.parallel(exports.clean, cleanPackageLock, cleanNodeModules)
 
 // TODO: add proxy respvis.js for typescript support in all concerned directories
 exports.build = gulp.series(
   exports.clean,
   gulp.parallel(
     gulp.series(bundleJS, bundleDeclaration),
-    buildLibSCSS
+    buildLibCSS
   ),
   createExampleDependencies,
   copyExampleDependencies,

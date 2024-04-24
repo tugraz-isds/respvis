@@ -95,6 +95,7 @@ export const Primary: Story = {
         width: axisBoundsWidth,
         height: axisBoundsHeight
       },
+      gridLineFactor: 1
       // tickOrientation: tickOrientationHorizontal,
       // tickOrientationFlipped: tickOrientationVertical
     },
@@ -105,6 +106,7 @@ export const Primary: Story = {
         height: axisBoundsHeight,
         width: axisBoundsWidth
       },
+      gridLineFactor: 1,
       // tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,
       configureAxis: {

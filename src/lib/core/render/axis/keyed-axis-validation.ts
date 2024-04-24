@@ -1,13 +1,13 @@
-import {AxisBaseArgs, AxisBaseValid, axisBaseValidation} from "./axis-base-validation";
+import {BaseAxisArgs, BaseAxisValid, baseAxisValidation} from "./base-axis-validation";
 import {ActiveKeyMap, AxisKey} from "../../constants/types";
 import {ParcoordSeries} from "../../../parcoord";
 
-export type KeyedAxisArgs = AxisBaseArgs & {
+export type KeyedAxisArgs = BaseAxisArgs & {
   key: AxisKey
   series: ParcoordSeries
 }
 
-export type KeyedAxisValid = AxisBaseValid & {
+export type KeyedAxisValid = BaseAxisValid & {
   series: ParcoordSeries //If a chart similar to parcoord is integrated, create interface
   key: AxisKey
   keysActive: ActiveKeyMap
@@ -23,7 +23,7 @@ export function keyedAxisValidation(args:KeyedAxisArgs): KeyedAxisValid {
   keysActive[args.key] = true
 
   return {
-    ...axisBaseValidation(args),
+    ...baseAxisValidation(args),
     series: args.series,
     key: args.key,
     keysActive,
