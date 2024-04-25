@@ -4,6 +4,9 @@
 
 .window-rv {
   container-type: inline-size;
+  --chart-padding-top: 0.5rem;
+  --chart-padding-bottom: 1rem;
+  --chart-padding-left: 1rem;
 /*//Legend To Bottom*/
 @container style(--layout-width: 0) or style(--layout-width: 1) or style(--layout-width: 2) {
   .chart {

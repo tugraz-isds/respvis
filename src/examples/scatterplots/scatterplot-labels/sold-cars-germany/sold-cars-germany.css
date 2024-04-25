@@ -1,40 +1,38 @@
 #sold-cars-germany {
   width: 100%;
-}
-
-.window-rv {
-  container-type: inline-size;
-}
-@container style(--layout-width: 0) or style(--layout-width: 1) or style(--layout-width: 2) {
-  .window-rv .series-label {
-    transform: translate(5px, -40px);
-  }
-  .window-rv .axis-y .tick {
-    display: none;
-  }
-  .window-rv .axis-y .tick:nth-of-type(2n + 1), .window-rv .axis-y .tick:first-of-type, .window-rv .axis-y .tick:last-of-type {
-    display: block;
-  }
-}
-@container style(--layout-width: 0) or style(--layout-width: 1) {
-  .window-rv .chart {
-    grid-template: auto 1fr auto/1fr;
-    grid-template-areas: "header" "padding-wrapper" "legend";
-  }
-  .window-rv .legend {
-    width: 100%;
-    margin-bottom: 2rem;
-    margin-left: 0.5rem;
-    flex-direction: row;
-    justify-content: center;
-  }
-  .window-rv .legend .items {
-    display: grid;
-    width: 100%;
-    justify-content: space-between;
-    grid-template-columns: auto auto auto;
-  }
-  .window-rv .legend .items .legend-item {
-    justify-content: flex-start;
+  .window-rv {
+    container-type: inline-size;
+    --chart-padding-top: 0.5rem;
+    --chart-padding-right: 1rem;
+    @container style(--layout-width: 0) or style(--layout-width: 1) or style(--layout-width: 2) {
+      .axis-y .tick {
+        display: none;
+      }
+      .axis-y .tick:nth-of-type(2n + 1), .axis-y .tick:first-of-type, .axis-y .tick:last-of-type {
+        display: block;
+      }
+    }
+    @container style(--layout-width: 0) or style(--layout-width: 1) {
+      .chart {
+        grid-template: auto 1fr auto/1fr;
+        grid-template-areas: "header" "padding-wrapper" "legend";
+        --chart-padding-right: 3rem;
+      }
+      .legend {
+        width: 100%;
+        margin-bottom: 2rem;
+        flex-direction: row;
+        justify-content: center;
+      }
+      .legend .items {
+        display: grid;
+        width: 100%;
+        justify-content: space-between;
+        grid-template-columns: auto auto auto;
+      }
+      .legend .items .legend-item {
+        justify-content: flex-start;
+      }
+    }
   }
 }

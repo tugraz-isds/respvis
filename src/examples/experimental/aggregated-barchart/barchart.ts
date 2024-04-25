@@ -8,11 +8,6 @@ export function createBarChart(selector: string) {
       dependentOn: 'width',
       mapping: {0: 90, 1: 90, 3: 30} //{0: 90, 1: -180, 3: 179} // demonstration purposes
   } as const
-  const tickOrientationVertical = {
-    scope: 'self',
-    dependentOn: 'height',
-    mapping: {0: 0, 3: 90} //{0: -180, 1: -180, 3: 179} // demonstration purposes
-  } as const
   const axisBoundsWidth = {
     values: [10, 30, 50],
       unit: 'rem'
@@ -25,14 +20,12 @@ export function createBarChart(selector: string) {
     series: {
       x: { values: data.months, scale: d3.scaleBand().domain(data.years).padding(0.1) },
       y: { values: data.anomalies, scale: d3.scaleLinear().domain([-2, 3])},
-      //scale: d3.scaleLinear().domain([Math.min(...data.anomalies), Math.max(...data.anomalies)]).nice()
-      // categoriesTitle: 'City',
       markerTooltips: {
         tooltips: (i, d) => `Month: ${d.xValue}<br/>Anomalie: ${d.yValue}°C`,
       },
       flipped: {
         dependentOn: 'width',
-        mapping: {0: true, 2: false}
+        mapping: {0: true, 3: false}
       },
       labels: {
         values: data.anomalies,

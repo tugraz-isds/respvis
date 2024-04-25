@@ -7,6 +7,7 @@ import {ScaledValues} from "../../data/scale/scaled-values-base";
 import {KeyedAxisValid} from "./keyed-axis-validation";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 import {CartesianAxisValid} from "../../../cartesian/cartesian-axis-validation";
+import {Series} from "../series";
 
 export type BaseAxisUserArgs = {
   bounds?: Partial<LayoutBreakpoints>
@@ -19,6 +20,7 @@ export type BaseAxisUserArgs = {
 
 export type BaseAxisArgs = BaseAxisUserArgs & RenderArgs & {
   scaledValues: ScaledValues
+  series: Series
 }
 
 export type BaseAxisValid = Required<Omit<BaseAxisArgs, 'bounds'>> & {
@@ -35,6 +37,7 @@ export interface ConfigureAxisFn {
 export function baseAxisValidation(data: BaseAxisArgs): AxisValid {
   return {
     renderer: data.renderer,
+    series: data.series,
     scaledValues: data.scaledValues,
     title: data.title || '',
     subTitle: data.subTitle || '',

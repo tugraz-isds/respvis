@@ -29,7 +29,7 @@ export function tickAngleCalculation(axisS: AxisSelection) {
 
 function calcTickAngleOrInterpolationData(axisS: AxisSelection) {
   const {renderer, bounds, ...restAxisD} = axisS.datum()
-  const isFlipped = renderer.chartS?.attr('data-flipped') === 'true'
+  const isFlipped = restAxisD.series.responsiveState.currentlyFlipped
   const tickOrientation = isFlipped ? restAxisD.tickOrientationFlipped : restAxisD.tickOrientation
 
   if (!isResponsiveValueByValue(tickOrientation)) {

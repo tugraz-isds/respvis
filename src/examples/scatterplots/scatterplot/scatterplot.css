@@ -5,6 +5,8 @@
 
   .window-rv {
     container-type: inline-size;
+    --chart-padding-bottom: 1rem;
+    --chart-padding-left: 1rem;
 
     .legend {
       align-items: flex-start;

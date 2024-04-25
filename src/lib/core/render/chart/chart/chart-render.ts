@@ -45,7 +45,7 @@ function drawAreaRender<T extends SVGGroupingElement, D extends ChartValid>(padd
     .classed('draw-area', true)
     .attr('data-ignore-layout-children', true)
 
-  const boundsAttr = rectFromString(drawArea.attr('bounds') || '0 0 0 0');
+  const boundsAttr = rectFromString(drawArea.attr('bounds') || '0, 0, 0, 0');
   const background = bgSVGOnlyFixedRender(drawArea, {...boundsAttr, x: 0, y: 0})
     .classed('background', true)
 
