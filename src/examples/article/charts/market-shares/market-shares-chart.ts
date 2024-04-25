@@ -1,13 +1,13 @@
 import {BarChart, BarChartUserArgs} from '../../libs/respvis/respvis.js';
 import * as d3 from '../../libs/d3-7.6.0/d3.js'
 import {
-  desktop,
-  desktopCategory,
-  phone,
-  phoneCategory,
-  tablet,
-  tabletCategory,
-  years
+    desktop,
+    desktopCategory,
+    phone,
+    phoneCategory,
+    tablet,
+    tabletCategory,
+    years
 } from './data/desktop-phone-tablet.js';
 
 
@@ -20,11 +20,6 @@ export function createMarketSharesChart(selector) {
         scope: 'self',
         dependentOn: 'width',
         mapping: {0: 90, 3: 0} //{0: 90, 1: -180, 3: 179} // demonstration purposes
-    } as const
-    const tickOrientationVertical = {
-        scope: 'self',
-        dependentOn: 'height',
-        mapping: {0: 0, 3: 90} //{0: -180, 1: -180, 3: 179} // demonstration purposes
     } as const
     const axisBoundsWidth = {
         values: [10, 30, 50],
@@ -55,6 +50,14 @@ export function createMarketSharesChart(selector) {
                 dependentOn: 'width',
                 mapping: {0: true, 2: false}
             },
+            labels: {
+                values: sharesWhole.map(share => share.toString()), position: 'center',
+                format: (bar, label) => {
+                    const labelFormatted = d3.format('.2s')(label)
+                    return ((bar.width <= 20 && labelFormatted.length > 2)
+                      || bar.height <= 15) ? '' : labelFormatted
+                }
+            }
         },
         bounds: {
             width: {
@@ -97,9 +100,6 @@ export function createMarketSharesChart(selector) {
 
     const chartWindow = d3.select(selector).append('div')
     const renderer = new BarChart(chartWindow, barChartArgs)
-    renderer.addCustomListener('resize.custom', (event, data) => {
-        // chooseResponsiveData(event.target, data)
-    })
     renderer.buildChart()
 }
 
