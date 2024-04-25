@@ -16,6 +16,7 @@ export function chartRender<T extends SVGGroupingElement, D extends ChartValid>(
   updateCSSForSelection(chartS)
 
   chartS.classed('chart', true)
+    .classed('layout-container', true)
     .attr('xmlns', 'http://www.w3.org/2000/svg')
 
   const paddingWrapperS = paddingWrapperRender(chartS)

@@ -2,14 +2,16 @@
   width: calc(100% - 1.5rem);
   height: 75vh;
   min-height: 25rem;
-  & svg.chart {
-    --chart-padding-top: 1rem;
-    --chart-padding-right: 4rem;
+  container-type: inline-size;
+
+  @container (width < 30rem) {
+    .window-rv {
+      --chart-padding-right: 4rem;
+    }
   }
-  .padding-wrapper {
-    padding-top: 3rem;
-  }
-  .draw-area {
-    overflow: visible;
+  @container (width >= 30rem) {
+    .window-rv {
+      --chart-padding-top: 1rem;
+    }
   }
 }

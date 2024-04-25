@@ -34,13 +34,19 @@ function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGTwinInforma
 }
 
 function layoutNodeClassAttr(selection: Selection<HTMLDivElement, SVGTwinInformation>): void {
-  selection
-    .each((d, i, g) => {
-      const classList = d.element.getAttribute('class')?.split(/\s+/) ?? []
-      g[i].classList.add(...classList)
-      select(g[i]).classed(d.element.tagName, true)
-    })
-    .classed('layout', true);
+  selection.each((d, i, g) => {
+    select(g[i]).attr('class', d.element.getAttribute('class'))
+      .each((_, i, g) => select(g[i]).classed(d.element.tagName, true))
+      .classed('layout', true);
+  })
+  // Alternatively preserve classes method:
+  // selection
+  //   .each((d, i, g) => {
+  //     const classList = d.element.getAttribute('class')?.split(/\s+/) ?? []
+  //     g[i].classList.add(...classList)
+  //     select(g[i]).classed(d.element.tagName, true)
+  //   })
+  //   .classed('layout', true);
 }
 
 function layoutNodeDataAttrs(selection: Selection<HTMLDivElement, SVGTwinInformation>): void {
@@ -108,7 +114,6 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGTwinInformatio
       return anyChanged
     }
 
-
     if (changed) {
       svgS.attr('bounds', rectToString(bounds));
       switch (svgE.tagName) {
@@ -149,7 +154,7 @@ function layoutNodeChildren(
     .data((d) => layedOutChildren(d))
     .join(enter => {
       const div = enter.append('div')
-      div.each(function(d, i, g) {
+      div.each(function (d, i, g) {
         if (!d.element.classList.contains('layout-container')) return
         select(g[i])
           .classed('layout layout-container-positioner', true)
@@ -157,7 +162,7 @@ function layoutNodeChildren(
       })
       return div
     })
-    .each(function(d, i, g) {
+    .each(function (d, i, g) {
       if (!select(g[i]).classed('layout layout-container-positioner')) return
       select(g[i]).selectChildren('.layout.layout-container')
         .data([d])
@@ -229,7 +234,7 @@ function layoutLayouter(layouter: HTMLDivElement): Selection<HTMLDivElement, SVG
       ignoreBounds: false
     }])
     .join('div')
-    .classed('layout layout-container', true)
+    // .classed('layout layout-container', true)
 }
 
 
@@ -251,7 +256,7 @@ export function layoutContainerCompute(layoutContainerS: Selection<HTMLDivElemen
 
     layouterS.selectAll<HTMLDivElement, SVGElement>('.layout').each(function () {
       const layoutS = select<HTMLDivElement, SVGTwinInformation>(this);
-      if(layoutS.datum().ignoreBounds) return
+      if (layoutS.datum().ignoreBounds) return
       const boundsChanged = layoutNodeBounds(layoutS);
       anyBoundsChanged = anyBoundsChanged || boundsChanged;
     });
