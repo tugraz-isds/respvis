@@ -1,9 +1,9 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {BarChartUserArgs} from "../../../../../lib";
+import {BarChartUserArgs} from "../../../../../../lib";
 import StackedBarChartCSS from './stacked-bar-chart.css?inline'
-import {rawCode} from "../../../util/raw-code";
-import {DesktopPhoneTabletData} from '../../data'
-import {renderBarChart} from "../render-line.chart";
+import {rawCode} from "../../../../util/raw-code";
+import {DesktopPhoneTabletData} from '../../../data'
+import {renderBarChart} from "../render-bar.chart";
 import {format, scaleLinear} from "d3";
 
 const {
@@ -17,7 +17,7 @@ const {
 } = DesktopPhoneTabletData
 
 const meta = {
-  title: 'Charts/Bar Charts/Stacked Bar Chart',
+  title: 'Charts/Cartesian Charts/Bar Charts/Stacked Bar Chart',
   parameters: {
     docs: {
       story: {

@@ -1,16 +1,16 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {formatWithDecimalZero, LineChartUserArgs} from "../../../../../lib";
+import {formatWithDecimalZero, LineChartUserArgs} from "../../../../../../lib";
 import {format} from "d3";
 import axisTransformations from './single-line-chart-axis-transformations.css?inline'
 import sparkLineTransformation from './single-line-chart-spark-line.css?inline'
-import {rawCode} from "../../../util/raw-code";
-import {StudentTUGrazData} from '../../data'
+import {rawCode} from "../../../../util/raw-code";
+import {StudentTUGrazData} from '../../../data'
 import {renderLineChart} from "../render-line.chart";
 
 const {students, years} = StudentTUGrazData
 
 const meta = {
-  title: 'Charts/Line Charts/Single Line Chart',
+  title: 'Charts/Cartesian Charts/Line Charts/Single Line Chart',
   // subtitle: 'Line Chart',
   // tags: ['autodocs'],
   parameters: {

@@ -1,15 +1,15 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {BarChartUserArgs} from "../../../../../lib";
-import standardBarChartCSS from './standard-bar-chart.css?inline'
-import {rawCode} from "../../../util/raw-code";
-import {AustrianCitiesData} from '../../data'
-import {renderBarChart} from "../render-line.chart";
+import {BarChartUserArgs} from "../../../../../../lib";
+import GroupedBarChartCSS from './grouped-bar-chart.css?inline'
+import {rawCode} from "../../../../util/raw-code";
+import {CompensationEmployeeData} from '../../../data'
+import {renderBarChart} from "../render-bar.chart";
 import {format} from "d3";
 
-const {cities, populations} = AustrianCitiesData.default
+const {compensations, sites, years} = CompensationEmployeeData
 
 const meta = {
-  title: 'Charts/Bar Charts/Standard Bar Chart',
+  title: 'Charts/Cartesian Charts/Bar Charts/Grouped Bar Chart',
   parameters: {
     docs: {
       story: {
@@ -49,10 +49,19 @@ export const Primary: Story = {
   name: 'Fully Responsive',
   args: {
     series: {
-      x: { values: cities },
-      y: { values: populations },
+      type: 'grouped',
+      x: { values: sites },
+      y: { values: compensations },
+      categories: {
+        values: years,
+        title: 'Years'
+      },
       markerTooltips: {
-        tooltips: (i, d) => `City: ${d.xValue}<br/>Population: ${d.yValue}`,
+        tooltips: ((e, d) => {
+          return `Site: ${d.xValue}<br/>
+                Total Remuneration: $${format(',')(d.yValue)}<br/>
+                Year: ${d.tooltipLabel}<br/>`
+        })
       },
       flipped: {
         dependentOn: 'width',
@@ -62,7 +71,10 @@ export const Primary: Story = {
         in: 20,
         out: 1
       },
-      labels: { values: populations, offset: 6}
+      labels: {
+        values: compensations.map(comp => format('.2s')(comp)),
+        offset: 6, position: 'dynamic'
+      }
     },
     bounds: {
       width: {
@@ -70,46 +82,43 @@ export const Primary: Story = {
         unit: 'rem'
       }
     },
-    title: {
-      dependentOn: 'width',
-      mapping: {0: 'Population of Austria', 2: 'Population of Austrian Cities'},
+    legend: {
+      title: 'Year'
     },
+    // title: {
+    //   dependentOn: 'width',
+    //   mapping: {0: 'Population of Austria', 2: 'Population of Austrian Cities'},
+    // },
     x: {
-      title: 'Cities',
+      title: 'Country',
       bounds: {
         width: axisBoundsWidth,
         height: axisBoundsHeight
       },
-      tickOrientation: tickOrientationHorizontal,
-      tickOrientationFlipped: tickOrientationVertical,
       gridLineFactor: 1
+      // tickOrientation: tickOrientationHorizontal,
+      // tickOrientationFlipped: tickOrientationVertical
     },
     y: {
-      title: 'Population',
+      title: 'Total Remuneration',
+      subTitle: '[EU]',
       bounds: {
         height: axisBoundsHeight,
         width: axisBoundsWidth
       },
-      tickOrientation: tickOrientationVertical,
+      gridLineFactor: 1,
+      // tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,
-      configureAxis: (axis) => axis.tickFormat(format('.2s')),
-      gridLineFactor: 1
-    },
-    // zoom: { //TODO: make bar chart work with zooming!
-    //   in: 20,
-    //   out: 1
-    // }
-    // legend: {
-    //   title: {
-    //     dependentOn: 'width',
-    //     scope: 'chart',
-    //     mapping: {0: '', 3: 'Legend'}
-    //   }
-    // }
+      configureAxis: {
+        dependentOn: 'width',
+        scope: 'chart',
+        mapping: {0: (axis) => axis.tickFormat(format('.2s')), 3: (axis) => axis.tickFormat()}
+      },
+    }
   },
   parameters: {
     sources: {
-      css: { title: 'CSS Code', code: standardBarChartCSS },
+      css: { title: 'CSS Code', code: GroupedBarChartCSS },
     }
   }
 }

@@ -1,6 +1,6 @@
-import {BarChart, BarChartUserArgs} from "../../../../lib";
+import {BarChart, BarChartUserArgs} from "../../../../../lib";
 import type {StoryContext} from "@storybook/html";
-import {renderChartMeta} from "../../util/render-chart-meta";
+import {renderChartMeta} from "../../../util/render-chart-meta";
 import {select, Selection} from "d3";
 
 export const renderBarChart = (args: BarChartUserArgs, context: StoryContext<BarChartUserArgs>) => {

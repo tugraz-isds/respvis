@@ -1,8 +1,8 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {formatWithDecimalZero, Point, ScatterPlotUserArgs} from "../../../../lib";
+import {formatWithDecimalZero, Point, ScatterPlotUserArgs} from "../../../../../lib";
 import standardBarChartCSS from './scatterplot.css?inline'
-import {rawCode} from "../../util/raw-code";
-import {SoldCarsGermanyData} from '../data'
+import {rawCode} from "../../../util/raw-code";
+import {SoldCarsGermanyData} from '../../data'
 import {format, scaleLinear} from "d3";
 import {renderScatterplot} from "./render-scatterplot";
 
@@ -13,7 +13,7 @@ const allPrices = carData.map(entry => entry.price)
 const allMileages = carData.map(entry => entry.mileage)
 
 const meta = {
-  title: 'Charts/Scatterplot',
+  title: 'Charts/Cartesian Charts/Scatterplot',
   parameters: {
     docs: {
       story: {

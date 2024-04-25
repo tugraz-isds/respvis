@@ -1,8 +1,8 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {LineChartUserArgs} from "../../../../../lib";
+import {LineChartUserArgs} from "../../../../../../lib";
 import {format} from "d3";
-import {rawCode} from "../../../util/raw-code";
-import {PowerConsumptionData} from '../../data'
+import {rawCode} from "../../../../util/raw-code";
+import {PowerConsumptionData} from '../../../data'
 import {renderLineChart} from "../render-line.chart";
 import FullyResponsiveCSS from './multi-line-chart.css?inline'
 
@@ -13,7 +13,7 @@ const categories = [
   ...yAsia.map(() => 'Asia')]
 
 const meta = {
-  title: 'Charts/Line Charts/Multi Line Chart',
+  title: 'Charts/Cartesian Charts/Line Charts/Multi Line Chart',
   parameters: {
     docs: {
       story: {
