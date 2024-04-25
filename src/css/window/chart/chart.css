@@ -17,6 +17,10 @@
   padding-bottom: 1rem;
 }
 
+.padding-wrapper {
+  grid-area: padding-wrapper;
+}
+
 .draw-area {
   grid-area: draw-area;
 }

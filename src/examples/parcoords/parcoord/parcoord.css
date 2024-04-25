@@ -2,8 +2,8 @@
   width: 100%;
   height: 75vh;
   min-height: 25rem;
-  .padding-wrapper {
-    padding-right: 8rem;
-    padding-left: 4rem;
+  .chart-parcoord {
+    --chart-padding-left: 4rem;
+    --chart-padding-right: 4rem;
   }
 }

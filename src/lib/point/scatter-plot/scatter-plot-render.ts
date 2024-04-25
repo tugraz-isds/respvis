@@ -13,14 +13,12 @@ export function scatterPlotRender(chartS: ScatterplotSVGChartSelection) {
   const series = chartS.datum().series.cloneFiltered().cloneZoomed() as PointSeries
   const points = pointsCreate(series, false)
   const drawAreaS = chartS.datum().renderer.drawAreaS
-  const drawAreaClipPathS = chartS.datum().renderer.drawAreaClipPathS
 
   drawAreaS.selectAll<SVGGElement, PointSeries>('.series-point')
     .data([series])
     .join('g')
     .classed('series-point', true)
     .attr('data-ignore-layout-children', true)
-    .attr('clip-path', `url(#${drawAreaClipPathS.attr('id')})`)
     .call(s => pointsRender(s, points))
     .call(addHighlight)
     .call(seriesConfigTooltipsHandleEvents)

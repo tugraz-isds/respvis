@@ -19,7 +19,6 @@ export function lineChartRender(selection: LineChartSVGChartSelection) {
 
 function renderAllSeriesOfLines(chartS: LineChartSVGChartSelection) {
   const series = chartS.datum().series.cloneZoomed().cloneFiltered() as LineSeries
-  const drawAreaClipPathS = chartS.datum().renderer.drawAreaClipPathS
   const drawAreaS = chartS.datum().renderer.drawAreaS
   const createSelection = (type: 'line' | 'point-line') => {
     return drawAreaS
@@ -28,7 +27,6 @@ function renderAllSeriesOfLines(chartS: LineChartSVGChartSelection) {
       .join('g')
       .classed(`series-${type}`, true)
       .attr('data-ignore-layout-children', true)
-      .attr('clip-path', `url(#${drawAreaClipPathS.attr('id')})`)
   }
 
   createSelection('line')

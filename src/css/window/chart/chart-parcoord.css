@@ -1,10 +1,15 @@
 .chart.chart-parcoord {
+  --chart-padding-left: 3rem;
+  --chart-padding-top: 3rem;
+  --chart-padding-right: 3rem;
+  --chart-padding-bottom: 3rem;
   .padding-wrapper {
     display: grid;
-    grid-area: padding-wrapper;
-    grid-template: 1fr / 1fr;
-    grid-template-areas: 'draw-area';
-    padding: 3rem;
+    grid-template: auto 1fr auto / auto 1fr auto;
+    grid-template-areas:
+    '. padding-container--top .'
+    'padding-container--left draw-area padding-container--right'
+    '. padding-container--bottom .';
     overflow: hidden;
     .draw-area {
       overflow: visible

@@ -22,7 +22,6 @@ export function chartDownload<Datum>(
 
     applyDownloadStyle(g[i], clonedChart, renderer)
 
-    //TODO: Maybe include decimals in settings
     optimizeSVG(select(clonedChart), renderer)
 
     const cloneContainer = document.createElement('div');

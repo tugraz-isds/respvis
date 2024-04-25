@@ -1,7 +1,6 @@
 .chart-cartesian, .chart-cartesian[data-legend-position='right'] {
   .padding-wrapper {
     display: grid;
-    grid-area: padding-wrapper;
     grid-template: auto auto 1fr auto auto / auto auto 1fr auto auto;
     grid-template-areas:
     '. . axis-top . .'
@@ -9,15 +8,14 @@
     'axis-left padding-container--left draw-area padding-container--right axis-right'
     '. . padding-container--bottom . .'
     '. . axis-bottom . .';
-    overflow: visible;
   }
 }
 
-.chart-cartesian[data-legend-position='top'] {
-  grid-template: auto auto 1fr / 1fr;
-  grid-template-areas:
-      'header'
-      'legend'
-      'padding-wrapper';
-}
+/*.chart-cartesian[data-legend-position='top'] {*/
+/*  grid-template: auto auto 1fr / 1fr;*/
+/*  grid-template-areas:*/
+/*      'header'*/
+/*      'legend'*/
+/*      'padding-wrapper';*/
+/*}*/
 

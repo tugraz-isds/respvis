@@ -45,7 +45,7 @@ function drawAreaRender<T extends SVGGroupingElement, D extends ChartValid>(padd
     .attr('data-ignore-layout-children', true)
 
   const boundsAttr = rectFromString(drawArea.attr('bounds') || '0 0 0 0');
-  const background = bgSVGOnlyFixedRender(drawArea, {...boundsAttr, x: 0, y:0})
+  const background = bgSVGOnlyFixedRender(drawArea, {...boundsAttr, x: 0, y: 0})
     .classed('background', true)
 
   const gridArea = drawArea.selectAll('.grid-area')
@@ -53,7 +53,7 @@ function drawAreaRender<T extends SVGGroupingElement, D extends ChartValid>(padd
     .join('g')
     .classed('grid-area', true)
 
-  const orientations = ['left', 'top', 'right',  'bottom'] as const
+  const orientations = ['left', 'top', 'right', 'bottom'] as const
   const containerSArr = orientations.map(orientation => paddingContainersRender(paddingS, orientation))
   const [paddingContainerBottomS, paddingContainerTopS, paddingContainerRightS, paddingContainerLeftS] = containerSArr
   const [paddingLeft, paddingTop, paddingRight, paddingBottom] = containerSArr.map((sel, index) => {
@@ -71,19 +71,22 @@ function drawAreaRender<T extends SVGGroupingElement, D extends ChartValid>(padd
     .classed('draw-area__clip', true)
 
   if (!drawAreaClipPath.attr('id')) drawAreaClipPath.attr('id', uniqueId())
-  const clipPathRect = {x: -paddingLeft, y: -paddingTop,
+  const clipPathRect = {
+    x: -paddingLeft, y: -paddingTop,
     width: boundsAttr.width + paddingLeft + paddingRight,
     height: boundsAttr.height + paddingTop + paddingBottom
   }
-
   bgSVGOnlyFixedRender(drawAreaClipPath, clipPathRect)
+  drawArea.attr('clip-path', `url(#${drawAreaClipPath.attr('id')})`)
 
-  return {drawArea, background, gridArea, drawAreaClipPath,
-    paddingContainerBottomS, paddingContainerTopS, paddingContainerRightS, paddingContainerLeftS}
+  return {
+    drawArea, background, gridArea, drawAreaClipPath,
+    paddingContainerBottomS, paddingContainerTopS, paddingContainerRightS, paddingContainerLeftS
+  }
 }
 
 function paddingContainersRender<T extends SVGGroupingElement, D extends ChartValid>
-(paddingS: Selection<T, D>, orientation: AxisOrientation ) {
+(paddingS: Selection<T, D>, orientation: AxisOrientation) {
   return paddingS
     .selectAll<SVGGElement, D>(`.padding-container--${orientation}`)
     .data([null])
@@ -101,9 +104,9 @@ function headerRender(selection: Selection<SVGGroupingElement, ChartValid>) {
 }
 
 function titleRender<T extends SVGGroupingElement, D extends ChartValid>
-(header: Selection<any, D>, chart: Selection<T, D>){
+(header: Selection<any, D>, chart: Selection<T, D>) {
   const chartElement = elementFromSelection(chart)
-   return header
+  return header
     .selectAll('.title')
     .data((d) => [getCurrentRespVal(d.title, {chart: chartElement})])
     .join('g')
@@ -115,7 +118,7 @@ function titleRender<T extends SVGGroupingElement, D extends ChartValid>
 }
 
 function subTitleRender<T extends SVGGroupingElement, D extends ChartValid>
-(header: ChartBaseSelection<any, D>, chart: ChartBaseSelection<T, D>){
+(header: ChartBaseSelection<any, D>, chart: ChartBaseSelection<T, D>) {
   const chartElement = elementFromSelection(chart)
   return header
     .selectAll('.subtitle')

@@ -27,6 +27,8 @@ export function roundSVGAttributes(selection: Selection<SVGElement>, decimals = 
 }
 
 export function removeBackgrounds(selection: Selection<SVGElement>) {
-  selection.selectAll('.background, .background-svgonly')
-    .remove()
+  selection.selectAll<SVGGElement, any>('.background, .background-svgonly')
+    .filter(function () {
+      return !(this.parentNode instanceof SVGClipPathElement) //clippath backgrounds must remain to give clippath bounds!
+    }).remove()
 }
