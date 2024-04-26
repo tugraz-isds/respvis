@@ -8,10 +8,6 @@ export function createScatterplot(selector: string) {
   const allPrices = carData.map(entry => entry.price)
   const allMileages = carData.map(entry => entry.mileage)
 
-  // const horsePowerWithExtrema = [...horsePower, [0, 0, Math.max(...allHorsePower), Math.max(...allHorsePower)]]
-  // const pricesWithExtrema = [...prices, [0, Math.max(...allPrices), 0, Math.max(...allPrices)]]
-  // const mileagesWithExtrema = [...mileages, [Math.max(...allMileages), Math.max(...allMileages), Math.max(...allMileages), Math.max(...allMileages)]]
-
   const baseScaleX = d3.scaleLinear()
     .domain([0, Math.max(...allHorsePower)])
     .nice()

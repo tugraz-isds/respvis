@@ -19,8 +19,9 @@ export function lineChartRender(selection: LineChartSVGChartSelection) {
 
 function renderAllSeriesOfLines(chartS: LineChartSVGChartSelection) {
   const series = chartS.datum().series.cloneZoomed().cloneFiltered() as LineSeries
+  const drawAreaS = chartS.datum().renderer.drawAreaS
   const createSelection = (type: 'line' | 'point-line') => {
-    return chartS.selectAll('.draw-area')
+    return drawAreaS
       .selectAll<SVGSVGElement, LineSeries>(`.series-${type}`)
       .data<LineSeries>([series])
       .join('g')

@@ -1,8 +1,6 @@
 import {format, select} from './libs/d3-7.6.0/d3.js'
 import {LineChart, LineChartUserArgs} from './libs/respvis/respvis.js';
-
 import {mapPowerConsumptionData} from './data/electricPowerConsumption.js'
-// import {chooseResponsiveData} from "./chooseResponsiveData.js";
 
 export const renderMultiLineChart = (selector: string) => {
   const {yUSA, yEurope, yAsia, years} = mapPowerConsumptionData()
@@ -24,10 +22,6 @@ export const renderMultiLineChart = (selector: string) => {
         tooltips: (_, point) => {
           return `Year: ${point.xValue}<br/>Pow. Consumption: ${point.yValue}kWh`
         }
-      },
-      flipped: {
-        dependentOn: 'width',
-        mapping: {0: true, 2: false}
       },
       zoom: {
         in: 20,

@@ -20,10 +20,16 @@ h1 {
 .grid-article {
   display: grid;
   grid-template-columns: repeat( auto-fit, minmax(min(25rem, 100%), 1fr));
+  container-type: inline-size;
   max-width: 87.5rem;
   margin: 0 auto;
   grid-gap: 0.063rem;
   background: #DADCE0;
+  @container (width < 25rem) {
+    .article {
+      padding-inline: 0;
+    }
+  }
 }
 
 .article {

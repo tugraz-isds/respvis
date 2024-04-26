@@ -4,19 +4,35 @@ import {getTopMakesData} from "./data/sold-cars-germany.js";
 
 export function renderParcoord(selector: string) {
   const {horsePower, prices, mileages, makes, fuel} = getTopMakesData(5)
+  const sharedAxisConfig = {
+    dependentOn: 'width',
+    scope: 'chart',
+    mapping: {
+      0: (axis: d3.Axis<d3.AxisDomain>) => {
+        axis.tickFormat(d3.format('.2s'))
+      },
+      3: (() => {})
+    }
+  } as const
+  const sharedTickOrientationFlipped = {
+    dependentOn: 'width',
+    mapping: {0: 90, 3: 0}
+  } as const
 
   const data: ParcoordChartUserArgs = {
     series: {
       dimensions: [
         {
-          scaledValues: { values: horsePower},
+          scaledValues: {values: horsePower},
           zoom: {
             in: 10,
             out: 1
           },
           axis: {
             title: "Horsepower",
-            subTitle: "[PS]"
+            subTitle: "[PS]",
+            configureAxis: sharedAxisConfig,
+            tickOrientationFlipped: sharedTickOrientationFlipped
           }
         },
         {
@@ -29,24 +45,29 @@ export function renderParcoord(selector: string) {
           },
           axis: {
             title: "Price",
-            subTitle: "[EU]"
+            subTitle: "[EU]",
+            configureAxis: sharedAxisConfig,
+            tickOrientationFlipped: sharedTickOrientationFlipped
           }
         },
         {
-          scaledValues: { values: mileages},
+          scaledValues: {values: mileages},
           zoom: {
             in: 20,
             out: 1
           },
           axis: {
             title: "Mileage",
-            subTitle: "[km]"
+            subTitle: "[km]",
+            configureAxis: sharedAxisConfig,
+            tickOrientationFlipped: sharedTickOrientationFlipped
           }
         },
         {
-          scaledValues: { values: fuel},
+          scaledValues: {values: fuel},
           axis: {
             title: "Fuel",
+            tickOrientationFlipped: sharedTickOrientationFlipped
           }
         },
       ],
@@ -61,7 +82,7 @@ export function renderParcoord(selector: string) {
     },
     bounds: {
       width: {
-        values: [20, 30, 70],
+        values: [20, 30, 50],
         unit: 'rem'
       }
     },
@@ -89,14 +110,14 @@ export function renderParcoordGeneralized(selector: string) {
   const mileagesGeneralized = mileages.map(mileage => {
     return mileage > 0 && mileage < 100000 ? '0-100000' :
       mileage > 100000 && mileage < 200000 ? '100001-200000' :
-      mileage > 200000 && mileage < 300000 ? '200001-300000' : '>300000'
+        mileage > 200000 && mileage < 300000 ? '200001-300000' : '>300000'
   })
 
   const data: ParcoordChartUserArgs = {
     series: {
       dimensions: [
         {
-          scaledValues: { values: horsePoserGeneralized},
+          scaledValues: {values: horsePoserGeneralized},
           axis: {
             title: "Horsepower",
             subTitle: "[PS]"
@@ -112,14 +133,14 @@ export function renderParcoordGeneralized(selector: string) {
           }
         },
         {
-          scaledValues: { values: mileagesGeneralized},
+          scaledValues: {values: mileagesGeneralized},
           axis: {
             title: "Mileage",
             subTitle: "[km]"
           }
         },
         {
-          scaledValues: { values: fuel},
+          scaledValues: {values: fuel},
           axis: {
             title: "Fuel",
           }

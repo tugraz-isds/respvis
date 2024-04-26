@@ -39,15 +39,20 @@ export abstract class Chart implements Renderer {
     return (this._chartS && !this._chartS.empty()) ? this._chartS :
       this.layouterS.selectAll<SVGSVGElement, ChartWindowedValid>('svg.chart')
   }
-  _drawAreaS?: Selection<SVGHTMLElement>
-  get drawAreaS(): Selection<SVGHTMLElement> {
+  _drawAreaS?: Selection<SVGGElement>
+  get drawAreaS(): Selection<SVGGElement> {
     return (this._drawAreaS && !this._drawAreaS.empty()) ? this._drawAreaS :
-      this.chartS.selectAll<SVGHTMLElement, any>('.draw-area')
+      this.chartS.selectAll<SVGGElement, any>('.draw-area')
   }
   _drawAreaBgS?: Selection<SVGRectElement>
   get drawAreaBgS(): Selection<SVGRectElement> {
     return (this._drawAreaBgS && !this._drawAreaBgS.empty()) ? this._drawAreaBgS :
       this.drawAreaS.selectChildren<SVGRectElement, any>('.background')
+  }
+  _drawAreaClipPathS?: Selection<SVGClipPathElement>
+  get drawAreaClipPathS(): Selection<SVGClipPathElement> {
+    return (this._drawAreaClipPathS && !this._drawAreaClipPathS.empty()) ? this._drawAreaClipPathS :
+      this.drawAreaS.selectChildren<SVGClipPathElement, any>('.draw-area__clip')
   }
   _xAxisS?: Selection<SVGGElement, AxisValid>
   get xAxisS(): Selection<SVGGElement, AxisValid> {

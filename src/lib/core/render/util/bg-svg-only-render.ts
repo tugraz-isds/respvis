@@ -1,5 +1,6 @@
 import {Selection} from "d3";
 import {backgroundSVGOnly} from "../../constants/dom/classes";
+import {SVGGroupingElement} from "../../constants/types";
 
 type bgSVGOnlyData = {
   scale?: number
@@ -35,7 +36,7 @@ type bgSVGOnlyFixedData = {
   width: number
   height: number
 }
-export function bgSVGOnlyFixedRender(parentS: Selection<SVGGraphicsElement>, props: bgSVGOnlyFixedData) {
+export function bgSVGOnlyFixedRender(parentS: Selection<SVGGroupingElement>, props: bgSVGOnlyFixedData) {
   return parentS.selectChildren<SVGRectElement, bgSVGOnlyData>(`.${backgroundSVGOnly}`)
     .data([props])
     .join('rect')

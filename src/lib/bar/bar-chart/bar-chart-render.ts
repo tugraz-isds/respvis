@@ -9,7 +9,7 @@ export type BarChartChartSelection = Selection<SVGSVGElement | SVGGElement, BarC
 
 export function barChartRender(chartS: BarChartChartSelection) {
   const series = chartS.datum().series.cloneFiltered().cloneZoomed() as BarSeries
-  const drawAreaS = chartS.selectAll('.draw-area');
+  const drawAreaS = chartS.selectAll('.draw-area')
   const bars = series.getBarRects()
 
   drawAreaS.selectAll<SVGGElement, BarStandardSeries>('.series-bar')
@@ -23,6 +23,7 @@ export function barChartRender(chartS: BarChartChartSelection) {
       elements: bars,
       classes: ['series-label'],
       orientation: series.responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
-    }).attr( 'layout-strategy', bars[0]?.labelArg?.position ?? null)
+    })
+      .attr( 'layout-strategy', bars[0]?.labelArg?.position ?? null)
     )
 }

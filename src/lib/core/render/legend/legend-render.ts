@@ -28,7 +28,7 @@ export function legendRender(parentS: Selection, data: LegendValid): LegendSelec
 function legendTitleRender(selection: LegendSelection) {
   const legendD = selection.datum()
   const chartElement = elementFromSelection(legendD.renderer.chartS)
-  const legendElement = elementFromSelection(selection)
+  const legendElement = elementFromSelection(selection) as SVGGElement
   selection
     .selectAll('.title')
     .data([null])

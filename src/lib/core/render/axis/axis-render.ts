@@ -16,8 +16,10 @@ import {tickAngleConfiguration} from "./tick-angle-configuration";
 import {getFilteredScaledValues} from "../../data/scale/axis-scaled-values-validation";
 import {bgSVGOnlyBBoxRender} from "../util/bg-svg-only-render";
 import {AxisLayout} from "../../constants/types";
+import {KeyedAxisValid} from "./keyed-axis-validation";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
+export type KeyedAxisSelection = Selection<SVGSVGElement | SVGGElement, KeyedAxisValid>;
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
 
 export function axisLeftRender(axisS: AxisSelection) {
@@ -31,7 +33,7 @@ export function axisBottomRender(axisS: AxisSelection) {
   return axisRender(axisS, d3Axis(d3AxisBottom, axisS))
 }
 
-export function axisSequenceRender(axisS: AxisSelection, axisPosition?: AxisLayout) {
+export function axisSequenceRender(axisS: KeyedAxisSelection, axisPosition?: AxisLayout) {
   bgSVGOnlyBBoxRender(axisS)
   axisS.classed('axis-bottom', false)
   axisS.classed('axis-left', false)
@@ -45,7 +47,7 @@ export function axisSequenceRender(axisS: AxisSelection, axisPosition?: AxisLayo
   axisS.selectAll('.title-wrapper')
     .classed('layout-container', true)
 
-  return axisS
+  return axisS.attr('data-key', (d) => d.key)
 }
 
 function axisRender(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {

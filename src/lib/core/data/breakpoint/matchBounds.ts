@@ -1,9 +1,9 @@
-import {LengthDimension, SVGHTMLElement} from "../../constants/types";
+import {LengthDimension, SVGHTMLGroupingElement} from "../../constants/types";
 
 import {BreakpointsValid} from "./breakpoint-validation";
 import {convertToPx} from "../../utilities/dom/units";
 
-export function indexFromBounds(element: SVGHTMLElement, bounds: BreakpointsValid, dimension: LengthDimension) {
+export function indexFromBounds(element: SVGHTMLGroupingElement, bounds: BreakpointsValid, dimension: LengthDimension) {
   const rect = element.getBoundingClientRect()
   const referenceValue = rect[dimension]
   if (bounds.values.length === 0) return 0

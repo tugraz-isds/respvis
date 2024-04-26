@@ -12,10 +12,6 @@ export function createLineChart(selector: string) {
         tooltips: (_, {xValue, yValue}) =>
           `Year: ${xValue}<br/>Students: ${d3.format('.2f')(yValue)}`,
       },
-      flipped: {
-        dependentOn: 'width',
-        mapping: {0: true, 2: false}
-      },
       zoom: {
         in: 20,
         out: 1

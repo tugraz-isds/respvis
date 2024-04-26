@@ -26,7 +26,8 @@ function embedCSS(original: SVGSVGElement, clone: SVGSVGElement) {
   // })
   const styleTag = document.createElement("style")
   activeCSSRules.forEach((rule) => {
-    styleTag.appendChild(document.createTextNode(rule))
+    const ruleXMLConform = rule.replace(/&/g, '&amp;')
+    styleTag.appendChild(document.createTextNode(ruleXMLConform))
   })
 
   clone.appendChild(styleTag);

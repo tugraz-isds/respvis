@@ -1,0 +1,60 @@
+.series-label .label {
+  display: none;
+}
+
+.legend {
+  margin-left: 2rem;
+}
+
+.legend-item {
+  margin-top: 1rem;
+}
+
+.point, .axis-x .tick {
+  display: none;
+}
+
+#chart {
+  container-type: inline-size;
+
+  @container (width < 30rem) {
+    .point, .axis-x .tick {
+      display: none;
+    }
+
+    .point-category {
+      .point:first-of-type, .point:last-of-type { display: block; }
+      .point:nth-of-type(4n) { display: block }
+    }
+    .axis-x .tick:nth-of-type(4n) { display: block}
+  }
+
+  @container (min-width: 30rem) {
+    .point-category {
+      .point:first-of-type, .point:last-of-type { display: block; }
+      .point:nth-of-type(2n) { display: block }
+    }
+    .axis-x .tick:nth-of-type(2n) { display: block}
+  }
+
+  @container (max-width: 50rem) {
+    .chart {
+      grid-template: auto auto 1fr / 1fr;
+      grid-template-areas:
+      'header'
+      'legend'
+      'padding-wrapper';
+    }
+
+    .legend {
+      width: 100%;
+      margin-bottom: 2rem;
+      margin-left: 0.5rem;
+    }
+    .legend .items {
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-evenly;
+    }
+  }
+}

@@ -4,9 +4,8 @@ import {formatWithDecimalZero, Point, ScatterPlot, ScatterPlotUserArgs} from '..
 import {getTopMakesData} from './data/sold-cars-germany.js';
 
 export function createChartSoldCarsGermany(selector) {
-  const {mileages: mileagesAll, horsePower: horsePowerAll, prices: pricesAll, makes: makesAll} = getTopMakesData(5)
+  const {horsePower: horsePowerAll, prices: pricesAll, makes: makesAll} = getTopMakesData(5)
   const elements = [1, 3, 4, 105, 205, 350, 400, 360]
-  const mileages = elements.map(num => mileagesAll[num])
   const horsePower = elements.map(num => horsePowerAll[num])
   const prices = elements.map(num => pricesAll[num])
   const makes = elements.map(num => makesAll[num])
@@ -52,8 +51,8 @@ export function createChartSoldCarsGermany(selector) {
       labels: {
         values: makes,
         offset: 3,
-        positionHorizontal: 'center',
-        positionVertical: 'center'
+        positionHorizontal: 'right',
+        positionVertical: 'top'
       }
       // labelCallback: (label: string) => {
       //   // console.log(label)
