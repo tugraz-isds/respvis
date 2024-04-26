@@ -1,7 +1,8 @@
 import {ScaledValuesDateUserArgs} from "./scaled-values";
 import {ScaledValuesBase, ScaledValuesBaseArgs} from "./scaled-values-base";
-import {scaleTime, ScaleTime, ZoomTransform} from "d3";
+import {max, min, scaleTime, ScaleTime, ZoomTransform} from "d3";
 import {AxisType} from "../../constants/types";
+import {ErrorMessages} from "../../utilities/error";
 
 type ScaledValuesDateArgs = ScaledValuesDateUserArgs & ScaledValuesBaseArgs
 
@@ -14,7 +15,10 @@ export class ScaledValuesDate extends ScaledValuesBase<Date> {
   constructor(args: ScaledValuesDateArgs) {
     super(args)
     this.values = args.values
-    this.scale = args.scale ?? scaleTime(this.values, [0, 600]).nice()
+    const extentMin = min(this.values)
+    const extentMax = max(this.values)
+    if (!extentMin || !extentMax) throw new Error(ErrorMessages.invalidScaledValuesCombination)
+    this.scale = args.scale ?? scaleTime([extentMin, extentMax], [0, 600]).nice()
     this.flippedScale = this.scale.copy()
   }
 
