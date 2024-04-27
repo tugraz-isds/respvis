@@ -1,12 +1,12 @@
 import type {Meta, StoryObj} from '@storybook/html';
 import {LineChartUserArgs} from "../../../../../../lib";
-import {format} from "d3";
+import {timeFormat} from "d3";
 import {rawCode} from "../../../../util/raw-code";
 import {PowerConsumptionData} from '../../../data'
 import {renderLineChart} from "../render-line.chart";
 import FullyResponsiveCSS from './multi-line-chart.css?inline'
 
-const {yUSA, yEurope, yAsia, years} = PowerConsumptionData.mapPowerConsumptionData()
+const {yUSA, yEurope, yAsia, years, yearsJSDateFormat} = PowerConsumptionData.mapPowerConsumptionData()
 const categories = [
   ...yUSA.map(() => 'USA'),
   ...yEurope.map(() => 'Europe'),
@@ -34,7 +34,7 @@ export const FullyResponsive: Story = {
   name: 'Fully Responsive',
   args: {
     series: {
-      x: {values: [...years, ...years, ...years]},
+      x: {values: [...yearsJSDateFormat, ...yearsJSDateFormat, ...yearsJSDateFormat]},
       y: {values: [...yUSA, ...yEurope, ...yAsia]},
       categories: {
         values: categories,
@@ -83,7 +83,7 @@ export const FullyResponsive: Story = {
         }
       },
       // configureAxis: (axis) => axis.tickFormat((v) => v),
-      configureAxis: (axis) => axis.tickFormat(format('.3d'))
+      configureAxis: (axis) => axis.tickFormat(timeFormat('%Y'))
     },
     y: {
       title: 'Consumption',

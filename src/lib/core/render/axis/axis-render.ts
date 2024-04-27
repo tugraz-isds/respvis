@@ -102,5 +102,6 @@ function d3Axis(
   const axis = axisGenerator(filteredScaledValues.scale)
   configureAxisValid(axis)
   selection.datum().d3Axis = axis
+  selection.datum().originalAxis.d3Axis = axis
   return axis;
 }

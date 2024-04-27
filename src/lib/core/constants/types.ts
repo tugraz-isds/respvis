@@ -69,6 +69,8 @@ export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 export type ToArray<T> = T extends any ? T[] : never;
 
+export type Mixin<T = {}> = new (...args: any[]) => T;
+
 
 type AllInstanceKeys<T> = T extends { new(...args: any[]): infer I } ? keyof I : never;
 // Filter out methods and protected properties

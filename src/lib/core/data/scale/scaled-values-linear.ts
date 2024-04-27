@@ -10,13 +10,27 @@ export class ScaledValuesLinear extends ScaledValuesBase<number> {
   values: number[]
   scale: ScaleLinear<number, number, never>
   flippedScale: ScaleLinear<number, number, never>
+  filteredRanges: [number, number][]
 
-  constructor(args: ScaledValuesLinearArgs) {
+  constructor(args: ScaledValuesLinearArgs | ScaledValuesLinear) {
     super(args)
     this.values = args.values
     const extent = [Math.min(...this.values), Math.max(...this.values)]
     this.scale = args.scale ?? scaleLinear().domain(extent).nice()
     this.flippedScale = this.scale.copy()
+    if ('tag' in args) {
+      this.filteredRanges = args.filteredRanges
+    } else {
+      this.filteredRanges = [this.scale.domain() as [number, number]]
+    }
+  }
+
+  isValueActive(index: number): boolean {
+    for(let i = 0; i < this.filteredRanges.length; i++) {
+      const range = this.filteredRanges[i]
+      if (this.values[index] >= range[0] && this.values[index] <= range[1]) return true
+    }
+    return false
   }
 
   cloneZoomed(transform: ZoomTransform, axisType: AxisType): ScaledValuesLinear {

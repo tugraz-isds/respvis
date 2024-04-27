@@ -8,7 +8,24 @@ import {ScaledValuesCategorical} from "./scaled-values-categorical";
 
 export type ScaledValuesBaseArgs = { parentKey: string }
 
-export type ScaledValues = ScaledValuesLinear | ScaledValuesDate | ScaledValuesCategorical
+export type ScaledValuesLinearScale = ScaledValuesLinear | ScaledValuesDate
+export type ScaledValues = ScaledValuesLinearScale | ScaledValuesCategorical
+
+export type ScaledValuesOrdered<T> = {
+  [K in ScaledValues["tag"]]: {
+    values: Extract<ScaledValues, { tag: K }>,
+    wrapper: T
+  }[]
+}
+
+export function orderScaledValues<T>(values: ScaledValues[], wrappers: T[]): ScaledValuesOrdered<T> {
+  const valuesOrdered: ScaledValuesOrdered<T> = { linear: [], categorical: [], date: [] }
+  values.forEach((val, index) => {
+    //@ts-ignore
+    valuesOrdered[val.tag].push({values: val, wrapper: wrappers[index]})
+  })
+  return valuesOrdered
+}
 
 export abstract class ScaledValuesBase<T extends AxisDomainRV> {
   abstract readonly tag: ScaledValueTag
@@ -66,11 +83,14 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
 
   abstract scaledValueAtScreenPosition(value: number): string
 
-  isKeyActiveByKey(key: string) { return true }
+  isKeyActiveByKey(key: string) {
+    return true
+  }
 
-  isKeyActiveByIndex(i: number) { return true }
+  abstract isValueActive(index: number): boolean
 
-  setKeyActiveIfDefined(key: string, value: boolean) {}
+  setKeyActiveIfDefined(key: string, value: boolean) {
+  }
 
   cloneFiltered(): ScaledValues {
     return this.clone()

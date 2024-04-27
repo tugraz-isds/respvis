@@ -44,8 +44,8 @@ export abstract class BarBaseSeries extends CartesianSeries {
 
     if (!this.keysActive[this.key]) return data
     for (let i = 0; i < this.y.values.length; ++i) {
-      if (this.categories && !this.categories.isKeyActiveByIndex(i)) continue
-      if (!x.isKeyActiveByIndex(i) || !y.isKeyActiveByIndex(i)) continue
+      if (this.categories && !this.categories.isValueActive(i)) continue
+      if (!x.isValueActive(i) || !y.isValueActive(i)) continue
       data.push(new Bar({
         ...this.getRect(i),
         xValue: this.x.values[i],

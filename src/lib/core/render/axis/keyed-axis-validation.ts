@@ -8,6 +8,7 @@ export type KeyedAxisArgs = BaseAxisArgs & {
 }
 
 export type KeyedAxisValid = BaseAxisValid & {
+  originalAxis: KeyedAxisValid
   series: ParcoordSeries //If a chart similar to parcoord is integrated, create interface
   key: AxisKey
   keysActive: ActiveKeyMap
@@ -22,8 +23,9 @@ export function keyedAxisValidation(args:KeyedAxisArgs): KeyedAxisValid {
   const keysActive = {}
   keysActive[args.key] = true
 
-  return {
+  const axis = {
     ...baseAxisValidation(args),
+    originalAxis: this,
     series: args.series,
     key: args.key,
     keysActive,
@@ -55,4 +57,6 @@ export function keyedAxisValidation(args:KeyedAxisArgs): KeyedAxisValid {
       return val <= minRangeGraphical && val >= maxRangeGraphical
     }
   }
+  axis.originalAxis = axis
+  return axis
 }

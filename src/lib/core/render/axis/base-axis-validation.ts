@@ -25,6 +25,7 @@ export type BaseAxisArgs = BaseAxisUserArgs & RenderArgs & {
 
 export type BaseAxisValid = Required<Omit<BaseAxisArgs, 'bounds'>> & {
   bounds: LayoutBreakpoints,
+  originalAxis: BaseAxisValid,
   d3Axis?: D3Axis<any> //axis available after first render
 }
 
@@ -35,7 +36,8 @@ export interface ConfigureAxisFn {
 }
 
 export function baseAxisValidation(data: BaseAxisArgs): AxisValid {
-  return {
+  const axis = {
+    originalAxis: this,
     renderer: data.renderer,
     series: data.series,
     scaledValues: data.scaledValues,
@@ -50,4 +52,6 @@ export function baseAxisValidation(data: BaseAxisArgs): AxisValid {
       height: breakPointsValidation(data.bounds?.height)
     }
   }
+  axis.originalAxis = axis
+  return axis
 }

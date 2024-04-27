@@ -158,5 +158,6 @@ export function mapPowerConsumptionData() {
   const yUSA = years.map(year => usaData[year])
   const yEurope = years.map(year => europeData[year])
   const yAsia= years.map(year => asiaData[year])
-  return {yUSA, yEurope, yAsia, years}
+  const yearsJSDateFormat = years.map(year => new Date(year))
+  return {yUSA, yEurope, yAsia, years, yearsJSDateFormat}
 }

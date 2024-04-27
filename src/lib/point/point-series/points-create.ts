@@ -25,8 +25,8 @@ export function pointsCreate<T extends boolean, R = T extends false ? Point[] : 
   if (!keysActive[seriesKey] && grouped) return pointsGrouped as R
 
   for (let i = 0; i < x.values.length; i++) {
-    if (categories && !categories.isKeyActiveByIndex(i)) continue
-    if (!x.isKeyActiveByIndex(i) || !y.isKeyActiveByIndex(i)) continue
+    if (categories && !categories.isValueActive(i)) continue
+    if (!x.isValueActive(i) || !y.isValueActive(i)) continue
     const point = createPoint({geometryHandler, seriesData, i, color})
     pointsSingleGroup.push(point)
     if (pointsGrouped && categories) {
