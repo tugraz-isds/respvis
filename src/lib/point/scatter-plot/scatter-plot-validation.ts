@@ -5,7 +5,7 @@ export type ScatterPlotArgs = Omit<CartesianChartUserArgs, 'series'> & {
   series: SeriesPointUserArgs
 }
 
-export type ScatterPlotValid = CartesianChartValid & {
+export type ScatterPlotValid = Omit<CartesianChartValid, 'series'> & {
   series: PointSeries;
 }
 

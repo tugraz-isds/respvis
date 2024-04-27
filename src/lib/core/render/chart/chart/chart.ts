@@ -1,23 +1,20 @@
-import {dispatch, selection, Selection} from "d3";
+import {dispatch, Selection} from "d3";
 import {SVGHTMLElement} from "../../../constants/types";
 import {WindowArgs, windowRender, WindowValid, windowValidation} from "../../window";
-import {ChartValid} from "./chart-validation";
+import {ChartArgs, ChartValid, chartValidation} from "./chart-validation";
 import {Renderer} from "../renderer";
 import {resizeEventListener} from "../../../resize-event-dispatcher";
 import {layouterCompute} from "../../../layouter/layouter";
 import {chartRender} from "./chart-render";
 import {throttle} from "../../../utilities/d3/util";
-import {AxisValid} from "../../axis";
 import {fixActiveCursor} from "../../util/fix-active-cursor";
 
 export type ChartWindowedValid = WindowValid & ChartValid
 
-export abstract class Chart implements Renderer {
+export class Chart implements Renderer {
   private addedListeners = false
   protected initialRenderHappened = false
-  abstract windowS: Selection<SVGHTMLElement, ChartWindowedValid>
   public readonly filterDispatch = dispatch<{ dataKey: string }>('filter')
-  protected readonly initialWindowData: WindowValid
   protected renderCountSinceResize = 0
   protected rerenderAfterLayoutChangeScheduled?: NodeJS.Timeout
   protected resizeObserver?: ResizeObserver
@@ -25,10 +22,18 @@ export abstract class Chart implements Renderer {
   legendS?: Selection<SVGHTMLElement>
   private unmounted: boolean = false;
 
-  protected constructor(data: Omit<WindowArgs, 'renderer'>) {
-    this.initialWindowData = windowValidation({...data, renderer: this})
+  constructor(windowSelection: Selection<HTMLDivElement>, args: Omit<WindowArgs & ChartArgs, 'renderer'>) {
+    const initialWindowData = windowValidation({...args, renderer: this})
+    const chartData = chartValidation({...args, renderer: this})
+    windowSelection.datum({...initialWindowData, ...chartData})
+    this._windowS = windowSelection as Selection<HTMLDivElement, ChartWindowedValid>
   }
 
+  _windowS?: Selection<HTMLElement, ChartWindowedValid>
+  get windowS(): Selection<HTMLElement, ChartWindowedValid> {
+    return (this._windowS && !this._windowS.empty()) ? this._windowS :
+      this.windowS.selectAll<HTMLElement, ChartWindowedValid>('.window-rv')
+  }
   _layouterS?: Selection<HTMLDivElement>
   get layouterS(): Selection<HTMLDivElement> {
     return (this._layouterS && !this._layouterS.empty()) ? this._layouterS :
@@ -54,27 +59,10 @@ export abstract class Chart implements Renderer {
     return (this._drawAreaClipPathS && !this._drawAreaClipPathS.empty()) ? this._drawAreaClipPathS :
       this.drawAreaS.selectChildren<SVGClipPathElement, any>('.draw-area__clip')
   }
-  _xAxisS?: Selection<SVGGElement, AxisValid>
-  get xAxisS(): Selection<SVGGElement, AxisValid> {
-    return (this._xAxisS && !this._xAxisS.empty()) ? this._xAxisS :
-      this.chartS.selectAll<SVGGElement, AxisValid>('.axis-x')
-  }
-  _yAxisS?: Selection<SVGGElement, AxisValid>
-  get yAxisS(): Selection<SVGGElement, AxisValid> {
-    return (this._yAxisS && !this._yAxisS.empty()) ? this._yAxisS :
-      this.chartS.selectAll<SVGGElement, AxisValid>('.axis-y')
-  }
-  get horizontalAxisS(): Selection<SVGGElement, AxisValid> {
-    return selection() as unknown as Selection<SVGGElement, AxisValid>
-  }
-  get verticalAxisS(): Selection<SVGGElement, AxisValid> {
-    return selection() as unknown as Selection<SVGGElement, AxisValid>
-  }
 
   buildChart() {
     this.render()
     if (this.addedListeners) return
-    this.addBuiltInListeners()
     const chartDivS = this.layouterS.selectChild('div.chart')
     if (chartDivS) this.resizeObserver = resizeEventListener(
       chartDivS as Selection<Element>, this.windowS)
@@ -102,8 +90,6 @@ export abstract class Chart implements Renderer {
       () => this.resizeThrottle?.func())
   }
 
-  protected addBuiltInListeners() {}
-
   private initializeRender() {
     clearTimeout(this.rerenderAfterLayoutChangeScheduled)
     const instance = this
@@ -117,16 +103,13 @@ export abstract class Chart implements Renderer {
     instance.render()
   }
 
-  protected render() {
+  private render() {
     if (!(this.windowS.node() as Element).isConnected || this.unmounted) return
-    this.preRender()
     this.mainRender()
-    this.postRender()
+    this.reLayout()
     this.addFinalListeners()
     this.initialRenderHappened = true
   }
-
-  protected preRender() {}
 
   protected mainRender() {
     const data = this.windowS.datum()
@@ -136,7 +119,7 @@ export abstract class Chart implements Renderer {
     fixActiveCursor(chartS)
   }
 
-  protected postRender() {
+  private reLayout() {
     if (this.layouterS) {
       const boundsChanged = layouterCompute(this.layouterS)
       if (boundsChanged) {

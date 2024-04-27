@@ -1,11 +1,10 @@
 import {LayoutBreakpoints} from "../../data/breakpoint/breakpoint";
 import {RenderArgs} from "../chart/renderer";
-import {ChartType} from "../../constants/types";
 import {breakPointsValidation} from "../../data/breakpoint/breakpoint-validation";
 import {defaultWindowSettings, WindowSettings} from "./window-settings";
 
 export type WindowArgs = RenderArgs & {
-  type: ChartType,
+  type: string,
   bounds?: Partial<LayoutBreakpoints>
 }
 
