@@ -54,7 +54,7 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     return this.keysActive[key] !== false
   }
 
-  isKeyActiveByIndex(i: number) {
+  isValueActive(i: number) {
     return this.isKeyActiveByKey(this.getCombinedKey(i))
   }
 

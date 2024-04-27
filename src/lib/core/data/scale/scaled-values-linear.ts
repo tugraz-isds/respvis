@@ -25,6 +25,14 @@ export class ScaledValuesLinear extends ScaledValuesBase<number> {
     }
   }
 
+  isValueActive(index: number): boolean {
+    for(let i = 0; i < this.filteredRanges.length; i++) {
+      const range = this.filteredRanges[i]
+      if (this.values[index] >= range[0] && this.values[index] <= range[1]) return true
+    }
+    return false
+  }
+
   cloneZoomed(transform: ZoomTransform, axisType: AxisType): ScaledValuesLinear {
     const scale = axisType === 'x' ? transform.rescaleX(this.scale) : transform.rescaleY(this.scale)
     return new ScaledValuesLinear({...this, scale})

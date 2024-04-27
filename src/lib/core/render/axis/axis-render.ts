@@ -100,14 +100,8 @@ function d3Axis(
   const filteredScaledValues = getFilteredScaledValues(scaledValues)
 
   const axis = axisGenerator(filteredScaledValues.scale)
-  if (filteredScaledValues.values[0] instanceof Date) {
-    console.log('Sequence')
-    console.log(filteredScaledValues.values)
-    console.log(filteredScaledValues.scale.domain())
-    console.log(filteredScaledValues.scale.range())
-    console.log(filteredScaledValues.scale(filteredScaledValues.values[0]))
-  }
   configureAxisValid(axis)
   selection.datum().d3Axis = axis
+  selection.datum().originalAxis.d3Axis = axis
   return axis;
 }

@@ -33,7 +33,7 @@ function createLines(activeAxes: KeyedAxisValid[]) {
   if (!series.keysActive[series.key]) return lines
 
   for (let valueIndex = 0; valueIndex < maxIndex; valueIndex++) {
-    if (series.categories && !series.categories.isKeyActiveByIndex(valueIndex)) continue
+    if (series.categories && !series.categories.isValueActive(valueIndex)) continue
     const positions = createLinePositions(activeAxes, valueIndex, series)
     if (positions.length === 0) continue
     lines.push({
@@ -51,7 +51,7 @@ function createLinePositions(activeAxes: KeyedAxisValid[], valueIndex: number, s
   for (let axisIndex = 0; axisIndex < activeAxes.length; axisIndex++) {
     const axis = activeAxes[axisIndex]
     const valPos = axis.scaledValues.getScaledValue(valueIndex)
-    if (!axis.scaledValues.isKeyActiveByIndex(valueIndex) || !axis.isValueInRangeLimit(valPos)) return []
+    if (!axis.scaledValues.isValueActive(valueIndex) || !axis.isValueInRangeLimit(valPos)) return []
 
     const axisPosPercent = series.originalSeries.axesPercentageScale(axis.key)
     const axisPosReal = series.percentageScreenScale(axisPosPercent)

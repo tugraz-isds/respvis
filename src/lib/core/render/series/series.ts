@@ -24,6 +24,12 @@ export type SeriesArgs = SeriesUserArgs & RenderArgs & {
   bounds?: Size
 }
 
+// export type ScaledValuesOrdered = {
+//   linear: ScaledValuesLinear[],
+//   categorical: ScaledValuesCategorical[],
+//   date: ScaledValuesDate[]
+// }
+
 export abstract class Series implements RenderArgs {
   class = true
   originalSeries: Series

@@ -33,7 +33,7 @@ export class ScaledValuesAggregation {
       const categoryOrder = orderMap[category]
       const currentValue = this.linearValues.values[i]
       groupedValues[categoryOrder].push(currentValue)
-      if (this.additionalCategories && !this.additionalCategories.isKeyActiveByIndex(i)) return
+      if (this.additionalCategories && !this.additionalCategories.isValueActive(i)) return
       cumulativeValues[i] = summedValues[categoryOrder]
       summedValues[categoryOrder] += this.linearValues.values[i]
     }, [])

@@ -13,12 +13,16 @@ export type CartesianAxisArgs = BaseAxisArgs & {
 export type CartesianAxisValid = BaseAxisValid & {
   series: CartesianSeries
   gridLineFactor: number | undefined
+  originalAxis: CartesianAxisValid
 }
 
 export function cartesianAxisValidation(args: CartesianAxisArgs): CartesianAxisValid {
-  return {
+  const axis = {
     ...baseAxisValidation(args),
+    originalAxis: this,
     series: args.series,
     gridLineFactor: args.gridLineFactor
   }
+  axis.originalAxis = axis
+  return axis
 }
