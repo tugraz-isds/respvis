@@ -12,6 +12,7 @@ export function handleAxisZoomAndDrag(axisS: Selection<SVGGElement, KeyedAxisVal
     throttledZoom.func(e)
     if (e.sourceEvent.type === "mousemove" || e.sourceEvent.type === "touchmove") {
       throttledDrag.func(e)
+      axisD.series.originalSeries.renderer.windowS.dispatch('resize')
     }
     if (e.sourceEvent.type === "wheel") {
       axisD.series.originalSeries.renderer.windowS.dispatch('resize')

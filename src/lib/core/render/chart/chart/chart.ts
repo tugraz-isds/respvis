@@ -3,10 +3,10 @@ import {SVGHTMLElement} from "../../../constants/types";
 import {WindowArgs, windowRender, WindowValid, windowValidation} from "../../window";
 import {ChartArgs, ChartValid, chartValidation} from "./chart-validation";
 import {Renderer} from "../renderer";
-import {resizeEventListener} from "../../../resize-event-dispatcher";
+import {ReRenderContext, resizeEventListener} from "../../../resize-event-dispatcher";
 import {layouterCompute} from "../../../layouter/layouter";
 import {chartRender} from "./chart-render";
-import {throttle} from "../../../utilities/d3/util";
+import {ThrottleScheduled} from "../../../utilities/d3/util";
 import {fixActiveCursor} from "../../util/fix-active-cursor";
 
 export type ChartWindowedValid = WindowValid & ChartValid
@@ -15,10 +15,11 @@ export class Chart implements Renderer {
   private addedListeners = false
   protected initialRenderHappened = false
   public readonly filterDispatch = dispatch<{ dataKey: string }>('filter')
-  protected renderCountSinceResize = 0
-  protected rerenderAfterLayoutChangeScheduled?: NodeJS.Timeout
+  protected subsequentRenderCount = 0
+  protected rerenderAfterResizeScheduled?: NodeJS.Timeout
   protected resizeObserver?: ResizeObserver
-  private resizeThrottle?: ReturnType<typeof throttle>
+  private immediateInteractionThrottle?: ThrottleScheduled<any, any>
+  private standardInteractionThrottle?: ThrottleScheduled<any, any>
   legendS?: Selection<SVGHTMLElement>
   private unmounted: boolean = false;
 
@@ -34,26 +35,31 @@ export class Chart implements Renderer {
     return (this._windowS && !this._windowS.empty()) ? this._windowS :
       this.windowS.selectAll<HTMLElement, ChartWindowedValid>('.window-rv')
   }
+
   _layouterS?: Selection<HTMLDivElement>
   get layouterS(): Selection<HTMLDivElement> {
     return (this._layouterS && !this._layouterS.empty()) ? this._layouterS :
       this.windowS.selectAll<HTMLDivElement, any>('.layouter')
   }
+
   _chartS?: Selection<SVGSVGElement, ChartWindowedValid>
   get chartS(): Selection<SVGSVGElement, ChartWindowedValid> {
     return (this._chartS && !this._chartS.empty()) ? this._chartS :
       this.layouterS.selectAll<SVGSVGElement, ChartWindowedValid>('svg.chart')
   }
+
   _drawAreaS?: Selection<SVGGElement>
   get drawAreaS(): Selection<SVGGElement> {
     return (this._drawAreaS && !this._drawAreaS.empty()) ? this._drawAreaS :
       this.chartS.selectAll<SVGGElement, any>('.draw-area')
   }
+
   _drawAreaBgS?: Selection<SVGRectElement>
   get drawAreaBgS(): Selection<SVGRectElement> {
     return (this._drawAreaBgS && !this._drawAreaBgS.empty()) ? this._drawAreaBgS :
       this.drawAreaS.selectChildren<SVGRectElement, any>('.background')
   }
+
   _drawAreaClipPathS?: Selection<SVGClipPathElement>
   get drawAreaClipPathS(): Selection<SVGClipPathElement> {
     return (this._drawAreaClipPathS && !this._drawAreaClipPathS.empty()) ? this._drawAreaClipPathS :
@@ -62,12 +68,14 @@ export class Chart implements Renderer {
 
   buildChart() {
     this.render()
+    layouterCompute(this.layouterS)
     if (this.addedListeners) return
     const chartDivS = this.layouterS.selectChild('div.chart')
     if (chartDivS) this.resizeObserver = resizeEventListener(
       chartDivS as Selection<Element>, this.windowS)
     this.addedListeners = true
     this.render()
+    layouterCompute(this.layouterS)
   }
 
   /**
@@ -79,34 +87,89 @@ export class Chart implements Renderer {
   }
 
   private addFinalListeners() {
-    const rerender = () => {
-      this.renderCountSinceResize = 0
-      this.initializeRender()
+    const onResize = () => {
+      this.subsequentRenderCount = 0
+      this.onResizeRender()
     }
-    if (!this.resizeThrottle) this.resizeThrottle = throttle(() => this.windowS.dispatch('resize'), 30)
-    this.windowS.on('resize.final', () => rerender())
-    //TODO: maybe add variant of throtteling which allows scheduling exactly one job?
+    const onStandardInteraction = () => {
+      if (this.windowS.selectAll('.mid-d3-transit').size() > 0) return
+      this.subsequentRenderCount = 0
+      this.onStandardInteractionRender()
+    }
+    const onImmediateInteraction = () => {
+      this.subsequentRenderCount = 0
+      this.onImmediateInteractionRender()
+    }
+    if (!this.immediateInteractionThrottle) {
+      //optimal values: //chrome zooming 55 //firefox zooming 30
+      this.immediateInteractionThrottle = new ThrottleScheduled<any, any>(onImmediateInteraction, 30)
+    }
+    if (!this.standardInteractionThrottle) {
+      this.standardInteractionThrottle = new ThrottleScheduled(() =>
+        this.windowS.dispatch('resize', {detail: {type: 'standard-interaction'}}), 50)
+    }
+
     this.windowS.on('pointermove.final pointerleave.final pointerdown.final pointerup.final',
-      () => this.resizeThrottle?.func())
+      () => this.standardInteractionThrottle?.invokeScheduled())
+
+    this.windowS.on('resize.final', (context: { detail?: ReRenderContext }) => {
+      clearTimeout(this.rerenderAfterResizeScheduled)
+      switch (context.detail?.type) {
+        case 'resize': onResize(); break;
+        case 'standard-interaction': {
+          onStandardInteraction()
+          break;
+        }
+        case 'immediate-interaction': default: {
+          this.immediateInteractionThrottle?.invokeScheduled()
+          break;
+        }
+      }
+    })
   }
 
-  private initializeRender() {
-    clearTimeout(this.rerenderAfterLayoutChangeScheduled)
-    const instance = this
-    if (this.renderCountSinceResize > 2) {
+  private inRenderLoop() {
+    if (this.subsequentRenderCount > 3) {
       /* DEV_MODE_ONLY_START */
       console.log('TOO MANY RENDERS. THERE MUST BE A PROBLEM')
       /* DEV_MODE_ONLY_END */
-      return
+      return true
     }
-    this.renderCountSinceResize++
-    instance.render()
+    this.subsequentRenderCount++
+    return false
+  }
+
+  private onResizeRender() {
+    if (this.inRenderLoop()) return
+    this.render()
+    if (!this.layouterS) return
+    if (!layouterCompute(this.layouterS)) return
+    this.rerenderAfterResizeScheduled = setTimeout(() => {
+      this.onResizeRender()
+    }, 100)
+  }
+
+  private onStandardInteractionRender() {
+    if (this.inRenderLoop()) return
+    if (!this.layouterS) return
+    if (!layouterCompute(this.layouterS)) return //layoutercompute should return any style change?
+    this.subsequentRenderCount++
+    this.render()
+  }
+
+  private onImmediateInteractionRender() {
+    if (this.inRenderLoop()) return
+    this.render()
+    if (!this.layouterS) return
+    if (!layouterCompute(this.layouterS)) return //layoutercompute should return any style change?
+    this.subsequentRenderCount++
+    this.render()
+    this.onResizeRender()
   }
 
   private render() {
     if (!(this.windowS.node() as Element).isConnected || this.unmounted) return
     this.mainRender()
-    this.reLayout()
     this.addFinalListeners()
     this.initialRenderHappened = true
   }
@@ -117,18 +180,6 @@ export class Chart implements Renderer {
     chartRender(chartS)
     chartS.classed(`chart-${data.type}`, true)
     fixActiveCursor(chartS)
-  }
-
-  private reLayout() {
-    if (this.layouterS) {
-      const boundsChanged = layouterCompute(this.layouterS)
-      if (boundsChanged) {
-        // Timout is necessary to detect subsequent resizes
-        this.rerenderAfterLayoutChangeScheduled = setTimeout(() => {
-          this.initializeRender()
-        }, 100)
-      }
-    }
   }
 
   unmountChart() {

@@ -80,6 +80,7 @@ function axisLinearControlsRender(menuToolsItemsS: Selection, axis: AxisValid, v
     else {
       values.filteredRanges[0][index] = new Date(Math.floor(valueNumber))
     }
+    renderer.windowS.dispatch('resize')
   }
 
   const data: (LabelsParentData & FieldSetData)[] = [{

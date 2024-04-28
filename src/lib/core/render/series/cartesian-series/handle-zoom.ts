@@ -6,9 +6,7 @@ export function handleZoom(series: CartesianSeries) {
   const throttledZoom = throttle((e) => onZoomDrawArea(e, series), 50)
   const onZoom = (e) => {
     throttledZoom.func(e)
-    if (e.sourceEvent.type === "wheel") {
-      series.originalSeries.renderer.windowS.dispatch('resize')
-    }
+    series.originalSeries.renderer.windowS.dispatch('resize')
   }
   const zoom = series.zoom
   if (!zoom) return
