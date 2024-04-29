@@ -66,6 +66,10 @@ export class Chart implements Renderer {
       this.drawAreaS.selectChildren<SVGClipPathElement, any>('.draw-area__clip')
   }
 
+  exitEnterActive() {
+    return this.windowS.selectAll('.entering, .exiting').size() > 0
+  }
+
   buildChart() {
     this.render()
     layouterCompute(this.layouterS)

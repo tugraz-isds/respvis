@@ -1,6 +1,14 @@
 path.line {
   fill: none;
   stroke-width: 2;
+  &.animated {
+    stroke-width: 0;
+    transition: stroke-width 250ms;
+    &.entering, &.enter-done {
+      stroke-width: 2;
+    }
+  }
+
   &.line--origin {
     stroke: var(--color-origin-line);
     stroke-width: 1;

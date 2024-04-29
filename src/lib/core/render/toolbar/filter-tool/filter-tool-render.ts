@@ -45,12 +45,19 @@ export function filterToolRender(toolbarS: Selection<HTMLDivElement>, args: Tool
 
 function seriesControlRender(menuToolsItemsS: Selection, series: Series) {
   const {key, renderer} = series
+  const onClick = (e) => {
+    if (renderer.exitEnterActive()) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+  }
   const data: (LabelsParentData & FieldSetData)[] = [{
     legend: 'Main Series',
     collapsable: true,
     labelData: [new CheckBoxLabel({
       label: 'Series', type: 'series',
       dataKey: key, defaultVal: series.keysActive[key] ? true : false,
+      onClick,
       onChange: () => {
         renderer.filterDispatch.call('filter', {dataKey: key}, this)
       }
@@ -124,6 +131,13 @@ function categoryControlsRender(menuToolsItemsS: Selection, series: Series) {
   const options = categoryOrderMapToArray(categoryOrderMap)
   const keys = keyOrder.map(key => mergeKeys([categories.parentKey, key]))
 
+  const onClick = (e) => {
+    if (renderer.exitEnterActive()) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+  }
+
   const data: (LabelsParentData & FieldSetData)[] = [{
     legend: categoryText,
     collapsable: true,
@@ -131,7 +145,9 @@ function categoryControlsRender(menuToolsItemsS: Selection, series: Series) {
       return new CheckBoxLabel({
         label: option, type: 'category',
         dataKey: keys[index], defaultVal: categories.isKeyActiveByKey(keys[index]),
+        onClick,
         onChange: () => {
+          if (renderer.exitEnterActive()) return
           renderer.filterDispatch.call('filter', {dataKey: keys[index]}, this)
         }
       })
@@ -148,11 +164,20 @@ function axisControlsRender(menuToolsItemsS: Selection, axis: AxisValid) {
   const title = getCurrentRespVal(axis.title, {chart: chartElement})
   const {keys, options} = getAxisCategoryProps(axis)
 
+  const onClick = (e) => {
+    if (renderer.exitEnterActive()) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+  }
+
   const labelData: InputLabel[] = options.map((option, index) => {
     return new CheckBoxLabel({
       label: option, type: 'category',
       dataKey: keys[index], defaultVal: axis.scaledValues.isKeyActiveByKey(keys[index]),
+      onClick,
       onChange: () => {
+        if (renderer.exitEnterActive()) return
         renderer.filterDispatch.call('filter', {dataKey: keys[index]}, this)
       }
     })

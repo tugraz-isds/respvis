@@ -10,4 +10,6 @@ export type InputLabelDataBase = {
   type: string,
   activeClasses?: string[]
   inactiveClasses?: string[]
+  onClick?: (e: MouseEvent, type: string) => void
+  onInputClick?: (e: MouseEvent, type: string) => void
 }

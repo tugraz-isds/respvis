@@ -12,6 +12,8 @@ export type Renderer = {
     get drawAreaS(): Selection<SVGGroupingElement>
     get drawAreaBgS(): Selection<SVGRectElement>
     get drawAreaClipPathS(): Selection<SVGClipPathElement>
+
+    exitEnterActive(): boolean
 }
 
 export type RenderArgs = {

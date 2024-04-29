@@ -47,4 +47,8 @@
   --chart-padding-top: 0;
   --chart-padding-right: 0;
   --chart-padding-bottom: 0;
+
+  /*transitions*/
+  --transition-time-ms: 250;
+  --transition-time-line-enter-ms: var(--transition-time-ms);
 }

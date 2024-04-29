@@ -63,5 +63,4 @@ export function createLineChart(selector: string) {
   const chartWindow = d3.select(selector).append('div')
   const renderer = new LineChart(chartWindow, data)
   renderer.buildChart()
-  console.log(renderer)
 }
