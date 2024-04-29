@@ -45,7 +45,7 @@ export abstract class SeriesChartMixin extends Chart {
     toolbarRender(this.windowS!, chartSelection.datum())
   }
   addSeriesFeatures(seriesS: Selection<SVGGElement, Series>) {
-    const seriesElementsS = seriesS.selectAll<any, RenderElement>('*')
+    const seriesElementsS = seriesS.selectAll<any, RenderElement>('.bar:not(.exiting):not(.exit-done)')
     const renderElements = seriesElementsS.data()
     const series = seriesS.datum()
     seriesS.call(addHighlight)

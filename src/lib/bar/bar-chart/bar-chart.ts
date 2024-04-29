@@ -34,7 +34,7 @@ export class BarChart extends Chart {
 
     const series = this.chartS.datum().series.cloneFiltered().cloneZoomed() as BarSeries
     const seriesS = barSeriesRender(this.drawAreaS, [series])
-    const barS = seriesS.selectAll<SVGRectElement, Bar>('rect')
+    const barS = seriesS.selectAll<SVGRectElement, Bar>('.bar:not(.exiting):not(.exit-done)')
     const bars = barS.data()
 
     this.addSeriesFeatures(seriesS)

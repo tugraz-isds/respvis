@@ -11,7 +11,7 @@ export function lineSeriesJoin(seriesS: Selection<Element>, joinS: Selection<Ele
     .join(
       (enter) =>
         enter.append('path')
-          .classed('line animated', true)
+          .classed('line', true)
           .call(s => addEnterClass(s, tDuration))
           .call((s) => seriesS.dispatch('enter', {detail: {selection: s}})),
       undefined,

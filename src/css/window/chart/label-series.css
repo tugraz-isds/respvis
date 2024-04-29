@@ -1,4 +1,15 @@
 .series-label {
+  & .label {
+    &.animated {
+      font-size: 0;
+      opacity: 0;
+      transition: opacity 250ms, font-size 250ms;
+      &.entering, &.enter-done {
+        opacity: 1;
+        font-size: var(--font-size-element-label);
+      }
+    }
+  }
   text {
     text-anchor: middle;
   }

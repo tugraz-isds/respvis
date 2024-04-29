@@ -3,7 +3,7 @@ path.line {
   stroke-width: 2;
   &.animated {
     stroke-width: 0;
-    transition: stroke-width 250ms;
+    transition: stroke-width calc(var(--transition-time-line-enter-ms) * 1ms);
     &.entering, &.enter-done {
       stroke-width: 2;
     }

@@ -51,4 +51,5 @@
   /*transitions*/
   --transition-time-ms: 250;
   --transition-time-line-enter-ms: var(--transition-time-ms);
+  --transition-time-label-enter-ms: var(--transition-time-ms);
 }
