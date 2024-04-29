@@ -10,6 +10,7 @@ import {ThrottleScheduled} from "../../../utilities/d3/util";
 import {fixActiveCursor} from "../../util/fix-active-cursor";
 
 export type ChartWindowedValid = WindowValid & ChartValid
+export type ChartUserArgs = Omit<WindowArgs & ChartArgs, 'renderer'>
 
 export class Chart implements Renderer {
   private addedListeners = false
@@ -23,7 +24,7 @@ export class Chart implements Renderer {
   legendS?: Selection<SVGHTMLElement>
   private unmounted: boolean = false;
 
-  constructor(windowSelection: Selection<HTMLDivElement>, args: Omit<WindowArgs & ChartArgs, 'renderer'>) {
+  constructor(windowSelection: Selection<HTMLDivElement>, args: ChartUserArgs) {
     const initialWindowData = windowValidation({...args, renderer: this})
     const chartData = chartValidation({...args, renderer: this})
     windowSelection.datum({...initialWindowData, ...chartData})
@@ -46,6 +47,12 @@ export class Chart implements Renderer {
   get chartS(): Selection<SVGSVGElement, ChartWindowedValid> {
     return (this._chartS && !this._chartS.empty()) ? this._chartS :
       this.layouterS.selectAll<SVGSVGElement, ChartWindowedValid>('svg.chart')
+  }
+
+  _paddingWrapperS?: Selection<SVGGElement, ChartWindowedValid>
+  get paddingWrapperS(): Selection<SVGGElement, ChartWindowedValid> {
+    return (this._paddingWrapperS && !this._paddingWrapperS.empty()) ? this._paddingWrapperS :
+      this.chartS.selectAll<SVGGElement, ChartWindowedValid>('.padding-wrapper')
   }
 
   _drawAreaS?: Selection<SVGGElement>

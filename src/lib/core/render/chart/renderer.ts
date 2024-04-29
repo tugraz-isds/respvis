@@ -8,6 +8,7 @@ export type Renderer = {
 
     get windowS(): Selection<HTMLElement, ChartWindowedValid>
     get chartS(): Selection<SVGGroupingElement>
+    get paddingWrapperS(): Selection<SVGGroupingElement>
     get layouterS(): Selection<HTMLDivElement>
     get drawAreaS(): Selection<SVGGroupingElement>
     get drawAreaBgS(): Selection<SVGRectElement>
