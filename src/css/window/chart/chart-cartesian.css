@@ -9,6 +9,29 @@
     '. . padding-container--bottom . .'
     '. . axis-bottom . .';
   }
+  .axis.axis-left {
+    .ticks-transform {
+      margin-left: 0.5em;
+      .ticks { margin-left: 100%; }
+    }
+  }
+  .axis.axis-bottom {
+    .ticks-transform {
+      margin-bottom: 0.5em;
+    }
+  }
+  .axis.axis-top {
+    position: relative;
+    .ticks-transform {
+
+      .ticks {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        /*translate: 0 100%;*/
+      }
+    }
+  }
 }
 
 /*.chart-cartesian[data-legend-position='top'] {*/

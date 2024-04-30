@@ -19,7 +19,6 @@
   }
 
   .axis-left, .axis-right {
-    grid-area: axis-left;
     grid-template-areas: 'title-wrapper ticks';
     grid-template-columns: auto auto;
     .title-wrapper {
@@ -30,15 +29,10 @@
         transform: rotate(-90deg);
       }
     }
-    .ticks-transform {
-      --fit-width: true;
-      margin-left: 0.5em;
-      .ticks { margin-left: 100%; }
-    }
+    .ticks-transform { --fit-width: true; }
   }
 
   .axis-right {
-    grid-area: axis-right;
     grid-template-areas: 'ticks title-wrapper';
     .title-wrapper {
       text {
@@ -49,22 +43,15 @@
 
 
   .axis-bottom, .axis-top {
-    grid-area: axis-bottom;
     grid-template-areas: 'ticks' 'title-wrapper';
     grid-template-rows: auto auto;
     .title .text, .subtitle .text { margin: 0 auto; }
     .ticks-transform {
       --fit-height: true;
-      margin-bottom: 0.5em;
     }
   }
 
   .axis-top {
-    grid-area: axis-top;
     grid-template-areas: 'title-wrapper' 'ticks';
-    .ticks-transform {
-      margin-bottom: 0;
-      margin-top: 0.5em;
-    }
   }
 }

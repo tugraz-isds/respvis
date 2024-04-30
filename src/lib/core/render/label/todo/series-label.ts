@@ -1,8 +1,9 @@
 import {easeCubicOut, select, Selection} from 'd3';
 import {Position, positionToTransformAttr} from '../../../index';
-import {classesForSelection} from "../../../utilities/d3/util";
+import {classesForSelection, cssVarFromSelection} from "../../../utilities/d3/util";
 import {RenderElement} from "../../../utilities/graphic-elements/render-element";
 import {Orientation, Sign} from "../../../constants/types";
+import {addEnterClass, addExitClass} from "../../../utilities/d3/transition";
 
 export interface Label extends Position {
   text: string
@@ -35,31 +36,23 @@ export function labelsRender<D extends Label>(seriesS: Selection, labels: D[]) {
     .call((s) => seriesLabelJoin(seriesS, s));
 }
 
-export function seriesLabelJoin(
-  seriesSelection: Selection,
-  joinSelection: Selection<Element, Label>
-): void {
-  joinSelection
+export function seriesLabelJoin(seriesS: Selection, joinS: Selection<Element, Label>): void {
+  const tDurationString = cssVarFromSelection(seriesS, '--transition-time-label-enter-ms')
+  const tDuration = tDurationString ? parseInt(tDurationString) : 250
+  joinS
     .join(
       (enter) =>
         enter
           .append('text')
           .classed('label', true)
           .each((d, i, g) => positionToTransformAttr(select(g[i]), d))
-          .attr('font-size', '0em')
-          .attr('opacity', 0)
-          .call((s) =>
-            s.transition('enter').duration(250).attr('font-size', '1em').attr('opacity', 1)
-          )
-          .call((s) => seriesSelection.dispatch('enter', { detail: { selection: s } })),
+          .call(s => addEnterClass(s, tDuration))
+          .call((s) => seriesS.dispatch('enter', { detail: { selection: s } })),
       undefined,
       (exit) =>
-        exit
-          .classed('exiting', true)
-          .call((s) =>
-            s.transition('exit').duration(250).attr('font-size', '0em').attr('opacity', 0).remove()
-          )
-          .call((s) => seriesSelection.dispatch('exit', { detail: { selection: s } }))
+        exit.call((s) => addExitClass(s, tDuration).on('end', () => {
+          exit.remove().call((s) => seriesS.dispatch('exit', {detail: {selection: s}}))
+        }))
     )
     .each((d, i, g) =>
       select(g[i])
@@ -71,5 +64,5 @@ export function seriesLabelJoin(
     .text((d) => d.text)
     .attr('data-key', (d) => d.key)
     .attr( 'data-sign', (d) => d.sign ? d.sign : null)
-    .call((s) => seriesSelection.dispatch('update', { detail: { selection: s } }));
+    .call((s) => seriesS.dispatch('update', { detail: { selection: s } }));
 }

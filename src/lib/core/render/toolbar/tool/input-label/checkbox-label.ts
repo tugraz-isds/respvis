@@ -18,9 +18,7 @@ export class CheckBoxLabel implements InputLabel {
       .data([data])
       .join('input')
       .attr('type', 'checkbox')
-      .on('change', function (e) {
-        data.onChange?.(e, data.type)
-      })
+      .on('change', function (e) { data.onChange?.(e, data.type) })
     if (data.defaultVal !== undefined) inputS.property('checked', data.defaultVal)
     if (data.dataKey) inputS.attr('data-key', data.dataKey)
 

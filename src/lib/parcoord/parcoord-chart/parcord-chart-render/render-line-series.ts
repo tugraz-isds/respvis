@@ -20,7 +20,6 @@ export function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>)
   const lines = activeAxes.length > 0 ? createLines(activeAxes) : []
 
 
-
   lineSeriesS.selectAll<SVGPathElement, Line>('path')
     .data(lines, (d) => d.key)
     .call(s => lineSeriesJoin(lineSeriesS, s))

@@ -3,7 +3,9 @@ import {
   axisBottom as d3AxisBottom,
   AxisDomain,
   axisLeft as d3AxisLeft,
+  axisRight as d3AxisRight,
   AxisScale,
+  axisTop as d3AxisTop,
   Selection,
   Transition
 } from "d3";
@@ -22,15 +24,26 @@ export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
 export type KeyedAxisSelection = Selection<SVGSVGElement | SVGGElement, KeyedAxisValid>;
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
 
+//TODO: one axis render function. Specify in data which orientation
+
 export function axisLeftRender(axisS: AxisSelection) {
-  // console.log(axisS)
   axisS.classed('axis axis-left', true)
   return axisRender(axisS, d3Axis(d3AxisLeft, axisS))
+}
+
+export function axisRightRender(axisS: AxisSelection) {
+  axisS.classed('axis axis-right', true)
+  return axisRender(axisS, d3Axis(d3AxisRight, axisS))
 }
 
 export function axisBottomRender(axisS: AxisSelection) {
   axisS.classed('axis axis-bottom', true)
   return axisRender(axisS, d3Axis(d3AxisBottom, axisS))
+}
+
+export function axisTopRender(axisS: AxisSelection) {
+  axisS.classed('axis axis-top', true)
+  return axisRender(axisS, d3Axis(d3AxisTop, axisS))
 }
 
 export function axisSequenceRender(axisS: KeyedAxisSelection, axisPosition?: AxisLayout) {

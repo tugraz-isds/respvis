@@ -18,12 +18,13 @@ export function renderParcoord(selector: string) {
     dependentOn: 'width',
     mapping: {0: 90, 3: 0}
   } as const
+  const sampleSize = 500
 
   const data: ParcoordChartUserArgs = {
     series: {
       dimensions: [
         {
-          scaledValues: {values: horsePower},
+          scaledValues: {values: horsePower.slice(0, sampleSize)},
           zoom: {
             in: 10,
             out: 1
@@ -37,7 +38,7 @@ export function renderParcoord(selector: string) {
         },
         {
           scaledValues: {
-            values: prices
+            values: prices.slice(0, sampleSize)
           },
           zoom: {
             in: 20,
@@ -51,7 +52,7 @@ export function renderParcoord(selector: string) {
           }
         },
         {
-          scaledValues: {values: mileages},
+          scaledValues: {values: mileages.slice(0, sampleSize)},
           zoom: {
             in: 20,
             out: 1
@@ -64,7 +65,7 @@ export function renderParcoord(selector: string) {
           }
         },
         {
-          scaledValues: {values: fuel},
+          scaledValues: {values: fuel.slice(0, sampleSize)},
           axis: {
             title: "Fuel",
             tickOrientationFlipped: sharedTickOrientationFlipped
@@ -72,7 +73,7 @@ export function renderParcoord(selector: string) {
         },
       ],
       categories: {
-        values: makes,
+        values: makes.slice(0, sampleSize),
         title: 'Makes'
       },
       flipped: {

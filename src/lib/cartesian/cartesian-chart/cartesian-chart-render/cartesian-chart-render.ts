@@ -45,7 +45,7 @@ export function cartesianAxisRender<T extends CartesianChartSelection>(chartS: T
 }
 
 export function originLineRender<T extends CartesianChartSelection>(chartS: T): void {
-  const {horizontalAxisS, verticalAxisS, drawAreaS} = chartS.datum().renderer
+  const {horizontalAxisS, verticalAxisS, drawAreaS} = chartS.datum().series.renderer
   const gridAreaS = drawAreaS.selectAll('.grid-area')
 
   function needsBaseLine(values: ScaledValues) {

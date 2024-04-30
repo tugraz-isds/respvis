@@ -3,6 +3,7 @@ import {BarArgs} from "../bar";
 import {rectFitStroke, rectMinimized, rectToAttrs} from "../../core";
 import {cssLengthInPx} from "../../core/utilities/dom/units";
 import {CSSLengthUnit, UnitValue} from "../../core/constants/types";
+import {addTransitionClass} from "../../core/utilities/d3/transition";
 
 export interface JoinEvent<GElement extends Element, Datum>
   extends CustomEvent<{ selection: Selection<GElement, Datum> }> {
@@ -32,6 +33,7 @@ export function barSeriesJoin(
             select(g[i])
               .transition('minimize')
               .duration(250)
+              .call(addTransitionClass)
               .call((t) => rectToAttrs(t, rectMinimized(d)))
               .remove()
           )
@@ -40,6 +42,7 @@ export function barSeriesJoin(
     .each((d, i, g) =>
       select(g[i])
         .transition('position')
+        .call(addTransitionClass)
         .duration(250)
         .ease(easeCubicOut)
         .call((t) => {

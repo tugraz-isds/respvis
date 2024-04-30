@@ -126,9 +126,7 @@ function addSliderDrag(axisS: Selection<SVGGElement, KeyedAxisValid>) {
       axisD.lowerRangeLimitPercent += percentDiff
     }
     limit === 'rect' ? onRect() : onUpperLower()
-    if (e.type === 'end') {
-      originalSeries.renderer.windowS.dispatch('resize')
-    }
+    originalSeries.renderer.windowS.dispatch('resize')
   }
 
   const throttledDrag = throttle(onDrag, 25)

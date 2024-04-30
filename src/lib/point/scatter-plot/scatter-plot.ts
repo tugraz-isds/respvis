@@ -1,26 +1,27 @@
 import {Selection} from 'd3';
-import {cartesianAxisRender, cartesianGridRender} from '../../cartesian';
 import {scatterPlotRender} from "./scatter-plot-render";
 import {ScatterPlotArgs, ScatterPlotValid, scatterPlotValidation} from "./scatter-plot-validation";
-import {getMaxRadius} from "../../core/data/radius/radius-util";
-import {elementFromSelection} from "../../core/utilities/d3/util";
-import {CartesianChart} from "../../cartesian/cartesian-chart/cartesian-chart";
-import {originLineRender} from "../../cartesian/cartesian-chart/cartesian-chart-render/cartesian-chart-render";
-import {rectFromString, WindowValid} from "../../core";
+import {CartesianChartMixin} from "../../cartesian/cartesian-chart/cartesian-chart-mixin";
+import {Chart, WindowValid} from "../../core";
+import {SeriesChartMixin} from "../../core/render/chart/series-chart/series-chart-mixin";
+import {applyMixins} from "../../core/utilities/typescript";
 
-type WindowSelection = Selection<HTMLDivElement, WindowValid & ScatterPlotValid>;
+type WindowSelection = Selection<HTMLElement, WindowValid & ScatterPlotValid>;
 type ChartSelection = Selection<SVGSVGElement, WindowValid & ScatterPlotValid>;
 export type ScatterPlotUserArgs = Omit<ScatterPlotArgs, 'renderer'>
 
-export class ScatterPlot extends CartesianChart {
-  public windowS: WindowSelection
-  constructor(windowSelection: Selection<HTMLDivElement>, data: ScatterPlotUserArgs) {
-    super({...data, type: 'point'})
+export interface ScatterPlot extends CartesianChartMixin, SeriesChartMixin {}
+export class ScatterPlot extends Chart {
+    constructor(windowSelection: Selection<HTMLDivElement>, data: ScatterPlotUserArgs) {
+    super(windowSelection, {...data, type: 'point'})
     const chartData = scatterPlotValidation({...data, renderer: this})
-    this.windowS = windowSelection as WindowSelection
-    this.windowS.datum({...this.initialWindowData, ...chartData})
+    this._windowS = windowSelection as WindowSelection
+    const initialWindowData = this.windowS.datum()
+    this.windowS.datum({...initialWindowData, ...chartData})
   }
-
+  _windowS: WindowSelection
+  get windowS(): WindowSelection { return this._windowS }
+  _chartS?: ChartSelection
   get chartS(): ChartSelection {
     return ((this._chartS && !this._chartS.empty()) ? this._chartS :
       this.layouterS.selectAll('svg.chart')) as ChartSelection
@@ -28,25 +29,11 @@ export class ScatterPlot extends CartesianChart {
 
   protected override mainRender() {
     super.mainRender()
-    scatterPlotRender(this.chartS!)
-    this.chartS.call(cartesianAxisRender)
-    this.chartS.call(originLineRender)
-    this.chartS.call(cartesianGridRender)
-  }
-
-  protected override preRender() {
-    super.preRender()
-    if (!this.initialRenderHappened) return
-    const { series } = this.windowS.datum()
-    const { radii } = series
-    const { x, y } = series
-    const drawArea = this.windowS.selectAll('.draw-area')
-    const chartElement = elementFromSelection(this.chartS)
-    const maxRadius = getMaxRadius(radii, {chart: chartElement})
-    const drawAreaBounds = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
-    const flipped = series.responsiveState.currentlyFlipped
-    //TODO: resizing is also necessary if no zoom
-    x.scale.range(flipped ? [drawAreaBounds.height - maxRadius, maxRadius] : [maxRadius, drawAreaBounds.width - 2 * maxRadius])
-    y.scale.range(flipped ? [maxRadius, drawAreaBounds.width - 2 * maxRadius] : [drawAreaBounds.height - maxRadius, maxRadius])
+    this.seriesRequirementsRender()
+    scatterPlotRender(this.chartS)
+    this.addCartesianFeatures()
+    this.addFilterListener()
   }
 }
+
+applyMixins(ScatterPlot, [CartesianChartMixin, SeriesChartMixin])
