@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {BarChartUserArgs} from "../../../../../../lib";
 import standardBarChartCSS from './standard-bar-chart.css?inline'
 import {rawCode} from "../../../../util/raw-code";
-import {AustrianCitiesData} from '../../../data'
+import {AustrianCitiesData} from '../../../../data'
 import {renderBarChart} from "../render-bar.chart";
 import {format} from "d3";
 

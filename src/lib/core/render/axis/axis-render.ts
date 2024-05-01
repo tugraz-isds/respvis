@@ -17,7 +17,7 @@ import {axisTicksPostGenerationRender, axisTicksPreGenerationRender} from "./axi
 import {tickAngleConfiguration} from "./tick-angle-configuration";
 import {getFilteredScaledValues} from "../../data/scale/axis-scaled-values-validation";
 import {bgSVGOnlyBBoxRender} from "../util/bg-svg-only-render";
-import {AxisLayout} from "../../constants/types";
+import {AxisLayout, Orientation} from "../../constants/types";
 import {KeyedAxisValid} from "./keyed-axis-validation";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
@@ -25,6 +25,19 @@ export type KeyedAxisSelection = Selection<SVGSVGElement | SVGGElement, KeyedAxi
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
 
 //TODO: one axis render function. Specify in data which orientation
+
+export function axisLayoutRender(axisS: AxisSelection, orientation: Orientation = 'horizontal') {
+  const { horizontalLayout, verticalLayout} = axisS.datum()
+  const layout = orientation === 'horizontal' ? horizontalLayout : verticalLayout
+  const generators = {
+    'left': d3AxisLeft,
+    'right': d3AxisRight,
+    'bottom': d3AxisBottom,
+    'top': d3AxisTop,
+  } as const
+  axisS.classed(`axis axis-${layout}`, true)
+  return axisRender(axisS, d3Axis(generators[layout], axisS))
+}
 
 export function axisLeftRender(axisS: AxisSelection) {
   axisS.classed('axis axis-left', true)

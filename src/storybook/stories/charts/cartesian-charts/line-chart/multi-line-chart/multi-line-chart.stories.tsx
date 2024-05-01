@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {LineChartUserArgs} from "../../../../../../lib";
 import {timeFormat} from "d3";
 import {rawCode} from "../../../../util/raw-code";
-import {PowerConsumptionData} from '../../../data'
+import {PowerConsumptionData} from '../../../../data'
 import {renderLineChart} from "../render-line.chart";
 import FullyResponsiveCSS from './multi-line-chart.css?inline'
 

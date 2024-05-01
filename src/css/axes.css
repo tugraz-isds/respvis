@@ -1,3 +1,7 @@
+.title-wrapper { grid-area: title-wrapper; }
+
+.ticks-transform { grid-area: ticks; }
+
 .axis {
   .title text { font-size: var(--font-size-axis-title); }
   .subtitle text { font-size: var(--font-size-axis-subtitle); }
@@ -12,11 +16,7 @@
 }
 
 .chart-cartesian {
-  .axis {
-    display: grid;
-    .title-wrapper { grid-area: title-wrapper; }
-    .ticks-transform { grid-area: ticks; }
-  }
+  .axis { display: grid; }
 
   .axis-left, .axis-right {
     grid-template-areas: 'title-wrapper ticks';
@@ -25,8 +25,9 @@
       display: flex;
       align-items: center;
       text {
-        text-anchor: end;
-        transform: rotate(-90deg);
+        transform-box: fill-box;
+        transform-origin: 50% 50%;
+        transform: rotate(-90deg) translate(-50%, -150%);
       }
     }
     .ticks-transform { --fit-width: true; }
@@ -36,7 +37,9 @@
     grid-template-areas: 'ticks title-wrapper';
     .title-wrapper {
       text {
-        transform: rotate(90deg);
+        transform-box: fill-box;
+        transform-origin: 50% 50%;
+        transform: rotate(90deg) translate(50%, 150%);
       }
     }
   }

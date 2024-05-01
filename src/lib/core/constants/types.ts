@@ -38,7 +38,8 @@ export type ChartType = CartesianChartType | 'parcoord'
 
 export type BarSeriesType = 'standard' | 'stacked' | 'grouped'
 
-export type Orientation = 'horizontal' | 'vertical'
+export const Orientations = ['horizontal', 'vertical'] as const
+export type Orientation = typeof Orientations[number]
 
 export type ScaledValueTag = 'categorical' | 'linear' | 'date'
 
@@ -53,9 +54,15 @@ export type SeriesKey = `s-${number}`
 export type CategoryKey = `c-${number}`
 export type IndividualKey = `i-${number}`
 
-export type AxisType = 'x' | 'y'
+export const AxisLayoutsHorizontal = ['bottom', 'top'] as const
+export type AxisLayoutHorizontal = typeof AxisLayoutsHorizontal[number]
+export const AxisLayoutsVertical = ['left', 'right'] as const
+export type AxisLayoutVertical = typeof AxisLayoutsVertical[number]
+
 export type AxisLayout = 'bottom' | 'left'
 export type AxisOrientation = AxisLayout | 'top' | 'right'
+export type AxisType = 'x' | 'y'
+
 
 export type ActiveKeyMap = {[p: string]: boolean}
 

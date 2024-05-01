@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {formatWithDecimalZero, Point, ScatterPlotUserArgs} from "../../../../../lib";
 import standardBarChartCSS from './scatterplot.css?inline'
 import {rawCode} from "../../../util/raw-code";
-import {SoldCarsGermanyData} from '../../data'
+import {SoldCarsGermanyData} from '../../../data'
 import {format, scaleLinear} from "d3";
 import {renderScatterplot} from "./render-scatterplot";
 

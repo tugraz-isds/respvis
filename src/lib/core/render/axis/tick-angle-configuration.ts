@@ -56,7 +56,7 @@ const tickAngleConfig = (angle: number) => {
     bottom: horizontalConfig(angle),
     left: horizontalConfig(normalizeAngle(angle - 90)),
     right: horizontalConfig(normalizeAngle(angle + 90)),
-    top: horizontalConfig(angle),
+    top: horizontalConfig(angle + 180),
   } as const
 }
 const horizontalConfig = (angle: number) => {

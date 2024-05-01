@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {BarChartUserArgs} from "../../../../../../lib";
 import GroupedBarChartCSS from './grouped-bar-chart.css?inline'
 import {rawCode} from "../../../../util/raw-code";
-import {CompensationEmployeeData} from '../../../data'
+import {CompensationEmployeeData} from '../../../../data'
 import {renderBarChart} from "../render-bar.chart";
 import {format} from "d3";
 

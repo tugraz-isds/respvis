@@ -4,7 +4,7 @@ import {format} from "d3";
 import axisTransformations from './single-line-chart-axis-transformations.css?inline'
 import sparkLineTransformation from './single-line-chart-spark-line.css?inline'
 import {rawCode} from "../../../../util/raw-code";
-import {StudentTUGrazData} from '../../../data'
+import {StudentTUGrazData} from '../../../../data'
 import {renderLineChart} from "../render-line.chart";
 
 const {students, years} = StudentTUGrazData

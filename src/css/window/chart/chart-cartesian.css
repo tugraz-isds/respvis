@@ -15,6 +15,11 @@
       .ticks { margin-left: 100%; }
     }
   }
+  .axis.axis-right {
+    .ticks-transform {
+      margin-right: 0.5em;
+    }
+  }
   .axis.axis-bottom {
     .ticks-transform {
       margin-bottom: 0.5em;
@@ -23,12 +28,11 @@
   .axis.axis-top {
     position: relative;
     .ticks-transform {
-
+      margin-top: 0.5em;
       .ticks {
         position: absolute;
         top: 100%;
         left: 0;
-        /*translate: 0 100%;*/
       }
     }
   }

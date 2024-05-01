@@ -8,11 +8,19 @@ import {KeyedAxisValid} from "./keyed-axis-validation";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 import {CartesianAxisValid} from "../../../cartesian/cartesian-axis-validation";
 import {Series} from "../series";
+import {
+  AxisLayoutHorizontal,
+  AxisLayoutsHorizontal,
+  AxisLayoutsVertical,
+  AxisLayoutVertical
+} from "../../constants/types";
 
 export type BaseAxisUserArgs = {
   bounds?: Partial<LayoutBreakpoints>
   title?: RespValOptional<string>
   subTitle?: RespValOptional<string>
+  horizontalLayout?: AxisLayoutHorizontal
+  verticalLayout?: AxisLayoutVertical
   configureAxis?: RespValOptional<ConfigureAxisFn>
   tickOrientation?: RespValByValueOptional<number>
   tickOrientationFlipped?: RespValByValueOptional<number>
@@ -35,22 +43,27 @@ export interface ConfigureAxisFn {
   (axis: D3Axis<AxisDomain>): void;
 }
 
-export function baseAxisValidation(data: BaseAxisArgs): AxisValid {
-  const axis = {
+export function baseAxisValidation(args: BaseAxisArgs): AxisValid {
+  console.log(args.horizontalLayout)
+  const axis: AxisValid = {
     originalAxis: this,
-    renderer: data.renderer,
-    series: data.series,
-    scaledValues: data.scaledValues,
-    title: data.title || '',
-    subTitle: data.subTitle || '',
-    configureAxis: data.configureAxis || (() => {
+    renderer: args.renderer,
+    series: args.series,
+    scaledValues: args.scaledValues,
+    title: args.title || '',
+    subTitle: args.subTitle || '',
+    configureAxis: args.configureAxis || (() => {
     }),
-    tickOrientation: data.tickOrientation ?? 0,
-    tickOrientationFlipped: data.tickOrientationFlipped ?? 0,
+    tickOrientation: args.tickOrientation ?? 0,
+    tickOrientationFlipped: args.tickOrientationFlipped ?? 0,
     bounds: {
-      width: breakPointsValidation(data.bounds?.width),
-      height: breakPointsValidation(data.bounds?.height)
-    }
+      width: breakPointsValidation(args.bounds?.width),
+      height: breakPointsValidation(args.bounds?.height)
+    },
+    horizontalLayout: args.horizontalLayout && AxisLayoutsHorizontal.includes(args.horizontalLayout) ?
+      args.horizontalLayout : 'bottom',
+    verticalLayout: args.verticalLayout && AxisLayoutsVertical.includes(args.verticalLayout) ?
+      args.verticalLayout : 'left'
   }
   axis.originalAxis = axis
   return axis
