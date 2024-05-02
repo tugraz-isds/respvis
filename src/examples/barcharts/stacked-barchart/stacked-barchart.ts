@@ -20,11 +20,6 @@ export function renderStackedBarChart(selector: string) {
     dependentOn: 'width',
     mapping: {0: 90, 3: 0} //{0: 90, 1: -180, 3: 179} // demonstration purposes
   } as const
-  const tickOrientationVertical = {
-    scope: 'self',
-    dependentOn: 'height',
-    mapping: {0: 0, 3: 90} //{0: -180, 1: -180, 3: 179} // demonstration purposes
-  } as const
   const axisBoundsWidth = {
     values: [10, 30, 50],
     unit: 'rem'
@@ -67,7 +62,7 @@ export function renderStackedBarChart(selector: string) {
         }
       }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'

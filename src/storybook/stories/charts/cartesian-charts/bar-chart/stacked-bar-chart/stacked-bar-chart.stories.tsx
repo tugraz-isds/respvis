@@ -39,16 +39,11 @@ const tickOrientationHorizontal = {
   dependentOn: 'width',
   mapping: {0: 90, 3: 0} //{0: 90, 1: -180, 3: 179} // demonstration purposes
 } as const
-const tickOrientationVertical = {
-  scope: 'self',
-  dependentOn: 'height',
-  mapping: {0: 0, 3: 90} //{0: -180, 1: -180, 3: 179} // demonstration purposes
-} as const
-const axisBoundsWidth = {
+const axisBreakPointsWidth = {
   values: [10, 30, 50],
   unit: 'rem'
 } as const
-const axisBoundsHeight = {
+const axisBreakPointsHeight = {
   values: [10, 20, 30],
   unit: 'rem'
 } as const
@@ -93,7 +88,7 @@ export const Primary: Story = {
         }
       }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -104,9 +99,9 @@ export const Primary: Story = {
     },
     x: {
       title: 'Year',
-      bounds: {
-        width: axisBoundsWidth,
-        height: axisBoundsHeight
+      breakPoints: {
+        width: axisBreakPointsWidth,
+        height: axisBreakPointsHeight
       },
       // tickOrientation: tickOrientationHorizontal,
       // tickOrientationFlipped: tickOrientationVertical
@@ -114,9 +109,9 @@ export const Primary: Story = {
     y: {
       title: 'Market Share',
       configureAxis: (a) => a.tickFormat((v) => `${v}%`),
-      bounds: {
-        height: axisBoundsHeight,
-        width: axisBoundsWidth
+      breakPoints: {
+        height: axisBreakPointsHeight,
+        width: axisBreakPointsWidth
       },
       // tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,

@@ -28,7 +28,7 @@ export function tickAngleCalculation(axisS: AxisSelection) {
 }
 
 function calcTickAngleOrInterpolationData(axisS: AxisSelection) {
-  const {renderer, bounds, ...restAxisD} = axisS.datum()
+  const {renderer, breakPoints, ...restAxisD} = axisS.datum()
   const isFlipped = restAxisD.series.responsiveState.currentlyFlipped
   const tickOrientation = isFlipped ? restAxisD.tickOrientationFlipped : restAxisD.tickOrientation
 
@@ -51,7 +51,7 @@ function calcTickAngleOrInterpolationData(axisS: AxisSelection) {
   if (valueAtPostLayoutIndex === null || postLayoutIndex === null) return valueAtPreLayoutIndex
 
   const breakpoints = element === chartElement ?
-    renderer.windowS.datum().bounds[layout] : bounds[layout]
+    renderer.windowS.datum().breakPoints[layout] : breakPoints[layout]
   
   return {
     preOrientation: valueAtPreLayoutIndex,

@@ -59,7 +59,7 @@ export function createMarketSharesChart(selector) {
                 }
             }
         },
-        bounds: {
+        breakPoints: {
             width: {
                 values: [20, 30, 50],
                 unit: 'rem'

@@ -13,7 +13,7 @@ import {BreakpointsValid, getActiveBreakpoints} from "./breakpoint-validation";
 import {defaultLayoutIndex, pxLowerLimit, pxUpperLimit} from "../../constants/other";
 
 export type WithBreakpoints = {
-  bounds: LayoutBreakpoints
+  breakPoints: LayoutBreakpoints
 }
 export type LayoutBreakpoints = Record<LengthDimension, BreakpointsValid>
 type LayoutState = {
@@ -27,7 +27,7 @@ export type LayoutStates = Record<LengthDimension, LayoutState> & {
 export function updateCSSForSelection<T extends SVGHTMLGroupingElement, D extends WithBreakpoints>(selection: Selection<T, D>) {
   const element = elementFromSelection(selection)
   const chartBaseValid = selection.data()[0]
-  updateBreakpointStatesInCSS(element, chartBaseValid.bounds)
+  updateBreakpointStatesInCSS(element, chartBaseValid.breakPoints)
 }
 
 export function getLayoutStateFromCSS(element: SVGGroupingElement, dimension: LengthDimension) : LayoutState {
@@ -51,8 +51,8 @@ export function getLayoutStatesFromCSS(element: SVGGroupingElement): LayoutState
 //TODO: naming of custom css properties
 
 export function getComputedBreakpointValues(element: SVGGroupingElement, breakpoints: LayoutBreakpoints) {
-  const boundsWidthTransformed = getTransformedBreakpoints(element, breakpoints.width, 'width')
-  const boundsHeightTransformed = getTransformedBreakpoints(element, breakpoints.height, 'height')
+  getTransformedBreakpoints(element, breakpoints.width, 'width')
+  getTransformedBreakpoints(element, breakpoints.height, 'height')
 }
 
 export function updateBreakpointStatesInCSS(element: SVGHTMLGroupingElement, layoutBreakpoints: LayoutBreakpoints) {

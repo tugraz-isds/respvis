@@ -39,7 +39,7 @@ export function createBarCart(selector: string) {
       },
       labels: { values: data.populations, offset: 6}
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'

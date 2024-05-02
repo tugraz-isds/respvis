@@ -17,7 +17,7 @@ import {axisTicksPostGenerationRender, axisTicksPreGenerationRender} from "./axi
 import {tickAngleConfiguration} from "./tick-angle-configuration";
 import {getFilteredScaledValues} from "../../data/scale/axis-scaled-values-validation";
 import {bgSVGOnlyBBoxRender} from "../util/bg-svg-only-render";
-import {AxisLayout, Orientation} from "../../constants/types";
+import {AxisLayout, AxisLayouts, Orientation} from "../../constants/types";
 import {KeyedAxisValid} from "./keyed-axis-validation";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
@@ -36,6 +36,8 @@ export function axisLayoutRender(axisS: AxisSelection, orientation: Orientation 
     'top': d3AxisTop,
   } as const
   axisS.classed(`axis axis-${layout}`, true)
+  const unusedLayouts = AxisLayouts.filter(axisLayout => axisLayout !== layout)
+  unusedLayouts.forEach(unusedLayout => axisS.classed(unusedLayout, false))
   return axisRender(axisS, d3Axis(generators[layout], axisS))
 }
 
@@ -109,7 +111,7 @@ function axisRender(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
   const ticksS = axisTicksPreGenerationRender(axisS)
   a(ticksS);
   axisTicksPostGenerationRender(ticksS)
-  updateBreakpointStatesInCSS(axisElement, axisD.bounds)
+  updateBreakpointStatesInCSS(axisElement, axisD.breakPoints)
   tickAngleConfiguration(axisS, ticksS)
 }
 
@@ -117,9 +119,9 @@ function d3Axis(
   axisGenerator: (scale: AxisScale<AxisDomain>) => D3Axis<AxisDomain>,
   selection: AxisSelection
 ): D3Axis<AxisDomain> {
-  const {scaledValues, bounds, configureAxis, renderer} = selection.datum()
+  const {scaledValues, breakPoints, configureAxis, renderer} = selection.datum()
   const axisElement = elementFromSelection(selection)
-  updateBreakpointStatesInCSS(axisElement, bounds)
+  updateBreakpointStatesInCSS(axisElement, breakPoints)
   const chartElement = elementFromSelection(renderer.chartS)
   const configureAxisValid = getCurrentRespVal(configureAxis, {chart: chartElement, self: axisElement})
 

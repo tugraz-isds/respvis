@@ -59,7 +59,7 @@ export function createChartSoldCarsGermany(selector) {
       //   return label + '1'
       // }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 30, 65],
         unit: 'rem'

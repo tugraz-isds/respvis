@@ -84,7 +84,7 @@ export const Primary: Story = {
       },
       // labels: makes
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [40, 60],
         unit: 'rem'
@@ -100,7 +100,7 @@ export const Primary: Story = {
         scope: 'self',
         mapping: {0: 'HP in [PS]', 1: 'Horse P. [PS]', 2: 'Horse Power in [PS]'}
       },
-      bounds: {
+      breakPoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'

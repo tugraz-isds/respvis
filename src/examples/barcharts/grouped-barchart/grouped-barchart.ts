@@ -45,7 +45,7 @@ export function renderGroupedBarChart(selector: string) {
         offset: 6, position: 'dynamic'
       }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 45, 50],
         unit: 'rem'

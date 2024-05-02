@@ -81,7 +81,7 @@ export function renderParcoord(selector: string) {
         dependentOn: 'width'
       }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -152,7 +152,7 @@ export function renderParcoordGeneralized(selector: string) {
         title: 'Makes'
       }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'

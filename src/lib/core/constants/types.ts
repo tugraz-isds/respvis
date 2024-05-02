@@ -58,6 +58,7 @@ export const AxisLayoutsHorizontal = ['bottom', 'top'] as const
 export type AxisLayoutHorizontal = typeof AxisLayoutsHorizontal[number]
 export const AxisLayoutsVertical = ['left', 'right'] as const
 export type AxisLayoutVertical = typeof AxisLayoutsVertical[number]
+export const AxisLayouts = [...AxisLayoutsHorizontal, ...AxisLayoutsVertical] as const
 
 export type AxisLayout = 'bottom' | 'left'
 export type AxisOrientation = AxisLayout | 'top' | 'right'

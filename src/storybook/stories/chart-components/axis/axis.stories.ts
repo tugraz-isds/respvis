@@ -31,7 +31,7 @@ type Story = StoryObj<AxisChartUserArgs>
 export const Primary: Story = {
   args: {
     title: 'Axis Chart',
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 40, 60],
         unit: "rem"

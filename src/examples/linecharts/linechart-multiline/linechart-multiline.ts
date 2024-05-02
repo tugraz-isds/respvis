@@ -28,7 +28,7 @@ export const renderMultiLineChart = (selector: string) => {
         out: 1
       }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [25, 30, 50],
         unit: 'rem'

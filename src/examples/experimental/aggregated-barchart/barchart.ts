@@ -33,7 +33,7 @@ export function createBarChart(selector: string) {
         offset: 3
       }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -117,7 +117,7 @@ export function createBarChartAggregated(selector: string) {
         mapping: {0: true, 2: false}
       },
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'

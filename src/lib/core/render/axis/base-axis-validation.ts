@@ -16,7 +16,7 @@ import {
 } from "../../constants/types";
 
 export type BaseAxisUserArgs = {
-  bounds?: Partial<LayoutBreakpoints>
+  breakPoints?: Partial<LayoutBreakpoints>
   title?: RespValOptional<string>
   subTitle?: RespValOptional<string>
   horizontalLayout?: AxisLayoutHorizontal
@@ -31,8 +31,8 @@ export type BaseAxisArgs = BaseAxisUserArgs & RenderArgs & {
   series: Series
 }
 
-export type BaseAxisValid = Required<Omit<BaseAxisArgs, 'bounds'>> & {
-  bounds: LayoutBreakpoints,
+export type BaseAxisValid = Required<Omit<BaseAxisArgs, 'breakPoints'>> & {
+  breakPoints: LayoutBreakpoints,
   originalAxis: BaseAxisValid,
   d3Axis?: D3Axis<any> //axis available after first render
 }
@@ -44,7 +44,6 @@ export interface ConfigureAxisFn {
 }
 
 export function baseAxisValidation(args: BaseAxisArgs): AxisValid {
-  console.log(args.horizontalLayout)
   const axis: AxisValid = {
     originalAxis: this,
     renderer: args.renderer,
@@ -56,9 +55,9 @@ export function baseAxisValidation(args: BaseAxisArgs): AxisValid {
     }),
     tickOrientation: args.tickOrientation ?? 0,
     tickOrientationFlipped: args.tickOrientationFlipped ?? 0,
-    bounds: {
-      width: breakPointsValidation(args.bounds?.width),
-      height: breakPointsValidation(args.bounds?.height)
+    breakPoints: {
+      width: breakPointsValidation(args.breakPoints?.width),
+      height: breakPointsValidation(args.breakPoints?.height)
     },
     horizontalLayout: args.horizontalLayout && AxisLayoutsHorizontal.includes(args.horizontalLayout) ?
       args.horizontalLayout : 'bottom',

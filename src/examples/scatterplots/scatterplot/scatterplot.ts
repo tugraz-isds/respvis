@@ -60,7 +60,7 @@ export function createScatterplot(selector: string) {
       },
       // labels: makes
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [40, 60],
         unit: 'rem'

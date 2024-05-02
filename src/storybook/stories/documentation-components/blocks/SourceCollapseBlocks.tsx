@@ -1,6 +1,7 @@
-import React, {FC, Fragment, useContext} from 'react';
-import {Description, DocsContext, Subtitle} from "@storybook/blocks";
+import React, {FC, useContext} from 'react';
+import {DocsContext} from "@storybook/blocks";
 import {SourceCollapseBlock} from "./SourceCollapseBlock/SourceCollapseBlock";
+import {StoryContext} from "@storybook/html";
 
 interface StoriesProps {
   includePrimary?: boolean;
@@ -29,12 +30,10 @@ export const SourceCollapseBlocks: FC<StoriesProps> = ({includePrimary = true}) 
   return (
     <>
       {stories.map(
-        (story) =>
-          story && <Fragment key={story.id}>
-            <Subtitle children={story.name}/>
-            <Description of={story}/>
-            <SourceCollapseBlock of={story.moduleExport} id={story.id} __forceInitialArgs/>
-          </Fragment>
+        (story) => {
+          //How to properly cast type?
+          return story && <SourceCollapseBlock story={story as unknown as StoryContext}></SourceCollapseBlock>
+        }
       )}
     </>
   );
