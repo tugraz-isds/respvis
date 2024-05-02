@@ -52,21 +52,21 @@ export const Primary: Story = {
       { vals: { values: populations}, title: 'Population', standardOrientation: "vertical",
         tickOrientation: {
           dependentOn: 'height',
-          mapping: {0: 45, 2: 0} //TODO: -90 degree does not work completely
+          mapping: {0: 45, 2: 0}
         }
       },
       {
         vals: {values: cities}, title: 'Cities', standardOrientation: "horizontal", horizontalLayout: 'top',
         tickOrientation: {
           dependentOn: 'width',
-          mapping: {0: 90, 2: 0} //TODO: -90 degree does not work completely
+          mapping: {0: -90, 2: 0}
         }
       },
       {
         vals: { values: populations}, title: 'Population', standardOrientation: "vertical", verticalLayout: 'right',
         tickOrientation: {
           dependentOn: 'height',
-          mapping: {0: -45, 2: 0} //TODO: -90 degree does not work completely
+          mapping: {0: -45, 2: 0}
         }
       },
     ]

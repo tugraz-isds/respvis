@@ -24,7 +24,7 @@ function configureTick(tickS: Selection<Element>, angle: number, axisS: AxisSele
 
   const axisLocation = axisElement.classList.contains('axis-bottom') ? 'bottom' :
     axisElement.classList.contains('axis-left') ? 'left' :
-    axisElement.classList.contains('axis-top') ? 'top' : 'right'
+      axisElement.classList.contains('axis-top') ? 'top' : 'right'
 
   const pivotS = tickS.select<SVGGElement>('.pivot')!
   pivotS.append(() => textS.node())
@@ -44,34 +44,51 @@ function configureTick(tickS: Selection<Element>, angle: number, axisS: AxisSele
   pivotS //.transition().duration(200) //TODO: enable D3 transitions when being able to differ between initial render and succeeding renders
     .attr("transform", axisLocation === 'bottom' ?
       `translate(0, ${transformRelative + transformFixed}) rotate(${normalizedAngle})` : axisLocation === 'top' ?
-      `translate(0, -${transformRelative + transformFixed}) rotate(${normalizedAngle})` : axisLocation === 'left' ?
-      `translate(-${transformRelative + transformFixed}, 0) rotate(${normalizedAngle})` : //right
-      `translate(${transformRelative + transformFixed}, 0) rotate(${normalizedAngle})`
+        `translate(0, -${transformRelative + transformFixed}) rotate(${normalizedAngle})` : axisLocation === 'left' ?
+          `translate(-${transformRelative + transformFixed}, 0) rotate(${normalizedAngle})` : //right
+          `translate(${transformRelative + transformFixed}, 0) rotate(${normalizedAngle})`
     )
 }
 
 //TODO: Add valid configurations for other axes than bottom
 const tickAngleConfig = (angle: number) => {
   return {
-    bottom: horizontalConfig(angle),
-    left: horizontalConfig(normalizeAngle(angle - 90)),
-    right: horizontalConfig(normalizeAngle(angle + 90)),
-    top: horizontalConfig(angle + 180),
+    bottom: bottomConfig(angle),
+    left: bottomConfig(normalizeAngle(angle - 90)),
+    right: bottomConfig(normalizeAngle(angle + 90)),
+    top: topConfig(angle),
   } as const
 }
-const horizontalConfig = (angle: number) => {
-  const anchorStart = (angle > 15 && angle < 165)
-  const anchorMiddle = (angle >= 345) || (angle >= 0 && angle <= 15) || (angle >= 165 && angle <= 195)
-  // const anchorEnd = (angle < 345 && angle > 195)
-
-  const baseLineHanging = (angle >= 0 && angle <= 15) || (angle >= 345)
-  const baseLineAuto = (angle >= 165 && angle <= 195)
-  // const baseLineMiddle = (angle >= 15 && angle <= 165) || (angle >= 195 && angle <= 345)
-
-  const moreSpace = (angle >= 345) || (angle >= 0 && angle <= 15) || (angle >= 165 || angle <= 195)
+const bottomConfig = (angle: number) => {
+  const {
+    anchorInRotationFirstHalf, anchorParallelToAxis,
+    baseLineAround180Degree, baseLineAround0Degree, moreSpace
+  } = getAngleState(angle)
   return {
-    textAnchor: anchorStart ? 'start' : anchorMiddle ? 'middle' : 'end',
-    dominantBaseline: baseLineHanging ? 'hanging' : baseLineAuto ? 'auto' : 'middle',
+    textAnchor: anchorInRotationFirstHalf ? 'start' : anchorParallelToAxis ? 'middle' : 'end',
+    dominantBaseline: baseLineAround0Degree ? 'hanging' : baseLineAround180Degree ? 'auto' : 'middle',
     transformFixed: moreSpace ? 6 : 4
   } as const
+}
+
+const topConfig = (angle: number) => {
+  const {
+    anchorInRotationFirstHalf, anchorParallelToAxis,
+    baseLineAround180Degree, baseLineAround0Degree, moreSpace
+  } = getAngleState(angle)
+  return {
+    textAnchor: anchorInRotationFirstHalf ? 'end' : anchorParallelToAxis ? 'middle' : 'start',
+    dominantBaseline: baseLineAround0Degree ? 'auto' : baseLineAround180Degree ? 'hanging' : 'middle',
+    transformFixed: moreSpace ? 6 : 4
+  } as const
+}
+
+const getAngleState = (angle: number) => {
+  return {
+    anchorInRotationFirstHalf: (angle > 15 && angle < 165),
+    anchorParallelToAxis: (angle >= 345) || (angle >= 0 && angle <= 15) || (angle >= 165 && angle <= 195),
+    baseLineAround0Degree: (angle >= 0 && angle <= 15) || (angle >= 345),
+    baseLineAround180Degree: (angle >= 165 && angle <= 195),
+    moreSpace: (angle >= 345) || (angle >= 0 && angle <= 15) || (angle >= 165 || angle <= 195)
+  }
 }
