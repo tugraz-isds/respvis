@@ -69,7 +69,7 @@ export function createChartSoldCarsGermany(selector: string) {
       //   return label + '1'
       // }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -84,7 +84,7 @@ export function createChartSoldCarsGermany(selector: string) {
         dependentOn: 'width',
         mapping: {0: 'HP in [PS]', 1: 'Horse P. [PS]', 2: 'Horse Power in [PS]'}
       },
-      bounds: {
+      breakPoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'

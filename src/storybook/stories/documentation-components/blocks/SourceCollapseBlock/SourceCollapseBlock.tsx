@@ -1,79 +1,27 @@
-import {Canvas, Controls, DocsContext, SourceProps} from '@storybook/blocks';
-import React, {Fragment, useContext, useState} from "react";
-import './SourceCollapseBlock.css'
+import {Description, DocsContext, Subtitle} from "@storybook/blocks";
+import {SourceCollapseBlockCanvas} from "./SourceCollapseBlockCanvas";
+import React, {Fragment, useContext} from "react";
+import {StoryContext, StoryObj} from "@storybook/html";
 
-type Language = {
-  code: string | string[] | ((args: object) => string),
-  title?: string
-}
-type Sources = Record<string, Language>
-/**
- */
-type SourceCollapseBlockProps = SourceProps & {
-  of: any //TODO: only stories allowed
-  id: any
-}
-export const SourceCollapseBlock = (props: SourceCollapseBlockProps) => {
-  const {of, id} = props
-  //@ts-ignore
-  const storyIdToCSFFile: Map<string, any> = useContext(DocsContext).storyIdToCSFFile;
-  const csfFile = storyIdToCSFFile?.get(id)
-  const meta = csfFile?.meta
 
-  const sources: Sources = {
-    ...meta?.parameters?.sources,
-    ...of.parameters.sources
-  }//'css' | 'js'
-  const [blockState, setBlockState] = useState<{
-    visible: '' | 'controls' | 'language',
-    currentLanguage: string
-  }>({
-    visible: '',
-    currentLanguage: Object.keys(sources)[0] ?? ''
-  })
-
-  const source: any = {
-    code: parseCode(sources[blockState.currentLanguage]?.code), //TODO: handle possible code arrays here
-    type: 'code',
-    language: blockState.currentLanguage
-  }
-
-  function parseCode(code?: string | string[] | Function) {
-    if (!code) return ''
-    if (Array.isArray(code)) return code.join('\n')
-    if (typeof code === 'string') return code
-    return code(of.args)
-  }
-
-  const actions = Object.entries(sources).map(([language, config]) => {
-    return {
-      title: config.title ?? language.toUpperCase(),
-      onClick: () => {
-        setBlockState(prev => {
-          const fromSameLanguage = prev.visible === 'language' && prev.currentLanguage === language
-          const visible = fromSameLanguage ? '' : 'language'
-          return {...prev, currentLanguage: language, visible}
-        })
-      }
-    }
-  })
-  actions.push({
-    title: 'Controls',
-    onClick: () => {
-      setBlockState((prev) => {
-        const visible = prev.visible === 'controls' ? '' : 'controls'
-        return {...prev, visible}
-      })
-    }
-  })
-
-  const controlsVisible = blockState.visible === 'controls'
-  const sourceState = blockState.visible === 'language' ? 'shown' : 'hidden'
-
-  return <Fragment>
-    <Canvas of={of} source={source} className={`sb-canvas-wrapper ${sourceState}`} additionalActions={actions} sourceState={'shown'}></Canvas>
-    <div className={`sb-controls-wrapper ${!controlsVisible ? 'hidden' : ''}`}>
-      <Controls of={of}/>
-    </div>
+export const SourceCollapseBlock = (props: { story: StoryContext }) => {
+  const {story} = props
+  return <Fragment key={story.id}>
+    <Subtitle children={story.name}/>
+    <Description of={story}/>
+    <SourceCollapseBlockCanvas of={story.moduleExport} id={story.id} __forceInitialArgs/>
   </Fragment>
-};
+}
+
+export const SourceCollapseBlockByStoryObj = (props: { story: StoryObj }) => {
+  const {story: storyArg} = props
+  const {storyIdByName, storyById} = useContext(DocsContext);
+  if (!storyArg.name) return null
+  const storyId = storyIdByName(storyArg.name)
+  const story = storyById(storyId)
+  if (!story) {
+    return null;
+  }
+
+  return <SourceCollapseBlock story={story as unknown as StoryContext}/>
+}

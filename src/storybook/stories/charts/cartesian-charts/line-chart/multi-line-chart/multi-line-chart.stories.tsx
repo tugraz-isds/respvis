@@ -2,11 +2,11 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {LineChartUserArgs} from "../../../../../../lib";
 import {timeFormat} from "d3";
 import {rawCode} from "../../../../util/raw-code";
-import {PowerConsumptionData} from '../../../data'
+import {PowerConsumptionData} from '../../../../data'
 import {renderLineChart} from "../render-line.chart";
 import FullyResponsiveCSS from './multi-line-chart.css?inline'
 
-const {yUSA, yEurope, yAsia, years, yearsJSDateFormat} = PowerConsumptionData.mapPowerConsumptionData()
+const {yUSA, yEurope, yAsia, yearsJSDateFormat} = PowerConsumptionData.mapPowerConsumptionData()
 const categories = [
   ...yUSA.map(() => 'USA'),
   ...yEurope.map(() => 'Europe'),
@@ -54,7 +54,7 @@ export const FullyResponsive: Story = {
         out: 1
       }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [25, 30, 50],
         unit: 'rem'
@@ -76,7 +76,7 @@ export const FullyResponsive: Story = {
         scope: 'self',
         mapping: {0: 90, 3: 0},
       },
-      bounds: {
+      breakPoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'
@@ -87,7 +87,7 @@ export const FullyResponsive: Story = {
     },
     y: {
       title: 'Consumption',
-      bounds: {
+      breakPoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'
@@ -106,111 +106,5 @@ export const FullyResponsive: Story = {
     }
   }
 }
-
-// export const SimpleAxisThinning: Story = {
-//   name: 'Simple: Thinning out Axes',
-//   args: {
-//     ...Basic.args,
-//     y: { ...Basic.args!.y,
-//       configureAxis: {
-//         dependentOn: 'width',
-//         scope: 'chart',
-//         mapping: {
-//           0: (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s'))),
-//           2: (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))
-//         }
-//       },
-//     },
-//     bounds: {
-//       width: {
-//         values: [20, 30, 50],
-//         unit: 'rem'
-//       }
-//     },
-//   },
-//   parameters: {
-//     sources: {
-//       css: { title: 'CSS Code', code: axisTransformations },
-//     }
-//   }
-// }
-//
-// export const SimpleSparkLine: Story = {
-//   name: 'Simple: Spark Line',
-//   args: {
-//     ...Basic.args,
-//   },
-//   parameters: {
-//     sources: {
-//       css: { title: 'CSS Code', code: sparkLineTransformation },
-//     }
-//   }
-// }
-//
-// export const SimpleResponsiveLabels: Story = {
-//   name: 'Simple: Responsive Labels',
-//   args: {
-//     ...SimpleAxisThinning.args,
-//     title: {
-//       dependentOn: 'width',
-//       mapping: {0: 'Registered Students', 1: 'Students at TU Graz', 3: 'Students Registered at TU Graz'}
-//     },
-//     subTitle: {
-//       dependentOn: 'width',
-//       mapping: {0: 'TU Graz', 1: ''}
-//     },
-//   },
-//   parameters: {
-//     sources: {
-//       css: { title: 'CSS Code', code: sparkLineTransformation },
-//     }
-//   }
-// }
-//
-// export const SimpleFlipping: Story = {
-//   args: { ...SimpleAxisThinning.args,
-//     series: {
-//       ...SimpleResponsiveLabels.args!.series!,
-//       flipped: {
-//         dependentOn: 'width',
-//         mapping: {0: true, 2: false}
-//       }
-//     }
-//   },
-//   parameters: {
-//     sources: {
-//       css: { title: 'CSS Code', code: sparkLineTransformation },
-//     }
-//   }
-// }
-//
-// const LineChartZoomableArgs = { ...SimpleFlipping.args,
-//     series: { ...SimpleFlipping.args!.series!,
-//       zoom: {
-//         in: 20,
-//         out: 1
-//       }
-//     }
-//   }
-//
-// export const LineChartZoomable: Story = {
-//   name: 'Simple: Zoomable',
-//   args: LineChartZoomableArgs,
-//   parameters: {
-//     sources: {
-//       css: { title: 'CSS Code', code: sparkLineTransformation },
-//     }
-//   }
-// }
-//
-// export const Primary: Story = {
-//   name: 'Fully Responsive',
-//   args: LineChartZoomableArgs,
-//   parameters: {
-//     sources: {
-//       css: { title: 'CSS Code', code: sparkLineTransformation },
-//     }
-//   }
-// }
 
 export default meta;

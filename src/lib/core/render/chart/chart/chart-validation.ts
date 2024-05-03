@@ -4,21 +4,21 @@ import {RespValOptional} from "../../../data/responsive-value/responsive-value";
 import {breakPointsValidation} from "../../../data/breakpoint/breakpoint-validation";
 
 export type ChartArgs = RenderArgs & {
-  bounds?: Partial<LayoutBreakpoints>
+  breakPoints?: Partial<LayoutBreakpoints>
   title?: RespValOptional<string>,
   subTitle?: RespValOptional<string>;
 }
 
-export type ChartValid = Required<Omit<ChartArgs, 'bounds'>> & {
-  bounds: LayoutBreakpoints,
+export type ChartValid = Required<Omit<ChartArgs, 'breakPoints'>> & {
+  breakPoints: LayoutBreakpoints,
 }
 
 export function chartValidation(args: ChartArgs): ChartValid {
   return {
     renderer: args.renderer,
-    bounds: {
-      width: breakPointsValidation(args.bounds?.width),
-      height: breakPointsValidation(args.bounds?.height)
+    breakPoints: {
+      width: breakPointsValidation(args.breakPoints?.width),
+      height: breakPointsValidation(args.breakPoints?.height)
     },
     title: args.title || '',
     subTitle: args.subTitle || '',

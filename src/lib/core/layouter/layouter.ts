@@ -134,9 +134,7 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGTwinInformatio
             .attr('y2', topRight.y);
           break;
         case 'text':
-          select(this)
-          svgS.call(((s) => positionToTransformAttr(s, bounds)));
-          centerSVGTextBaseline(svgS as Selection<SVGTextElement>)
+          centerSVGTextBaseline(svgS as Selection<SVGTextElement>, bounds)
           break;
         default:
           svgS.call((s) => positionToTransformAttr(s, bounds));

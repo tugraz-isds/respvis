@@ -22,7 +22,7 @@ export function createLineChart(selector: string) {
         format: (bar, label) => d3.format('.3s')(label)
       }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -39,7 +39,7 @@ export function createLineChart(selector: string) {
     x: {
       title: 'Year',
       subTitle: '[2012 to 2021]',
-      bounds: {
+      breakPoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'

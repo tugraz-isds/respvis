@@ -8,11 +8,11 @@ export function renderGroupedBarChart(selector: string) {
     dependentOn: 'width',
     mapping: {0: 90, 3: 0} //{0: 90, 1: -180, 3: 179} // demonstration purposes
   } as const
-  const axisBoundsWidth = {
+  const axisBreakPointsWidth = {
     values: [10, 30, 50],
     unit: 'rem'
   } as const
-  const axisBoundsHeight = {
+  const axisBreakPointsHeight = {
     values: [10, 20, 30],
     unit: 'rem'
   } as const
@@ -45,7 +45,7 @@ export function renderGroupedBarChart(selector: string) {
         offset: 6, position: 'dynamic'
       }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 45, 50],
         unit: 'rem'
@@ -60,9 +60,9 @@ export function renderGroupedBarChart(selector: string) {
     // },
     x: {
       title: 'Country',
-      bounds: {
-        width: axisBoundsWidth,
-        height: axisBoundsHeight
+      breakPoints: {
+        width: axisBreakPointsWidth,
+        height: axisBreakPointsHeight
       },
       // tickOrientation: tickOrientationHorizontal,
       // tickOrientationFlipped: tickOrientationVertical
@@ -70,9 +70,9 @@ export function renderGroupedBarChart(selector: string) {
     y: {
       title: 'Total Remuneration',
       subTitle: '[EU]',
-      bounds: {
-        height: axisBoundsHeight,
-        width: axisBoundsWidth
+      breakPoints: {
+        height: axisBreakPointsHeight,
+        width: axisBreakPointsWidth
       },
       // tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,

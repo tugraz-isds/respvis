@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {BarChartUserArgs} from "../../../../../../lib";
 import GroupedBarChartCSS from './grouped-bar-chart.css?inline'
 import {rawCode} from "../../../../util/raw-code";
-import {CompensationEmployeeData} from '../../../data'
+import {CompensationEmployeeData} from '../../../../data'
 import {renderBarChart} from "../render-bar.chart";
 import {format} from "d3";
 
@@ -31,16 +31,11 @@ const tickOrientationHorizontal = {
   dependentOn: 'width',
   mapping: {0: 90, 3: 0} //{0: 90, 1: -180, 3: 179} // demonstration purposes
 } as const
-const tickOrientationVertical = {
-  scope: 'self',
-  dependentOn: 'height',
-  mapping: {0: 0, 3: 90} //{0: -180, 1: -180, 3: 179} // demonstration purposes
-} as const
-const axisBoundsWidth = {
+const axisBreakPointsWidth = {
   values: [10, 30, 50],
   unit: 'rem'
 } as const
-const axisBoundsHeight = {
+const axisBreakPointsHeight = {
   values: [10, 20, 30],
   unit: 'rem'
 } as const
@@ -76,7 +71,7 @@ export const Primary: Story = {
         offset: 6, position: 'dynamic'
       }
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -91,9 +86,9 @@ export const Primary: Story = {
     // },
     x: {
       title: 'Country',
-      bounds: {
-        width: axisBoundsWidth,
-        height: axisBoundsHeight
+      breakPoints: {
+        width: axisBreakPointsWidth,
+        height: axisBreakPointsHeight
       },
       gridLineFactor: 1
       // tickOrientation: tickOrientationHorizontal,
@@ -102,9 +97,9 @@ export const Primary: Story = {
     y: {
       title: 'Total Remuneration',
       subTitle: '[EU]',
-      bounds: {
-        height: axisBoundsHeight,
-        width: axisBoundsWidth
+      breakPoints: {
+        height: axisBreakPointsHeight,
+        width: axisBreakPointsWidth
       },
       gridLineFactor: 1,
       // tickOrientation: tickOrientationVertical,

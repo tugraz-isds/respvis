@@ -1,47 +1,43 @@
-import {axisBottomRender, axisLeftRender, AxisSelection, AxisValid} from "../../../core/render/axis";
+import {axisLayoutRender, AxisSelection, AxisValid} from "../../../core/render/axis";
 import {CartesianChartSelection} from "../cartesian-chart-validation";
 import {ScaledValuesLinear} from "../../../core/data/scale/scaled-values-linear";
 import {BarStackedSeries} from "../../../bar/bar-series/bar-stacked-series";
 import {ScaledValues} from "../../../core/data/scale/scaled-values-base";
 import {pathLine} from "../../../core/utilities/path";
+import {CartesianAxisValid} from "../../cartesian-axis-validation";
 
 export function cartesianAxisRender<T extends CartesianChartSelection>(chartS: T): void {
   const {renderer, ...data} = chartS.datum()
   const series = data.series.cloneZoomed().cloneFiltered()
   const flipped = series.responsiveState.currentlyFlipped
-  const leftAxisD = flipped ? {...data.x, scaledValues: series.x} : {...data.y, scaledValues: series.y}
-  const leftAxisClass = flipped ? 'axis-x' : 'axis-y'
-  const bottomAxisD = flipped ? {...data.y, scaledValues: series.y} : {...data.x, scaledValues: series.x}
-  const bottomAxisClass = flipped ? 'axis-y' : 'axis-x'
-  const paddingWrapperS = chartS.selectAll('.padding-wrapper')
+  const [horizontalAxisType, verticalAxisType] = flipped ? ['y', 'x'] : ['x', 'y']
 
-  chartS.classed('chart-cartesian', true)
-    .attr('data-flipped', flipped)
+  const verticalAxisD: CartesianAxisValid = {...data[verticalAxisType], scaledValues: series[verticalAxisType]}
+  const horizontalAxisD: CartesianAxisValid = {...data[horizontalAxisType], scaledValues: series[horizontalAxisType]}
+  const paddingWrapperS = chartS.selectAll('.padding-wrapper')
 
   //TODO: clean this stacked bar chart mess up
   const aggScaledValues = series instanceof BarStackedSeries ? series.aggScaledValues.aggregateCached() : undefined
 
-  const bottomAxisDAgg = (aggScaledValues && bottomAxisD.scaledValues instanceof ScaledValuesLinear) ?
-    {...bottomAxisD, scaledValues: aggScaledValues} : bottomAxisD
-  bottomAxisDAgg.scaledValues.scale.range(bottomAxisD.scaledValues.scale.range())
+  const horizontalAxisDAgg = (aggScaledValues && horizontalAxisD.scaledValues instanceof ScaledValuesLinear) ?
+    {...horizontalAxisD, scaledValues: aggScaledValues} : horizontalAxisD
+  horizontalAxisDAgg.scaledValues.scale.range(horizontalAxisD.scaledValues.scale.range())
 
-  const leftAxisDAgg = (aggScaledValues && leftAxisD.scaledValues instanceof ScaledValuesLinear) ?
-    {...leftAxisD, scaledValues: aggScaledValues} : leftAxisD
-  leftAxisDAgg.scaledValues.scale.range(leftAxisD.scaledValues.scale.range())
+  const verticalAxisDAgg = (aggScaledValues && verticalAxisD.scaledValues instanceof ScaledValuesLinear) ?
+    {...verticalAxisD, scaledValues: aggScaledValues} : verticalAxisD
+  verticalAxisDAgg.scaledValues.scale.range(verticalAxisD.scaledValues.scale.range())
 
-  const leftAxisS= paddingWrapperS.selectAll<SVGGElement, AxisSelection>('.axis-left')
-    .data([leftAxisDAgg])
+  paddingWrapperS.selectAll<SVGGElement, AxisSelection>(`.axis-${verticalAxisType}`)
+    .data([verticalAxisDAgg])
     .join('g')
-    .call((s) => axisLeftRender(s))
-    .classed(leftAxisClass, true)
-    .classed(bottomAxisClass, false)
+    .call((s) => axisLayoutRender(s, 'vertical'))
+    .classed(`axis-${verticalAxisType}`, true)
 
-  const bottomAxisS = paddingWrapperS.selectAll<SVGGElement, AxisValid>('.axis-bottom')
-    .data([bottomAxisDAgg])
+  paddingWrapperS.selectAll<SVGGElement, AxisValid>(`.axis-${horizontalAxisType}`)
+    .data([horizontalAxisDAgg])
     .join('g')
-    .call((s) => axisBottomRender(s))
-    .classed(bottomAxisClass, true)
-    .classed(leftAxisClass, false)
+    .call((s) => axisLayoutRender(s, 'horizontal'))
+    .classed(`axis-${horizontalAxisType}`, true)
 }
 
 export function originLineRender<T extends CartesianChartSelection>(chartS: T): void {

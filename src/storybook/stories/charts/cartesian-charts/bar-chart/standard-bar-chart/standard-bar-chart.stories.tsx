@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {BarChartUserArgs} from "../../../../../../lib";
 import standardBarChartCSS from './standard-bar-chart.css?inline'
 import {rawCode} from "../../../../util/raw-code";
-import {AustrianCitiesData} from '../../../data'
+import {AustrianCitiesData} from '../../../../data'
 import {renderBarChart} from "../render-bar.chart";
 import {format} from "d3";
 
@@ -36,11 +36,11 @@ const tickOrientationVertical = {
   dependentOn: 'height',
   mapping: {0: 0, 3: 90} //{0: -180, 1: -180, 3: 179} // demonstration purposes
 } as const
-const axisBoundsWidth = {
+const axisBreakPointsWidth = {
   values: [10, 30, 50],
   unit: 'rem'
 } as const
-const axisBoundsHeight = {
+const axisBreakPointsHeight = {
   values: [10, 20, 30],
   unit: 'rem'
 } as const
@@ -64,7 +64,7 @@ export const Primary: Story = {
       },
       labels: { values: populations, offset: 6}
     },
-    bounds: {
+    breakPoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -76,9 +76,9 @@ export const Primary: Story = {
     },
     x: {
       title: 'Cities',
-      bounds: {
-        width: axisBoundsWidth,
-        height: axisBoundsHeight
+      breakPoints: {
+        width: axisBreakPointsWidth,
+        height: axisBreakPointsHeight
       },
       tickOrientation: tickOrientationHorizontal,
       tickOrientationFlipped: tickOrientationVertical,
@@ -86,9 +86,9 @@ export const Primary: Story = {
     },
     y: {
       title: 'Population',
-      bounds: {
-        height: axisBoundsHeight,
-        width: axisBoundsWidth
+      breakPoints: {
+        height: axisBreakPointsHeight,
+        width: axisBreakPointsWidth
       },
       tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,

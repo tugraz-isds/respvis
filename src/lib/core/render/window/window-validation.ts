@@ -5,19 +5,19 @@ import {defaultWindowSettings, WindowSettings} from "./window-settings";
 
 export type WindowArgs = RenderArgs & {
   type: string,
-  bounds?: Partial<LayoutBreakpoints>
+  breakPoints?: Partial<LayoutBreakpoints>
 }
 
-export type WindowValid = Required<Omit<WindowArgs, 'bounds'>> & {
-  bounds: LayoutBreakpoints,
+export type WindowValid = Required<Omit<WindowArgs, 'breakPoints'>> & {
+  breakPoints: LayoutBreakpoints,
   windowSettings: WindowSettings
 }
 
 export function windowValidation(args: WindowArgs): WindowValid {
   return {...args,
-    bounds: {
-      width: breakPointsValidation(args.bounds?.width),
-      height: breakPointsValidation(args.bounds?.height)
+    breakPoints: {
+      width: breakPointsValidation(args.breakPoints?.width),
+      height: breakPointsValidation(args.breakPoints?.height)
     },
     windowSettings: { ...defaultWindowSettings }
   }

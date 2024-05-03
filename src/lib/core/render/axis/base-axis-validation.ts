@@ -8,11 +8,19 @@ import {KeyedAxisValid} from "./keyed-axis-validation";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 import {CartesianAxisValid} from "../../../cartesian/cartesian-axis-validation";
 import {Series} from "../series";
+import {
+  AxisLayoutHorizontal,
+  AxisLayoutsHorizontal,
+  AxisLayoutsVertical,
+  AxisLayoutVertical
+} from "../../constants/types";
 
 export type BaseAxisUserArgs = {
-  bounds?: Partial<LayoutBreakpoints>
+  breakPoints?: Partial<LayoutBreakpoints>
   title?: RespValOptional<string>
   subTitle?: RespValOptional<string>
+  horizontalLayout?: AxisLayoutHorizontal
+  verticalLayout?: AxisLayoutVertical
   configureAxis?: RespValOptional<ConfigureAxisFn>
   tickOrientation?: RespValByValueOptional<number>
   tickOrientationFlipped?: RespValByValueOptional<number>
@@ -23,8 +31,8 @@ export type BaseAxisArgs = BaseAxisUserArgs & RenderArgs & {
   series: Series
 }
 
-export type BaseAxisValid = Required<Omit<BaseAxisArgs, 'bounds'>> & {
-  bounds: LayoutBreakpoints,
+export type BaseAxisValid = Required<Omit<BaseAxisArgs, 'breakPoints'>> & {
+  breakPoints: LayoutBreakpoints,
   originalAxis: BaseAxisValid,
   d3Axis?: D3Axis<any> //axis available after first render
 }
@@ -35,22 +43,26 @@ export interface ConfigureAxisFn {
   (axis: D3Axis<AxisDomain>): void;
 }
 
-export function baseAxisValidation(data: BaseAxisArgs): AxisValid {
-  const axis = {
+export function baseAxisValidation(args: BaseAxisArgs): AxisValid {
+  const axis: AxisValid = {
     originalAxis: this,
-    renderer: data.renderer,
-    series: data.series,
-    scaledValues: data.scaledValues,
-    title: data.title || '',
-    subTitle: data.subTitle || '',
-    configureAxis: data.configureAxis || (() => {
+    renderer: args.renderer,
+    series: args.series,
+    scaledValues: args.scaledValues,
+    title: args.title || '',
+    subTitle: args.subTitle || '',
+    configureAxis: args.configureAxis || (() => {
     }),
-    tickOrientation: data.tickOrientation ?? 0,
-    tickOrientationFlipped: data.tickOrientationFlipped ?? 0,
-    bounds: {
-      width: breakPointsValidation(data.bounds?.width),
-      height: breakPointsValidation(data.bounds?.height)
-    }
+    tickOrientation: args.tickOrientation ?? 0,
+    tickOrientationFlipped: args.tickOrientationFlipped ?? 0,
+    breakPoints: {
+      width: breakPointsValidation(args.breakPoints?.width),
+      height: breakPointsValidation(args.breakPoints?.height)
+    },
+    horizontalLayout: args.horizontalLayout && AxisLayoutsHorizontal.includes(args.horizontalLayout) ?
+      args.horizontalLayout : 'bottom',
+    verticalLayout: args.verticalLayout && AxisLayoutsVertical.includes(args.verticalLayout) ?
+      args.verticalLayout : 'left'
   }
   axis.originalAxis = axis
   return axis

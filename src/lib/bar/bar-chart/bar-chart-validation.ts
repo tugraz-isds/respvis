@@ -16,7 +16,7 @@ export type BarChartValid = CartesianChartValid & {
 
 export function barChartValidation(chartArgs: BarChartArgs): BarChartValid {
   const {renderer, x, y,
-    legend, bounds,
+    legend, breakPoints,
     title, subTitle
   } = chartArgs
   const series = chartArgs.series.type === 'stacked' ?
@@ -24,7 +24,7 @@ export function barChartValidation(chartArgs: BarChartArgs): BarChartValid {
     new BarGroupedSeries({...chartArgs.series, key: 's-0', renderer}) :
     new BarStandardSeries({...chartArgs.series, key: 's-0', renderer})
   const cartesianData =
-    cartesianChartValidation({renderer, series, x, y, legend, bounds, title, subTitle})
+    cartesianChartValidation({renderer, series, x, y, legend, breakPoints, title, subTitle})
   return {
     ...cartesianData,
     series

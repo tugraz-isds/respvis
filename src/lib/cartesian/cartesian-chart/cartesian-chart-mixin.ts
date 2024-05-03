@@ -19,7 +19,12 @@ export abstract class CartesianChartMixin extends Chart {
     return (this._verticalAxisS && !this._verticalAxisS.empty()) ? this._verticalAxisS :
       this.chartS.selectAll<SVGGElement, CartesianAxisValid>('.axis-left, .axis-right')
   }
-  cartesianAxisRender() { cartesianAxisRender(this.chartS) }
+  cartesianAxisRender() {
+    const flipped = this.chartS.datum().series.responsiveState.currentlyFlipped
+    this.chartS.classed('chart-cartesian', true)
+      .attr('data-flipped', flipped)
+    cartesianAxisRender(this.chartS)
+  }
   originLineRender() { originLineRender(this.chartS) }
   cartesianGridRender() { cartesianGridRender(this.chartS) }
   addCartesianFeatures() {

@@ -1,8 +1,11 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {ChartUserArgs} from "../../../../lib";
 import {rawCode} from "../../util/raw-code";
 import {renderChart} from "./render-chart";
 import AxisChartCSS from './axis-chart.css?inline'
+import {AxisChartUserArgs} from "../example-extensions/axis-chart/axis-chart-validation";
+import {AustrianCitiesData} from "../../data"
+
+const {cities, populations} = AustrianCitiesData.default
 
 const meta = {
   title: 'Chart-Components/Axis',
@@ -19,15 +22,54 @@ const meta = {
     }
   },
   render: renderChart,
-} satisfies Meta<ChartUserArgs>;
+} satisfies Meta<AxisChartUserArgs>;
 
 export default meta;
-type Story = StoryObj<ChartUserArgs>
+type Story = StoryObj<AxisChartUserArgs>
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
   args: {
-    title: 'Axis Chart'
+    title: 'Axis Chart',
+    breakPoints: {
+      width: {
+        values: [20, 40, 60],
+        unit: "rem"
+      },
+      height: {
+        values: [20, 40, 60],
+        unit: "rem"
+      }
+    },
+    axes: [
+      {
+        vals: { values: cities}, title: 'Cities', standardOrientation: "horizontal",
+        tickOrientation: {
+          dependentOn: 'width',
+          mapping: {0: 90, 2: 0}
+        }
+      },
+      { vals: { values: populations}, title: 'Population', standardOrientation: "vertical",
+        tickOrientation: {
+          dependentOn: 'height',
+          mapping: {0: 45, 2: 0}
+        }
+      },
+      {
+        vals: {values: cities}, title: 'Cities', standardOrientation: "horizontal", horizontalLayout: 'top',
+        tickOrientation: {
+          dependentOn: 'width',
+          mapping: {0: -90, 2: 0}
+        }
+      },
+      {
+        vals: { values: populations}, title: 'Population', standardOrientation: "vertical", verticalLayout: 'right',
+        tickOrientation: {
+          dependentOn: 'height',
+          mapping: {0: -45, 2: 0}
+        }
+      },
+    ]
   },
 };
 //
