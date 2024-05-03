@@ -1,6 +1,6 @@
-import {CartesianAxisUserArgs} from "../../../../../../lib/cartesian/cartesian-axis-validation";
+import {BaseAxisUserArgs} from "../../../../../../lib";
 
-export const y: CartesianAxisUserArgs = {
+export const y: BaseAxisUserArgs = {
   title: 'Consumption',
   breakPoints: {
     width: {
@@ -12,6 +12,5 @@ export const y: CartesianAxisUserArgs = {
     dependentOn: 'width',
     scope: 'self',
     mapping: {0: 90, 3: 0},
-  },
-
+  }
 }

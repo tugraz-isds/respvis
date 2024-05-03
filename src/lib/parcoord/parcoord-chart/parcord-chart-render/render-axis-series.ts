@@ -19,17 +19,11 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>)
     .join('g')
     .each((d, i, g) => {
       const axisS = select<SVGGElement, KeyedAxisValid>(g[i])
-      resetTickLines()
-      axisSequenceRender(axisS, filteredSeries.responsiveState.axisLayout)
+      const orientation = filteredSeries.responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
+      axisSequenceRender(axisS, orientation)
       parcoordChartAxisLimiterRender(axisS)
       handleAxisZoomAndDrag(axisS, i)
       axisInverterRender(axisS)
-
-      function resetTickLines() {
-        const tickLinesS = axisS.selectAll('.tick > line');
-        ['x1', 'x2', 'y1', 'y2']
-          .forEach(attr => tickLinesS.attr(attr, null))
-      }
     })
     .attr('transform', (d, i) => {
       const {x, y} = filteredSeries.responsiveState.getAxisPosition(i)

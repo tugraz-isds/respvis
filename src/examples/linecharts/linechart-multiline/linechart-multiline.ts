@@ -50,7 +50,7 @@ export const renderMultiLineChart = (selector: string) => {
         scope: 'self',
         mapping: {0: 90, 3: 0},
       },
-      bounds: {
+      breakPoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'
@@ -61,7 +61,7 @@ export const renderMultiLineChart = (selector: string) => {
     },
     y: {
       title: 'Consumption',
-      bounds: {
+      breakPoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'

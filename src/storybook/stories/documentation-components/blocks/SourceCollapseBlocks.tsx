@@ -32,7 +32,7 @@ export const SourceCollapseBlocks: FC<StoriesProps> = ({includePrimary = true}) 
       {stories.map(
         (story) => {
           //How to properly cast type?
-          return story && <SourceCollapseBlock story={story as unknown as StoryContext}></SourceCollapseBlock>
+          return story && <SourceCollapseBlock key={story.id} story={story as unknown as StoryContext}></SourceCollapseBlock>
         }
       )}
     </>

@@ -4,6 +4,7 @@ import {ScaledValuesLinear} from "../../../core/data/scale/scaled-values-linear"
 import {BarStackedSeries} from "../../../bar/bar-series/bar-stacked-series";
 import {ScaledValues} from "../../../core/data/scale/scaled-values-base";
 import {pathLine} from "../../../core/utilities/path";
+import {CartesianAxisValid} from "../../cartesian-axis-validation";
 
 export function cartesianAxisRender<T extends CartesianChartSelection>(chartS: T): void {
   const {renderer, ...data} = chartS.datum()
@@ -11,12 +12,8 @@ export function cartesianAxisRender<T extends CartesianChartSelection>(chartS: T
   const flipped = series.responsiveState.currentlyFlipped
   const [horizontalAxisType, verticalAxisType] = flipped ? ['y', 'x'] : ['x', 'y']
 
-  const verticalAxisD = flipped ? {...data.x, scaledValues: series.x} : {...data.y, scaledValues: series.y}
-  const verticalAxisLayout = data[verticalAxisType].verticalLayout
-
-  const horizontalAxisD = flipped ? {...data.y, scaledValues: series.y} : {...data.x, scaledValues: series.x}
-  const horizontalAxisLayout = data[horizontalAxisType].horizontalLayout
-
+  const verticalAxisD: CartesianAxisValid = {...data[verticalAxisType], scaledValues: series[verticalAxisType]}
+  const horizontalAxisD: CartesianAxisValid = {...data[horizontalAxisType], scaledValues: series[horizontalAxisType]}
   const paddingWrapperS = chartS.selectAll('.padding-wrapper')
 
   //TODO: clean this stacked bar chart mess up
@@ -30,13 +27,13 @@ export function cartesianAxisRender<T extends CartesianChartSelection>(chartS: T
     {...verticalAxisD, scaledValues: aggScaledValues} : verticalAxisD
   verticalAxisDAgg.scaledValues.scale.range(verticalAxisD.scaledValues.scale.range())
 
-  paddingWrapperS.selectAll<SVGGElement, AxisSelection>(`.axis-${verticalAxisLayout}`)
+  paddingWrapperS.selectAll<SVGGElement, AxisSelection>(`.axis-${verticalAxisType}`)
     .data([verticalAxisDAgg])
     .join('g')
     .call((s) => axisLayoutRender(s, 'vertical'))
     .classed(`axis-${verticalAxisType}`, true)
 
-  paddingWrapperS.selectAll<SVGGElement, AxisValid>(`.axis-${horizontalAxisLayout}`)
+  paddingWrapperS.selectAll<SVGGElement, AxisValid>(`.axis-${horizontalAxisType}`)
     .data([horizontalAxisDAgg])
     .join('g')
     .call((s) => axisLayoutRender(s, 'horizontal'))

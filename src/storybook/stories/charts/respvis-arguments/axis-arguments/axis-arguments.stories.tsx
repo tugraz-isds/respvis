@@ -7,6 +7,7 @@ import FullyResponsiveCSS from '../example-multi-line/example-multi-line.css?inl
 import {breakPoints} from "../example-multi-line/arguments/breakPoints-argument";
 import {title} from "../example-multi-line/arguments/title-argument";
 import {subTitle} from "../example-multi-line/arguments/subTitle-argument";
+import {x as xBase} from "../example-multi-line/arguments/x-axis-base-arg";
 import {x} from "../example-multi-line/arguments/x-ticks-rotating-arg";
 import {y} from "../example-multi-line/arguments/y-ticks-rotating-flipped-arg";
 
@@ -35,8 +36,8 @@ const meta = {
 
 type Story = StoryObj<LineChartUserArgs>;
 
-export const RotatingTicksArguments: Story = {
-  name: 'Rotating Ticks Arguments',
+export const AxisConfigArguments: Story = {
+  name: 'Configuring Axis Arguments',
   args: {
     series: {
       x: {values: [...yearsJSDateFormat, ...yearsJSDateFormat, ...yearsJSDateFormat]},
@@ -49,8 +50,15 @@ export const RotatingTicksArguments: Story = {
     breakPoints,
     title,
     subTitle,
-    x,
+    x : xBase,
     y: { title: 'Consumption' }
+  }
+}
+
+export const RotatingTicksArguments: Story = {
+  name: 'Rotating Ticks Arguments',
+  args: { ...AxisConfigArguments.args,
+    x, y: { title: 'Consumption' }
   }
 }
 

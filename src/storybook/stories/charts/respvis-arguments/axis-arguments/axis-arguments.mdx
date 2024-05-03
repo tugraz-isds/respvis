@@ -1,5 +1,6 @@
 import {Meta, Source} from "@storybook/blocks";
 import CurrentMeta, * as CurrentStories from './axis-arguments.stories'
+import XAxisBaseArg from '../example-multi-line/arguments/x-axis-base-arg?raw'
 import XTicksRotatingArg from '../example-multi-line/arguments/x-ticks-rotating-arg.ts?raw'
 import YTicksRotatingArg from '../example-multi-line/arguments/y-ticks-rotating-flipped-arg.ts?raw'
 import {
@@ -19,10 +20,25 @@ the parameters in a different way), but the concept stays the same.
 The practical usage of axis arguments is demonstrated by the creation of example multi line charts.
 
 
+
 ## Title and SubTitle Arguments
 
 The configuration of titles and subtitles for axes works the same way as it works
 for charts, see [Chart Title Argument](?path=/docs/charts-respvis-arguments-chart-arguments--docs/#-title-argument).
+
+
+
+## Configuring Axis Arguments
+
+A callback can be provided to configure the D3 axis object created by RespVis shortly before
+rendering. A typical use case is to specify how the axis ticks should be formatted. The
+_*configureAxis*_ argument is used to adjust the ticks to only display the full years of the underlying
+[JS Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date?retiredLocale=de)
+values:
+
+<Source code={XAxisBaseArg} language={"typescript"}/>
+<SourceCollapseBlockByStoryObj story={CurrentStories.AxisConfigArguments}/>
+
 
 
 ## <a name="tick-orientation-argument"></a> Tick Orientation Argument
@@ -43,6 +59,7 @@ layout widths.
 <SourceCollapseBlockByStoryObj story={CurrentStories.RotatingTicksArguments}/>
 
 
+
 ## <a name="tick-orientation-flipped-argument"></a> Tick Orientation Flipped Argument
 
 RespVis comes with the ability to flip charts. This can be a useful feature as can be seen
@@ -59,4 +76,3 @@ in the following stories:
 
 <SourceCollapseBlockByStoryObj story={CurrentStories.RotatingTicksArgumentsWithFlipIncorrect}/>
 <SourceCollapseBlockByStoryObj story={CurrentStories.RotatingTicksArgumentsWithFlipCorrect}/>
-

@@ -74,7 +74,7 @@ export function createChartSoldCarsGermany(selector) {
         dependentOn: 'width',
         mapping: {0: 'Make', 1: 'Car Make'}
       },
-      bounds: {
+      breakPoints: {
         width: {
           values: [10, 40, 50],
           unit: 'rem'

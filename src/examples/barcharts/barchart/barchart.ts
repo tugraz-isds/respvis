@@ -51,7 +51,7 @@ export function createBarCart(selector: string) {
     },
     x: {
       title: 'Cities',
-      bounds: {
+      breakPoints: {
         width: axisBoundsWidth,
         height: axisBoundsHeight
       },
@@ -60,7 +60,7 @@ export function createBarCart(selector: string) {
     },
     y: {
       title: 'Population',
-      bounds: {
+      breakPoints: {
         height: axisBoundsHeight,
         width: axisBoundsWidth
       },

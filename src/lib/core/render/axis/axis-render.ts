@@ -17,16 +17,21 @@ import {axisTicksPostGenerationRender, axisTicksPreGenerationRender} from "./axi
 import {tickAngleConfiguration} from "./tick-angle-configuration";
 import {getFilteredScaledValues} from "../../data/scale/axis-scaled-values-validation";
 import {bgSVGOnlyBBoxRender} from "../util/bg-svg-only-render";
-import {AxisLayout, AxisLayouts, Orientation} from "../../constants/types";
+import {AxisLayouts, Orientation} from "../../constants/types";
 import {KeyedAxisValid} from "./keyed-axis-validation";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, AxisValid>;
 export type KeyedAxisSelection = Selection<SVGSVGElement | SVGGElement, KeyedAxisValid>;
 export type AxisTransition = Transition<SVGSVGElement | SVGGElement, AxisValid>;
 
-//TODO: one axis render function. Specify in data which orientation
+function resetTickLines(axisS: AxisSelection) {
+  const tickLinesS = axisS.selectAll('.tick > line');
+  ['x1', 'x2', 'y1', 'y2']
+    .forEach(attr => tickLinesS.attr(attr, null))
+}
 
 export function axisLayoutRender(axisS: AxisSelection, orientation: Orientation = 'horizontal') {
+  resetTickLines(axisS)
   const { horizontalLayout, verticalLayout} = axisS.datum()
   const layout = orientation === 'horizontal' ? horizontalLayout : verticalLayout
   const generators = {
@@ -37,44 +42,16 @@ export function axisLayoutRender(axisS: AxisSelection, orientation: Orientation 
   } as const
   axisS.classed(`axis axis-${layout}`, true)
   const unusedLayouts = AxisLayouts.filter(axisLayout => axisLayout !== layout)
-  unusedLayouts.forEach(unusedLayout => axisS.classed(unusedLayout, false))
+  unusedLayouts.forEach(unusedLayout => axisS.classed(`axis-${unusedLayout}`, false))
   return axisRender(axisS, d3Axis(generators[layout], axisS))
 }
 
-export function axisLeftRender(axisS: AxisSelection) {
-  axisS.classed('axis axis-left', true)
-  return axisRender(axisS, d3Axis(d3AxisLeft, axisS))
-}
-
-export function axisRightRender(axisS: AxisSelection) {
-  axisS.classed('axis axis-right', true)
-  return axisRender(axisS, d3Axis(d3AxisRight, axisS))
-}
-
-export function axisBottomRender(axisS: AxisSelection) {
-  axisS.classed('axis axis-bottom', true)
-  return axisRender(axisS, d3Axis(d3AxisBottom, axisS))
-}
-
-export function axisTopRender(axisS: AxisSelection) {
-  axisS.classed('axis axis-top', true)
-  return axisRender(axisS, d3Axis(d3AxisTop, axisS))
-}
-
-export function axisSequenceRender(axisS: KeyedAxisSelection, axisPosition?: AxisLayout) {
+export function axisSequenceRender(axisS: KeyedAxisSelection, orientation: Orientation) {
   bgSVGOnlyBBoxRender(axisS)
-  axisS.classed('axis-bottom', false)
-  axisS.classed('axis-left', false)
-  axisS.classed('axis-right', false)
-  axisS.classed('axis-top', false)
-  switch (axisPosition) {
-    case "bottom": axisBottomRender(axisS); break;
-    default: axisLeftRender(axisS)
-  }
+  axisLayoutRender(axisS, orientation)
   axisS.classed('axis-sequence', true)
   axisS.selectAll('.title-wrapper')
     .classed('layout-container', true)
-
   return axisS.attr('data-key', (d) => d.key)
 }
 

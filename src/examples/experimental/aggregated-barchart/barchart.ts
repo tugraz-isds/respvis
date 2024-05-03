@@ -8,11 +8,11 @@ export function createBarChart(selector: string) {
       dependentOn: 'width',
       mapping: {0: 90, 1: 90, 3: 30} //{0: 90, 1: -180, 3: 179} // demonstration purposes
   } as const
-  const axisBoundsWidth = {
+  const axisBreakPointsWidth = {
     values: [10, 30, 50],
       unit: 'rem'
   } as const
-  const axisBoundsHeight = {
+  const axisBreakPointsHeight = {
     values: [10, 20, 30],
     unit: 'rem'
   } as const
@@ -45,9 +45,9 @@ export function createBarChart(selector: string) {
     },
     x: {
       title: 'Months',
-      bounds: {
-        width: axisBoundsWidth,
-        height: axisBoundsHeight
+      breakPoints: {
+        width: axisBreakPointsWidth,
+        height: axisBreakPointsHeight
       },
       tickOrientation: tickOrientationHorizontal,
       gridLineFactor: 1
@@ -56,9 +56,9 @@ export function createBarChart(selector: string) {
     y: {
       title: 'Anomalies',
       subTitle: '[°C]',
-      bounds: {
-        height: axisBoundsHeight,
-        width: axisBoundsWidth
+      breakPoints: {
+        height: axisBreakPointsHeight,
+        width: axisBreakPointsWidth
       },
       // tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,
@@ -95,11 +95,11 @@ export function createBarChartAggregated(selector: string) {
     dependentOn: 'height',
     mapping: {0: 0, 3: 90} //{0: -180, 1: -180, 3: 179} // demonstration purposes
   } as const
-  const axisBoundsWidth = {
+  const axisBreakPointsWidth = {
     values: [10, 30, 50],
     unit: 'rem'
   } as const
-  const axisBoundsHeight = {
+  const axisBreakPointsHeight = {
     values: [10, 20, 30],
     unit: 'rem'
   } as const
@@ -129,9 +129,9 @@ export function createBarChartAggregated(selector: string) {
     },
     x: {
       title: 'Months',
-      bounds: {
-        width: axisBoundsWidth,
-        height: axisBoundsHeight
+      breakPoints: {
+        width: axisBreakPointsWidth,
+        height: axisBreakPointsHeight
       },
       tickOrientation: tickOrientationHorizontal,
       tickOrientationFlipped: tickOrientationVertical,
@@ -140,9 +140,9 @@ export function createBarChartAggregated(selector: string) {
     y: {
       title: 'Anomalies',
       subTitle: '[°C]',
-      bounds: {
-        height: axisBoundsHeight,
-        width: axisBoundsWidth
+      breakPoints: {
+        height: axisBreakPointsHeight,
+        width: axisBreakPointsWidth
       },
       tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,
