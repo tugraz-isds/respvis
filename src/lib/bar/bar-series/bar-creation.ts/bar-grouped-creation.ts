@@ -1,6 +1,6 @@
 import {scaleBand} from "d3";
-import {getActiveKeys} from "../../../core/utilities/dom/key";
-import {ScaledValuesCategorical} from "../../../core/data/scale/scaled-values-categorical";
+import {getActiveKeys} from "core/utilities/dom/key";
+import {ScaledValuesCategorical} from "core/data/scale/scaled-values-categorical";
 import {BarGroupedSeries} from "../bar-grouped-series";
 
 type createGroupedBarProps = {

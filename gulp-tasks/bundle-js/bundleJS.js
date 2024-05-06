@@ -5,9 +5,10 @@ const rollupTypescript = require("@rollup/plugin-typescript");
 const rollupTerser = require("@rollup/plugin-terser");
 const {default: rollupGzip} = require("rollup-plugin-gzip");
 const fs = require("fs");
-const {rootDir} = require('./paths')
-const {stripCode} = require('./rollup-plugin/codeStripPlugin');
+const {rootDir} = require('../paths')
+const {stripCode} = require('../rollup-plugin/codeStripPlugin');
 const { string } = require("rollup-plugin-string");
+const {allBundlesConfigsBase} = require('./bundle-configs')
 
 async function bundleJS() {
   if (process.env.MODE === 'dev') await bundleJSDevelopment()
@@ -21,60 +22,69 @@ async function bundleJSDevelopment() {
   ]))
 }
 
+/**
+ * @typedef {Object} BundleJsConfig
+ * @property {string} entryFile - Entry File.
+ * @property {string[]} include - Include Globs.
+ * @property {string[]} exclude - Exclude Globs.
+ * @property {string} outputDirectory - Output Directory.
+ * @property {string[]} external - External Dependencies.
+ */
+
 async function bundleJSProduction() {
-  const [standaloneBundle, dependencyBasedBundle] = await Promise.all([
-    getRollupBundle({ standalone: true } ), getRollupBundle({ standalone: false } )
-  ])
+  const allBundleConfigDependencyBased = allBundlesConfigsBase.map(config => {
+    const external = config.external ? [...config.external, 'd3'] : ['d3']
+    return {...config, external}
+  })
+  const allBundleConfigStandalone = allBundlesConfigsBase.map(config => {
+    return {...config, external: undefined}
+  })
+  const allBundleConfigs = [...allBundleConfigDependencyBased, ...allBundleConfigStandalone]
+
+  const allBundles = await Promise.all(allBundleConfigs.map(getRollupBundle))
   const minPlugins = [rollupTerser()]
   const gzPlugins = [rollupTerser(), rollupGzip()]
   const formats = ['esm', 'cjs', 'iife']
-  const configsFormatMapped = formats.map(format => [
-    { extension: 'js', plugins: [], location: `${rootDir}/package` , format: `${format}` },
-    { extension: 'min.js', plugins: minPlugins, location: `${rootDir}/package` , format: `${format}` },
-    { extension: 'min.js', plugins: gzPlugins, location: `${rootDir}/package` , format: `${format}` }
-  ]).flat()
-  const configsStandaloneMapped = configsFormatMapped.map(config => {
-    return {...config, location: `${config.location}/standalone/${config.format}`}
-  })
-  const configsDependencyBasedMapped = configsFormatMapped.map(config => {
-    return {...config, location: `${config.location}/dependency-based/${config.format}`}
-  })
-  return Promise.all([
-    ...writeBundle(standaloneBundle, configsStandaloneMapped.flat()),
-    ...writeBundle(dependencyBasedBundle, configsDependencyBasedMapped.flat())
-  ])
+
+  const writeBundles = allBundles.map((bundle, index) => {
+    const writeConfigs = formats.map(format => {
+      const bundleConfig = allBundleConfigs[index]
+      const dependencyType = bundleConfig.external && bundleConfig.external.length > 0 ? 'dependency-based' : 'standalone'
+      const location = `${bundleConfig.outputDirectory}/${dependencyType}/${format}`
+      return [
+        { extension: 'js', plugins: [], location, format },
+        { extension: 'min.js', plugins: minPlugins, location, format },
+        { extension: 'min.js', plugins: gzPlugins, location, format }
+      ]
+    }).flat()
+    return writeBundle(bundle, writeConfigs)
+  }).flat()
+  return Promise.all(writeBundles)
 }
 
 /**
- * @typedef {Object} RollupConfig
- * @property {boolean} standalone - Flag for creating standalone bundle.
- */
-
-/**
- * Concatenates two strings.
- * @param {RollupConfig} config - Rollup bundle config.
+ // * @param {RollupOptions} options - Overwrite default rollup bundle options.
+ * @param {BundleJsConfig} config - Additional config options.
  */
 async function getRollupBundle(config) {
   return await rollup.rollup({
-    input: `${rootDir}/src/lib/index.ts`,
+    input: config.entryFile,
     plugins: [
       rollupNodeResolve({ browser: true }),
       rollupCommonJs(),
-      string({
-        include: "**/*.svg"
-      }),
+      string({ include: "**/*.svg" }),
       rollupTypescript({
         tsconfig: `${rootDir}/tsconfig.json`,
-        include: ["src/lib/**/*", "module-specs.d.ts"], //override tsconfig for library bundling
-        exclude: ["node_modules", "dist", "**/*.spec.ts", "src/stories"]
+        include: config.include ?? ["src/lib/**/*", "module-specs.d.ts"],
+        exclude: config.exclude ?? ["node_modules", "dist", "**/*.spec.ts", "src/stories"],
       }),
       process.env.STRIP_CODE === 'true' ? stripCode({
         startComment: '/* DEV_MODE_ONLY_START */',
         endComment: '/* DEV_MODE_ONLY_END */'
       }) : null,
     ].filter(plugin => plugin),
-    ...(config.standalone ? {} : { external: ['d3'] } )
-  });
+    ...(config.external ? { external: config.external } : {})
+  })
 }
 
 /**

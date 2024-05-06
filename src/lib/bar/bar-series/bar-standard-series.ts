@@ -1,8 +1,8 @@
-import {BarSeriesType} from "../../core/constants/types";
-import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
-import {ErrorMessages} from "../../core/utilities/error";
+import {BarSeriesType} from "core/constants/types";
+import {ScaledValuesCategorical} from "core/data/scale/scaled-values-categorical";
+import {ErrorMessages} from "core/utilities/error";
 import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "./bar-base-series";
-import {Rect} from "../../core";
+import {Rect} from "core/utilities/graphic-elements/rect";
 
 export type BarStandardSeriesUserArgs = BarBaseSeriesUserArgs & {
   type?: 'standard'

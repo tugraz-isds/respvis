@@ -8,8 +8,8 @@ function createExampleDependencies() {
 
 function createRespvisDependencies() {
   return [
-    gulp.src('./package/standalone/esm/respvis.js').pipe(gulp.dest(`${respvisDepsDir}`)),
-    gulp.src('./package/standalone/respvis.d.ts').pipe(gulp.dest(`${respvisDepsDir}`))
+    gulp.src('./package/respvis/standalone/esm/respvis.js').pipe(gulp.dest(`${respvisDepsDir}`)),
+    gulp.src('./package/respvis/standalone/respvis.d.ts').pipe(gulp.dest(`${respvisDepsDir}`))
   ];
 }
 

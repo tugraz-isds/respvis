@@ -1,10 +1,10 @@
-import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "../../core/render/series/cartesian-series";
-import {ScaledValuesCategoricalUserArgs} from "../../core/data/scale/scaled-values";
-import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
-import {ErrorMessages} from "../../core/utilities/error";
+import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "core/render/series/cartesian-series";
+import {ScaledValuesCategoricalUserArgs} from "core/data/scale/scaled-values";
+import {ScaledValuesCategorical} from "core/data/scale/scaled-values-categorical";
+import {ErrorMessages} from "core/utilities/error";
 import {Bar} from "../bar";
-import {defaultStyleClass} from "../../core/constants/other";
-import {Rect} from "../../core";
+import {defaultStyleClass} from "core/constants/other";
+import {Rect} from "core/utilities/graphic-elements/rect";
 import {BarBaseResponsiveState} from "./bar-base-series/responsive-state";
 import {BarLabelsUserArgs, BarLabelValues} from "../bar-label";
 

@@ -1,9 +1,9 @@
 import {easeCubicOut, select, Selection, Transition} from "d3";
 import {BarArgs} from "../bar";
-import {rectFitStroke, rectMinimized, rectToAttrs} from "../../core";
-import {cssLengthInPx} from "../../core/utilities/dom/units";
-import {CSSLengthUnit, UnitValue} from "../../core/constants/types";
-import {addTransitionClass} from "../../core/utilities/d3/transition";
+import {rectFitStroke, rectMinimized, rectToAttrs} from "core/utilities/graphic-elements/rect";
+import {cssLengthInPx} from "core/utilities/dom/units";
+import {CSSLengthUnit, UnitValue} from "core/constants/types";
+import {addTransitionClass} from "core/utilities/d3/transition";
 
 export interface JoinEvent<GElement extends Element, Datum>
   extends CustomEvent<{ selection: Selection<GElement, Datum> }> {

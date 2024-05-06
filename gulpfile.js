@@ -3,7 +3,7 @@ const del = require('del');
 
 const {copyExampleDependencies} = require("./gulp-tasks/copyExampleDependencies");
 const {createExampleDependencies} = require("./gulp-tasks/createExampleDependencies");
-const {bundleJS} = require("./gulp-tasks/bundleJS");
+const {bundleJS} = require("./gulp-tasks/bundle-js/bundleJS");
 const {bundleDeclaration} = require("./gulp-tasks/bundleDeclaration");
 const {buildLibCSS} = require("./gulp-tasks/buildCSS");
 const {copyExamples} = require("./gulp-tasks/copyExamples");

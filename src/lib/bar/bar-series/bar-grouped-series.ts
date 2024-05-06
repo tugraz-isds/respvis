@@ -1,7 +1,7 @@
-import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
-import {ErrorMessages} from "../../core/utilities/error";
+import {ScaledValuesCategorical} from "core/data/scale/scaled-values-categorical";
+import {ErrorMessages} from "core/utilities/error";
 import {createGroupedBar} from "./bar-creation.ts/bar-grouped-creation";
-import {CategoryUserArgs} from "../../core/data/category";
+import {CategoryUserArgs} from "core/data/category";
 import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "./bar-base-series";
 
 export type BarGroupedSeriesUserArgs = BarBaseSeriesUserArgs & {

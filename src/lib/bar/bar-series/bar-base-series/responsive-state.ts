@@ -1,10 +1,10 @@
 import {
   CartesianSeriesResponsiveState,
   CartesianSeriesResponsiveStateArgs
-} from "../../../core/render/series/cartesian-series/responsive-state";
+} from "core/render/series/cartesian-series/responsive-state";
 import {BarBaseSeries} from "../bar-base-series";
-import {ScaledValuesCategorical} from "../../../core/data/scale/scaled-values-categorical";
-import {ScaledValuesLinear} from "../../../core/data/scale/scaled-values-linear";
+import {ScaledValuesCategorical} from "core/data/scale/scaled-values-categorical";
+import {ScaledValuesLinear} from "core/data/scale/scaled-values-linear";
 
 type BarBaseResponsiveStateArgs = CartesianSeriesResponsiveStateArgs & {
   series: BarBaseSeries

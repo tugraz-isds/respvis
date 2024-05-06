@@ -1,7 +1,8 @@
-import {Position, Rect} from "../core";
-import {RenderElement, RenderElementArgs} from "../core/utilities/graphic-elements/render-element";
-import {Orientation} from "../core/constants/types";
+import {Rect} from "core/utilities/graphic-elements/rect";
+import {RenderElement, RenderElementArgs} from "core/utilities/graphic-elements/render-element";
+import {Orientation} from "core/constants/types";
 import {BarLabel, BarLabelArgValid} from "./bar-label";
+import {Position} from "core/utilities/position/position";
 
 export type BarArgs = Rect & RenderElementArgs & {
   xValue: any
@@ -45,7 +46,7 @@ export class Bar implements BarArgs, RenderElement {
     }
   }
   private labelPositionVertical(): (Position & Pick<BarLabel, 'sign'>) {
-    const { offset, position, offsetX, offsetY, value } = this.labelArg!
+    const { offset, position, offsetX, offsetY } = this.labelArg!
     const yPositive = this.yValue >= 0
     const strategyPositive = (yPositive && position === 'dynamic') || position === 'positive'
     return {

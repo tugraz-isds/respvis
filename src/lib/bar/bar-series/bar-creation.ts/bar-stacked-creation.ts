@@ -1,5 +1,5 @@
-import {ScaledValuesLinear} from "../../../core/data/scale/scaled-values-linear";
-import {ScaledValuesDate} from "../../../core/data/scale/scaled-values-date";
+import {ScaledValuesLinear} from "core/data/scale/scaled-values-linear";
+import {ScaledValuesDate} from "core/data/scale/scaled-values-date";
 import {BarStackedSeries} from "../bar-stacked-series";
 
 type createStackedBarProps = {

@@ -3,7 +3,7 @@ import {BarSeries} from "./bar-series";
 import {BarArgs} from "../bar";
 import {barSeriesJoin} from "./bar-series-join";
 import {BarStandardSeries} from "./bar-standard-series";
-import {classesForSelection} from "../../core/utilities/d3/util";
+import {classesForSelection} from "core/utilities/d3/util";
 
 export function barSeriesRender(parentS: Selection<Element>, series: BarSeries[], ...classes: string[]) {
   const {names, selector} = classesForSelection(classes)

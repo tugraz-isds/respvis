@@ -11,7 +11,10 @@
     "experimentalDecorators": true,
     "outDir": "package",
     "declaration": true,
-    "declarationDir": "types"
+    "declarationDir": "types",
+    "paths": {
+      "core/*": ["./src/lib/core/*"]
+    }
   },
   "include": ["src/**/*", "module-specs.d.ts"],
   "exclude": ["node_modules", "**/*.spec.ts", "src/storybook/**/*"]
