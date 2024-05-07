@@ -55,10 +55,6 @@ export function seriesCheckboxJoin(
   seriesSelection: Selection,
   joinSelection: Selection<Element, Checkbox>
 ): void {
-  const onClick = (e, d: Checkbox) => {
-    //TODO:?
-  }
-
   joinSelection
     .join(
       (enter) =>
@@ -70,10 +66,8 @@ export function seriesCheckboxJoin(
           )
           .classed('checkbox', true)
           .each((d, i, g) => {
-            const s = select(g[i]),
-              id = uniqueId()
-            const inputS = s.append('input').attr('type', 'checkbox').attr('id', id).attr('checked', true)
-            inputS.on('click.categorycheck', (e) => onClick(e, d))
+            const s = select(g[i]), id = uniqueId()
+            s.append('input').attr('type', 'checkbox').attr('id', id).attr('checked', true)
             s.append('label').attr('for', id);
           })
           .call((s) => seriesSelection.dispatch('enter', { detail: { selection: s } })),

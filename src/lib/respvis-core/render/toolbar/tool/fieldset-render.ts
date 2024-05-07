@@ -22,7 +22,7 @@ export function fieldsetRender<D extends FieldSetData>(
 
   itemS.each(function (d, i, g) {
     const currentItemS = select<HTMLFieldSetElement, typeof d>(g[i])
-    const legendS = currentItemS.selectAll<HTMLLegendElement, any>('legend')
+    currentItemS.selectAll<HTMLLegendElement, any>('legend')
       .data([null])
       .join('legend')
       .call((s) => fieldsetLegendRender(s, d))
