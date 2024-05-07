@@ -1,7 +1,7 @@
 import {D3ZoomEvent, Selection} from "d3";
-import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
-import {relateDragWayToSelection} from "../../../core/utilities/d3/drag";
-import {arrayOrder} from "../../../core";
+import {KeyedAxisValid} from "respvis-core/render/axis/keyed-axis-validation";
+import {relateDragWayToSelection} from "respvis-core/utilities/d3/drag";
+import {arrayOrder} from "../../../respvis-core";
 
 export function onDragAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid, drawAreaBackgroundS: Selection<SVGRectElement>) {
   const dragWay = relateDragWayToSelection(e, drawAreaBackgroundS)

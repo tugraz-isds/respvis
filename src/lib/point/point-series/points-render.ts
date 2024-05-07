@@ -1,7 +1,7 @@
 import {select, Selection} from "d3";
-import {circleMinimized, circleToAttrs} from "../../core";
+import {circleMinimized, circleToAttrs} from "../../respvis-core";
 import {Point} from "./point";
-import {addTransitionClass} from "../../core/utilities/d3/transition";
+import {addTransitionClass} from "respvis-core/utilities/d3/transition";
 
 export function pointsRender(seriesS: Selection, points: Point[]) {
   seriesS.selectAll<SVGCircleElement, Point>('.point')

@@ -1,10 +1,10 @@
-import {axisLayoutRender, AxisSelection, AxisValid} from "../../../core/render/axis";
+import {axisLayoutRender, AxisSelection, AxisValid} from "respvis-core/render/axis";
 import {CartesianChartSelection} from "../cartesian-chart-validation";
-import {ScaledValuesLinear} from "../../../core/data/scale/scaled-values-linear";
-import {BarStackedSeries} from "../../../bar/bar-series/bar-stacked-series";
-import {ScaledValues} from "../../../core/data/scale/scaled-values-base";
-import {pathLine} from "../../../core/utilities/path";
+import {ScaledValuesLinear} from "respvis-core/data/scale/scaled-values-linear";
+import {ScaledValues} from "respvis-core/data/scale/scaled-values-base";
+import {pathLine} from "respvis-core/utilities/path";
 import {CartesianAxisValid} from "../../cartesian-axis-validation";
+import {ScaledValuesAggregation} from "respvis-core";
 
 export function cartesianAxisRender<T extends CartesianChartSelection>(chartS: T): void {
   const {renderer, ...data} = chartS.datum()
@@ -17,7 +17,8 @@ export function cartesianAxisRender<T extends CartesianChartSelection>(chartS: T
   const paddingWrapperS = chartS.selectAll('.padding-wrapper')
 
   //TODO: clean this stacked bar chart mess up
-  const aggScaledValues = series instanceof BarStackedSeries ? series.aggScaledValues.aggregateCached() : undefined
+  const aggScaledValues = ('aggScaledValues' in series && series.aggScaledValues instanceof ScaledValuesAggregation) ?
+    series.aggScaledValues.aggregateCached() : undefined
 
   const horizontalAxisDAgg = (aggScaledValues && horizontalAxisD.scaledValues instanceof ScaledValuesLinear) ?
     {...horizontalAxisD, scaledValues: aggScaledValues} : horizontalAxisD

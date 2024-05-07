@@ -1,5 +1,5 @@
-import {Circle, Position} from "../../core";
-import {RenderElement, RenderElementArgs} from "../../core/utilities/graphic-elements/render-element";
+import {Circle, Position} from "../../respvis-core";
+import {RenderElement, RenderElementArgs} from "respvis-core/utilities/graphic-elements/render-element";
 import {PointLabel, PointLabelArgValid} from "../point-label";
 
 export type PointArgs = Circle & RenderElementArgs & {

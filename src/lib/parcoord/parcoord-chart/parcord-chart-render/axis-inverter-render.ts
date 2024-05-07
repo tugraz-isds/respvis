@@ -1,8 +1,8 @@
-import {pathArrowBigDown, pathArrowBigLeft} from "../../../core";
+import {pathArrowBigDown, pathArrowBigLeft} from "respvis-core";
 import {Selection} from "d3";
-import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
-import {bgSVGOnlyBBoxRender} from "../../../core/render/util/bg-svg-only-render";
-import {bboxDiffSVG} from "../../../core/utilities/position/diff";
+import {KeyedAxisValid} from "respvis-core/render/axis/keyed-axis-validation";
+import {bgSVGOnlyBBoxRender} from "respvis-core/render/util/bg-svg-only-render";
+import {bboxDiffSVG} from "respvis-core/utilities/position/diff";
 
 //TODO: Refactor out duplicated code
 export function axisInverterRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
@@ -19,12 +19,12 @@ export function axisInverterRenderVerticalChart(axisS: Selection<SVGGElement, Ke
   const inverterIconS = pathArrowBigLeft(axisS, ['axis-inverter'])
   inverterIconS.selectAll('path')
 
-  const inverterIconRgroupBgS = bgSVGOnlyBBoxRender(inverterIconS.selectAll('.rotation-group'), [{ scale: 1.6, offsetX: 1, offsetY: 1 }], inverterIconS.selectAll('.rotation-group'))
+  bgSVGOnlyBBoxRender(inverterIconS.selectAll('.rotation-group'), [{ scale: 1.6, offsetX: 1, offsetY: 1 }], inverterIconS.selectAll('.rotation-group'))
   const inverterIconBgS = bgSVGOnlyBBoxRender(inverterIconS, undefined, inverterIconS )
   const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
 
   const domainS = axisS.select<SVGPathElement>('.domain')
-  const {leftCornersXDiff, leftCornersYDiff, bbox2: bboxPath, bbox1: bboxDomain} =
+  const {leftCornersXDiff, leftCornersYDiff, bbox2: bboxPath} =
     bboxDiffSVG(domainS, inverterIconS.select('path'))
 
   const xOffset = bboxPath.width / 2
@@ -56,7 +56,7 @@ export function axisInverterRenderHorizontalChart(axisS: Selection<SVGGElement, 
 
   inverterIconS.selectAll('path').attr('transform', 'scale(0.8) translate(-3, -3)')
 
-  const inverterIconRgroupBgS = bgSVGOnlyBBoxRender(inverterIconS.selectAll('.rotation-group'), [{ scale: 1.6, offsetX: 1, offsetY: 1 }], inverterIconS.selectAll('.rotation-group'))
+  bgSVGOnlyBBoxRender(inverterIconS.selectAll('.rotation-group'), [{ scale: 1.6, offsetX: 1, offsetY: 1 }], inverterIconS.selectAll('.rotation-group'))
   const inverterIconBgS = bgSVGOnlyBBoxRender(inverterIconS, undefined, inverterIconS )
   const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
 

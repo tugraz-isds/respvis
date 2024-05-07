@@ -1,5 +1,5 @@
 import {select, Selection} from 'd3';
-import {Position} from '../core';
+import {Position} from '../respvis-core';
 import {tooltipContent, tooltipHide, tooltipPosition, TooltipPositionConfig, tooltipShow,} from './tooltip';
 
 export interface SeriesConfigTooltips<ItemElement extends Element, ItemDatum> {

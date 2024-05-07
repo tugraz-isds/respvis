@@ -1,11 +1,11 @@
-import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
+import {KeyedAxisValid} from "respvis-core/render/axis/keyed-axis-validation";
 import {drag, Selection} from "d3";
-import {pathChevronRender} from "../../../core";
-import {bboxDiffSVG} from "../../../core/utilities/position/diff";
-import {cssVarFromSelection, throttle} from "../../../core/utilities/d3/util";
-import {relateDragWayToSelection, relateDragWayToSelectionByDiff} from "../../../core/utilities/d3/drag";
-import {bgSVGOnlyBBoxRender} from "../../../core/render/util/bg-svg-only-render";
-import {backgroundSVGOnly} from "../../../core/constants/dom/classes";
+import {pathChevronRender} from "../../../respvis-core";
+import {bboxDiffSVG} from "respvis-core/utilities/position/diff";
+import {cssVarFromSelection, throttle} from "respvis-core/utilities/d3/util";
+import {relateDragWayToSelection, relateDragWayToSelectionByDiff} from "respvis-core/utilities/d3/drag";
+import {bgSVGOnlyBBoxRender} from "respvis-core/render/util/bg-svg-only-render";
+import {backgroundSVGOnly} from "respvis-core/constants/dom/classes";
 
 export function parcoordChartAxisLimiterRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   slidersChevronRender(axisS)

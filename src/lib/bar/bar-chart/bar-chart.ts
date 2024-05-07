@@ -1,9 +1,7 @@
 import {Selection} from "d3";
 import {BarChartArgs, BarChartValid, barChartValidation} from "./bar-chart-validation";
 import {CartesianChartMixin} from "../../cartesian/cartesian-chart/cartesian-chart-mixin";
-import {Chart, WindowValid} from "core/render";
-import {SeriesChartMixin} from "../../core/render/chart/series-chart/series-chart-mixin";
-import {applyMixins} from "core/utilities/typescript";
+import {applyMixins, Chart, SeriesChartMixin, WindowValid} from "respvis-core";
 import {Bar, BarSeries, barSeriesRender} from "../bar-series";
 
 type WindowSelection = Selection<HTMLDivElement, WindowValid & BarChartValid>

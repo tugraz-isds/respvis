@@ -1,4 +1,4 @@
-import {Label} from "core/render/label/todo/series-label";
+import {Label} from "respvis-core";
 import {Bar} from "./bar";
 
 type BarLabelPosition = 'positive' | 'negative' | 'dynamic' | 'center'

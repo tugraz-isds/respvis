@@ -1,7 +1,7 @@
 import {select, Selection} from "d3";
 import {ParcoordChartValid} from "../parcoord-chart-validation";
-import {axisSequenceRender, AxisValid} from "../../../core";
-import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
+import {axisSequenceRender, AxisValid} from "../../../respvis-core";
+import {KeyedAxisValid} from "respvis-core/render/axis/keyed-axis-validation";
 import {handleAxisZoomAndDrag} from "./parcoord-chart-zoom-axis";
 import {parcoordChartAxisLimiterRender} from "./axis-limiter-render";
 import {axisInverterRender} from "./axis-inverter-render";

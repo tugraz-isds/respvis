@@ -1,8 +1,8 @@
 import {D3ZoomEvent, drag, Selection} from "d3";
-import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
-import {throttle} from "../../../core/utilities/d3/util";
+import {KeyedAxisValid} from "respvis-core/render/axis/keyed-axis-validation";
+import {throttle} from "respvis-core/utilities/d3/util";
 import {onDragAxisParcoord, onDragEndAxisParcord} from "./parcoord-chart-drag-axis";
-import {arrayOrder} from "../../../core";
+import {arrayOrder} from "../../../respvis-core";
 
 export function handleAxisZoomAndDrag(axisS: Selection<SVGGElement, KeyedAxisValid>, i: number) {
   const axisD = axisS.datum()

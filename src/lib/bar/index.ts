@@ -5,9 +5,8 @@
 
 export * from './bar-chart';
 export * from './bar-series';
-export * from './bar-chart/bar-chart-validation';
-export * from '../core/render/label/todo/series-label';
-export * from '../core/render/label/todo/series-label-bar';
+export * from './bar';
+export * from './bar-label';
 
 // export * from './grouped-bars';
 // export * from './stacked-bars';

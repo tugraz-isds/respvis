@@ -1,8 +1,5 @@
-import {Rect} from "core/utilities/graphic-elements/rect";
-import {RenderElement, RenderElementArgs} from "core/utilities/graphic-elements/render-element";
-import {Orientation} from "core/constants/types";
+import {Orientation, Position, Rect, RenderElement, RenderElementArgs} from "respvis-core";
 import {BarLabel, BarLabelArgValid} from "./bar-label";
-import {Position} from "core/utilities/position/position";
 
 export type BarArgs = Rect & RenderElementArgs & {
   xValue: any

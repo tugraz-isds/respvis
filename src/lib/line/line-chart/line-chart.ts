@@ -2,9 +2,9 @@ import {Selection} from 'd3';
 import {CartesianChartMixin} from "../../cartesian/cartesian-chart/cartesian-chart-mixin";
 import {LineChartArgs, LineChartValid, lineChartValidation} from "./line-chart-validation";
 import {lineChartRender} from "./line-chart-render";
-import {Chart, WindowValid} from "../../core";
-import {SeriesChartMixin} from "../../core/render/chart/series-chart/series-chart-mixin";
-import {applyMixins} from "../../core/utilities/typescript";
+import {Chart, WindowValid} from "../../respvis-core";
+import {SeriesChartMixin} from "respvis-core/render/chart/series-chart/series-chart-mixin";
+import {applyMixins} from "respvis-core/utilities/typescript";
 
 export type WindowSelection = Selection<HTMLDivElement, WindowValid & LineChartValid>;
 export type ChartSelection = Selection<SVGSVGElement, WindowValid & LineChartValid>;

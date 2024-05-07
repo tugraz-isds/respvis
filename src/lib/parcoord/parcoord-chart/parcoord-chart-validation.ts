@@ -1,7 +1,7 @@
-import {chartValidation} from "../../core";
+import {chartValidation} from "../../respvis-core";
 import {ParcoordSeries, ParcoordSeriesUserArgs} from "../parcoord-series";
-import {SeriesChartUserArgs, SeriesChartValid} from "../../core/render/chart/series-chart/series-chart-validation";
-import {legendValidation} from "../../core/render/legend";
+import {SeriesChartUserArgs, SeriesChartValid} from "respvis-core/render/chart/series-chart/series-chart-validation";
+import {legendValidation} from "respvis-core/render/legend";
 
 export type ParcoordChartUserArgs = Omit<ParcoordChartArgs, 'renderer'>
 

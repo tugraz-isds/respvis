@@ -1,4 +1,4 @@
-import {Label} from "../core/render/label/todo/series-label";
+import {Label} from "respvis-core/render/label/series-label";
 import {Point} from "./point-series/point";
 
 type PointLabelPositionHorizontal = 'left' | 'center' | 'right'

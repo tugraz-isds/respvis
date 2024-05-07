@@ -1,15 +1,15 @@
-import {Series, SeriesArgs, SeriesUserArgs} from "../../core/render/series";
-import {SeriesKey} from "../../core/constants/types";
-import {arrayAlignLengths, AxisDomainRV, axisScaledValuesValidation, BaseAxisUserArgs, Size} from "../../core";
-import {ScaledValuesUserArgs} from "../../core/data/scale/scaled-values";
+import {Series, SeriesArgs, SeriesUserArgs} from "respvis-core/render/series";
+import {SeriesKey} from "respvis-core/constants/types";
+import {arrayAlignLengths, AxisDomainRV, axisScaledValuesValidation, BaseAxisUserArgs, Size} from "../../respvis-core";
+import {ScaledValuesUserArgs} from "respvis-core/data/scale/scaled-values";
 import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal, scalePoint, ScalePoint, Selection} from "d3";
-import {ScaledValuesCategorical} from "../../core/data/scale/scaled-values-categorical";
-import {combineKeys} from "../../core/utilities/dom/key";
-import {KeyedAxisValid, keyedAxisValidation} from "../../core/render/axis/keyed-axis-validation";
-import {ZoomArgs, ZoomValid, zoomValidation} from "../../core/data/zoom";
-import {elementFromSelection} from "../../core/utilities/d3/util";
-import {getCurrentRespVal} from "../../core/data/responsive-value/responsive-value";
-import {ErrorMessages} from "../../core/utilities/error";
+import {ScaledValuesCategorical} from "respvis-core/data/scale/scaled-values-categorical";
+import {combineKeys} from "respvis-core/utilities/dom/key";
+import {KeyedAxisValid, keyedAxisValidation} from "respvis-core/render/axis/keyed-axis-validation";
+import {ZoomArgs, ZoomValid, zoomValidation} from "respvis-core/data/zoom";
+import {elementFromSelection} from "respvis-core/utilities/d3/util";
+import {getCurrentRespVal} from "respvis-core/data/responsive-value/responsive-value";
+import {ErrorMessages} from "respvis-core/utilities/error";
 import {ParcoordSeriesResponsiveState} from "./responsive-state";
 import {toolRender} from "./tool-render";
 

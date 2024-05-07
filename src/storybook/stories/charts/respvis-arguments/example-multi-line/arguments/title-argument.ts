@@ -1,4 +1,4 @@
-import {RespValByValue} from "../../../../../../lib/core/data/responsive-value/responsive-value-value";
+import {RespValByValue} from "respvis-core/data/responsive-value/responsive-value-value";
 
 export const title: RespValByValue<string> = {
   dependentOn: 'width',

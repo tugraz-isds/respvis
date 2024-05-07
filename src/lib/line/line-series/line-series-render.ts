@@ -1,12 +1,12 @@
 import {select, Selection} from "d3";
 import {Point, pointsCreate, pointSeriesJoin} from "../../point";
 import {LineSeries} from "./line-series-validation";
-import {defaultStyleClass} from "../../core/constants/other";
+import {defaultStyleClass} from "respvis-core/constants/other";
 import {seriesConfigTooltipsHandleEvents} from "../../tooltip";
 import {Line} from "./line";
 import {lineSeriesJoin} from "./line-series-join";
-import {addHighlight} from "../../core/render/series/series-add-highlight";
-import {labelSeriesFromElementsRender} from "../../core/render/label/todo/series-label";
+import {addHighlight} from "respvis-core/render/series/series-add-highlight";
+import {labelSeriesFromElementsRender} from "respvis-core/render/label/series-label";
 
 export function lineSeriesRender(pointLineS: Selection<Element, LineSeries>): void {
   const series = pointLineS.datum()

@@ -1,8 +1,8 @@
 import {Selection} from 'd3';
-import {chartValidation} from "../../core/render/chart/chart";
-import {legendValidation} from "../../core/render/legend";
-import {CartesianSeries, CartesianSeriesUserArgs} from "../../core/render/series/cartesian-series";
-import {SeriesChartUserArgs, SeriesChartValid} from "../../core/render/chart/series-chart/series-chart-validation";
+import {chartValidation} from "respvis-core/render/chart/chart";
+import {legendValidation} from "respvis-core/render/legend";
+import {CartesianSeries, CartesianSeriesUserArgs} from "../cartesian-series";
+import {SeriesChartUserArgs, SeriesChartValid} from "respvis-core/render/chart/series-chart/series-chart-validation";
 import {CartesianAxisUserArgs, CartesianAxisValid, cartesianAxisValidation} from "../cartesian-axis-validation";
 
 export type CartesianChartUserArgs = SeriesChartUserArgs & {

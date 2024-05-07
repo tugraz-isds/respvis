@@ -1,6 +1,6 @@
-import {SeriesResponsiveState, SeriesResponsiveStateArgs} from "../../core/render/series/responsive-state";
+import {SeriesResponsiveState, SeriesResponsiveStateArgs} from "respvis-core/render/series/responsive-state";
 import {ParcoordSeries} from "./parcoord-series";
-import {AxisLayout} from "../../core/constants/types";
+import {AxisLayout} from "respvis-core/constants/types";
 
 type ParcoordSeriesResponsiveStateArgs = SeriesResponsiveStateArgs & {
   series: ParcoordSeries

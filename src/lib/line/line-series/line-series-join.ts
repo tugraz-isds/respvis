@@ -1,8 +1,8 @@
 import {Selection} from "d3";
 import {Line} from "./line";
-import {pathLine} from "../../core";
-import {addEnterClass, addExitClass} from "../../core/utilities/d3/transition";
-import {cssVarFromSelection} from "../../core/utilities/d3/util";
+import {pathLine} from "../../respvis-core";
+import {addEnterClass, addExitClass} from "respvis-core/utilities/d3/transition";
+import {cssVarFromSelection} from "respvis-core/utilities/d3/util";
 
 export function lineSeriesJoin(seriesS: Selection<Element>, joinS: Selection<Element, Line>) {
   const tDurationString = cssVarFromSelection(seriesS, '--transition-time-line-enter-ms')

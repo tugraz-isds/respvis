@@ -1,13 +1,13 @@
 import {select, Selection} from "d3";
 import {ParcoordSeries} from "./parcoord-series";
-import {Renderer} from "../../core/render/chart/renderer";
-import {windowSettingsKeys} from "../../core/render/window/window-settings";
-import {fieldsetRender} from "../../core/render/toolbar/tool/fieldset-render";
-import {CheckBoxLabel} from "../../core/render/toolbar/tool/input-label/checkbox-label";
-import {inputLabelsRender} from "../../core/render/toolbar/tool/input-label/input-labels-render";
-import {DialogData} from "../../core/render/toolbar/tool/dialog-render";
-import {addRawSVGToSelection} from "../../core/utilities/d3/util";
-import checkSVGRaw from "../../core/assets/check.svg";
+import {Renderer} from "respvis-core/render/chart/renderer";
+import {windowSettingsKeys} from "respvis-core/render/window/window-settings";
+import {fieldsetRender} from "respvis-core/render/toolbar/tool/fieldset-render";
+import {CheckBoxLabel} from "respvis-core/render/toolbar/tool/input-label/checkbox-label";
+import {inputLabelsRender} from "respvis-core/render/toolbar/tool/input-label/input-labels-render";
+import {DialogData} from "respvis-core/render/toolbar/tool/dialog-render";
+import {addRawSVGToSelection} from "respvis-core/utilities/d3/util";
+import {checkSVGRaw} from "respvis-core/assets";
 
 export function toolRender(toolbarS: Selection<HTMLDivElement>, series: ParcoordSeries) {
   const dialogS = toolbarS.selectAll<HTMLDialogElement, DialogData>('.dialog--center.dialog--chart')

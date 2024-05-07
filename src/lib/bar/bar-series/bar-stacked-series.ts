@@ -1,11 +1,13 @@
 import {ScaleLinear} from "d3";
-import {ScaledValuesLinearUserArgs} from "core/data/scale/scaled-values";
-import {ScaledValuesCategorical} from "core/data/scale/scaled-values-categorical";
-import {ScaledValuesLinear} from "core/data/scale/scaled-values-linear";
-import {ErrorMessages} from "core/utilities/error";
-import {ScaledValuesAggregation} from "core/data/scale/scaled-values-aggregation";
+import {
+  CategoryUserArgs,
+  ErrorMessages,
+  ScaledValuesAggregation,
+  ScaledValuesCategorical,
+  ScaledValuesLinear,
+  ScaledValuesLinearUserArgs
+} from "respvis-core";
 import {createStackedBar} from "./bar-creation.ts/bar-stacked-creation";
-import {CategoryUserArgs} from "core/data/category";
 import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "./bar-base-series";
 import {Bar} from "../bar";
 

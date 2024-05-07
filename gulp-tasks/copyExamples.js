@@ -5,7 +5,10 @@ const replace = require('gulp-replace');
 const {stripHtml} = require("./gulp-plugin/codeStripPlugin");
 const {logger} = require("browser-sync/dist/logger");
 
-const tsProject = ts.createProject('tsconfig.json', {"target": "ES6"})
+const tsProject = ts.createProject('tsconfig.json', {
+  "target": "ES6",
+  paths: {}
+})
 
 function compileTs() {
   return gulp.src('src/examples/**/*.ts')

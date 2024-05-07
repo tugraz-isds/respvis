@@ -1,9 +1,9 @@
 import {Selection} from "d3";
-import {Chart, WindowValid} from "../../core";
+import {Chart, WindowValid} from "../../respvis-core";
 import {ParcoordChartUserArgs, ParcoordChartValid, parcoordChartValidation} from "./parcoord-chart-validation";
 import {parCoordChartRender} from "./parcord-chart-render/parcoord-chart-render";
-import {SeriesChartMixin} from "../../core/render/chart/series-chart/series-chart-mixin";
-import {applyMixins} from "../../core/utilities/typescript";
+import {SeriesChartMixin} from "respvis-core/render/chart/series-chart/series-chart-mixin";
+import {applyMixins} from "respvis-core/utilities/typescript";
 
 type WindowSelection = Selection<HTMLDivElement, WindowValid & ParcoordChartValid>
 type ChartSelection = Selection<SVGSVGElement, WindowValid & ParcoordChartValid>

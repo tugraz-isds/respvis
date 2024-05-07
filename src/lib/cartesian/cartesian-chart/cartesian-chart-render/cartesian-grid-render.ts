@@ -1,5 +1,5 @@
 import {CartesianChartSelection} from "../cartesian-chart-validation";
-import {pathLine} from "../../../core";
+import {pathLine} from "../../../respvis-core";
 import {select} from "d3";
 
 

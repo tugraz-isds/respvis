@@ -1,6 +1,6 @@
 import {Selection} from "d3";
 import {CartesianAxisValid} from "../cartesian-axis-validation";
-import {Chart, WindowValid} from "../../core";
+import {Chart, WindowValid} from "../../respvis-core";
 import {cartesianAxisRender, originLineRender} from "./cartesian-chart-render/cartesian-chart-render";
 import {CartesianChartValid} from "./cartesian-chart-validation";
 import {cartesianGridRender} from "./cartesian-chart-render/cartesian-grid-render";

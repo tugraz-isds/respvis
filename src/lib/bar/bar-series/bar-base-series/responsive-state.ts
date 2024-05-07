@@ -1,10 +1,6 @@
-import {
-  CartesianSeriesResponsiveState,
-  CartesianSeriesResponsiveStateArgs
-} from "core/render/series/cartesian-series/responsive-state";
+import {CartesianSeriesResponsiveState, CartesianSeriesResponsiveStateArgs} from "../../../cartesian";
 import {BarBaseSeries} from "../bar-base-series";
-import {ScaledValuesCategorical} from "core/data/scale/scaled-values-categorical";
-import {ScaledValuesLinear} from "core/data/scale/scaled-values-linear";
+import {ScaledValuesCategorical, ScaledValuesLinear} from "respvis-core";
 
 type BarBaseResponsiveStateArgs = CartesianSeriesResponsiveStateArgs & {
   series: BarBaseSeries
@@ -61,7 +57,7 @@ export class BarBaseResponsiveState extends CartesianSeriesResponsiveState {
 
 const barRectFormula = {
   barCategoryStart: (vals: ScaledValuesCategorical, i: number) => vals.getScaledValueStart(i),
-  barCategoryLength: (vals: ScaledValuesCategorical, i: number) => vals.scale.bandwidth(),
+  barCategoryLength: (vals: ScaledValuesCategorical, _: number) => vals.scale.bandwidth(),
   barLinearStart: (vals: ScaledValuesLinear, i: number) => Math.min(vals.getScaledValueEnd(i), vals.scale(0)!),
   barLinearLength: (vals: ScaledValuesLinear, i: number) => Math.abs(vals.scale(0)! - vals.getScaledValue(i)),
 } as const

@@ -1,10 +1,10 @@
 import {Selection} from "d3";
-import {legendRender} from "../../core/render/legend";
-import {legendAddHover} from "../../core/render/legend/legend-event";
+import {legendRender} from "respvis-core/render/legend";
+import {legendAddHover} from "respvis-core/render/legend/legend-event";
 import {LineChartValid} from "./line-chart-validation";
 import {LineSeries} from "../line-series/line-series-validation";
 import {lineSeriesRender} from "../line-series/line-series-render";
-import {chartRender} from "../../core";
+import {chartRender} from "respvis-core";
 
 export type LineChartSVGChartSelection = Selection<SVGSVGElement | SVGGElement, LineChartValid>;
 

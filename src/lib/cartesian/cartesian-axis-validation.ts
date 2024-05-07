@@ -1,5 +1,5 @@
-import {BaseAxisArgs, BaseAxisUserArgs, BaseAxisValid, baseAxisValidation} from "../core";
-import {CartesianSeries} from "../core/render/series/cartesian-series";
+import {BaseAxisArgs, BaseAxisUserArgs, BaseAxisValid, baseAxisValidation} from "../respvis-core";
+import {CartesianSeries} from "./cartesian-series";
 
 export type CartesianAxisUserArgs = BaseAxisUserArgs & {
   gridLineFactor?: number

@@ -7,8 +7,9 @@ const {default: rollupGzip} = require("rollup-plugin-gzip");
 const fs = require("fs");
 const {rootDir} = require('../paths')
 const {stripCode} = require('../rollup-plugin/codeStripPlugin');
-const { string } = require("rollup-plugin-string");
-const {allBundlesConfigsBase} = require('./bundle-configs')
+const {string} = require("rollup-plugin-string");
+const {allBundlesConfigsBase, respvisBundleConfig} = require('./bundle-configs')
+const typescript = require('typescript')
 
 async function bundleJS() {
   if (process.env.MODE === 'dev') await bundleJSDevelopment()
@@ -16,9 +17,9 @@ async function bundleJS() {
 }
 
 async function bundleJSDevelopment() {
-  const bundle = await getRollupBundle({ standalone: true })
+  const bundle = await getRollupBundle(respvisBundleConfig)
   return Promise.all(writeBundle(bundle, [
-    { extension: 'js', plugins: [], location: `${rootDir}/package/standalone/esm` , format: 'esm' },
+    {extension: 'js', plugins: [], location: `${rootDir}/package/respvis/standalone/esm`, format: 'esm'},
   ]))
 }
 
@@ -29,6 +30,7 @@ async function bundleJSDevelopment() {
  * @property {string[]} exclude - Exclude Globs.
  * @property {string} outputDirectory - Output Directory.
  * @property {string[]} external - External Dependencies.
+ * @property {boolean} replaceAliases - Replace Aliases with relative paths (for entire code bundle).
  */
 
 async function bundleJSProduction() {
@@ -52,9 +54,9 @@ async function bundleJSProduction() {
       const dependencyType = bundleConfig.external && bundleConfig.external.length > 0 ? 'dependency-based' : 'standalone'
       const location = `${bundleConfig.outputDirectory}/${dependencyType}/${format}`
       return [
-        { extension: 'js', plugins: [], location, format },
-        { extension: 'min.js', plugins: minPlugins, location, format },
-        { extension: 'min.js', plugins: gzPlugins, location, format }
+        {extension: 'js', plugins: [], location, format},
+        {extension: 'min.js', plugins: minPlugins, location, format},
+        {extension: 'min.js', plugins: gzPlugins, location, format}
       ]
     }).flat()
     return writeBundle(bundle, writeConfigs)
@@ -70,20 +72,26 @@ async function getRollupBundle(config) {
   return await rollup.rollup({
     input: config.entryFile,
     plugins: [
-      rollupNodeResolve({ browser: true }),
+      rollupNodeResolve({browser: true}),
       rollupCommonJs(),
-      string({ include: "**/*.svg" }),
+      string({include: "**/*.svg"}),
       rollupTypescript({
+        typescript: typescript,
         tsconfig: `${rootDir}/tsconfig.json`,
         include: config.include ?? ["src/lib/**/*", "module-specs.d.ts"],
         exclude: config.exclude ?? ["node_modules", "dist", "**/*.spec.ts", "src/stories"],
+        compilerOptions: {
+          plugins: [
+            ...(config.replaceAliases ? [{ "transform": "typescript-transform-paths", "afterDeclarations": true }] : [])
+          ]
+        }
       }),
       process.env.STRIP_CODE === 'true' ? stripCode({
         startComment: '/* DEV_MODE_ONLY_START */',
         endComment: '/* DEV_MODE_ONLY_END */'
       }) : null,
     ].filter(plugin => plugin),
-    ...(config.external ? { external: config.external } : {})
+    ...(config.external ? {external: config.external} : {})
   })
 }
 
@@ -102,12 +110,16 @@ async function getRollupBundle(config) {
  */
 function writeBundle(bundle, writeConfigurations) {
   return writeConfigurations.map((c) => bundle.write({
-    file:`${c.location}/respvis.${c.extension}`,
+    file: `${c.location}/respvis.${c.extension}`,
     format: c.format,
     name: 'respVis',
     plugins: c.plugins,
     sourcemap: true,
     inlineDynamicImports: true,
+    globals: {
+      d3: 'd3',
+      'respvis-core': 'respvis-core'
+    }
   }).then(() => {
     const fileData = fs.readFileSync(`${c.location}/respvis.${c.extension}`, 'utf8');
     const formatString = c.format === 'iife' ? 'IIFE' :

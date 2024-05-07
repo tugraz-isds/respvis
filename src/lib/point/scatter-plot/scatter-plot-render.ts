@@ -4,8 +4,8 @@ import {ScatterPlotValid} from "./scatter-plot-validation"
 import {pointsRender} from "../point-series/points-render"
 import {pointsCreate} from "../point-series/points-create"
 import {seriesConfigTooltipsHandleEvents} from "../../tooltip"
-import {labelSeriesFromElementsRender} from "../../core/render/label/todo/series-label"
-import {addHighlight} from "../../core/render/series/series-add-highlight"
+import {labelSeriesFromElementsRender} from "respvis-core/render/label/series-label"
+import {addHighlight} from "respvis-core/render/series/series-add-highlight"
 
 export type ScatterplotSVGChartSelection = Selection<SVGSVGElement | SVGGElement, ScatterPlotValid>
 

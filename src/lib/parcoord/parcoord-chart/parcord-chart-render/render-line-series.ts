@@ -1,10 +1,10 @@
 import {Selection} from "d3";
 import {ParcoordChartValid} from "../parcoord-chart-validation";
-import {AxisValid, Position} from "../../../core";
+import {AxisValid, Position} from "../../../respvis-core";
 import {Line, lineSeriesJoin} from "../../../line";
-import {combineKeys} from "../../../core/utilities/dom/key";
-import {defaultStyleClass} from "../../../core/constants/other";
-import {KeyedAxisValid} from "../../../core/render/axis/keyed-axis-validation";
+import {combineKeys} from "respvis-core/utilities/dom/key";
+import {defaultStyleClass} from "respvis-core/constants/other";
+import {KeyedAxisValid} from "respvis-core/render/axis/keyed-axis-validation";
 import {ParcoordSeries} from "../../parcoord-series";
 
 export function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>) {

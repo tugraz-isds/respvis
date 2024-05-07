@@ -13,7 +13,8 @@
     "declaration": true,
     "declarationDir": "types",
     "paths": {
-      "core/*": ["./src/lib/core/*"]
+      "respvis-core": ["./src/lib/respvis-core"],
+      "respvis-core/*": ["./src/lib/respvis-core/*"]
     }
   },
   "include": ["src/**/*", "module-specs.d.ts"],

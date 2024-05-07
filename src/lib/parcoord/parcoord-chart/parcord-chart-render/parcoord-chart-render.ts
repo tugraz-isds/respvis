@@ -1,4 +1,4 @@
-import {chartRender} from "../../../core";
+import {chartRender} from "../../../respvis-core";
 import {Selection} from "d3";
 import {ParcoordChartValid} from "../parcoord-chart-validation";
 import {renderLineSeries} from "./render-line-series";

@@ -1,6 +1,6 @@
-import {RadiusArg} from "../../core/data/radius/radius-validation";
-import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "../../core/render/series/cartesian-series";
-import {ColorContinuous} from "../../core/data/color-continuous/color-continuous";
+import {RadiusArg} from "respvis-core/data/radius/radius-validation";
+import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "../../cartesian/cartesian-series";
+import {ColorContinuous} from "respvis-core/data/color-continuous/color-continuous";
 import {PointLabelsUserArgs, PointLabelValues} from "../point-label";
 
 export type SeriesPointUserArgs = CartesianSeriesUserArgs & {

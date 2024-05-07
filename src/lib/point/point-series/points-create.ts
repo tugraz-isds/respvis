@@ -1,10 +1,10 @@
 import {Point} from "./point";
-import {elementFromSelection} from "../../core/utilities/d3/util";
-import {getRadiusScaledValues} from "../../core/data/radius/radius-util";
-import {PointScaleHandler} from "../../core/data/scale/geometry-scale-handler/point-scale-handler";
+import {elementFromSelection} from "respvis-core/utilities/d3/util";
+import {getRadiusScaledValues} from "respvis-core/data/radius/radius-util";
+import {PointScaleHandler} from "respvis-core/data/scale/geometry-scale-handler/point-scale-handler";
 import {PointSeries} from "./point-series";
-import {defaultStyleClass} from "../../core/constants/other";
-import {ColorContinuous} from "../../core/data/color-continuous/color-continuous";
+import {defaultStyleClass} from "respvis-core/constants/other";
+import {ColorContinuous} from "respvis-core/data/color-continuous/color-continuous";
 
 export function pointsCreate<T extends boolean, R = T extends false ? Point[] : Point[][]>
 (seriesData: PointSeries, grouped: T) : R {

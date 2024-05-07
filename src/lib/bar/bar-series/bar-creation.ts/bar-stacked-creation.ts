@@ -1,5 +1,4 @@
-import {ScaledValuesLinear} from "core/data/scale/scaled-values-linear";
-import {ScaledValuesDate} from "core/data/scale/scaled-values-date";
+import {ScaledValuesDate, ScaledValuesLinear} from "respvis-core";
 import {BarStackedSeries} from "../bar-stacked-series";
 
 type createStackedBarProps = {
