@@ -1,5 +1,5 @@
 import {select, Selection} from 'd3';
-import {BarArgs, JoinEvent} from "../../../bar";
+import {BarArgs, JoinEvent} from "../../../respvis-bar";
 import {
   arrayIs,
   HorizontalAlignment,

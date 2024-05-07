@@ -14,7 +14,20 @@
     "declarationDir": "types",
     "paths": {
       "respvis-core": ["./src/lib/respvis-core"],
-      "respvis-core/*": ["./src/lib/respvis-core/*"]
+      "respvis-core/*": ["./src/lib/respvis-core/*"],
+      "respvis-bar": ["./src/lib/respvis-bar"],
+      "respvis-bar/*": ["./src/lib/respvis-bar/*"],
+      "respvis-cartesian": ["./src/lib/respvis-cartesian"],
+      "respvis-cartesian/*": ["./src/lib/respvis-cartesian/*"],
+      "respvis-line": ["./src/lib/respvis-line"],
+      "respvis-line/*": ["./src/lib/respvis-line/*"],
+      "respvis-parcoord": ["./src/lib/respvis-parcoord"],
+      "respvis-paracoord/*": ["./src/lib/respvis-parcoord/*"],
+      "respvis-point": ["./src/lib/respvis-point"],
+      "respvis-point/*": ["./src/lib/respvis-point/*"],
+      "respvis-tooltip": ["./src/lib/respvis-tooltip"],
+      "respvis-tooltip/*": ["./src/lib/respvis-tooltip/*"],
+      "respvis-tooltipsdf/*": ["./src/lib/respvis-tooltipsdf/*"]
     }
   },
   "include": ["src/**/*", "module-specs.d.ts"],

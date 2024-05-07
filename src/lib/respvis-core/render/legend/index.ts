@@ -1,4 +1,4 @@
-export * from './legend-validation';
-export {legendRender} from "./legend-render";
-
+export * from './legend-event';
 export * from "./legend-item-validation";
+export * from "./legend-render";
+export * from './legend-validation';

@@ -11,7 +11,7 @@ import {
   chartValidation
 } from "../../../../../lib";
 import {EmptySeries} from "../empty-series";
-import {Orientation, Orientations} from "respvis-core/constants/types";
+import {Orientation, Orientations} from "respvis-core";
 
 type AxisChartAxisUserArgs = BaseAxisUserArgs & {
   vals: ScaledValuesUserArgs<AxisDomainRV>

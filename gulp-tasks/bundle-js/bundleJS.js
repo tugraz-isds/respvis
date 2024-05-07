@@ -13,7 +13,21 @@ const typescript = require('typescript')
 
 async function bundleJS() {
   if (process.env.MODE === 'dev') await bundleJSDevelopment()
-  else await bundleJSProduction()
+  else {
+    const allBundleConfigDependencyBased = allBundlesConfigsBase.map(config => {
+      const external = config.external ? [...config.external, 'd3'] : ['d3']
+      return {...config, external}
+    })
+    const allBundleConfigStandalone = allBundlesConfigsBase.map(config => {
+      return {...config, external: undefined}
+    })
+    const allBundleConfigs = [...allBundleConfigDependencyBased, ...allBundleConfigStandalone]
+    // splitting necessary to not overload heap //increase optionally heap for node process
+    await bundleJSProduction([...allBundleConfigDependencyBased.slice(0, 1), ...allBundleConfigStandalone.slice(0, 1)])
+    await bundleJSProduction([...allBundleConfigDependencyBased.slice(1, 2), ...allBundleConfigStandalone.slice(1, 2)])
+    await bundleJSProduction([...allBundleConfigDependencyBased.slice(2, 5), ...allBundleConfigStandalone.slice(2, 5)])
+    await bundleJSProduction([...allBundleConfigDependencyBased.slice(5), ...allBundleConfigStandalone.slice(5)])
+  }
 }
 
 async function bundleJSDevelopment() {
@@ -33,17 +47,9 @@ async function bundleJSDevelopment() {
  * @property {boolean} replaceAliases - Replace Aliases with relative paths (for entire code bundle).
  */
 
-async function bundleJSProduction() {
-  const allBundleConfigDependencyBased = allBundlesConfigsBase.map(config => {
-    const external = config.external ? [...config.external, 'd3'] : ['d3']
-    return {...config, external}
-  })
-  const allBundleConfigStandalone = allBundlesConfigsBase.map(config => {
-    return {...config, external: undefined}
-  })
-  const allBundleConfigs = [...allBundleConfigDependencyBased, ...allBundleConfigStandalone]
-
+async function bundleJSProduction(allBundleConfigs) {
   const allBundles = await Promise.all(allBundleConfigs.map(getRollupBundle))
+
   const minPlugins = [rollupTerser()]
   const gzPlugins = [rollupTerser(), rollupGzip()]
   const formats = ['esm', 'cjs', 'iife']
@@ -118,7 +124,13 @@ function writeBundle(bundle, writeConfigurations) {
     inlineDynamicImports: true,
     globals: {
       d3: 'd3',
-      'respvis-core': 'respvis-core'
+      'respvis-bar': 'respvis-bar',
+      'respvis-cartesian': 'respvis-cartesian',
+      'respvis-core': 'respvis-core',
+      'respvis-line': 'respvis-line',
+      'respvis-parcoord': 'respvis-parcoord',
+      'respvis-point': 'respvis-point',
+      'respvis-tooltip': 'respvis-tooltip',
     }
   }).then(() => {
     const fileData = fs.readFileSync(`${c.location}/respvis.${c.extension}`, 'utf8');

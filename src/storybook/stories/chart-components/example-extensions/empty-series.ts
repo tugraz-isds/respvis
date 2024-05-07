@@ -1,4 +1,4 @@
-import {Series} from "respvis-core/render/series";
+import {Series} from "respvis-core";
 
 const placeholder = 'empty-series'
 export class EmptySeries extends Series {

@@ -1,6 +1,6 @@
 import {CategoryUserArgs} from "../../data/category";
-import {SeriesConfigTooltips, seriesConfigTooltipsData} from "../../../tooltip";
-import {Point} from "../../../point";
+import {SeriesConfigTooltips, seriesConfigTooltipsData} from "../../../respvis-tooltip";
+import {Point} from "../../../respvis-point";
 import {RenderArgs, Renderer} from "../chart/renderer";
 import {ActiveKeyMap, SeriesKey} from "../../constants/types";
 import {Size} from "../../utilities/size";

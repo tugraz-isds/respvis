@@ -6,7 +6,7 @@ import {breakPointsValidation} from "../../data/breakpoint/breakpoint-validation
 import {ScaledValues} from "../../data/scale/scaled-values-base";
 import {KeyedAxisValid} from "./keyed-axis-validation";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
-import {CartesianAxisValid} from "../../../cartesian/cartesian-axis-validation";
+import {CartesianAxisValid} from "../../../respvis-cartesian/cartesian-axis-validation";
 import {Series} from "../series";
 import {
   AxisLayoutHorizontal,
