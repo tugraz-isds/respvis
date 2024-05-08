@@ -12,7 +12,7 @@ const {allBundlesConfigsBase, respvisBundleConfig} = require('./bundle-configs')
 const typescript = require('typescript')
 
 async function bundleJS() {
-  if (process.env.MODE === 'dev') await bundleJSDevelopment()
+  if (process.env.LIVE_SERVER === 'true') await bundleJSLive()
   else {
     const allBundleConfigDependencyBased = allBundlesConfigsBase.map(config => {
       const external = config.external ? [...config.external, 'd3'] : ['d3']
@@ -30,7 +30,7 @@ async function bundleJS() {
   }
 }
 
-async function bundleJSDevelopment() {
+async function bundleJSLive() {
   const bundle = await getRollupBundle(respvisBundleConfig)
   return Promise.all(writeBundle(bundle, [
     {extension: 'js', plugins: [], location: `${rootDir}/package/respvis/standalone/esm`, format: 'esm'},

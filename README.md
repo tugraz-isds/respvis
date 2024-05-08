@@ -49,7 +49,9 @@ defines six public tasks:
 
 - The `build` task first executes the clean task, then creates a new
   build of the framework and copies the self-contained examples into
-  the freshly created `dist` folder.
+  the freshly created `dist` folder. The build task, in contrary to
+  the serve task, bundles all modules respvis provides, once in standalone form,
+  and once in dependency-based form.
 
 - The `serve` task first executes the build task, then additionally
   executes a private task called watcher which has two
@@ -61,6 +63,10 @@ defines six public tasks:
   in production (--prod) or developer (--dev) mode. The default is
   production mode. The non-secret enviroment variables for production and
   development can be found in `.env.prod` and `.env.dev` respectively.
+  Note that the serve tasks only bundles the standalone form of respvis,
+  as this package is the only one needed for the self-contained examples
+  and omitting the bundling of the other modules saves much time during
+  live development.
 
 - The `gen-base64` task converts svg files which are
   meant to be used as icons automatically to base64 strings that can 
@@ -83,10 +89,10 @@ npx gulp cleanAll
 npm run build
 npx gulp build
 
-npm run dev
+npm run serve-dev
 npx gulp serve --dev
 
-npm run prod
+npm run serve-prod
 npx gulp serve --prod
 
 npm run gen-base64
@@ -102,8 +108,6 @@ documentation about RespVis. When running storybook one can conveniently
 navigate through different use cases of different RespVis components. On
 top of that there are many markdown files explaining the functionality of
 RespVis in depth. To run storybook one must execute the following command:
-
-
 
 ```
 npm run storybook

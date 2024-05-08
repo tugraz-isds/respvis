@@ -9,15 +9,15 @@
   ],
   "types": "./package/index.d.ts",
   "scripts": {
-    "cleanAll": "npx gulp cleanAll",
-    "cleanExampleDeps": "npx gulp cleanExampleDeps",
     "clean": "npx gulp clean",
+    "cleanExampleDeps": "npx gulp cleanExampleDeps",
+    "cleanAll": "npx gulp cleanAll",
     "build": "npx gulp build",
-    "dev": "npx gulp serve --dev",
-    "prod": "npx gulp serve --prod",
+    "serve-dev": "npx gulp serve --dev",
+    "serve-prod": "npx gulp serve --prod",
+    "gen-base64": "npx gulp genBase64",
     "storybook": "storybook dev -p 6006 -c ./src/storybook/config",
     "build-storybook": "storybook build",
-    "gen-base64": "npx gulp genBase64",
     "prepare": "ts-patch install -s"
   },
   "repository": {

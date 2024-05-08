@@ -5,7 +5,7 @@ const {string} = require("rollup-plugin-string");
 
 async function bundleDeclaration() {
   await Promise.all([bundleDeclarationByDepsType('standalone'),
-    ...(process.env.MODE === 'prod' ? [bundleDeclarationByDepsType('dependency-based')] : [])
+    ...(process.env.LIVE_SERVER !== 'true' ? [bundleDeclarationByDepsType('dependency-based')] : [])
   ])
 }
 
