@@ -57,8 +57,18 @@ export function addExitClass<T extends BaseType, D>(selection: Selection<T, D>, 
     .transition('exiting')
     .delay(delayMS)
     .on('end.Exit', function () {
+      if (!select(this).classed('exiting')) return
       select(this)
         .classed("exiting", false)
-        .classed("exit-done", true);
+        .classed("exit-done", true)
     })
+}
+
+export function cancelExitClassOnUpdate<T extends BaseType, D>(selection: Selection<T, D>) {
+  return selection.each(function(d, i, g) {
+    if (select(g[i]).classed('exiting')) {
+      select(g[i]).classed('exiting', false)
+      select(g[i]).classed('enter-done', true)
+    }
+  })
 }

@@ -1,6 +1,6 @@
-import {Selection} from "d3";
+import {select, Selection} from "d3";
 import {Line} from "./line";
-import {addEnterClass, addExitClass, cssVarFromSelection, pathLine} from "respvis-core";
+import {addEnterClass, addExitClass, cancelExitClassOnUpdate, cssVarFromSelection, pathLine} from "respvis-core";
 
 export function lineSeriesJoin(seriesS: Selection<Element>, joinS: Selection<Element, Line>) {
   const tDurationString = cssVarFromSelection(seriesS, '--transition-time-line-enter-ms')
@@ -10,13 +10,20 @@ export function lineSeriesJoin(seriesS: Selection<Element>, joinS: Selection<Ele
       (enter) =>
         enter.append('path')
           .classed('line', true)
-          .call(s => addEnterClass(s, tDuration))
+          .call(s => {
+            addEnterClass(s, tDuration)
+          })
           .call((s) => seriesS.dispatch('enter', {detail: {selection: s}})),
-      undefined,
+      (update) => update.call(() => {
+        update.call(cancelExitClassOnUpdate)
+      }),
       (exit) =>
-        exit.call((s) => addExitClass(s, tDuration).on('end', () => {
-          exit.remove().call((s) => seriesS.dispatch('exit', {detail: {selection: s}}))
-        })))
+        exit.call((s) => {
+          addExitClass(s, tDuration).on('end.Remove', function() {
+            if (!select(this).classed('exit-done')) return
+            exit.remove().call((s) => seriesS.dispatch('exit', {detail: {selection: s}}))
+          })
+        }))
     .each((line, i, g) => pathLine(g[i], line.positions))
     .attr('data-style', (d) => d.styleClass)
     .attr('data-key', (d) => d.key)
