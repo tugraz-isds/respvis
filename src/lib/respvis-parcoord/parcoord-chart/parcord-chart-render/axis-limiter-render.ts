@@ -21,13 +21,13 @@ export function parcoordChartAxisLimiterRender(axisS: Selection<SVGGElement, Key
 function slidersChevronRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   const flipped = axisS.datum().series.responsiveState.currentlyFlipped
   const direction = (flipped ? 'right' : 'down')
-  const upperChevronS = pathChevronRender(axisS, ['slider-up'], [{type: direction, scale: 1.5}])
-  bgSVGOnlyBBoxRender(upperChevronS, [{scale: 2}], upperChevronS.select('path'))
+  const upperChevronS = pathChevronRender(axisS, ['slider-up'], [{type: direction, scale: 0.85}])
+  bgSVGOnlyBBoxRender(upperChevronS, [{scale: 4}], upperChevronS.select('path'))
     .classed('cursor', true)
     .classed('cursor--range-vertical', !flipped)
     .classed('cursor--range-horizontal cursor--range-left', flipped)
-  const lowerChevronS = pathChevronRender(axisS, ['slider-down'], [{type: direction, scale: 1.5}])
-  bgSVGOnlyBBoxRender(lowerChevronS, [{scale: 2}], lowerChevronS.select('path'))
+  const lowerChevronS = pathChevronRender(axisS, ['slider-down'], [{type: direction, scale: 0.85}])
+  bgSVGOnlyBBoxRender(lowerChevronS, [{scale: 4}], lowerChevronS.select('path'))
     .classed('cursor', true)
     .classed('cursor--range-horizontal ', flipped)
     .classed('cursor--range-vertical cursor--range-up', !flipped)

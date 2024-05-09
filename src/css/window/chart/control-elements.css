@@ -5,18 +5,21 @@
   }
 }
 
-.slider-up, .slider-down, .axis-inverter {
+.slider-up, .slider-down {
   & path {
-    fill: var(--control-elements-chart-color2);
+    fill: var(--control-elements-chart-color3);
+    stroke: var(--control-elements-chart-color3);
   }
-  &:active {
-    filter: brightness(150%);
-  }
+  &:active { filter: brightness(150%); }
 }
 
 .axis-inverter {
   width: 12px;
   height: 15px;
+  & path {
+    stroke: var(--control-elements-chart-color3);
+  }
+  &:active { filter: brightness(150%); }
 }
 
 .cursor:not(.cursor-disabled) {

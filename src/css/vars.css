@@ -39,10 +39,11 @@
   --control-elements-chart-color1: rgb(248, 229, 121);
   --control-elements-chart-color1-40: rgb(248, 229, 121, 0.4);
   --control-elements-chart-color2: rgb(255, 255, 255);
+  --control-elements-chart-color3: var(--color-axes-line);
 
 
   /*spacings and lengths*/
-  --rect-slider-breadth: 20;
+  --rect-slider-breadth: 13;
   --chart-padding-left: 0;
   --chart-padding-top: 0;
   --chart-padding-right: 0;
