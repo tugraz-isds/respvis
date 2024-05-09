@@ -1,6 +1,10 @@
 import {getActiveCSSRulesForElement} from "./getActiveCSSRules";
 import {Renderer} from "../../../../chart/renderer";
-import {elementComputedStyleWithoutDefaults, elementSVGPresentationAttrs} from "../../../../../utilities/element";
+import {
+  elementComputedStyleWithoutDefaults,
+  elementSVGInlineStyles,
+  elementSVGPresentationAttrs
+} from "../../../../../utilities/element";
 import {ErrorMessages} from "../../../../../utilities/error";
 import {
   cssContentFromEntries,
@@ -50,12 +54,21 @@ function copyInlineStyles(target: Element, source: Element) {
   }
 }
 
-function attrsFromComputedStyle(target: Element, source: Element) {
-  const style = elementComputedStyleWithoutDefaults(source, elementSVGPresentationAttrs);
-  for (let prop in style) {
-    target.setAttribute(prop, style[prop]);
+function attrsFromComputedStyle(target: SVGElement | HTMLElement, source: Element) {
+  const svgPresentationStyle = elementComputedStyleWithoutDefaults(source, elementSVGPresentationAttrs);
+  for (let prop in svgPresentationStyle) {
+    target.setAttribute(prop, svgPresentationStyle[prop]);
+  }
+  if (window.getComputedStyle(source).getPropertyValue('--orientation') === 'vertical') {
+    //For now only check vertical text elements as they are the only affected elements
+    //Otherwise downloaded svg is much bigger
+    const svgInlineStyles = elementComputedStyleWithoutDefaults(source, elementSVGInlineStyles);
+    for (let prop in svgInlineStyles) {
+      target.style[prop] = svgInlineStyles[prop]
+    }
   }
   for (let i = 0; i < source.children.length; ++i) {
-    attrsFromComputedStyle(target.children[i], source.children[i]);
+    const child = target.children[i] as (SVGElement | HTMLElement)
+    attrsFromComputedStyle(child, source.children[i]);
   }
 }

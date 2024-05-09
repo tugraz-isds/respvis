@@ -17,6 +17,7 @@ export type WindowSettings = {
   downloadAttributeMaxDecimalsActive: boolean
 
   downloadPrettifyActive: boolean
+  downloadPrettifyIndentionSpaces: string
 
   // ------------------ parcoord
   parcoordEquidistantAxes: boolean
@@ -37,6 +38,7 @@ export const windowSettingsKeys: Record<keyof WindowSettings, keyof WindowSettin
   downloadRemoveBgElements: 'downloadRemoveBgElements',
   downloadRemoveDataStyles: 'downloadRemoveDataStyles',
   downloadPrettifyActive: 'downloadPrettifyActive',
+  downloadPrettifyIndentionSpaces: 'downloadPrettifyIndentionSpaces',
   movableCrossActive: "movableCrossActive",
   downloadAttributeMaxDecimals: "downloadAttributeMaxDecimals",
   downloadAttributeMaxDecimalsActive: "downloadAttributeMaxDecimalsActive",
@@ -50,6 +52,7 @@ export const defaultWindowSettings: WindowSettings = {
   downloadRemoveDataStyles: true,
   downloadRemoveBgElements: true,
   downloadPrettifyActive: true,
+  downloadPrettifyIndentionSpaces: '2',
   movableCrossActive: false,
   downloadAttributeMaxDecimals: '1',
   downloadAttributeMaxDecimalsActive: true,

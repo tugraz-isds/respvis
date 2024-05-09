@@ -127,3 +127,8 @@ export const elementSVGPresentationAttrs = [
   'writing-mode',
   'transform',
 ];
+
+export const elementSVGInlineStyles = [
+  'transform-box',
+  'transform-origin'
+]

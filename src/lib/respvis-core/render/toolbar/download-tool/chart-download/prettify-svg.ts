@@ -9,7 +9,8 @@ export function prettifySVG(code: string, renderer: Renderer) {
   if (!renderer.windowS.datum().windowSettings.downloadPrettifyActive) return prettifiedSVG
   prettifiedSVG = addNewLinesBeforeOpeningTags(prettifiedSVG)
   prettifiedSVG = addNewlineBeforeGroupCloseTag(prettifiedSVG)
-  prettifiedSVG = addTabsPerNestingLevel(prettifiedSVG)
+  const indentationSpaces = ' '.repeat(parseInt(renderer.windowS.datum().windowSettings.downloadPrettifyIndentionSpaces))
+  prettifiedSVG = addTabsPerNestingLevel(prettifiedSVG, indentationSpaces)
   prettifiedSVG = prettifyStyleTags(prettifiedSVG)
   return prettifiedSVG
 }
@@ -24,7 +25,7 @@ function addNewlineBeforeGroupCloseTag(code: string) {
   return code.replace(regexGroupTags, "\n$1")
 }
 
-function addTabsPerNestingLevel(code: string) {
+function addTabsPerNestingLevel(code: string, indentationChars: string) {
   //text|tspan
   const regexAllTags = /(<\/?(svg|g|defs|symbol|marker|a|switch|mask|clipPath|pattern|filter|use|rect|circle|ellipse|line|polyline|polygon|path|image|text|textPath|tspan|glyph|missing-glyph|foreignObject).*?>)/g
   const regexNesting = /(<\/?(svg|g|defs|symbol|marker|a|switch|mask|clipPath|pattern|filter|textPath|use).*?>)/g
@@ -34,7 +35,7 @@ function addTabsPerNestingLevel(code: string) {
     if (p1.startsWith('</') && match.match(regexNesting)) {
       tabs--;
     }
-    const tabString = '\t'.repeat(tabs);
+    const tabString = indentationChars.repeat(tabs);
     if (!p1.startsWith('</') && match.match(regexNesting)) {
       tabs++;
     }

@@ -30,4 +30,18 @@ export class NumberLabel implements InputLabel {
       .text(label)
     return labelS
   }
+
+  valueAsInt(e: InputEvent) {
+    const target = e.target as HTMLInputElement
+    return parseInt(target.value)
+  }
+
+  valueAsFloat(e: InputEvent) {
+    const target = e.target as HTMLInputElement
+    return parseFloat(target.value)
+  }
+
+  inMinMaxRange(value: number) {
+    return (this.data.min && value < this.data.min) || (this.data.max && value > this.data.max)
+  }
 }

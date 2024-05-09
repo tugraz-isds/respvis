@@ -12,18 +12,14 @@ export function decimalNumberOptionsRender(selection: Selection, renderer: Rende
     renderer.windowS.dispatch('resize')
   }
 
-  const onNumberInput = (e, d: NumberLabel) => {
-    const type = d.data.type
-    const target = e.target as HTMLInputElement
-    const value = parseInt(target.value)
-    if (isNaN(value)) e.target.value = currentSettings[type]
+  const onInputNumber = (e, d: NumberLabel) => {
+    const value = d.valueAsInt(e)
+    if (isNaN(value)) e.target.value = currentSettings[d.data.type]
   }
   const onChangeNumber = (e, d: NumberLabel) => {
-    const type = d.data.type
-    const target = e.target as HTMLInputElement
-    const value = parseInt(target.value)
-    if (isNaN(value) || (d.data.min && value < d.data.min) || (d.data.max && value > d.data.max)) {
-      e.target.value = currentSettings[type]
+    const value = d.valueAsInt(e)
+    if (isNaN(value) || d.inMinMaxRange(value)) {
+      e.target.value = currentSettings[d.data.type]
     }
     currentSettings[d.data.type] = (e.target as HTMLInputElement).value
   }
@@ -40,7 +36,7 @@ export function decimalNumberOptionsRender(selection: Selection, renderer: Rende
       type: windowSettingsKeys.downloadAttributeMaxDecimals,
       value: currentSettings.downloadAttributeMaxDecimals,
       min: 1, max: 20, step: 1,
-      onInput: onNumberInput,
+      onInput: onInputNumber,
       onChange: onChangeNumber,
       activeClasses: !currentSettings.downloadAttributeMaxDecimalsActive ? ['disabled'] : [],
       inactiveClasses: currentSettings.downloadAttributeMaxDecimalsActive ? ['disabled'] : [],
