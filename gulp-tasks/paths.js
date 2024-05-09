@@ -9,7 +9,7 @@ const libsDepsDir = `${exampleDepsDir}/libs`
 const respvisDepsDir = `${libsDepsDir}/respvis`
 const utilDepsDir = `${exampleDepsDir}/util`
 
-const iconsDir = `${srcDir}/lib/core/assets/cursor-icons`
+const iconsDir = `${srcDir}/lib/respvis-core/assets/cursor-icons`
 
 const exampleDir = `${srcDir}/examples`
 

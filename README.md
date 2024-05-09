@@ -68,9 +68,9 @@ defines six public tasks:
   and omitting the bundling of the other modules saves much time during
   live development.
 
-- The `gen-base64` task converts svg files which are
-  meant to be used as icons automatically to base64 strings that can 
-  conviniently copy and pasted into style sheets. This is especially
+- The `genSVGDataURI` task converts svg files which are
+  meant to be used as icons automatically to data URIs that can be
+  conveniently copied and pasted into style sheets. This is especially
   helpful when creating styles for cursor icons.
 
 The public tasks can be invoked either by directly running gulp via npx or
@@ -95,8 +95,8 @@ npx gulp serve --dev
 npm run serve-prod
 npx gulp serve --prod
 
-npm run gen-base64
-npx gulp genBase64
+npm run genSVGDataURI
+npx gulp genSVGDataURI
 ```
 
 ***
