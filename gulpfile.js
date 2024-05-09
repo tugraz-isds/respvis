@@ -3,7 +3,7 @@ const del = require('del');
 
 const {copyExampleDependencies} = require("./gulp-tasks/copyExampleDependencies");
 const {createExampleDependencies} = require("./gulp-tasks/createExampleDependencies");
-const {bundleJS} = require("./gulp-tasks/bundleJS");
+const {bundleJS} = require("./gulp-tasks/bundle-js/bundleJS");
 const {bundleDeclaration} = require("./gulp-tasks/bundleDeclaration");
 const {buildLibCSS} = require("./gulp-tasks/buildCSS");
 const {copyExamples} = require("./gulp-tasks/copyExamples");
@@ -24,12 +24,21 @@ function cleanPackage() {
   return del('package', { force: true });
 }
 
+function cleanPackageLive() {
+  return del('package/respvis', { force: true });
+}
+
 function cleanPackageLock() {
   return del('package-lock.json', { force: true });
 }
 
 function cleanNodeModules() {
   return del('node_modules', { force: true });
+}
+
+function setEnvLive(cb) {
+  process.env.LIVE_SERVER = 'true'
+  cb()
 }
 
 // # Public tasks
@@ -39,12 +48,11 @@ exports.genBase64 = gulp.series(() => genBase64SVGs(`${iconsDir}/**/*.svg`, util
 exports.cleanExampleDeps = gulp.series(cleanExampleDependencies)
 
 exports.clean = gulp.parallel(cleanDist, cleanPackage, exports.cleanExampleDeps)
+const cleanLive = gulp.parallel(cleanDist, cleanPackageLive, exports.cleanExampleDeps )
 
 exports.cleanAll = gulp.parallel(exports.clean, cleanPackageLock, cleanNodeModules)
 
-// TODO: add proxy respvis.js for typescript support in all concerned directories
-exports.build = gulp.series(
-  exports.clean,
+const buildOnly = gulp.series(
   gulp.parallel(
     gulp.series(bundleJS, bundleDeclaration),
     buildLibCSS
@@ -52,9 +60,12 @@ exports.build = gulp.series(
   createExampleDependencies,
   copyExampleDependencies,
   copyExamples
-);
+)
 
+const buildLive = gulp.series(setEnvLive, cleanLive, buildOnly)
 
-exports.serve = gulp.series(exports.build, watcher)
+exports.build = gulp.series(exports.clean, buildOnly)
+
+exports.serve = gulp.series(buildLive, watcher)
 
 exports.default = exports.serve;

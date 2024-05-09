@@ -1,8 +1,27 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "jsx": "react"
+    "jsx": "react",
+    "paths": {
+      "respvis-core": ["../lib/respvis-core"],
+      "respvis-core/*": ["./lib/respvis-core/*"],
+      "respvis-bar": ["./lib/respvis-bar"],
+      "respvis-bar/*": ["./lib/respvis-bar/*"],
+      "respvis-cartesian": ["./lib/respvis-cartesian"],
+      "respvis-cartesian/*": ["./lib/respvis-cartesian/*"],
+      "respvis-line": ["./lib/respvis-line"],
+      "respvis-line/*": ["./lib/respvis-line/*"],
+      "respvis-parcoord": ["./lib/respvis-parcoord"],
+      "respvis-paracoord/*": ["./lib/respvis-parcoord/*"],
+      "respvis-point": ["./lib/respvis-point"],
+      "respvis-point/*": ["./lib/respvis-point/*"],
+      "respvis-tooltip": ["./lib/respvis-tooltip"],
+      "respvis-tooltip/*": ["./lib/respvis-tooltip/*"],
+      "respvis-tooltipsdf/*": ["./lib/respvis-tooltipsdf/*"]
+    }
   },
-  "include": ["./stories/**/*", "../../module-specs.d.ts"],
+  "include": ["./stories/**/*",
+    "../../module-specs.d.ts"
+  ],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

@@ -1,6 +1,6 @@
 const gulp = require("gulp");
 const browserSync = require('browser-sync').create();
-const {bundleJS} = require("./bundleJS");
+const {bundleJS} = require("./bundle-js/bundleJS");
 const {createExampleDependencies} = require("./createExampleDependencies");
 const {copyExampleDependencies} = require("./copyExampleDependencies");
 const {buildLibCSS} = require("./buildCSS");

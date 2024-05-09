@@ -1,4 +1,4 @@
-import {ScaledValuesUserArgs} from "../../../../../lib/core/data/scale/scaled-values";
+import {Orientation, Orientations, ScaledValuesUserArgs} from "respvis-core";
 import {
   AxisDomainRV,
   axisScaledValuesValidation,
@@ -11,7 +11,6 @@ import {
   chartValidation
 } from "../../../../../lib";
 import {EmptySeries} from "../empty-series";
-import {Orientation, Orientations} from "../../../../../lib/core/constants/types";
 
 type AxisChartAxisUserArgs = BaseAxisUserArgs & {
   vals: ScaledValuesUserArgs<AxisDomainRV>

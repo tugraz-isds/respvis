@@ -9,15 +9,16 @@
   ],
   "types": "./package/index.d.ts",
   "scripts": {
-    "cleanAll": "npx gulp cleanAll",
-    "cleanExampleDeps": "npx gulp cleanExampleDeps",
     "clean": "npx gulp clean",
+    "cleanExampleDeps": "npx gulp cleanExampleDeps",
+    "cleanAll": "npx gulp cleanAll",
     "build": "npx gulp build",
-    "dev": "npx gulp serve --dev",
-    "prod": "npx gulp serve --prod",
-    "storybook": "storybook dev -p 6006 -c ./src/storybook/config",
+    "serve-dev": "npx gulp serve --dev",
+    "serve-prod": "npx gulp serve --prod",
+    "gen-base64": "npx gulp genBase64",
+    "storybook": "storybook dev -p 6006 -c src/storybook",
     "build-storybook": "storybook build",
-    "gen-base64": "npx gulp genBase64"
+    "prepare": "ts-patch install -s"
   },
   "repository": {
     "type": "git",
@@ -61,7 +62,6 @@
     "gulp-cssimport": "^7.0.0",
     "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.1.4",
-    "gulp-sass": "^5.1.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "madge": "^6.1.0",
     "merge-stream": "^2.0.0",
@@ -70,10 +70,12 @@
     "rollup-plugin-dts": "^5",
     "rollup-plugin-gzip": "^2.5.0",
     "rollup-plugin-string": "^3.0.0",
-    "sass": "^1.62.0",
     "storybook": "^8.0.5",
+    "ts-patch": "^3.1.2",
     "tslib": "^2.2.0",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.2",
+    "typescript-transform-paths": "^3.4.7",
+    "vite-tsconfig-paths": "^4.3.2"
   },
   "dependencies": {
     "d3": "^7.2.1"

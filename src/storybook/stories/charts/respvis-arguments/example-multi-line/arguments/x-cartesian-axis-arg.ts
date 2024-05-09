@@ -1,4 +1,4 @@
-import {CartesianAxisUserArgs} from "../../../../../../lib/cartesian/cartesian-axis-validation";
+import {CartesianAxisUserArgs} from "../../../../../../lib/respvis-cartesian/cartesian-axis-validation";
 import {x as xRotating} from './x-ticks-rotating-arg'
 
 export const x: CartesianAxisUserArgs = {...xRotating,
