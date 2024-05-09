@@ -16,7 +16,7 @@
     "serve-dev": "npx gulp serve --dev",
     "serve-prod": "npx gulp serve --prod",
     "gen-base64": "npx gulp genBase64",
-    "storybook": "storybook dev -p 6006 -c ./src/storybook/config",
+    "storybook": "storybook dev -p 6006 -c src/storybook",
     "build-storybook": "storybook build",
     "prepare": "ts-patch install -s"
   },
