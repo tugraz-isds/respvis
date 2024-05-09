@@ -51,7 +51,8 @@ function prettifyStyleTags(code: string) {
     cssCode = cssCode.replace(/{/g, "{\n")
     cssCode = cssCode.replace(/}/g, "}\n\n")
 
-    const lines = cssCode.split(';').map(line => line.trim())
+      // &amp
+    const lines = cssCode.split(/(?<!&amp);/).map(line => line.trim())
 
     const prettifiedLines = new Array<string>();
     const spacesPerTab = 4;

@@ -2,6 +2,14 @@ import {getActiveCSSRulesForElement} from "./getActiveCSSRules";
 import {Renderer} from "../../../../chart/renderer";
 import {elementComputedStyleWithoutDefaults, elementSVGPresentationAttrs} from "../../../../../utilities/element";
 import {ErrorMessages} from "../../../../../utilities/error";
+import {
+  cssContentFromEntries,
+  getActiveCSSVars,
+  getRelevantCSSVars
+} from "respvis-core/render/toolbar/download-tool/chart-download/apply-download-style/get-active-CSSVars";
+import {
+  createCSSRule
+} from "respvis-core/render/toolbar/download-tool/chart-download/apply-download-style/create-CSSRule";
 
 export function applyDownloadStyle(original: SVGSVGElement, clone: SVGSVGElement, renderer: Renderer) {
   const { windowSettings } = renderer.windowS.datum()
@@ -18,14 +26,12 @@ export function applyDownloadStyle(original: SVGSVGElement, clone: SVGSVGElement
 }
 
 function embedCSS(original: SVGSVGElement, clone: SVGSVGElement) {
-  const activeCSSRules = getActiveCSSRulesForElement(original)
-  // TODO: check if this functionality is necessary for embedding css
-  // const relevantCSSVars = getRelevantCSSVars(getActiveCSSVars(original), [...activeCSSRules])
-  // Object.entries(relevantCSSVars).forEach(([key, value]) => {
-  //   clone.style[key] = value
-  // })
-  const styleTag = document.createElement("style")
-  activeCSSRules.forEach((rule) => {
+  const activeCSSRules = Array.from<string>(getActiveCSSRulesForElement(original))
+  const activeCSSVars = getActiveCSSVars(original)
+  const relevantCSSVars = getRelevantCSSVars(activeCSSVars, [...activeCSSRules])
+  const cssVarRule = createCSSRule('.chart', cssContentFromEntries(relevantCSSVars))
+  const styleTag = document.createElement("style");
+  [...activeCSSRules, cssVarRule].forEach((rule) => {
     const ruleXMLConform = rule.replace(/&/g, '&amp;')
     styleTag.appendChild(document.createTextNode(ruleXMLConform))
   })

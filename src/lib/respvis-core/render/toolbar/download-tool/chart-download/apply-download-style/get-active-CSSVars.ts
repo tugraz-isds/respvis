@@ -1,6 +1,6 @@
 import {SVGHTMLElement} from "../../../../../constants/types";
 
-type CSSVarsEntries = Record<string, string>
+export type CSSVarsEntries = Record<string, string>
 
 export function getActiveCSSVars(element: SVGHTMLElement) {
   const computedStyles = window.getComputedStyle(element);
@@ -16,7 +16,9 @@ export function getActiveCSSVars(element: SVGHTMLElement) {
 }
 
 export function getRelevantCSSVars(cssVars: CSSVarsEntries, cssRules: string[]) {
-  const [keys, values] = Object.entries(cssVars)
+  const entries = Object.entries(cssVars)
+  const keys = entries.map(entry => entry[0])
+  const values = entries.map(entry => entry[1])
   const relevantCSSVars: CSSVarsEntries = {}
   for (let i = 0; i < keys.length; i++) {
     for (let j = 0; j < cssRules.length; j++) {
@@ -29,4 +31,8 @@ export function getRelevantCSSVars(cssVars: CSSVarsEntries, cssRules: string[]) 
     }
   }
   return relevantCSSVars
+}
+
+export function cssContentFromEntries(entries: CSSVarsEntries) {
+  return Object.entries(entries).reduce((prev, [key, value]) => prev + `${key}: ${value};`, '')
 }

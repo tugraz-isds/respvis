@@ -47,6 +47,10 @@ export function getActiveCSSRulesForElement(target: Element) {
     const selectorText = getWholeSelector(cssRule)
     const activeElementSVGStandalone = targetClone.matches(selectorText) ? targetClone : targetClone.querySelector(selectorText)
     if (activeElementSVGStandalone) {
+      if (cssRule.selectorText.includes('.line')) {
+        console.log(cssRule)
+        console.log(cssRule.cssText)
+      }
       return new Set<string>().add(cssRule.cssText)
     }
     const activeElementInDOM = target.matches(selectorText) ? target : target.querySelector(selectorText)
