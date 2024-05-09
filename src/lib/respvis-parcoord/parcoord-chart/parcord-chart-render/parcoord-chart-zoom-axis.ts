@@ -6,12 +6,15 @@ export function handleAxisZoomAndDrag(axisS: Selection<SVGGElement, KeyedAxisVal
   const axisD = axisS.datum()
   const throttledZoom = throttle((e) => onZoomAxisParcoord(e, axisD), 30)
   const throttledDrag = throttle((e) => onDragAxisParcoord(e, axisD, axisD.renderer.drawAreaBgS), 30)
-  const onZoom = (e) => {
-    throttledZoom.func(e)
+  const onDrag = (e) => {
     if (e.sourceEvent.type === "mousemove" || e.sourceEvent.type === "touchmove") {
       throttledDrag.func(e)
       axisD.series.originalSeries.renderer.windowS.dispatch('resize')
     }
+  }
+  const onZoomAndDrag = (e) => {
+    throttledZoom.func(e)
+    onDrag(e)
     if (e.sourceEvent.type === "wheel") {
       axisD.series.originalSeries.renderer.windowS.dispatch('resize')
     }
@@ -21,14 +24,13 @@ export function handleAxisZoomAndDrag(axisS: Selection<SVGGElement, KeyedAxisVal
   }
   const zoomB = axisD.series.zooms[i]
   if (!zoomB) {
-    axisS.call(drag()
-      .on("drag.dragAxis", (e) => throttledDrag.func(e))
+    axisS.call(drag().on("drag.dragAxis", onDrag)
       .on("end.dragAxis", (e) => onDragEndAxisParcord(e, axisD))
     ).call(addCursorClasses)
     return
   }
   axisS.call(zoomB.behaviour.scaleExtent([zoomB.out, zoomB.in])
-    .on('zoom.zoomAndDrag', onZoom)
+    .on('zoom.zoomAndDrag', onZoomAndDrag)
     .on('end.zoomAndDrag', onZoomEnd)
   ).call(addCursorClasses)
 }
