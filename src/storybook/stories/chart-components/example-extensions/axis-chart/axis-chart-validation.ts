@@ -9,7 +9,7 @@ import {
   ChartUserArgs,
   ChartValid,
   chartValidation
-} from "../../../../../lib";
+} from "../../../../../ts";
 import {EmptySeries} from "../empty-series";
 
 type AxisChartAxisUserArgs = BaseAxisUserArgs & {

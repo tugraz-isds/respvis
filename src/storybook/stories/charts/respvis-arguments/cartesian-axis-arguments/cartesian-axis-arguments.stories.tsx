@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {LineChartUserArgs} from "../../../../../lib";
+import {LineChartUserArgs} from "../../../../../ts";
 import {rawCode} from "../../../util/raw-code";
 import {renderLineChart} from "../../cartesian-charts/line-chart/render-line.chart";
 import FullyResponsiveCSS from '../example-multi-line/example-multi-line.css?inline'

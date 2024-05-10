@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {formatWithDecimalZero, Point, ScatterPlotUserArgs} from "../../../../../lib";
+import {formatWithDecimalZero, Point, ScatterPlotUserArgs} from "../../../../../ts";
 import standardBarChartCSS from './scatterplot.css?inline'
 import {rawCode} from "../../../util/raw-code";
 import {SoldCarsGermanyData} from '../../../data'

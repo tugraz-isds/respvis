@@ -10,7 +10,7 @@ const {copyExamples} = require("./gulp-tasks/copyExamples");
 const {watcher} = require("./gulp-tasks/watcher");
 const {cleanExampleDependencies} = require("./gulp-tasks/cleanExampleDependencies")
 const {genSVGDataURIs} = require("./gulp-tasks/genSVGDataURIs");
-const {iconsDir, utilDepsDir} = require("./gulp-tasks/paths");
+const {iconsDir, gulpUtilGenerated} = require("./gulp-tasks/paths");
 
 const mode = process.argv.includes('--dev') ? 'dev' : 'prod'
 const envFile = '.env.' + mode
@@ -43,7 +43,7 @@ function setEnvLive(cb) {
 
 // # Public tasks
 
-exports.genSVGDataURI = gulp.series(() => genSVGDataURIs(`${iconsDir}/**/*.svg`, utilDepsDir))
+exports.genSVGDataURI = gulp.series(() => genSVGDataURIs(`${iconsDir}/**/*.svg`, gulpUtilGenerated))
 
 exports.cleanExampleDeps = gulp.series(cleanExampleDependencies)
 

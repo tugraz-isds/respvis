@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {formatWithDecimalZero, LineChartUserArgs} from "../../../../../../lib";
+import {formatWithDecimalZero, LineChartUserArgs} from "../../../../../../ts";
 import {format} from "d3";
 import axisTransformations from './single-line-chart-axis-transformations.css?inline'
 import sparkLineTransformation from './single-line-chart-spark-line.css?inline'

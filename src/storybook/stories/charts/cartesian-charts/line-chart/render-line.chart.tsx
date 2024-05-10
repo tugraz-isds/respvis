@@ -1,4 +1,4 @@
-import {LineChart, LineChartUserArgs} from "../../../../../lib";
+import {LineChart, LineChartUserArgs} from "../../../../../ts";
 import type {StoryContext} from "@storybook/html";
 import {renderChartMeta} from "../../../util/render-chart-meta";
 import {select, Selection} from "d3";

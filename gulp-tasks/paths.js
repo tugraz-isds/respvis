@@ -7,9 +7,9 @@ const exampleDepsDir = `${srcDir}/examples-dependencies`
 const dataDepsDir = `${exampleDepsDir}/data`
 const libsDepsDir = `${exampleDepsDir}/libs`
 const respvisDepsDir = `${libsDepsDir}/respvis`
-const utilDepsDir = `${exampleDepsDir}/util`
+const gulpUtilGenerated = `${rootDir}/gulp-util-generated`
 
-const iconsDir = `${srcDir}/lib/respvis-core/assets/cursor-icons`
+const iconsDir = `${srcDir}/assets/svg/cursor-icons`
 
 const exampleDir = `${srcDir}/examples`
 
@@ -40,7 +40,7 @@ module.exports = {
   dataDepsDir,
   libsDepsDir,
   respvisDepsDir,
-  utilDepsDir,
+  gulpUtilGenerated,
   exampleDir,
   exampleDirList,
   iconsDir

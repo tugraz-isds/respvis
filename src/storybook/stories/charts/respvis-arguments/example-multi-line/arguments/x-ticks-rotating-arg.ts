@@ -1,5 +1,5 @@
 import {Axis, AxisDomain, timeFormat} from "d3";
-import {BaseAxisUserArgs} from "../../../../../../lib";
+import {BaseAxisUserArgs} from "../../../../../../ts";
 
 export const x: BaseAxisUserArgs = {
   title: 'Year',
