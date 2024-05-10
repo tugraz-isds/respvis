@@ -1,4 +1,4 @@
-const {dataDepsDir, exampleDir} = require('./paths')
+const {dataDepsDir, exampleDir} = require('../paths')
 
 const dataAustrianCitiesPaths = {
   src: `${dataDepsDir}/austrian-cities/**/*`,

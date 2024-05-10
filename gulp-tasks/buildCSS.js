@@ -7,7 +7,7 @@ async function buildLibCSS() {
     const cssPath = `${srcDir}/respvis.css`
     return gulp.src(cssPath)
       .pipe(cssimport())
-      .pipe(gulp.dest(`${rootDir}/package`))
+      .pipe(gulp.dest(`${rootDir}/package/respvis/standalone/esm`)) //TODO: modularize respvis.css for all packages
       .on('end', resolve)
   })
 

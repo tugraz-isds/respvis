@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const del = require('del');
 
-const {copyExampleDependencies} = require("./gulp-tasks/copyExampleDependencies");
+const {copyExampleDependencies} = require("./gulp-tasks/copy-example-dependencies/copyExampleDependencies");
 const {createExampleDependencies} = require("./gulp-tasks/createExampleDependencies");
 const {bundleJS} = require("./gulp-tasks/bundle-js/bundleJS");
 const {bundleDeclaration} = require("./gulp-tasks/bundleDeclaration");
@@ -57,7 +57,7 @@ const buildOnly = gulp.series(
     gulp.series(bundleJS, bundleDeclaration),
     buildLibCSS
   ),
-  createExampleDependencies,
+  // createExampleDependencies,
   copyExampleDependencies,
   copyExamples
 )

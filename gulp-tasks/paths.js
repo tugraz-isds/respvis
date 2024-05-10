@@ -3,16 +3,17 @@ const path = require('path');
 const rootDir = path.dirname(__dirname).split(path.sep).join(path.posix.sep)
 const srcDir = `${rootDir}/src`
 
-const exampleDepsDir = `${srcDir}/examples-dependencies`
-const dataDepsDir = `${exampleDepsDir}/data`
-const libsDepsDir = `${exampleDepsDir}/libs`
-const respvisDepsDir = `${libsDepsDir}/respvis`
 const gulpUtilGenerated = `${rootDir}/gulp-util-generated`
-
 const iconsDir = `${srcDir}/assets/svg/cursor-icons`
 
-const exampleDir = `${srcDir}/examples`
+const exampleDepsDir = `${srcDir}/examples-dependencies`
+const dataDepsDir = `${srcDir}/data`
+const libsDepsDir = `${srcDir}/libs`
 
+const respvisDepsDir = `${libsDepsDir}/respvis`
+
+
+const exampleDir = `${srcDir}/examples`
 const exampleDirList = [
   `${exampleDir}/article`,
 

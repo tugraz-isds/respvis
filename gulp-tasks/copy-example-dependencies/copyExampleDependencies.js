@@ -4,7 +4,6 @@ const { dataPaths} = require('./copyPathData')
 const { libsPaths} = require('./copyPathLibs')
 
 function copyExampleDependencies() {
-  // const appDirPosix = rootDir.split(path.sep).join(path.posix.sep)
   return mergeStream([
     ...copyExampleDataDependencies(),
     ...copyExampleLibDependencies()
@@ -12,13 +11,15 @@ function copyExampleDependencies() {
 }
 
 function copyExampleDataDependencies() {
-  return dataPaths.map((dataPath => {
+  return dataPaths.map(dataPath => {
     return dataPath.target.map((target) => gulp.src(dataPath.src).pipe(gulp.dest(target)))
-  })).flat()
+  }).flat()
 }
 
 function copyExampleLibDependencies() {
-  return libsPaths.target.map((target) => gulp.src(libsPaths.src).pipe(gulp.dest(target)))
+  return libsPaths.map(libPath => {
+    return libPath.target.map((target) => gulp.src(libsPaths.src).pipe(gulp.dest(target)))
+  }).flat()
 }
 
 module.exports = {
