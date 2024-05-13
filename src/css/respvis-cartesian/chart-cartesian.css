@@ -37,12 +37,3 @@
     }
   }
 }
-
-/*.chart-cartesian[data-legend-position='top'] {*/
-/*  grid-template: auto auto 1fr / 1fr;*/
-/*  grid-template-areas:*/
-/*      'header'*/
-/*      'legend'*/
-/*      'padding-wrapper';*/
-/*}*/
-

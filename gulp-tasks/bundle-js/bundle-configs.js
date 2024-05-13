@@ -31,5 +31,6 @@ const allBundlesConfigsBase = [respvisBundleConfig, ...singleBundleConfigs]
 module.exports = {
   respvisBundleConfig,
   allBundlesConfigsBase,
-  moduleNames
+  moduleNames,
+  modules
 }

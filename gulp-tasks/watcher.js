@@ -2,7 +2,7 @@ const gulp = require("gulp");
 const browserSync = require('browser-sync').create();
 const {bundleJS} = require("./bundle-js/bundleJS");
 const {copyExampleDependencies} = require("./copy-example-dependencies/copyExampleDependencies");
-const {buildLibCSS} = require("./buildCSS");
+const {buildLibCSS} = require("./bundle-css/buildCSS");
 const {copyExamples} = require("./copyExamples");
 const {rootDir, srcDir, exampleDir} = require('./paths')
 

@@ -2,12 +2,12 @@
   "name": "respvis",
   "version": "0.2.0",
   "description": "A library to build responsive SVG-based visualisations.",
-  "main": "./package/cjs/index.js",
-  "module": "./package/esm/index.js",
+  "main": "./package/respis/dependency-based/cjs/respvis.js",
+  "module": "./package/respvis/dependency-based/esm/respvis.js",
   "files": [
     "package"
   ],
-  "types": "./package/index.d.ts",
+  "types": "./package/respvis/standalone/esm/respvis.d.ts",
   "scripts": {
     "clean": "npx gulp clean",
     "cleanExampleDeps": "npx gulp cleanExampleDeps",
@@ -78,7 +78,7 @@
     "typescript-transform-paths": "^3.4.7",
     "vite-tsconfig-paths": "^4.3.2"
   },
-  "dependencies": {
+  "peerDependencies": {
     "d3": "^7.2.1"
   }
 }

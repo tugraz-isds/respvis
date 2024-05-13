@@ -4,6 +4,7 @@ const dts = require("rollup-plugin-dts");
 const {string} = require("rollup-plugin-string");
 const {moduleNames} = require("./bundle-js/bundle-configs");
 const del = require("del");
+const {writeStreamToPromise} = require("./util/stream-to-promise");
 
 async function bundleDeclarations(declarationConfigs) {
   await Promise.all(declarationConfigs.map(reduceToRelevantTypesOnly))
@@ -12,12 +13,6 @@ async function bundleDeclarations(declarationConfigs) {
 }
 
 async function reduceToRelevantTypesOnly(declarationConfig) {
-  async function writeStreamToPromise(stream) {
-    return new Promise((resolve, reject) => {
-      stream.on('finish', () => resolve())
-      stream.on('error', () => reject())
-    })
-  }
   const {location, module, dependencyType} = declarationConfig
   if (module === 'respvis' || dependencyType === 'standalone') return Promise.resolve()
   const typePath = `${location}/types`

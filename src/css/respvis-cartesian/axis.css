@@ -1,36 +1,3 @@
-.title-wrapper {
-  grid-area: title-wrapper;
-}
-
-.ticks-transform {
-  grid-area: ticks;
-}
-
-.axis {
-  .title text {
-    font-size: var(--font-size-axis-title);
-  }
-
-  .subtitle text {
-    font-size: var(--font-size-axis-subtitle);
-  }
-
-  .domain {
-    stroke: var(--color-axes-line);
-    fill: none;
-  }
-
-  .tick {
-    line {
-      stroke: var(--color-axes-line);
-    }
-
-    text {
-      font-size: var(--font-size-axis-label);
-    }
-  }
-}
-
 .chart-cartesian {
   .axis {
     display: grid;

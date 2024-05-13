@@ -1,20 +1,5 @@
-.chart {
-  display: grid;
-  grid-template: auto 1fr / 1fr auto;
-  grid-template-areas:
-      'header header'
-      'padding-wrapper legend';
-}
-
-.chart .header {
+.header {
   grid-area: header;
-  display: grid;
-  grid-template: auto auto / 1fr;
-  grid-template-areas:
-    'title'
-    'subtitle';
-  justify-items: center;
-  padding-bottom: 1rem;
 }
 
 .padding-wrapper {
@@ -60,13 +45,3 @@
 .axis-bottom {
   grid-area: axis-bottom;
 }
-
-@media (hover: none) {
-  .chart {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
-  }
-}
-
-

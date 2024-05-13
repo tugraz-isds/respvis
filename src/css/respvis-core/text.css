@@ -1,0 +1,11 @@
+/*TODO: Scope to respvis window*/
+.text {
+  --fit-width: true;
+  --fit-height: true;
+}
+
+text {
+  dominant-baseline: central;
+  text-anchor: start;
+  stroke: none;
+}

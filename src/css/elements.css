@@ -1,9 +1,0 @@
-.series-label {
-  .label {
-    font-size: var(--font-size-element-label);
-    pointer-events: none;
-    &.highlight {
-      font-size: calc(1.3 * var(--font-size-element-label));
-    }
-  }
-}
