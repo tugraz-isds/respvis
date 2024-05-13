@@ -9,7 +9,7 @@ import {
   Renderer,
   windowSettingsKeys
 } from "respvis-core";
-import {checkSVGRaw} from "respvis-core/assets";
+import checkSVGRaw from "../../../assets/svg/check.svg";
 
 export function toolRender(toolbarS: Selection<HTMLDivElement>, series: ParcoordSeries) {
   const dialogS = toolbarS.selectAll<HTMLDialogElement, DialogData>('.dialog--center.dialog--chart')

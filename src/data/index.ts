@@ -1,4 +1,4 @@
-export * as PowerConsumptionData from "./electric-power-consumption/electricPowerConsumption.js"
+export * as PowerConsumptionData from "./electric-power-consumption/electric-power-consumption.js"
 export * as StudentTUGrazData from "./students-tugraz/students-tugraz.js"
 export * as AustrianCitiesData from "./austrian-cities/austrian-cities.js"
 export * as CompensationEmployeeData from "./compensation-employees/compensation-employees.js"

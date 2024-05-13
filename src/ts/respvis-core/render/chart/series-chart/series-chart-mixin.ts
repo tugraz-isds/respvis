@@ -7,7 +7,7 @@ import {legendAddHover} from "../../legend/legend-event";
 import {toolbarRender} from "../../toolbar/toolbar-render";
 import {Series} from "../../series";
 import {addHighlight} from "../../series/series-add-highlight";
-import {seriesConfigTooltipsHandleEvents} from "../../../../respvis-tooltip";
+import {seriesConfigTooltipsHandleEvents} from "respvis-tooltip";
 import {labelSeriesFromElementsRender} from "../../label/series-label";
 import {RenderElement} from "../../../utilities/graphic-elements/render-element";
 

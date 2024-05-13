@@ -2,7 +2,7 @@ import {Selection} from "d3";
 import {Renderer} from "../../chart/renderer";
 import {toolRender} from "../tool/tool-render";
 import {addRawSVGToSelection} from "../../../utilities/d3/util";
-import crossSVGRaw from "../../../assets/movable-cross.svg";
+import crossSVGRaw from "../../../../../assets/svg/movable-cross.svg";
 import {buttonRender} from "../tool/button-render";
 import {tooltipSimpleRender} from "../tool/tooltip-simple-render";
 import {clickSAddEnterExitAttributes} from "../tool/animation/animtation";

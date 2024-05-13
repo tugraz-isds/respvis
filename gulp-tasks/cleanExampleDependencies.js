@@ -6,7 +6,7 @@ const {gulpUtilGenerated} = require("./paths");
 
 function cleanExampleDependencies() {
   const delDataTargetDirs = del(dataPaths.map(dataPath => dataPath.target).flat(), { force: true })
-  const delLibsTargetDirs = del(libsPaths.target, { force: true })
+  const delLibsTargetDirs = del(libsPaths.map(libPath => libPath.target).flat(), { force: true })
   const delSourceDirs = del([gulpUtilGenerated], { force: true })
   return Promise.all([delDataTargetDirs, delLibsTargetDirs, delSourceDirs])
 }

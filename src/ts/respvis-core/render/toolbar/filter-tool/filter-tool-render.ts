@@ -2,7 +2,7 @@ import {Selection} from "d3";
 import {toolRender} from "../tool/tool-render";
 import {bindOpenerToDialog, dialogRender} from "../tool/dialog-render";
 import {addRawSVGToSelection, elementFromSelection} from "../../../utilities/d3/util";
-import filterSVGRaw from "../../../assets/filter.svg";
+import filterSVGRaw from "../../../../../assets/svg/filter.svg";
 import {FieldSetData, fieldsetRender} from "../tool/fieldset-render";
 import {ToolbarValid} from "../toolbar-render";
 import {Series} from "../../series";

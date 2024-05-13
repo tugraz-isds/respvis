@@ -2,7 +2,7 @@ import {Selection} from 'd3';
 import {ChartValid} from "./chart-validation";
 import {elementFromSelection} from "../../../utilities/d3/util";
 import {updateCSSForSelection} from "../../../data/breakpoint/breakpoint";
-import {ScatterPlotValid} from "../../../../respvis-point";
+import {ScatterPlotValid} from "respvis-point";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {bgSVGOnlyFixedRender} from "../../util/bg-svg-only-render";
 import {rectFromString} from "../../../utilities/graphic-elements/rect";

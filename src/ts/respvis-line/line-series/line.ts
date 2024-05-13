@@ -1,4 +1,4 @@
-import {Position} from "../../respvis-core";
+import {Position} from "respvis-core";
 
 export type Line = {
   positions: Position[];

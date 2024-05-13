@@ -17,6 +17,25 @@ function compileTs() {
     .js.pipe(gulp.dest('dist'))
 }
 
+function copyExamples() { //do not copy ts files to dist
+  const exludedGlobs = process.env.MODE === 'prod' ? [
+    `!${rootDir}/src/examples/experimental/**`
+  ] : []
+  return gulp.src([`${rootDir}/src/examples/**/*`,
+    `!${rootDir}/src/examples/**/types`,
+    `!${rootDir}/src/examples/**/*.ts`,
+    ...exludedGlobs])
+    .pipe(gulp.dest(`${rootDir}/dist`));
+}
+
+function replaceTsImports() {
+  //exclude libraries and data files as they have no ts imports and contain very large files (slow down)
+  const exludedGlobs = [`!${rootDir}/dist/**/data/**/*`, `!${rootDir}/dist/**/libs/**/*`]
+  return gulp.src([`${rootDir}/dist/**/*`, ...exludedGlobs])
+    .pipe(replace(/import {(.+)} from ["'].\/(.+)\.ts["']/g, 'import {$1} from "./$2.js"'))
+    .pipe(gulp.dest(`${rootDir}/dist`));
+}
+
 function stripHTMLDevOnly(cb) {
   if (process.env.MODE === 'prod') {
     return gulp.src('dist/**/*.html')
@@ -29,15 +48,6 @@ function stripHTMLDevOnly(cb) {
   cb()
 }
 
-function copyExamples() { //do not copy ts files to dist
-  const exludedGlobs = process.env.MODE === 'prod' ? [
-    `!${rootDir}/src/examples/experimental/**`
-  ] : []
-  return gulp.src([`${rootDir}/src/examples/**/*`, `!${rootDir}/src/examples/**/*.ts`, ...exludedGlobs])
-    .pipe(replace(/import {(.+)} from ["'].\/(.+)\.ts["']/g, 'import {$1} from "./$2.js"'))
-    .pipe(gulp.dest(`${rootDir}/dist`));
-}
-
 module.exports = {
-  copyExamples: gulp.series(compileTs, copyExamples, stripHTMLDevOnly)
+  copyExamples: gulp.series(compileTs, copyExamples, replaceTsImports, stripHTMLDevOnly)
 }

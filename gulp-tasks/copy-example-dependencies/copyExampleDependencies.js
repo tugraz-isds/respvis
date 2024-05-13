@@ -18,7 +18,7 @@ function copyExampleDataDependencies() {
 
 function copyExampleLibDependencies() {
   return libsPaths.map(libPath => {
-    return libPath.target.map((target) => gulp.src(libsPaths.src).pipe(gulp.dest(target)))
+    return libPath.target.map((target) => gulp.src(libPath.src).pipe(gulp.dest(target)))
   }).flat()
 }
 

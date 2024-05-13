@@ -1,7 +1,6 @@
 const gulp = require("gulp");
 const browserSync = require('browser-sync').create();
 const {bundleJS} = require("./bundle-js/bundleJS");
-const {createExampleDependencies} = require("./createExampleDependencies");
 const {copyExampleDependencies} = require("./copy-example-dependencies/copyExampleDependencies");
 const {buildLibCSS} = require("./buildCSS");
 const {copyExamples} = require("./copyExamples");
@@ -27,10 +26,8 @@ function watcher(cb) {
   const cssLibWatcher = gulp.watch([`${srcDir}/css/**/*.css`, `${srcDir}/*.css`], watchOptions);
   cssLibWatcher.on('change', async (fileName) => {
     await buildLibCSS()
-    // gulp.series(buildLibCSS) //TODO: delete this line if works without
     copyExampleDependencies()
   })
-
   cb()
 }
 

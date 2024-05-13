@@ -1,7 +1,7 @@
 import {select, Selection} from "d3";
 import {addRawSVGToSelection, classesForSelection} from "../../../utilities/d3/util";
 import {InputLabel} from "./input-label/input-label";
-import CollapseDownRAW from '../../../assets/collapse-down.svg';
+import CollapseDownRAW from '../../../../../assets/svg/collapse-down.svg';
 import {mapSelection} from "../../../utilities/d3/selection";
 import {inputLabelRender} from "./input-label/input-labels-render";
 

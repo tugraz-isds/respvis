@@ -8,8 +8,9 @@ const fs = require("fs");
 const {rootDir} = require('../paths')
 const {stripCode} = require('../rollup-plugin/codeStripPlugin');
 const {string} = require("rollup-plugin-string");
-const {allBundlesConfigsBase, respvisBundleConfig} = require('./bundle-configs')
+const {allBundlesConfigsBase, respvisBundleConfig, moduleNames} = require('./bundle-configs')
 const typescript = require('typescript')
+const {bundleDeclarations} = require("../bundleDeclarations");
 
 async function bundleJS() {
   if (process.env.LIVE_SERVER === 'true') await bundleJSLive()
@@ -19,9 +20,8 @@ async function bundleJS() {
       return {...config, external}
     })
     const allBundleConfigStandalone = allBundlesConfigsBase.map(config => {
-      return {...config, external: undefined}
+      return {...config, external: undefined, replaceAliases: true}
     })
-    const allBundleConfigs = [...allBundleConfigDependencyBased, ...allBundleConfigStandalone]
     // splitting necessary to not overload heap //increase optionally heap for node process
     await bundleJSProduction([...allBundleConfigDependencyBased.slice(0, 1), ...allBundleConfigStandalone.slice(0, 1)])
     await bundleJSProduction([...allBundleConfigDependencyBased.slice(1, 2), ...allBundleConfigStandalone.slice(1, 2)])
@@ -31,10 +31,18 @@ async function bundleJS() {
 }
 
 async function bundleJSLive() {
-  const bundle = await getRollupBundle(respvisBundleConfig)
-  return Promise.all(writeBundle(bundle, [
-    {extension: 'js', plugins: [], location: `${rootDir}/package/respvis/standalone/esm`, format: 'esm'},
+  const respvisStandaloneBundleConfig = {...respvisBundleConfig, replaceAliases: true}
+  const bundle = await getRollupBundle(respvisStandaloneBundleConfig)
+  const declarationConfig = {
+    location: `${rootDir}/package/respvis/standalone/esm`,
+    format: 'esm',
+    module: respvisBundleConfig.module,
+    dependencyType: 'standalone'
+  }
+  await Promise.all(writeBundle(bundle, [
+    {extension: 'js', plugins: [], location: declarationConfig.location, format: declarationConfig.format},
   ]))
+  return bundleDeclarations([declarationConfig])
 }
 
 /**
@@ -45,6 +53,7 @@ async function bundleJSLive() {
  * @property {string} outputDirectory - Output Directory.
  * @property {string[]} external - External Dependencies.
  * @property {boolean} replaceAliases - Replace Aliases with relative paths (for entire code bundle).
+ * @property {string} module - The name of the bundled module.
  */
 
 async function bundleJSProduction(allBundleConfigs) {
@@ -54,11 +63,18 @@ async function bundleJSProduction(allBundleConfigs) {
   const gzPlugins = [rollupTerser(), rollupGzip()]
   const formats = ['esm', 'cjs', 'iife']
 
+  const declarationConfigs = new Set()
   const writeBundles = allBundles.map((bundle, index) => {
     const writeConfigs = formats.map(format => {
       const bundleConfig = allBundleConfigs[index]
       const dependencyType = bundleConfig.external && bundleConfig.external.length > 0 ? 'dependency-based' : 'standalone'
       const location = `${bundleConfig.outputDirectory}/${dependencyType}/${format}`
+      declarationConfigs.add({
+        location,
+        module: bundleConfig.module,
+        format,
+        dependencyType
+      })
       return [
         {extension: 'js', plugins: [], location, format},
         {extension: 'min.js', plugins: minPlugins, location, format},
@@ -67,7 +83,8 @@ async function bundleJSProduction(allBundleConfigs) {
     }).flat()
     return writeBundle(bundle, writeConfigs)
   }).flat()
-  return Promise.all(writeBundles)
+  await Promise.all(writeBundles)
+  return bundleDeclarations(Array.from(declarationConfigs))
 }
 
 /**
@@ -84,7 +101,7 @@ async function getRollupBundle(config) {
       rollupTypescript({
         typescript: typescript,
         tsconfig: `${rootDir}/tsconfig.json`,
-        include: config.include ?? ["src/lib/**/*", "module-specs.d.ts"],
+        include: config.include ?? ["src/ts/**/*", "module-specs.d.ts"],
         exclude: config.exclude ?? ["node_modules", "dist", "**/*.spec.ts", "src/stories"],
         compilerOptions: {
           plugins: [
@@ -122,16 +139,7 @@ function writeBundle(bundle, writeConfigurations) {
     plugins: c.plugins,
     sourcemap: true,
     inlineDynamicImports: true,
-    globals: {
-      d3: 'd3',
-      'respvis-bar': 'respvis-bar',
-      'respvis-cartesian': 'respvis-cartesian',
-      'respvis-core': 'respvis-core',
-      'respvis-line': 'respvis-line',
-      'respvis-parcoord': 'respvis-parcoord',
-      'respvis-point': 'respvis-point',
-      'respvis-tooltip': 'respvis-tooltip',
-    }
+    globals: moduleNames
   }).then(() => {
     const fileData = fs.readFileSync(`${c.location}/respvis.${c.extension}`, 'utf8');
     const formatString = c.format === 'iife' ? 'IIFE' :

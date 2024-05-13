@@ -2,6 +2,8 @@ const path = require('path');
 
 const rootDir = path.dirname(__dirname).split(path.sep).join(path.posix.sep)
 const srcDir = `${rootDir}/src`
+const tsDir = `${srcDir}/ts`
+const assetsDir = `${srcDir}/assets`
 
 const gulpUtilGenerated = `${rootDir}/gulp-util-generated`
 const iconsDir = `${srcDir}/assets/svg/cursor-icons`
@@ -37,6 +39,8 @@ const exampleDirList = [
 module.exports = {
   rootDir,
   srcDir,
+  tsDir,
+  assetsDir,
   exampleDepsDir,
   dataDepsDir,
   libsDepsDir,
