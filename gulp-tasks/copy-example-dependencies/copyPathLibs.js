@@ -10,7 +10,12 @@ const respvisLibPaths = {
   target: exampleDirList.map((dir) => `${dir}/libs/respvis`)
 }
 
-const libsPaths = [srcLibsPaths, respvisLibPaths]
+const respvisCSSPaths = {
+  src: `${rootDir}/package/respvis/respvis.css`,
+  target: exampleDirList.map((dir) => `${dir}/libs/respvis`)
+}
+
+const libsPaths = [srcLibsPaths, respvisLibPaths, respvisCSSPaths]
 
 module.exports = {
   libsPaths

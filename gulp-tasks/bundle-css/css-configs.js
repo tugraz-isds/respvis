@@ -1,20 +1,21 @@
-const {libsDepsDir, exampleDirList, srcDir, rootDir} = require("../paths");
+const {srcDir, rootDir} = require("../paths");
 const {modules} = require("../bundle-js/bundle-configs");
 
-const singleModuleConfigs = modules.map(module => {
+const singleModuleConfigsCSS = modules.map(module => {
   return {
     module,
-    src: `${srcDir}/css/${module}`,
-    target: [`${rootDir}/package/${module}/${module}.css`],
+    src: `${srcDir}/css/${module}/index.css`,
+    target: `${rootDir}/package/${module}`,
   }
 })
 
-const srcLibsPaths = {
-  src: `${libsDepsDir}/**/*`,
-  target: exampleDirList.map((dir) => `${dir}/libs`)
+const respvisModuleConfigCSS = {
+  module: 'respvis',
+  src: `${srcDir}/css/index.css`,
+  target: `${rootDir}/package/respvis`,
 }
 
-
 module.exports = {
-  singleModuleConfigs
+  singleModuleConfigsCSS,
+  respvisModuleConfigCSS
 }

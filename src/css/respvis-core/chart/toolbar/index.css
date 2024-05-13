@@ -1,1 +1,3 @@
-@import "control-elements/index.css";
+@import "./control-element.css";
+@import "./dialog.css";
+@import "./toolbar.css";
