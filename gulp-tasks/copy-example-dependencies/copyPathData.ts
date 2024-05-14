@@ -1,4 +1,6 @@
-const {dataDepsDir, exampleDir} = require('../paths')
+import {absolutePaths} from "../paths/absolute-paths";
+
+const {dataDepsDir, exampleDir} = absolutePaths
 
 const dataAustrianCitiesPaths = {
   src: `${dataDepsDir}/austrian-cities/**/*`,
@@ -56,7 +58,7 @@ const dataTemperatureAnomaliesPaths = {
   ]
 }
 
-const dataPaths = [
+export const dataPaths = [
   dataAustrianCitiesPaths,
   dataCompensationEmployeesPaths,
   dataDesktopPhoneTabletPaths,
@@ -65,7 +67,3 @@ const dataPaths = [
   dataStudentsTuGrazPaths,
   dataTemperatureAnomaliesPaths
 ]
-
-module.exports = {
-  dataPaths
-}

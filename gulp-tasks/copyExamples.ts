@@ -1,9 +1,10 @@
-const gulp = require("gulp");
-const {rootDir} = require('./paths')
-const ts = require('gulp-typescript');
-const replace = require('gulp-replace');
-const {stripHtml} = require("./gulp-plugin/codeStripPlugin");
-const {logger} = require("browser-sync/dist/logger");
+import gulp from "gulp";
+import {stripHtml} from "./gulp-plugin/codeStripPlugin";
+import ts from "gulp-typescript";
+import replace from "gulp-replace";
+import {absolutePaths} from "./paths/absolute-paths";
+
+const {rootDir} = absolutePaths
 
 const tsProject = ts.createProject('tsconfig.json', {
   "target": "ES6",
@@ -17,7 +18,7 @@ function compileTs() {
     .js.pipe(gulp.dest('dist'))
 }
 
-function copyExamples() { //do not copy ts files to dist
+function copyExampleFiles() { //do not copy ts files to dist
   const exludedGlobs = process.env.MODE === 'prod' ? [
     `!${rootDir}/src/examples/experimental/**`
   ] : []
@@ -48,6 +49,5 @@ function stripHTMLDevOnly(cb) {
   cb()
 }
 
-module.exports = {
-  copyExamples: gulp.series(compileTs, copyExamples, replaceTsImports, stripHTMLDevOnly)
-}
+
+export const copyExamples = gulp.series(compileTs, copyExampleFiles, replaceTsImports, stripHTMLDevOnly)

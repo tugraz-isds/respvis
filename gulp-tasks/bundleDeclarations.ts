@@ -1,12 +1,12 @@
-const rollup = require("rollup");
-const {src, dest} = require("gulp")
-const dts = require("rollup-plugin-dts");
-const {string} = require("rollup-plugin-string");
-const {moduleNames} = require("./bundle-js/bundle-configs");
-const del = require("del");
-const {writeStreamToPromise} = require("./util/stream-to-promise");
+import {dest, src} from "gulp";
+import rollup from "rollup";
+import del from "del";
+import {writeStreamToPromise} from "./util/stream-to-promise";
+import dts from "rollup-plugin-dts";
+import {string} from "rollup-plugin-string";
+import {modulesMap, respvisModules} from "./constants/modules";
 
-async function bundleDeclarations(declarationConfigs) {
+export async function bundleDeclarations(declarationConfigs) {
   await Promise.all(declarationConfigs.map(reduceToRelevantTypesOnly))
   await Promise.all(declarationConfigs.map(bundleDeclarationByLocation))
   return Promise.all(declarationConfigs.map(config => del(`${config.location}/types`)))
@@ -40,17 +40,13 @@ async function bundleDeclarationByLocation(declarationConfig) {
     input: `${location}/types/index.d.ts`,
     plugins: [
       string({ include: "**/*.svg" }),
-      dts.default()
+      dts()
     ],
-    external: moduleNames
+    external: [...respvisModules, 'd3']
   });
   await bundle.write({
     file: `${location}/${module}.d.ts`,
     format,
-    globals: moduleNames
+    globals: modulesMap
   })
-}
-
-module.exports = {
-  bundleDeclarations
 }

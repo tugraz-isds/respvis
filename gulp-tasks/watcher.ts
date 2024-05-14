@@ -1,17 +1,20 @@
-const gulp = require("gulp");
-const browserSync = require('browser-sync').create();
-const {bundleJS} = require("./bundle-js/bundleJS");
-const {copyExampleDependencies} = require("./copy-example-dependencies/copyExampleDependencies");
-const {buildLibCSS} = require("./bundle-css/buildCSS");
-const {copyExamples} = require("./copyExamples");
-const {rootDir, srcDir, exampleDir} = require('./paths')
+import gulp from "gulp";
+import {bundleJS} from "./bundle-js/bundleJS";
+import {copyExampleDependencies} from "./copy-example-dependencies/copyExampleDependencies";
+import {buildLibCSS} from "./bundle-css/buildCSS";
+import {copyExamples} from "./copyExamples";
+import {absolutePaths} from "./paths/absolute-paths";
+import {create} from "browser-sync";
 
+const browserSync = create();
+const {rootDir, srcDir, exampleDir} = absolutePaths
 
 function reloadBrowser(cb) {
   browserSync.reload();
   cb();
 }
-function watcher(cb) {
+
+export function watcher(cb) {
   browserSync.init({
     server: `${rootDir}/dist`,
     startPath: '/',
@@ -29,8 +32,4 @@ function watcher(cb) {
     copyExampleDependencies()
   })
   cb()
-}
-
-module.exports = {
-  watcher
 }

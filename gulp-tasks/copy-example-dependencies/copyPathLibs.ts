@@ -1,4 +1,6 @@
-const {libsDepsDir, exampleDirList, rootDir, barExampleDir} = require('../paths')
+import {absolutePaths} from "../paths/absolute-paths";
+
+const {libsDepsDir, exampleDirList, rootDir, barExampleDir} = absolutePaths
 
 const srcLibsPaths = {
   src: `${libsDepsDir}/**/*`,
@@ -35,12 +37,7 @@ const respvisTooltipDependencyBasedPaths = {
   target: [`${barExampleDir}/libs/respvis`]
 }
 
-const dependencyBasedLibPaths = [respvisCoreDependencyBasedPaths, respvisBarDependencyBasedPaths,
+export const dependencyBasedLibPaths = [respvisCoreDependencyBasedPaths, respvisBarDependencyBasedPaths,
 respvisCartesianDependencyBasedPaths, respvisTooltipDependencyBasedPaths]
 
-const libsPaths = [srcLibsPaths, respvisLibPaths, respvisCSSPaths]
-
-module.exports = {
-  libsPaths,
-  dependencyBasedLibPaths
-}
+export const libsPaths = [srcLibsPaths, respvisLibPaths, respvisCSSPaths]

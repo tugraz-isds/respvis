@@ -53,6 +53,7 @@
     "@storybook/html-vite": "^8.0.5",
     "@storybook/test": "^8.0.5",
     "@types/d3": "^7.1.0",
+    "@types/gulp": "^4.0.17",
     "browser-sync": "^2.27.5",
     "del": "^6.0.0",
     "dotenv": "^16.4.5",
@@ -72,10 +73,12 @@
     "rollup-plugin-gzip": "^2.5.0",
     "rollup-plugin-string": "^3.0.0",
     "storybook": "^8.0.5",
+    "ts-node": "^10.9.2",
     "ts-patch": "^3.1.2",
     "tslib": "^2.2.0",
-    "typescript": "^5.4.2",
+    "typescript": "^5.4.5",
     "typescript-transform-paths": "^3.4.7",
+    "vite-plugin-require": "^1.1.14",
     "vite-tsconfig-paths": "^4.3.2"
   },
   "peerDependencies": {

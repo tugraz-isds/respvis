@@ -1,18 +1,22 @@
-const rollup = require("rollup");
-const {default: rollupNodeResolve} = require("@rollup/plugin-node-resolve");
-const rollupCommonJs = require("@rollup/plugin-commonjs");
-const rollupTypescript = require("@rollup/plugin-typescript");
-const rollupTerser = require("@rollup/plugin-terser");
-const {default: rollupGzip} = require("rollup-plugin-gzip");
-const fs = require("fs");
-const {rootDir} = require('../paths')
-const {stripCode} = require('../rollup-plugin/codeStripPlugin');
-const {string} = require("rollup-plugin-string");
-const {allBundlesConfigsBase, respvisBundleConfig, moduleNames} = require('./bundle-configs')
-const typescript = require('typescript')
-const {bundleDeclarations} = require("../bundleDeclarations");
+import rollup from "rollup";
+import {stripCode} from "../rollup-plugin/codeStripPlugin";
+import {allBundlesConfigsBase, respvisBundleConfig} from "./bundle-configs";
+import rollupNodeResolve from "@rollup/plugin-node-resolve";
+import rollupCommonJs from "@rollup/plugin-commonjs";
+import rollupTypescript from "@rollup/plugin-typescript";
+import rollupTerser from "@rollup/plugin-terser";
+import rollupGzip from "rollup-plugin-gzip";
+import fs from "fs";
+import {string} from "rollup-plugin-string";
+import typescript from "typescript";
+import {bundleDeclarations} from "../bundleDeclarations";
+import {absolutePaths} from "../paths/absolute-paths";
+import {modulesMap} from "../constants/modules";
 
-async function bundleJS() {
+const {rootDir} = absolutePaths
+
+
+export async function bundleJS() {
   if (process.env.LIVE_SERVER === 'true') await bundleJSLive()
   else {
     const allBundleConfigDependencyBased = allBundlesConfigsBase.map(config => {
@@ -141,7 +145,7 @@ function writeBundle(bundle, writeConfigurations) {
     plugins: c.plugins,
     sourcemap: true,
     inlineDynamicImports: true,
-    globals: moduleNames
+    globals: modulesMap
   }).then(() => {
     const fileData = fs.readFileSync(`${c.location}/${c.module}.${c.extension}`, 'utf8');
     const formatString = c.format === 'iife' ? 'IIFE' :
@@ -150,8 +154,4 @@ function writeBundle(bundle, writeConfigurations) {
     const dataWithHeaderLine = `// RespVis version 2.0 ${formatString}\n` + fileData
     fs.writeFileSync(`${c.location}/${c.module}.${c.extension}`, dataWithHeaderLine, 'utf8');
   }))
-}
-
-module.exports = {
-  bundleJS
 }

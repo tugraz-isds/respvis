@@ -30,5 +30,10 @@
     }
   },
   "include": ["src/**/*", "module-specs.d.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts", "src/storybook/**/*"]
+  "exclude": ["node_modules", "**/*.spec.ts", "src/storybook/**/*"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
 }

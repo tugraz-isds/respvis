@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "jsx": "react",
+    "module": "ESNext",
     "paths": {
       "respvis-core": ["../ts/respvis-core"],
       "respvis-core/*": ["../ts/respvis-core/*"],
