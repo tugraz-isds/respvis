@@ -8,7 +8,6 @@ const assetsDir = `${srcDir}/assets`
 const gulpUtilGenerated = `${rootDir}/gulp-util-generated`
 const iconsDir = `${srcDir}/assets/svg/cursor-icons`
 
-const exampleDepsDir = `${srcDir}/examples-dependencies`
 const dataDepsDir = `${srcDir}/data`
 const libsDepsDir = `${srcDir}/libs`
 
@@ -16,10 +15,10 @@ const respvisDepsDir = `${libsDepsDir}/respvis`
 
 
 const exampleDir = `${srcDir}/examples`
+const barExampleDir = `${exampleDir}/barcharts/barchart`
 const exampleDirList = [
   `${exampleDir}/article`,
-
-  `${exampleDir}/barcharts/barchart`,
+  barExampleDir,
   `${exampleDir}/barcharts/grouped-barchart`,
   `${exampleDir}/barcharts/stacked-barchart`,
 
@@ -41,12 +40,12 @@ module.exports = {
   srcDir,
   tsDir,
   assetsDir,
-  exampleDepsDir,
   dataDepsDir,
   libsDepsDir,
   respvisDepsDir,
   gulpUtilGenerated,
   exampleDir,
+  barExampleDir,
   exampleDirList,
   iconsDir
 }

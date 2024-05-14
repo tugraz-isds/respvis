@@ -40,7 +40,7 @@ async function bundleJSLive() {
     dependencyType: 'standalone'
   }
   await Promise.all(writeBundle(bundle, [
-    {extension: 'js', plugins: [], location: declarationConfig.location, format: declarationConfig.format},
+    {extension: 'js', plugins: [], location: declarationConfig.location, format: declarationConfig.format, module: respvisStandaloneBundleConfig.module},
   ]))
   return bundleDeclarations([declarationConfig])
 }
@@ -69,6 +69,7 @@ async function bundleJSProduction(allBundleConfigs) {
       const bundleConfig = allBundleConfigs[index]
       const dependencyType = bundleConfig.external && bundleConfig.external.length > 0 ? 'dependency-based' : 'standalone'
       const location = `${bundleConfig.outputDirectory}/${dependencyType}/${format}`
+      const module = bundleConfig.module
       declarationConfigs.add({
         location,
         module: bundleConfig.module,
@@ -76,9 +77,9 @@ async function bundleJSProduction(allBundleConfigs) {
         dependencyType
       })
       return [
-        {extension: 'js', plugins: [], location, format},
-        {extension: 'min.js', plugins: minPlugins, location, format},
-        {extension: 'min.js', plugins: gzPlugins, location, format}
+        {extension: 'js', plugins: [], location, format, module},
+        {extension: 'min.js', plugins: minPlugins, location, format, module},
+        {extension: 'min.js', plugins: gzPlugins, location, format, module}
       ]
     }).flat()
     return writeBundle(bundle, writeConfigs)
@@ -124,6 +125,7 @@ async function getRollupBundle(config) {
  * @property {OutputPluginOption} plugins - Plugins.
  * @property {string} location - Path to generate to.
  * @property {'esm' | 'iife' | 'cjs'} format - The bundling format.
+ * @property {string} module - The module name.
  */
 
 /**
@@ -133,20 +135,20 @@ async function getRollupBundle(config) {
  */
 function writeBundle(bundle, writeConfigurations) {
   return writeConfigurations.map((c) => bundle.write({
-    file: `${c.location}/respvis.${c.extension}`,
+    file: `${c.location}/${c.module}.${c.extension}`,
     format: c.format,
-    name: 'respVis',
+    name: 'respvis',
     plugins: c.plugins,
     sourcemap: true,
     inlineDynamicImports: true,
     globals: moduleNames
   }).then(() => {
-    const fileData = fs.readFileSync(`${c.location}/respvis.${c.extension}`, 'utf8');
+    const fileData = fs.readFileSync(`${c.location}/${c.module}.${c.extension}`, 'utf8');
     const formatString = c.format === 'iife' ? 'IIFE' :
       c.format === 'esm' ? 'ESM' :
         c.format === 'cjs' ? 'CommonJS' : ''
     const dataWithHeaderLine = `// RespVis version 2.0 ${formatString}\n` + fileData
-    fs.writeFileSync(`${c.location}/respvis.${c.extension}`, dataWithHeaderLine, 'utf8');
+    fs.writeFileSync(`${c.location}/${c.module}.${c.extension}`, dataWithHeaderLine, 'utf8');
   }))
 }
 

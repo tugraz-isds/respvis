@@ -17,7 +17,7 @@ const moduleNames = modules.reduce((acc, item) => {
 
 const singleBundleConfigs = modules.map(currentModule => {
   return {
-    entryFile: `${tsDir}/index.ts`,
+    entryFile: `${tsDir}/${currentModule}/index.ts`,
     include: [`src/ts/**/*`, `module-specs.d.ts`],
     exclude: ["node_modules", "dist", "**/*.spec.ts", "src/stories"],
     outputDirectory: `${rootDir}/package/${currentModule}`,

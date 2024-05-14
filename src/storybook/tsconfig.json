@@ -16,8 +16,7 @@
       "respvis-point": ["../ts/respvis-point"],
       "respvis-point/*": ["../ts/respvis-point/*"],
       "respvis-tooltip": ["../ts/respvis-tooltip"],
-      "respvis-tooltip/*": ["../ts/respvis-tooltip/*"],
-      "respvis-tooltipsdf/*": ["../ts/respvis-tooltipsdf/*"]
+      "respvis-tooltip/*": ["../ts/respvis-tooltip/*"]
     }
   },
   "include": ["./stories/**/*",

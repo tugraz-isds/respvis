@@ -1,7 +1,7 @@
 import type {Preview} from "@storybook/html";
 import ChartDocTemplate from './stories/templates/ChartDocTemplate.mdx'
 import {INITIAL_VIEWPORTS} from "@storybook/addon-viewport"
-import '../../package/respvis.css'
+import '../../package/respvis/respvis.css'
 import './stories/story-styles/general.css'
 import './stories/story-styles/chart-window.css'
 

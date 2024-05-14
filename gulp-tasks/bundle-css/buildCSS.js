@@ -6,7 +6,7 @@ const {writeStreamToPromise} = require("../util/stream-to-promise");
 
 async function buildLibCSS() {
   const configs = [respvisModuleConfigCSS,
-    ...(process.env.LIVE_SERVER === 'true' ? singleModuleConfigsCSS : [])]
+    ...(process.env.LIVE_SERVER === 'true' ? [] : singleModuleConfigsCSS)]
 
   const cssBuildProms = configs.map(config => {
     const writeStream = gulp.dest(config.target)

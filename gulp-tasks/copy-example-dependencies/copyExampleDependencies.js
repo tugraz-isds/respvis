@@ -1,24 +1,17 @@
 const gulp = require("gulp");
 const mergeStream = require('merge-stream')
 const { dataPaths} = require('./copyPathData')
-const { libsPaths} = require('./copyPathLibs')
+const { libsPaths, dependencyBasedLibPaths} = require('./copyPathLibs')
 
 function copyExampleDependencies() {
-  return mergeStream([
-    ...copyExampleDataDependencies(),
-    ...copyExampleLibDependencies()
+  return mergeStream([...copyFiles(dataPaths), ...copyFiles(libsPaths),
+    ...copyFiles(dependencyBasedLibPaths)
   ])
 }
 
-function copyExampleDataDependencies() {
-  return dataPaths.map(dataPath => {
-    return dataPath.target.map((target) => gulp.src(dataPath.src).pipe(gulp.dest(target)))
-  }).flat()
-}
-
-function copyExampleLibDependencies() {
-  return libsPaths.map(libPath => {
-    return libPath.target.map((target) => gulp.src(libPath.src).pipe(gulp.dest(target)))
+function copyFiles(srcTargetsMapping) {
+  return srcTargetsMapping.map(mapping => {
+    return mapping.target.map((target) => gulp.src(mapping.src).pipe(gulp.dest(target)))
   }).flat()
 }
 
