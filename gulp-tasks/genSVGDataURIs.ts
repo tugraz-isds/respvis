@@ -1,8 +1,9 @@
-const gulp = require("gulp");
-const fs = require('fs');
+import gulp from "gulp";
+import fs from "fs";
+
 const svgToMiniDataURI = require('mini-svg-data-uri');
 
-function genSVGDataURIs(svgGlob, outputDirectory) {
+export function genSVGDataURIs(svgGlob, outputDirectory) {
   const fileName = 'svg-uri-mapping.txt'
   const mapping = {}
   return new Promise((resolve, reject) => {
@@ -24,7 +25,7 @@ function genSVGDataURIs(svgGlob, outputDirectory) {
           fs.mkdirSync(outputDirectory, { recursive: true });
         }
         fs.writeFileSync(outputDirectory + '/' + fileName, lines , 'utf8');
-        resolve()
+        resolve({})
       })
   })
 }
@@ -37,8 +38,4 @@ function getSvgDimensions(svgString) {
   if (!svgMatchWidth || svgMatchWidth.length < 2 || !svgMatchHeight || svgMatchHeight.length < 2)
     return {width: undefined, height: undefined}
   return {width: svgMatchWidth[1], height: svgMatchHeight[1]};
-}
-
-module.exports = {
-  genSVGDataURIs
 }

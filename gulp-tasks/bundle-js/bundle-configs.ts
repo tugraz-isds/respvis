@@ -1,16 +1,19 @@
-const {rootDir, tsDir} = require("../paths");
+import {absolutePaths} from "../paths/absolute-paths";
 
-const respvisBundleConfig = {
+const {rootDir, tsDir} = absolutePaths
+
+export const respvisBundleConfig = {
   entryFile: `${tsDir}/index.ts`,
   include: ["src/ts/**/*", "module-specs.d.ts"],
   exclude: ["node_modules", "dist", "**/*.spec.ts", "src/stories", "src/examples"],
   outputDirectory: `${rootDir}/package/respvis`,
-  module: 'respvis'
+  module: 'respvis',
+  external: undefined
 }
 
-const modules = ['respvis-core', 'respvis-bar', 'respvis-cartesian', 'respvis-line', 'respvis-parcoord', 'respvis-point', 'respvis-tooltip']
+export const modules = ['respvis-core', 'respvis-bar', 'respvis-cartesian', 'respvis-line', 'respvis-parcoord', 'respvis-point', 'respvis-tooltip']
 
-const moduleNames = modules.reduce((acc, item) => {
+export const moduleNames = modules.reduce((acc, item) => {
   acc[item] = item;
   return acc;
 }, {d3: 'd3'});
@@ -26,11 +29,4 @@ const singleBundleConfigs = modules.map(currentModule => {
   }
 })
 
-const allBundlesConfigsBase = [respvisBundleConfig, ...singleBundleConfigs]
-
-module.exports = {
-  respvisBundleConfig,
-  allBundlesConfigsBase,
-  moduleNames,
-  modules
-}
+export const allBundlesConfigsBase = [respvisBundleConfig, ...singleBundleConfigs]

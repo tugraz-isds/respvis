@@ -1,6 +1,12 @@
-const { Transform } = require('stream');
+import {Transform} from "stream";
 
-function stripHtml(options = {}) {
+
+type stripHtmlOptions = {
+  startComment?: string
+  endComment?: string
+}
+
+export function stripHtml(options: stripHtmlOptions = {}) {
   const startComment = options.startComment || '<!-- START_REMOVE_CODE -->';
   const endComment = options.endComment || '<!-- END_REMOVE_CODE -->';
   console.log(startComment)
@@ -48,7 +54,3 @@ function stripHtml(options = {}) {
     },
   });
 }
-
-module.exports = {
-  stripHtml
-};

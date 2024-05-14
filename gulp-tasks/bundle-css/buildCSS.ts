@@ -1,10 +1,11 @@
-const gulp = require("gulp");
+import gulp from "gulp";
+import {respvisModuleConfigCSS, singleModuleConfigsCSS} from "./css-configs";
+import {writeStreamToPromise} from "../util/stream-to-promise";
+
 const cssimport = require("gulp-cssimport");
 const rename = require("gulp-rename");
-const {singleModuleConfigsCSS, respvisModuleConfigCSS} = require("./css-configs");
-const {writeStreamToPromise} = require("../util/stream-to-promise");
 
-async function buildLibCSS() {
+export async function buildLibCSS() {
   const configs = [respvisModuleConfigCSS,
     ...(process.env.LIVE_SERVER === 'true' ? [] : singleModuleConfigsCSS)]
 
@@ -17,8 +18,4 @@ async function buildLibCSS() {
     return writeStreamToPromise(writeStream)
   })
   return await Promise.all(cssBuildProms)
-}
-
-module.exports = {
-  buildLibCSS
 }

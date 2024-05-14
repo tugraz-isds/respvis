@@ -1,4 +1,9 @@
-function stripCode(options = {}) {
+type stripHtmlOptions = {
+  startComment?: string
+  endComment?: string
+}
+
+export function stripCode(options: stripHtmlOptions = {}) {
   const startComment = options.startComment || '/* START_REMOVE_CODE */';
   const endComment = options.endComment || '/* END_REMOVE_CODE */';
 
@@ -36,7 +41,3 @@ function stripCode(options = {}) {
     },
   };
 }
-
-module.exports = {
-  stripCode
-};

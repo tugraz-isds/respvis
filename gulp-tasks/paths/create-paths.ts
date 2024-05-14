@@ -1,7 +1,4 @@
-import path from "path";
-
-const rootDir = path.dirname(__dirname).split(path.sep).join(path.posix.sep)
-function createPaths(rootDir: string) {
+export function createPaths(rootDir: string) {
   const gulpUtilGenerated = `${rootDir}/gulp-util-generated`
   const srcDir = `${rootDir}/src`
   const tsDir = `${srcDir}/ts`
@@ -36,12 +33,7 @@ function createPaths(rootDir: string) {
   ]
 
   return {
-    gulpUtilGenerated, srcDir, tsDir, assetsDir, iconsDir, dataDepsDir, libsDepsDir, respvisDepsDir,
+    rootDir, gulpUtilGenerated, srcDir, tsDir, assetsDir, iconsDir, dataDepsDir, libsDepsDir, respvisDepsDir,
     exampleDir, barExampleDir, exampleDirList
   }
-}
-
-module.exports = {
-  rootDir,
-  ...createPaths(rootDir)
 }

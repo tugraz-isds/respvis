@@ -1,18 +1,22 @@
-const rollup = require("rollup");
+import rollup from "rollup";
+import {stripCode} from "../rollup-plugin/codeStripPlugin";
+import {allBundlesConfigsBase, moduleNames, respvisBundleConfig} from "./bundle-configs";
+import {absolutePaths} from "../paths/absolute-paths";
+
+const {rootDir} = absolutePaths
+
 const {default: rollupNodeResolve} = require("@rollup/plugin-node-resolve");
 const rollupCommonJs = require("@rollup/plugin-commonjs");
 const rollupTypescript = require("@rollup/plugin-typescript");
 const rollupTerser = require("@rollup/plugin-terser");
 const {default: rollupGzip} = require("rollup-plugin-gzip");
 const fs = require("fs");
-const {rootDir} = require('../paths')
-const {stripCode} = require('../rollup-plugin/codeStripPlugin');
 const {string} = require("rollup-plugin-string");
-const {allBundlesConfigsBase, respvisBundleConfig, moduleNames} = require('./bundle-configs')
 const typescript = require('typescript')
+
 const {bundleDeclarations} = require("../bundleDeclarations");
 
-async function bundleJS() {
+export async function bundleJS() {
   if (process.env.LIVE_SERVER === 'true') await bundleJSLive()
   else {
     const allBundleConfigDependencyBased = allBundlesConfigsBase.map(config => {
@@ -150,8 +154,4 @@ function writeBundle(bundle, writeConfigurations) {
     const dataWithHeaderLine = `// RespVis version 2.0 ${formatString}\n` + fileData
     fs.writeFileSync(`${c.location}/${c.module}.${c.extension}`, dataWithHeaderLine, 'utf8');
   }))
-}
-
-module.exports = {
-  bundleJS
 }
