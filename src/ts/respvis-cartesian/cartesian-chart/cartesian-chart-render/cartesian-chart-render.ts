@@ -51,8 +51,8 @@ export function originLineRender<T extends CartesianChartSelection>(chartS: T): 
 
   function needsBaseLine(values: ScaledValues) {
     if (values.tag !== 'linear') return false
-    const hasNegativeVal = values.scale.domain().find(val => val < 0)
-    const hasPositiveVal = values.scale.domain().find(val => val > 0)
+    const hasNegativeVal = values.values.find(val => val < 0)
+    const hasPositiveVal = values.values.find(val => val > 0)
     return hasNegativeVal && hasPositiveVal
   }
 
