@@ -1,0 +1,45 @@
+.legend {
+  grid-area: legend;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: start;
+  cursor: default;
+  gap: 0.25rem;
+  .title {
+    font-size: var(--font-size-legend-title);
+    margin: 0 0.5em;
+  }
+  .cross-state {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+}
+
+.legend-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6em;
+  font-size: var(--font-size-legend-label);
+  --fit-height: false;
+  &:active {
+    font-weight: bold;
+  }
+  .symbol {
+    stroke: #000;
+    stroke-width: 1px;
+    width: 1em;
+    height: 1em;
+  }
+}
+
+.highlight.legend-item .symbol {
+  filter: brightness(var(--highlight-brightness));
+}

@@ -7,12 +7,22 @@
   <link rel="stylesheet" href="./libs/respvis/respvis.css"/>
   <link rel="stylesheet" href="./barchart.css"/>
 </head>
-
 <body>
 <h1>Bar Chart</h1>
 <noscript>Please enable JavaScript!</noscript>
 <div id="chart"> </div>
 
+<script type="importmap">
+  {
+    "imports": {
+      "d3": "./libs/d3-7.6.0/d3.js",
+      "respvis-core": "./libs/respvis/respvis-core.js",
+      "respvis-cartesian": "./libs/respvis/respvis-cartesian.js",
+      "respvis-bar": "./libs/respvis/respvis-bar.js",
+      "respvis-tooltip": "./libs/respvis/respvis-tooltip.js"
+    }
+  }
+</script>
 <script type="module">
   import {createBarCart} from "./barchart.ts";
   createBarCart('#chart')

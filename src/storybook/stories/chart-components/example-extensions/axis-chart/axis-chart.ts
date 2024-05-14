@@ -1,4 +1,4 @@
-import {axisLayoutRender, AxisValid, Chart, rectFromString, WindowValid} from "../../../../../lib";
+import {axisLayoutRender, AxisValid, Chart, rectFromString, WindowValid} from "../../../../../ts";
 import {Selection} from "d3";
 import {AxisChartUserArgs, AxisChartValid, axisChartValidation} from "./axis-chart-validation";
 

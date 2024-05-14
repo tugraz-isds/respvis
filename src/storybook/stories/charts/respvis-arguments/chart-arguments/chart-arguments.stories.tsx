@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {LineChartUserArgs} from "../../../../../lib";
+import {LineChartUserArgs} from "../../../../../ts";
 import {timeFormat} from "d3";
 import {rawCode} from "../../../util/raw-code";
 import {PowerConsumptionData} from '../../../data'

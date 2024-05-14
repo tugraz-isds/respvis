@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {ParcoordChartUserArgs} from "../../../../lib";
+import {ParcoordChartUserArgs} from "../../../../ts";
 import parcoordChartCSS from './parcoord-chart.css?inline'
 import {rawCode} from "../../util/raw-code";
 import {SoldCarsGermanyData} from '../../data'

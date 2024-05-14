@@ -1,4 +1,4 @@
-import {BaseAxisUserArgs} from "../../../../../../lib";
+import {BaseAxisUserArgs} from "../../../../../../ts";
 
 export const y: BaseAxisUserArgs = {
   title: 'Consumption',

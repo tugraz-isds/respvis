@@ -2,21 +2,23 @@ const path = require('path');
 
 const rootDir = path.dirname(__dirname).split(path.sep).join(path.posix.sep)
 const srcDir = `${rootDir}/src`
+const tsDir = `${srcDir}/ts`
+const assetsDir = `${srcDir}/assets`
 
-const exampleDepsDir = `${srcDir}/examples-dependencies`
-const dataDepsDir = `${exampleDepsDir}/data`
-const libsDepsDir = `${exampleDepsDir}/libs`
+const gulpUtilGenerated = `${rootDir}/gulp-util-generated`
+const iconsDir = `${srcDir}/assets/svg/cursor-icons`
+
+const dataDepsDir = `${srcDir}/data`
+const libsDepsDir = `${srcDir}/libs`
+
 const respvisDepsDir = `${libsDepsDir}/respvis`
-const utilDepsDir = `${exampleDepsDir}/util`
 
-const iconsDir = `${srcDir}/lib/core/assets/cursor-icons`
 
 const exampleDir = `${srcDir}/examples`
-
+const barExampleDir = `${exampleDir}/barcharts/barchart`
 const exampleDirList = [
   `${exampleDir}/article`,
-
-  `${exampleDir}/barcharts/barchart`,
+  barExampleDir,
   `${exampleDir}/barcharts/grouped-barchart`,
   `${exampleDir}/barcharts/stacked-barchart`,
 
@@ -36,12 +38,14 @@ const exampleDirList = [
 module.exports = {
   rootDir,
   srcDir,
-  exampleDepsDir,
+  tsDir,
+  assetsDir,
   dataDepsDir,
   libsDepsDir,
   respvisDepsDir,
-  utilDepsDir,
+  gulpUtilGenerated,
   exampleDir,
+  barExampleDir,
   exampleDirList,
   iconsDir
 }

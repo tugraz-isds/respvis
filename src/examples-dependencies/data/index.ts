@@ -1,7 +1,0 @@
-export * as PowerConsumptionData from "./electric-power-consumption/electricPowerConsumption.js"
-export * as StudentTUGrazData from "./students-tugraz/students-tugraz.js"
-export * as AustrianCitiesData from "./austrian-cities/austrian-cities.js"
-export * as CompensationEmployeeData from "./compensation-employees/compensation-employees.js"
-export * as DesktopPhoneTabletData from "./desktop-phone-tablet/desktop-phone-tablet.js"
-export * as GlobalTemperatureAnomaliesData from "./global-temperature-anomalies/global-temperature-anomalies.js"
-export * as SoldCarsGermanyData from "./sold-cars-germany/sold-cars-germany.js"

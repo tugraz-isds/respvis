@@ -1,16 +1,14 @@
 const gulp = require('gulp');
 const del = require('del');
 
-const {copyExampleDependencies} = require("./gulp-tasks/copyExampleDependencies");
-const {createExampleDependencies} = require("./gulp-tasks/createExampleDependencies");
+const {copyExampleDependencies} = require("./gulp-tasks/copy-example-dependencies/copyExampleDependencies");
 const {bundleJS} = require("./gulp-tasks/bundle-js/bundleJS");
-const {bundleDeclaration} = require("./gulp-tasks/bundleDeclaration");
-const {buildLibCSS} = require("./gulp-tasks/buildCSS");
+const {buildLibCSS} = require("./gulp-tasks/bundle-css/buildCSS");
 const {copyExamples} = require("./gulp-tasks/copyExamples");
 const {watcher} = require("./gulp-tasks/watcher");
 const {cleanExampleDependencies} = require("./gulp-tasks/cleanExampleDependencies")
-const {genBase64SVGs} = require("./gulp-tasks/genBase64SVGs");
-const {iconsDir, utilDepsDir} = require("./gulp-tasks/paths");
+const {genSVGDataURIs} = require("./gulp-tasks/genSVGDataURIs");
+const {iconsDir, gulpUtilGenerated} = require("./gulp-tasks/paths");
 
 const mode = process.argv.includes('--dev') ? 'dev' : 'prod'
 const envFile = '.env.' + mode
@@ -43,7 +41,7 @@ function setEnvLive(cb) {
 
 // # Public tasks
 
-exports.genBase64 = gulp.series(() => genBase64SVGs(`${iconsDir}/**/*.svg`, utilDepsDir))
+exports.genSVGDataURI = gulp.series(() => genSVGDataURIs(`${iconsDir}/**/*.svg`, gulpUtilGenerated))
 
 exports.cleanExampleDeps = gulp.series(cleanExampleDependencies)
 
@@ -54,10 +52,9 @@ exports.cleanAll = gulp.parallel(exports.clean, cleanPackageLock, cleanNodeModul
 
 const buildOnly = gulp.series(
   gulp.parallel(
-    gulp.series(bundleJS, bundleDeclaration),
+    bundleJS,
     buildLibCSS
   ),
-  createExampleDependencies,
   copyExampleDependencies,
   copyExamples
 )

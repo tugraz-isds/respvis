@@ -1,9 +1,7 @@
-@import './reset.css';
-@import './axes.css';
-@import "./window/index.css";
-@import "./data-styles.css";
-@import "./text.css";
-@import "./vars.css";
-@import "./elements.css";
-@import "./util.css";
-
+@import "./respvis-bar/index.css";
+@import "./respvis-cartesian/index.css";
+@import "./respvis-core/index.css";
+@import "./respvis-line/index.css";
+@import "./respvis-parcoord/index.css";
+@import "./respvis-point/index.css";
+@import "./respvis-tooltip/index.css";

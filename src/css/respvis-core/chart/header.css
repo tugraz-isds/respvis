@@ -1,0 +1,18 @@
+.header {
+  display: grid;
+  grid-template: auto auto / 1fr;
+  grid-template-areas:
+    'title'
+    'subtitle';
+  justify-items: center;
+  padding-bottom: 1rem;
+
+  .title text {
+    font-size: var(--font-size-title);
+    letter-spacing: 0.1em;
+  }
+
+  .subtitle text {
+    font-size: var(--font-size-subtitle);
+  }
+}

@@ -1,6 +1,6 @@
 import {format, select} from '../../libs/d3-7.6.0/d3.js'
 import {LineChart, LineChartUserArgs} from '../../libs/respvis/respvis.js'
-import {mapPowerConsumptionData} from './data/electricPowerConsumption.js'
+import {mapPowerConsumptionData} from './data/electric-power-consumption.js'
 
 export const createPowerConsumptionChart = (selector: string) => {
     const {yUSA, yEurope, yAsia, years} = mapPowerConsumptionData()

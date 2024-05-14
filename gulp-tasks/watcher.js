@@ -1,11 +1,10 @@
 const gulp = require("gulp");
 const browserSync = require('browser-sync').create();
 const {bundleJS} = require("./bundle-js/bundleJS");
-const {createExampleDependencies} = require("./createExampleDependencies");
-const {copyExampleDependencies} = require("./copyExampleDependencies");
-const {buildLibCSS} = require("./buildCSS");
+const {copyExampleDependencies} = require("./copy-example-dependencies/copyExampleDependencies");
+const {buildLibCSS} = require("./bundle-css/buildCSS");
 const {copyExamples} = require("./copyExamples");
-const {rootDir} = require('./paths')
+const {rootDir, srcDir, exampleDir} = require('./paths')
 
 
 function reloadBrowser(cb) {
@@ -19,20 +18,16 @@ function watcher(cb) {
   });
 
   const watchOptions = { ignoreInitial: true };
-  gulp.watch(`${rootDir}/src/lib/**/*`, watchOptions,
-    gulp.series(bundleJS, createExampleDependencies, copyExampleDependencies, reloadBrowser));
+  gulp.watch([`${srcDir}/ts/**/*`, `${srcDir}/assets/**/*`], watchOptions,
+    gulp.series(bundleJS, copyExampleDependencies, reloadBrowser));
 
-  gulp.watch(`${rootDir}/src/examples/**/*`, watchOptions, gulp.series(copyExamples, reloadBrowser));
+  gulp.watch(`${exampleDir}/**/*`, watchOptions, gulp.series(copyExamples, reloadBrowser));
 
-  const cssLibWatcher = gulp.watch([`${rootDir}/src/css/**/*.css`, `${rootDir}/src/*.css`], watchOptions);
+  const cssLibWatcher = gulp.watch([`${srcDir}/css/**/*.css`, `${srcDir}/*.css`], watchOptions);
   cssLibWatcher.on('change', async (fileName) => {
     await buildLibCSS()
-    gulp.series(buildLibCSS)
-    createExampleDependencies().on('finish', () => {
-      copyExampleDependencies()
-    })
+    copyExampleDependencies()
   })
-
   cb()
 }
 

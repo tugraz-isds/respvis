@@ -1,8 +1,0 @@
-.header .title text {
-  font-size: var(--font-size-title);
-  letter-spacing: 0.1em;
-}
-
-.header .subtitle text {
-  font-size: var(--font-size-subtitle);
-}

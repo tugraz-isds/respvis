@@ -1,1 +1,1 @@
-export * from "../../../examples-dependencies/data/index"
+export * from "../../../data"

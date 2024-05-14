@@ -1,0 +1,47 @@
+.header {
+  grid-area: header;
+}
+
+.padding-wrapper {
+  grid-area: padding-wrapper;
+}
+
+.draw-area {
+  grid-area: draw-area;
+}
+
+.padding-container--left {
+  grid-area: padding-container--left;
+  width: var(--chart-padding-left, 0);
+}
+
+.padding-container--top {
+  grid-area: padding-container--top;
+  height: var(--chart-padding-top, 0);
+}
+
+.padding-container--right {
+  grid-area: padding-container--right;
+  width: var(--chart-padding-right, 0);
+}
+
+.padding-container--bottom {
+  grid-area: padding-container--bottom;
+  height: var(--chart-padding-bottom, 0);
+}
+
+.axis-left {
+  grid-area: axis-left;
+}
+
+.axis-top {
+  grid-area: axis-top;
+}
+
+.axis-right {
+  grid-area: axis-right;
+}
+
+.axis-bottom {
+  grid-area: axis-bottom;
+}
