@@ -1,5 +1,5 @@
-const gulp = require('gulp');
-const del = require('del');
+import gulp from 'gulp';
+import del from "del";
 
 const {copyExampleDependencies} = require("./gulp-tasks/copy-example-dependencies/copyExampleDependencies");
 const {bundleJS} = require("./gulp-tasks/bundle-js/bundleJS");
