@@ -1,11 +1,10 @@
 import {dest, src} from "gulp";
 import rollup from "rollup";
 import del from "del";
-import {moduleNames, modules} from "./bundle-js/bundle-configs";
 import {writeStreamToPromise} from "./util/stream-to-promise";
-
-const dts = require("rollup-plugin-dts");
-const {string} = require("rollup-plugin-string");
+import dts from "rollup-plugin-dts";
+import {string} from "rollup-plugin-string";
+import {modulesMap, respvisModules} from "./constants/modules";
 
 export async function bundleDeclarations(declarationConfigs) {
   await Promise.all(declarationConfigs.map(reduceToRelevantTypesOnly))
@@ -41,13 +40,13 @@ async function bundleDeclarationByLocation(declarationConfig) {
     input: `${location}/types/index.d.ts`,
     plugins: [
       string({ include: "**/*.svg" }),
-      dts.default()
+      dts()
     ],
-    external: [...modules, 'd3']
+    external: [...respvisModules, 'd3']
   });
   await bundle.write({
     file: `${location}/${module}.d.ts`,
     format,
-    globals: moduleNames
+    globals: modulesMap
   })
 }

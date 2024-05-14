@@ -1,3 +1,5 @@
+import {Module, modules} from "../constants/modules";
+
 export function createPaths(rootDir: string) {
   const gulpUtilGenerated = `${rootDir}/gulp-util-generated`
   const srcDir = `${rootDir}/src`
@@ -32,8 +34,12 @@ export function createPaths(rootDir: string) {
     `${exampleDir}/experimental/scatterplot-colourscale`,
   ]
 
+  const modulesPaths: Record<Module, string> = modules.reduce((acc, item) => {
+    acc[item] = `${tsDir}/${item}`; return acc
+  }, {}) as Record<Module, string>
+
   return {
     rootDir, gulpUtilGenerated, srcDir, tsDir, assetsDir, iconsDir, dataDepsDir, libsDepsDir, respvisDepsDir,
-    exampleDir, barExampleDir, exampleDirList
+    exampleDir, barExampleDir, exampleDirList, modulesPaths
   }
 }

@@ -1,9 +1,8 @@
 import gulp from "gulp";
 import {respvisModuleConfigCSS, singleModuleConfigsCSS} from "./css-configs";
 import {writeStreamToPromise} from "../util/stream-to-promise";
-
-const cssimport = require("gulp-cssimport");
-const rename = require("gulp-rename");
+import cssimport from "gulp-cssimport";
+import rename from "gulp-rename";
 
 export async function buildLibCSS() {
   const configs = [respvisModuleConfigCSS,

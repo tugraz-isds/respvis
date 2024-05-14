@@ -1,10 +1,9 @@
 import {absolutePaths} from "../paths/absolute-paths";
-
-const {modules} = require("../bundle-js/bundle-configs");
+import {respvisModules} from "../constants/modules";
 
 const {srcDir, rootDir} = absolutePaths
 
-export const singleModuleConfigsCSS = modules.map(module => {
+export const singleModuleConfigsCSS = respvisModules.map(module => {
   return {
     module,
     src: `${srcDir}/css/${module}/index.css`,

@@ -1,7 +1,6 @@
 import gulp from "gulp";
 import fs from "fs";
-
-const svgToMiniDataURI = require('mini-svg-data-uri');
+import svgToMiniDataURI from "mini-svg-data-uri";
 
 export function genSVGDataURIs(svgGlob, outputDirectory) {
   const fileName = 'svg-uri-mapping.txt'

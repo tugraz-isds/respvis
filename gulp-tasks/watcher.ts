@@ -4,8 +4,9 @@ import {copyExampleDependencies} from "./copy-example-dependencies/copyExampleDe
 import {buildLibCSS} from "./bundle-css/buildCSS";
 import {copyExamples} from "./copyExamples";
 import {absolutePaths} from "./paths/absolute-paths";
+import {create} from "browser-sync";
 
-const browserSync = require('browser-sync').create();
+const browserSync = create();
 const {rootDir, srcDir, exampleDir} = absolutePaths
 
 function reloadBrowser(cb) {

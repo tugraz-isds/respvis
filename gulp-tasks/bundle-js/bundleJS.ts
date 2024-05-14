@@ -1,20 +1,20 @@
 import rollup from "rollup";
 import {stripCode} from "../rollup-plugin/codeStripPlugin";
-import {allBundlesConfigsBase, moduleNames, respvisBundleConfig} from "./bundle-configs";
+import {allBundlesConfigsBase, respvisBundleConfig} from "./bundle-configs";
+import rollupNodeResolve from "@rollup/plugin-node-resolve";
+import rollupCommonJs from "@rollup/plugin-commonjs";
+import rollupTypescript from "@rollup/plugin-typescript";
+import rollupTerser from "@rollup/plugin-terser";
+import rollupGzip from "rollup-plugin-gzip";
+import fs from "fs";
+import {string} from "rollup-plugin-string";
+import typescript from "typescript";
+import {bundleDeclarations} from "../bundleDeclarations";
 import {absolutePaths} from "../paths/absolute-paths";
+import {modulesMap} from "../constants/modules";
 
 const {rootDir} = absolutePaths
 
-const {default: rollupNodeResolve} = require("@rollup/plugin-node-resolve");
-const rollupCommonJs = require("@rollup/plugin-commonjs");
-const rollupTypescript = require("@rollup/plugin-typescript");
-const rollupTerser = require("@rollup/plugin-terser");
-const {default: rollupGzip} = require("rollup-plugin-gzip");
-const fs = require("fs");
-const {string} = require("rollup-plugin-string");
-const typescript = require('typescript')
-
-const {bundleDeclarations} = require("../bundleDeclarations");
 
 export async function bundleJS() {
   if (process.env.LIVE_SERVER === 'true') await bundleJSLive()
@@ -145,7 +145,7 @@ function writeBundle(bundle, writeConfigurations) {
     plugins: c.plugins,
     sourcemap: true,
     inlineDynamicImports: true,
-    globals: moduleNames
+    globals: modulesMap
   }).then(() => {
     const fileData = fs.readFileSync(`${c.location}/${c.module}.${c.extension}`, 'utf8');
     const formatString = c.format === 'iife' ? 'IIFE' :

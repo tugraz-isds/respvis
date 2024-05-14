@@ -1,8 +1,7 @@
 import gulp from "gulp";
 import {dataPaths} from "./copyPathData";
 import {dependencyBasedLibPaths, libsPaths} from "./copyPathLibs";
-
-const mergeStream = require('merge-stream')
+import mergeStream from "merge-stream";
 
 //TODO: type for srcTargetsMapping
 function copyFiles(srcTargetsMapping: any) {

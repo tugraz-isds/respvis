@@ -1,11 +1,10 @@
 import gulp from "gulp";
-import {absolutePaths} from "./paths/absolute-paths";
 import {stripHtml} from "./gulp-plugin/codeStripPlugin";
+import ts from "gulp-typescript";
+import replace from "gulp-replace";
+import {absolutePaths} from "./paths/absolute-paths";
 
 const {rootDir} = absolutePaths
-const ts = require('gulp-typescript');
-const replace = require('gulp-replace');
-const {logger} = require("browser-sync/dist/logger");
 
 const tsProject = ts.createProject('tsconfig.json', {
   "target": "ES6",

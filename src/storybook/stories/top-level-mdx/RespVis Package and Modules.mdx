@@ -1,8 +1,7 @@
 import {Meta} from "@storybook/blocks";
 import {Tooltip} from "../documentation-components/tooltip-text";
-
-[//]: # (import {assetsDirTemp} from './constants')
-
+import {modulesMap} from "../../../../gulp-tasks/constants/modules";
+import {projectAbsolutePaths} from "../../../../gulp-tasks/paths/project-absolute-paths";
 
 <Meta title='Respvis Package and Modules'/>
 
@@ -11,4 +10,15 @@ import {Tooltip} from "../documentation-components/tooltip-text";
 
 The source code of RespVis consists of multiple typescript modules:
 
-- <Tooltip text={assetsDirTemp}>***respvis-core***</Tooltip>: Contains the core functionality of RespVis.
+- <Tooltip text={projectAbsolutePaths.modulesPaths["respvis-core"]}>***{modulesMap["respvis-core"]}***</Tooltip>:
+  Contains the core functionality of RespVis, including
+- <Tooltip text={projectAbsolutePaths.modulesPaths["respvis-cartesian"]}>***{modulesMap["respvis-cartesian"]}***</Tooltip>:
+  Contains
+- <Tooltip text={projectAbsolutePaths.modulesPaths["respvis-bar"]}>***{modulesMap["respvis-bar"]}***</Tooltip>:
+  Contains
+- <Tooltip text={projectAbsolutePaths.modulesPaths["respvis-point"]}>***{modulesMap["respvis-point"]}***</Tooltip>:
+  Contains
+- <Tooltip text={projectAbsolutePaths.modulesPaths["respvis-line"]}>***{modulesMap["respvis-line"]}***</Tooltip>:
+  Contains
+- <Tooltip text={projectAbsolutePaths.modulesPaths["respvis-tooltip"]}>***{modulesMap["respvis-tooltip"]}***</Tooltip>:
+  Contains
