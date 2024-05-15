@@ -2,8 +2,8 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {BarChartUserArgs} from "../../../../../../ts";
 import StackedBarChartCSS from './stacked-bar-chart.css?inline'
 import {rawCode} from "../../../../util/raw-code";
-import {DesktopPhoneTabletData} from '../../../../data'
-import {renderBarChart} from "../render-bar.chart";
+import {DesktopPhoneTabletData} from '../../../../util/data'
+import {renderBarChart} from "../../../../util/render/render-bar.chart";
 import {format, scaleLinear} from "d3";
 
 const {

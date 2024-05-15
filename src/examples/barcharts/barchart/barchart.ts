@@ -4,10 +4,8 @@ import data from './data/austrian-cities.js'
 // Make sure to have executed gulp build task before importing from respvis-bar (dependency-based)
 // Note that no watcher is configured for dependency-based modules, so live coding will not work
 // when making changes in ts source code
-//
-import {BarChart, BarChartUserArgs} from './libs/respvis/respvis.js'
-
 // import {BarChart, BarChartUserArgs} from './libs/respvis/respvis-bar.js'
+import {BarChart, BarChartUserArgs} from './libs/respvis/respvis.js'
 
 export async function createBarCart(selector: string) {
   const tickOrientationHorizontal = {

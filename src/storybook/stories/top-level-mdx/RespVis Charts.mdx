@@ -1,0 +1,110 @@
+import {Meta, Source} from "@storybook/blocks";
+import ChartLayout from '../util/assets/svg/chart-layout.svg'
+import {SVGLoader} from "../util/documentation-components/svg-loader/svg-loader";
+
+<Meta title='RespVis Charts'/>
+
+# RespVis Charts
+
+## Chart Class
+
+The RespVis *__Chart__* class provides a convenient way of using RespVis to the fullest
+effortlessly. When having the following markup code:
+
+<Source code={`
+<body>
+  <div id="chart-wrapper"></div>
+</body>
+`} language={"html"}/>
+this code can be used to create a new empty chart:
+<Source code={`
+const chartWrapper = document.querySelector('#chart-wrapper')
+const chart = new Chart(chartWrapper, args)
+chart.buildChart()
+`} language={"typescript"}/>
+
+The code above first selects the existing div element with id **_chart-wrapper_**.
+
+Then, a new **_Chart_** instance is created by passing the selected div element and
+the desired arguments to the constructor. Inside the constructor, the passed arguments
+are validated. If there are serious issues with the arguments, RespVis will throw an error
+indicating what the exact problem is. Remember that RespVis is best used by utilising
+TypeScript to avoid such scenarios. If there are only minor issues with the arguments
+RespVis will make small adjustments and then continue without throwing an error.
+
+Finally, by calling **_Chart.buildChart()_** the chart executes all necessary actions to
+render its content and become responsive. This includes:
+1. Rendering the chart for the first time.
+2. Executing [RespVis Layouting Mechanism](?path=/docs/respvis-layouting-mechanism--docs)
+3. Setting up all necessary listeners to resize all content inside the chart if:
+    - the width or height of the chart changes.
+    - an interaction with the chart requires an immediate rerender (such as filtering data).
+    - an interaction with the chart initiates a rerender and is not conflicting with any
+      ongoing [d3 transitions](?path=/docs/handling-transitions--docs)
+
+## Chart Layout Structure
+
+
+### <a name="window-toolbar-layouter"></a> Window, Toolbar and Layouter
+
+The layout structure of a RespVis chart is quite complex. It begins with
+the **_window-rv_** element. This is the same element which is passed at
+the instantiation of a chart and is expected to be an empty div element.
+
+The **_window-rv_** element has two children, the **_toolbar_** and the
+**_layouter_**. Both are, again, div elements. The toolbar provides the
+viewer of a chart with interaction possibilities. The layouter, on the
+other hand, serves as wrapper for two chart hierarchies: the original
+hierarchy, consisting of an SVG node tree and a replicated div node tree,
+containing invisible div elements.
+
+The replicated node tree can be laid out with powerful CSS layout mechanisms
+like CSS Flexbox and CSS Grid. The elements of the original node tree then
+adapt their size and position accordingly, making it possible to control the
+size and position of elements inside an SVG by CSS layout mechanisms.
+
+
+### Replicated Chart Layout
+
+When rendering a chart via the Chart class, RespVis handles the layouting mechanisms
+discussed in [the previous section](#window-toolbar-layouter) under the hood. This
+means the layout of a chart can be controlled via CSS. For this reason, RespVis comes
+with default styles to provide good-looking charts out of the box. If a developer desires
+to change the layout in general, or via media or container queries, he or she
+conveniently can do so by overriding the default CSS of RespVis. The default styles
+for laying out the replicated chart node are the following:
+
+<SVGLoader rawSvg={`${ChartLayout}`} className={'svg-loader--illustration'}/>
+
+<Source code={`
+.chart {
+  display: grid;
+  grid-template: auto 1fr / 1fr auto;
+  grid-template-areas:
+      'header header'
+      'padding-wrapper legend';
+}`} language={'css'}/>
+
+The chart element contains three children: **_heading_**, **_legend_** and
+**_padding-wrapper_**. heading and legend are laid out in a similar way like the chart
+element. The padding-wrapper, on the contrary, is more complex.
+
+### Padding-wrapper
+
+To understand why a padding-wrapper is needed in the layout hierarchy in
+the first place, one needs to understand its structure:
+
+TODO: insert picture of padding wrapper + padding containers for cartesian charts here.
+
+The illustration above shows ...
+WThe padding-wrapper provides a solution for issues with overflowing content.
+A common example is the usage
+
+When creating a new
+instance, two arguments are expected:
+
+TODO: Describe Chart structure + padding-wrapper + overflow + link to specific chart mdx files
+
+TODO: background elements, why needed, padding-wrapper, draw-area, clippath
+
+

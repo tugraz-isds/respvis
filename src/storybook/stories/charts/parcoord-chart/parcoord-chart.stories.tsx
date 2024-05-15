@@ -2,8 +2,8 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {ParcoordChartUserArgs} from "../../../../ts";
 import parcoordChartCSS from './parcoord-chart.css?inline'
 import {rawCode} from "../../util/raw-code";
-import {SoldCarsGermanyData} from '../../data'
-import {renderParcoordChart} from "./render-parcoord-chart";
+import {SoldCarsGermanyData} from '../../util/data'
+import {renderParcoordChart} from "../../util/render/render-parcoord-chart";
 
 const meta = {
   title: 'Charts/Parallel Coordinates Chart',

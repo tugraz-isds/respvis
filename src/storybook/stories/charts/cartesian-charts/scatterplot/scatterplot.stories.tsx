@@ -2,9 +2,9 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {formatWithDecimalZero, Point, ScatterPlotUserArgs} from "../../../../../ts";
 import standardBarChartCSS from './scatterplot.css?inline'
 import {rawCode} from "../../../util/raw-code";
-import {SoldCarsGermanyData} from '../../../data'
+import {SoldCarsGermanyData} from '../../../util/data'
 import {format, scaleLinear} from "d3";
-import {renderScatterplot} from "./render-scatterplot";
+import {renderScatterplot} from "../../../util/render/render-scatterplot";
 
 const {carData, getTopMakesData} = SoldCarsGermanyData
 const {mileages, horsePower, prices, makes} = getTopMakesData(5)

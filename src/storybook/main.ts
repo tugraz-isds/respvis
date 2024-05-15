@@ -1,7 +1,6 @@
 import type {StorybookConfig} from "@storybook/html-vite";
-import svgRawPlugin from './plugins/vite-plugin-svg-raw.js';
+import {svgRawPlugin} from './plugins/vite-plugin-svg-raw';
 import tsconfigPaths from 'vite-tsconfig-paths'
-import vitePluginRequire from "vite-plugin-require";
 
 const config: StorybookConfig = {
   stories: ["./stories/**/*.mdx", "./stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -26,9 +25,7 @@ const config: StorybookConfig = {
     return mergeConfig(config, {
       plugins: [
         svgRawPlugin(),
-        vitePluginRequire({translateType: "importMetaUrl"}),
-        tsconfigPaths({
-        })
+        tsconfigPaths({})
       ]
     });
   },

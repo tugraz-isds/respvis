@@ -1,0 +1,7 @@
+.svg-loader {
+  &.svg-loader--illustration {
+    width: min(30rem, 90%);
+    padding-block: 1rem;
+    height: auto;
+  }
+}
