@@ -2,8 +2,8 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {BarChartUserArgs} from "../../../../../../ts";
 import standardBarChartCSS from './standard-bar-chart.css?inline'
 import {rawCode} from "../../../../util/raw-code";
-import {AustrianCitiesData} from '../../../../data'
-import {renderBarChart} from "../render-bar.chart";
+import {AustrianCitiesData} from '../../../../util/data'
+import {renderBarChart} from "../../../../util/render/render-bar.chart";
 import {format} from "d3";
 
 const {cities, populations} = AustrianCitiesData.default

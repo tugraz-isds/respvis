@@ -1,10 +1,13 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {LineChartUserArgs} from "../../../../../../ts";
+import {LineChartUserArgs} from "respvis-line";
 import {timeFormat} from "d3";
-import {rawCode} from "../../../../util/raw-code";
-import {PowerConsumptionData} from '../../../../util/data'
-import {renderLineChart} from "../../../../util/render/render-line.chart";
-import FullyResponsiveCSS from './multi-line-chart.css?inline'
+import {rawCode} from "../../util/raw-code";
+import {PowerConsumptionData} from '../../util/data'
+import {renderLineChart} from "../../util/render/render-line.chart";
+import FullyResponsiveCSS from '../example-multi-line/example-multi-line.css?inline'
+import {breakPoints} from "../example-multi-line/arguments/breakPoints-argument";
+import {title} from "../example-multi-line/arguments/title-argument";
+import {subTitle} from "../example-multi-line/arguments/subTitle-argument";
 
 const {yUSA, yEurope, yAsia, yearsJSDateFormat} = PowerConsumptionData.mapPowerConsumptionData()
 const categories = [
@@ -13,7 +16,7 @@ const categories = [
   ...yAsia.map(() => 'Asia')]
 
 const meta = {
-  title: 'Charts/Cartesian Charts/Line Charts/Multi Line Chart',
+  title: 'RespVis Arguments/Chart Arguments',
   parameters: {
     docs: {
       story: {
@@ -30,8 +33,8 @@ const meta = {
 
 type Story = StoryObj<LineChartUserArgs>;
 
-export const FullyResponsive: Story = {
-  name: 'Fully Responsive',
+export const ChartArgs: Story = {
+  name: 'Chart Arguments',
   args: {
     series: {
       x: {values: [...yearsJSDateFormat, ...yearsJSDateFormat, ...yearsJSDateFormat]},
@@ -39,35 +42,11 @@ export const FullyResponsive: Story = {
       categories: {
         values: categories,
         title: 'Continents'
-      },
-      markerTooltips: {
-        tooltips: (_, point) => {
-          return `Year: ${point.xValue}<br/>Pow. Consumption: ${point.yValue}kWh`
-        }
-      },
-      flipped: {
-        dependentOn: 'width',
-        mapping: {0: true, 2: false}
-      },
-      zoom: {
-        in: 20,
-        out: 1
       }
     },
-    breakPoints: {
-      width: {
-        values: [25, 30, 50],
-        unit: 'rem'
-      }
-    },
-    title: {
-      dependentOn: 'width',
-      mapping: {0: 'Power (kWh)', 1: 'Power Consumption (kWh)', 3: 'Electric Power Consumption (kWh per Capita)'}
-    },
-    subTitle: {
-      dependentOn: 'width',
-      mapping: {0: 'TU Graz', 1: ''}
-    },
+    breakPoints,
+    title,
+    subTitle,
     x: {
       title: 'Year',
       subTitle: '[2012 to 2021]',
@@ -82,7 +61,6 @@ export const FullyResponsive: Story = {
           unit: 'rem'
         }
       },
-      // configureAxis: (axis) => axis.tickFormat((v) => v),
       configureAxis: (axis) => axis.tickFormat(timeFormat('%Y'))
     },
     y: {
@@ -92,12 +70,7 @@ export const FullyResponsive: Story = {
           values: [10, 30, 50],
           unit: 'rem'
         }
-      },
-      tickOrientationFlipped: {
-        dependentOn: 'width',
-        scope: 'self',
-        mapping: {0: 90, 3: 0},
-      },
+      }
     }
   },
   parameters: {

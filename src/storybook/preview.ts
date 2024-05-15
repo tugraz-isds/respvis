@@ -1,9 +1,9 @@
 import type {Preview} from "@storybook/html";
-import ChartDocTemplate from './stories/templates/ChartDocTemplate.mdx'
+import ChartDocTemplate from './stories/util/templates/ChartDocTemplate.mdx'
 import {INITIAL_VIEWPORTS} from "@storybook/addon-viewport"
 import '../../package/respvis/respvis.css'
-import './stories/story-styles/general.css'
-import './stories/story-styles/chart-window.css'
+import './stories/util/story-styles/general.css'
+import './stories/util/story-styles/chart-window.css'
 
 const preview: Preview = {
   parameters: {
@@ -25,7 +25,8 @@ const preview: Preview = {
             ['Standard Bar Chart', 'Grouped Bar Chart', 'Stacked Bar Chart', '*'],
             'Scatterplot',
             '*'],
-          'Chart-Components',
+          'Extending Charts',
+          'RespVis Arguments',
           '*']
       }
     },

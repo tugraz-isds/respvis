@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "jsx": "react",
-    "module": "ESNext",
     "paths": {
       "respvis-core": ["../ts/respvis-core"],
       "respvis-core/*": ["../ts/respvis-core/*"],
@@ -21,7 +20,8 @@
     }
   },
   "include": ["./stories/**/*",
-    "../../module-specs.d.ts"
+    "../../module-specs.d.ts",
+    "../../module-specs-d3.d.ts"
   ],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

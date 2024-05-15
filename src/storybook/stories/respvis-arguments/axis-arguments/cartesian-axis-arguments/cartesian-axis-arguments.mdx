@@ -1,0 +1,49 @@
+import {Meta, Source} from "@storybook/blocks";
+import CurrentMeta from './cartesian-axis-arguments.stories'
+import XCartesianArg from '../../example-multi-line/arguments/x-cartesian-axis-arg.ts?raw'
+import YCartesianArg from '../../example-multi-line/arguments/y-cartesian-axis-arg.ts?raw'
+import {SourceCollapseBlocks} from "../../../util/documentation-components/blocks/SourceCollapseBlocks";
+import {concatCodeSnippets} from "../../../util/concatCodeSnippets";
+
+<Meta of={CurrentMeta}/>
+
+# Cartesian Axis Arguments
+
+This part of the documentation explains arguments which operate on axis level
+and can be passed to all *_cartesian_* chart types. Only arguments which are
+specific to cartesian axes are discussed here, for base axis arguments see
+[Axis Arguments](?path=/docs/charts-respvis-arguments-axis-arguments--docs)
+The practical usage of the arguments is demonstrated by the creation of an
+example multi line chart. Below one can see the arguments passed for the creation
+of x- and y-axis of the chart:
+
+<Source code={concatCodeSnippets(XCartesianArg, YCartesianArg)} language={"typescript"}/>
+
+## Horizontal Layout and Vertical Layout
+
+The *_horizontalLayout_* and *_verticalLayout_* arguments provide the possibility
+to position axes as desired. They are also available for base
+[Axis Arguments](?path=/docs/charts-respvis-arguments-axis-arguments--docs) but
+really come to the fore when being applied in
+[Cartesian Charts](?path=/docs/charts-cartesian-charts--about-cartesian-charts).
+The possible horizontal layout types are *_bottom_* or *_top_*, while the
+values for vertical layout types are *_left_* or *_right_*.
+
+By default, the x-axis is positioned horizontally (using horizontalLayout)
+while the y-axis is positioned vertically (using verticalLayout). If the chart
+is flipped, however, the axes will behave in the opposite way. The example chart
+demonstrates this flipping behavior perfectly well by its x-axis position being
+changed from top to right and its y-axis position from left to bottom.
+
+## Grid Line Factor
+
+The _*gridLineFactor*_ argument is specific to cartesian charts and lays grid lines
+over the chart. There are 4 possible values for the factor:
+- undefined, which results in no lines.
+- \<1, which results in the space between ticks to be split up according to the chosen factor.
+- =1, which results in lines being exactly aligned with axis tick positions.
+- \>1. In this scenario, the largest gap space between ticks is taken as reference.
+  Then, beginning with the first tick position, lines are created at gridLineFactor * gap space
+  as long as the calculated position is inside the chart.
+
+<SourceCollapseBlocks></SourceCollapseBlocks>
