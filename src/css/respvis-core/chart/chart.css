@@ -4,6 +4,26 @@
   grid-template-areas:
       'header header'
       'padding-wrapper legend';
+  .padding-wrapper {
+    display: grid;
+    grid-template: auto 1fr auto / auto 1fr auto;
+    grid-template-areas:
+    '. padding-container--top .'
+    'padding-container--left draw-area padding-container--right'
+    '. padding-container--bottom .';
+  }
+  .padding-container--left {
+    width: var(--chart-padding-left, 0);
+  }
+  .padding-container--top {
+    height: var(--chart-padding-top, 0);
+  }
+  .padding-container--right {
+    width: var(--chart-padding-right, 0);
+  }
+  .padding-container--bottom {
+    height: var(--chart-padding-bottom, 0);
+  }
 }
 
 @media (hover: none) {

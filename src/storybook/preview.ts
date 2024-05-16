@@ -16,6 +16,12 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
+          'RespVis Packages',
+          'RespVis Charts',
+          'RespVis Layouting Mechanism',
+          'Layout Breakpoints',
+          'CSS Caveats',
+          'Todos and Issues',
           'Charts',
           [
             'About Chart Stories',
