@@ -73,10 +73,27 @@ layout breakpoints, one must take into account two things:
 
 
 
-## Layouting of SVG Text Elements in RespVis
+## Laying out SVG \<text\> Elements
 
-- respvis handling of svg text baseline under the hood and the difficulties
+Laying out \<text\> elements via the RespVis layout mechanism is not
+an easy topic and has its own dedicated [article](?path=/docs/svg-text-in-respvis--docs).
+This section only aims to emphasize that rotations are (yet) not possible
+with layed out text elements without alignment issues. Exceptions to
+the rule are text elements which are rotated by 90° or -90°. These
+elements can be rotated and will still align with their corresponding
+layout element if styled with the correct CSS code:
 
+<Source code={`
+text {
+  --orientation: vertical;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(-90deg);
+}`} language={"css"}/>
+
+Note that the specification of the orientation CSS variable is crucial
+hereby. Otherwise, the layout mechanism of RespVis will treat the element
+as horizontally oriented.
 
 
 ## Handling Transitions

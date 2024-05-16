@@ -20,6 +20,7 @@ const preview: Preview = {
           'RespVis Charts',
           'RespVis Layouting Mechanism',
           'Layout Breakpoints',
+          'SVG Text in RespVis',
           'CSS Caveats',
           'Todos and Issues',
           'Charts',
