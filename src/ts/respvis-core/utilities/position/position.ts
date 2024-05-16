@@ -75,14 +75,4 @@ export function centerSVGTextBaseline(svgS: Selection<SVGTextElement>, bounds: R
   const textSVGHeight = textElement.getBBox().height
   svgS.attr('dy', () => textSVGHeight / 2)
   svgS.attr('dx', null)
-
-  // if (textElement.parentElement?.classList.contains('title')) {
-  //   const textSVGHeight = textElement.getBBox().width
-  //   svgS.attr('dy', () => -textSVGHeight / 2)
-  // }
-
-  // const hmtlHeight = htmlS.style('height'
-  // svgS.attr('dy', () => {
-  //   return cssLengthInPx(htmlS.style('height') as UnitValue<CSSLengthUnit>) / 2
-  // })
 }

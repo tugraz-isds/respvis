@@ -1,0 +1,43 @@
+import {Meta} from "@storybook/blocks";
+
+<Meta title='SVG Text in RespVis'/>
+
+# SVG Text in RespVis
+
+## Problem Definition
+
+
+SVG text elements
+
+SVGs can be layed out horizontally by using the text-anchor property...
+
+SVGs can be layed out vertically by using the dominant-baseline property ,
+which influences were text is exactly positioned relative to baseline...
+
+%TODO: Explain line height issue
+These properties influence the final position of an SVG text element.
+Additionally, the real height of text elements is dependent on the used
+font. A text element may always has a computationally height of 16px, but
+the real height differs, dependent on the used font-family and characters.
+
+
+## The solution
+
+
+### Alignment of Layout Element and SVG Element (Horizontal Case)
+
+%TODO: Explain Solution
+To address all these problems and make it possible to properly lay out
+SVG text elements exactly like their div counterpart, the dominant baseline
+of the SVG text element had to be aligned with the vertical center of the
+div counterpart. Additionally choosing an text-anchor property of start is
+finally sufficient to give svg text elements the exact position in the center
+of their div counterpart.
+
+
+### Alignment of Layout Element and SVG Element (Vertical Case)
+
+
+
+
+
