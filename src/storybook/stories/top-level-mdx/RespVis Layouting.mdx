@@ -7,18 +7,35 @@ import {Tooltip} from "../util/documentation-components/tooltip-text";
 
 Many powerful CSS layout techniques like CSS Flexbox and CSS Grid
 are not applicable in SVG-DOM. It is important to note hereby that there
-are good reasons that styling works differently in SVG-DOM than it
-does in HTML-DOM. Elements in SVG-DOM are often constrained to specific
-locations and sizes. There is no sense in laying out these elements
-via CSS techniques. Instead, JavaScript and libraries like D3 should
-take care about calculating the size and position of elements in these
-cases.
+are good reasons that styling works differently in HTML-DOM than it
+does in SVG-DOM.
 
-However, a complex SVG tree consists of many elements. Often, laying
-out some of these elements via layout techniques that are actually
-reserved for the HTML-DOM makes sense. To make it possible to use
-these styling techniques, RespVis applies a non-trivial layout
-mechanism under the hood. This mechanism produces two DOM trees:
+In HTML-DOM, elements are layed out according to the CSS box model.
+All elements of an HTML document are represented as boxes. Additionally,
+these boxes consist of defined areas, margin, border, padding and content,
+which can be used for alignment. The simplification of content to such boxes
+gives the possibility of applying different powerful layout modes. In
+many cases, the default positioning of a fitting layout mode achieves
+already appealing results.
+
+In SVG-DOM, on the other hand, a coordinate system is used to precisely
+position and shape elements. This type of layout technique makes sense
+if elements have complex shapes or are constrained to specific positions and
+sizes, which is certainly the case for many elements inside extensive charts.
+There is no sense in laying out such elements via CSS techniques. Instead,
+JavaScript and libraries like D3 should be used to take care of this task.
+
+However, an SVG tree may consist of many elements. This leads to
+situations where layouting certain parts of the tree could be tremendously
+simplified by making use of the CSS box model and HTML-DOM layout modes rather
+than making use of the powerful but complicated coordinate system.
+Another advantage, when shifting the layout definition from internally executed
+scripts to CSS, is that the layout can easily be overwritten.
+
+For these reasons, the goal of RespVis is to allow certain parts of an
+SVG to be layed out with HTML-DOM layout techniques. To make this possible,
+RespVis applies a non-trivial layout mechanism under the hood. This mechanism
+produces two DOM trees:
 1. A tree consisting of the displayed SVG elements themselves, the
 SVG-DOM tree.
 2. A replication of the SVG-DOM tree. This tree contains replicated
@@ -82,3 +99,17 @@ Nested HTML contexts logically come out of SVG contexts. Therefore, the default 
 for HTML contexts should be the parent's origin of the corresponding SVG twin element.
 This is achieved by inserting additional wrapper elements (layout-container-positioner) into
 the HTML-DOM tree. These wrapper elements are positioned exactly at said position.
+
+
+## <a name="synchronizing-bounds"></a> Synchronizing Bounds of Replicated and Original Tree
+
+The synchronization of element bounds requires different actions for different elements:
+- \<svg\>, \<rect\>: The rectangular shape of these elements allows a 1:1
+  synchronization with the position and size of the corresponding layout element.
+- \<circle\>, \<ellipse\>: The required presentational attributes for these elements can
+  be easily calculated and set to match the corresponding layout element.
+- \<text\>: The text element requires more complicated handling and, therefore, is discussed
+  in [SVG Text in RespVis](?path=/docs/svg-text-in-respvis--docs).
+- \<g\> and other: The default action is to make use of the transform attribute
+  to synchronize position between layout and original element. With this method, only
+  position but not size can be synchronized.

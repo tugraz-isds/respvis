@@ -1,16 +1,10 @@
 import {select, selectAll, Selection} from 'd3';
 import {elementAbsoluteBounds, elementRelativeBounds} from '../utilities/element';
 import {centerSVGTextBaseline, positionToTransformAttr} from '../utilities/position/position';
-import {
-  rectBottomLeft,
-  rectEquals,
-  rectFromString,
-  rectToAttrs,
-  rectTopRight,
-  rectToString,
-} from '../utilities/graphic-elements/rect';
+import {rectEquals, rectFromString, rectToAttrs, rectToString,} from '../utilities/graphic-elements/rect';
 import {circleInsideRect, circleToAttrs} from '../utilities/graphic-elements/circle';
 import {cssVars} from "../constants/cssVars";
+import {ellipseInsideRect, ellipseToAttrs} from "respvis-core/utilities/graphic-elements/ellipse";
 
 function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGTwinInformation>): void {
   selection.each((d, i, g) => {
@@ -124,14 +118,8 @@ function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGTwinInformatio
         case 'circle':
           svgS.call((s) => circleToAttrs(s, circleInsideRect(bounds)));
           break;
-        case 'line':
-          const bottomLeft = rectBottomLeft(bounds);
-          const topRight = rectTopRight(bounds);
-          svgS
-            .attr('x1', bottomLeft.x)
-            .attr('y1', bottomLeft.y)
-            .attr('x2', topRight.x)
-            .attr('y2', topRight.y);
+        case 'ellipse':
+          svgS.call((s) => ellipseToAttrs(s, ellipseInsideRect(bounds)));
           break;
         case 'text':
           centerSVGTextBaseline(svgS as Selection<SVGTextElement>, bounds)
