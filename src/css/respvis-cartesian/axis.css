@@ -13,7 +13,6 @@
       align-items: center;
 
       text {
-        --orientation: vertical;
         transform-box: fill-box;
         transform-origin: center;
         transform: rotate(-90deg);
