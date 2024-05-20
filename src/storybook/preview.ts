@@ -34,6 +34,7 @@ const preview: Preview = {
             '*'],
           'Extending Charts',
           'RespVis Arguments',
+          ['RespVis Arguments', '*'],
           '*']
       }
     },

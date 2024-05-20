@@ -37,22 +37,5 @@ export class AxisChart extends Chart {
         .join('g')
         .call(s => axisLayoutRender(s, axis.standardOrientation))
     })
-
-    // const axisBottomS = this.paddingWrapperS.selectAll<SVGGElement, AxisValid>('.axis.axis-bottom')
-    //   .data([this.axisXD])
-    //   .join('g')
-    //   .call(axisBottomRender)
-    // const axisTopS = this.paddingWrapperS.selectAll<SVGGElement, AxisValid>('.axis.axis-top')
-    //   .data([this.axisXD])
-    //   .join('g')
-    //   .call(axisTopRender)
-    // const axisLeftS = this.paddingWrapperS.selectAll<SVGGElement, AxisValid>('.axis.axis-left')
-    //   .data([this.axisYD])
-    //   .join('g')
-    //   .call(axisLeftRender)
-    // const axisRightS = this.paddingWrapperS.selectAll<SVGGElement, AxisValid>('.axis.axis-right')
-    //   .data([this.axisYD])
-    //   .join('g')
-    //   .call(axisRightRender)
   }
 }
