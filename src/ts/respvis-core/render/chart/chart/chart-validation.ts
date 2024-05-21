@@ -1,24 +1,23 @@
-import {LayoutBreakpoints} from "../../../data/breakpoint/breakpoint";
 import {RenderArgs} from "../renderer";
 import {RespValOptional} from "../../../data/responsive-value/responsive-value";
-import {breakPointsValidation} from "../../../data/breakpoint/breakpoint-validation";
+import {validateBreakpoints, WidthAndHeightBreakpoints} from "respvis-core/data/breakpoints/breakpoints-validation";
 
 export type ChartArgs = RenderArgs & {
-  breakPoints?: Partial<LayoutBreakpoints>
+  breakPoints?: Partial<WidthAndHeightBreakpoints>
   title?: RespValOptional<string>,
   subTitle?: RespValOptional<string>;
 }
 
 export type ChartValid = Required<Omit<ChartArgs, 'breakPoints'>> & {
-  breakPoints: LayoutBreakpoints,
+  breakpoints: WidthAndHeightBreakpoints,
 }
 
 export function chartValidation(args: ChartArgs): ChartValid {
   return {
     renderer: args.renderer,
-    breakPoints: {
-      width: breakPointsValidation(args.breakPoints?.width),
-      height: breakPointsValidation(args.breakPoints?.height)
+    breakpoints: {
+      width: validateBreakpoints(args.breakPoints?.width),
+      height: validateBreakpoints(args.breakPoints?.height)
     },
     title: args.title || '',
     subTitle: args.subTitle || '',

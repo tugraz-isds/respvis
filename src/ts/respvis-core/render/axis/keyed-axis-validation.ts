@@ -1,4 +1,4 @@
-import {BaseAxisArgs, BaseAxisValid, baseAxisValidation} from "./base-axis-validation";
+import {BaseAxisArgs, BaseAxisValid, validateBaseAxis} from "./base-axis-validation";
 import {ActiveKeyMap, AxisKey} from "../../constants/types";
 import {ParcoordSeries} from "respvis-parcoord";
 
@@ -24,7 +24,7 @@ export function keyedAxisValidation(args:KeyedAxisArgs): KeyedAxisValid {
   keysActive[args.key] = true
 
   const axis = {
-    ...baseAxisValidation(args),
+    ...validateBaseAxis(args),
     originalAxis: this,
     series: args.series,
     key: args.key,

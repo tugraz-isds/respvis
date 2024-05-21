@@ -1,4 +1,4 @@
-import {CategoryUserArgs} from "../../data/category";
+import {CategoriesUserArgs} from "../../data/categories";
 import {SeriesConfigTooltips, seriesConfigTooltipsData} from "respvis-tooltip";
 import {Point} from "respvis-point";
 import {RenderArgs, Renderer} from "../chart/renderer";
@@ -12,7 +12,7 @@ import {RespValByValueOptional} from "../../data/responsive-value/responsive-val
 import {Selection} from "d3";
 
 export type SeriesUserArgs = {
-  categories?: CategoryUserArgs
+  categories?: CategoriesUserArgs
   markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>
   labelCallback?: (category: string) => string
   flipped?: RespValByValueOptional<boolean>

@@ -1,23 +1,22 @@
-import {LayoutBreakpoints} from "../../data/breakpoint/breakpoint";
 import {RenderArgs} from "../chart/renderer";
-import {breakPointsValidation} from "../../data/breakpoint/breakpoint-validation";
+import {validateBreakpoints, WidthAndHeightBreakpoints} from "respvis-core/data/breakpoints/breakpoints-validation";
 import {defaultWindowSettings, WindowSettings} from "./window-settings";
 
 export type WindowArgs = RenderArgs & {
   type: string,
-  breakPoints?: Partial<LayoutBreakpoints>
+  breakPoints?: Partial<WidthAndHeightBreakpoints>
 }
 
 export type WindowValid = Required<Omit<WindowArgs, 'breakPoints'>> & {
-  breakPoints: LayoutBreakpoints,
+  breakpoints: WidthAndHeightBreakpoints,
   windowSettings: WindowSettings
 }
 
 export function windowValidation(args: WindowArgs): WindowValid {
   return {...args,
-    breakPoints: {
-      width: breakPointsValidation(args.breakPoints?.width),
-      height: breakPointsValidation(args.breakPoints?.height)
+    breakpoints: {
+      width: validateBreakpoints(args.breakPoints?.width),
+      height: validateBreakpoints(args.breakPoints?.height)
     },
     windowSettings: { ...defaultWindowSettings }
   }

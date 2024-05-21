@@ -1,6 +1,6 @@
 import {ScaleLinear} from "d3";
 import {
-  CategoryUserArgs,
+  CategoriesUserArgs,
   ErrorMessages,
   ScaledValuesAggregation,
   ScaledValuesCategorical,
@@ -15,7 +15,7 @@ export type BarStackedSeriesUserArgs = BarBaseSeriesUserArgs & {
   type: 'stacked'
   aggregationScale?: ScaleLinear<number, number, never>
   y: ScaledValuesLinearUserArgs
-  categories: CategoryUserArgs
+  categories: CategoriesUserArgs
 }
 
 export type BarStackedSeriesArgs = BarBaseSeriesArgs & BarStackedSeriesUserArgs

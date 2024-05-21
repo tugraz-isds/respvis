@@ -3,7 +3,7 @@ import {
   isResponsiveValueByValue,
 } from "../../data/responsive-value/responsive-value-value";
 import {elementFromSelection} from "../../utilities/d3/util";
-import {BreakpointsValid, getActiveBreakpoints} from "../../data/breakpoint/breakpoint-validation";
+import {Breakpoints, getActiveBreakpoints} from "respvis-core/data/breakpoints/breakpoints-validation";
 import {cssLengthInPx} from "../../utilities/dom/units";
 import {AxisSelection} from "./axis-render";
 import {CSSAbsoluteLengthUnit, CSSEMUnit, SVGGroupingElement, UnitValue} from "../../constants/types";
@@ -51,7 +51,7 @@ function calcTickAngleOrInterpolationData(axisS: AxisSelection) {
   if (valueAtPostLayoutIndex === null || postLayoutIndex === null) return valueAtPreLayoutIndex
 
   const breakpoints = element === chartElement ?
-    renderer.windowS.datum().breakPoints[layout] : breakPoints[layout]
+    renderer.windowS.datum().breakpoints[layout] : breakPoints[layout]
   
   return {
     preOrientation: valueAtPreLayoutIndex,
@@ -65,7 +65,7 @@ function calcTickAngleOrInterpolationData(axisS: AxisSelection) {
 
 type getInterPolationArgs = {
   element: Element,
-  breakpoints: BreakpointsValid
+  breakpoints: Breakpoints
   preLayoutIndex: number,
   postLayoutIndex: number,
 }

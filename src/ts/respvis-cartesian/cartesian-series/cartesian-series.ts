@@ -1,7 +1,6 @@
 import {
   alignScaledValuesLengths,
   AxisDomainRV,
-  axisScaledValuesValidation,
   AxisType,
   combineKeys,
   ScaledValues,
@@ -10,6 +9,7 @@ import {
   Series,
   SeriesArgs,
   SeriesUserArgs,
+  validateScaledValuesAxis,
   ZoomArgs,
   ZoomValid,
   zoomValidation
@@ -40,8 +40,8 @@ export class CartesianSeries extends Series {
     this.originalSeries = args.originalSeries ?? this
     const [xAligned, yAligned] = ('tag' in args.x && 'tag' in args.y) ? [args.x, args.y] :
       alignScaledValuesLengths(args.x, args.y)
-    this.x = 'tag' in xAligned ? xAligned : axisScaledValuesValidation(xAligned, 'a-0')
-    this.y = 'tag' in yAligned ? yAligned : axisScaledValuesValidation(yAligned, 'a-1')
+    this.x = 'tag' in xAligned ? xAligned : validateScaledValuesAxis(xAligned, 'a-0')
+    this.y = 'tag' in yAligned ? yAligned : validateScaledValuesAxis(yAligned, 'a-1')
 
     this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
       new CartesianSeriesResponsiveState({

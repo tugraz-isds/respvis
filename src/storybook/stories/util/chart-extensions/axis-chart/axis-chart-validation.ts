@@ -1,14 +1,14 @@
 import {Orientation, Orientations, ScaledValuesUserArgs} from "respvis-core";
 import {
   AxisDomainRV,
-  axisScaledValuesValidation,
   BaseAxisUserArgs,
   BaseAxisValid,
-  baseAxisValidation,
   ChartArgs,
   ChartUserArgs,
   ChartValid,
-  chartValidation
+  chartValidation,
+  validateBaseAxis,
+  validateScaledValuesAxis
 } from "../../../../../ts";
 import {EmptySeries} from "../empty-series";
 
@@ -36,11 +36,11 @@ export function axisChartValidation(args: AxisChartArgs): AxisChartValid {
   return {
     ...chartValidation(args),
     axes: args.axes.map((axis, index) => {
-      const scaledValues = axisScaledValuesValidation(axis.vals, `a-${index}`)
+      const scaledValues = validateScaledValuesAxis(axis.vals, `a-${index}`)
       const standardOrientation = (axis.standardOrientation && Orientations.includes(axis.standardOrientation)) ?
         axis.standardOrientation : 'horizontal'
       return {
-        ...baseAxisValidation({...axis, series, scaledValues, renderer: args.renderer}), standardOrientation
+        ...validateBaseAxis({...axis, series, scaledValues, renderer: args.renderer}), standardOrientation
       }
     })
   }

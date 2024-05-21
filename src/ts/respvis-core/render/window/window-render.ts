@@ -1,15 +1,15 @@
 import {Selection} from "d3";
 import {layouterRender} from "../../layouter/layouter";
-import {updateCSSForSelection} from "../../data/breakpoint/breakpoint";
 import {SVGHTMLElement} from "../../constants/types";
 import {WindowValid} from "./window-validation";
+import {updateBreakpointStateForSelection} from "respvis-core/data/breakpoints/breakpoints-update";
 
 export function windowRender<D extends WindowValid>(selection: Selection<SVGHTMLElement, D>) {
   const data = selection.datum()
   selection.datum(data)
     .classed('window-rv', true)
     .classed(`window-rv-${data.type}`, true)
-  updateCSSForSelection(selection)
+  updateBreakpointStateForSelection(selection)
 
   const layouterS = selection
     .selectAll<HTMLDivElement, any>('.layouter')

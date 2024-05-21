@@ -1,4 +1,4 @@
-import {BaseAxisArgs, BaseAxisUserArgs, BaseAxisValid, baseAxisValidation} from "respvis-core";
+import {BaseAxisArgs, BaseAxisUserArgs, BaseAxisValid, validateBaseAxis} from "respvis-core";
 import {CartesianSeries} from "./cartesian-series";
 
 export type CartesianAxisUserArgs = BaseAxisUserArgs & {
@@ -18,7 +18,7 @@ export type CartesianAxisValid = BaseAxisValid & {
 
 export function cartesianAxisValidation(args: CartesianAxisArgs): CartesianAxisValid {
   const axis = {
-    ...baseAxisValidation(args),
+    ...validateBaseAxis(args),
     originalAxis: this,
     series: args.series,
     gridLineFactor: args.gridLineFactor

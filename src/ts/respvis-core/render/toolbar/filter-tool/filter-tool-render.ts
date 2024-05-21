@@ -7,7 +7,7 @@ import {FieldSetData, fieldsetRender} from "../tool/fieldset-render";
 import {ToolbarValid} from "../toolbar-render";
 import {Series} from "../../series";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
-import {categoryOrderMapToArray} from "../../../data/category";
+import {categoryOrderMapToArray} from "../../../data/categories";
 import {mergeKeys} from "../../../utilities/dom/key";
 import {AxisValid} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
