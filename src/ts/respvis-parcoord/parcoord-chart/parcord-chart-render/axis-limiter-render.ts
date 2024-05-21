@@ -3,7 +3,7 @@ import {
   bboxDiffSVG,
   bgSVGOnlyBBoxRender,
   cssVarFromSelection,
-  KeyedAxisValid,
+  KeyedAxis,
   pathChevronRender,
   relateDragWayToSelection,
   relateDragWayToSelectionByDiff,
@@ -11,14 +11,14 @@ import {
 } from "respvis-core";
 import {drag, Selection} from "d3";
 
-export function parcoordChartAxisLimiterRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+export function parcoordChartAxisLimiterRender(axisS: Selection<SVGGElement, KeyedAxis>) {
   slidersChevronRender(axisS)
   sliderRectRender(axisS)
   alignSliders(axisS)
   addSliderDrag(axisS)
 }
 
-function slidersChevronRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+function slidersChevronRender(axisS: Selection<SVGGElement, KeyedAxis>) {
   const flipped = axisS.datum().series.responsiveState.currentlyFlipped
   const direction = (flipped ? 'right' : 'down')
   const upperChevronS = pathChevronRender(axisS, ['slider-up'], [{type: direction, scale: 0.85}])
@@ -33,7 +33,7 @@ function slidersChevronRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
     .classed('cursor--range-vertical cursor--range-up', !flipped)
 }
 
-function sliderRectRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+function sliderRectRender(axisS: Selection<SVGGElement, KeyedAxis>) {
   const flipped = axisS.datum().series.responsiveState.currentlyFlipped
   axisS.selectAll('.slider-rect')
     .data([null])
@@ -43,7 +43,7 @@ function sliderRectRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
     .classed('cursor--range-rect-horizontal', flipped)
 }
 
-function alignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+function alignSliders(axisS: Selection<SVGGElement, KeyedAxis>) {
   const {upperRangeLimitPercent, lowerRangeLimitPercent, scaledValues, series} = axisS.datum()
   const upperChevronS= axisS.selectAll<SVGGElement, any>('.slider-up')
   const lowerChevronS = axisS.selectAll<SVGGElement, any>('.slider-down')
@@ -90,7 +90,7 @@ function alignSliders(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   }
 }
 
-function addSliderDrag(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+function addSliderDrag(axisS: Selection<SVGGElement, KeyedAxis>) {
   const originalSeries = axisS.datum().series.originalSeries
   const axisD = originalSeries.axes.find(axis => axis.key === axisS.datum().key)
   if (!axisD) return

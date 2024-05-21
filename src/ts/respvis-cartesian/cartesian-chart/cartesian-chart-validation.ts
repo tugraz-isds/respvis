@@ -1,7 +1,7 @@
 import {Selection} from 'd3';
-import {chartValidation, legendValidation, SeriesChartUserArgs, SeriesChartValid} from "respvis-core";
+import {legendValidation, SeriesChartArgs, SeriesChartData, SeriesChartUserArgs, validateChart} from "respvis-core";
 import {CartesianSeries, CartesianSeriesUserArgs} from "../cartesian-series";
-import {CartesianAxisUserArgs, CartesianAxisValid, cartesianAxisValidation} from "../cartesian-axis-validation";
+import {CartesianAxis, CartesianAxisUserArgs, validateCartesianAxis} from "../cartesian-axis-validation";
 
 export type CartesianChartUserArgs = SeriesChartUserArgs & {
   series: CartesianSeriesUserArgs
@@ -10,29 +10,29 @@ export type CartesianChartUserArgs = SeriesChartUserArgs & {
   y: CartesianAxisUserArgs
 }
 
-export type CartesianChartArgs = Omit<CartesianChartUserArgs, 'series'> & {
+export type CartesianChartArgs = SeriesChartArgs & Omit<CartesianChartUserArgs, 'series'> & {
   series: CartesianSeries
 }
 
-export type CartesianChartValid = SeriesChartValid & {
+export type CartesianChartData = SeriesChartData & {
   series: CartesianSeries
-  x: CartesianAxisValid
-  y: CartesianAxisValid
+  x: CartesianAxis
+  y: CartesianAxis
 }
 
-export type CartesianChartSelection = Selection<SVGSVGElement | SVGGElement, CartesianChartValid>
+export type CartesianChartSelection = Selection<SVGSVGElement | SVGGElement, CartesianChartData>
 
-export function cartesianChartValidation(cartesianArgs: CartesianChartArgs): CartesianChartValid {
-  const {renderer, series, x, y} = cartesianArgs
+export function cartesianChartValidation(args: CartesianChartArgs): CartesianChartData {
+  const {renderer, series, x, y} = args
 
   return {
     series,
-    x: cartesianAxisValidation({...x, renderer, scaledValues: series.x, series}),
-    y: cartesianAxisValidation({...y, renderer, scaledValues: series.y, series}),
+    x: validateCartesianAxis({...x, renderer, scaledValues: series.x, series}),
+    y: validateCartesianAxis({...y, renderer, scaledValues: series.y, series}),
     getAxes: function () { return [this.x, this.y] },
     getSeries: function () { return [this.series] },
     getMainSeries: function () { return this.series },
-    legend: legendValidation({...cartesianArgs.legend, renderer, series}),
-    ...chartValidation(cartesianArgs),
+    legend: legendValidation({...args.legend, renderer, series}),
+    ...validateChart(args),
   }
 }

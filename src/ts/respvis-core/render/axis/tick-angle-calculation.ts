@@ -9,8 +9,8 @@ import {AxisSelection} from "./axis-render";
 import {CSSAbsoluteLengthUnit, CSSEMUnit, SVGGroupingElement, UnitValue} from "../../constants/types";
 
 
-export function tickAngleCalculation(axisS: AxisSelection) {
-  const angleOrBreakData = calcTickAngleOrInterpolationData(axisS)
+export function calculateTickAngles(axisS: AxisSelection) {
+  const angleOrBreakData = calculateTickAngleOrInterpolationData(axisS)
   if (typeof angleOrBreakData === 'number') {
     return angleOrBreakData
   }
@@ -27,7 +27,7 @@ export function tickAngleCalculation(axisS: AxisSelection) {
   return preSmaller ? preOrientation + lengthRatio * angleDiff : preOrientation - lengthRatio * angleDiff
 }
 
-function calcTickAngleOrInterpolationData(axisS: AxisSelection) {
+function calculateTickAngleOrInterpolationData(axisS: AxisSelection) {
   const {renderer, breakPoints, ...restAxisD} = axisS.datum()
   const isFlipped = restAxisD.series.responsiveState.currentlyFlipped
   const tickOrientation = isFlipped ? restAxisD.tickOrientationFlipped : restAxisD.tickOrientation
@@ -63,13 +63,13 @@ function calcTickAngleOrInterpolationData(axisS: AxisSelection) {
   } as const
 }
 
-type getInterPolationArgs = {
+type GetInterPolationArgs = {
   element: Element,
   breakpoints: Breakpoints
   preLayoutIndex: number,
   postLayoutIndex: number,
 }
-function getInterpolationBreakpoints(props: getInterPolationArgs) {
+function getInterpolationBreakpoints(props: GetInterPolationArgs) {
   const {element, postLayoutIndex, preLayoutIndex, breakpoints} = props
   const [, breakStart] = getActiveBreakpoints(preLayoutIndex, breakpoints)
   const [breakEnd,] = getActiveBreakpoints(postLayoutIndex, breakpoints)

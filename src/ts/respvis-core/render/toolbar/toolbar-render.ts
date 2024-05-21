@@ -1,5 +1,5 @@
 import {Selection} from "d3";
-import {SeriesChartValid} from "../chart/series-chart/series-chart-validation";
+import {SeriesChartData} from "../chart/series-chart/series-chart-validation";
 import {downloadToolRender} from "./download-tool/download-tool-render/download-tool-render";
 import {filterToolRender} from "./filter-tool/filter-tool-render";
 import {crossToolRender} from "./cross-tool/cross-tool-render";
@@ -9,7 +9,7 @@ import {DialogData} from "./tool/dialog-render";
 import {clickSAddEnterExitAttributes} from "./tool/animation/animtation";
 import {chartToolRender} from "./chart-tool/chart-tool-render";
 
-export type ToolbarValid = Pick<SeriesChartValid, 'renderer' | 'legend' | 'getSeries' | 'getAxes'>
+export type ToolbarValid = Pick<SeriesChartData, 'renderer' | 'legend' | 'getSeries' | 'getAxes'>
 
 export function toolbarRender(chartS: Selection, args: ToolbarValid): void {
   const toolbarS = chartS

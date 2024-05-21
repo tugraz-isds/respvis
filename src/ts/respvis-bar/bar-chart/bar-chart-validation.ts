@@ -1,40 +1,33 @@
-import {Selection} from 'd3';
-import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "respvis-cartesian";
+import {CartesianChartData, CartesianChartUserArgs, cartesianChartValidation} from "respvis-cartesian";
 import {BarSeries, BarSeriesUserArgs} from "../bar-series/bar-series";
-import {BarArgs} from "../bar";
-import {BarStackedSeries} from "../bar-series/bar-stacked-series";
-import {BarGroupedSeries} from "../bar-series/bar-grouped-series";
+import {BarStackedSeries} from "../bar-series/bar-stacked/bar-stacked-series";
+import {BarGroupedSeries} from "../bar-series/bar-grouped/bar-grouped-series";
 import {BarStandardSeries} from "../bar-series";
+import {RenderArgs} from "respvis-core";
 
-export type BarChartArgs = CartesianChartUserArgs & {
+export type BarChartUserArgs = CartesianChartUserArgs & {
   series: BarSeriesUserArgs
 }
 
-export type BarChartValid = CartesianChartValid & {
+export type BarChartArgs = BarChartUserArgs & RenderArgs
+
+export type BarChartData = CartesianChartData & {
   series: BarSeries
 }
 
-export function barChartValidation(chartArgs: BarChartArgs): BarChartValid {
+export function validateBarChart(args: BarChartArgs): BarChartData {
   const {renderer, x, y,
     legend, breakPoints,
     title, subTitle
-  } = chartArgs
-  const series = chartArgs.series.type === 'stacked' ?
-    new BarStackedSeries({...chartArgs.series, key: 's-0', renderer}) : chartArgs.series.type === 'grouped' ?
-    new BarGroupedSeries({...chartArgs.series, key: 's-0', renderer}) :
-    new BarStandardSeries({...chartArgs.series, key: 's-0', renderer})
+  } = args
+  const series = args.series.type === 'stacked' ?
+    new BarStackedSeries({...args.series, key: 's-0', renderer}) : args.series.type === 'grouped' ?
+    new BarGroupedSeries({...args.series, key: 's-0', renderer}) :
+    new BarStandardSeries({...args.series, key: 's-0', renderer})
   const cartesianData =
     cartesianChartValidation({renderer, series, x, y, legend, breakPoints, title, subTitle})
   return {
     ...cartesianData,
     series
   }
-}
-
-export type ChartBarSelection = Selection<SVGSVGElement | SVGGElement, BarChartValid>;
-
-export function chartBarHoverBar(chart: Selection, bar: Selection<Element, BarArgs>, hover: boolean) {
-  bar.each((barD) => {
-    chart.selectAll(`.label[data-key="${barD.key}"]`).classed('highlight', hover);
-  });
 }

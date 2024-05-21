@@ -1,11 +1,11 @@
 import {ScaledValuesDate, ScaledValuesLinear} from "respvis-core";
-import {BarStackedSeries} from "../bar-stacked-series";
+import {BarStackedSeries} from "./bar-stacked-series";
 
-type createStackedBarProps = {
+type CreateStackedBarProps = {
   series: BarStackedSeries
   i: number
 }
-export function createStackedBar(props: createStackedBarProps) {
+export function createStackedBar(props: CreateStackedBarProps) {
   const {i, series} = props
   const {responsiveState} = series
   const aggScaledValues = series.aggScaledValues.aggregateCached()

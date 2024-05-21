@@ -1,15 +1,18 @@
-import {ChartArgs, ChartValid} from "../chart";
-import {AxisValid} from "../../axis";
+import {ChartData, ChartDataArgs, ChartDataUserArgs} from "../chart";
+import {Axis} from "../../axis";
 import {Series} from "../../series";
 import {LegendUserArgs, LegendValid} from "../../legend";
 
-//TODO: SeriesChartUserArgs should omit renderer propterty etc.
-export type SeriesChartUserArgs = ChartArgs & {
+export type SeriesChartUserArgs = ChartDataUserArgs & {
   legend?: LegendUserArgs
 }
 
-export type SeriesChartValid = ChartValid & {
-  getAxes: () => AxisValid[]
+export type SeriesChartArgs = ChartDataArgs & {
+  legend?: LegendUserArgs
+}
+
+export type SeriesChartData = ChartData & {
+  getAxes: () => Axis[]
   getSeries: () => Series[]
   getMainSeries: () => Series
   legend: LegendValid

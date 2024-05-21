@@ -3,9 +3,9 @@ import {RenderArgs} from "../chart/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
 import {validateBreakpoints, WidthAndHeightBreakpoints} from "respvis-core/data/breakpoints/breakpoints-validation";
 import {ScaledValues} from "../../data/scale/scaled-values-base";
-import {KeyedAxisValid} from "./keyed-axis-validation";
+import {KeyedAxis} from "./keyed-axis-validation";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
-import {CartesianAxisValid} from "respvis-cartesian";
+import {CartesianAxis} from "respvis-cartesian";
 import {Series} from "../series";
 import {
   AxisLayoutHorizontal,
@@ -30,20 +30,20 @@ export type BaseAxisArgs = BaseAxisUserArgs & RenderArgs & {
   series: Series
 }
 
-export type BaseAxisValid = Required<Omit<BaseAxisArgs, 'breakPoints'>> & {
+export type BaseAxis = Required<Omit<BaseAxisArgs, 'breakPoints'>> & {
   breakPoints: WidthAndHeightBreakpoints,
-  originalAxis: BaseAxisValid,
+  originalAxis: BaseAxis,
   d3Axis?: D3Axis<any> //axis available after first render
 }
 
-export type AxisValid = BaseAxisValid | CartesianAxisValid | KeyedAxisValid
+export type Axis = BaseAxis | CartesianAxis | KeyedAxis
 
 export interface ConfigureAxisFn {
   (axis: D3Axis<AxisDomain>): void;
 }
 
-export function validateBaseAxis(args: BaseAxisArgs): AxisValid {
-  const axis: AxisValid = {
+export function validateBaseAxis(args: BaseAxisArgs): Axis {
+  const axis: Axis = {
     originalAxis: this,
     renderer: args.renderer,
     series: args.series,

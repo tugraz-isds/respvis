@@ -1,10 +1,10 @@
 import {Selection} from "d3";
-import {applyMixins, Chart, SeriesChartMixin, WindowValid} from "respvis-core";
+import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
 import {ParcoordChartUserArgs, ParcoordChartValid, parcoordChartValidation} from "./parcoord-chart-validation";
 import {parCoordChartRender} from "./parcord-chart-render/parcoord-chart-render";
 
-type WindowSelection = Selection<HTMLDivElement, WindowValid & ParcoordChartValid>
-type ChartSelection = Selection<SVGSVGElement, WindowValid & ParcoordChartValid>
+type WindowSelection = Selection<HTMLDivElement, Window & ParcoordChartValid>
+type ChartSelection = Selection<SVGSVGElement, Window & ParcoordChartValid>
 
 export interface ParcoordChart extends SeriesChartMixin {}
 export class ParcoordChart extends Chart {

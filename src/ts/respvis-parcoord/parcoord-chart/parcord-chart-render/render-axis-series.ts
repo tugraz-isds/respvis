@@ -1,6 +1,6 @@
 import {select, Selection} from "d3";
 import {ParcoordChartValid} from "../parcoord-chart-validation";
-import {axisSequenceRender, AxisValid, KeyedAxisValid} from "respvis-core";
+import {Axis, KeyedAxis, renderAxisSequence} from "respvis-core";
 import {handleAxisZoomAndDrag} from "./parcoord-chart-zoom-axis";
 import {parcoordChartAxisLimiterRender} from "./axis-limiter-render";
 import {axisInverterRender} from "./axis-inverter-render";
@@ -13,13 +13,13 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>)
   const filteredSeries = series.cloneFiltered().cloneZoomed().cloneInverted()
 
   axisSeriesS
-    .selectAll<SVGGElement, KeyedAxisValid>('.axis.axis-sequence')
+    .selectAll<SVGGElement, KeyedAxis>('.axis.axis-sequence')
     .data(filteredSeries.axes, (d) => d.key)
     .join('g')
     .each((d, i, g) => {
-      const axisS = select<SVGGElement, KeyedAxisValid>(g[i])
+      const axisS = select<SVGGElement, KeyedAxis>(g[i])
       const orientation = filteredSeries.responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
-      axisSequenceRender(axisS, orientation)
+      renderAxisSequence(axisS, orientation)
       parcoordChartAxisLimiterRender(axisS)
       handleAxisZoomAndDrag(axisS, i)
       axisInverterRender(axisS)
@@ -34,7 +34,7 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartValid>)
 
   function axisSeriesRender() {
     return renderer.drawAreaS
-      .selectAll<SVGGElement, AxisValid>(`.series-parcoord-axes`)
+      .selectAll<SVGGElement, Axis>(`.series-parcoord-axes`)
       .data([series])
       .join('g')
       .classed(`series-parcoord-axes`, true)

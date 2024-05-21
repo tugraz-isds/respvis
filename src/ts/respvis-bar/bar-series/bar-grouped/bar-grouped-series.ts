@@ -1,6 +1,6 @@
 import {CategoriesUserArgs, ErrorMessages, ScaledValuesCategorical} from "respvis-core";
-import {createGroupedBar} from "./bar-creation.ts/bar-grouped-creation";
-import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "./bar-base-series";
+import {createGroupedBar} from "./bar-grouped-creation";
+import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "respvis-bar/bar-series/bar-base/bar-base-series";
 
 export type BarGroupedSeriesUserArgs = BarBaseSeriesUserArgs & {
   type: 'grouped'

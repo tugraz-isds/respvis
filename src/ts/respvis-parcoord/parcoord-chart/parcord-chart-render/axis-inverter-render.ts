@@ -1,15 +1,15 @@
-import {bboxDiffSVG, bgSVGOnlyBBoxRender, KeyedAxisValid, pathArrowBigDown, pathArrowBigLeft} from "respvis-core";
+import {bboxDiffSVG, bgSVGOnlyBBoxRender, KeyedAxis, pathArrowBigDown, pathArrowBigLeft} from "respvis-core";
 import {Selection} from "d3";
 
 //TODO: Refactor out duplicated code
-export function axisInverterRender(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+export function axisInverterRender(axisS: Selection<SVGGElement, KeyedAxis>) {
   const { series } = axisS.datum()
   const flipped = series.responsiveState.currentlyFlipped
   if (flipped) axisInverterRenderVerticalChart(axisS)
   else axisInverterRenderHorizontalChart(axisS)
 }
 
-export function axisInverterRenderVerticalChart(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+export function axisInverterRenderVerticalChart(axisS: Selection<SVGGElement, KeyedAxis>) {
   const { series } = axisS.datum()
   axisS.selectAll('.title-wrapper .axis-inverter').remove()
   const originalSeries = series.originalSeries
@@ -44,7 +44,7 @@ export function axisInverterRenderVerticalChart(axisS: Selection<SVGGElement, Ke
   })
 }
 
-export function axisInverterRenderHorizontalChart(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+export function axisInverterRenderHorizontalChart(axisS: Selection<SVGGElement, KeyedAxis>) {
   const { series } = axisS.datum()
   axisS.selectChildren('.axis-inverter').remove()
   const originalSeries = series.originalSeries

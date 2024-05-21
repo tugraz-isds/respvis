@@ -68,7 +68,7 @@ export const Primary: Story = {
       },
       labels: {
         values: compensations.map(comp => format('.2s')(comp)),
-        offset: 6, position: 'dynamic'
+        offset: 6, positionStrategy: 'dynamic'
       }
     },
     breakPoints: {

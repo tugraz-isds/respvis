@@ -1,4 +1,4 @@
-import {easeCubicOut, select, Selection, Transition} from "d3";
+import {easeCubicOut, select, Selection} from "d3";
 import {BarArgs} from "../bar";
 import {
   addTransitionClass,
@@ -10,15 +10,7 @@ import {
   UnitValue
 } from "respvis-core";
 
-export interface JoinEvent<GElement extends Element, Datum>
-  extends CustomEvent<{ selection: Selection<GElement, Datum> }> {
-}
-
-export interface JoinTransitionEvent<GElement extends Element, Datum>
-  extends CustomEvent<{ transition: Transition<GElement, Datum> }> {
-}
-
-export function barSeriesJoin(
+export function joinBarSeries(
   seriesSelection: Selection,
   joinSelection: Selection<SVGRectElement, BarArgs>
 ): void {

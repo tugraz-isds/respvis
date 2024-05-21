@@ -1,19 +1,17 @@
 import {Selection} from "d3";
-import {BarChartArgs, BarChartValid, barChartValidation} from "./bar-chart-validation";
+import {BarChartData, BarChartUserArgs, validateBarChart} from "./bar-chart-validation";
 import {CartesianChartMixin} from "respvis-cartesian";
-import {applyMixins, Chart, SeriesChartMixin, WindowValid} from "respvis-core";
-import {Bar, BarSeries, barSeriesRender} from "../bar-series";
+import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
+import {Bar, BarSeries, renderBarSeries} from "../bar-series";
 
-type WindowSelection = Selection<HTMLDivElement, WindowValid & BarChartValid>
-type ChartSelection = Selection<SVGSVGElement, WindowValid & BarChartValid>
-
-export type BarChartUserArgs = Omit<BarChartArgs, 'renderer'>
+type WindowSelection = Selection<HTMLDivElement, Window & BarChartData>
+type ChartSelection = Selection<SVGSVGElement, Window & BarChartData>
 
 export interface BarChart extends CartesianChartMixin, SeriesChartMixin {}
 export class BarChart extends Chart {
   constructor(windowSelection: Selection<HTMLDivElement>, data: BarChartUserArgs) {
     super(windowSelection, {...data, type: 'bar'})
-    const chartData = barChartValidation({...data, renderer: this})
+    const chartData = validateBarChart({...data, renderer: this})
     this._windowS = windowSelection as WindowSelection
     const initialWindowData = this.windowS.datum()
     this.windowS.datum({...initialWindowData, ...chartData})
@@ -31,13 +29,13 @@ export class BarChart extends Chart {
     this.seriesRequirementsRender()
 
     const series = this.chartS.datum().series.cloneFiltered().cloneZoomed() as BarSeries
-    const seriesS = barSeriesRender(this.drawAreaS, [series])
+    const seriesS = renderBarSeries(this.drawAreaS, [series])
     const barS = seriesS.selectAll<SVGRectElement, Bar>('.bar:not(.exiting):not(.exit-done)')
     const bars = barS.data()
 
     this.addSeriesFeatures(seriesS)
     this.drawAreaS.selectAll('.series-label')
-      .attr( 'layout-strategy', bars[0]?.labelArg?.position ?? null)
+      .attr( 'layout-strategy', bars[0]?.labelData?.positionStrategy ?? null)
 
     this.addCartesianFeatures()
     this.addFilterListener()

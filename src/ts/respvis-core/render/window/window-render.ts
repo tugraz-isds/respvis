@@ -1,10 +1,10 @@
 import {Selection} from "d3";
-import {layouterRender} from "../../layouter/layouter";
 import {SVGHTMLElement} from "../../constants/types";
-import {WindowValid} from "./window-validation";
+import {Window} from "./window-validation";
 import {updateBreakpointStateForSelection} from "respvis-core/data/breakpoints/breakpoints-update";
+import {layouterRender} from "respvis-core/layouter/layouter-compute";
 
-export function windowRender<D extends WindowValid>(selection: Selection<SVGHTMLElement, D>) {
+export function windowRender<D extends Window>(selection: Selection<SVGHTMLElement, D>) {
   const data = selection.datum()
   selection.datum(data)
     .classed('window-rv', true)

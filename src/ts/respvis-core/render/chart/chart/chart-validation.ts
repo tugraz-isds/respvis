@@ -2,17 +2,19 @@ import {RenderArgs} from "../renderer";
 import {RespValOptional} from "../../../data/responsive-value/responsive-value";
 import {validateBreakpoints, WidthAndHeightBreakpoints} from "respvis-core/data/breakpoints/breakpoints-validation";
 
-export type ChartArgs = RenderArgs & {
+export type ChartDataUserArgs = {
   breakPoints?: Partial<WidthAndHeightBreakpoints>
   title?: RespValOptional<string>,
   subTitle?: RespValOptional<string>;
 }
 
-export type ChartValid = Required<Omit<ChartArgs, 'breakPoints'>> & {
+export type ChartDataArgs = ChartDataUserArgs & RenderArgs
+
+export type ChartData = Required<Omit<ChartDataArgs, 'breakPoints'>> & {
   breakpoints: WidthAndHeightBreakpoints,
 }
 
-export function chartValidation(args: ChartArgs): ChartValid {
+export function validateChart(args: ChartDataArgs): ChartData {
   return {
     renderer: args.renderer,
     breakpoints: {

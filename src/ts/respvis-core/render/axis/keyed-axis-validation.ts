@@ -1,4 +1,4 @@
-import {BaseAxisArgs, BaseAxisValid, validateBaseAxis} from "./base-axis-validation";
+import {BaseAxis, BaseAxisArgs, validateBaseAxis} from "./base-axis-validation";
 import {ActiveKeyMap, AxisKey} from "../../constants/types";
 import {ParcoordSeries} from "respvis-parcoord";
 
@@ -7,8 +7,8 @@ export type KeyedAxisArgs = BaseAxisArgs & {
   series: ParcoordSeries
 }
 
-export type KeyedAxisValid = BaseAxisValid & {
-  originalAxis: KeyedAxisValid
+export type KeyedAxis = BaseAxis & {
+  originalAxis: KeyedAxis
   series: ParcoordSeries //If a chart similar to parcoord is integrated, create interface
   key: AxisKey
   keysActive: ActiveKeyMap
@@ -19,7 +19,7 @@ export type KeyedAxisValid = BaseAxisValid & {
   isValueInRangeLimit: (val: any) => boolean
 }
 
-export function keyedAxisValidation(args:KeyedAxisArgs): KeyedAxisValid {
+export function validateKeyedAxis(args:KeyedAxisArgs): KeyedAxis {
   const keysActive = {}
   keysActive[args.key] = true
 

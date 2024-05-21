@@ -7,12 +7,12 @@ export type WindowArgs = RenderArgs & {
   breakPoints?: Partial<WidthAndHeightBreakpoints>
 }
 
-export type WindowValid = Required<Omit<WindowArgs, 'breakPoints'>> & {
+export type Window = Required<Omit<WindowArgs, 'breakPoints'>> & {
   breakpoints: WidthAndHeightBreakpoints,
   windowSettings: WindowSettings
 }
 
-export function windowValidation(args: WindowArgs): WindowValid {
+export function windowValidation(args: WindowArgs): Window {
   return {...args,
     breakpoints: {
       width: validateBreakpoints(args.breakPoints?.width),

@@ -9,7 +9,7 @@ import {Series} from "../../series";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {categoryOrderMapToArray} from "../../../data/categories";
 import {mergeKeys} from "../../../utilities/dom/key";
-import {AxisValid} from "../../axis";
+import {Axis} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
 import {CheckBoxLabel} from "../tool/input-label/checkbox-label";
 import {buttonRender} from "../tool/button-render";
@@ -68,7 +68,7 @@ function seriesControlRender(menuToolsItemsS: Selection, series: Series) {
   inputLabelsRender(fieldSetS)
 }
 
-function axisLinearControlsRender(menuToolsItemsS: Selection, axis: AxisValid, values: ScaledValuesLinearScale) {
+function axisLinearControlsRender(menuToolsItemsS: Selection, axis: Axis, values: ScaledValuesLinearScale) {
   const {renderer} = axis
   const chartElement = elementFromSelection(renderer.chartS)
   const title = getCurrentRespVal(axis.title, {chart: chartElement})
@@ -157,7 +157,7 @@ function categoryControlsRender(menuToolsItemsS: Selection, series: Series) {
   inputLabelsRender(fieldSetS)
 }
 
-function axisControlsRender(menuToolsItemsS: Selection, axis: AxisValid) {
+function axisControlsRender(menuToolsItemsS: Selection, axis: Axis) {
   const {renderer} = axis
   const axisScaledValues = axis.scaledValues
   const chartElement = elementFromSelection(renderer.chartS)
@@ -210,7 +210,7 @@ function axisControlsRender(menuToolsItemsS: Selection, axis: AxisValid) {
   inputLabelsRender(fieldSetS)
 }
 
-function getAxisCategoryProps(axis: AxisValid) {
+function getAxisCategoryProps(axis: Axis) {
   const axisScaledValues = axis.scaledValues
   return {
     keys: axisScaledValues instanceof ScaledValuesCategorical ?

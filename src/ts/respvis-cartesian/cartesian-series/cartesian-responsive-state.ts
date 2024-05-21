@@ -1,17 +1,17 @@
-import {SeriesResponsiveState, SeriesResponsiveStateArgs} from "respvis-core";
+import {ResponsiveState, ResponsiveStateArgs} from "respvis-core";
 import {CartesianSeries} from "./cartesian-series";
 import {handleZoom} from "./handle-zoom";
 
-export type CartesianSeriesResponsiveStateArgs = SeriesResponsiveStateArgs & {
+export type CartesianResponsiveStateArgs = ResponsiveStateArgs & {
   series: CartesianSeries
   originalSeries: CartesianSeries
 }
 
-export class CartesianSeriesResponsiveState extends SeriesResponsiveState {
+export class CartesianResponsiveState extends ResponsiveState {
   protected _series: CartesianSeries
   protected _originalSeries: CartesianSeries
 
-  constructor(args: CartesianSeriesResponsiveStateArgs) {
+  constructor(args: CartesianResponsiveStateArgs) {
     super(args)
     this._series = args.series
     this._originalSeries = args.originalSeries
@@ -32,12 +32,12 @@ export class CartesianSeriesResponsiveState extends SeriesResponsiveState {
     handleZoom(this._series)
   }
 
-  cloneProps(): CartesianSeriesResponsiveStateArgs {
+  cloneProps(): CartesianResponsiveStateArgs {
     const originalSeries = this._originalSeries
     return { ...super.cloneProps(), series: this._series, originalSeries }
   }
 
-  clone(args?: Partial<CartesianSeriesResponsiveStateArgs>) {
-    return new CartesianSeriesResponsiveState({...this.cloneProps(), ...(args ? args : {})})
+  clone(args?: Partial<CartesianResponsiveStateArgs>) {
+    return new CartesianResponsiveState({...this.cloneProps(), ...(args ? args : {})})
   }
 }

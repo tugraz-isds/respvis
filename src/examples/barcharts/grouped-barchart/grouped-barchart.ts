@@ -42,7 +42,7 @@ export function renderGroupedBarChart(selector: string) {
       },
       labels: {
         values: compensations.map(comp => d3.format('.2s')(comp)),
-        offset: 6, position: 'dynamic'
+        offset: 6, positionStrategy: 'dynamic'
       }
     },
     breakPoints: {

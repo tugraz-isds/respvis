@@ -1,11 +1,11 @@
-import {CartesianChartUserArgs, CartesianChartValid, cartesianChartValidation} from "respvis-cartesian";
+import {CartesianChartArgs, CartesianChartData, cartesianChartValidation} from "respvis-cartesian";
 import {PointSeries, SeriesPointUserArgs} from "../point-series/point-series";
 
-export type ScatterPlotArgs = Omit<CartesianChartUserArgs, 'series'> & {
+export type ScatterPlotArgs = Omit<CartesianChartArgs, 'series'> & {
   series: SeriesPointUserArgs
 }
 
-export type ScatterPlotValid = Omit<CartesianChartValid, 'series'> & {
+export type ScatterPlotValid = Omit<CartesianChartData, 'series'> & {
   series: PointSeries;
 }
 

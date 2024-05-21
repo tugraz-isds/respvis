@@ -1,12 +1,12 @@
-import {AxisLayout, SeriesResponsiveState, SeriesResponsiveStateArgs} from "respvis-core";
+import {AxisLayout, ResponsiveState, ResponsiveStateArgs} from "respvis-core";
 import {ParcoordSeries} from "./parcoord-series";
 
-type ParcoordSeriesResponsiveStateArgs = SeriesResponsiveStateArgs & {
+type ParcoordSeriesResponsiveStateArgs = ResponsiveStateArgs & {
   series: ParcoordSeries
   originalSeries: ParcoordSeries
 }
 
-export class ParcoordSeriesResponsiveState extends SeriesResponsiveState {
+export class ParcoordSeriesResponsiveState extends ResponsiveState {
   protected _series: ParcoordSeries
   protected _originalSeries: ParcoordSeries
   protected _axisLayout: AxisLayout

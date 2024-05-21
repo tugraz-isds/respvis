@@ -29,7 +29,7 @@ export function createBarChart(selector: string) {
       },
       labels: {
         values: data.anomalies,
-        position: 'dynamic',
+        positionStrategy: 'dynamic',
         offset: 3
       }
     },

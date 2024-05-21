@@ -6,14 +6,14 @@ import {
   ScaledValuesCategorical,
   ScaledValuesCategoricalUserArgs
 } from "respvis-core";
-import {Bar} from "../bar";
-import {BarBaseResponsiveState} from "./bar-base-series/responsive-state";
-import {BarLabelsUserArgs, BarLabelValues} from "../bar-label";
+import {Bar} from "../../bar";
+import {BarBaseResponsiveState} from "./bar-base-responsive-state";
+import {BarLabelsDataCollection, BarLabelsUserArg} from "../../bar-label";
 
 export type BarBaseSeriesUserArgs = CartesianSeriesUserArgs & {
   x: ScaledValuesCategoricalUserArgs
   originalSeries?: BarBaseSeries
-  labels?: BarLabelsUserArgs
+  labels?: BarLabelsUserArg
 }
 
 export type BarBaseSeriesArgs = BarBaseSeriesUserArgs & CartesianSeriesArgs
@@ -22,7 +22,7 @@ export abstract class BarBaseSeries extends CartesianSeries {
   x: ScaledValuesCategorical
   responsiveState: BarBaseResponsiveState
   originalSeries: BarBaseSeries
-  labels?: BarLabelValues
+  labels?: BarLabelsDataCollection
   protected constructor(args: BarBaseSeriesArgs | BarBaseSeries) {
     super(args);
     this.originalSeries = args.originalSeries ?? this
@@ -37,7 +37,7 @@ export abstract class BarBaseSeries extends CartesianSeries {
       })
 
     if ('class' in args) this.labels = args.labels
-    else if (args.labels) this.labels = new BarLabelValues(args.labels)
+    else if (args.labels) this.labels = new BarLabelsDataCollection(args.labels)
   }
 
   getBarRects(): Bar[] {
@@ -54,7 +54,7 @@ export abstract class BarBaseSeries extends CartesianSeries {
         yValue: this.y.values[i],
         styleClass: this.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
         tooltipLabel: this.labelCallback(this.categories?.values[i] ?? ''),
-        labelArg: this.labels?.getArgValid(i),
+        label: this.labels?.at(i),
         key: this.getCombinedKey(i) + ` i-${i}`,
       }));
     }

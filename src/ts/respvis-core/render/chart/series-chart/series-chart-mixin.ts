@@ -1,7 +1,7 @@
 import {Chart} from "../chart";
 import {Selection} from "d3";
-import {SeriesChartValid} from "./series-chart-validation";
-import {WindowValid} from "../../window";
+import {SeriesChartData} from "./series-chart-validation";
+import {Window} from "../../window";
 import {legendRender} from "../../legend";
 import {legendAddHover} from "../../legend/legend-event";
 import {toolbarRender} from "../../toolbar/toolbar-render";
@@ -12,8 +12,8 @@ import {labelSeriesFromElementsRender} from "../../label/series-label";
 import {RenderElement} from "../../../utilities/graphic-elements/render-element";
 
 export abstract class SeriesChartMixin extends Chart {
-  abstract get windowS(): Selection<HTMLElement, WindowValid & SeriesChartValid>
-  abstract get chartS(): Selection<SVGSVGElement, WindowValid & SeriesChartValid>
+  abstract get windowS(): Selection<HTMLElement, Window & SeriesChartData>
+  abstract get chartS(): Selection<SVGSVGElement, Window & SeriesChartData>
   addFilterListener() {
     const renderer = this
     renderer.windowS

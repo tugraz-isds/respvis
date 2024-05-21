@@ -1,9 +1,9 @@
-import {axisLayoutRender, AxisValid, Chart, rectFromString, WindowValid} from "../../../../../ts";
+import {Axis, Chart, rectFromString, renderAxisLayout, Window} from "../../../../../ts";
 import {Selection} from "d3";
 import {AxisChartUserArgs, AxisChartValid, axisChartValidation} from "./axis-chart-validation";
 
-type WindowSelection = Selection<HTMLDivElement, WindowValid & AxisChartValid>
-type ChartSelection = Selection<SVGSVGElement, WindowValid & AxisChartValid>
+type WindowSelection = Selection<HTMLDivElement, Window & AxisChartValid>
+type ChartSelection = Selection<SVGSVGElement, Window & AxisChartValid>
 
 export class AxisChart extends Chart {
   constructor(s: Selection<HTMLDivElement>, args: AxisChartUserArgs ) {
@@ -32,10 +32,10 @@ export class AxisChart extends Chart {
       if (axis.standardOrientation === 'horizontal') axis.scaledValues.scale.range([0, width])
       else axis.scaledValues.scale.range([height, 0])
       const layout = axis.standardOrientation === 'horizontal' ? axis.horizontalLayout : axis.verticalLayout
-      this.paddingWrapperS.selectAll<SVGGElement, AxisValid>(`.axis.axis-${layout}`)
+      this.paddingWrapperS.selectAll<SVGGElement, Axis>(`.axis.axis-${layout}`)
         .data([axis])
         .join('g')
-        .call(s => axisLayoutRender(s, axis.standardOrientation))
+        .call(s => renderAxisLayout(s, axis.standardOrientation))
     })
   }
 }

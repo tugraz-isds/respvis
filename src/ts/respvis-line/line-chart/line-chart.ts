@@ -2,10 +2,10 @@ import {Selection} from 'd3';
 import {CartesianChartMixin} from "respvis-cartesian";
 import {LineChartArgs, LineChartValid, lineChartValidation} from "./line-chart-validation";
 import {lineChartRender} from "./line-chart-render";
-import {applyMixins, Chart, SeriesChartMixin, WindowValid} from "respvis-core";
+import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
 
-export type WindowSelection = Selection<HTMLDivElement, WindowValid & LineChartValid>;
-export type ChartSelection = Selection<SVGSVGElement, WindowValid & LineChartValid>;
+export type WindowSelection = Selection<HTMLDivElement, Window & LineChartValid>;
+export type ChartSelection = Selection<SVGSVGElement, Window & LineChartValid>;
 export type LineChartUserArgs = Omit<LineChartArgs, 'renderer'>
 
 export interface LineChart extends SeriesChartMixin, CartesianChartMixin {}

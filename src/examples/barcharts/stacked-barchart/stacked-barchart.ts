@@ -54,7 +54,7 @@ export function renderStackedBarChart(selector: string) {
         out: 1
       },
       labels: {
-        values: sharesWhole.map(share => share.toString()), position: 'center',
+        values: sharesWhole.map(share => share.toString()), positionStrategy: 'center',
         format: (bar, label) => {
           const labelFormatted = d3.format('.2s')(label)
           return ((bar.width <= 20 && labelFormatted.length > 2)
