@@ -1,8 +1,8 @@
 {
   "name": "respvis",
-  "version": "0.2.0",
+  "version": "3.0",
   "description": "A library to build responsive SVG-based visualisations.",
-  "main": "./package/respis/dependency-based/cjs/respvis.js",
+  "main": "./package/respvis/dependency-based/cjs/respvis.js",
   "module": "./package/respvis/dependency-based/esm/respvis.js",
   "files": [
     "package"
