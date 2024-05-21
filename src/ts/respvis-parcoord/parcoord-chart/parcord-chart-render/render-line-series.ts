@@ -1,13 +1,13 @@
 import {Selection} from "d3";
 import {ParcoordChartValid} from "../parcoord-chart-validation";
-import {AxisValid, combineKeys, defaultStyleClass, KeyedAxisValid, Position} from "respvis-core";
+import {Axis, combineKeys, defaultStyleClass, KeyedAxis, Position} from "respvis-core";
 import {Line, lineSeriesJoin} from "respvis-line";
 import {ParcoordSeries} from "../../parcoord-series";
 
 export function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>) {
   const {series} = chartS.datum()
   const lineSeriesS = chartS.selectAll('.draw-area')
-    .selectAll<SVGGElement, AxisValid>(`.series-parcoord-lines`)
+    .selectAll<SVGGElement, Axis>(`.series-parcoord-lines`)
     .data([series])
     .join('g')
     .classed(`series-parcoord-lines`, true)
@@ -22,7 +22,7 @@ export function renderLineSeries(chartS: Selection<Element, ParcoordChartValid>)
     .call(s => lineSeriesJoin(lineSeriesS, s))
 }
 
-function createLines(activeAxes: KeyedAxisValid[]) {
+function createLines(activeAxes: KeyedAxis[]) {
   const lines: Line[] = []
   const series = activeAxes[0].series
   const maxIndex = activeAxes[0].scaledValues.values.length
@@ -41,7 +41,7 @@ function createLines(activeAxes: KeyedAxisValid[]) {
   return lines
 }
 
-function createLinePositions(activeAxes: KeyedAxisValid[], valueIndex: number, series: ParcoordSeries) {
+function createLinePositions(activeAxes: KeyedAxis[], valueIndex: number, series: ParcoordSeries) {
   const positions: Position[] = []
   const flipped = series.responsiveState.currentlyFlipped
   for (let axisIndex = 0; axisIndex < activeAxes.length; axisIndex++) {

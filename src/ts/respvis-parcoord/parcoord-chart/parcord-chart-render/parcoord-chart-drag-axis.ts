@@ -1,7 +1,7 @@
 import {D3ZoomEvent, Selection} from "d3";
-import {arrayOrder, KeyedAxisValid, relateDragWayToSelection} from "respvis-core";
+import {arrayOrder, KeyedAxis, relateDragWayToSelection} from "respvis-core";
 
-export function onDragAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid, drawAreaBackgroundS: Selection<SVGRectElement>) {
+export function onDragAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxis, drawAreaBackgroundS: Selection<SVGRectElement>) {
   const dragWay = relateDragWayToSelection(e, drawAreaBackgroundS)
   if (!dragWay) return
   const originalSeries = d.series.originalSeries
@@ -21,7 +21,7 @@ export function onDragAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid, 
   originalSeries.axesPercentageScale.range(newPercentageRange)
 }
 
-export function onDragEndAxisParcord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid) {
+export function onDragEndAxisParcord(e: D3ZoomEvent<any, any>, d: KeyedAxis) {
   const originalSeries = d.series.originalSeries
 
   const equidistantAxesActive = originalSeries.renderer.windowS.datum().windowSettings.parcoordEquidistantAxes

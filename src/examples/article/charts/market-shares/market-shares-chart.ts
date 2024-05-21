@@ -1,13 +1,13 @@
 import {BarChart, BarChartUserArgs} from '../../libs/respvis/respvis.js';
 import * as d3 from '../../libs/d3-7.6.0/d3.js'
 import {
-    desktop,
-    desktopCategory,
-    phone,
-    phoneCategory,
-    tablet,
-    tabletCategory,
-    years
+  desktop,
+  desktopCategory,
+  phone,
+  phoneCategory,
+  tablet,
+  tabletCategory,
+  years
 } from './data/desktop-phone-tablet.js';
 
 
@@ -51,7 +51,7 @@ export function createMarketSharesChart(selector) {
                 mapping: {0: true, 2: false}
             },
             labels: {
-                values: sharesWhole.map(share => share.toString()), position: 'center',
+                values: sharesWhole.map(share => share.toString()), positionStrategy: 'center',
                 format: (bar, label) => {
                     const labelFormatted = d3.format('.2s')(label)
                     return ((bar.width <= 20 && labelFormatted.length > 2)

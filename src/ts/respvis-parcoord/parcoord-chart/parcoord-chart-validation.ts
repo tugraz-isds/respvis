@@ -1,13 +1,13 @@
-import {chartValidation, legendValidation, SeriesChartUserArgs, SeriesChartValid} from "respvis-core";
+import {legendValidation, SeriesChartArgs, SeriesChartData, validateChart} from "respvis-core";
 import {ParcoordSeries, ParcoordSeriesUserArgs} from "../parcoord-series";
 
 export type ParcoordChartUserArgs = Omit<ParcoordChartArgs, 'renderer'>
 
-export type ParcoordChartArgs = SeriesChartUserArgs & {
+export type ParcoordChartArgs = SeriesChartArgs & {
   series: ParcoordSeriesUserArgs
 }
 
-export type ParcoordChartValid = SeriesChartValid & {
+export type ParcoordChartValid = SeriesChartData & {
   series: ParcoordSeries
 }
 
@@ -21,6 +21,6 @@ export function parcoordChartValidation(args: ParcoordChartArgs): ParcoordChartV
     getMainSeries: function () { return this.series },
     series,
     legend: legendValidation({...args.legend, renderer, series}),
-    ...chartValidation(args),
+    ...validateChart(args),
   }
 }

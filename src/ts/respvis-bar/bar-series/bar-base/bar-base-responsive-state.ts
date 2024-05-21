@@ -1,13 +1,16 @@
-import {CartesianSeriesResponsiveState, CartesianSeriesResponsiveStateArgs} from "respvis-cartesian";
-import {BarBaseSeries} from "../bar-base-series";
+import {
+  CartesianResponsiveState,
+  CartesianResponsiveStateArgs
+} from "respvis-cartesian/cartesian-series/cartesian-responsive-state";
+import {BarBaseSeries} from "./bar-base-series";
 import {ScaledValuesCategorical, ScaledValuesLinear} from "respvis-core";
 
-type BarBaseResponsiveStateArgs = CartesianSeriesResponsiveStateArgs & {
+type BarBaseResponsiveStateArgs = CartesianResponsiveStateArgs & {
   series: BarBaseSeries
   originalSeries: BarBaseSeries
 }
 
-export class BarBaseResponsiveState extends CartesianSeriesResponsiveState {
+export class BarBaseResponsiveState extends CartesianResponsiveState {
   protected _series: BarBaseSeries
   protected _originalSeries: BarBaseSeries
 

@@ -4,7 +4,7 @@ import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {Series} from "./index";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 
-export type SeriesResponsiveStateArgs = {
+export type ResponsiveStateArgs = {
   series: Series
   originalSeries: Series
   flipped?: RespValByValueOptional<boolean>
@@ -13,7 +13,7 @@ export type SeriesResponsiveStateArgs = {
   drawAreaHeight?: number
 }
 
-export class SeriesResponsiveState {
+export class ResponsiveState {
   protected _series: Series
   protected _originalSeries: Series
   protected _flipped: RespValByValueOptional<boolean>
@@ -21,7 +21,7 @@ export class SeriesResponsiveState {
   protected _drawAreaWidth: number
   protected _drawAreaHeight: number
 
-  constructor(args: SeriesResponsiveStateArgs) {
+  constructor(args: ResponsiveStateArgs) {
     this._series = args.series
     this._originalSeries = args.originalSeries
     this._flipped = args.flipped ?? false
@@ -57,7 +57,7 @@ export class SeriesResponsiveState {
     this._currentlyFlipped = getCurrentRespVal(this._flipped, {chart: chartElement})
   }
 
-  cloneProps(): SeriesResponsiveStateArgs {
+  cloneProps(): ResponsiveStateArgs {
     return {
       series: this._series, originalSeries: this._originalSeries,
       flipped: this.flipped, currentlyFlipped: this.currentlyFlipped,

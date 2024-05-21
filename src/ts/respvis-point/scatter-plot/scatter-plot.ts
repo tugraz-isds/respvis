@@ -2,10 +2,10 @@ import {Selection} from 'd3';
 import {scatterPlotRender} from "./scatter-plot-render";
 import {ScatterPlotArgs, ScatterPlotValid, scatterPlotValidation} from "./scatter-plot-validation";
 import {CartesianChartMixin} from "respvis-cartesian";
-import {applyMixins, Chart, SeriesChartMixin, WindowValid} from "respvis-core";
+import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
 
-type WindowSelection = Selection<HTMLElement, WindowValid & ScatterPlotValid>;
-type ChartSelection = Selection<SVGSVGElement, WindowValid & ScatterPlotValid>;
+type WindowSelection = Selection<HTMLElement, Window & ScatterPlotValid>;
+type ChartSelection = Selection<SVGSVGElement, Window & ScatterPlotValid>;
 export type ScatterPlotUserArgs = Omit<ScatterPlotArgs, 'renderer'>
 
 export interface ScatterPlot extends CartesianChartMixin, SeriesChartMixin {}

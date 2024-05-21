@@ -6,8 +6,7 @@ import {
   elementFromSelection,
   ErrorMessages,
   getCurrentRespVal,
-  KeyedAxisValid,
-  keyedAxisValidation,
+  KeyedAxis,
   ScaledValuesCategorical,
   ScaledValuesUserArgs,
   Series,
@@ -15,6 +14,7 @@ import {
   SeriesKey,
   SeriesUserArgs,
   Size,
+  validateKeyedAxis,
   validateScaledValuesAxis,
   ZoomArgs,
   ZoomValid,
@@ -40,7 +40,7 @@ export type ParcoordArgs = SeriesArgs & ParcoordSeriesUserArgs & {
 
 export class ParcoordSeries extends Series {
   originalSeries: ParcoordSeries
-  axes: KeyedAxisValid[]
+  axes: KeyedAxis[]
   axesScale: ScalePoint<string>
   axesPercentageScale: ScaleOrdinal<string, number>
   percentageScreenScale: ScaleLinear<number, number>
@@ -56,7 +56,7 @@ export class ParcoordSeries extends Series {
     //TODO: data aligning
     this.axes = 'class' in args ? args.axes :
       args.dimensions.map((dimension, index) => {
-        return keyedAxisValidation({
+        return validateKeyedAxis({
           ...dimension.axis, renderer,
           series: this,
           scaledValues: validateScaledValuesAxis(dimension.scaledValues, `a-${index}`),
@@ -115,7 +115,7 @@ export class ParcoordSeries extends Series {
   getScaledValuesAtScreenPosition(x: number, y: number) {
     const activeSeries = this.cloneFiltered()
     const chartE = elementFromSelection(activeSeries.axes[0].renderer.chartS)
-    function axisDiff(axis: KeyedAxisValid) {
+    function axisDiff(axis: KeyedAxis) {
       const currentAxisPosition = activeSeries.axesScale(axis.key)!
       return Math.abs(currentAxisPosition - x)
     }

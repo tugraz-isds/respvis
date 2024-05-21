@@ -1,12 +1,12 @@
-import {Orientation, Position, Rect, RenderElement, RenderElementArgs} from "respvis-core";
-import {BarLabel, BarLabelArgValid} from "./bar-label";
+import {Label, Orientation, Position, Rect, RenderElement, RenderElementArgs} from "respvis-core";
+import {BarLabel, BarLabelData} from "./bar-label";
 
 export type BarArgs = Rect & RenderElementArgs & {
   xValue: any
   yValue: any
   styleClass: string;
   key: string;
-  labelArg?: BarLabelArgValid
+  label?: BarLabelData
 }
 
 export class Bar implements BarArgs, RenderElement {
@@ -19,7 +19,7 @@ export class Bar implements BarArgs, RenderElement {
   tooltipLabel: string
   styleClass: string
   key: string
-  labelArg?: BarLabelArgValid
+  labelData?: BarLabelData
 
   constructor(args: BarArgs) {
     this.x = args.x
@@ -31,36 +31,37 @@ export class Bar implements BarArgs, RenderElement {
     this.tooltipLabel = args.tooltipLabel
     this.styleClass = args.styleClass
     this.key = args.key
-    this.labelArg = args.labelArg
+    this.labelData = args.label
   }
 
   getLabel(orientation: Orientation): BarLabel | [] {
-    if (!this.labelArg) return []
+    if (!this.labelData) return []
     return {
-      ...(orientation === 'horizontal' ? this.labelPositionHorizontal() : this.labelPositionVertical()),
+      ...this.labelData,
+      ...(orientation === 'horizontal' ? this.getLabelPositionHorizontal() : this.getLabelPositionVertical()),
       key: this.key,
-      text: this.labelArg.format(this, this.labelArg.value)
+      text: this.labelData.format(this, this.labelData.value)
     }
   }
-  private labelPositionVertical(): (Position & Pick<BarLabel, 'sign'>) {
-    const { offset, position, offsetX, offsetY } = this.labelArg!
+  private getLabelPositionVertical(): (Position & Pick<Label, 'sign'>) {
+    const { offset, positionStrategy, offsetX, offsetY } = this.labelData!
     const yPositive = this.yValue >= 0
-    const strategyPositive = (yPositive && position === 'dynamic') || position === 'positive'
+    const strategyPositive = (yPositive && positionStrategy === 'dynamic') || positionStrategy === 'positive'
     return {
       x: offsetX + this.x + this.width / 2,
       y: offsetY + (strategyPositive ? this.y - offset :
-        position === 'center' ? this.y + this.height / 2 :
+        positionStrategy === 'center' ? this.y + this.height / 2 :
           this.y + this.height + offset),
       sign: yPositive ? 'positive' : 'negative',
     }
   }
-  private labelPositionHorizontal(): (Position & Pick<BarLabel, 'sign'>) {
-    const { offset, position, offsetX, offsetY } = this.labelArg!
+  private getLabelPositionHorizontal(): (Position & Pick<Label, 'sign'>) {
+    const { offset, positionStrategy, offsetX, offsetY } = this.labelData!
     const yPositive = this.yValue >= 0
-    const strategyPositive = (yPositive && position === 'dynamic') || position === 'positive'
+    const strategyPositive = (yPositive && positionStrategy === 'dynamic') || positionStrategy === 'positive'
     return {
       x: offsetX + ( strategyPositive ? this.x + this.width + offset :
-        position === 'center' ? this.x + this.width / 2 :
+        positionStrategy === 'center' ? this.x + this.width / 2 :
           this.x - offset),
       y: offsetY + this.y + this.height / 2,
       sign: yPositive ? 'positive' : 'negative',

@@ -7,9 +7,9 @@ import {
   ScaledValuesLinear,
   ScaledValuesLinearUserArgs
 } from "respvis-core";
-import {createStackedBar} from "./bar-creation.ts/bar-stacked-creation";
-import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "./bar-base-series";
-import {Bar} from "../bar";
+import {createStackedBar} from "./bar-stacked-creation";
+import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "respvis-bar/bar-series/bar-base/bar-base-series";
+import {Bar} from "../../bar";
 
 export type BarStackedSeriesUserArgs = BarBaseSeriesUserArgs & {
   type: 'stacked'

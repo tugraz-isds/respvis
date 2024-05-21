@@ -14,7 +14,7 @@ import {
   ZoomValid,
   zoomValidation
 } from "respvis-core";
-import {CartesianSeriesResponsiveState} from "./responsive-state";
+import {CartesianResponsiveState} from "./cartesian-responsive-state";
 import {CartesianRenderer} from "../cartesian-renderer";
 
 export type CartesianSeriesUserArgs = SeriesUserArgs & {
@@ -31,7 +31,7 @@ export class CartesianSeries extends Series {
   originalSeries: CartesianSeries
   x: ScaledValues
   y: ScaledValues
-  responsiveState: CartesianSeriesResponsiveState
+  responsiveState: CartesianResponsiveState
   zoom?: ZoomValid
   renderer: CartesianRenderer
 
@@ -44,7 +44,7 @@ export class CartesianSeries extends Series {
     this.y = 'tag' in yAligned ? yAligned : validateScaledValuesAxis(yAligned, 'a-1')
 
     this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
-      new CartesianSeriesResponsiveState({
+      new CartesianResponsiveState({
         series: this,
         originalSeries: this.originalSeries,
         flipped: ('flipped' in args) ? args.flipped : false

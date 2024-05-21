@@ -3,17 +3,17 @@ import {select, Selection} from "d3";
 import {SVGHTMLElement} from "../../constants/types";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {cssLengthInPx} from "../../utilities/dom/units";
-import {tickAngleCalculation} from "./tick-angle-calculation";
+import {calculateTickAngles} from "./tick-angle-calculation";
 import {normalizeAngle} from "../../utilities/angle";
 
-export function tickAngleConfiguration(axisS: AxisSelection, ticksS: Selection<SVGHTMLElement>) {
-  const angle = tickAngleCalculation(axisS)
+export function configureTickAngles(axisS: AxisSelection, ticksS: Selection<SVGHTMLElement>) {
+  const angle = calculateTickAngles(axisS)
   ticksS.selectAll<Element, any>('.tick').each((d, i, g) => {
-    configureTick(select(g[i]), angle, axisS)
+    configureTickAngle(select(g[i]), angle, axisS)
   })
 }
 
-function configureTick(tickS: Selection<Element>, angle: number, axisS: AxisSelection) {
+function configureTickAngle(tickS: Selection<Element>, angle: number, axisS: AxisSelection) {
   const axisElement = elementFromSelection(axisS)
 
   const textS = tickS.select('text')
@@ -41,7 +41,7 @@ function configureTick(tickS: Selection<Element>, angle: number, axisS: AxisSele
     .style('dominant-baseline', dominantBaseline)
   const normalizedAngle = normalizeAngle(angle)
 
-  pivotS //.transition().duration(200) //TODO: enable D3 transitions when being able to differ between initial render and succeeding renders
+  pivotS
     .attr("transform", axisLocation === 'bottom' ?
       `translate(0, ${transformRelative + transformFixed}) rotate(${normalizedAngle})` : axisLocation === 'top' ?
         `translate(0, -${transformRelative + transformFixed}) rotate(${normalizedAngle})` : axisLocation === 'left' ?
@@ -50,7 +50,6 @@ function configureTick(tickS: Selection<Element>, angle: number, axisS: AxisSele
     )
 }
 
-//TODO: Add valid configurations for other axes than bottom
 const tickAngleConfig = (angle: number) => {
   return {
     bottom: bottomConfig(angle),

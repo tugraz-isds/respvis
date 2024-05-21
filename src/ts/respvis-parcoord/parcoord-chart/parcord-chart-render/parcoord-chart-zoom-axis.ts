@@ -1,8 +1,8 @@
 import {D3ZoomEvent, drag, Selection} from "d3";
-import {arrayOrder, KeyedAxisValid, throttle} from "respvis-core";
+import {arrayOrder, KeyedAxis, throttle} from "respvis-core";
 import {onDragAxisParcoord, onDragEndAxisParcord} from "./parcoord-chart-drag-axis";
 
-export function handleAxisZoomAndDrag(axisS: Selection<SVGGElement, KeyedAxisValid>, i: number) {
+export function handleAxisZoomAndDrag(axisS: Selection<SVGGElement, KeyedAxis>, i: number) {
   const axisD = axisS.datum()
   const throttledZoom = throttle((e) => onZoomAxisParcoord(e, axisD), 30)
   const throttledDrag = throttle((e) => onDragAxisParcoord(e, axisD, axisD.renderer.drawAreaBgS), 30)
@@ -35,7 +35,7 @@ export function handleAxisZoomAndDrag(axisS: Selection<SVGGElement, KeyedAxisVal
   ).call(addCursorClasses)
 }
 
-function addCursorClasses(axisS: Selection<SVGGElement, KeyedAxisValid>) {
+function addCursorClasses(axisS: Selection<SVGGElement, KeyedAxis>) {
   const originalSeries = axisS.datum().series.originalSeries
   const flipped = originalSeries.responsiveState.currentlyFlipped
   const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
@@ -50,7 +50,7 @@ function addCursorClasses(axisS: Selection<SVGGElement, KeyedAxisValid>) {
   axisS.classed('cursor--drag-down-only',flipped && orderArray[axisIndex] === orderArray.length)
 }
 
-function onZoomAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxisValid) {
+function onZoomAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxis) {
   const transform = e.transform
   const originalSeries = d.series.originalSeries
   const axisIndex = originalSeries.axes.findIndex(axis => axis.key === d.key)

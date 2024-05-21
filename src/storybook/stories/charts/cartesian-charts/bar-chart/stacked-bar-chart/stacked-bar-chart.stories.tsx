@@ -80,7 +80,7 @@ export const Primary: Story = {
         out: 1
       },
       labels: {
-        values: sharesWhole.map(share => share.toString()), position: 'center',
+        values: sharesWhole.map(share => share.toString()), positionStrategy: 'center',
         format: (bar, label) => {
           const labelFormatted = format('.2s')(parseFloat(label))
           return ((bar.width <= 20 && labelFormatted.length > 2)

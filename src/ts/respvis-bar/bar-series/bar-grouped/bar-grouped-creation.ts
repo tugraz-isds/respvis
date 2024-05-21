@@ -1,12 +1,12 @@
 import {scaleBand} from "d3";
 import {getActiveKeys, ScaledValuesCategorical} from "respvis-core";
-import {BarGroupedSeries} from "../bar-grouped-series";
+import {BarGroupedSeries} from "./bar-grouped-series";
 
-type createGroupedBarProps = {
+type CreateGroupedBarProps = {
   series: BarGroupedSeries
   i: number
 }
-export function createGroupedBar(props: createGroupedBarProps) {
+export function createGroupedBar(props: CreateGroupedBarProps) {
   const {i, series} = props
 
   const flipped = series.responsiveState.currentlyFlipped
