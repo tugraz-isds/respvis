@@ -10,7 +10,7 @@ import {
   Transition
 } from "d3";
 import {elementFromSelection} from "../../utilities/d3/util";
-import {updateBreakpointStatesInCSS} from "../../data";
+import {updateBreakpointState} from "../../data";
 import {AxisValid} from "./base-axis-validation";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {axisTicksPostGenerationRender, axisTicksPreGenerationRender} from "./axis-ticks-render";
@@ -88,7 +88,7 @@ function axisRender(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
   const ticksS = axisTicksPreGenerationRender(axisS)
   a(ticksS);
   axisTicksPostGenerationRender(ticksS)
-  updateBreakpointStatesInCSS(axisElement, axisD.breakPoints)
+  updateBreakpointState(axisElement, axisD.breakPoints)
   tickAngleConfiguration(axisS, ticksS)
 }
 
@@ -98,7 +98,7 @@ function d3Axis(
 ): D3Axis<AxisDomain> {
   const {scaledValues, breakPoints, configureAxis, renderer} = selection.datum()
   const axisElement = elementFromSelection(selection)
-  updateBreakpointStatesInCSS(axisElement, breakPoints)
+  updateBreakpointState(axisElement, breakPoints)
   const chartElement = elementFromSelection(renderer.chartS)
   const configureAxisValid = getCurrentRespVal(configureAxis, {chart: chartElement, self: axisElement})
 

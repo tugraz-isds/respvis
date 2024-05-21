@@ -1,5 +1,5 @@
 import {
-  CSSBreakPointLengthUnit,
+  CSSBreakpointLengthUnit,
   CSSLengthRegex,
   CSSLengthUnit,
   LengthDimension,
@@ -24,7 +24,7 @@ export function cssLengthInPx(length: UnitValue<CSSLengthUnit>, element?: Elemen
   throw new Error(ErrorMessages.evaluatingCSSUnitError)
 }
 
-export function convertToPx(element: Element, value: number, unit: CSSBreakPointLengthUnit) {
+export function convertToPx(element: Element, value: number, unit: CSSBreakpointLengthUnit) {
   if (unit === 'px') {
     return value;
   } else if (unit === 'rem') {

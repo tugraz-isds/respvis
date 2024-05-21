@@ -1,8 +1,8 @@
 import {ErrorMessages} from "../../utilities/error";
 import {defaultScope, maxBreakpointCount} from "../../constants/other";
-import {BreakpointScope, BreakpointScopeMapping} from "../breakpoint/breakpoint-scope";
-import {getLayoutStateFromCSS} from "../breakpoint/breakpoint";
+import {BreakpointScope, BreakpointScopeMapping} from "respvis-core/data/breakpoints/breakpoint-scope";
 import {LengthDimension} from "../../constants/types";
+import {getLayoutWidth} from "respvis-core/data/breakpoints/layout-width";
 
 //TODO: Simultaneous Interpretation of multiple breakpoint indexes
 // Change dependentOn to be inside mapping
@@ -25,7 +25,7 @@ export function getResponsiveValueInformation<T>(respVal: RespValByValue<T>, sco
   const element = desiredElement ? desiredElement : scopes[defaultScope]
   const layout = respVal.dependentOn
 
-  const {index: layoutIndex} = getLayoutStateFromCSS(element, layout)
+  const {index: layoutIndex} = getLayoutWidth(element, layout)
   const valueAtLayoutIndex = getExactResponsiveValueByValue(layoutIndex, respVal)
 
   const preLayoutIndex = getPreLayoutIndex(layoutIndex, respVal)
@@ -33,12 +33,6 @@ export function getResponsiveValueInformation<T>(respVal: RespValByValue<T>, sco
 
   const postLayoutIndex = getPostLayoutIndex(layoutIndex, respVal)
   const valueAtPostLayoutIndex = postLayoutIndex !== null ? getExactResponsiveValueByValue(postLayoutIndex, respVal) : null
-
-  //TODO: Test with different configurations
-  // if (element.classList.contains('axis-x')) {
-  //   console.log(element, layout, layoutIndex, valueAtLayoutIndex,
-  //     preLayoutIndex, valueAtPreLayoutIndex, postLayoutIndex, valueAtPostLayoutIndex)
-  // }
 
   return { element, layout, layoutIndex, valueAtLayoutIndex,
     preLayoutIndex, valueAtPreLayoutIndex, postLayoutIndex, valueAtPostLayoutIndex }

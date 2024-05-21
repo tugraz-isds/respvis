@@ -1,12 +1,7 @@
-import {estimateResponsiveValueByValue, getExactResponsiveValueByValue, RespValByValue} from "./responsive-value-value";
-import {
-  estimateRespValByCallback,
-  getExactRespValByCallback,
-  isRespValByCallback,
-  RespValByCallback
-} from "./responsive-value-callback";
-import {getLayoutStatesFromCSS} from "../breakpoint/breakpoint";
-import {BreakpointScopeMapping} from "../breakpoint/breakpoint-scope";
+import {estimateResponsiveValueByValue, RespValByValue} from "./responsive-value-value";
+import {estimateRespValByCallback, isRespValByCallback, RespValByCallback} from "./responsive-value-callback";
+import {BreakpointScopeMapping} from "respvis-core/data/breakpoints/breakpoint-scope";
+import {getLayoutWidths} from "respvis-core/data/breakpoints/layout-width";
 
 export type RespVal<T> = RespValByValue<T> | RespValByCallback<T>
 export type RespValOptional<T> = RespVal<T> | T
@@ -27,7 +22,7 @@ export function getExactLayoutIndex<T>(val: RespVal<T>, mapping: BreakpointScope
   const scope = val.scope ? val.scope : 'chart'
   const mappingElement = mapping[scope]
   const element = mappingElement ? mappingElement : mapping.chart
-  const layoutIndices = getLayoutStatesFromCSS(element)
+  const layoutIndices = getLayoutWidths(element)
   return layoutIndices[val.dependentOn]
 }
 
@@ -36,11 +31,4 @@ function estimateRespVal<T>(exactBreakpoint: number, respVal: RespVal<T>) {
     return estimateRespValByCallback(exactBreakpoint, respVal)
   }
   return estimateResponsiveValueByValue(exactBreakpoint, respVal)
-}
-
-function getExactRespVal<T>(exactBreakpoint: number, respVal: RespVal<T>) {
-  if (isRespValByCallback(respVal)) {
-    return getExactRespValByCallback(exactBreakpoint, respVal)
-  }
-  return getExactResponsiveValueByValue(exactBreakpoint, respVal)
 }

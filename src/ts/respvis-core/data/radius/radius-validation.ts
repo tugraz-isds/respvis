@@ -14,6 +14,6 @@ export function isRadiusVaryingArg(arg: any): arg is RadiusVaryingArg {
   return typeof arg === 'object' && arg !== null && 'values' in arg && 'scale' in arg;
 }
 
-export type RadiusUnifiedValid = RadiusUnifiedArg
-export type RadiusVaryingValid = RadiusVaryingArg
-export type RadiusValid = RadiusUnifiedValid | RadiusVaryingValid
+export type RadiusUnified = RadiusUnifiedArg
+export type RadiusVarying = RadiusVaryingArg
+export type Radius = RadiusUnified | RadiusVarying

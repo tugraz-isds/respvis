@@ -1,7 +1,6 @@
 import {
   arrayAlignLengths,
   AxisDomainRV,
-  axisScaledValuesValidation,
   BaseAxisUserArgs,
   combineKeys,
   elementFromSelection,
@@ -16,6 +15,7 @@ import {
   SeriesKey,
   SeriesUserArgs,
   Size,
+  validateScaledValuesAxis,
   ZoomArgs,
   ZoomValid,
   zoomValidation
@@ -59,7 +59,7 @@ export class ParcoordSeries extends Series {
         return keyedAxisValidation({
           ...dimension.axis, renderer,
           series: this,
-          scaledValues: axisScaledValuesValidation(dimension.scaledValues, `a-${index}`),
+          scaledValues: validateScaledValuesAxis(dimension.scaledValues, `a-${index}`),
           key: `a-${index}`
         })
       })

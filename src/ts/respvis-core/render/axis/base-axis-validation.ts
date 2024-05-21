@@ -1,8 +1,7 @@
 import {Axis as D3Axis, AxisDomain} from 'd3';
-import {LayoutBreakpoints} from "../../data/breakpoint/breakpoint";
 import {RenderArgs} from "../chart/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
-import {breakPointsValidation} from "../../data/breakpoint/breakpoint-validation";
+import {validateBreakpoints, WidthAndHeightBreakpoints} from "respvis-core/data/breakpoints/breakpoints-validation";
 import {ScaledValues} from "../../data/scale/scaled-values-base";
 import {KeyedAxisValid} from "./keyed-axis-validation";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
@@ -16,7 +15,7 @@ import {
 } from "../../constants/types";
 
 export type BaseAxisUserArgs = {
-  breakPoints?: Partial<LayoutBreakpoints>
+  breakPoints?: Partial<WidthAndHeightBreakpoints>
   title?: RespValOptional<string>
   subTitle?: RespValOptional<string>
   horizontalLayout?: AxisLayoutHorizontal
@@ -32,7 +31,7 @@ export type BaseAxisArgs = BaseAxisUserArgs & RenderArgs & {
 }
 
 export type BaseAxisValid = Required<Omit<BaseAxisArgs, 'breakPoints'>> & {
-  breakPoints: LayoutBreakpoints,
+  breakPoints: WidthAndHeightBreakpoints,
   originalAxis: BaseAxisValid,
   d3Axis?: D3Axis<any> //axis available after first render
 }
@@ -43,7 +42,7 @@ export interface ConfigureAxisFn {
   (axis: D3Axis<AxisDomain>): void;
 }
 
-export function baseAxisValidation(args: BaseAxisArgs): AxisValid {
+export function validateBaseAxis(args: BaseAxisArgs): AxisValid {
   const axis: AxisValid = {
     originalAxis: this,
     renderer: args.renderer,
@@ -56,8 +55,8 @@ export function baseAxisValidation(args: BaseAxisArgs): AxisValid {
     tickOrientation: args.tickOrientation ?? 0,
     tickOrientationFlipped: args.tickOrientationFlipped ?? 0,
     breakPoints: {
-      width: breakPointsValidation(args.breakPoints?.width),
-      height: breakPointsValidation(args.breakPoints?.height)
+      width: validateBreakpoints(args.breakPoints?.width),
+      height: validateBreakpoints(args.breakPoints?.height)
     },
     horizontalLayout: args.horizontalLayout && AxisLayoutsHorizontal.includes(args.horizontalLayout) ?
       args.horizontalLayout : 'bottom',

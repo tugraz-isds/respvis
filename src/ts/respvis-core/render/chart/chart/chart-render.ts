@@ -1,7 +1,6 @@
 import {Selection} from 'd3';
 import {ChartValid} from "./chart-validation";
 import {elementFromSelection} from "../../../utilities/d3/util";
-import {updateCSSForSelection} from "../../../data/breakpoint/breakpoint";
 import {ScatterPlotValid} from "respvis-point";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {bgSVGOnlyFixedRender} from "../../util/bg-svg-only-render";
@@ -9,11 +8,12 @@ import {rectFromString} from "../../../utilities/graphic-elements/rect";
 import {AxisOrientation, isCSSBreakpointLengthValue, SVGGroupingElement} from "../../../constants/types";
 import {uniqueId} from "../../../utilities/unique";
 import {cssLengthInPx} from "../../../utilities/dom/units";
+import {updateBreakpointStateForSelection} from "respvis-core/data/breakpoints/breakpoints-update";
 
 export type ChartBaseSelection<T extends SVGGroupingElement, D extends ChartValid> = Selection<T, D>;
 
 export function chartRender<T extends SVGGroupingElement, D extends ChartValid>(chartS: Selection<T, D>) {
-  updateCSSForSelection(chartS)
+  updateBreakpointStateForSelection(chartS)
 
   chartS.classed('chart', true)
     .classed('layout-container', true)

@@ -12,12 +12,12 @@ export type CSSEMUnit = 'em'
 export type CSSPERUnit = '%'
 export type CSSAbsoluteLengthUnit = CSSPXUnit | CSSREMUnit
 export type CSSRelativeLengthUnit = CSSEMUnit | CSSPERUnit
-export type CSSBreakPointLengthUnit = CSSAbsoluteLengthUnit | CSSEMUnit
+export type CSSBreakpointLengthUnit = CSSAbsoluteLengthUnit | CSSEMUnit
 
 export type UnitValue<Unit extends string> = `${number}${Unit}`
 
 export const CSSBreakpointLengthRegex = /(\d+(?:\.\d+)?)(px|rem|em)/
-export function isCSSBreakpointLengthValue(value: any): value is UnitValue<CSSBreakPointLengthUnit> {
+export function isCSSBreakpointLengthValue(value: any): value is UnitValue<CSSBreakpointLengthUnit> {
   return value.match(CSSBreakpointLengthRegex) !== null
 }
 

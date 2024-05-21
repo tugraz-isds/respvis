@@ -9,7 +9,7 @@ import {ScaledValues, ScaledValuesBase} from "./scaled-values-base";
 
 export type AxisDomainRV = Extract<AxisDomain, number | string | Date>
 
-export function axisScaledValuesValidation(axisScaleArgs: ScaledValuesUserArgs<AxisDomainRV>, axisKey: AxisKey): ScaledValues {
+export function validateScaledValuesAxis(axisScaleArgs: ScaledValuesUserArgs<AxisDomainRV>, axisKey: AxisKey): ScaledValues {
   const {values, scale} = axisScaleArgs
 
   if (values.length <= 0) throw new Error(ErrorMessages.responsiveValueHasNoValues)

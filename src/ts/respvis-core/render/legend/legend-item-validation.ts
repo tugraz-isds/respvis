@@ -1,7 +1,7 @@
 import {arrayIs} from "../../utilities/array";
 import {LegendValid} from "./legend-validation";
 import {Size} from "../../utilities/size";
-import {categoryOrderMapToArray} from "../../data/category";
+import {categoryOrderMapToArray} from "../../data/categories";
 import {mergeKeys} from "../../utilities/dom/key";
 
 export interface LegendItem {
