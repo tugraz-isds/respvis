@@ -1,3 +1,3 @@
-export * from './axis-render'
-export * from './base-axis-validation'
-export * from './keyed-axis-validation'
+export * from './render-axis'
+export * from './validate-base-axis'
+export * from './validate-keyed-axis'

@@ -1,2 +1,2 @@
-export * from './radius-validation'
+export * from './radius'
 export * from './radius-util'

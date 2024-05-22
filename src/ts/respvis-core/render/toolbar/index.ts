@@ -1,3 +1,3 @@
 export * from './tool'
-export * from './toolbar-render'
+export * from './render-toolbar'
 export * from './download-tool'

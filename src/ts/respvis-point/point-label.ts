@@ -1,5 +1,5 @@
 import {Label} from "respvis-core";
-import {Point} from "./point-series/point";
+import {Point} from "./point";
 
 type PointLabelPositionHorizontal = 'left' | 'center' | 'right'
 type PointLabelPositionVertical = 'top' | 'center' | 'bottom'

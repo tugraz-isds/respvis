@@ -9,7 +9,7 @@ import {
   ScaleThreshold,
   ScaleTime
 } from "d3";
-import {AxisDomainRV} from "./axis-scaled-values-validation";
+import {AxisDomainRV} from "./validate-scaled-values-axis";
 
 export type ScaledNumeric<T extends number | Date> =
   T extends Date ? ScaleTime<number, number, never> :

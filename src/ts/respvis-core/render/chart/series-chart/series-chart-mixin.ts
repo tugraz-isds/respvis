@@ -1,14 +1,14 @@
 import {Chart} from "../chart";
 import {Selection} from "d3";
-import {SeriesChartData} from "./series-chart-validation";
+import {SeriesChartData} from "./series-chart";
 import {Window} from "../../window";
-import {legendRender} from "../../legend";
-import {legendAddHover} from "../../legend/legend-event";
-import {toolbarRender} from "../../toolbar/toolbar-render";
+import {renderLegend} from "../../legend";
+import {addLegendHoverHighlighting} from "../../legend/legend-highlighting";
+import {renderToolbar} from "../../toolbar/render-toolbar";
 import {Series} from "../../series";
-import {addHighlight} from "../../series/series-add-highlight";
+import {addSeriesHighlighting} from "../../series/series-highlighting";
 import {seriesConfigTooltipsHandleEvents} from "respvis-tooltip";
-import {labelSeriesFromElementsRender} from "../../label/series-label";
+import {renderLabelSeries} from "../../label";
 import {RenderElement} from "../../../utilities/graphic-elements/render-element";
 
 export abstract class SeriesChartMixin extends Chart {
@@ -41,16 +41,16 @@ export abstract class SeriesChartMixin extends Chart {
     const chartSelection = this.chartS!
     const chartD = chartSelection.datum()
     chartD.getSeries().forEach(series => series.responsiveState.update())
-    legendRender(chartSelection, chartD.legend).call(legendAddHover)
-    toolbarRender(this.windowS!, chartSelection.datum())
+    renderLegend(chartSelection, chartD.legend).call(addLegendHoverHighlighting)
+    renderToolbar(this.windowS!, chartSelection.datum())
   }
   addSeriesFeatures(seriesS: Selection<SVGGElement, Series>) {
     const seriesElementsS = seriesS.selectAll<any, RenderElement>('.bar:not(.exiting):not(.exit-done)')
     const renderElements = seriesElementsS.data()
     const series = seriesS.datum()
-    seriesS.call(addHighlight)
+    seriesS.call(addSeriesHighlighting)
       .call(seriesConfigTooltipsHandleEvents)
-      .call(() => labelSeriesFromElementsRender(this.drawAreaS, {
+      .call(() => renderLabelSeries(this.drawAreaS, {
           elements: renderElements,
           classes: ['series-label'],
           orientation: series.responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'

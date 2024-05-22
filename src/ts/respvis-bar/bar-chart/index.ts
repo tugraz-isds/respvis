@@ -1,2 +1,2 @@
 export * from './bar-chart'
-export * from './bar-chart-validation'
+export * from './validate-bar-chart'

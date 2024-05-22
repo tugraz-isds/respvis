@@ -1,4 +1,4 @@
 export * from './line'
-export * from './line-series-render'
+export * from './render-line-series'
 export * from './line-series-validation'
-export {lineSeriesJoin} from "./line-series-join";
+export {joinLineSeries} from "./join-line-series";

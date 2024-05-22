@@ -1,5 +1,5 @@
 import {AxisType, Orientation, ScaledValueTag, ToArray} from "../../constants/types";
-import {AxisDomainRV} from "./axis-scaled-values-validation";
+import {AxisDomainRV} from "./validate-scaled-values-axis";
 import {ScaleBase} from "./scales";
 import {ZoomTransform} from "d3";
 import {ScaledValuesLinear} from "./scaled-values-linear";

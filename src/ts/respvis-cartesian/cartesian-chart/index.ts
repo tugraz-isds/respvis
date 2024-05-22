@@ -1,3 +1,3 @@
-export * from './cartesian-chart-validation'
+export * from './validate-cartesian-chart'
 export * from './cartesian-chart-mixin'
-export * from './cartesian-chart-render'
+export * from './render'

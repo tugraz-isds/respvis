@@ -2,6 +2,6 @@ export * from './bar-series'
 export * from './bar-standard-series'
 export * from './bar-grouped/bar-grouped-series'
 export * from './bar-stacked/bar-stacked-series'
-export {renderBarSeries} from "./bar-series-render";
+export {renderBarSeries} from "./render-bar-series";
 export * from "../bar";
-export * from "./bar-series-join";
+export * from "./join-bar-series";

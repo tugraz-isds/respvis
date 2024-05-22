@@ -1,18 +1,17 @@
 import {Selection} from 'd3';
 import {CartesianChartMixin} from "respvis-cartesian";
-import {LineChartArgs, LineChartValid, lineChartValidation} from "./line-chart-validation";
-import {lineChartRender} from "./line-chart-render";
+import {LineChartData, LineChartUserArgs, validateLineChart} from "./validate-line-chart";
+import {renderLineChart} from "./render-line-chart";
 import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
 
-export type WindowSelection = Selection<HTMLDivElement, Window & LineChartValid>;
-export type ChartSelection = Selection<SVGSVGElement, Window & LineChartValid>;
-export type LineChartUserArgs = Omit<LineChartArgs, 'renderer'>
+export type WindowSelection = Selection<HTMLDivElement, Window & LineChartData>;
+export type ChartSelection = Selection<SVGSVGElement, Window & LineChartData>;
 
 export interface LineChart extends SeriesChartMixin, CartesianChartMixin {}
 export class LineChart extends Chart {
   constructor(windowSelection: Selection<HTMLDivElement>, data: LineChartUserArgs) {
     super(windowSelection, {...data, type: 'line'})
-    const chartData = lineChartValidation({...data, renderer: this})
+    const chartData = validateLineChart({...data, renderer: this})
     this._windowS = windowSelection as WindowSelection
     const initialWindowData = this.windowS.datum()
     this.windowS.datum({...initialWindowData, ...chartData})
@@ -28,7 +27,7 @@ export class LineChart extends Chart {
   protected override mainRender() {
     super.mainRender()
     this.seriesRequirementsRender()
-    lineChartRender(this.chartS)
+    renderLineChart(this.chartS)
     this.addCartesianFeatures()
     this.addFilterListener()
   }

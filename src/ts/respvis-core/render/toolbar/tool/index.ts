@@ -1,3 +1,3 @@
 export * from './input-label'
-export * from './dialog-render'
-export * from './fieldset-render'
+export * from './render/render-dialog'
+export * from './render/render-fieldset'

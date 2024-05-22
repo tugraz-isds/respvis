@@ -1,5 +1,5 @@
 import {Selection} from "d3";
-import {BarChartData, BarChartUserArgs, validateBarChart} from "./bar-chart-validation";
+import {BarChartData, BarChartUserArgs, validateBarChart} from "./validate-bar-chart";
 import {CartesianChartMixin} from "respvis-cartesian";
 import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
 import {Bar, BarSeries, renderBarSeries} from "../bar-series";

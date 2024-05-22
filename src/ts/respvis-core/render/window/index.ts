@@ -1,3 +1,3 @@
-export * from './window-render'
+export * from './render-window'
 export * from './window-settings'
-export * from './window-validation'
+export * from './window'
