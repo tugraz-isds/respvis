@@ -51,8 +51,8 @@ export function createChartSoldCarsGermany(selector) {
       labels: {
         values: makes,
         offset: 3,
-        positionHorizontal: 'right',
-        positionVertical: 'top'
+        positionStrategyHorizontal: 'right',
+        positionStrategyVertical: 'top'
       }
       // labelCallback: (label: string) => {
       //   // console.log(label)

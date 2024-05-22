@@ -1,5 +1,5 @@
 import {CategoriesUserArgs} from "../../data/categories";
-import {SeriesConfigTooltips, seriesConfigTooltipsData} from "respvis-tooltip";
+import {SeriesConfigTooltips, SeriesConfigTooltipsUserArgs, validateSeriesConfigTooltips} from "respvis-tooltip";
 import {Point} from "respvis-point";
 import {RenderArgs, Renderer} from "../chart/renderer";
 import {ActiveKeyMap, SeriesKey} from "../../constants/types";
@@ -13,7 +13,7 @@ import {Selection} from "d3";
 
 export type SeriesUserArgs = {
   categories?: CategoriesUserArgs
-  markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>
+  markerTooltips?: SeriesConfigTooltipsUserArgs<SVGCircleElement, Point>
   labelCallback?: (category: string) => string
   flipped?: RespValByValueOptional<boolean>
 }
@@ -55,7 +55,7 @@ export abstract class Series implements RenderArgs {
       this.keysActive = {}
       this.keysActive[key] = true
     }
-    this.markerTooltips = 'class' in args ? args.markerTooltips : seriesConfigTooltipsData(args.markerTooltips)
+    this.markerTooltips = 'class' in args ? args.markerTooltips : validateSeriesConfigTooltips(args.markerTooltips)
     this.labelCallback = 'class' in args ? args.labelCallback : (labelCallback ?? ((label: string) => label))
     this.renderer = args.renderer
     this.responsiveState = 'class' in args ? args.responsiveState : new ResponsiveState({

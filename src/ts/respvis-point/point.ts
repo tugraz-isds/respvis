@@ -1,11 +1,11 @@
 import {Circle, Position, RenderElement, RenderElementArgs} from "respvis-core";
-import {PointLabel, PointLabelArgValid} from "./point-label";
+import {PointLabel, PointLabelData} from "./point-label";
 
 export type PointArgs = Circle & RenderElementArgs & {
   xValue: any
   yValue: any
   radiusValue?: any
-  labelArg?: PointLabelArgValid
+  label?: PointLabelData
 }
 
 export class Point implements Circle, RenderElement {
@@ -18,7 +18,7 @@ export class Point implements Circle, RenderElement {
   center: Position;
   radius: number;
   color?: string | undefined;
-  labelArg?: PointLabelArgValid
+  labelData?: PointLabelData
 
   constructor(args: PointArgs) {
     this.xValue = args.xValue
@@ -30,30 +30,31 @@ export class Point implements Circle, RenderElement {
     this.center = args.center
     this.radius = args.radius
     this.color = args.color
-    this.labelArg = args.labelArg
+    this.labelData = args.label
   }
 
   getLabel(): PointLabel | [] {
-    if (!this.labelArg) return []
+    if (!this.labelData) return []
     return {
+      ...this.labelData,
       x: this.getLabelX(),
       y: this.getLabelY(),
       key: this.key,
-      text: this.labelArg.format(this, this.labelArg.value),
+      text: this.labelData.format(this, this.labelData.value),
     }
   }
 
   private getLabelX() {
-    const {positionHorizontal, offset} = this.labelArg!
-    return positionHorizontal === 'left' ? this.center.x - this.radius - offset :
-      positionHorizontal === 'right' ? this.center.x + this.radius + offset :
+    const {positionStrategyHorizontal, offset} = this.labelData!
+    return positionStrategyHorizontal === 'left' ? this.center.x - this.radius - offset :
+      positionStrategyHorizontal === 'right' ? this.center.x + this.radius + offset :
         this.center.x
   }
 
   private getLabelY() {
-    const {positionVertical, offset} = this.labelArg!
-    return positionVertical === 'top' ? this.center.y - this.radius - offset :
-      positionVertical === 'bottom' ? this.center.y + this.radius + offset :
+    const {positionStrategyVertical, offset} = this.labelData!
+    return positionStrategyVertical === 'top' ? this.center.y - this.radius - offset :
+      positionStrategyVertical === 'bottom' ? this.center.y + this.radius + offset :
         this.center.y
   }
 }

@@ -2,7 +2,7 @@ import {select, Selection} from "d3";
 import {createPoints, joinPointSeries, Point} from "respvis-point";
 import {LineSeries} from "./line-series-validation";
 import {addSeriesHighlighting, defaultStyleClass, renderLabelSeries} from "respvis-core";
-import {seriesConfigTooltipsHandleEvents} from "respvis-tooltip";
+import {addSeriesConfigTooltipsEvents} from "respvis-tooltip";
 import {Line} from "./line";
 import {joinLineSeries} from "./join-line-series";
 
@@ -13,13 +13,13 @@ export function renderLineSeries(pointLineS: Selection<Element, LineSeries>): vo
   pointLineS.filter('.series-point-line')
     .call((s) => renderLineSeriesPoints(s, pointGroups))
     .call(addSeriesHighlighting)
-    .call(seriesConfigTooltipsHandleEvents)
+    .call(addSeriesConfigTooltipsEvents)
     .call(() => renderLabelSeries(series.renderer.drawAreaS, {
         elements: pointGroupsFlat,
         classes: ['series-label'],
         orientation: pointLineS.datum().responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
-      }).attr( 'layout-strategy-horizontal', pointGroupsFlat[0]?.labelArg?.positionHorizontal ?? null)
-        .attr( 'layout-strategy-vertical', pointGroupsFlat[0]?.labelArg?.positionVertical ?? null)
+      }).attr( 'layout-strategy-horizontal', pointGroupsFlat[0]?.labelData?.positionStrategyHorizontal ?? null)
+        .attr( 'layout-strategy-vertical', pointGroupsFlat[0]?.labelData?.positionStrategyVertical ?? null)
     )
   renderLineSeriesLines(pointLineS.filter('.series-line'), pointGroups)
 }

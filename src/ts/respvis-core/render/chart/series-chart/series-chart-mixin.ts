@@ -7,7 +7,7 @@ import {addLegendHoverHighlighting} from "../../legend/legend-highlighting";
 import {renderToolbar} from "../../toolbar/render-toolbar";
 import {Series} from "../../series";
 import {addSeriesHighlighting} from "../../series/series-highlighting";
-import {seriesConfigTooltipsHandleEvents} from "respvis-tooltip";
+import {addSeriesConfigTooltipsEvents} from "respvis-tooltip";
 import {renderLabelSeries} from "../../label";
 import {RenderElement} from "../../../utilities/graphic-elements/render-element";
 
@@ -49,7 +49,7 @@ export abstract class SeriesChartMixin extends Chart {
     const renderElements = seriesElementsS.data()
     const series = seriesS.datum()
     seriesS.call(addSeriesHighlighting)
-      .call(seriesConfigTooltipsHandleEvents)
+      .call(addSeriesConfigTooltipsEvents)
       .call(() => renderLabelSeries(this.drawAreaS, {
           elements: renderElements,
           classes: ['series-label'],
