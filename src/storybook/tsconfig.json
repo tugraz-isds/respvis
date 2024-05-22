@@ -12,7 +12,7 @@
       "respvis-line": ["../ts/respvis-line/ts"],
       "respvis-line/*": ["../ts/respvis-line/ts/*"],
       "respvis-parcoord": ["../ts/respvis-parcoord/ts"],
-      "respvis-paracoord/*": ["../ts/respvis-parcoord/ts/*"],
+      "respvis-parcoord/*": ["../ts/respvis-parcoord/ts/*"],
       "respvis-point": ["../ts/respvis-point/ts"],
       "respvis-point/*": ["../ts/respvis-point/ts/*"],
       "respvis-tooltip": ["../ts/respvis-tooltip/ts"],

@@ -22,7 +22,7 @@
       "respvis-line": ["./src/ts/respvis-line/ts"],
       "respvis-line/*": ["./src/ts/respvis-line/ts/*"],
       "respvis-parcoord": ["./src/ts/respvis-parcoord/ts"],
-      "respvis-paracoord/*": ["./src/ts/respvis-parcoord/ts/*"],
+      "respvis-parcoord/*": ["./src/ts/respvis-parcoord/ts/*"],
       "respvis-point": ["./src/ts/respvis-point/ts"],
       "respvis-point/*": ["./src/ts/respvis-point/ts/*"],
       "respvis-tooltip": ["./src/ts/respvis-tooltip/ts"],

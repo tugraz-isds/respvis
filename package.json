@@ -4,6 +4,15 @@
   "description": "A library to build responsive SVG-based visualisations.",
   "main": "./package/respvis/dependency-based/cjs/respvis.js",
   "module": "./package/respvis/dependency-based/esm/respvis.js",
+  "workspaces": [
+    "ts/respvis-bar",
+    "ts/respvis-cartesian",
+    "ts/respvis-core",
+    "ts/respvis-line",
+    "ts/respvis-parcoord",
+    "ts/respvis-point",
+    "ts/respvis-tooltip"
+  ],
   "files": [
     "package/respvis"
   ],

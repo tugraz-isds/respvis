@@ -1,4 +1,4 @@
-import {CartesianAxisUserArgs} from "respvis-cartesian/ts";
+import {CartesianAxisUserArgs} from "respvis-cartesian";
 import {y as yRotating} from './y-ticks-rotating-flipped-arg'
 
 export const y: CartesianAxisUserArgs = {...yRotating,

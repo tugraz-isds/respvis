@@ -1,7 +1,7 @@
 import {Selection} from "d3";
 import {CartesianAxis} from "../validate-cartesian-axis";
 import {Chart, Window} from "respvis-core";
-import {renderCartesianAxes, renderGrid, renderOriginLine} from "respvis-cartesian";
+import {renderCartesianAxes, renderGrid, renderOriginLine} from "./render";
 import {CartesianChartData} from "./validate-cartesian-chart";
 
 type CartesianChartSelection = Selection<SVGSVGElement, Window & CartesianChartData>
