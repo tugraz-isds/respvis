@@ -1,6 +1,6 @@
 {
   "name": "respvis-line",
-  "version": "3.0",
+  "version": "3.0.0",
   "description": "A library to build responsive SVG-based visualisations.",
   "main": "./package/dependency-based/cjs/respvis-line.js",
   "module": "./package/dependency-based/esm/respvis-line.js",

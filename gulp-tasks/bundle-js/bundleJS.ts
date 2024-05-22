@@ -38,7 +38,7 @@ async function bundleJSLive() {
   const respvisStandaloneBundleConfig = {...extensiveBundleConfig, replaceAliases: true}
   const bundle = await getRollupBundle(respvisStandaloneBundleConfig)
   const declarationConfig = {
-    location: `${rootDir}/package/respvis/standalone/esm`,
+    location: `${rootDir}/package/standalone/esm`,
     format: 'esm',
     module: extensiveBundleConfig.module,
     dependencyType: 'standalone'
