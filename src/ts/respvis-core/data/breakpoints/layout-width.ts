@@ -6,7 +6,7 @@ import {
   SVGHTMLGroupingElement,
   UnitValue
 } from "../../constants/types";
-import {Breakpoints} from "./breakpoints-validation";
+import {Breakpoints} from "./breakpoints";
 import {convertToPx} from "../../utilities/dom/units";
 import {defaultLayoutIndex, pxLowerLimit, pxUpperLimit} from "respvis-core/constants";
 

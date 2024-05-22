@@ -1,10 +1,10 @@
 import {dispatch, Selection} from "d3";
 import {SVGHTMLElement} from "../../../constants/types";
-import {Window, WindowArgs, windowRender, windowValidation} from "../../window";
-import {ChartData, ChartDataUserArgs, validateChart} from "./chart-validation";
+import {renderWindow, Window, WindowArgs, windowValidation} from "../../window";
+import {ChartData, ChartDataUserArgs, validateChart} from "./validate-chart";
 import {Renderer} from "../renderer";
 import {ReRenderContext, resizeEventListener} from "../../../resize-event-dispatcher";
-import {renderChart} from "./chart-render";
+import {renderChart} from "./render-chart";
 import {ThrottleScheduled} from "../../../utilities/d3/util";
 import {fixActiveCursor} from "../../util/fix-active-cursor";
 import {layouterCompute} from "respvis-core/layouter/layouter-compute";
@@ -187,7 +187,7 @@ export class Chart implements Renderer {
 
   protected mainRender() {
     const data = this.windowS.datum()
-    const {chartS} = windowRender(this.windowS)
+    const {chartS} = renderWindow(this.windowS)
     renderChart(chartS)
     chartS.classed(`chart-${data.type}`, true)
     fixActiveCursor(chartS)

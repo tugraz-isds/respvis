@@ -1,4 +1,4 @@
-import {isRadiusVaryingArg, Radius} from "./radius-validation";
+import {isRadiusVaryingArg, Radius} from "./radius";
 import {getCurrentRespVal} from "../responsive-value/responsive-value";
 import {BreakpointScopeMapping} from "respvis-core/data/breakpoints/breakpoint-scope";
 import {ScaledValuesLinear} from "../scale/scaled-values-linear";

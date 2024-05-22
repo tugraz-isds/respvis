@@ -1,3 +1,3 @@
 export * from './chart'
-export * from './chart-render'
-export * from "./chart-validation"
+export * from './render-chart'
+export * from "./validate-chart"

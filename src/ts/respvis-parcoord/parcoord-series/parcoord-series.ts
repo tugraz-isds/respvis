@@ -16,13 +16,13 @@ import {
   Size,
   validateKeyedAxis,
   validateScaledValuesAxis,
-  ZoomArgs,
-  ZoomValid,
-  zoomValidation
+  validateZoom,
+  Zoom,
+  ZoomArgs
 } from "respvis-core";
 import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal, scalePoint, ScalePoint, Selection} from "d3";
-import {ParcoordSeriesResponsiveState} from "./responsive-state";
-import {toolRender} from "./tool-render";
+import {ParcoordResponsiveState} from "./responsive-state";
+import {renderTool} from "../parcoord-chart/render/render-tool";
 
 export type ParcoordSeriesUserArgs = SeriesUserArgs & {
   dimensions: {
@@ -44,9 +44,9 @@ export class ParcoordSeries extends Series {
   axesScale: ScalePoint<string>
   axesPercentageScale: ScaleOrdinal<string, number>
   percentageScreenScale: ScaleLinear<number, number>
-  zooms: (ZoomValid | undefined)[]
+  zooms: (Zoom | undefined)[]
   axesInverted: boolean[]
-  responsiveState: ParcoordSeriesResponsiveState
+  responsiveState: ParcoordResponsiveState
 
   constructor(args: ParcoordArgs | ParcoordSeries) {
     super(args)
@@ -88,11 +88,11 @@ export class ParcoordSeries extends Series {
       .domain(this.axes.map((axis) => axis.key))
     
     this.zooms = 'class' in args ? args.zooms : args.dimensions.map(dimension => {
-      return dimension.zoom ? zoomValidation(dimension.zoom) : undefined
+      return dimension.zoom ? validateZoom(dimension.zoom) : undefined
     })
 
     this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
-      new ParcoordSeriesResponsiveState({
+      new ParcoordResponsiveState({
       series: this,
       originalSeries: this.originalSeries,
       flipped: ('flipped' in args) ? args.flipped : false
@@ -133,7 +133,7 @@ export class ParcoordSeries extends Series {
   }
 
   toolRender(toolbarS: Selection<HTMLDivElement>) {
-    toolRender(toolbarS, this)
+    renderTool(toolbarS, this)
   }
 
   cloneFiltered() {

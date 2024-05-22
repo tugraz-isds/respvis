@@ -2,20 +2,20 @@ import {ColorContinuous, RadiusArg} from "respvis-core";
 import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
 import {PointLabelsUserArgs, PointLabelValues} from "../point-label";
 
-export type SeriesPointUserArgs = CartesianSeriesUserArgs & {
+export type PointSeriesUserArgs = CartesianSeriesUserArgs & {
   radii?: RadiusArg
   color?: ColorContinuous
   labels?: PointLabelsUserArgs
 }
 
-export type SeriesPointArgs = SeriesPointUserArgs & CartesianSeriesArgs
+export type PointSeriesArgs = PointSeriesUserArgs & CartesianSeriesArgs
 
 export class PointSeries extends CartesianSeries {
   color?: ColorContinuous
   radii: RadiusArg
   labels?: PointLabelValues
   //TODO: Do clean radius validation
-  constructor(args: SeriesPointArgs | PointSeries) {
+  constructor(args: PointSeriesArgs | PointSeries) {
     super(args)
     this.radii = args.radii ?? 5
     this.color = args.color

@@ -1,10 +1,10 @@
 import {Selection} from "d3";
-import {CartesianAxis} from "../cartesian-axis-validation";
+import {CartesianAxis} from "../validate-cartesian-axis";
 import {Chart, Window} from "respvis-core";
-import {renderOriginLine} from "./cartesian-chart-render/origin-line-render";
-import {CartesianChartData} from "./cartesian-chart-validation";
-import {cartesianGridRender} from "./cartesian-chart-render/grid-render";
-import {renderCartesianAxes} from "./cartesian-chart-render/cartesian-axes-render";
+import {renderOriginLine} from "respvis-cartesian/cartesian-chart/render/render-origin-line";
+import {CartesianChartData} from "./validate-cartesian-chart";
+import {renderGrid} from "respvis-cartesian/cartesian-chart/render/render-grid";
+import {renderCartesianAxes} from "respvis-cartesian/cartesian-chart/render/render-cartesian-axes";
 
 type CartesianChartSelection = Selection<SVGSVGElement, Window & CartesianChartData>
 
@@ -27,7 +27,7 @@ export abstract class CartesianChartMixin extends Chart {
     renderCartesianAxes(this.chartS)
   }
   originLineRender() { renderOriginLine(this.chartS) }
-  cartesianGridRender() { cartesianGridRender(this.chartS) }
+  cartesianGridRender() { renderGrid(this.chartS) }
   addCartesianFeatures() {
     this.cartesianAxisRender()
     this.originLineRender()
