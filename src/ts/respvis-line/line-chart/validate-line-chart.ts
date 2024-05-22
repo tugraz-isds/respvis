@@ -1,8 +1,8 @@
-import {CartesianChartArgs, CartesianChartData, validateCartesianChart} from "respvis-cartesian";
+import {CartesianChartData, CartesianChartUserArgs, validateCartesianChart} from "respvis-cartesian";
 import {LineSeries, LineSeriesUserArgs} from "../line-series/line-series-validation";
 import {RenderArgs} from "respvis-core";
 
-export type LineChartUserArgs =  Omit<CartesianChartArgs, 'series'> & {
+export type LineChartUserArgs =  Omit<CartesianChartUserArgs, 'series'> & {
   series: LineSeriesUserArgs
 }
 

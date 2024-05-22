@@ -53,6 +53,6 @@ function createPoint(props: CreatePointProps) {
       key: seriesData.getCombinedKey(i) + ` i-${i}`,
       styleClass: seriesData.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
       tooltipLabel: seriesData.labelCallback(seriesData.categories?.values[i] ?? ''),
-      labelArg: seriesData.labels?.getArgValid(i)
+      label: seriesData.labels?.getArgValid(i)
     })
 }

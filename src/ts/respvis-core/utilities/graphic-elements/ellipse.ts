@@ -1,4 +1,4 @@
-import {Position, Rect, rectCenter, SelectionOrTransition} from "respvis-core";
+import {Position, Rect, rectCenter, SelectionOrTransition} from "respvis-core/utilities";
 
 export interface Ellipse {
   center: Position;
