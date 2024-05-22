@@ -9,7 +9,7 @@ import {
   validateBaseAxis,
   validateChart,
   validateScaledValuesAxis
-} from "../../../../../ts";
+} from "../../../../../packages";
 import {EmptySeries} from "../empty-series";
 
 type AxisChartAxisUserArgs = BaseAxisUserArgs & {

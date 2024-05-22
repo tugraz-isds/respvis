@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {BarChartUserArgs} from "../../../../../../ts";
+import {BarChartUserArgs} from "respvis-bar";
 import StackedBarChartCSS from './stacked-bar-chart.css?inline'
 import {rawCode} from "../../../../util/raw-code";
 import {DesktopPhoneTabletData} from '../../../../util/data'

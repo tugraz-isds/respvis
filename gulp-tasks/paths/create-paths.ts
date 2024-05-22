@@ -1,9 +1,9 @@
-import {Module, modules} from "../constants/modules";
+import {Module, modules, respvisModules} from "../constants/modules";
 
 export function createPaths(rootDir: string) {
   const gulpUtilGenerated = `${rootDir}/gulp-util-generated`
   const srcDir = `${rootDir}/src`
-  const tsDir = `${srcDir}/ts`
+  const packagesDir = `${srcDir}/packages`
 
   const assetsDir = `${srcDir}/assets`
   const iconsDir = `${srcDir}/assets/svg/cursor-icons`
@@ -35,11 +35,15 @@ export function createPaths(rootDir: string) {
   ]
 
   const modulesPaths: Record<Module, string> = modules.reduce((acc, item) => {
-    acc[item] = `${tsDir}/${item}`; return acc
+    acc[item] = `${packagesDir}/${item}`; return acc
+  }, {}) as Record<Module, string>
+
+  const respVisModulesPaths: Record<Module, string> = respvisModules.reduce((acc, item) => {
+    acc[item] = `${packagesDir}/${item}`; return acc
   }, {}) as Record<Module, string>
 
   return {
-    rootDir, gulpUtilGenerated, srcDir, tsDir, assetsDir, iconsDir, dataDepsDir, libsDepsDir, respvisDepsDir,
-    exampleDir, barExampleDir, exampleDirList, modulesPaths
+    rootDir, gulpUtilGenerated, srcDir, packagesDir, assetsDir, iconsDir, dataDepsDir, libsDepsDir, respvisDepsDir,
+    exampleDir, barExampleDir, exampleDirList, modulesPaths, respVisModulesPaths
   }
 }

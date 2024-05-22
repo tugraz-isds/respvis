@@ -1,13 +1,22 @@
 {
   "name": "respvis",
-  "version": "3.0",
+  "version": "3.0.0",
   "description": "A library to build responsive SVG-based visualisations.",
-  "main": "./package/respvis/dependency-based/cjs/respvis.js",
-  "module": "./package/respvis/dependency-based/esm/respvis.js",
+  "main": "./package/dependency-based/cjs/respvis.js",
+  "module": "./package/dependency-based/esm/respvis.js",
+  "workspaces": [
+    "./src/packages/respvis-bar",
+    "./src/packages/respvis-cartesian",
+    "./src/packages/respvis-core",
+    "./src/packages/respvis-line",
+    "./src/packages/respvis-parcoord",
+    "./src/packages/respvis-point",
+    "./src/packages/respvis-tooltip"
+  ],
   "files": [
     "package"
   ],
-  "types": "./package/respvis/standalone/esm/respvis.d.ts",
+  "types": "./package/standalone/esm/respvis.d.ts",
   "scripts": {
     "clean": "npx gulp clean",
     "cleanExampleDeps": "npx gulp cleanExampleDeps",

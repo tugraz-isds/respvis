@@ -19,8 +19,11 @@ function cleanDist() {
   return del('dist', { force: true });
 }
 
-function cleanPackage() {
-  return del('package', { force: true });
+function cleanPackages() {
+  const singlePackagePaths = Object.values(absolutePaths.respVisModulesPaths)
+    .map(path => `${path}/package`)
+  const extensivePackagePath = 'package'
+  return del([...singlePackagePaths, extensivePackagePath], { force: true });
 }
 
 function cleanPackageLive() {
@@ -46,7 +49,7 @@ exports.genSVGDataURI = gulp.series(() => genSVGDataURIs(`${iconsDir}/**/*.svg`,
 
 exports.cleanExampleDeps = gulp.series(cleanExampleDependencies)
 
-exports.clean = gulp.parallel(cleanDist, cleanPackage, exports.cleanExampleDeps)
+exports.clean = gulp.parallel(cleanDist, cleanPackages, exports.cleanExampleDeps)
 const cleanLive = gulp.parallel(cleanDist, cleanPackageLive, exports.cleanExampleDeps )
 
 exports.cleanAll = gulp.parallel(exports.clean, cleanPackageLock, cleanNodeModules)

@@ -1,26 +1,26 @@
 import {absolutePaths} from "../paths/absolute-paths";
 import {respvisModules} from "../constants/modules";
 
-const {rootDir, tsDir} = absolutePaths
+const {rootDir, packagesDir, respVisModulesPaths} = absolutePaths
 
-export const respvisBundleConfig = {
-  entryFile: `${tsDir}/index.ts`,
-  include: ["src/ts/**/*", "module-specs.d.ts"],
-  exclude: ["node_modules", "dist", "**/*.spec.ts", "src/stories", "src/examples"],
-  outputDirectory: `${rootDir}/package/respvis`,
+export const extensiveBundleConfig = {
+  entryFile: `${packagesDir}/index.ts`,
+  include: ["src/packages/**/*", "declarations/*.d.ts"],
+  exclude: ["node_modules", "dist", "src/stories", "src/examples", "**/package"],
+  outputDirectory: `${rootDir}/package`,
   module: 'respvis',
   external: undefined
 }
 
 const singleBundleConfigs = respvisModules.map(currentModule => {
   return {
-    entryFile: `${tsDir}/${currentModule}/index.ts`,
-    include: [`src/ts/**/*`, `module-specs.d.ts`],
-    exclude: ["node_modules", "dist", "**/*.spec.ts", "src/stories"],
-    outputDirectory: `${rootDir}/package/${currentModule}`,
+    entryFile: `${respVisModulesPaths[currentModule]}/ts/index.ts`,
+    include: [`src/packages/**/*`, "declarations/*.d.ts"],
+    exclude: ["node_modules", "dist", "src/stories", "**/package"],
+    outputDirectory: `${respVisModulesPaths[currentModule]}/package`,
     external: respvisModules.filter(module => module !== currentModule),
     module: currentModule
   }
 })
 
-export const allBundlesConfigsBase = [respvisBundleConfig, ...singleBundleConfigs]
+export const allBundlesConfigsBase = [extensiveBundleConfig, ...singleBundleConfigs]
