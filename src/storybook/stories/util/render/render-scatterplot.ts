@@ -1,4 +1,4 @@
-import {ScatterPlot, ScatterPlotUserArgs} from "../../../../ts";
+import {ScatterPlot, ScatterPlotUserArgs} from "../../../../packages";
 import type {StoryContext} from "@storybook/html";
 import {renderChartMeta} from "./render-chart-meta";
 import {select, Selection} from "d3";

@@ -1,18 +1,18 @@
 import {absolutePaths} from "../paths/absolute-paths";
 import {respvisModules} from "../constants/modules";
 
-const {srcDir, rootDir} = absolutePaths
+const {srcDir, rootDir, respVisModulesPaths} = absolutePaths
 
 export const singleModuleConfigsCSS = respvisModules.map(module => {
   return {
     module,
-    src: `${srcDir}/css/${module}/index.css`,
-    target: `${rootDir}/package/${module}`,
+    src: `${respVisModulesPaths[module]}/css/index.css`,
+    target: `${respVisModulesPaths[module]}/package`,
   }
 })
 
 export const respvisModuleConfigCSS = {
   module: 'respvis',
-  src: `${srcDir}/css/index.css`,
-  target: `${rootDir}/package/respvis`,
+  src: `${srcDir}/packages/index.css`,
+  target: `${rootDir}/package`,
 }

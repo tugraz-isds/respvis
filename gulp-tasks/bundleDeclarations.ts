@@ -18,7 +18,7 @@ async function reduceToRelevantTypesOnly(declarationConfig) {
   const typePath = `${location}/types`
   const tempTypePath = `${location}/types-temp`
   const tempTypePathFiles = `${tempTypePath}/**/*`
-  const modulePath = `${typePath}/${module}`
+  const modulePath = `${typePath}/${module}/ts`
   const modulePathFiles = `${modulePath}/**/*`
 
   const writeToTempStream = dest(tempTypePath)

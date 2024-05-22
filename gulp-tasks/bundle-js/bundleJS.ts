@@ -1,6 +1,6 @@
 import rollup from "rollup";
 import {stripCode} from "../rollup-plugin/codeStripPlugin";
-import {allBundlesConfigsBase, respvisBundleConfig} from "./bundle-configs";
+import {allBundlesConfigsBase, extensiveBundleConfig} from "./bundle-configs";
 import rollupNodeResolve from "@rollup/plugin-node-resolve";
 import rollupCommonJs from "@rollup/plugin-commonjs";
 import rollupTypescript from "@rollup/plugin-typescript";
@@ -35,12 +35,12 @@ export async function bundleJS() {
 }
 
 async function bundleJSLive() {
-  const respvisStandaloneBundleConfig = {...respvisBundleConfig, replaceAliases: true}
+  const respvisStandaloneBundleConfig = {...extensiveBundleConfig, replaceAliases: true}
   const bundle = await getRollupBundle(respvisStandaloneBundleConfig)
   const declarationConfig = {
     location: `${rootDir}/package/respvis/standalone/esm`,
     format: 'esm',
-    module: respvisBundleConfig.module,
+    module: extensiveBundleConfig.module,
     dependencyType: 'standalone'
   }
   await Promise.all(writeBundle(bundle, [
@@ -88,6 +88,7 @@ async function bundleJSProduction(allBundleConfigs) {
     }).flat()
     return writeBundle(bundle, writeConfigs)
   }).flat()
+  // return Promise.all(writeBundles)
   await Promise.all(writeBundles)
   return bundleDeclarations(Array.from(declarationConfigs))
 }
@@ -107,7 +108,7 @@ async function getRollupBundle(config) {
         typescript: typescript,
         tsconfig: `${rootDir}/tsconfig.json`,
         include: config.include ?? ["src/ts/**/*", "declarations/*.d.ts"],
-        exclude: config.exclude ?? ["node_modules", "dist", "src/stories"],
+        exclude: config.exclude ?? ["node_modules", "dist", "src/stories", "package"],
         compilerOptions: {
           plugins: [
             ...(config.replaceAliases ? [{ "transform": "typescript-transform-paths", "afterDeclarations": true }] : [])

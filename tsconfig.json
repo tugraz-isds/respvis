@@ -14,27 +14,27 @@
     "declarationDir": "types",
     "isolatedModules": true,
     "paths": {
-      "respvis-core": ["./src/ts/respvis-core/ts"],
-      "respvis-core/*": ["./src/ts/respvis-core/ts/*"],
-      "respvis-bar": ["./src/ts/respvis-bar/ts"],
-      "respvis-bar/*": ["./src/ts/respvis-bar/ts/*"],
-      "respvis-cartesian": ["./src/ts/respvis-cartesian/ts"],
-      "respvis-cartesian/*": ["./src/ts/respvis-cartesian/ts/*"],
-      "respvis-line": ["./src/ts/respvis-line/ts"],
-      "respvis-line/*": ["./src/ts/respvis-line/ts/*"],
-      "respvis-parcoord": ["./src/ts/respvis-parcoord/ts"],
-      "respvis-parcoord/*": ["./src/ts/respvis-parcoord/ts/*"],
-      "respvis-point": ["./src/ts/respvis-point/ts"],
-      "respvis-point/*": ["./src/ts/respvis-point/ts/*"],
-      "respvis-tooltip": ["./src/ts/respvis-tooltip/ts"],
-      "respvis-tooltip/*": ["./src/ts/respvis-tooltip/ts/*"]
+      "respvis-core": ["./src/packages/respvis-core/ts"],
+      "respvis-core/*": ["./src/packages/respvis-core/ts/*"],
+      "respvis-bar": ["./src/packages/respvis-bar/ts"],
+      "respvis-bar/*": ["./src/packages/respvis-bar/ts/*"],
+      "respvis-cartesian": ["./src/packages/respvis-cartesian/ts"],
+      "respvis-cartesian/*": ["./src/packages/respvis-cartesian/ts/*"],
+      "respvis-line": ["./src/packages/respvis-line/ts"],
+      "respvis-line/*": ["./src/packages/respvis-line/ts/*"],
+      "respvis-parcoord": ["./src/packages/respvis-parcoord/ts"],
+      "respvis-parcoord/*": ["./src/packages/respvis-parcoord/ts/*"],
+      "respvis-point": ["./src/packages/respvis-point/ts"],
+      "respvis-point/*": ["./src/packages/respvis-point/ts/*"],
+      "respvis-tooltip": ["./src/packages/respvis-tooltip/ts"],
+      "respvis-tooltip/*": ["./src/packages/respvis-tooltip/ts/*"]
     }
   },
   "include": [
     "src/**/*",
     "declarations/*.d.ts"
   ],
-  "exclude": ["node_modules", "src/storybook/**/*"],
+  "exclude": ["node_modules", "src/storybook/**/*", "**/package"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"

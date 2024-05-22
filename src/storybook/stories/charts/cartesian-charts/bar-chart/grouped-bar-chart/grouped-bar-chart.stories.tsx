@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {BarChartUserArgs} from "../../../../../../ts";
+import {BarChartUserArgs} from "../../../../../../packages";
 import GroupedBarChartCSS from './grouped-bar-chart.css?inline'
 import {rawCode} from "../../../../util/raw-code";
 import {CompensationEmployeeData} from '../../../../util/data'

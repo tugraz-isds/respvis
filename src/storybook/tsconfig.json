@@ -3,25 +3,25 @@
   "compilerOptions": {
     "jsx": "react",
     "paths": {
-      "respvis-core": ["../ts/respvis-core/ts"],
-      "respvis-core/*": ["../ts/respvis-core/ts/*"],
-      "respvis-bar": ["../ts/respvis-bar/ts"],
-      "respvis-bar/*": ["../ts/respvis-bar/ts/*"],
-      "respvis-cartesian": ["../ts/respvis-cartesian/ts"],
-      "respvis-cartesian/*": ["../ts/respvis-cartesian/ts/*"],
-      "respvis-line": ["../ts/respvis-line/ts"],
-      "respvis-line/*": ["../ts/respvis-line/ts/*"],
-      "respvis-parcoord": ["../ts/respvis-parcoord/ts"],
-      "respvis-parcoord/*": ["../ts/respvis-parcoord/ts/*"],
-      "respvis-point": ["../ts/respvis-point/ts"],
-      "respvis-point/*": ["../ts/respvis-point/ts/*"],
-      "respvis-tooltip": ["../ts/respvis-tooltip/ts"],
-      "respvis-tooltip/*": ["../ts/respvis-tooltip/ts/*"]
+      "respvis-core": ["../packages/respvis-core/ts"],
+      "respvis-core/*": ["../packages/respvis-core/ts/*"],
+      "respvis-bar": ["../packages/respvis-bar/ts"],
+      "respvis-bar/*": ["../packages/respvis-bar/ts/*"],
+      "respvis-cartesian": ["../packages/respvis-cartesian/ts"],
+      "respvis-cartesian/*": ["../packages/respvis-cartesian/ts/*"],
+      "respvis-line": ["../packages/respvis-line/ts"],
+      "respvis-line/*": ["../packages/respvis-line/ts/*"],
+      "respvis-parcoord": ["../packages/respvis-parcoord/ts"],
+      "respvis-parcoord/*": ["../packages/respvis-parcoord/ts/*"],
+      "respvis-point": ["../packages/respvis-point/ts"],
+      "respvis-point/*": ["../packages/respvis-point/ts/*"],
+      "respvis-tooltip": ["../packages/respvis-tooltip/ts"],
+      "respvis-tooltip/*": ["../packages/respvis-tooltip/ts/*"]
     }
   },
   "include": [
     "./stories/**/*",
     "../../declarations/*.d.ts",
   ],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": ["node_modules", "**/*.spec.ts", "**/package"]
 }
