@@ -5,7 +5,7 @@
   "main": "./package/respvis/dependency-based/cjs/respvis.js",
   "module": "./package/respvis/dependency-based/esm/respvis.js",
   "files": [
-    "package"
+    "package/respvis"
   ],
   "types": "./package/respvis/standalone/esm/respvis.d.ts",
   "scripts": {

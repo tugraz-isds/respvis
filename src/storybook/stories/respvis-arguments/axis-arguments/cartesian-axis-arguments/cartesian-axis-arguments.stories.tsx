@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/html';
-import {LineChartUserArgs} from "respvis-line";
+import {LineChartUserArgs} from "respvis-line/ts";
 import {rawCode} from "../../../util/raw-code";
 import {renderLineChart} from "../../../util/render/render-line.chart";
 import FullyResponsiveCSS from '../../example-multi-line/example-multi-line.css?inline'

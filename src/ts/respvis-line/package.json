@@ -1,0 +1,35 @@
+{
+  "name": "respvis-line",
+  "version": "3.0",
+  "description": "A library to build responsive SVG-based visualisations.",
+  "main": "./package/dependency-based/cjs/respvis-line.js",
+  "module": "./package/dependency-based/esm/respvis-line.js",
+  "files": [
+    "./package"
+  ],
+  "types": "./package/dependency-based/esm/respvis-line.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tugraz-isds/respvis.git"
+  },
+  "keywords": [
+    "d3",
+    "responsive",
+    "svg",
+    "information-visualisation",
+    "visualisation",
+    "chart"
+  ],
+  "author": "David Egger, Peter Oberrauner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tugraz-isds/respvis/issues"
+  },
+  "homepage": "https://github.com/tugraz-isds/respvis#readme",
+  "peerDependencies": {
+    "d3": "^7.2.1",
+    "respvis-core": "latest",
+    "respvis-cartesian": "latest",
+    "respvis-point": "latest"
+  }
+}
