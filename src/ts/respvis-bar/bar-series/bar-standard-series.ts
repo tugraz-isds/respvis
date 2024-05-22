@@ -1,5 +1,5 @@
 import {BarSeriesType, ErrorMessages, Rect, ScaledValuesCategorical} from "respvis-core";
-import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "./bar-base-series";
+import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "respvis-bar/bar-series/bar-base/bar-base-series";
 
 export type BarStandardSeriesUserArgs = BarBaseSeriesUserArgs & {
   type?: 'standard'

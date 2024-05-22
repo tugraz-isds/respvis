@@ -1,7 +1,6 @@
 import {
   alignScaledValuesLengths,
   AxisDomainRV,
-  axisScaledValuesValidation,
   AxisType,
   combineKeys,
   ScaledValues,
@@ -10,11 +9,12 @@ import {
   Series,
   SeriesArgs,
   SeriesUserArgs,
-  ZoomArgs,
-  ZoomValid,
-  zoomValidation
+  validateScaledValuesAxis,
+  validateZoom,
+  Zoom,
+  ZoomArgs
 } from "respvis-core";
-import {CartesianSeriesResponsiveState} from "./responsive-state";
+import {CartesianResponsiveState} from "./cartesian-responsive-state";
 import {CartesianRenderer} from "../cartesian-renderer";
 
 export type CartesianSeriesUserArgs = SeriesUserArgs & {
@@ -31,8 +31,8 @@ export class CartesianSeries extends Series {
   originalSeries: CartesianSeries
   x: ScaledValues
   y: ScaledValues
-  responsiveState: CartesianSeriesResponsiveState
-  zoom?: ZoomValid
+  responsiveState: CartesianResponsiveState
+  zoom?: Zoom
   renderer: CartesianRenderer
 
   constructor(args: CartesianSeriesArgs | CartesianSeries) {
@@ -40,16 +40,16 @@ export class CartesianSeries extends Series {
     this.originalSeries = args.originalSeries ?? this
     const [xAligned, yAligned] = ('tag' in args.x && 'tag' in args.y) ? [args.x, args.y] :
       alignScaledValuesLengths(args.x, args.y)
-    this.x = 'tag' in xAligned ? xAligned : axisScaledValuesValidation(xAligned, 'a-0')
-    this.y = 'tag' in yAligned ? yAligned : axisScaledValuesValidation(yAligned, 'a-1')
+    this.x = 'tag' in xAligned ? xAligned : validateScaledValuesAxis(xAligned, 'a-0')
+    this.y = 'tag' in yAligned ? yAligned : validateScaledValuesAxis(yAligned, 'a-1')
 
     this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
-      new CartesianSeriesResponsiveState({
+      new CartesianResponsiveState({
         series: this,
         originalSeries: this.originalSeries,
         flipped: ('flipped' in args) ? args.flipped : false
       })
-    this.zoom = 'class' in args ? args.zoom : args.zoom ? zoomValidation(args.zoom) : undefined
+    this.zoom = 'class' in args ? args.zoom : args.zoom ? validateZoom(args.zoom) : undefined
     this.renderer = args.renderer as CartesianRenderer
   }
 

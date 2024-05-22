@@ -1,19 +1,19 @@
-import {CategoryUserArgs} from "../../data/category";
-import {SeriesConfigTooltips, seriesConfigTooltipsData} from "respvis-tooltip";
+import {CategoriesUserArgs} from "../../data/categories";
+import {SeriesConfigTooltips, SeriesConfigTooltipsUserArgs, validateSeriesConfigTooltips} from "respvis-tooltip";
 import {Point} from "respvis-point";
 import {RenderArgs, Renderer} from "../chart/renderer";
 import {ActiveKeyMap, SeriesKey} from "../../constants/types";
 import {Size} from "../../utilities/size";
 import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";
 import {mergeKeys} from "../../utilities/dom/key";
-import {SeriesResponsiveState} from "./responsive-state";
+import {ResponsiveState} from "./responsive-state";
 
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 import {Selection} from "d3";
 
 export type SeriesUserArgs = {
-  categories?: CategoryUserArgs
-  markerTooltips?: Partial<SeriesConfigTooltips<SVGCircleElement, Point>>
+  categories?: CategoriesUserArgs
+  markerTooltips?: SeriesConfigTooltipsUserArgs<SVGCircleElement, Point>
   labelCallback?: (category: string) => string
   flipped?: RespValByValueOptional<boolean>
 }
@@ -34,7 +34,7 @@ export abstract class Series implements RenderArgs {
   markerTooltips: SeriesConfigTooltips<SVGCircleElement, Point>
   labelCallback: (category: string) => string
   renderer: Renderer
-  responsiveState: SeriesResponsiveState
+  responsiveState: ResponsiveState
 
   constructor(args: SeriesArgs | Series) {
     const {key, labelCallback} = args
@@ -55,10 +55,10 @@ export abstract class Series implements RenderArgs {
       this.keysActive = {}
       this.keysActive[key] = true
     }
-    this.markerTooltips = 'class' in args ? args.markerTooltips : seriesConfigTooltipsData(args.markerTooltips)
+    this.markerTooltips = 'class' in args ? args.markerTooltips : validateSeriesConfigTooltips(args.markerTooltips)
     this.labelCallback = 'class' in args ? args.labelCallback : (labelCallback ?? ((label: string) => label))
     this.renderer = args.renderer
-    this.responsiveState = 'class' in args ? args.responsiveState : new SeriesResponsiveState({
+    this.responsiveState = 'class' in args ? args.responsiveState : new ResponsiveState({
       series: this,
       originalSeries: this.originalSeries,
       flipped: ('flipped' in args) ? args.flipped : false

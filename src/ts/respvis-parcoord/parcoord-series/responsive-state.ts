@@ -1,17 +1,17 @@
-import {AxisLayout, SeriesResponsiveState, SeriesResponsiveStateArgs} from "respvis-core";
+import {AxisLayout, ResponsiveState, ResponsiveStateArgs} from "respvis-core";
 import {ParcoordSeries} from "./parcoord-series";
 
-type ParcoordSeriesResponsiveStateArgs = SeriesResponsiveStateArgs & {
+type ParcoordResponsiveStateArgs = ResponsiveStateArgs & {
   series: ParcoordSeries
   originalSeries: ParcoordSeries
 }
 
-export class ParcoordSeriesResponsiveState extends SeriesResponsiveState {
+export class ParcoordResponsiveState extends ResponsiveState {
   protected _series: ParcoordSeries
   protected _originalSeries: ParcoordSeries
   protected _axisLayout: AxisLayout
 
-  constructor(args: ParcoordSeriesResponsiveStateArgs) {
+  constructor(args: ParcoordResponsiveStateArgs) {
     super(args);
     this._series = args.series
     this._originalSeries = args.originalSeries
@@ -41,11 +41,11 @@ export class ParcoordSeriesResponsiveState extends SeriesResponsiveState {
     axesScale.range(currentAxesSpaceRange)
   }
 
-  cloneProps(): ParcoordSeriesResponsiveStateArgs {
+  cloneProps(): ParcoordResponsiveStateArgs {
     return { ...super.cloneProps(), series: this._series, originalSeries: this._originalSeries }
   }
 
-  clone(args?: Partial<ParcoordSeriesResponsiveStateArgs>) {
-    return new ParcoordSeriesResponsiveState({...this.cloneProps(), ...(args ? args : {})})
+  clone(args?: Partial<ParcoordResponsiveStateArgs>) {
+    return new ParcoordResponsiveState({...this.cloneProps(), ...(args ? args : {})})
   }
 }

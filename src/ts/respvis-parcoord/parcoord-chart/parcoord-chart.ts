@@ -1,10 +1,10 @@
 import {Selection} from "d3";
-import {applyMixins, Chart, SeriesChartMixin, WindowValid} from "respvis-core";
-import {ParcoordChartUserArgs, ParcoordChartValid, parcoordChartValidation} from "./parcoord-chart-validation";
-import {parCoordChartRender} from "./parcord-chart-render/parcoord-chart-render";
+import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
+import {ParcoordChartData, ParcoordChartUserArgs, validateParcoordChart} from "./validate-parcoord-chart";
+import {renderParcoordChart} from "respvis-paracoord/parcoord-chart/render/render-parcoord-chart";
 
-type WindowSelection = Selection<HTMLDivElement, WindowValid & ParcoordChartValid>
-type ChartSelection = Selection<SVGSVGElement, WindowValid & ParcoordChartValid>
+type WindowSelection = Selection<HTMLDivElement, Window & ParcoordChartData>
+type ChartSelection = Selection<SVGSVGElement, Window & ParcoordChartData>
 
 export interface ParcoordChart extends SeriesChartMixin {}
 export class ParcoordChart extends Chart {
@@ -12,7 +12,7 @@ export class ParcoordChart extends Chart {
     super(windowSelection, {...data, type: 'parcoord'})
     this._windowS = windowSelection as WindowSelection
     const initialWindowData = this.windowS.datum()
-    const chartData = parcoordChartValidation({...data, renderer: this})
+    const chartData = validateParcoordChart({...data, renderer: this})
     this.windowS.datum({...initialWindowData, ...chartData})
   }
 
@@ -26,7 +26,7 @@ export class ParcoordChart extends Chart {
   protected mainRender(): void {
     super.mainRender()
     this.seriesRequirementsRender()
-    parCoordChartRender(this.chartS!)
+    renderParcoordChart(this.chartS!)
     this.addFilterListener()
   }
 }

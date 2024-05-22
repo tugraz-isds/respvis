@@ -1,1 +1,1 @@
-export * from "./zoom-validation";
+export * from "./zoom";

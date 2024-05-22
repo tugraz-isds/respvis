@@ -31,8 +31,4 @@
   .layouter {
     grid-area: chart;
   }
-  .background {
-    opacity: 0;
-    grid-area: 1 / 1;
-  }
 }

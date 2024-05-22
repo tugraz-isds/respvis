@@ -63,26 +63,8 @@ export function centerSVGTextBaseline(svgS: Selection<SVGTextElement>, bounds: R
   const textElement = svgS.node()
   if (!textElement) return
 
-  if (getComputedStyle(textElement).getPropertyValue('--orientation') === 'vertical') {
-    const textSVGHeight = textElement.getBBox().height
-    const textSVGWidth = textElement.getBBox().width
-    svgS.attr('dx', () => -textSVGWidth / 2 + textSVGHeight / 2)
-    svgS.attr('dy', () => textSVGWidth / 2)
-    return;
-  }
-
+  const textSVGWidth = textElement.getBBox().width
+  svgS.attr('x', () => -textSVGWidth / 2 + bounds.width / 2)
+  svgS.attr('y', () => bounds.height / 2)
   svgS.call(((s) => positionToTransformAttr(s, bounds)))
-  const textSVGHeight = textElement.getBBox().height
-  svgS.attr('dy', () => textSVGHeight / 2)
-  svgS.attr('dx', null)
-
-  // if (textElement.parentElement?.classList.contains('title')) {
-  //   const textSVGHeight = textElement.getBBox().width
-  //   svgS.attr('dy', () => -textSVGHeight / 2)
-  // }
-
-  // const hmtlHeight = htmlS.style('height'
-  // svgS.attr('dy', () => {
-  //   return cssLengthInPx(htmlS.style('height') as UnitValue<CSSLengthUnit>) / 2
-  // })
 }

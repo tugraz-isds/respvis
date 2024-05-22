@@ -2,8 +2,8 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {BarChartUserArgs} from "../../../../../../ts";
 import GroupedBarChartCSS from './grouped-bar-chart.css?inline'
 import {rawCode} from "../../../../util/raw-code";
-import {CompensationEmployeeData} from '../../../../data'
-import {renderBarChart} from "../render-bar.chart";
+import {CompensationEmployeeData} from '../../../../util/data'
+import {renderBarChart} from "../../../../util/render/render-bar.chart";
 import {format} from "d3";
 
 const {compensations, sites, years} = CompensationEmployeeData
@@ -68,7 +68,7 @@ export const Primary: Story = {
       },
       labels: {
         values: compensations.map(comp => format('.2s')(comp)),
-        offset: 6, position: 'dynamic'
+        offset: 6, positionStrategy: 'dynamic'
       }
     },
     breakPoints: {

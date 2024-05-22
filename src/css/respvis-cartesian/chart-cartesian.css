@@ -1,4 +1,4 @@
-.chart-cartesian, .chart-cartesian[data-legend-position='right'] {
+.chart.chart-cartesian {
   .padding-wrapper {
     display: grid;
     grid-template: auto auto 1fr auto auto / auto auto 1fr auto auto;

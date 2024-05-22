@@ -1,43 +1,43 @@
 import {Label} from "respvis-core";
-import {Point} from "./point-series/point";
+import {Point} from "./point";
 
 type PointLabelPositionHorizontal = 'left' | 'center' | 'right'
 type PointLabelPositionVertical = 'top' | 'center' | 'bottom'
 
-export type PointLabel = Label & {}
-
-export type PointLabelsConfig = {
-  offset: number
-  positionHorizontal: PointLabelPositionHorizontal
-  positionVertical: PointLabelPositionVertical
-  format: (point: Point, label: string) => string
-}
-
-export type PointLabelsUserArgs = Partial<PointLabelsConfig> & {
+//TODO: offset as array as in bar labels?
+export type PointLabelsUserArgs = {
+  offset?: number
+  positionStrategyHorizontal?: PointLabelPositionHorizontal
+  positionStrategyVertical?: PointLabelPositionVertical
+  format?: (point: Point, label: string) => string
   values: string[]
 }
 
-export type PointLabelArgValid = PointLabelsConfig & {
+export type PointLabelsData = Required<PointLabelsUserArgs>
+
+export type PointLabelData = Omit<PointLabelsData, 'values'> & {
   value: string
 }
 
-export class PointLabelValues implements PointLabelsConfig {
+export type PointLabel = Label & PointLabelData
+
+export class PointLabelsDataCollection implements PointLabelsData {
   values: string[]
   offset: number
-  positionHorizontal: PointLabelPositionHorizontal
-  positionVertical: PointLabelPositionVertical
+  positionStrategyHorizontal: PointLabelPositionHorizontal
+  positionStrategyVertical: PointLabelPositionVertical
   format: (bar: Point, label: string) => string
   constructor(args: PointLabelsUserArgs) {
     this.values = args.values
     this.offset = args.offset ?? 0
-    this.positionHorizontal = args.positionHorizontal ?? 'center'
-    this.positionVertical = args.positionVertical ?? 'top'
+    this.positionStrategyHorizontal = args.positionStrategyHorizontal ?? 'center'
+    this.positionStrategyVertical = args.positionStrategyVertical ?? 'top'
     this.format = args.format ?? ((point, label) => label)
   }
 
-  getArgValid(i: number) : PointLabelArgValid {
+  getArgValid(i: number) : PointLabelData {
     return { value: this.values[i], offset: this.offset,
-      positionHorizontal: this.positionHorizontal, positionVertical: this.positionVertical,
+      positionStrategyHorizontal: this.positionStrategyHorizontal, positionStrategyVertical: this.positionStrategyVertical,
       format: this.format
     }
   }

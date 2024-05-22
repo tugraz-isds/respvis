@@ -1,10 +1,5 @@
 export type CodeType = 'chart'
 export type ChartCodeType = 'LineChart' | 'ScatterPlot' | 'BarChart' | 'ParcoordChart'
-// export type MetaWithChartCodeType = {
-//   parameters: {
-//     hoho: ChartCodeType
-//   }
-// }
 
 type RawCodeprops = {
   args: object,

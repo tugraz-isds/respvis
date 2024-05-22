@@ -1,5 +1,5 @@
 import {LengthDimension} from "../../constants/types";
-import {BreakpointScope} from "../breakpoint/breakpoint-scope";
+import {BreakpointScope} from "respvis-core/data/breakpoints/breakpoint-scope";
 
 export type RespValByCallback<T> = {
   value: T,
@@ -18,12 +18,5 @@ export function estimateRespValByCallback<T>(exactBreakpoint: number, respVal: R
     if (respVal.mapping[i]) value = respVal.mapping[i]
   }
   if (value) value(respVal.value)
-  return respVal.value
-}
-
-export function getExactRespValByCallback<T>(exactBreakpoint: number, respVal: RespValByCallback<T>) {
-  if (respVal.mapping[exactBreakpoint]) {
-    respVal.mapping[exactBreakpoint](respVal.value)
-  }
   return respVal.value
 }

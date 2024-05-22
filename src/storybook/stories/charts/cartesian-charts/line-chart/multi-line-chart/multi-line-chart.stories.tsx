@@ -2,8 +2,8 @@ import type {Meta, StoryObj} from '@storybook/html';
 import {LineChartUserArgs} from "../../../../../../ts";
 import {timeFormat} from "d3";
 import {rawCode} from "../../../../util/raw-code";
-import {PowerConsumptionData} from '../../../../data'
-import {renderLineChart} from "../render-line.chart";
+import {PowerConsumptionData} from '../../../../util/data'
+import {renderLineChart} from "../../../../util/render/render-line.chart";
 import FullyResponsiveCSS from './multi-line-chart.css?inline'
 
 const {yUSA, yEurope, yAsia, yearsJSDateFormat} = PowerConsumptionData.mapPowerConsumptionData()

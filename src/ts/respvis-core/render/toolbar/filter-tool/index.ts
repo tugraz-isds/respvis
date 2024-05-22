@@ -1,1 +1,1 @@
-export * from './filter-tool-render'
+export * from './render-filter-tool'

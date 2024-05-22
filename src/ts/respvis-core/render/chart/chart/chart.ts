@@ -1,16 +1,16 @@
 import {dispatch, Selection} from "d3";
 import {SVGHTMLElement} from "../../../constants/types";
-import {WindowArgs, windowRender, WindowValid, windowValidation} from "../../window";
-import {ChartArgs, ChartValid, chartValidation} from "./chart-validation";
+import {renderWindow, Window, WindowArgs, windowValidation} from "../../window";
+import {ChartData, ChartDataUserArgs, validateChart} from "./validate-chart";
 import {Renderer} from "../renderer";
 import {ReRenderContext, resizeEventListener} from "../../../resize-event-dispatcher";
-import {layouterCompute} from "../../../layouter/layouter";
-import {chartRender} from "./chart-render";
+import {renderChart} from "./render-chart";
 import {ThrottleScheduled} from "../../../utilities/d3/util";
 import {fixActiveCursor} from "../../util/fix-active-cursor";
+import {layouterCompute} from "respvis-core/layouter/layouter-compute";
 
-export type ChartWindowedValid = WindowValid & ChartValid
-export type ChartUserArgs = Omit<WindowArgs & ChartArgs, 'renderer'>
+export type ChartWindowed = Window & ChartData
+export type ChartUserArgs = Omit<WindowArgs & ChartDataUserArgs, 'renderer'>
 
 export class Chart implements Renderer {
   private addedListeners = false
@@ -26,15 +26,15 @@ export class Chart implements Renderer {
 
   constructor(windowSelection: Selection<HTMLDivElement>, args: ChartUserArgs) {
     const initialWindowData = windowValidation({...args, renderer: this})
-    const chartData = chartValidation({...args, renderer: this})
+    const chartData = validateChart({...args, renderer: this})
     windowSelection.datum({...initialWindowData, ...chartData})
-    this._windowS = windowSelection as Selection<HTMLDivElement, ChartWindowedValid>
+    this._windowS = windowSelection as Selection<HTMLDivElement, ChartWindowed>
   }
 
-  _windowS?: Selection<HTMLElement, ChartWindowedValid>
-  get windowS(): Selection<HTMLElement, ChartWindowedValid> {
+  _windowS?: Selection<HTMLElement, ChartWindowed>
+  get windowS(): Selection<HTMLElement, ChartWindowed> {
     return (this._windowS && !this._windowS.empty()) ? this._windowS :
-      this.windowS.selectAll<HTMLElement, ChartWindowedValid>('.window-rv')
+      this.windowS.selectAll<HTMLElement, ChartWindowed>('.window-rv')
   }
 
   _layouterS?: Selection<HTMLDivElement>
@@ -43,16 +43,16 @@ export class Chart implements Renderer {
       this.windowS.selectAll<HTMLDivElement, any>('.layouter')
   }
 
-  _chartS?: Selection<SVGSVGElement, ChartWindowedValid>
-  get chartS(): Selection<SVGSVGElement, ChartWindowedValid> {
+  _chartS?: Selection<SVGSVGElement, ChartWindowed>
+  get chartS(): Selection<SVGSVGElement, ChartWindowed> {
     return (this._chartS && !this._chartS.empty()) ? this._chartS :
-      this.layouterS.selectAll<SVGSVGElement, ChartWindowedValid>('svg.chart')
+      this.layouterS.selectAll<SVGSVGElement, ChartWindowed>('svg.chart')
   }
 
-  _paddingWrapperS?: Selection<SVGGElement, ChartWindowedValid>
-  get paddingWrapperS(): Selection<SVGGElement, ChartWindowedValid> {
+  _paddingWrapperS?: Selection<SVGGElement, ChartWindowed>
+  get paddingWrapperS(): Selection<SVGGElement, ChartWindowed> {
     return (this._paddingWrapperS && !this._paddingWrapperS.empty()) ? this._paddingWrapperS :
-      this.chartS.selectAll<SVGGElement, ChartWindowedValid>('.padding-wrapper')
+      this.chartS.selectAll<SVGGElement, ChartWindowed>('.padding-wrapper')
   }
 
   _drawAreaS?: Selection<SVGGElement>
@@ -93,7 +93,7 @@ export class Chart implements Renderer {
    * Adds custom event listener. Be sure to add custom event listeners before calling {@link Chart.buildChart}
    * as the method also adds listeners and the order matters.
    */
-  addCustomListener<T extends ChartWindowedValid>(name: string, callback: (event: Event, data: T) => void) {
+  addCustomListener<T extends ChartWindowed>(name: string, callback: (event: Event, data: T) => void) {
     this.windowS.on(name, callback)
   }
 
@@ -187,8 +187,8 @@ export class Chart implements Renderer {
 
   protected mainRender() {
     const data = this.windowS.datum()
-    const {chartS} = windowRender(this.windowS)
-    chartRender(chartS)
+    const {chartS} = renderWindow(this.windowS)
+    renderChart(chartS)
     chartS.classed(`chart-${data.type}`, true)
     fixActiveCursor(chartS)
   }

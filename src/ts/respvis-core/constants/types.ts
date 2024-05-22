@@ -12,12 +12,12 @@ export type CSSEMUnit = 'em'
 export type CSSPERUnit = '%'
 export type CSSAbsoluteLengthUnit = CSSPXUnit | CSSREMUnit
 export type CSSRelativeLengthUnit = CSSEMUnit | CSSPERUnit
-export type CSSBreakPointLengthUnit = CSSAbsoluteLengthUnit | CSSEMUnit
+export type CSSBreakpointLengthUnit = CSSAbsoluteLengthUnit | CSSEMUnit
 
 export type UnitValue<Unit extends string> = `${number}${Unit}`
 
 export const CSSBreakpointLengthRegex = /(\d+(?:\.\d+)?)(px|rem|em)/
-export function isCSSBreakpointLengthValue(value: any): value is UnitValue<CSSBreakPointLengthUnit> {
+export function isCSSBreakpointLengthValue(value: any): value is UnitValue<CSSBreakpointLengthUnit> {
   return value.match(CSSBreakpointLengthRegex) !== null
 }
 
@@ -76,12 +76,3 @@ export const categoryRegex = /^c-\d+$/
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 export type ToArray<T> = T extends any ? T[] : never;
-
-export type Constructor = new (...args: any[]) => {};
-export type GConstructor<T = {}> = new (...args: any[]) => T;
-
-type AllInstanceKeys<T> = T extends { new(...args: any[]): infer I } ? keyof I : never;
-// Filter out methods and protected properties
-export type PropertiesOnly<T> = {
-  [K in AllInstanceKeys<T>]: T[K] extends Function | number ? never : K extends keyof T ? T[K] : never;
-}[AllInstanceKeys<T>];
