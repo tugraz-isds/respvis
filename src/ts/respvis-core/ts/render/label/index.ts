@@ -1,2 +1,2 @@
 export * from './label-series'
-export {Label} from "respvis-core/render/label/label";
+export type {Label} from "respvis-core/render/label/label";

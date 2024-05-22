@@ -5,8 +5,8 @@ const {rootDir, tsDir} = absolutePaths
 
 export const respvisBundleConfig = {
   entryFile: `${tsDir}/index.ts`,
-  include: ["src/ts/**/*", "module-specs.d.ts"],
-  exclude: ["node_modules", "dist", "**/*.spec.ts", "src/stories", "src/examples"],
+  include: ["src/ts/**/*", "declarations/*.d.ts"],
+  exclude: ["node_modules", "dist", "src/stories", "src/examples"],
   outputDirectory: `${rootDir}/package/respvis`,
   module: 'respvis',
   external: undefined
@@ -15,8 +15,8 @@ export const respvisBundleConfig = {
 const singleBundleConfigs = respvisModules.map(currentModule => {
   return {
     entryFile: `${tsDir}/${currentModule}/index.ts`,
-    include: [`src/ts/**/*`, `module-specs.d.ts`],
-    exclude: ["node_modules", "dist", "**/*.spec.ts", "src/stories"],
+    include: [`src/ts/**/*`, "declarations/*.d.ts"],
+    exclude: ["node_modules", "dist", "src/stories"],
     outputDirectory: `${rootDir}/package/${currentModule}`,
     external: respvisModules.filter(module => module !== currentModule),
     module: currentModule

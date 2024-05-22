@@ -106,8 +106,8 @@ async function getRollupBundle(config) {
       rollupTypescript({
         typescript: typescript,
         tsconfig: `${rootDir}/tsconfig.json`,
-        include: config.include ?? ["src/ts/**/*", "module-specs.d.ts"],
-        exclude: config.exclude ?? ["node_modules", "dist", "**/*.spec.ts", "src/stories"],
+        include: config.include ?? ["src/ts/**/*", "declarations/*.d.ts"],
+        exclude: config.exclude ?? ["node_modules", "dist", "src/stories"],
         compilerOptions: {
           plugins: [
             ...(config.replaceAliases ? [{ "transform": "typescript-transform-paths", "afterDeclarations": true }] : [])

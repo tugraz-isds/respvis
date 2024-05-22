@@ -12,6 +12,7 @@
     "outDir": "package",
     "declaration": true,
     "declarationDir": "types",
+    "isolatedModules": true,
     "paths": {
       "respvis-core": ["./src/ts/respvis-core/ts"],
       "respvis-core/*": ["./src/ts/respvis-core/ts/*"],
@@ -29,8 +30,11 @@
       "respvis-tooltip/*": ["./src/ts/respvis-tooltip/ts/*"]
     }
   },
-  "include": ["src/**/*", "module-specs.d.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts", "src/storybook/**/*"],
+  "include": [
+    "src/**/*",
+    "declarations/*.d.ts"
+  ],
+  "exclude": ["node_modules", "src/storybook/**/*"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"

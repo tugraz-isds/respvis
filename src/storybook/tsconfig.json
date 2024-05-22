@@ -19,9 +19,9 @@
       "respvis-tooltip/*": ["../ts/respvis-tooltip/ts/*"]
     }
   },
-  "include": ["./stories/**/*",
-    "../../module-specs.d.ts",
-    "../../module-specs-d3.d.ts"
+  "include": [
+    "./stories/**/*",
+    "../../declarations/*.d.ts",
   ],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
