@@ -1,9 +1,9 @@
-import {format, select} from './libs/d3-7.6.0/d3.js'
+import {select, timeFormat, timeYear} from './libs/d3-7.6.0/d3.js'
 import {LineChart, LineChartUserArgs} from './libs/respvis/respvis.js';
 import {mapPowerConsumptionData} from './data/electric-power-consumption.js'
 
 export const renderMultiLineChart = (selector: string) => {
-  const {yUSA, yEurope, yAsia, years} = mapPowerConsumptionData()
+  const {yUSA, yEurope, yAsia, yearsJSDateFormat} = mapPowerConsumptionData()
 
   const categories = [
     ...yUSA.map(() => 'USA'),
@@ -12,7 +12,7 @@ export const renderMultiLineChart = (selector: string) => {
 
   const data: LineChartUserArgs = {
     series: {
-      x: {values: [...years, ...years, ...years]},
+      x: {values: [...yearsJSDateFormat, ...yearsJSDateFormat, ...yearsJSDateFormat]},
       y: {values: [...yUSA, ...yEurope, ...yAsia]},
       categories: {
         values: categories,
@@ -56,8 +56,10 @@ export const renderMultiLineChart = (selector: string) => {
           unit: 'rem'
         }
       },
-      // configureAxis: (axis) => axis.tickFormat((v) => v),
-      configureAxis: (axis) => axis.tickFormat(format('.3d'))
+      configureAxis: (axis) => {
+        axis.ticks(timeYear.every(2))
+        axis.tickFormat(timeFormat('%Y'))
+      }
     },
     y: {
       title: 'Consumption',

@@ -4,6 +4,10 @@
   min-height: 25rem;
   container-type: inline-size;
 
+  .window-rv {
+    --chart-padding-left: 1.5rem;
+  }
+
   .axis .ticks .tick {
     display: none;
   }
@@ -14,8 +18,7 @@
 
   @container (width < 45rem) {
     .window-rv {
-      --chart-padding-right: 1rem;
-      --chart-padding-left: 1rem;
+      --chart-padding-right: 1.5rem;
     }
     .chart {
       .axis > * {

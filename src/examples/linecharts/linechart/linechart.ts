@@ -1,12 +1,12 @@
 import {formatWithDecimalZero, LineChart, LineChartUserArgs} from './libs/respvis/respvis.js';
-import {students, years} from './data/students-tugraz.js';
+import {students, yearsJSDateFormat} from './data/students-tugraz.js';
 import * as d3 from './libs/d3-7.6.0/d3.js'
-import {format} from './libs/d3-7.6.0/d3.js'
+import {format, timeFormat} from './libs/d3-7.6.0/d3.js'
 
 export function createLineChart(selector: string) {
   const data: LineChartUserArgs = {
     series: {
-      x: { values: years },
+      x: { values: yearsJSDateFormat },
       y: { values: students },
       markerTooltips: {
         tooltips: (_, {xValue, yValue}) =>
@@ -45,7 +45,7 @@ export function createLineChart(selector: string) {
           unit: 'rem'
         }
       },
-      configureAxis: (axis) => axis.tickFormat(format('.3d'))
+      configureAxis: (axis) => axis.tickFormat(timeFormat('%Y'))
     },
     y: {
       title: 'Students',
