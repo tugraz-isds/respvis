@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2024-05-23
+
+### Added
+
+- Add CSS variables for font sizing.
+- Add a gulp task for compiling ts files in self-contained examples.
+- Add category filtering to all charts and axis types.
+- Add linear/time filtering to all charts and axis types.
+- Add zooming to all charts and linear/time axis types.
+- Enable single axis zooming of cartesian charts.
+- Add a new system of rotating axis labels, working for all axis positions (top, bottom, left, right) and both dimensions(width, height) out of the box.
+- Add a new system to solve padding problems combining padding containers, clip-path element, and CSS variables.
+- Add dev mode and production mode in gulp.
+- Add SVG generation cleanup and toolbar options.
+- Add consistent handling of svg text element layouting, consider rotations in SVG (occupied place matches now with text layout elements).
+- Add flipping for all charts. Provide special flip options for axes.
+- Add legend filter interaction.
+- Add drag & drop to parcoord chart. 
+- Add extra filter interactions to parcoord chart.
+- Add zooming possibility for parcoord axes. Let developer specify zoom options for each axis.
+- Add cursor elements for parcoord chart.
+- Add a new cursor system (base64 gulp task, fix cursor on interactions).
+- Add a gulp task for creating both, standalone and dependency based bundles.
+- Add Storybook. Add custom storybook doc components. Add documentation.
+- Add origin line for cartesian charts.
+- Add intelligent grid for cartesian charts (orients on axis ticks. Configurable by user).
+- Add timescale support.
+- Add CSS Variables for certain d3 transitions.
+- Add CSS Transitions where possible as these can easily be overridden via CSS.
+- Add a gulp task for creating isolated package bundles.
+- Add path aliases for packages in tsconfigs.
+- Add a consistent labeling system for graphic elements.
+
+### Changed
+
+- Improve reusability of charts (break point configuration, CSS layout variables).
+- Refactor the whole library (make code reusable, understandable, provide understandable API, restrict types of API).
+- Change styles to CSS files only. Add a gulp task for merging library css files.
+- Improve layouter to be capable of interrupting layout hierarchies and have nested layout structures.
+- Change chart class to be extended via ts mixins. Avoid nested inheritance.
+- Change import/export policy according to packages.
+- Change packages to be REAL packages containing package.json.
+- Improve chart class: Can now be used alone.
+- Improve chart render strategy. Works now without performance issues but is still capable of detecting interactions.
+- Redesign toolbar completely, provide additional toolbar options, improved usability.
+- Remove all inner SVGs, replace with g elements.
+
+### Fixed
+
+- Fix rerender problems occurring due to layouter and CSS-only resize events.
+
+
+## [2.0.0] - 2024-02-08
+
 ## [1.0.0] - 2023-07-25
 
 ### Added
