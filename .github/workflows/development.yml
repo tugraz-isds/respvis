@@ -27,8 +27,8 @@ jobs:
       # Run npm install and build on our code
       - run: npm install
       - run: npm run build
-      # Deploy to Netlify using our dev secrets
-      - name: Deploy to netlify
+      # Deploy self-contained examples to Netlify
+      - name: Deploy self-contained
         uses: netlify/actions/cli@375963b92b795c7b979927c580dd6f2a65ebcf28
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.RESPVIS_NETLIFY }}
@@ -36,3 +36,14 @@ jobs:
         with:
           args: deploy --dir=dist --prod
           secrets: '["RESPVIS_NETLIFY", "RESPVIS_NETLIFY_DEVELOP_SITE_ID"]'
+      # Build docs
+      - run: npm run build-storybook
+      # Deploy docs to Netlify
+      - name: Deploy to netlify
+        uses: netlify/actions/cli@375963b92b795c7b979927c580dd6f2a65ebcf28
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.RESPVIS_NETLIFY }}
+          NETLIFY_SITE_ID: ${{ secrets.RESPVIS_NETLIFY_DEVELOP_DOCS_SITE_ID }}
+        with:
+          args: deploy --dir=storybook-static --prod
+          secrets: '["RESPVIS_NETLIFY", "RESPVIS_NETLIFY_DEVELOP_DOCS_SITE_ID"]'

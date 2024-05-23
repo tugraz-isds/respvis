@@ -2,7 +2,7 @@ import {select, Selection} from "d3";
 import {renderTool} from "../tool/render/render-tool";
 import {renderButton} from "../tool/render/render-button";
 import {addRawSVGToSelection} from "../../../utilities/d3/util";
-import chartSVGRaw from "../../../../../../assets/svg/chart-bar.svg";
+import chartSVGRaw from "../../../../../../assets/svg/tablericons/chart-bar.svg";
 import {renderSimpleTooltip} from "../tool/render/render-simple-tooltip";
 import {bindOpenerToDialog, DialogData, renderDialog} from "../tool/render/render-dialog";
 import {Series} from "../../series";

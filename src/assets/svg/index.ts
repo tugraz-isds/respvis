@@ -1,1 +1,1 @@
-export {default as checkSVGRaw} from './check.svg'
+export {default as checkSVGRaw} from './tablericons/check.svg'

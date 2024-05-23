@@ -4,7 +4,7 @@ import {renderDownloadTool} from "./download-tool";
 import {renderFilterTool} from "./filter-tool/render-filter-tool";
 import {renderCrossTool} from "./cross-tool/render-cross-tool";
 import {addRawSVGToSelection} from "../../utilities/d3/util";
-import ChevronsDown from "../../../../../assets/svg/chevrons-down.svg"
+import ChevronsDown from "../../../../../assets/svg/tablericons/chevrons-down.svg"
 import {DialogData} from "./tool/render/render-dialog";
 import {clickSAddEnterExitAttributes} from "./tool/animation/animtation";
 import {renderChartTool} from "./chart-tool/render-chart-tool";

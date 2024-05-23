@@ -1,0 +1,3 @@
+SVG icons taken from: https://tablericons.com/ (https://tabler.io/icons)
+and partially adapted.
+Used under the terms of the MIT license.

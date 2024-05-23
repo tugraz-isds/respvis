@@ -1,6 +1,6 @@
 import {select, Selection} from "d3";
-import downloadSVGRaw from '../../../../../../../assets/svg/download.svg'
-import cancelSVGRaw from '../../../../../../../assets/svg/x-circle.svg'
+import downloadSVGRaw from '../../../../../../../assets/svg/tablericons/download.svg'
+import cancelSVGRaw from '../../../../../../../assets/svg/feathericons/x-circle.svg'
 import {Renderer} from "../../../chart/renderer";
 import {addRawSVGToSelection} from "../../../../utilities/d3/util";
 import {bindOpenerToDialog, DialogData, renderDialog} from "../../tool/render/render-dialog";

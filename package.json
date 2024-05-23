@@ -26,7 +26,7 @@
     "serve-prod": "npx gulp serve --prod",
     "genSVGDataURI": "npx gulp genSVGDataURI",
     "storybook": "storybook dev -p 6006 -c src/storybook",
-    "build-storybook": "storybook build",
+    "build-storybook": "storybook build -c src/storybook --force-build-preview",
     "prepare": "ts-patch install -s"
   },
   "repository": {
