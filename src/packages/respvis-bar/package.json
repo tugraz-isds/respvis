@@ -28,7 +28,7 @@
   "homepage": "https://github.com/tugraz-isds/respvis#readme",
   "peerDependencies": {
     "d3": "^7.2.1",
-    "respvis-core": "latest",
-    "respvis-cartesian": "latest"
+    "respvis-core": "^3.0.0",
+    "respvis-cartesian": "^3.0.0"
   }
 }
