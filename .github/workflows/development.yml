@@ -34,5 +34,5 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.RESPVIS_NETLIFY }}
           NETLIFY_SITE_ID: ${{ secrets.RESPVIS_NETLIFY_DEVELOP_SITE_ID }}
         with:
-          args: deploy --dir=dist --prod
+          args: deploy --dir=dist --prod --filter respvis-core
           secrets: '["RESPVIS_NETLIFY", "RESPVIS_NETLIFY_DEVELOP_SITE_ID"]'
