@@ -20,10 +20,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v1
       # Install NodeJS
-      - name: Use Node.js 16.x
+      - name: Use Node.js 18.17
         uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 18.17
       # Run npm install and build on our code
       - run: npm install
       - run: npm run build
