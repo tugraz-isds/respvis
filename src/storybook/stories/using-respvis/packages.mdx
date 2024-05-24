@@ -1,29 +1,93 @@
-import {Meta} from "@storybook/blocks";
-import {Tooltip} from "../util/documentation-components/tooltip-text";
-import {modulesMap} from "../../../../gulp-tasks/constants/modules";
-import {projectAbsolutePaths} from "../../../../gulp-tasks/paths/project-absolute-paths";
+import {Meta, Source} from "@storybook/blocks";
+import {packageStructure} from "../util";
+import {importMap} from "../util/assets/raw-strings/import-map";
 
 <Meta title='Using RespVis/Packages'/>
 
-# RespVis Packages
+# Packages
 
-The source code of RespVis consists of multiple typescript modules:
+The RespVis library is a mono repository and, therefore, structured into multiple
+packages. Each package contains related TypeScript and CSS source code and is publicly
+available on npm:
 
-- <Tooltip text={projectAbsolutePaths.modulesPaths["respvis-core"]}>***{modulesMap["respvis-core"]}***</Tooltip>:
-  Contains the core functionality of RespVis, including
-- <Tooltip text={projectAbsolutePaths.modulesPaths["respvis-cartesian"]}>***{modulesMap["respvis-cartesian"]}***</Tooltip>:
-  Contains
-- <Tooltip text={projectAbsolutePaths.modulesPaths["respvis-bar"]}>***{modulesMap["respvis-bar"]}***</Tooltip>:
-  Contains
-- <Tooltip text={projectAbsolutePaths.modulesPaths["respvis-point"]}>***{modulesMap["respvis-point"]}***</Tooltip>:
-  Contains
-- <Tooltip text={projectAbsolutePaths.modulesPaths["respvis-line"]}>***{modulesMap["respvis-line"]}***</Tooltip>:
-  Contains
-- <Tooltip text={projectAbsolutePaths.modulesPaths["respvis-tooltip"]}>***{modulesMap["respvis-tooltip"]}***</Tooltip>:
-  Contains
+- [respvis](https://www.npmjs.com/package/respvis): Extensive package, which contains
+  the entire functionality of RespVis.
+- [respvis-core](https://www.npmjs.com/package/respvis-core): Contains core
+  functionality of RespVis which is always necessary when creating a visualization
+  with RespVis. It also includes the layouter mechanism.
+- [respvis-cartesian](https://www.npmjs.com/package/respvis-cartesian): Contains the
+  functionality to create cartesian components.
+- [respvis-bar](https://www.npmjs.com/package/respvis-bar): Contains the functionality
+  to create bar components.
+- [respvis-point](https://www.npmjs.com/package/respvis-point): Contains the functionality
+  to create point components.
+- [respvis-line](https://www.npmjs.com/package/respvis-line): Contains the functionality
+  to create line components.
+- [respvis-tooltip](https://www.npmjs.com/package/respvis-tooltip): Contains the functionality
+  to create tooltip components.
 
 
-TODO: Explain:
-- importmap + how to use packages without npm (standalone vs. dependency based)
-- css structuring
-- structure of repo once finally decided (monorepo, mulitple packages, npm workspaces, gulp, storybook)
+
+## Package Structure
+
+All packages share the same structure:
+
+<Source code={packageStructure} language={"text"}/>
+
+The interesting part, as a library consumer, is the package.json
+and the structure of the generated package because this is what is
+provided by npm at the end of the day.
+
+
+
+### JavaScript Bundles and Type Information
+
+The generated package contains two subdirectories:
+
+- dependency-based: This folder contains only bundles which solely contain
+  code and type information of the corresponding RespVis package and nothing
+  else. Therefore, when importing a code from the dependency-based folder,
+  one must make sure to install the peer dependencies of the package too. As
+  stated by the npm docs, as of npm v7 peer dependencies are automatically installed.
+- standalone: This folder contains only bundles which have all necessary dependencies
+  included. It is not necessary to worry about peer-dependencies when importing from
+  a standalone bundle. On the contrary, such bundles are substantially larger than
+  their dependency-based counter-parts. Note that, if using standalone bundles, it is
+  necessary to include the styles from the respvis-package!
+
+
+In addition to creating and grouping bundles, according to their dependency type, they
+are created and grouped in three formats too:
+
+- esm: The standard module system used by modern browsers.
+- cjs: The module system which was and is still used in Node.js systems.
+- iife: Provides a way to directly include a library in a script tag.
+
+While esm is the de facto standard nowadays, the cjs and iife bundles are included in
+the package for backward compatibility reasons. When importing from a package, the
+package.json acts as a resolver. By default, it resolves to the dependency-based bundle
+using the esm system.
+
+
+
+### CSS in Generated Packages
+
+Each generated package comes with additional styles, which must be included
+together with the JavaSript module to achieve a proper layout of charts. The
+styles are provided as single CSS files with the name \<package-name\>.css.
+
+
+
+## Importing Packages without Bundler or Module Loader
+
+Since 2023 it is possible to import modules natively in the browser via importmaps.
+The following script ensures working imports between dependency-based RespVis modules
+when included in browsers without bundlers or module loaders:
+
+<Source code={importMap} language={"html"}/>
+
+
+
+## Package Dependencies
+
+TODO: include figure of package dependencies

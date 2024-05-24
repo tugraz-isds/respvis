@@ -22,6 +22,8 @@
       "respvis-tooltip/*": ["../packages/respvis-tooltip/ts/*"],
       "data": ["./stories/util/data"],
       "data/*": ["./stories/util/data/*"],
+      "storybook-util": ["./stories/util"],
+      "storybook-util/*": ["./stories/util/*"]
     }
   },
   "include": [

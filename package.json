@@ -78,7 +78,6 @@
     "mini-svg-data-uri": "^1.4.4",
     "react": "^18.2.0",
     "react-markdown": "^9.0.1",
-    "remark-gfm": "^4.0.0",
     "rollup": "^3",
     "rollup-plugin-dts": "^5",
     "rollup-plugin-gzip": "^2.5.0",
