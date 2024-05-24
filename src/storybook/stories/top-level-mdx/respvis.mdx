@@ -1,0 +1,12 @@
+import {Meta} from "@storybook/blocks";
+import ReactMarkdown from 'react-markdown';
+import Readme from "../../../../README.md?raw"
+import {DevWrapper} from "../util/documentation-components/dev-wrapper/dev-wrapper";
+
+<Meta title='RespVis'/>
+
+<DevWrapper>
+  ### ‼️ Note that the links below lead to the live documentation page at [respvis-docs.netlify.app](https://respvis-dev-docs.netlify.app) since the content below is only a replication of the original readme.
+</DevWrapper>
+
+<ReactMarkdown>{Readme}</ReactMarkdown>

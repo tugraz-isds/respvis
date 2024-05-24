@@ -16,25 +16,47 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
-          'RespVis Packages',
-          'RespVis Charts',
-          'RespVis Layouting Mechanism',
-          'Layout Breakpoints',
-          'SVG Text in RespVis',
-          'CSS Caveats',
+          'RespVis',
+          'Changelog',
           'Todos and Issues',
-          'Charts',
+          'Using RespVis',
           [
-            'About Chart Stories',
-            'Line Charts',
-            ['Single Line Chart', 'Multi Line Chart', '*'],
-            'Bar Charts',
-            ['Standard Bar Chart', 'Grouped Bar Chart', 'Stacked Bar Chart', '*'],
-            'Scatterplot',
-            '*'],
-          'Extending Charts',
-          'RespVis Arguments',
-          ['RespVis Arguments', '*'],
+            'Using RespVis',
+            'Packages',
+            'Charts',
+            [
+              'Charts',
+              'Chart Examples',
+              [
+                'Chart Examples',
+                [
+                  'Cartesian Charts',
+                  [
+                    'Line Charts',
+                    ['Single Line Chart', 'Multi Line Chart', '*'],
+                    'Bar Charts',
+                    ['Standard Bar Chart', 'Grouped Bar Chart', 'Stacked Bar Chart', '*'],
+                    'Scatterplot',
+                    '*'
+                  ],
+                  '*'
+                ],
+                '*'
+              ],
+              'Extending Charts',
+              '*'
+            ],
+            'Layouting Mechanism',
+            'Layout Breakpoints',
+            'Layouting SVG Text',
+            'CSS Caveats',
+          ],
+          'Contributing',
+          [
+            'Contributing'
+          ],
+          'Arguments',
+          ['Arguments', '*'],
           '*']
       }
     },

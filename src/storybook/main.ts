@@ -1,6 +1,7 @@
 import type {StorybookConfig} from "@storybook/html-vite";
 import {svgRawPlugin} from './plugins/vite-plugin-svg-raw';
 import tsconfigPaths from 'vite-tsconfig-paths'
+// import remarkGfm from 'remark-gfm';
 
 const config: StorybookConfig = {
   stories: ["./stories/**/*.mdx", "./stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -9,7 +10,17 @@ const config: StorybookConfig = {
     "@storybook/addon-essentials",
     "@chromatic-com/storybook",
     "@storybook/addon-interactions",
-    '@storybook/addon-storysource'
+    '@storybook/addon-storysource',
+    // {
+    //   name: '@storybook/addon-docs',
+    //   options: {
+    //     mdxPluginOptions: {
+    //       mdxCompileOptions: {
+    //         remarkPlugins: [remarkGfm],
+    //       },
+    //     },
+    //   },
+    // },
   ],
   framework: {
     name: "@storybook/html-vite",

@@ -1,0 +1,78 @@
+import {Meta, Source} from "@storybook/blocks";
+import CurrentMeta, * as CurrentStories from './base-axis-arguments.stories'
+import XAxisBaseArg from '../../example-multi-line/arguments/x-axis-base-arg?raw'
+import XTicksRotatingArg from '../../example-multi-line/arguments/x-ticks-rotating-arg.ts?raw'
+import YTicksRotatingArg from '../../example-multi-line/arguments/y-ticks-rotating-flipped-arg.ts?raw'
+import {
+  SourceCollapseBlockByStoryObj
+} from "../../../../util/documentation-components/blocks/SourceCollapseBlock/SourceCollapseBlock";
+
+<Meta of={CurrentMeta}/>
+
+# Axis Arguments
+
+This part of the documentation explains arguments which operate on axis level
+and can be passed to all chart types containing axes. The exact API for
+different chart types may slightly differ
+(e.g. [Cartesian Charts](?path=/docs/charts-cartesian-charts--about-cartesian-charts)
+and [Parallel Coordinates Charts](?path=/docs/charts-parallel-coordinates-chart--docs) expect
+the parameters in a different way), but the concept stays the same.
+The practical usage of axis arguments is demonstrated by the creation of example multi line charts.
+
+
+
+## Title and SubTitle Arguments
+
+The configuration of titles and subtitles for axes works the same way as it works
+for charts, see [Chart Title Argument](?path=/docs/charts-respvis-arguments-chart-arguments--docs/#-title-argument).
+
+
+
+## Configuring Axis Arguments
+
+A callback can be provided to configure the D3 axis object created by RespVis shortly before
+rendering. A typical use case is to specify how the axis ticks should be formatted. The
+_*configureAxis*_ argument is used to adjust the ticks to only display the full years of the underlying
+[JS Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date?retiredLocale=de)
+values:
+
+<Source code={XAxisBaseArg} language={"typescript"}/>
+<SourceCollapseBlockByStoryObj story={CurrentStories.AxisConfigArguments}/>
+
+
+
+## <a name="tick-orientation-argument"></a> Tick Orientation Argument
+
+The _**tickOrientation**_ enables to specify the behavior of axis tick labels when
+transitioning from one breakpoint to another:
+
+<Source code={XTicksRotatingArg} language={"typescript"}/>
+
+The code snippet above shows the configuration arguments of the x-axis of a cartesian chart.
+Note the _*breakPoints*_ argument. This tells RespVis to compute the current layout state out
+of the width of the axis rather than the width of the surrounding chart, see
+[nested breakpoints](?path=/docs/charts-respvis-arguments-chart-arguments--docs/#-nested-breakpoints).
+The tickOrientation argument states that the labels should be rotated by 90 degrees at layout width 0,
+while being not rotated at layout width 3. RespVis automatically interpolates the angle in between these
+layout widths.
+
+<SourceCollapseBlockByStoryObj story={CurrentStories.RotatingTicksArguments}/>
+
+
+
+## <a name="tick-orientation-flipped-argument"></a> Tick Orientation Flipped Argument
+
+RespVis comes with the ability to flip charts. This can be a useful feature as can be seen
+at [TODO](TODO). Although powerful, this feature takes a bit of extra effort to get to work
+with rotating axis labels properly. The reason is that axes, when flipped, swap their width
+and height values. For this reason, a user of the library must be able to configure the
+rotation of axis labels for the standard as well as the flipped version of an axis. This is
+where the *_tickOrientationFlipped_* arguments comes in play:
+
+<Source code={XTicksRotatingArg + YTicksRotatingArg} language={"typescript"}/>
+
+Examples for how to combine and not combine tick axis rotation can be seen
+in the following stories:
+
+<SourceCollapseBlockByStoryObj story={CurrentStories.RotatingTicksArgumentsWithFlipIncorrect}/>
+<SourceCollapseBlockByStoryObj story={CurrentStories.RotatingTicksArgumentsWithFlipCorrect}/>
