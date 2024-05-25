@@ -18,7 +18,7 @@ const preview: Preview = {
         order: [
           'RespVis',
           'Changelog',
-          'Todos and Issues',
+          'Future Outlook',
           'Using RespVis',
           [
             'Using RespVis',
@@ -53,7 +53,13 @@ const preview: Preview = {
           ],
           'Contributing',
           [
-            'Contributing'
+            'Contributing',
+            'Development Environment',
+            'Project Structure',
+            'Contribution Guidelines',
+            'Documenting and Testing',
+            'Deployment',
+            '*'
           ],
           'Arguments',
           ['Arguments', '*'],

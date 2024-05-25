@@ -2,7 +2,7 @@ import gulp from "gulp";
 import fs from "fs";
 import svgToMiniDataURI from "mini-svg-data-uri";
 
-export function genSVGDataURIs(svgGlob, outputDirectory) {
+export function genSvgDataUris(svgGlob, outputDirectory) {
   const fileName = 'svg-uri-mapping.txt'
   const mapping = {}
   return new Promise((resolve, reject) => {

@@ -7,57 +7,60 @@ import {Meta} from "@storybook/blocks";
 
 ## Installing
 
-The framework is built on the Node ecosystem. Before attempting to do
-anything else, all the dependencies need to be installed:
+The library is built on the Node ecosystem. Before attempting to do
+anything else, all the dependencies need to be installed at the root
+directory of the repository:
 
 ```
 npm install
 ```
 
-## Gulp Build And Development
 
-Gulp is used to automate repeatable tasks. The file [gulpfile.js](gulpfile.js)
-defines six public tasks:
 
-- The `clean` task removes existing `package` and `dist` directories in
-order to enable a clean rebuild of the project.
+## Gulp Tasks
 
-- The `cleanExampleDeps` task removes dependencies which were copied from
-`example-dependencies` to `src/examples/**`. The process of copying
-these dependencies is necessary to keep control over all dependencies
-in one place and to avoid muliple slighly different versions of e.g. the
-same data file or library.
+Gulp is used to automate repeatable tasks. The file gulpfile.ts, which is
+located at the root directory, defines six public tasks:
+
+- The `clean` task removes existing `package` and `dist` directories to
+  enable a clean rebuild of the project.
+
+- The `cleanExampleDeps` task removes generated dependencies from the
+  `/src/examples/**` directory.
 
 - The `cleanAll` task executes the `clean` task, `cleanExampleDeps` task
-and additionally removes the `node_modules` directory and
-`package-lock.json` in order to enable a clean rebuild of the project including
-the re-installation of dependencies.
+  and additionally removes the `node_modules` directory and `package-lock.json`
+  in order to enable a clean rebuild of the project including the
+  re-installation of dependencies.
 
-- The `build` task first executes the clean task, then creates a new
-build of the framework and copies the self-contained examples into
-the freshly created `dist` folder. The build task, in contrary to
-the serve task, bundles all modules respvis provides, once in standalone form,
-and once in dependency-based form.
+- The `build` task first executes the clean task, then builds the
+  whole library and copies the self-contained examples into
+  the freshly created `dist` folder. The build task, unlike the serve
+  task, bundles all packages contained by RespVis. It is also responsible
+  for generating necessary dependencies into `/src/examples/**`.
+  It would be not sufficient to generate them in `/dist`, due to otherwise
+  missing files in the source folder, which would lead to countless errors.
 
-- The `serve` task first executes the build task, then additionally
-executes a private task called watcher which has two
-responsibilities: First, the browser-sync package is used to
-initialise a live server which serves the `dist` directory. Then,
-file watchers are initiated which automatically update the `dist`
-folder when making any relevant changes in the `src` folder and
-notify browsers to reload the page. The serve task can be invoked
-in production (--prod) or developer (--dev) mode. The default is
-production mode. The non-secret enviroment variables for production and
-development can be found in `.env.prod` and `.env.dev` respectively.
-Note that the serve tasks only bundles the standalone form of respvis,
-as this package is the only one needed for the self-contained examples
-and omitting the bundling of the other modules saves much time during
-live development.
+- The `serve` task first executes the build task, but only generates the
+  package at root level to save time on rebuilds. It additionally
+  executes a private task called watcher which has two
+  responsibilities: First, the browser-sync package is used to
+  initialise a live server serving the `dist` directory. Then,
+  file watchers are initiated which automatically update `dist`
+  if relevant changes are conducted in the `src` folder. The
+  browser is then notified to reload the page. The serve task can
+  be invoked in production (--prod) or developer (--dev) mode. The
+  default mode is production. The non-secret environment variables
+  for production and development can be found in `.env.prod` and
+  `.env.dev` respectively. Note that the serve task only bundles the
+  standalone form of respvis, as this package is the only one needed
+  for the self-contained examples and omitting the bundling of the
+  other packages saves much time during live development.
 
 - The `genSVGDataURI` task converts svg files which are
-meant to be used as icons automatically to data URIs that can be
-conveniently copied and pasted into style sheets. This is especially
-helpful when creating styles for cursor icons.
+  meant to be used as icons automatically to data URIs that can be
+  conveniently copied and pasted into style sheets. This is especially
+  helpful when creating styles for cursor icons.
 
 The public tasks can be invoked either by directly running gulp via npx or
 by running the equivalent scripts in package.json:
@@ -84,3 +87,28 @@ npx gulp serve --prod
 npm run genSVGDataURI
 npx gulp genSVGDataURI
 ```
+
+
+
+
+## Live Documentation
+
+The famous frontend workshop Storybook is used to provide extensive
+documentation about RespVis. When running storybook one can conveniently
+navigate through different use cases of different RespVis components. On
+top of that there are many markdown files explaining the functionality of
+RespVis in depth. To run Storybook one must execute:
+
+```
+npm run storybook
+```
+
+It is also possible to build static files out of the Storybook documentation.
+This can be done via:
+
+```
+npm run build-storybook
+```
+
+The built static files can be deployed to a web server, which is also done
+for the online documentation of RespVis.

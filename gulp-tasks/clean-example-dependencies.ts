@@ -1,6 +1,6 @@
 import del from "del";
-import {libsPaths} from "./copy-example-dependencies/copyPathLibs";
-import {dataPaths} from "./copy-example-dependencies/copyPathData";
+import {libsPaths} from "./copy-example-dependencies/copy-path-libs";
+import {dataPaths} from "./copy-example-dependencies/copy-path-data";
 import {absolutePaths} from "./paths/absolute-paths";
 
 const {gulpUtilGenerated} = absolutePaths

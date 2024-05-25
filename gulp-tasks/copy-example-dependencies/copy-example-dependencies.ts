@@ -1,6 +1,6 @@
 import gulp from "gulp";
-import {dataPaths} from "./copyPathData";
-import {dependencyBasedLibPaths, libsPaths} from "./copyPathLibs";
+import {dataPaths} from "./copy-path-data";
+import {dependencyBasedLibPaths, libsPaths} from "./copy-path-libs";
 import mergeStream from "merge-stream";
 
 //TODO: type for srcTargetsMapping

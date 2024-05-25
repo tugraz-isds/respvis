@@ -1,6 +1,7 @@
 import {Meta, Source} from "@storybook/blocks";
-import {packageStructure} from "../util";
+import {PackageDependencies, packageStructure} from "../util";
 import {importMap} from "../util/assets/raw-strings/import-map";
+import {SVGLoader} from "../util/documentation-components/svg-loader/svg-loader";
 
 <Meta title='Using RespVis/Packages'/>
 
@@ -90,4 +91,17 @@ when included in browsers without bundlers or module loaders:
 
 ## Package Dependencies
 
-TODO: include figure of package dependencies
+The following illustration shows the internal dependencies between RespVis packages:
+
+<SVGLoader rawSvg={`${PackageDependencies}`} className={'svg-loader--illustration'}/>
+
+As can be seen, all packages are dependent on repvis-core as it provides fundamental
+functionality.
+The packages respvis-bar, respvis-point and respvis-line are dependent
+on respvis-cartesian since it provides the base functionality for creating series and
+charts defined by having two dimensions for values and scales.
+The respvis-line package is dependent on respvis-point. This avoids the duplication
+of similar render functions, as a line series can be seen as points connected by many
+line fragments.
+The respvis-parcoord package is dependent on respvis-line, since one record of a parallel
+coordinates chart is visualized as a line, connecting all existing axes.

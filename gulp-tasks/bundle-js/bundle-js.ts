@@ -1,5 +1,5 @@
 import rollup from "rollup";
-import {stripCode} from "../rollup-plugin/codeStripPlugin";
+import {stripCode} from "../rollup-plugin/code-strip-plugin";
 import {allBundlesConfigsBase, extensiveBundleConfig} from "./bundle-configs";
 import rollupNodeResolve from "@rollup/plugin-node-resolve";
 import rollupCommonJs from "@rollup/plugin-commonjs";
@@ -9,14 +9,14 @@ import rollupGzip from "rollup-plugin-gzip";
 import fs from "fs";
 import {string} from "rollup-plugin-string";
 import typescript from "typescript";
-import {bundleDeclarations} from "../bundleDeclarations";
+import {bundleDeclarations} from "../bundle-declarations";
 import {absolutePaths} from "../paths/absolute-paths";
 import {modulesMap} from "../constants/modules";
 
 const {rootDir} = absolutePaths
 
 
-export async function bundleJS() {
+export async function bundleJs() {
   if (process.env.LIVE_SERVER === 'true') await bundleJSLive()
   else {
     const allBundleConfigDependencyBased = allBundlesConfigsBase.map(config => {

@@ -1,8 +1,8 @@
 import gulp from "gulp";
-import {bundleJS} from "./bundle-js/bundleJS";
-import {copyExampleDependencies} from "./copy-example-dependencies/copyExampleDependencies";
-import {buildLibCSS} from "./bundle-css/buildCSS";
-import {copyExamples} from "./copyExamples";
+import {bundleJs} from "./bundle-js/bundle-js";
+import {copyExampleDependencies} from "./copy-example-dependencies/copy-example-dependencies";
+import {buildLibCSS} from "./bundle-css/build-css";
+import {copyExamples} from "./copy-examples";
 import {absolutePaths} from "./paths/absolute-paths";
 import {create} from "browser-sync";
 
@@ -22,7 +22,7 @@ export function watcher(cb) {
 
   const watchOptions = { ignoreInitial: true };
   gulp.watch([`${srcDir}/ts/**/*`, `${srcDir}/assets/**/*`], watchOptions,
-    gulp.series(bundleJS, copyExampleDependencies, reloadBrowser));
+    gulp.series(bundleJs, copyExampleDependencies, reloadBrowser));
 
   gulp.watch(`${exampleDir}/**/*`, watchOptions, gulp.series(copyExamples, reloadBrowser));
 

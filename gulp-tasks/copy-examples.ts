@@ -1,5 +1,5 @@
 import gulp from "gulp";
-import {stripHtml} from "./gulp-plugin/codeStripPlugin";
+import {stripHtml} from "./gulp-plugin/code-strip-plugin";
 import ts from "gulp-typescript";
 import replace from "gulp-replace";
 import {absolutePaths} from "./paths/absolute-paths";
