@@ -1,0 +1,137 @@
+import {Meta, Source} from "@storybook/blocks";
+import {
+  SourceCollapseBlockByStoryObj
+} from "../../util/documentation-components/blocks/SourceCollapseBlock/SourceCollapseBlock";
+import CurrentMeta, * as CurrentStories from './how-to-create-a-chart.stories'
+
+<Meta of={CurrentMeta}/>
+
+
+# How to create a Chart
+
+Before starting with the implementation guide, a few words about
+the best development conditions. RespVis is fully typed and can
+be used the best when imported in TypeScript files. By using an
+IDE of choice, one will get useful hints about which arguments
+are expected when creating a new chart. Using a bundler like
+webpack, rollup or parcel will additionally ease the process of
+using TypeScript with plain HTML. This tutorial expects the project
+to be set up with parcel, the zero configuration build tool, and
+the goal is to create a simple responsive line chart:
+```
+# Create line-chart project
+mkdir line-chart
+cd line-chart
+
+# Initialize npm project
+npm init -y
+
+# Install Parcel as a development dependency
+npm install --save-dev parcel
+```
+Next, a chart directory with all necessary files is created. These files will
+finally contain the code to render the finished chart once the tutorial is
+completed:
+```
+# In line-chart directory
+mkdir chart
+cd chart
+touch line-chart.html
+touch line-chart.css
+touch line-chart.ts
+```
+The last thing todo before beginning to create a chart is to
+install the necessary RespVis packages: `npm install respvis`
+This will install the extensive RespVis package which contains
+the full functionality. If one wants to only install required sub
+packages, one can find further information in the
+[guide about packages](?path=/docs/using-respvis-packages--docs).
+
+The next step is to write the necessary markup to `line-chart.html`:
+
+<Source code={`
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <title>Line Chart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="../node_modules/respvis/package/respvis.css"/>
+  <link rel="stylesheet" href="./line-chart.css"/>
+</head>
+<body>
+
+<div id="chart"> </div>
+
+<script type="module">
+  import {createLineChart} from "./line-chart.ts";
+  createLineChart('#chart')
+</script>
+
+</body>
+</html>
+
+`} language={"html"}/>
+
+The above markup:
+1. includes the CSS provided by RespVis.
+2. includes the custom CSS to customize the appearance of the line chart.
+3. defines an empty `<div>` element which will serve as chart-container.
+4. \imports and executes the function to render a line chart from the
+   `line-chart.ts` TypeScript module. The function expects the selector of
+   the chart-container element as the only argument.
+
+For the above markup to function properly it is necessary to
+implement `line-chart.ts`. The LineChartUserArgs type helps
+in figuring out which arguments are required:
+
+<Source code={`
+import { LineChart, LineChartUserArgs } from 'respvis';
+import * as d3 from 'd3';
+
+const students = [
+  8291, 8785, 9203, 9766, 10245, 11211, 11681, 12105, 12323,
+  12565, 12764, 13167, 13454, 13737, 13373, 13566, 13673, 13712
+]
+
+const years = [
+  "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012",
+  "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021"
+]
+
+const args: LineChartUserArgs = {
+  series: {
+    x: {
+      values: years
+    },
+    y: {
+      values: students
+    }
+  },
+  x: {},
+  y: {}
+}
+
+`} language={"typescript"}/>
+
+The above code snippet shows the minimum object still matching
+the type LineChartUserArgs. There are many optional parameters,
+which can be added later, but the above example works.
+
+The only thing left to do to get the basic example working is
+to specify the dimensions of the chart in `line-chart.css`
+(fow your own example you can choose whatever dimensions fit best):
+
+<Source code={`
+#chart {
+  width: 100%;
+  height: 75vh;
+  min-height: 25rem;
+}`} language={"css"}/>
+
+When serving the index.html file by running `npx parcel ./line-chart/index.html`
+from the root directory one will see fruits of him/her work already:
+
+<SourceCollapseBlockByStoryObj story={CurrentStories.Basic}/>
+
+## Working with plain HTML
