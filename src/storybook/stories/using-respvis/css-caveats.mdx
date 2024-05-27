@@ -76,7 +76,7 @@ layout breakpoints, one must take into account two things:
 ## Laying out SVG \<text\> Elements
 
 Laying out \<text\> elements via the RespVis layout mechanism is not
-an easy topic and has its own dedicated [article](?path=/docs/svg-text-in-respvis--docs).
+an easy topic and has its own dedicated [page](?path=/docs/using-respvis-layouting-svg-text--docs).
 This section only aims to emphasize that rotations are (yet) not possible
 with layed out text elements without alignment issues. Exceptions to
 the rule are text elements which are rotated by 90° or -90°. These
@@ -97,9 +97,17 @@ as horizontally oriented.
 
 
 
-[//]: # (## Handling Transitions)
-[//]: # ()
-[//]: # (//Supports and uses both: D3 Transitions and CSS Transitions)
-[//]: # (// CSS Transitions used where possible: low computational cost. easy to override by library user)
-[//]: # (// D3 Transitions for more complicated transitions but may be in conflict with respvis rerender.)
-[//]: # (&#40;TODO: Explain current handling of CSS Transitions and D3 Transitions&#41;)
+## Handling Transitions
+
+RespVis supports and uses both, D3 Transitions and CSS Transitions.
+
+CSS Transitions are used whenever possible due to their simplicity,
+low computational cost and the ability to be easily overridden by
+external CSS.
+
+D3 Transitions, on the other hand, exhibit the ability of defining
+transitions more precisely which is necesssary for more complex
+procedures. However, they bear the disadvantages of higher
+computational cost and are harder to overwrite externally. Currently
+only the duration of D3 transitions can be adapted by specifying
+corresponding CSS variables.

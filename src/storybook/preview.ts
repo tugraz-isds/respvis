@@ -57,7 +57,6 @@ const preview: Preview = {
             'Development Environment',
             'Project Structure',
             'Contribution Guidelines',
-            'Documenting and Testing',
             'Deployment',
             '*'
           ],

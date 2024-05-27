@@ -37,12 +37,12 @@ RespVis will make small adjustments and then continue without throwing an error.
 Finally, by calling **_Chart.buildChart()_** the chart executes all necessary actions to
 render its content and become responsive. This includes:
 1. Rendering the chart for the first time.
-2. Executing [RespVis Layouting Mechanism](?path=/docs/respvis-layouting-mechanism--docs)
+2. Executing [RespVis Layouting Mechanism](?path=/docs/using-respvis-layouting-mechanism--docs)
 3. Setting up all necessary listeners to resize all content inside the chart if:
     - the width or height of the chart changes.
     - an interaction with the chart requires an immediate rerender (such as filtering data).
     - an interaction with the chart initiates a rerender and is not conflicting with any
-      ongoing [d3 transitions](?path=/docs/handling-transitions--docs)
+      ongoing [d3 transitions](?path=/docs/using-respvis-css-caveats--docs#handling-transitions)
 
 ## Chart Layout Structure
 
