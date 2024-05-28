@@ -70,6 +70,7 @@ const preview: Preview = {
     },
     docs: {
       page: ChartDocTemplate,
+      // theme: themes.dark
     }
   },
 };

@@ -2,8 +2,10 @@ import type {StorybookConfig} from "@storybook/html-vite";
 import {svgRawPlugin} from './plugins/vite-plugin-svg-raw';
 import tsconfigPaths from 'vite-tsconfig-paths'
 
+
 const config: StorybookConfig = {
   stories: ["./stories/**/*.mdx", "./stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  staticDirs: [{ from: './static-assets', to: '/assets' }],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
