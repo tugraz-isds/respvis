@@ -42,5 +42,5 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.RESPVIS_NETLIFY }}
           NETLIFY_SITE_ID: ${{ secrets.RESPVIS_NETLIFY_MASTER_DOCS_SITE_ID }}
         with:
-          args: deploy --dir=storybook-static --prod
+          args: deploy --dir=storybook-static --prod --filter respvis-core
           secrets: '["RESPVIS_NETLIFY", "RESPVIS_NETLIFY_MASTER_DOCS_SITE_ID"]'
