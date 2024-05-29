@@ -12,8 +12,6 @@ const {students, years} = StudentTUGrazData
 
 const meta = {
   title: 'Using RespVis/Charts/Chart Examples/Cartesian Charts/Line Charts/Single Line Chart',
-  // subtitle: 'Line Chart',
-  // tags: ['autodocs'],
   parameters: {
     docs: {
       story: {
