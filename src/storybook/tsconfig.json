@@ -2,6 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "jsx": "react",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["vite/client"],
     "paths": {
       "respvis-core": ["../packages/respvis-core/ts"],
       "respvis-core/*": ["../packages/respvis-core/ts/*"],
@@ -16,7 +19,11 @@
       "respvis-point": ["../packages/respvis-point/ts"],
       "respvis-point/*": ["../packages/respvis-point/ts/*"],
       "respvis-tooltip": ["../packages/respvis-tooltip/ts"],
-      "respvis-tooltip/*": ["../packages/respvis-tooltip/ts/*"]
+      "respvis-tooltip/*": ["../packages/respvis-tooltip/ts/*"],
+      "data": ["./stories/util/data"],
+      "data/*": ["./stories/util/data/*"],
+      "storybook-util": ["./stories/util"],
+      "storybook-util/*": ["./stories/util/*"]
     }
   },
   "include": [

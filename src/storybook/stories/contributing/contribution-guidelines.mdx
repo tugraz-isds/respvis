@@ -1,0 +1,138 @@
+import {Meta, Source} from "@storybook/blocks";
+import validateChart from "respvis-core/ts/render/chart/chart/validate-chart.ts?raw";
+
+<Meta title='Contributing/Contribution Guidelines'/>
+
+# Contribution Guidelines
+
+
+
+## Project Structure
+
+RespVis has a designated way of adding new functionality or
+chart examples. To maintain a clear, understandable structure,
+it is important to stick to the
+[existing structures](?path=/docs/contributing-project-structure--docs#gulp-tasks-directory).
+
+
+
+## Releasing
+
+When doing a release, make sure to follow these steps:
+- Check that the current branch is master.
+- Raise the version of all package.jsons.
+  They all must be the same.
+- Create a new tag. It must be named to: `v<major>.<minor>.<patch>`
+  and must match with the versions of the package.jsons.
+- Push the created tag.
+- Publish all packages on npm
+- Create a release from the new tag on GitHub
+
+
+
+## Importing/Exporting
+
+
+
+### Importing/Exporting TypeScript on Bundling
+
+Keeping to RespVis' import/export policy is an important matter
+because it greatly influences the bundle process.
+To understand the bundle process, one must know that each subpackage
+of the RespVis library has an entry file named `index.ts`. The bundler
+will check everything which is exported from this entry file and include
+it in the final bundle.
+To gain more fine-grained control, additional `index.ts` files exist for all
+nested directories. A top-level `index.ts` exports all its nested `index.ts`.
+This way, the entry file will export all desired functionality.
+
+Importing functionality from one RespVis package to another requires a special
+strategy. This is because if relative paths were used, the bundler
+would include the code from the providing package also in the dependent package.
+RespVis makes use of path aliases defined in the `tsconfig.json` to avoid this
+form of double bundling and enable importing functionality between subpackages.
+
+
+### Importing/Exporting Policy for TypeScript
+
+Importing and exporting is applied in several different ways in RespVis.
+To give a good explanation, respvis-bar and respvis-core are taken as
+reference examples, but they can be substituted with the other packages:
+  1. A file in respvis-core imports from another file in respvis-core.
+  It is advisable to use relative path imports hereby as using the path
+  alias may lead to problems and slowdowns in the bundling process.
+  2. A file in respvis-bar imports functionality from respvis-core. For this
+  case an import must be declared via path alias:
+  `import {<functionality>} from 'respvis-core'`. This way, rollup will
+  recognize that the import comes from an external package and will
+  specify so in the generated bundle.
+  3. An `index.ts` reexports a named type of a file.
+  For this case it is not enough to export like this:
+  `export {<type-name>} from "<path-to-file>"`,
+  but one must use type-only exports:
+  `export type {<type-name>} from "<path-to-file>"`. The
+  reason is that the live docs use vite as bundler and
+  the transpile process has different requirements.
+
+
+
+### Importing Policy for CSS
+
+The bundling process for CSS works similar like for TypeScript,
+but is less complicated because there is no need to import dependencies
+and all CSS files must be included in the bundle. Each package contains
+a corresponding entry `index.css`. Other CSS files can be imported using
+import statements: `@import '<relative-path>';`. In the build step, gulp
+takes care of substituting import statements with the real CSS code and
+generating a single CSS files which is included in the generated package
+directory.
+
+
+
+## Naming Conventions
+
+Entities in RespVis are named such that composed names sound
+natural and follow the conventions of the English language.
+Functions and methods start with a verb indicating the performed
+action.
+
+
+
+### Casing Entities
+
+The case conventions for entities in RespVis are:
+- Files: `<kebap-case-file>.<extension>`
+- Directories:`<kebap-case-directory>`
+- Functions:`camelCaseFunction()`
+- Classes: `PascalCaseClass`
+- Types: `PascalCaseType`
+
+
+
+### Semantic Naming Conventions
+
+RespVis' API is designed to let a user create
+visualisations by providing one JavaScript object containing numerous
+properties and nested objects. All these entities are validated before
+being used in the rendering process. Three types must be provided to
+achieve a clean validation process:
+- UserArgsType: This type will be visible by the end user when creating
+  a visualisation. It supports the user by providing information about
+  the expected arguments.
+- ArgsType: This type extends the UserArgsType by including properties
+  which the user should not care about but must be provided internally
+  to create a valid data object.
+- DataType: The valid data object which is returned by the validation
+  function. This type can be reliably used for internal data operations.
+
+A good example for this type and name convention is the validation of
+the base arguments necessary for creating all types of chart:
+
+<Source code={validateChart} language='typescript'/>
+
+
+## Generated Files and Directories
+
+Generated files and folder are not meant to be pushed to the repository,
+and must, therefore, be included in the .gitignore. Keeping this in mind
+is important as gulp generates many files in the build step.

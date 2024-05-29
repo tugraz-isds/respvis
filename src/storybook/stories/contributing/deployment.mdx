@@ -1,0 +1,44 @@
+import {Meta} from "@storybook/blocks";
+
+<Meta title='Contributing/Deployment'/>
+
+# Deployment
+
+
+
+## GitHub Workflow
+
+The RespVis repository contains GitHub workflows which are executed
+automatically on certain events:
+- The development workflow is triggered if new commits are pushed to
+  the develop branch, including merging approved pull requests.
+  The workflow is responsible for deploying RespVis'
+  [self-contained examples](https://respvis-dev.netlify.app/)
+  and the [live documentation](https://respvis-dev-docs.netlify.app/)
+  reflecting the state of the develop branch's latest commit.
+- The release workflow is triggered if a new tag is pushed to
+  the repository. New tags should _always_ be created on the master
+  branch, as they represent versions of the repository which are also
+  published as packages on npm. The workflow is responsible for deploying
+  RespVis' [self-contained examples](https://respvis.netlify.app/)
+  and the [live documentation](https://respvis-docs.netlify.app/)
+  reflecting the state of the pushed tag's commit.
+
+
+## Manual Deployment
+
+There are several ways to try out a built version of
+the RespVis examples:
+
+- Copy the `dist` folder to a web server's webspace.
+
+- Start a local web server in the `dist` folder with a command like:
+```
+python3 -m http.server 8000
+```
+and point a web browser to [localhost:8000](http://localhost:8000/).
+
+- Open the `dist/index.html` file directly in a browser (make
+sure your browser CORS policy [allows local file
+requests](https://dev.to/dengel29/loading-local-files-in-firefox-and-chrome-m9f)).
+

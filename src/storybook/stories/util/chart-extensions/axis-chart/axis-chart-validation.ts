@@ -1,4 +1,3 @@
-import {Orientation, Orientations, ScaledValuesUserArgs} from "respvis-core";
 import {
   AxisDomainRV,
   BaseAxis,
@@ -6,6 +5,9 @@ import {
   ChartData,
   ChartDataArgs,
   ChartDataUserArgs,
+  Orientation,
+  Orientations,
+  ScaledValuesUserArgs,
   validateBaseAxis,
   validateChart,
   validateScaledValuesAxis

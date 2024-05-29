@@ -39,3 +39,5 @@ export const years = [
   "2020",
   "2021"
 ]
+
+export const yearsJSDateFormat = years.map(year => new Date(year))

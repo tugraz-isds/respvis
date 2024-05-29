@@ -10,7 +10,7 @@ type Sources = Record<string, Language>
 /**
  */
 type SourceCollapseBlockProps = SourceProps & {
-  of: any //TODO: only stories allowed
+  of: any //only stories allowed
   id: any
 }
 export const SourceCollapseBlockCanvas = (props: SourceCollapseBlockProps) => {

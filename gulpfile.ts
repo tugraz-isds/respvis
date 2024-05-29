@@ -1,12 +1,12 @@
 import gulp from 'gulp';
 import del from "del";
-import {copyExampleDependencies} from "./gulp-tasks/copy-example-dependencies/copyExampleDependencies";
-import {bundleJS} from "./gulp-tasks/bundle-js/bundleJS";
-import {buildLibCSS} from "./gulp-tasks/bundle-css/buildCSS";
-import {copyExamples} from "./gulp-tasks/copyExamples";
+import {copyExampleDependencies} from "./gulp-tasks/copy-example-dependencies/copy-example-dependencies";
+import {bundleJs} from "./gulp-tasks/bundle-js/bundle-js";
+import {buildLibCSS} from "./gulp-tasks/bundle-css/build-css";
+import {copyExamples} from "./gulp-tasks/copy-examples";
 import {watcher} from "./gulp-tasks/watcher";
-import {cleanExampleDependencies} from "./gulp-tasks/cleanExampleDependencies";
-import {genSVGDataURIs} from "./gulp-tasks/genSVGDataURIs";
+import {cleanExampleDependencies} from "./gulp-tasks/clean-example-dependencies";
+import {genSvgDataUris} from "./gulp-tasks/gen-svg-data-uris";
 import {absolutePaths} from "./gulp-tasks/paths/absolute-paths";
 
 const {iconsDir, gulpUtilGenerated} = absolutePaths
@@ -45,7 +45,7 @@ function setEnvLive(cb) {
 
 // # Public tasks
 
-exports.genSVGDataURI = gulp.series(() => genSVGDataURIs(`${iconsDir}/**/*.svg`, gulpUtilGenerated))
+exports.genSVGDataURI = gulp.series(() => genSvgDataUris(`${iconsDir}/**/*.svg`, gulpUtilGenerated))
 
 exports.cleanExampleDeps = gulp.series(cleanExampleDependencies)
 
@@ -56,7 +56,7 @@ exports.cleanAll = gulp.parallel(exports.clean, cleanPackageLock, cleanNodeModul
 
 const buildOnly = gulp.series(
   gulp.parallel(
-    bundleJS,
+    bundleJs,
     buildLibCSS
   ),
   copyExampleDependencies,

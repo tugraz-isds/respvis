@@ -1,0 +1,115 @@
+import {Meta} from "@storybook/blocks";
+import {Tooltip} from "../util/documentation-components/tooltip-text";
+
+<Meta title='Using RespVis/Layouting Mechanism'/>
+
+# Layouting Mechanism
+
+Many powerful CSS layout techniques like CSS Flexbox and CSS Grid
+are not applicable in SVG-DOM. It is important to note hereby that there
+are good reasons that styling works differently in HTML-DOM than it
+does in SVG-DOM.
+
+In HTML-DOM, elements are layed out according to the CSS box model.
+All elements of an HTML document are represented as boxes. Additionally,
+these boxes consist of defined areas, margin, border, padding and content,
+which can be used for alignment. The simplification of content to such boxes
+gives the possibility of applying different powerful layout modes. In
+many cases, the default positioning of a fitting layout mode achieves
+already appealing results.
+
+In SVG-DOM, on the other hand, a coordinate system is used to precisely
+position and shape elements. This type of layout technique makes sense
+if elements have complex shapes or are constrained to specific positions and
+sizes, which is certainly the case for many elements inside extensive charts.
+There is no sense in laying out such elements via CSS techniques. Instead,
+JavaScript and libraries like D3 should be used to take care of this task.
+
+However, an SVG tree may consist of many elements. This leads to
+situations where layouting certain parts of the tree could be tremendously
+simplified by making use of the CSS box model and HTML-DOM layout modes rather
+than making use of the powerful but complicated coordinate system.
+Another advantage, when shifting the layout definition from internally executed
+scripts to CSS, is that the layout can easily be overwritten.
+
+For these reasons, the goal of RespVis is to allow certain parts of an
+SVG to be layed out with HTML-DOM layout techniques. To make this possible,
+RespVis applies a non-trivial layout mechanism under the hood. This mechanism
+produces two DOM trees:
+1. A tree consisting of the displayed SVG elements themselves, the
+SVG-DOM tree.
+2. A replication of the SVG-DOM tree. This tree contains replicated
+elements of the first tree as \<div\> elements that need to be layed
+out as HTML elements in the HTML-DOM, the HTML-DOM tree.
+
+
+## Special Components in Layouting Process
+
+The creation and maintaining of the HTML-DOM tree is the tricky part
+of the layout mechanism. To understand the process, a certain understanding
+of special components is needed:
+- class **_layouter_**: The core component of RespVis' layouting process.
+  It is a \<div\> element which contains both, the SVG-tree and the HTML-tree.
+- class **_layout_**: All elements of the replicated HTML-DOM tree are marked
+  as layout components since they have the responsibility to lay out their SVG
+  twin elements.
+- class **_layout-container_**: SVG elements which are desired to behave like
+  HTML container elements must have the class layout-container.
+- class **_layout-container-positioner_**: When SVG elements with class
+  layout-container are replicated as \<div\> elements, they get an additional
+  wrapper element with class layout-container-positioner. These elements are
+  automatically positioned by the layouter process, such that the corresponding
+  layout-container element matches with the position of its parent element by
+  default.
+- attribute **_data-ignore-layout_**: SVG elements which are desired to not have
+  an HTML twin element but to be layed out as an ordinary SVG element. Attaching this
+  attribute to an SVG element stops the creation of HTML context for all descendants
+  of the element.
+- attribute **_data-ignore-layout-children_**: Results in the same behavior as
+  the data-ignore-layout attribute. The difference is that the element itself has
+  an HTML twin and is layed out in HTML context.
+
+
+
+## Layouting Phases
+
+The described classes and attributes are necessary for the layout process to
+function properly. The consecutive phases of layouting are:
+1. Phase(Pre-phase): The first render of the SVG-DOM tree. This must happen
+   before the creation of the HTML-DOM tree as the HTML-DOM tree is
+   generated out of the SVG-DOM tree.
+2. Phase: After the rendering of the SVG-DOM tree a call to the method
+   <Tooltip text="/src/lib/core/layouter/layouter.ts">**_layouterCompute(layouterS)**_</Tooltip>
+   happens. This call initiates the rendering of the HTML-DOM.
+3. Phase: The root of the HTML-DOM tree is prepared. It is classified as
+   **_layout-container_** since it starts the HTML layout context.
+4. Phase: The rendering of the rest of the HTML-DOM tree is carried out. This
+   happens by subsequently copying the levels of the existing SVG-DOM tree via
+   D3 selections and data joins.
+
+The fourth phase comes with many important checks. Once elements are encountered
+that break the HTML context propagation (data-ignore attributes) the copying of
+elements generally stops at that level. Exceptions to this rule are elements that
+have layout-container elements as descendants. This results in elements still being
+copied into the generated HTML-DOM tree when they are needed for the nested HTML
+layout contexts (otherwise, the readability when selecting layout elements via css
+would suffer drastically).
+
+Nested HTML contexts logically come out of SVG contexts. Therefore, the default position
+for HTML contexts should be the parent's origin of the corresponding SVG twin element.
+This is achieved by inserting additional wrapper elements (layout-container-positioner) into
+the HTML-DOM tree. These wrapper elements are positioned exactly at said position.
+
+
+## <a name="synchronizing-bounds"></a> Synchronizing Bounds of Replicated and Original Tree
+
+The synchronization of element bounds requires different actions for different elements:
+- \<svg\>, \<rect\>: The rectangular shape of these elements allows a 1:1
+  synchronization with the position and size of the corresponding layout element.
+- \<circle\>, \<ellipse\>: The required presentational attributes for these elements can
+  be easily calculated and set to match the corresponding layout element.
+- \<text\>: The text element requires more complicated handling and, therefore, is discussed
+  in [SVG Text in RespVis](?path=/docs/using-respvis-layouting-svg-text--docs).
+- \<g\> and other: The default action is to make use of the transform attribute
+  to synchronize position between layout and original element. With this method, only
+  position but not size can be synchronized.

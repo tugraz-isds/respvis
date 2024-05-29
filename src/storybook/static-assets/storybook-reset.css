@@ -1,0 +1,7 @@
+#list-item-whats-new, #list-item-about, #list-item-documentation, #tabbutton-about, #tabbutton-whats-new {
+  display: none;
+}
+
+#restoreDefaultsHotkeys + div {
+  display: none;
+}
