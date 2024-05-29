@@ -1,0 +1,8 @@
+#chart-window {
+  container-type: inline-size;
+  @container (width < 15rem) {
+    .axis {
+      display: none;
+    }
+  }
+}

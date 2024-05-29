@@ -1,0 +1,24 @@
+#chart-window {
+  --chart-padding-top: 1rem;
+  container-type: inline-size;
+
+  .draw-area {
+    .label {
+      display: none;
+    }
+  }
+
+  @container (width < 15rem) {
+    .draw-area {
+      .point {
+        opacity: 0;
+        &:first-of-type, &:last-of-type {
+          opacity: 1;
+        }
+      }
+      .label:first-of-type, .label:last-of-type {
+        display: block;
+      }
+    }
+  }
+}

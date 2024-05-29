@@ -7,6 +7,7 @@ import {StoryContext, StoryObj} from "@storybook/html";
 export const SourceCollapseBlock = (props: { story: StoryContext }) => {
   const {story} = props
   return <Fragment key={story.id}>
+    <a id={"story-" + story.name.replace(/\s+/g, '-').toLowerCase()} target={'_self'}></a>
     <Subtitle children={story.name}/>
     <Description of={story}/>
     <SourceCollapseBlockCanvas of={story.moduleExport} id={story.id} __forceInitialArgs/>
