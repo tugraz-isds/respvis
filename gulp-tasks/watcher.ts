@@ -21,7 +21,7 @@ export function watcher(cb) {
   });
 
   const watchOptions = { ignoreInitial: true };
-  gulp.watch([`${srcDir}/ts/**/*`, `${srcDir}/assets/**/*`], watchOptions,
+  gulp.watch([`${srcDir}/packages/**/*`, `${srcDir}/assets/**/*`], watchOptions,
     gulp.series(bundleJs, copyExampleDependencies, reloadBrowser));
 
   gulp.watch(`${exampleDir}/**/*`, watchOptions, gulp.series(copyExamples, reloadBrowser));

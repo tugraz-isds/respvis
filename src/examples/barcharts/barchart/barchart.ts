@@ -5,7 +5,7 @@ import data from './data/austrian-cities.js'
 // Note that no watcher is configured for dependency-based modules, so live coding will not work
 // when making changes in ts source code
 // import {BarChart, BarChartUserArgs} from './libs/respvis/respvis-bar.js'
-import {BarChart, BarChartUserArgs} from './libs/respvis/respvis.js'
+import {Bar, BarChart, BarChartUserArgs, BarSeries, renderBarSeries} from './libs/respvis/respvis.js'
 
 export async function createBarCart(selector: string) {
   const tickOrientationHorizontal = {
@@ -86,7 +86,43 @@ export async function createBarCart(selector: string) {
     // }
   }
 
+  // const chartWindow = d3.select(selector).append('div')
+  // const renderer = new BarChart(chartWindow, barChartArgs)
+  // renderer.buildChart()
+
+  //Example for custom chart with no highlight and tooltips
+  class BarChartCustom extends BarChart {
+    renderContent() {
+      this.renderSeriesChartComponents()
+      const series = this.chartS.datum().series.cloneFiltered().cloneZoomed() as BarSeries
+      const seriesS = renderBarSeries(this.drawAreaS, [series])
+      const barS = seriesS.selectAll<SVGRectElement, Bar>('.bar:not(.exiting):not(.exit-done)')
+      const bars = barS.data()
+
+      // this.addAllSeriesFeatures(seriesS)
+      seriesS
+        // .call(addSeriesHighlighting)
+        // .call(addSeriesConfigTooltipsEvents)
+        .call((s) => this.addSeriesLabels(s))
+      this.drawAreaS.selectAll('.series-label')
+        .attr( 'layout-strategy', bars[0]?.labelData?.positionStrategy ?? null)
+
+      this.addCartesianFeatures()
+      this.addFilterListener()
+    }
+  }
+
   const chartWindow = d3.select(selector).append('div')
-  const renderer = new BarChart(chartWindow, barChartArgs)
+  const renderer = new BarChartCustom(chartWindow, barChartArgs)
   renderer.buildChart()
+
+
+  // const chartEmpty = new Chart(chartWindow, {...barChartArgs, type: 'bar'})
+  //   chartWindow
+  //   .datum(
+  //     validateBarChart({...barChartArgs, renderer: chartEmpty})
+  //   )
+  //   .call(chartWindowBarRender)
+  //   .call(chartWindowBarAutoResize)
+  //   .call(chartWindowBarAutoFilterCategories());
 }

@@ -180,18 +180,21 @@ export class Chart implements Renderer {
 
   private render() {
     if (!(this.windowS.node() as Element).isConnected || this.unmounted) return
-    this.mainRender()
+    this.renderChart()
+    this.renderContent()
     this.addFinalListeners()
     this.initialRenderHappened = true
   }
 
-  protected mainRender() {
+  private renderChart() {
     const data = this.windowS.datum()
     const {chartS} = renderWindow(this.windowS)
     renderChart(chartS)
     chartS.classed(`chart-${data.type}`, true)
     fixActiveCursor(chartS)
   }
+
+  protected renderContent() {}
 
   unmountChart() {
     this.unmounted = true
