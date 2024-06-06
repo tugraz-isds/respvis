@@ -1,4 +1,4 @@
-import {Selection} from "d3";
+import {select, Selection} from "d3";
 import {renderTool} from "../tool/render/render-tool";
 import {bindOpenerToDialog, renderDialog} from "../tool/render/render-dialog";
 import {addRawSVGToSelection, elementFromSelection} from "../../../utilities/d3/util";
@@ -9,12 +9,12 @@ import {Series} from "../../series";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {categoryOrderMapToArray} from "../../../data/categories";
 import {mergeKeys} from "../../../utilities/dom/key";
-import {Axis} from "../../axis";
+import {Axis, KeyedAxis} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
 import {CheckBoxLabel} from "../tool/input-label/checkbox-label";
 import {renderButton} from "../tool/render/render-button";
 import {renderSimpleTooltip} from "../tool/render/render-simple-tooltip";
-import {inputLabelsRender, LabelsParentData} from "../tool/input-label/input-labels-render";
+import {LabelsParentData, renderInputLabels} from "../tool/input-label/render-input-labels";
 import {InputLabel} from "../tool/input-label/input-label";
 import {orderScaledValues, ScaledValuesLinearScale} from "../../../data/scale/scaled-values-base";
 import {RangeLabel} from "../tool/input-label/range-label";
@@ -65,34 +65,47 @@ function renderSeriesControl(menuToolsItemsS: Selection, series: Series) {
     ]
   }]
   const fieldSetS = renderFieldset(menuToolsItemsS, data, 'item', 'item--checkbox-series', 'filter-series')
-  inputLabelsRender(fieldSetS)
+  renderInputLabels(fieldSetS)
 }
 
+//TODO: Refactor Double Input Range in own file
 function renderAxisLinearControls(menuToolsItemsS: Selection, axis: Axis, values: ScaledValuesLinearScale) {
   const {renderer} = axis
   const chartElement = elementFromSelection(renderer.chartS)
   const title = getCurrentRespVal(axis.title, {chart: chartElement})
   const domain: number[] = values.scale.domain().map(d => d.valueOf())
-  const [min, max] = [Math.min(...domain), Math.max(...domain)]
-  const [minMin, minMax] = [min, values.filteredRanges[0][1].valueOf()]
-  const [maxMin, maxMax] = [values.filteredRanges[0][0].valueOf(), max]
+  const [minFilter, maxFilter] = [values.filteredRanges[0][0].valueOf(), values.filteredRanges[0][1].valueOf()]
+  const [minDomain, maxDomain] = [Math.min(...domain), Math.max(...domain)]
+
   const onNumberInput = (e: InputEvent, labelD: RangeLabel) => {
+    const target = e.target as HTMLInputElement
+    const doubleRangeSliderS = select(target?.closest('.double-range-slider'))
+    const inputMin = doubleRangeSliderS.selectAll('.min-range input')
+    const inputMax = doubleRangeSliderS.selectAll('.max-range input')
     const type = labelD.data.type
     const index = type.charAt(type.length - 1)
     const valueString = (e.target as HTMLInputElement).value
     const valueNumber = parseFloat(valueString)
-    // console.log(valueNumber)
+
     if (isNaN(valueNumber)) return
-    if (values.tag === 'linear') values.filteredRanges[0][index] = valueNumber
-    else {
-      values.filteredRanges[0][index] = new Date(Math.floor(valueNumber))
+    const dragMinOverMax = (type === `$range-0-0` && valueNumber >= maxFilter)
+    const dragMaxBelowMin = (type === `$range-0-1` && valueNumber <= minFilter)
+    const valueResult = dragMinOverMax ? maxFilter :
+      dragMaxBelowMin ? minFilter : valueNumber
+    if (values.tag === 'linear') values.filteredRanges[0][index] = valueResult
+    else values.filteredRanges[0][index] = new Date(Math.floor(valueResult))
+    if (dragMinOverMax || dragMaxBelowMin) {
+      target.value = valueResult.toString()
     }
+    inputMin.classed('dominant', labelD.data.type === `$range-0-0`)
+    inputMax.classed('dominant', labelD.data.type === `$range-0-1`)
     renderer.windowS.dispatch('resize')
   }
 
   const data: (LabelsParentData & FieldSetData)[] = [{
     legend: title,
     collapsable: true,
+    filterable: 'key' in axis ? createKeyedAxisCheckboxLabel(axis) : undefined,
     labelData: values.filteredRanges.map((range) => {
       const axisFormatFunction = axis.d3Axis?.tickFormat() ?? values.scale.tickFormat()
       return [
@@ -100,23 +113,38 @@ function renderAxisLinearControls(menuToolsItemsS: Selection, axis: Axis, values
           label: 'Min: ' + axisFormatFunction(range[0], 0),
           type: `$range-0-0`,
           value: values.filteredRanges[0][0].valueOf().toString(),
-          min: minMin, max: minMax,
+          min: minDomain, max: maxDomain,
           step: 1,
+          activeClasses: ['min-range'],
           onInput: onNumberInput,
         }),
         new RangeLabel({
           label: 'Max: ' + axisFormatFunction(range[1], 0),
           type: `$range-0-1`,
           value: values.filteredRanges[0][1].valueOf().toString(),
-          min: maxMin, max: maxMax,
+          min: minDomain, max: maxDomain,
+          activeClasses: ['max-range'],
           step: 1,
           onInput: onNumberInput,
         })
       ]
     }).flat()
   }]
-  const fieldSetS = renderFieldset(menuToolsItemsS, data, 'item', 'item--range-filter', `filter-axis-${values.parentKey}`)
-  inputLabelsRender(fieldSetS)
+  const fieldSetS = renderFieldset(menuToolsItemsS, data, 'item', 'item--double-range-filter', `filter-axis-${values.parentKey}`)
+  const doubleRangeSliderS = fieldSetS.selectAll('.double-range-slider')
+    .data((d) => [d]).join('div')
+    .classed('double-range-slider', true)
+    .style('--range-start', (minFilter / maxDomain) + '')
+    .style('--range-end', (maxFilter / maxDomain) + '')
+
+  doubleRangeSliderS.selectAll('.double-range-slider__track')
+    .data([null]).join('div')
+    .classed('double-range-slider__track', true)
+  doubleRangeSliderS.selectAll('.double-range-slider__range')
+    .data([null]).join('div')
+    .classed('double-range-slider__range', true)
+  renderInputLabels(doubleRangeSliderS)
+  doubleRangeSliderS.selectAll('input').classed('double-range-slider__input', true)
 }
 
 function renderCategoryControls(menuToolsItemsS: Selection, series: Series) {
@@ -154,7 +182,7 @@ function renderCategoryControls(menuToolsItemsS: Selection, series: Series) {
     })
   }]
   const fieldSetS = renderFieldset(menuToolsItemsS, data, 'item', 'item--checkbox-series', 'filter-categories')
-  inputLabelsRender(fieldSetS)
+  renderInputLabels(fieldSetS)
 }
 
 function renderAxisControls(menuToolsItemsS: Selection, axis: Axis) {
@@ -184,30 +212,16 @@ function renderAxisControls(menuToolsItemsS: Selection, axis: Axis) {
   })
 
   if (keys.length === 0 && !('key' in axis)) return
-  let removeAxisLabel: CheckBoxLabel | undefined
-  if ('key' in axis) {
-    const defaultVal = axis.keysActive[axis.key]
-    const axisNecessary = (axis.series.cloneFiltered()?.axes.length <= 2 && defaultVal)
-    removeAxisLabel = new CheckBoxLabel({
-      activeClasses: axisNecessary ? ['disabled'] : undefined,
-      inactiveClasses: !axisNecessary ? ['disabled'] : undefined,
-      label: '', type: 'category',
-      dataKey: axis.key, defaultVal,
-      onChange: () => {
-        renderer.filterDispatch.call('filter', {dataKey: axis.key}, this)
-      }
-    })
-  }
 
   const data: (LabelsParentData & FieldSetData)[] = [{
-    legend: getCurrentRespVal(`${title ?? axisScaledValues.parentKey.toUpperCase()}-Axis`, {chart: chartElement}),
+    legend: getCurrentRespVal(`${title ?? axisScaledValues.parentKey.toUpperCase()}`, {chart: chartElement}),
     collapsable: (!('key' in axis) || keys.length > 1),
-    filterable: removeAxisLabel,
+    filterable: 'key' in axis ? createKeyedAxisCheckboxLabel(axis) : undefined,
     labelData
   }]
 
   const fieldSetS = renderFieldset(menuToolsItemsS, data, 'item', 'item--checkbox-series', `filter-axis-${axisScaledValues.parentKey}`)
-  inputLabelsRender(fieldSetS)
+  renderInputLabels(fieldSetS)
 }
 
 function getAxisCategoryProps(axis: Axis) {
@@ -218,4 +232,18 @@ function getAxisCategoryProps(axis: Axis) {
     options: axisScaledValues instanceof ScaledValuesCategorical ?
       categoryOrderMapToArray(axisScaledValues.categories.categoryOrderMap) : []
   }
+}
+
+function createKeyedAxisCheckboxLabel(axis: KeyedAxis) {
+  const defaultVal = axis.keysActive[axis.key]
+  const axisNecessary = (axis.series.cloneFiltered()?.axes.length <= 2 && defaultVal)
+  return new CheckBoxLabel({
+    activeClasses: axisNecessary ? ['disabled'] : undefined,
+    inactiveClasses: !axisNecessary ? ['disabled'] : undefined,
+    label: '', type: 'category',
+    dataKey: axis.key, defaultVal,
+    onChange: () => {
+      axis.series.renderer.filterDispatch.call('filter', {dataKey: axis.key}, this)
+    }
+  })
 }

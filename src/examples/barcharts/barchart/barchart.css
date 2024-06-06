@@ -4,6 +4,12 @@
   min-height: 25rem;
   container-type: inline-size;
 
+  @container (width < 25rem) {
+    .toolbar {
+      position: static;
+    }
+  }
+
   @container (width < 30rem) {
     .window-rv {
       --chart-padding-right: 4rem;

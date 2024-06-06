@@ -1,0 +1,89 @@
+/*based on https://www.youtube.com/watch?v=NCy_tav8CEA*/
+.double-range-slider {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  overflow: visible;
+  gap: 1rem;
+  --slider-height: 2rem;
+  --range-start: 0;
+  --range-end: 0;
+  padding-bottom: var(--slider-height);
+  label {
+    &:nth-of-type(2) span {
+      text-align: right;
+    }
+    input {
+      position: absolute;
+      top: calc(100% - var(--slider-height) / 2);
+      height: calc(var(--slider-height) / 2);
+      width: calc(100% - var(--slider-height) / 2);
+      left: 50%;
+      translate: -50% -50%;
+      appearance: none;
+      -webkit-appearance: none;
+      pointer-events: none;
+      cursor: pointer;
+      opacity: 1;
+      z-index: 5;
+      background: transparent;
+      &.dominant {
+        z-index: 6;
+      }
+    }
+    input[type='range']::-webkit-slider-thumb {
+      pointer-events: all;
+      display: block;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      /*background-color: #e8e8ec;*/
+      background-color: #e95420;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    input[type='range']::-moz-range-thumb {
+      pointer-events: all;
+      display: block;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      /*background-color: #e8e8ec;*/
+      background-color: #e95420;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    input[type='range']::-ms-thumb {
+      pointer-events: all;
+      display: block;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      /*background-color: #e8e8ec;*/
+      background-color: #e95420;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+  }
+  .double-range-slider__track, .double-range-slider__range {
+    position: absolute;
+    top: calc(100% - var(--slider-height) / 2);
+    left: 50%;
+    translate: -50% -50%;
+    height: 0.4rem;
+    border-radius: 0.75rem / 0.5rem;
+    background-color: #e8e8ec;
+    border: 0.0625rem solid #9c9ca9;
+    z-index: 2;
+  }
+  .double-range-slider__track {
+    width: calc(100% - var(--slider-height) / 2 - 0.2rem);
+  }
+  .double-range-slider__range {
+    translate: 0 -50%;
+    left: calc(var(--slider-height) / 2 + var(--range-start) * (100% - var(--slider-height)));
+    right: calc(var(--slider-height) / 2 + (1.0 - var(--range-end)) * (100% - var(--slider-height)));
+    background-color: #e95420;
+    z-index: 3;
+  }
+}

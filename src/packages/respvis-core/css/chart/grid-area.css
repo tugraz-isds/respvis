@@ -1,3 +1,11 @@
+.layouter {
+  grid-area: layouter;
+}
+
+.toolbar {
+  grid-area: toolbar;
+}
+
 .header {
   grid-area: header;
 }

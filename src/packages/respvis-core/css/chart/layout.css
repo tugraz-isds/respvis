@@ -26,9 +26,3 @@
 .draw-area > * {
   grid-area: 1 / 1;
 }
-
-.window-rv {
-  .layouter {
-    grid-area: chart;
-  }
-}

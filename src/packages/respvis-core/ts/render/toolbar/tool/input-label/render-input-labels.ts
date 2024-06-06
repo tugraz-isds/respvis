@@ -6,17 +6,17 @@ export type LabelsParentData = {
   labelData: InputLabel[]
 }
 
-export function inputLabelsRender(itemsS: Selection<any, LabelsParentData>) {
+export function renderInputLabels(itemsS: Selection<any, LabelsParentData>) {
   itemsS.each(function (d, i, g) {
     const {labelData} = d
     select(g[i]).selectChildren<HTMLLabelElement, InputLabel>('label')
       .data(labelData)
       .join('label')
-      .each((d, i, g) => inputLabelRender(select<HTMLLabelElement, InputLabel>(g[i])))
+      .each((d, i, g) => renderInputLabel(select<HTMLLabelElement, InputLabel>(g[i])))
   })
 }
 
-export function inputLabelRender<D extends InputLabel>(labelS: Selection<HTMLLabelElement, D>) {
+export function renderInputLabel<D extends InputLabel>(labelS: Selection<HTMLLabelElement, D>) {
   const d = labelS.datum()
   d.render(labelS)
   labelS.on('click.callback', function (e) { d.data.onClick?.(e, d.data.type) })

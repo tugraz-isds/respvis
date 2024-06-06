@@ -37,3 +37,12 @@ import {Meta} from "@storybook/blocks";
 
 - Firefox: Fast resizing of charts with many data points leads to strange error log
 - Self-contained grouped bar chart example: Labels disappear partially on numeric filtering
+- Parallel Coordinates Chart: Filtering Axes troubles Axes Drag & Drop. To Reproduce:
+  - Go to Self contained examples parcoord.
+  - Disable Price and Horsepower Axes.
+  - Drag & Drop Fuel Axis to Start of Chart.
+  - Activate Price and Horsepower Axes again.
+  - Fuel Axis can't be drag and dropped anymore. Instead, mileage axis is drag & dropped.
+- Parallel Coordinates Chart: Dragging Numeric Axes slightly changes scale. This leads to
+  a lot of lines disappearing. Dragging same Axis slighly again recovers old axis scale.
+- Parallel Coordinates Chart: Line CSS Transition not enabled.
