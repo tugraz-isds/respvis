@@ -2,7 +2,7 @@ import {select, Selection} from "d3";
 import {createPoints, joinPointSeries, Point} from "respvis-point";
 import {LineSeries} from "./line-series-validation";
 import {addSeriesHighlighting, defaultStyleClass, renderLabelSeries} from "respvis-core";
-import {addSeriesConfigTooltipsEvents} from "respvis-tooltip";
+import {renderSeriesTooltip} from "respvis-tooltip";
 import {Line} from "./line";
 import {joinLineSeries} from "./join-line-series";
 
@@ -13,7 +13,7 @@ export function renderLineSeries(pointLineS: Selection<Element, LineSeries>): vo
   pointLineS.filter('.series-point-line')
     .call((s) => renderLineSeriesPoints(s, pointGroups))
     .call(addSeriesHighlighting)
-    .call(addSeriesConfigTooltipsEvents)
+    .call(renderSeriesTooltip)
     .call(() => renderLabelSeries(series.renderer.drawAreaS, {
         elements: pointGroupsFlat,
         classes: ['series-label'],

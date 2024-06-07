@@ -11,7 +11,6 @@ import {renderSimpleTooltip} from "../../tool/render/render-simple-tooltip";
 import {renderInputLabels} from "../../tool/input-label/render-input-labels";
 import {renderStyleTypeOptions} from "./render-style-type-options";
 import {renderAttributeRemovalOptions} from "./render-attribute-removal-options";
-import {renderElementRemovalOptions} from "./render-element-removal-options";
 import {renderDecimalNumberOptions} from "./render-decimal-number-options";
 import {renderPrettifyOptions} from "./render-prettify-options";
 
@@ -29,7 +28,7 @@ export function renderDownloadTool(toolbarS: Selection<HTMLDivElement>, renderer
   renderPrettifyOptions(dialogS, renderer).call(renderInputLabels)
   renderStyleTypeOptions(dialogS, renderer).call(renderInputLabels)
   renderAttributeRemovalOptions(dialogS, renderer).call(renderInputLabels)
-  renderElementRemovalOptions(dialogS, renderer).call(renderInputLabels)
+  // renderElementRemovalOptions(dialogS, renderer).call(renderInputLabels)
   renderDecimalNumberOptions(dialogS, renderer).call(renderInputLabels)
   downloadButtonRender(dialogS, renderer)
   cancelButtonRender(dialogS)

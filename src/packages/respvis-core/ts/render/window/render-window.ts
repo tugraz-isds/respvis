@@ -3,6 +3,7 @@ import {SVGHTMLElement} from "../../constants/types";
 import {Window} from "./window";
 import {updateBreakpointStateForSelection} from "../../data";
 import {layouterRender} from "../../layouter";
+import {renderTooltip} from "respvis-tooltip";
 
 export function renderWindow<D extends Window>(selection: Selection<SVGHTMLElement, D>) {
   const data = selection.datum()
@@ -21,6 +22,10 @@ export function renderWindow<D extends Window>(selection: Selection<SVGHTMLEleme
     .selectAll<SVGSVGElement, D>(`svg.chart-${data.type}`)
     .data([data])
     .join('svg')
+
+  if (data.tooltip.active) {
+    renderTooltip()
+  }
 
   return {chartWindowS: selection, layouterS, chartS}
 }

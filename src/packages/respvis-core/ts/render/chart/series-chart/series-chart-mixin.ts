@@ -7,7 +7,7 @@ import {addLegendHoverHighlighting} from "../../legend/legend-highlighting";
 import {renderToolbar} from "../../toolbar/render-toolbar";
 import {Series} from "../../series";
 import {addSeriesHighlighting} from "../../series/series-highlighting";
-import {addSeriesConfigTooltipsEvents} from "respvis-tooltip";
+import {renderSeriesTooltip} from "respvis-tooltip";
 import {renderLabelSeries} from "../../label";
 import {RenderElement} from "../../../utilities/graphic-elements/render-element";
 
@@ -58,7 +58,7 @@ export abstract class SeriesChartMixin extends Chart {
 
   addAllSeriesFeatures(seriesS: Selection<SVGGElement, Series>) {
     seriesS.call(addSeriesHighlighting)
-      .call(addSeriesConfigTooltipsEvents)
+      .call(renderSeriesTooltip)
       .call((s) => this.addSeriesLabels(s))
   }
 }

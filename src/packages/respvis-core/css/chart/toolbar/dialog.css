@@ -37,6 +37,7 @@
       display: grid;
       grid-template-columns: auto 1fr;
       max-width: 50vw;
+      max-height: 60vh;
       translate: 0 -1rem;
       padding: 1.5em;
       gap: 0.5em;

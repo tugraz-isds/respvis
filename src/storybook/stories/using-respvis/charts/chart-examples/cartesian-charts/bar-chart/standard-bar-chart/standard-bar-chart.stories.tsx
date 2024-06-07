@@ -51,7 +51,7 @@ export const Primary: Story = {
     series: {
       x: { values: cities },
       y: { values: populations },
-      markerTooltips: {
+      markerTooltipGenerator: {
         tooltips: (i, d) => `City: ${d.xValue}<br/>Population: ${d.yValue}`,
       },
       flipped: {

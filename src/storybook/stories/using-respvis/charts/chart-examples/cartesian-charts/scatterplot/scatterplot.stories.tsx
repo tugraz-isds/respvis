@@ -71,7 +71,7 @@ export const Primary: Story = {
           }
         },
       },
-      markerTooltips: {
+      markerTooltipGenerator: {
         tooltips: ((e, d: Point) => {
           return `Car Price: ${d.yValue}€<br/>
                 Horse Power: ${d.xValue}PS<br/>

@@ -1,4 +1,4 @@
-.tooltip {
+#tooltip-rv {
   opacity: 0;
   background-color: #fff;
   border: #000 solid 1px;
@@ -8,6 +8,6 @@
   pointer-events: none;
 }
 
-.tooltip.show {
+#tooltip-rv.tooltip--visible {
   opacity: 1;
 }

@@ -48,14 +48,12 @@ export function createChartSoldCarsGermany(selector: string) {
           }
         },
       },
-      markerTooltips: {
-        tooltips: ((e, d) => {
+      markerTooltipGenerator: ((e, d) => {
         return `Car Price: ${d.yValue}€<br/>
                 Horse Power: ${d.xValue}PS<br/>
                 Make: ${d.tooltipLabel}<br/>
                 Mileage: ${d.radiusValue}km<br/>`
-      })
-    },
+      }),
       flipped: {
         dependentOn: 'width',
         mapping: {0: true, 2: false}

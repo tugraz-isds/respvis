@@ -46,14 +46,12 @@ export function createScatterplot(selector: string) {
           }
         },
       },
-      markerTooltips: {
-        tooltips: ((e, d: Point) => {
-          return `Car Price: ${d.yValue}€<br/>
+      markerTooltipGenerator: ((e, d: Point) => {
+        return `Car Price: ${d.yValue}€<br/>
                 Horse Power: ${d.xValue}PS<br/>
                 Make: ${d.tooltipLabel}<br/>
                 Mileage: ${d.radiusValue}km<br/>`
-        })
-      },
+      }),
       zoom: {
         in: 20,
         out: 1

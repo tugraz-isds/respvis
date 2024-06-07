@@ -38,13 +38,11 @@ export function renderStackedBarChart(selector: string) {
         values: platformsWhole,
         title: 'Device Types'
       },
-      markerTooltips: {
-        tooltips: ((e, d) => {
-          return `Device Type: ${d.tooltipLabel}<br/>
+      markerTooltipGenerator: ((e, d) => {
+        return `Device Type: ${d.tooltipLabel}<br/>
                 Market Share: ${d3.format(',')(d.yValue)}%<br/>
                 Year: ${d.xValue}<br/>`
-        })
-      },
+      }),
       flipped: {
         dependentOn: 'width',
         mapping: {0: true, 2: false}
