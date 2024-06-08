@@ -32,7 +32,7 @@ export function renderPrettifyOptions(selection: Selection, renderer: Renderer) 
       defaultVal: currentSettings.downloadPrettifyActive,
       onChange,
     }), new NumberLabel({
-      label: 'Number of Spaces',
+      label: 'Indentation spaces',
       type: windowSettingsKeys.downloadPrettifyIndentionSpaces,
       value: currentSettings.downloadPrettifyIndentionSpaces,
       min: 1, max: 20, step: 1,

@@ -48,7 +48,6 @@
       > .item { grid-column: 1 / -1; }
       button {
         justify-self: flex-start;
-        width: fit-content;
       }
     }
 
@@ -78,9 +77,8 @@
         display: flex;
         align-items: center;
         cursor: pointer;
-      }
-      input {
-        margin-right: 0.5em;
+        gap: 0.5em;
+        input { margin: 0; }
       }
       input[type='number'] {
         width: 4ch;

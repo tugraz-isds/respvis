@@ -50,4 +50,17 @@
       border-color: transparent transparent #555 transparent;
     }
   }
+
+  .info__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 1em;
+    min-width: 1em;
+    &:hover .tooltip-simple {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
 }
