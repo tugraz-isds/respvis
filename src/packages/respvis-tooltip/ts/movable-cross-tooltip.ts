@@ -1,4 +1,4 @@
-import {elementFromSelection, Series, throttle} from "respvis-core";
+import {elementFromSelection, Series} from "respvis-core";
 import {select} from "d3";
 import {tooltipSelector} from "./tooltip";
 
@@ -22,7 +22,8 @@ export function renderMovableCrossTooltip(series: Series) {
     return {toolTipCrossStateS, crossStateTextS}
   }
 
-  const onPointerMove = (e) => {
+  const onDrawAreaMove = (e) => {
+    tooltip.movableCrossTooltipVisible = renderer.windowS.datum().windowSettings.movableCrossActive
     const {crossStateTextS} = renderContent()
     const backgroundE = elementFromSelection(renderer.drawAreaBgS) as Element
     const rect = backgroundE.getBoundingClientRect()
@@ -38,15 +39,20 @@ export function renderMovableCrossTooltip(series: Series) {
     if (firstText.size() > 0) firstText.text(horizontal ? `${horizontalName}: ${horizontal}` : firstText.text())
     if (secondText.size() > 0) secondText.text(vertical ? `${verticalName}: ${vertical}` : secondText.text())
   }
-  const throttleObj = throttle(onPointerMove, 50)
 
-  renderer.drawAreaS
-    .on('pointermove.crossInfo', (e) => throttleObj.func(e))
-    .on('pointerover.tooltipMovableCross', () => {
-      tooltip.movableCrossTooltipVisible = renderer.windowS.datum().windowSettings.movableCrossActive
-    })
-    .on('pointerout.tooltipMovableCross', () => {
-      tooltip.movableCrossTooltipVisible = false
-      renderContent()
-    })
+  const onDrawAreaLeave = (e) => {
+    tooltip.movableCrossTooltipVisible = false
+    renderContent()
+  }
+  const onWindowMove = (e) => {
+    const rect = elementFromSelection(renderer.drawAreaBgS).getBoundingClientRect()
+    if (!(e.clientX < rect.x || e.clientX > rect.x + rect.width ||
+      e.clientY < rect.y || e.clientY > rect.y + rect.height)) {
+      onDrawAreaMove(e)
+      return
+    }
+    onDrawAreaLeave(e)
+  }
+
+  renderer.windowS.on('pointermove.LeaveMovableCrossTooltip', onWindowMove)
 }
