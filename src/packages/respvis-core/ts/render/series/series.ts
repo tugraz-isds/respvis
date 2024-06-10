@@ -78,7 +78,12 @@ export abstract class Series implements RenderArgs {
 
   toolRender(toolbarS: Selection<HTMLDivElement>) {}
 
-  abstract getScaledValuesAtScreenPosition(x: number, y: number) : { x: string, y: string }
+  abstract getScaledValuesAtScreenPosition(horizontal: number, vertical: number) : {
+    horizontal: string,
+    horizontalName: string
+    vertical: string,
+    verticalName: string
+  }
 
   abstract clone(): Series
 }

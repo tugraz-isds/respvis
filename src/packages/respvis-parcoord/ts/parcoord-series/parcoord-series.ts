@@ -118,9 +118,12 @@ export class ParcoordSeries extends Series {
   getScaledValuesAtScreenPosition(x: number, y: number) {
     const activeSeries = this.cloneFiltered()
     const chartE = elementFromSelection(activeSeries.axes[0].renderer.chartS)
+    const flipped = this.responsiveState.currentlyFlipped
+    const axisPosition = flipped ? y : x
+    const dimensionPosition = flipped ? x : y
     function axisDiff(axis: KeyedAxis) {
       const currentAxisPosition = activeSeries.axesScale(axis.key)!
-      return Math.abs(currentAxisPosition - x)
+      return Math.abs(currentAxisPosition - axisPosition)
     }
     const { axis } = activeSeries.axes.reduce((prev, current) => {
       const currentDiff = axisDiff(current)
@@ -129,9 +132,14 @@ export class ParcoordSeries extends Series {
       } : prev
     }, { axis: activeSeries.axes[0], diff: axisDiff(activeSeries.axes[0]) })
 
+    const format = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (val) => val
+    const axisName = getCurrentRespVal(axis.title, {chart: chartE})
+    const dimensionValue = format(axis.scaledValues.atScreenPosition(dimensionPosition))
     return {
-      x: getCurrentRespVal(axis.title, {chart: chartE}),
-      y: axis.scaledValues.scaledValueAtScreenPosition(y)
+      horizontal: flipped ? dimensionValue : axisName,
+      vertical: flipped ? axisName : dimensionValue,
+      horizontalName: flipped ? axisName : 'Dimension',
+      verticalName: flipped ? 'Dimension' : axisName
     }
   }
 

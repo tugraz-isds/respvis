@@ -1,4 +1,4 @@
-.window-rv {
+.window-rv, #tooltip-rv {
   /*font-sizes*/
   --root-size: 1rem;
 
@@ -9,6 +9,7 @@
   --font-size-axis-title: calc(1.1 * var(--font-size-base));
   --font-size-axis-subtitle: calc(0.7 * var(--font-size-base));
   --font-size-axis-label: calc(0.7 * var(--font-size-base));
+  --font-size-tooltip-label: calc(1 * var(--font-size-base));
   --font-size-element-label: calc(0.7 * var(--font-size-base));
   --font-size-legend-title: calc(1.1 * var(--font-size-base));
   --font-size-legend-label: calc(0.7 * var(--font-size-base));

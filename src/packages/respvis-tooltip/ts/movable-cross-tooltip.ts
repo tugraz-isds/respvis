@@ -4,41 +4,49 @@ import {tooltipSelector} from "./tooltip";
 
 export function renderMovableCrossTooltip(series: Series) {
   const { renderer} = series
-  const tooltip = renderer.windowS.datum().tooltip
-  const active = renderer.windowS.datum().windowSettings.movableCrossActive && tooltip.active
   const tooltipS = select(tooltipSelector)
-  const flipped = series.responsiveState.currentlyFlipped
+  const tooltip = renderer.windowS.datum().tooltip
 
-  const crossStateTextS = tooltipS
-    .selectAll('.tooltip--cross-state')
-    .data(active ? [null] : [])
-    .join('g')
-    .classed('tooltip--cross-state', true)
-    .selectAll('text')
-    .data(active ? [null, null] : [])
-    .join('text')
-
-  renderer.drawAreaS.classed('cursor-cross', active)
-
-  const onMouseMove = (e) => {
-    const backgroundE = elementFromSelection(renderer.drawAreaBgS) as Element
-    const rect = backgroundE.getBoundingClientRect()
-    const x = flipped ? e.clientY - rect.top : e.clientX - rect.left
-    const y = flipped ? e.clientX - rect.left : e.clientY - rect.top
-
-    const scaledVals = series.getScaledValuesAtScreenPosition(x, y)
-    const firstText = crossStateTextS.filter(function(d, i) { return i === 0; })
-    const secondText = crossStateTextS.filter(function(d, i) { return i === 1; })
-
-    firstText.text(scaledVals.x ? "X: " + scaledVals.x : firstText.text())
-    secondText.text(scaledVals.y ? "Y: " + scaledVals.y : secondText.text())
+  const renderContent = () => {
+    const active = renderer.windowS.datum().windowSettings.movableCrossActive
+      && tooltip.movableCrossTooltipVisible && !tooltip.seriesTooltipVisible
+    const toolTipCrossStateS = tooltipS
+      .selectAll('.item.tooltip--cross')
+      .data(active ? [null] : [])
+      .join('div')
+      .classed('item tooltip--cross', true)
+    const crossStateTextS =  toolTipCrossStateS.selectAll('output')
+      .data(active ? [null, null] : [])
+      .join('output')
+    renderer.drawAreaS.classed('cursor-cross', active)
+    return {toolTipCrossStateS, crossStateTextS}
   }
 
-  const throttleObj = throttle(onMouseMove, 50)
+  const onPointerMove = (e) => {
+    const {crossStateTextS} = renderContent()
+    const backgroundE = elementFromSelection(renderer.drawAreaBgS) as Element
+    const rect = backgroundE.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+
+    const { horizontal, horizontalName,
+      vertical, verticalName} = series.getScaledValuesAtScreenPosition(x, y)
+
+    const firstText = crossStateTextS.filter((d, i) => i === 0 )
+    const secondText = crossStateTextS.filter((d, i) => i === 1)
+
+    if (firstText.size() > 0) firstText.text(horizontal ? `${horizontalName}: ${horizontal}` : firstText.text())
+    if (secondText.size() > 0) secondText.text(vertical ? `${verticalName}: ${vertical}` : secondText.text())
+  }
+  const throttleObj = throttle(onPointerMove, 50)
+
   renderer.drawAreaS
-    .on('mousemove.crossInfo', active ? (e) => throttleObj.func(e) : null as any)
+    .on('pointermove.crossInfo', (e) => throttleObj.func(e))
     .on('pointerover.tooltipMovableCross', () => {
       tooltip.movableCrossTooltipVisible = renderer.windowS.datum().windowSettings.movableCrossActive
     })
-    .on('pointerout.tooltipMovableCross', () => tooltip.movableCrossTooltipVisible = false)
+    .on('pointerout.tooltipMovableCross', () => {
+      tooltip.movableCrossTooltipVisible = false
+      renderContent()
+    })
 }

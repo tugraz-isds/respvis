@@ -3,12 +3,16 @@ import {
   AxisDomainRV,
   AxisType,
   combineKeys,
+  elementFromSelection,
+  getCurrentRespVal,
   ScaledValues,
   ScaledValuesCategorical,
   ScaledValuesUserArgs,
   Series,
   SeriesArgs,
   SeriesUserArgs,
+  SVGGroupingElement,
+  SVGHTMLElement,
   validateScaledValuesAxis,
   validateZoom,
   Zoom,
@@ -16,6 +20,8 @@ import {
 } from "respvis-core";
 import {CartesianResponsiveState} from "./cartesian-responsive-state";
 import {CartesianRenderer} from "../cartesian-renderer";
+import {CartesianAxis} from "../validate-cartesian-axis";
+import {Selection} from "d3";
 
 export type CartesianSeriesUserArgs = SeriesUserArgs & {
   x: ScaledValuesUserArgs<AxisDomainRV>
@@ -63,9 +69,22 @@ export class CartesianSeries extends Series {
   }
 
   getScaledValuesAtScreenPosition(x: number, y: number) {
+    function getAxisData(axisS: Selection<SVGHTMLElement, CartesianAxis>) {
+      const axis = axisS.datum()
+      return {
+        format: axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (h) => h,
+        title: getCurrentRespVal(axis.title, {
+          self: elementFromSelection(axisS) as SVGGroupingElement,
+          chart: elementFromSelection(axis.renderer.chartS)
+        })
+      }
+    }
+    const horizontal = getAxisData(this.renderer.horizontalAxisS)
+    const vertical = getAxisData(this.renderer.verticalAxisS)
     return {
-      x: this.x.scaledValueAtScreenPosition(x),
-      y: this.y.scaledValueAtScreenPosition(y)
+      horizontal: horizontal.format(this.renderer.horizontalAxisS.datum().scaledValues.atScreenPosition(x)),
+      vertical: vertical.format(this.renderer.verticalAxisS.datum().scaledValues.atScreenPosition(y)),
+      horizontalName: horizontal.title, verticalName: vertical.title
     }
   }
 

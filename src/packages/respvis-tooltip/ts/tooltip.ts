@@ -23,8 +23,9 @@ export class Tooltip implements TooltipData {
     this.autoOffset = args?.autoOffset ?? 8
     this.active = args?.active ?? true
   }
-  visible() {
-    return this.seriesTooltipVisible || this.movableCrossTooltipVisible
+  numberOfVisibleTools() {
+    return (this.seriesTooltipVisible ? 1 : 0) +
+      (this.movableCrossTooltipVisible ? 1 : 0)
   }
 }
 
