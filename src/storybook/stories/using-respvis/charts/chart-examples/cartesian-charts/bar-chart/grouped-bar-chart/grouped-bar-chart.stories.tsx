@@ -51,7 +51,7 @@ export const Primary: Story = {
         values: years,
         title: 'Years'
       },
-      markerTooltips: {
+      markerTooltipGenerator: {
         tooltips: ((e, d) => {
           return `Site: ${d.xValue}<br/>
                 Total Remuneration: $${format(',')(d.yValue)}<br/>

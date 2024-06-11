@@ -21,8 +21,8 @@ export class AxisChart extends Chart {
       this.layouterS.selectAll('svg.chart')) as ChartSelection
   }
 
-  protected mainRender() {
-    super.mainRender()
+  protected renderContent() {
+    super.renderContent()
     const {width, height} = rectFromString(this.drawAreaS.attr('bounds') || '0, 0, 600, 400')
     const axes = this.chartS.datum().axes
 

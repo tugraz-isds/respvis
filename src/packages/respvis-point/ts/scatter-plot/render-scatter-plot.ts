@@ -3,7 +3,7 @@ import {PointSeries} from '../point-series/point-series'
 import {ScatterPlotData} from "./validate-scatter-plot"
 import {renderPoints} from "../point-series/render-points"
 import {createPoints} from "../point-series/create-points"
-import {addSeriesConfigTooltipsEvents} from "respvis-tooltip"
+import {renderSeriesTooltip} from "respvis-tooltip"
 import {addSeriesHighlighting, renderLabelSeries} from "respvis-core"
 
 export type ScatterplotSVGChartSelection = Selection<SVGSVGElement | SVGGElement, ScatterPlotData>
@@ -20,7 +20,7 @@ export function renderScatterPlot(chartS: ScatterplotSVGChartSelection) {
     .attr('data-ignore-layout-children', true)
     .call(s => renderPoints(s, points))
     .call(addSeriesHighlighting)
-    .call(addSeriesConfigTooltipsEvents)
+    .call(renderSeriesTooltip)
     .call(() => renderLabelSeries(drawAreaS, {
       elements: points,
       classes: ['series-label'],

@@ -18,11 +18,7 @@ export const createPowerConsumptionChart = (selector: string) => {
                 values: categories,
                 title: 'Continents'
             },
-            markerTooltips: {
-                tooltips: (_, point) => {
-                    return `Year: ${point.xValue}<br/>Pow. Consumption: ${point.yValue}kWh`
-                }
-            },
+            markerTooltipGenerator: (_, point) => `Year: ${point.xValue}<br/>Pow. Consumption: ${point.yValue}kWh`,
             zoom: {
                 in: 20,
                 out: 1

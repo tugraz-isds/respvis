@@ -45,8 +45,8 @@ export class ScaledValuesDate extends ScaledValuesBase<Date> {
     return this.clone();
   }
 
-  scaledValueAtScreenPosition(value: number): string {
-    return this.scale(value).toString()
+  atScreenPosition(value: number) {
+    return this.scale.invert(value)
   }
 
   clone(): ScaledValuesDate {

@@ -24,9 +24,9 @@ export class LineChart extends Chart {
       this.layouterS.selectAll('svg.chart')) as ChartSelection
   }
 
-  protected override mainRender() {
-    super.mainRender()
-    this.seriesRequirementsRender()
+  protected override renderContent() {
+    super.renderContent()
+    this.renderSeriesChartComponents()
     renderLineChart(this.chartS)
     this.addCartesianFeatures()
     this.addFilterListener()

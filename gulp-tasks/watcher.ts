@@ -21,12 +21,13 @@ export function watcher(cb) {
   });
 
   const watchOptions = { ignoreInitial: true };
-  gulp.watch([`${srcDir}/ts/**/*`, `${srcDir}/assets/**/*`], watchOptions,
+  gulp.watch([`${srcDir}/packages/**/*`, `${srcDir}/assets/**/*`,
+      `!${srcDir}/packages/**/package/**`, `!${srcDir}/packages/**/*.css`], watchOptions,
     gulp.series(bundleJs, copyExampleDependencies, reloadBrowser));
 
   gulp.watch(`${exampleDir}/**/*`, watchOptions, gulp.series(copyExamples, reloadBrowser));
 
-  const cssLibWatcher = gulp.watch([`${srcDir}/css/**/*.css`, `${srcDir}/*.css`], watchOptions);
+  const cssLibWatcher = gulp.watch([`${srcDir}/packages/**/*.css`, `!${srcDir}/packages/**/package/**`], watchOptions);
   cssLibWatcher.on('change', async (fileName) => {
     await buildLibCSS()
     copyExampleDependencies()

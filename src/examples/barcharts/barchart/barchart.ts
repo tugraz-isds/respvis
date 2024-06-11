@@ -31,9 +31,7 @@ export async function createBarCart(selector: string) {
       x: { values: data.cities },
       y: { values: data.populations },
       // categoriesTitle: 'City',
-      markerTooltips: {
-        tooltips: (i, d) => `City: ${d.xValue}<br/>Population: ${d.yValue}`,
-      },
+      markerTooltipGenerator: (i, d) => `City: ${d.xValue}<br/>Population: ${d.yValue}`,
       flipped: {
         dependentOn: 'width',
         mapping: {0: true, 2: false}
@@ -73,20 +71,41 @@ export async function createBarCart(selector: string) {
       tickOrientationFlipped: tickOrientationHorizontal,
       configureAxis: (axis) => axis.tickFormat(d3.format('.2s')),
     },
-    // zoom: { //TODO: make bar chart work with zooming!
-    //   in: 20,
-    //   out: 1
-    // }
-    // legend: {
-    //   title: {
-    //     dependentOn: 'width',
-    //     scope: 'chart',
-    //     mapping: {0: '', 3: 'Legend'}
-    //   }
-    // }
   }
+
+  //Example for custom chart with no highlight and tooltips
+  // class BarChartCustom extends BarChart {
+  //   renderContent() {
+  //     this.renderSeriesChartComponents()
+  //     const series = this.chartS.datum().series.cloneFiltered().cloneZoomed() as BarSeries
+  //     const seriesS = renderBarSeries(this.drawAreaS, [series])
+  //     const barS = seriesS.selectAll<SVGRectElement, Bar>('.bar:not(.exiting):not(.exit-done)')
+  //     const bars = barS.data()
+  //
+  //     // this.addAllSeriesFeatures(seriesS)
+  //     seriesS
+  //       // .call(addSeriesHighlighting)
+  //       // .call(addSeriesConfigTooltipsEvents)
+  //       .call((s) => this.addSeriesLabels(s))
+  //     this.drawAreaS.selectAll('.series-label')
+  //       .attr( 'layout-strategy', bars[0]?.labelData?.positionStrategy ?? null)
+  //
+  //     this.addCartesianFeatures()
+  //     this.addFilterListener()
+  //   }
+  // }
 
   const chartWindow = d3.select(selector).append('div')
   const renderer = new BarChart(chartWindow, barChartArgs)
   renderer.buildChart()
+
+
+  // const chartEmpty = new Chart(chartWindow, {...barChartArgs, type: 'bar'})
+  //   chartWindow
+  //   .datum(
+  //     validateBarChart({...barChartArgs, renderer: chartEmpty})
+  //   )
+  //   .call(chartWindowBarRender)
+  //   .call(chartWindowBarAutoResize)
+  //   .call(chartWindowBarAutoFilterCategories());
 }

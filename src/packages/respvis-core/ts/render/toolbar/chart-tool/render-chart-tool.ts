@@ -7,12 +7,14 @@ import {renderSimpleTooltip} from "../tool/render/render-simple-tooltip";
 import {bindOpenerToDialog, DialogData, renderDialog} from "../tool/render/render-dialog";
 import {Series} from "../../series";
 
-export function renderChartTool(toolbarS: Selection<HTMLDivElement>, series: Series[]) {
+export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesCollection: Series[]) {
+  if (seriesCollection.filter(series => series.providesTool).length <= 0) return
+
   const contentS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__content')
-  const downloadToolS = renderTool(contentS, 'tool--chart')
+  const chartToolS = renderTool(contentS, 'tool--chart')
   const dialogContainerS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__dialog-container')
 
-  const dialogOpenerS = renderButton(downloadToolS, 'toolbar__btn')
+  const dialogOpenerS = renderButton(chartToolS, 'toolbar__btn')
   addRawSVGToSelection(dialogOpenerS, chartSVGRaw)
   renderSimpleTooltip(dialogOpenerS, {text: 'Chart Settings'})
   const dialogS = renderDialog(dialogContainerS, 'dialog--center', 'dialog--chart')
@@ -23,7 +25,7 @@ export function renderChartTool(toolbarS: Selection<HTMLDivElement>, series: Ser
     select<HTMLDialogElement, DialogData>(this.closest('dialog')!).datum()?.triggerExit()
   });
 
-  series.forEach(serie => {
-    serie.toolRender(toolbarS)
+  seriesCollection.forEach(series => {
+    series.toolRender(toolbarS)
   })
 }

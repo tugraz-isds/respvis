@@ -64,7 +64,7 @@ export const Primary: Story = {
         values: platformsWhole,
         title: 'Device Types'
       },
-      markerTooltips: {
+      markerTooltipGenerator: {
         tooltips: ((e, d) => {
           return `Device Type: ${d.tooltipLabel}<br/>
                 Market Share: ${format(',')(d.yValue)}%<br/>

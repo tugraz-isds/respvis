@@ -44,13 +44,9 @@ export function getActiveCSSRulesForElement(target: Element) {
   }
 
   function getStyleRules(cssRule: CSSStyleRule | CSSPageRule) {
-    const selectorText = getWholeSelector(cssRule)
+    const selectorText = getWholeSelector(cssRule).replace('&', '')
     const activeElementSVGStandalone = targetClone.matches(selectorText) ? targetClone : targetClone.querySelector(selectorText)
     if (activeElementSVGStandalone) {
-      if (cssRule.selectorText.includes('.line')) {
-        console.log(cssRule)
-        console.log(cssRule.cssText)
-      }
       return new Set<string>().add(cssRule.cssText)
     }
     const activeElementInDOM = target.matches(selectorText) ? target : target.querySelector(selectorText)
@@ -89,36 +85,3 @@ export function getActiveCSSRulesForElement(target: Element) {
 
   return cssRules
 }
-
-
-
-// This function was intended to check if Container Styles are currently active or not.
-// However this is currently not so easy as with media queries.
-// Instead function CSSRuleHasEffect was used to check if the addition of container queries
-// to the document changes styles.
-
-// function checkParentRuleActive(parentRule: CSSRule, currentParent: Element | null, target: Element) {
-//   if (!currentParent) return false
-//   if (!(parentRule instanceof CSSContainerRule)) {
-//     '/* DEV_MODE_ONLY_START */'
-//     console.log('CSSRule Parent checking not implemented!', parentRule)
-//     '/* DEV_MODE_ONLY_END */'
-//     return true
-//   }
-//
-//   const containerType = window.getComputedStyle(currentParent).containerType
-//   const containerName = window.getComputedStyle(currentParent).containerName
-//
-//   if (parentRule.containerName !== '' && parentRule.containerName !== containerType) {
-//     return checkParentRuleActive(parentRule, target.parentElement, target)
-//   }
-//   if (containerType === 'size' || containerType === 'inline-size' || containerType === 'normal') {
-//     parentRule.containerQuery.
-//     //do comparison here
-//     console.log(window.matchMedia(parentRule.containerQuery))
-//     return true
-//   }
-//   return checkParentRuleActive(parentRule, target.parentElement, target)
-// }
-//
-//

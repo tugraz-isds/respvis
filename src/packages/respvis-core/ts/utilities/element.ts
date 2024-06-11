@@ -128,7 +128,7 @@ export const elementSVGPresentationAttrs = [
   'transform',
 ];
 
-export const elementSVGInlineStyles = [
+export const elementSVGTransformStyles = [
   'transform-box',
   'transform-origin'
 ]

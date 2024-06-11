@@ -1,0 +1,13 @@
+/*Position Chart Titles to Axis Ends*/
+#chart {
+  .axis-bottom .title {
+    display: flex;
+    justify-content: flex-end;
+    .text {
+      margin: 0;
+    }
+  }
+  .axis-left .title-wrapper {
+    align-items: flex-start;
+  }
+}

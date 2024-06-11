@@ -8,10 +8,9 @@ import {renderTool} from "../../tool/render/render-tool";
 import {downloadChart} from "../download-chart/download-chart";
 import {renderButton} from "../../tool/render/render-button";
 import {renderSimpleTooltip} from "../../tool/render/render-simple-tooltip";
-import {inputLabelsRender} from "../../tool/input-label/input-labels-render";
+import {renderInputLabels} from "../../tool/input-label/render-input-labels";
 import {renderStyleTypeOptions} from "./render-style-type-options";
 import {renderAttributeRemovalOptions} from "./render-attribute-removal-options";
-import {renderElementRemovalOptions} from "./render-element-removal-options";
 import {renderDecimalNumberOptions} from "./render-decimal-number-options";
 import {renderPrettifyOptions} from "./render-prettify-options";
 
@@ -26,11 +25,11 @@ export function renderDownloadTool(toolbarS: Selection<HTMLDivElement>, renderer
   const dialogS = renderDialog(dialogContainerS, 'dialog--center', 'dialog--download')
   bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300, type: 'modal'})
 
-  renderPrettifyOptions(dialogS, renderer).call(inputLabelsRender)
-  renderStyleTypeOptions(dialogS, renderer).call(inputLabelsRender)
-  renderAttributeRemovalOptions(dialogS, renderer).call(inputLabelsRender)
-  renderElementRemovalOptions(dialogS, renderer).call(inputLabelsRender)
-  renderDecimalNumberOptions(dialogS, renderer).call(inputLabelsRender)
+  renderPrettifyOptions(dialogS, renderer).call(renderInputLabels)
+  renderStyleTypeOptions(dialogS, renderer).call(renderInputLabels)
+  renderAttributeRemovalOptions(dialogS, renderer).call(renderInputLabels)
+  // renderElementRemovalOptions(dialogS, renderer).call(renderInputLabels)
+  renderDecimalNumberOptions(dialogS, renderer).call(renderInputLabels)
   downloadButtonRender(dialogS, renderer)
   cancelButtonRender(dialogS)
 

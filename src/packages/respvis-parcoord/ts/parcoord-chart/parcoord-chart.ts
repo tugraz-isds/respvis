@@ -23,9 +23,9 @@ export class ParcoordChart extends Chart {
       this.layouterS.selectAll('svg.chart')) as ChartSelection
   }
 
-  protected mainRender(): void {
-    super.mainRender()
-    this.seriesRequirementsRender()
+  protected renderContent(): void {
+    super.renderContent()
+    this.renderSeriesChartComponents()
     renderParcoordChart(this.chartS!)
     this.addFilterListener()
   }

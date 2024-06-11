@@ -24,16 +24,16 @@ export class BarChart extends Chart {
       this.layouterS.selectAll('svg.chart')) as ChartSelection
   }
 
-  protected override mainRender() {
-    super.mainRender()
-    this.seriesRequirementsRender()
+  protected override renderContent() {
+    super.renderContent()
+    this.renderSeriesChartComponents()
 
     const series = this.chartS.datum().series.cloneFiltered().cloneZoomed() as BarSeries
     const seriesS = renderBarSeries(this.drawAreaS, [series])
     const barS = seriesS.selectAll<SVGRectElement, Bar>('.bar:not(.exiting):not(.exit-done)')
     const bars = barS.data()
 
-    this.addSeriesFeatures(seriesS)
+    this.addAllSeriesFeatures(seriesS)
     this.drawAreaS.selectAll('.series-label')
       .attr( 'layout-strategy', bars[0]?.labelData?.positionStrategy ?? null)
 

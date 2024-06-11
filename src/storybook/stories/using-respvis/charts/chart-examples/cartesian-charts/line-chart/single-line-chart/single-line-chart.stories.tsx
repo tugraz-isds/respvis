@@ -34,7 +34,7 @@ export const Basic: Story = {
     series: {
       x: {values: years},
       y: {values: students},
-      markerTooltips: {
+      markerTooltipGenerator: {
         tooltips: function(_, {xValue, yValue}) {
           return `Year: ${xValue}<br/>Students: ${format('.2f')(yValue)}`
         }

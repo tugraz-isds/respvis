@@ -3,7 +3,7 @@ import {addRawSVGToSelection, classesForSelection} from "../../../../utilities/d
 import {InputLabel} from "../input-label/input-label";
 import CollapseDownRAW from '../../../../../../../assets/svg/tablericons/collapse-down.svg';
 import {mapSelection} from "../../../../utilities/d3/selection";
-import {inputLabelRender} from "../input-label/input-labels-render";
+import {renderInputLabel} from "../input-label/render-input-labels";
 
 export type FieldSetData = {
   legend: string
@@ -40,7 +40,7 @@ function fieldsetLegendRender(legendS: Selection<HTMLLegendElement>, data: Field
     .data(data.filterable ? [data.filterable] : [])
     .join('label')
     .classed('active', true)
-    .each((d, i, g) => inputLabelRender(select<HTMLLabelElement, InputLabel>(g[i])))
+    .each((d, i, g) => renderInputLabel(select<HTMLLabelElement, InputLabel>(g[i])))
   legendS.selectAll<any, string>('.text')
     .data([data.legend])
     .join('span')

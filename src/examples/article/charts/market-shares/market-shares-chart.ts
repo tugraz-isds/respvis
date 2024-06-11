@@ -1,13 +1,13 @@
 import {BarChart, BarChartUserArgs} from '../../libs/respvis/respvis.js';
 import * as d3 from '../../libs/d3-7.6.0/d3.js'
 import {
-  desktop,
-  desktopCategory,
-  phone,
-  phoneCategory,
-  tablet,
-  tabletCategory,
-  years
+    desktop,
+    desktopCategory,
+    phone,
+    phoneCategory,
+    tablet,
+    tabletCategory,
+    years
 } from './data/desktop-phone-tablet.js';
 
 
@@ -39,13 +39,11 @@ export function createMarketSharesChart(selector) {
                 values: platformsWhole,
                 title: 'Device Types'
             },
-            markerTooltips: {
-                tooltips: ((e, d) => {
-                    return `Device Type: ${d.tooltipLabel}<br/>
+            markerTooltipGenerator: ((e, d) => {
+                return `Device Type: ${d.tooltipLabel}<br/>
                 Market Share: ${d3.format(',')(d.yValue)}%<br/>
                 Year: ${d.xValue}<br/>`
-                })
-            },
+            }),
             flipped: {
                 dependentOn: 'width',
                 mapping: {0: true, 2: false}

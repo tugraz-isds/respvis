@@ -4,16 +4,16 @@ import {
   addRawSVGToSelection,
   CheckBoxLabel,
   DialogData,
-  inputLabelsRender,
   Renderer,
   renderFieldset,
+  renderInputLabels,
   windowSettingsKeys
 } from "respvis-core";
 import checkSVGRaw from "../../../../../assets/svg/tablericons/check.svg";
 
 export function renderTool(toolbarS: Selection<HTMLDivElement>, series: ParcoordSeries) {
   const dialogS = toolbarS.selectAll<HTMLDialogElement, DialogData>('.dialog--center.dialog--chart')
-  equidistantAxesOptionsRender(dialogS, series.renderer).call(inputLabelsRender)
+  equidistantAxesOptionsRender(dialogS, series.renderer).call(renderInputLabels)
   confirmButtonRender(dialogS)
 }
 

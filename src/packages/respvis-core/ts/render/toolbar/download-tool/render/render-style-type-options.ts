@@ -18,10 +18,13 @@ export function renderStyleTypeOptions(selection: Selection, renderer: Renderer)
     onChange,
   }
   const data = [{
-    legend: 'Style Type:',
+    legend: 'Style Type',
     labelData: [
-      new RadioLabel({...sharedData, value: 'inline', label: 'Inline CSS'}),
-      new RadioLabel({...sharedData, value: 'embedded', label: 'Embedded CSS'}),
+      new RadioLabel({...sharedData, value: 'inline', label: 'Inline CSS (styles in elements)'}),
+      new RadioLabel({...sharedData,
+        value: 'embedded', label: 'Embedded CSS (styles in styleblock)'
+        , info: 'Success of this method is not guaranteed.'
+      }),
     ]
   }]
   return renderFieldset(selection, data, 'item', 'item--radio')

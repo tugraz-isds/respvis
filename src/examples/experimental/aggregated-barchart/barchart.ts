@@ -20,9 +20,7 @@ export function createBarChart(selector: string) {
     series: {
       x: { values: data.months, scale: d3.scaleBand().domain(data.years).padding(0.1) },
       y: { values: data.anomalies, scale: d3.scaleLinear().domain([-2, 3])},
-      markerTooltips: {
-        tooltips: (i, d) => `Month: ${d.xValue}<br/>Anomalie: ${d.yValue}°C`,
-      },
+      markerTooltipGenerator: (i, d) => `Month: ${d.xValue}<br/>Anomalie: ${d.yValue}°C`,
       flipped: {
         dependentOn: 'width',
         mapping: {0: true, 3: false}
@@ -109,9 +107,7 @@ export function createBarChartAggregated(selector: string) {
       y: { values: [data.anomalies_1885, data.anomalies_2023],
         scale: d3.scaleLinear().domain([Math.min(...data.anomalies), Math.max(...data.anomalies)]).nice() },
       // categoriesTitle: 'City',
-      markerTooltips: {
-        tooltips: (i, d) => `Month: ${d.xValue}<br/>Anomalie: ${d.yValue}°C`,
-      },
+      markerTooltipGenerator: (i, d) => `Month: ${d.xValue}<br/>Anomalie: ${d.yValue}°C`,
       flipped: {
         dependentOn: 'width',
         mapping: {0: true, 2: false}

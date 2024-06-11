@@ -7,13 +7,14 @@ import {addLegendHoverHighlighting} from "../../legend/legend-highlighting";
 import {renderToolbar} from "../../toolbar/render-toolbar";
 import {Series} from "../../series";
 import {addSeriesHighlighting} from "../../series/series-highlighting";
-import {addSeriesConfigTooltipsEvents} from "respvis-tooltip";
+import {renderSeriesTooltip} from "respvis-tooltip";
 import {renderLabelSeries} from "../../label";
 import {RenderElement} from "../../../utilities/graphic-elements/render-element";
 
 export abstract class SeriesChartMixin extends Chart {
   abstract get windowS(): Selection<HTMLElement, Window & SeriesChartData>
   abstract get chartS(): Selection<SVGSVGElement, Window & SeriesChartData>
+
   addFilterListener() {
     const renderer = this
     renderer.windowS
@@ -37,24 +38,27 @@ export abstract class SeriesChartMixin extends Chart {
       renderer.windowS.dispatch('resize')
     })
   }
-  seriesRequirementsRender() {
+
+  renderSeriesChartComponents() {
     const chartSelection = this.chartS!
     const chartD = chartSelection.datum()
     chartD.getSeries().forEach(series => series.responsiveState.update())
     renderLegend(chartSelection, chartD.legend).call(addLegendHoverHighlighting)
     renderToolbar(this.windowS!, chartSelection.datum())
   }
-  addSeriesFeatures(seriesS: Selection<SVGGElement, Series>) {
+
+  addSeriesLabels(seriesS: Selection<SVGGElement, Series>) {
     const seriesElementsS = seriesS.selectAll<any, RenderElement>('.bar:not(.exiting):not(.exit-done)')
-    const renderElements = seriesElementsS.data()
-    const series = seriesS.datum()
+    renderLabelSeries(this.drawAreaS, {
+      elements: seriesElementsS.data(),
+      classes: ['series-label'],
+      orientation: seriesS.datum().responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
+    })
+  }
+
+  addAllSeriesFeatures(seriesS: Selection<SVGGElement, Series>) {
     seriesS.call(addSeriesHighlighting)
-      .call(addSeriesConfigTooltipsEvents)
-      .call(() => renderLabelSeries(this.drawAreaS, {
-          elements: renderElements,
-          classes: ['series-label'],
-          orientation: series.responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
-        })
-      )
+      .call(renderSeriesTooltip)
+      .call((s) => this.addSeriesLabels(s))
   }
 }

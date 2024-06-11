@@ -8,10 +8,8 @@ export function createLineChart(selector: string) {
     series: {
       x: { values: yearsJSDateFormat },
       y: { values: students },
-      markerTooltips: {
-        tooltips: (_, {xValue, yValue}) =>
-          `Year: ${xValue}<br/>Students: ${d3.format('.2f')(yValue)}`,
-      },
+      markerTooltipGenerator: (_, {xValue, yValue}) =>
+        `Year: ${xValue}<br/>Students: ${d3.format('.2f')(yValue)}`,
       zoom: {
         in: 20,
         out: 1

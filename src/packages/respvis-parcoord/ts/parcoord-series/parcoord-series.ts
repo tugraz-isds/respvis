@@ -1,12 +1,15 @@
 import {
   arrayAlignLengths,
   AxisDomainRV,
+  AxisLayout,
   BaseAxisUserArgs,
   combineKeys,
   elementFromSelection,
   ErrorMessages,
   getCurrentRespVal,
   KeyedAxis,
+  ResponsiveState,
+  ResponsiveStateArgs,
   ScaledValuesCategorical,
   ScaledValuesUserArgs,
   Series,
@@ -21,7 +24,6 @@ import {
   ZoomArgs
 } from "respvis-core";
 import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal, scalePoint, ScalePoint, Selection} from "d3";
-import {ParcoordResponsiveState} from "./responsive-state";
 import {renderTool} from "../parcoord-chart/render/render-tool";
 
 export type ParcoordSeriesUserArgs = SeriesUserArgs & {
@@ -47,6 +49,7 @@ export class ParcoordSeries extends Series {
   zooms: (Zoom | undefined)[]
   axesInverted: boolean[]
   responsiveState: ParcoordResponsiveState
+  providesTool = true
 
   constructor(args: ParcoordArgs | ParcoordSeries) {
     super(args)
@@ -115,9 +118,12 @@ export class ParcoordSeries extends Series {
   getScaledValuesAtScreenPosition(x: number, y: number) {
     const activeSeries = this.cloneFiltered()
     const chartE = elementFromSelection(activeSeries.axes[0].renderer.chartS)
+    const flipped = this.responsiveState.currentlyFlipped
+    const axisPosition = flipped ? y : x
+    const dimensionPosition = flipped ? x : y
     function axisDiff(axis: KeyedAxis) {
       const currentAxisPosition = activeSeries.axesScale(axis.key)!
-      return Math.abs(currentAxisPosition - x)
+      return Math.abs(currentAxisPosition - axisPosition)
     }
     const { axis } = activeSeries.axes.reduce((prev, current) => {
       const currentDiff = axisDiff(current)
@@ -126,9 +132,15 @@ export class ParcoordSeries extends Series {
       } : prev
     }, { axis: activeSeries.axes[0], diff: axisDiff(activeSeries.axes[0]) })
 
+    const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (val => val)
+    const format = axis.d3Axis?.tickFormat() ?? scaleFormat
+    const axisName = getCurrentRespVal(axis.title, {chart: chartE})
+    const dimensionValue = format(axis.scaledValues.atScreenPosition(dimensionPosition), 0)
     return {
-      x: getCurrentRespVal(axis.title, {chart: chartE}),
-      y: axis.scaledValues.scaledValueAtScreenPosition(y)
+      horizontal: flipped ? dimensionValue : axisName,
+      vertical: flipped ? axisName : dimensionValue,
+      horizontalName: flipped ? axisName : 'Dimension',
+      verticalName: flipped ? 'Dimension' : axisName
     }
   }
 
@@ -190,5 +202,56 @@ export class ParcoordSeries extends Series {
       axesPercentageScale: this.axesPercentageScale.copy(),
       percentageScreenScale: this.percentageScreenScale.copy(),
     });
+  }
+}
+
+
+
+type ParcoordResponsiveStateArgs = ResponsiveStateArgs & {
+  series: ParcoordSeries
+  originalSeries: ParcoordSeries
+}
+
+export class ParcoordResponsiveState extends ResponsiveState {
+  protected _series: ParcoordSeries
+  protected _originalSeries: ParcoordSeries
+  protected _axisLayout: AxisLayout
+
+  constructor(args: ParcoordResponsiveStateArgs) {
+    super(args);
+    this._series = args.series
+    this._originalSeries = args.originalSeries
+    this._axisLayout = this.currentlyFlipped ? 'bottom' : 'left'
+  }
+
+  get axisLayout() { return this._axisLayout }
+
+  getAxisPosition(axisIndex: number) {
+    const axis = this._series.axes[axisIndex]
+    const percentage = this._series.axesPercentageScale(axis.key) ?? 0
+    return this.currentlyFlipped ? { x: 0, y: this._series.percentageScreenScale(percentage)} :
+      { x: this._series.percentageScreenScale(percentage), y: 0 }
+  }
+
+  update() {
+    super.update();
+    const {horizontal, vertical} = this.drawAreaRange()
+    const currentAxesSpaceRange = this.currentlyFlipped ? vertical : horizontal
+
+    this._axisLayout = this.currentlyFlipped ? 'bottom' : 'left'
+    const orientation = this.currentlyFlipped ? 'horizontal' : 'vertical'
+
+    const {axes, axesScale, percentageScreenScale} = this._originalSeries
+    axes.forEach(axis => axis.scaledValues.updateRange(horizontal, vertical, orientation))
+    percentageScreenScale.range(currentAxesSpaceRange)
+    axesScale.range(currentAxesSpaceRange)
+  }
+
+  cloneProps(): ParcoordResponsiveStateArgs {
+    return { ...super.cloneProps(), series: this._series, originalSeries: this._originalSeries }
+  }
+
+  clone(args?: Partial<ParcoordResponsiveStateArgs>) {
+    return new ParcoordResponsiveState({...this.cloneProps(), ...(args ? args : {})})
   }
 }

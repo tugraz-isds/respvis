@@ -2,8 +2,8 @@ import {getActiveCSSRulesForElement} from "./get-active-cssrules";
 import {Renderer} from "../../../../chart/renderer";
 import {
   elementComputedStyleWithoutDefaults,
-  elementSVGInlineStyles,
-  elementSVGPresentationAttrs
+  elementSVGPresentationAttrs,
+  elementSVGTransformStyles
 } from "../../../../../utilities/element";
 import {ErrorMessages} from "../../../../../utilities/error";
 import {
@@ -59,12 +59,13 @@ function attrsFromComputedStyle(target: SVGElement | HTMLElement, source: Elemen
   for (let prop in svgPresentationStyle) {
     target.setAttribute(prop, svgPresentationStyle[prop]);
   }
-  if (window.getComputedStyle(source).getPropertyValue('--orientation') === 'vertical') {
-    //For now only check vertical text elements as they are the only affected elements
-    //Otherwise downloaded svg is much bigger
-    const svgInlineStyles = elementComputedStyleWithoutDefaults(source, elementSVGInlineStyles);
-    for (let prop in svgInlineStyles) {
-      target.style[prop] = svgInlineStyles[prop]
+  if (source.tagName === 'text') {
+    //Check if text elements use 'transform-box' and 'transform-origin'
+    //If so, include them as inline styles
+    const svgTransformStyles = elementComputedStyleWithoutDefaults(source, elementSVGTransformStyles);
+    if ('transform-origin' in svgTransformStyles && 'transform-box' in svgTransformStyles) {
+      target.style['transform-origin'] = svgTransformStyles['transform-origin']
+      target.style['transform-box'] = svgTransformStyles['transform-box']
     }
   }
   for (let i = 0; i < source.children.length; ++i) {

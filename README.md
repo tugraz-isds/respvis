@@ -11,6 +11,15 @@ chart components (title, x-axis, y-axis, legend, etc.), using standard
 CSS Grid or Flexbox syntax.
 
 
+## Getting Started
+
+To get started with easily creating responsive visualisations,
+have a look at:
+- Our extensive [library usage guide](https://respvis-docs.netlify.app/?path=/docs/using-respvis-using-respvis--docs)!
+- Out [tutorial for creating RespVis viusalizations](https://respvis-docs.netlify.app/?path=/docs/using-respvis-charts-how-to-create-a-chart--docs) is a good starting point
+
+
+
 ## Documentation
 
 The following online resources present the latest released version of 
@@ -32,13 +41,6 @@ of RespVis:
 For working locally in the cloned RespVis repository with self-contained 
 examples or live examples of the documentation, have a look at our 
 [development environment guide](https://respvis-dev-docs.netlify.app/?path=/docs/contributing-development-environment--docs).
-
-
-## Getting Started
-
-To get started with easily creating responsive visualisations,
-have a look at our
-[library usage guide](https://respvis-docs.netlify.app/?path=/docs/using-respvis-using-respvis--docs)!
 
 
 ## Contribution

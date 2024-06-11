@@ -51,7 +51,7 @@ export function renderToolbar(chartS: Selection, args: Toolbar): void {
 
   renderFilterTool(toolbarS, args)
   renderDownloadTool(toolbarS, args.renderer)
-  renderCrossTool(toolbarS, args.renderer)
+  renderCrossTool(toolbarS, args.getSeries())
   renderChartTool(toolbarS, args.getSeries())
 
   const dialogS = toolbarS.selectAll<HTMLDialogElement, DialogData>('dialog')

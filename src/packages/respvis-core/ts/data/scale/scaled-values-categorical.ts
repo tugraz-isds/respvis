@@ -88,15 +88,14 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     return clone
   }
 
-  scaledValueAtScreenPosition(value: number): string {
+  atScreenPosition(value: number) {
     const activeValues = this.cloneFiltered()
     const domain = activeValues.scale.domain()
-    const currentValue = domain.find(category => {
+    return domain.find(category => {
       const lower = activeValues.scale(category)!
       const upper = lower + activeValues.scale.bandwidth()
       return value > lower && value < upper
-    })
-    return currentValue ? currentValue : ''
+    }) ?? ''
   }
 
   clone(): ScaledValuesCategorical {

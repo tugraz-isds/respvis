@@ -1,13 +1,28 @@
-.tooltip {
+#tooltip-rv {
+  display: grid;
   opacity: 0;
-  background-color: #fff;
-  border: #000 solid 1px;
-  border-radius: 5px;
+  background-color: var(--control-elements-chart-color2);
+  border: var(--control-elements-chart-color3) solid 1px;
+  border-radius: 0.3125rem;
   padding: 0.5em;
   position: fixed;
   pointer-events: none;
+  font-size: var(--font-size-tooltip-label);
+  .item {
+    display: grid;
+    h3 {
+      grid-area: 1 / 1;
+      font-weight: normal;
+      font-size: var(--font-size-tooltip-label);
+    }
+    /*&.tooltip--cross {*/
+    /*  h3 {*/
+    /*    border-top: 0.0625rem solid var(--control-elements-chart-color3);*/
+    /*  }*/
+    /*}*/
+  }
 }
 
-.tooltip.show {
+#tooltip-rv.tooltip--visible {
   opacity: 1;
 }
