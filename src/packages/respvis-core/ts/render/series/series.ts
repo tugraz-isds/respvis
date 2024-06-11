@@ -9,7 +9,7 @@ import {RespValByValueOptional} from "../../data/responsive-value/responsive-val
 import {elementFromSelection, rectFromString} from "../../utilities";
 import {getCurrentRespVal} from "../../data";
 import {Selection} from "d3";
-import {Point} from "../../../../respvis-point/ts";
+import type {Point} from "../../../../respvis-point/ts";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
 
 export type SeriesUserArgs = {
