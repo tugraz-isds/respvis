@@ -76,3 +76,15 @@ export const categoryRegex = /^c-\d+$/
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 export type ToArray<T> = T extends any ? T[] : never;
+
+
+export type KeyObjectFromObject<T extends Object> = {
+  [K in keyof T]: K;
+}
+
+export function genKeyObjectFromObject<T extends Object>(object: T) {
+  return Object.keys(object).reduce((prev, accu ) => {
+    prev[accu] = accu
+    return prev
+  }, {}) as KeyObjectFromObject<T>
+}

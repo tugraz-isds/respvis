@@ -35,7 +35,7 @@ export function renderPrettifyOptions(selection: Selection, renderer: Renderer) 
       label: 'Indentation spaces',
       type: windowSettingsKeys.downloadPrettifyIndentionSpaces,
       value: currentSettings.downloadPrettifyIndentionSpaces,
-      min: 1, max: 20, step: 1,
+      min: 1, max: 20, step: 1, size: 2,
       onInput: onInputNumber,
       onChange: onChangeNumber,
       activeClasses: !currentSettings.downloadPrettifyActive ? ['disabled'] : [],

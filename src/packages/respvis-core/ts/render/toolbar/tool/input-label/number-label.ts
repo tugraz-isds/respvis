@@ -13,7 +13,9 @@ type NumberLabelData = InputLabelDataBase & {
 export class NumberLabel implements InputLabel {
   constructor(public readonly data: NumberLabelData) {}
   render(labelS: Selection<HTMLLabelElement, NumberLabelData>) {
-    const {value, onChange, onInput, label, min, max, step} = this.data
+    const {value, onChange, onInput,
+      label, min, max,
+      step} = this.data
     labelS.selectAll('input[type="number"]')
       .data([null])
       .join('input')

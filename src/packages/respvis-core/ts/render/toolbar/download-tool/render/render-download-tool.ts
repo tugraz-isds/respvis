@@ -13,6 +13,7 @@ import {renderStyleTypeOptions} from "./render-style-type-options";
 import {renderAttributeRemovalOptions} from "./render-attribute-removal-options";
 import {renderDecimalNumberOptions} from "./render-decimal-number-options";
 import {renderPrettifyOptions} from "./render-prettify-options";
+import {renderMarginOptions} from "./render-margin-options";
 
 export function renderDownloadTool(toolbarS: Selection<HTMLDivElement>, renderer: Renderer) {
   const contentS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__content')
@@ -25,6 +26,7 @@ export function renderDownloadTool(toolbarS: Selection<HTMLDivElement>, renderer
   const dialogS = renderDialog(dialogContainerS, 'dialog--center', 'dialog--download')
   bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300, type: 'modal'})
 
+  renderMarginOptions(dialogS, renderer).call(renderInputLabels)
   renderPrettifyOptions(dialogS, renderer).call(renderInputLabels)
   renderStyleTypeOptions(dialogS, renderer).call(renderInputLabels)
   renderAttributeRemovalOptions(dialogS, renderer).call(renderInputLabels)

@@ -35,7 +35,7 @@ export function renderDecimalNumberOptions(selection: Selection, renderer: Rende
       label: '',
       type: windowSettingsKeys.downloadAttributeMaxDecimals,
       value: currentSettings.downloadAttributeMaxDecimals,
-      min: 1, max: 20, step: 1,
+      min: 1, max: 20, step: 1, size: 2,
       onInput: onInputNumber,
       onChange: onChangeNumber,
       activeClasses: !currentSettings.downloadAttributeMaxDecimalsActive ? ['disabled'] : [],

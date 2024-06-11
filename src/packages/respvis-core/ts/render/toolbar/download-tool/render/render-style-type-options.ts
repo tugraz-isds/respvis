@@ -22,7 +22,7 @@ export function renderStyleTypeOptions(selection: Selection, renderer: Renderer)
     labelData: [
       new RadioLabel({...sharedData, value: 'inline', label: 'Inline CSS (styles in elements)'}),
       new RadioLabel({...sharedData,
-        value: 'embedded', label: 'Embedded CSS (styles in styleblock)'
+        value: 'embedded', label: 'Embedded CSS (styles in style block)'
         , info: 'Success of this method is not guaranteed.'
       }),
     ]

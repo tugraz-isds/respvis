@@ -13,10 +13,12 @@ CSS Grid or Flexbox syntax.
 
 ## Getting Started
 
-To get started with easily creating responsive visualisations,
-have a look at:
-- Our extensive [library usage guide](https://respvis-docs.netlify.app/?path=/docs/using-respvis-using-respvis--docs)!
-- Out [tutorial for creating RespVis viusalizations](https://respvis-docs.netlify.app/?path=/docs/using-respvis-charts-how-to-create-a-chart--docs) is a good starting point
+For learning how RespVis can be used to create responsive visualisations,
+have a look at ourtutorials:
+- The [tutorial for creating RespVis viusalizations](https://respvis-docs.netlify.app/?path=/docs/using-respvis-charts-how-to-create-a-chart--docs) 
+  is a good starting point if you have never used RespVis before.
+- The extensive [library usage guide](https://respvis-docs.netlify.app/?path=/docs/using-respvis-using-respvis--docs) 
+  covers everything which is important when creating visualizations with RespVis.
 
 
 
