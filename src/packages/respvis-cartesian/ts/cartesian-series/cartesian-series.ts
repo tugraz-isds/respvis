@@ -59,7 +59,9 @@ export class CartesianSeries extends Series {
     this.renderer = args.renderer as CartesianRenderer
   }
 
-  getScaledValues() { return {x: this.x, y: this.y} }
+  getScaledValues() {
+    return {x: this.x, y: this.y}
+  }
 
   getCombinedKey(i: number) {
     const xKey = this.x instanceof ScaledValuesCategorical ? this.x.getCategoryData(i).combinedKey : undefined
@@ -71,19 +73,21 @@ export class CartesianSeries extends Series {
   getScaledValuesAtScreenPosition(x: number, y: number) {
     function getAxisData(axisS: Selection<SVGHTMLElement, CartesianAxis>) {
       const axis = axisS.datum()
+      const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (h => h)
       return {
-        format: axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (h) => h,
+        format: axis.d3Axis?.tickFormat() ?? scaleFormat,
         title: getCurrentRespVal(axis.title, {
           self: elementFromSelection(axisS) as SVGGroupingElement,
           chart: elementFromSelection(axis.renderer.chartS)
         })
       }
     }
+
     const horizontal = getAxisData(this.renderer.horizontalAxisS)
     const vertical = getAxisData(this.renderer.verticalAxisS)
     return {
-      horizontal: horizontal.format(this.renderer.horizontalAxisS.datum().scaledValues.atScreenPosition(x)),
-      vertical: vertical.format(this.renderer.verticalAxisS.datum().scaledValues.atScreenPosition(y)),
+      horizontal: horizontal.format(this.renderer.horizontalAxisS.datum().scaledValues.atScreenPosition(x), 0),
+      vertical: vertical.format(this.renderer.verticalAxisS.datum().scaledValues.atScreenPosition(y), 0),
       horizontalName: horizontal.title, verticalName: vertical.title
     }
   }

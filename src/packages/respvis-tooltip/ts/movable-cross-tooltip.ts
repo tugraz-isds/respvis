@@ -25,6 +25,8 @@ export function renderMovableCrossTooltip(series: Series) {
   const onDrawAreaMove = (e) => {
     tooltip.movableCrossTooltipVisible = renderer.windowS.datum().windowSettings.movableCrossActive
     const {crossStateTextS} = renderContent()
+    if (!tooltip.movableCrossTooltipVisible) return
+
     const backgroundE = elementFromSelection(renderer.drawAreaBgS) as Element
     const rect = backgroundE.getBoundingClientRect()
     const x = e.clientX - rect.left

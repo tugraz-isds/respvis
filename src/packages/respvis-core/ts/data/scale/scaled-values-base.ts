@@ -81,7 +81,7 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
     return [originalRange[1], originalRange[0]]
   }
 
-  abstract atScreenPosition(value: number): string
+  abstract atScreenPosition(value: number): T
 
   isKeyActiveByKey(key: string) {
     return true

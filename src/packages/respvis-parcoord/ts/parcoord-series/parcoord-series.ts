@@ -132,9 +132,10 @@ export class ParcoordSeries extends Series {
       } : prev
     }, { axis: activeSeries.axes[0], diff: axisDiff(activeSeries.axes[0]) })
 
-    const format = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (val) => val
+    const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (val => val)
+    const format = axis.d3Axis?.tickFormat() ?? scaleFormat
     const axisName = getCurrentRespVal(axis.title, {chart: chartE})
-    const dimensionValue = format(axis.scaledValues.atScreenPosition(dimensionPosition))
+    const dimensionValue = format(axis.scaledValues.atScreenPosition(dimensionPosition), 0)
     return {
       horizontal: flipped ? dimensionValue : axisName,
       vertical: flipped ? axisName : dimensionValue,
