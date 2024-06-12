@@ -77,7 +77,7 @@ function renderAxis(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
     .text(getCurrentRespVal(axisD.title, {chart: chartElement, self: axisElement}))
 
   titleWrapperS.selectAll('.subtitle')
-    .data([null])
+    .data(axisD.subTitle ? [null] : [])
     .join('g')
     .classed('subtitle', true)
     .selectAll('text')

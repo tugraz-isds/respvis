@@ -20,18 +20,35 @@ npm install
 ## Gulp Tasks
 
 Gulp is used to automate repeatable tasks. The file gulpfile.ts, which is
-located at the root directory, defines six public tasks:
+located at the root directory, defines six public tasks. These tasks can be
+invoked either by directly running gulp via npx or by running the equivalent
+scripts in package.json:
 
 - The `clean` task removes existing `package` and `dist` directories to
-  enable a clean rebuild of the project.
+  enable a clean rebuild of the project:
+
+```
+npm run clean
+npx gulp clean
+```
 
 - The `cleanExampleDeps` task removes generated dependencies from the
-  `/src/examples/**` directory.
+  `/src/examples/**` directory:
+
+```
+npm run cleanExampleDeps
+npx gulp cleanExampleDeps
+```
 
 - The `cleanAll` task executes the `clean` task, `cleanExampleDeps` task
   and additionally removes the `node_modules` directory and `package-lock.json`
   in order to enable a clean rebuild of the project including the
-  re-installation of dependencies.
+  re-installation of dependencies:
+
+```
+npm run cleanAll
+npx gulp cleanAll
+```
 
 - The `build` task first executes the clean task, then builds the
   whole library and copies the self-contained examples into
@@ -39,7 +56,12 @@ located at the root directory, defines six public tasks:
   task, bundles all packages contained by RespVis. It is also responsible
   for generating necessary dependencies into `/src/examples/**`.
   It would be not sufficient to generate them in `/dist`, due to otherwise
-  missing files in the source folder, which would lead to countless errors.
+  missing files in the source folder, which would lead to countless errors:
+
+```
+npm run build
+npx gulp build
+```
 
 - The `serve` task first executes the build task, but only generates the
   package at root level to save time on rebuilds. It additionally
@@ -55,40 +77,25 @@ located at the root directory, defines six public tasks:
   `.env.dev` respectively. Note that the serve task only bundles the
   standalone form of respvis, as this package is the only one needed
   for the self-contained examples and omitting the bundling of the
-  other packages saves much time during live development.
-
-- The `genSVGDataURI` task converts svg files which are
-  meant to be used as icons automatically to data URIs that can be
-  conveniently copied and pasted into style sheets. This is especially
-  helpful when creating styles for cursor icons.
-
-The public tasks can be invoked either by directly running gulp via npx or
-by running the equivalent scripts in package.json:
+  other packages saves much time during live development:
 
 ```
-npm run clean
-npx gulp clean
-
-npm run cleanExampleDeps
-npx gulp cleanExampleDeps
-
-npm run cleanAll
-npx gulp cleanAll
-
-npm run build
-npx gulp build
-
 npm run serve-dev
 npx gulp serve --dev
 
 npm run serve-prod
 npx gulp serve --prod
+```
 
+- The `genSVGDataURI` task converts svg files which are
+  meant to be used as icons automatically to data URIs that can be
+  conveniently copied and pasted into style sheets. This is especially
+  helpful when creating styles for cursor icons:
+
+```
 npm run genSVGDataURI
 npx gulp genSVGDataURI
 ```
-
-
 
 
 ## Live Documentation

@@ -18,6 +18,8 @@
   height: 15px;
   & path {
     stroke: var(--control-elements-chart-color3);
+    stroke-width: 2px;
+    fill: var(--control-elements-chart-color3);
   }
   &:active { filter: brightness(150%); }
 }
