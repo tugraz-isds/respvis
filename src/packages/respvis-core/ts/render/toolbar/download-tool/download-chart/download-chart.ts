@@ -15,7 +15,7 @@ export function downloadChart<Datum>(
       downloadRemoveDataKeys, downloadRemoveDataStyles,
       downloadMarginLeft, downloadMarginTop,
       downloadMarginRight, downloadMarginBottom
-    } = renderer.windowS.datum().windowSettings
+    } = renderer.windowS.datum().windowSettings.state
 
     const clonedChart = <SVGSVGElement>g[i].cloneNode(true);
     const width = clonedChart.getAttribute('width');

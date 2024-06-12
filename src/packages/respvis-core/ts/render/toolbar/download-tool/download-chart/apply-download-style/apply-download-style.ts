@@ -17,7 +17,7 @@ import {
 
 export function applyDownloadStyle(original: SVGSVGElement, clone: SVGSVGElement, renderer: Renderer) {
   const { windowSettings } = renderer.windowS.datum()
-  switch (windowSettings.downloadStyleType) {
+  switch (windowSettings.get('downloadStyleType')) {
     case "embedded": embedCSS(original, clone); break
     case "inline": attrsFromComputedStyle(clone, original); break
     default: {

@@ -18,7 +18,7 @@ export function renderTooltip(): Selection<HTMLDivElement> {
     const tooltipS = select<HTMLDivElement, any>(tooltipSelector)
     const mousePosition = { x: e.clientX, y: e.clientY }
     positionTooltipAuto(tooltipS, {position: mousePosition, offset: window?.tooltip.autoOffset})
-  }).on('pointerout.tooltipVisibility', function(e) {
+  }).on('pointerout.tooltipVisibility', function() {
     setTooltipVisibility('hidden')
   })
 
@@ -29,7 +29,7 @@ export function renderTooltip(): Selection<HTMLDivElement> {
         e.clientY < rect.y || e.clientY > rect.y + rect.height))
     })
     if (windowHovered) {
-      windowHovered.tooltip.movableCrossTooltipVisible = windowHovered.windowSettings.movableCrossActive
+      windowHovered.tooltip.movableCrossTooltipVisible = windowHovered.windowSettings.get('movableCrossActive')
     }
     const visibleTools = windowHovered?.tooltip.numberOfVisibleTools() ?? 0
     setTooltipVisibility(visibleTools > 0 ? 'visible' : 'hidden')

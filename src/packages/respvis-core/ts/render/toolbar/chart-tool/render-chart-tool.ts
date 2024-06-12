@@ -20,9 +20,11 @@ export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesColle
   const dialogS = renderDialog(dialogContainerS, 'dialog--center', 'dialog--chart')
   bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300, type: 'modal'})
 
-  dialogS.on('cancel', function (e) {
+  dialogS.on('close', function (e) {
     e.preventDefault()
+    seriesCollection[0]?.renderer.windowS.datum().windowSettings.reset()
     select<HTMLDialogElement, DialogData>(this.closest('dialog')!).datum()?.triggerExit()
+    seriesCollection[0]?.renderer.windowS.dispatch('resize')
   });
 
   seriesCollection.forEach(series => {

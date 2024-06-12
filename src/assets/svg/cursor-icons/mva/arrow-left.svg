@@ -1,3 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" fill="#f9f9f9" stroke="#000" viewBox="0 0 4.63 3.31" height="30" width="30">
-  <path stroke-width="0.28" d="M4.37,2.06V1.26H2.59V0.51L0.49,1.68 2.59,2.81V2.05Z" />
+  <g transform="scale(0.85)" transform-origin="center">
+    <path stroke-width="0.2" d="M4.37,2.06V1.26H2.59V0.51L0.49,1.68 2.59,2.81V2.05Z" />
+  </g>
 </svg>

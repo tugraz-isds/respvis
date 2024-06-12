@@ -59,3 +59,28 @@ export const defaultWindowSettings: WindowSettings = {
 
 export const windowSettingsKeys=
   genKeyObjectFromObject(defaultWindowSettings)
+
+export class Revertible<T> {
+  state: T
+  snapshot: Partial<T>
+  constructor(defaultState: T) {
+    this.state = defaultState
+    this.snapshot = {}
+  }
+  setImmediately<K extends keyof T>(key: K, value: T[K]) {
+    this.state[key] = value
+  }
+  setDeferred<K extends keyof T>(key: K, value: T[K]) {
+    this.snapshot[key] = value
+  }
+  get<K extends keyof T>(key: K) { return this.state[key] }
+  update() {
+    for (const key in this.snapshot) {
+      this.state[key] = this.snapshot[key] ?? this.state[key]
+    }
+    this.reset()
+  }
+  reset() {
+    this.snapshot = {}
+  }
+}

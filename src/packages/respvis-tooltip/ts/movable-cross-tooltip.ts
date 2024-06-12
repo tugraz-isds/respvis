@@ -8,7 +8,7 @@ export function renderMovableCrossTooltip(series: Series) {
   const tooltip = renderer.windowS.datum().tooltip
 
   const renderContent = () => {
-    const active = renderer.windowS.datum().windowSettings.movableCrossActive
+    const active = renderer.windowS.datum().windowSettings.get('movableCrossActive')
       && tooltip.movableCrossTooltipVisible && !tooltip.seriesTooltipVisible
     const toolTipCrossStateS = tooltipS
       .selectAll('.item.tooltip--cross')
@@ -23,7 +23,7 @@ export function renderMovableCrossTooltip(series: Series) {
   }
 
   const onDrawAreaMove = (e) => {
-    tooltip.movableCrossTooltipVisible = renderer.windowS.datum().windowSettings.movableCrossActive
+    tooltip.movableCrossTooltipVisible = renderer.windowS.datum().windowSettings.get('movableCrossActive')
     const {crossStateTextS} = renderContent()
     if (!tooltip.movableCrossTooltipVisible) return
 
@@ -42,7 +42,7 @@ export function renderMovableCrossTooltip(series: Series) {
     if (secondText.size() > 0) secondText.text(vertical ? `${verticalName}: ${vertical}` : secondText.text())
   }
 
-  const onDrawAreaLeave = (e) => {
+  const onDrawAreaLeave = () => {
     tooltip.movableCrossTooltipVisible = false
     renderContent()
   }

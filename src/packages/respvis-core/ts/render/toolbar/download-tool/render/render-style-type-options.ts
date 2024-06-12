@@ -6,7 +6,7 @@ import {RadioLabel} from "../../tool/input-label/radio-label";
 import {renderFieldset} from "../../tool/render/render-fieldset";
 
 export function renderStyleTypeOptions(selection: Selection, renderer: Renderer) {
-  const currentSettings = renderer.windowS.datum().windowSettings
+  const currentSettings = renderer.windowS.datum().windowSettings.state
   const onChange = (e: InputEvent, type: string) => {
     currentSettings[type] = (e.target as HTMLInputElement).value
     renderer.windowS.dispatch('resize')

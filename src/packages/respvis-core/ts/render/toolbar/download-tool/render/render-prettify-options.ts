@@ -6,7 +6,7 @@ import {renderFieldset} from "../../tool/render/render-fieldset";
 import {NumberLabel} from "../../tool/input-label/number-label";
 
 export function renderPrettifyOptions(selection: Selection, renderer: Renderer) {
-  const currentSettings = renderer.windowS.datum().windowSettings
+  const currentSettings = renderer.windowS.datum().windowSettings.state
   const onChange = (e: InputEvent, type: string) => {
     currentSettings[type] = (e.target as HTMLInputElement).checked
     renderer.windowS.dispatch('resize')

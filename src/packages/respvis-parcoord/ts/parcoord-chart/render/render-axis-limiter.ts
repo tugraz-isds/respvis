@@ -21,12 +21,12 @@ export function renderAxisLimiter(axisS: Selection<SVGGElement, KeyedAxis>) {
 function renderChevronLimiter(axisS: Selection<SVGGElement, KeyedAxis>) {
   const flipped = axisS.datum().series.responsiveState.currentlyFlipped
   const direction = (flipped ? 'right' : 'down')
-  const upperChevronS = pathChevronRender(axisS, ['slider-up'], [{type: direction, scale: 0.85}])
+  const upperChevronS = pathChevronRender(axisS, ['slider-up'], [{type: direction, scale: 1}])
   renderBgSVGOnlyBBox(upperChevronS, [{scale: 4}], upperChevronS.select('path'))
     .classed('cursor', true)
     .classed('cursor--range-vertical', !flipped)
     .classed('cursor--range-horizontal cursor--range-left', flipped)
-  const lowerChevronS = pathChevronRender(axisS, ['slider-down'], [{type: direction, scale: 0.85}])
+  const lowerChevronS = pathChevronRender(axisS, ['slider-down'], [{type: direction, scale: 1}])
   renderBgSVGOnlyBBox(lowerChevronS, [{scale: 4}], lowerChevronS.select('path'))
     .classed('cursor', true)
     .classed('cursor--range-horizontal ', flipped)
@@ -34,12 +34,15 @@ function renderChevronLimiter(axisS: Selection<SVGGElement, KeyedAxis>) {
 }
 
 function renderRectLimiter(axisS: Selection<SVGGElement, KeyedAxis>) {
-  const flipped = axisS.datum().series.responsiveState.currentlyFlipped
+  const axisD = axisS.datum()
+  if (!axisD) return
+  const flipped = axisD.series.responsiveState.currentlyFlipped
+  const rectLimiterDragable = axisD.upperRangeLimitPercent < 1 || axisD.lowerRangeLimitPercent > 0
   axisS.selectAll('.slider-rect')
     .data([null])
     .join('rect')
     .classed('slider-rect', true)
-    .classed('cursor cursor--range-rect', true)
+    .classed('cursor cursor--range-rect', rectLimiterDragable)
     .classed('cursor--range-rect-horizontal', flipped)
 }
 

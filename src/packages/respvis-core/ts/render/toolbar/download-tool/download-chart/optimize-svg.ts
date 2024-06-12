@@ -5,7 +5,7 @@ export function optimizeSVG(selection: Selection<SVGElement>, renderer: Renderer
   const { downloadAttributeMaxDecimals,
     downloadAttributeMaxDecimalsActive,
     downloadRemoveBgElements
-  } = renderer.windowS.datum().windowSettings
+  } = renderer.windowS.datum().windowSettings.state
   if (downloadAttributeMaxDecimalsActive) roundSVGAttributes(selection, parseInt(downloadAttributeMaxDecimals))
   if (downloadRemoveBgElements) removeBackgrounds(selection)
 }

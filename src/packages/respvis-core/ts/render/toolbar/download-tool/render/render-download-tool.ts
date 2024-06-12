@@ -34,11 +34,6 @@ export function renderDownloadTool(toolbarS: Selection<HTMLDivElement>, renderer
   renderDecimalNumberOptions(dialogS, renderer).call(renderInputLabels)
   downloadButtonRender(dialogS, renderer)
   cancelButtonRender(dialogS)
-
-  dialogS.on('cancel', function (e) {
-    e.preventDefault()
-    select<HTMLDialogElement, DialogData>(this.closest('dialog')!).datum()?.triggerExit()
-  });
 }
 
 function downloadButtonRender(selection: Selection<HTMLDialogElement, DialogData>, renderer: Renderer) {

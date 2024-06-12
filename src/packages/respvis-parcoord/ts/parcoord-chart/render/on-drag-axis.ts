@@ -21,10 +21,10 @@ export function onDragAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxis, drawA
   originalSeries.axesPercentageScale.range(newPercentageRange)
 }
 
-export function onDragEndAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxis) {
+export function onDragEndAxisParcoord(d: KeyedAxis) {
   const originalSeries = d.series.originalSeries
 
-  const equidistantAxesActive = originalSeries.renderer.windowS.datum().windowSettings.parcoordEquidistantAxes
+  const equidistantAxesActive = originalSeries.renderer.windowS.datum().windowSettings.get('parcoordEquidistantAxes')
   if (!equidistantAxesActive) return
   const percentageRange = originalSeries.axesPercentageScale.range()
   const order = arrayOrder(percentageRange)
