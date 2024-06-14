@@ -53,7 +53,7 @@ export function renderMovableCrossTooltip(series: Series) {
       onDrawAreaMove(e)
       return
     }
-    onDrawAreaLeave(e)
+    onDrawAreaLeave()
   }
 
   renderer.windowS.on('pointermove.LeaveMovableCrossTooltip', onWindowMove)

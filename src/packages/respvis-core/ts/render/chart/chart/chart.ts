@@ -3,11 +3,11 @@ import {SVGHTMLElement} from "../../../constants/types";
 import {renderWindow, Window, WindowArgs, windowValidation} from "../../window";
 import {ChartData, ChartDataUserArgs, validateChart} from "./validate-chart";
 import {Renderer} from "../renderer";
-import {ReRenderContext, resizeEventListener} from "../../../resize-event-dispatcher";
+import {ReRenderContext, resizeEventListener} from "./resize-event-dispatcher";
 import {renderChart} from "./render-chart";
 import {ThrottleScheduled} from "../../../utilities/d3/util";
 import {fixActiveCursor} from "../../util/fix-active-cursor";
-import {layouterCompute} from "../../../layouter";
+import {layouterCompute} from "../../layouter";
 
 export type ChartWindowed = Window & ChartData
 export type ChartUserArgs = Omit<WindowArgs & ChartDataUserArgs, 'renderer'>

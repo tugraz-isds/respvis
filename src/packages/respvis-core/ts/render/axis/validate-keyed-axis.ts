@@ -1,6 +1,6 @@
 import {BaseAxis, BaseAxisArgs, validateBaseAxis} from "./validate-base-axis";
 import {ActiveKeyMap, AxisKey} from "../../constants/types";
-import {ParcoordSeries} from "respvis-parcoord";
+import type {ParcoordSeries} from "../../../../respvis-parcoord/ts";
 
 export type KeyedAxisArgs = BaseAxisArgs & {
   key: AxisKey

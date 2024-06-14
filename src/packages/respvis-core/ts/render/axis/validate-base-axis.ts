@@ -1,11 +1,10 @@
 import {Axis as D3Axis, AxisDomain} from 'd3';
 import {RenderArgs} from "../chart/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
-import {validateBreakpoints, WidthAndHeightBreakpoints} from "../../data/breakpoints/breakpoints";
 import {ScaledValues} from "../../data/scale/scaled-values-base";
 import {KeyedAxis} from "./validate-keyed-axis";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
-import {CartesianAxis} from "respvis-cartesian";
+import type {CartesianAxis} from "../../../../respvis-cartesian/ts";
 import {Series} from "../series";
 import {
   AxisLayoutHorizontal,
@@ -13,9 +12,11 @@ import {
   AxisLayoutsVertical,
   AxisLayoutVertical
 } from "../../constants/types";
+import {LayoutBreakpoints} from "../../data/layout-breakpoints";
+import {LayoutBreakpointsUserArgs, validateLayoutBreakpoints} from "../../data/layout-breakpoints/layout-breakpoints";
 
 export type BaseAxisUserArgs = {
-  breakPoints?: Partial<WidthAndHeightBreakpoints>
+  breakPoints?: LayoutBreakpointsUserArgs
   title?: RespValOptional<string>
   subTitle?: RespValOptional<string>
   horizontalLayout?: AxisLayoutHorizontal
@@ -31,7 +32,7 @@ export type BaseAxisArgs = BaseAxisUserArgs & RenderArgs & {
 }
 
 export type BaseAxis = Required<Omit<BaseAxisArgs, 'breakPoints'>> & {
-  breakPoints: WidthAndHeightBreakpoints,
+  breakPoints: LayoutBreakpoints,
   originalAxis: BaseAxis,
   d3Axis?: D3Axis<any> //axis available after first render
 }
@@ -54,10 +55,7 @@ export function validateBaseAxis(args: BaseAxisArgs): Axis {
     }),
     tickOrientation: args.tickOrientation ?? 0,
     tickOrientationFlipped: args.tickOrientationFlipped ?? 0,
-    breakPoints: {
-      width: validateBreakpoints(args.breakPoints?.width),
-      height: validateBreakpoints(args.breakPoints?.height)
-    },
+    breakPoints: validateLayoutBreakpoints(args.breakPoints),
     horizontalLayout: args.horizontalLayout && AxisLayoutsHorizontal.includes(args.horizontalLayout) ?
       args.horizontalLayout : 'bottom',
     verticalLayout: args.verticalLayout && AxisLayoutsVertical.includes(args.verticalLayout) ?

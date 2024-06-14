@@ -1,14 +1,14 @@
-import {CSSBreakpointLengthUnit, LengthDimension, UnitValue} from "../../constants/types";
+import {CSSBreakpointLengthUnit, UnitValue} from "../../constants/types";
 import {pxUpperLimit} from "../../constants/other";
 
-export type BreakpointsArgs = {
+export type BreakpointsUserArgs = {
   values: readonly number[],
   unit: CSSBreakpointLengthUnit
 }
-export type Breakpoints = Required<BreakpointsArgs>
-export type WidthAndHeightBreakpoints = Record<LengthDimension, Breakpoints>
+export type BreakpointsArgs = BreakpointsUserArgs
+export type Breakpoints = Required<BreakpointsUserArgs>
 
-export function validateBreakpoints(args?: BreakpointsArgs): Breakpoints {
+export function validateBreakpoints(args?: BreakpointsUserArgs): Breakpoints {
   return {
     unit: args ? args.unit : 'rem',
     values: args ? args.values : [],

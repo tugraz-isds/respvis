@@ -2,7 +2,7 @@ import {Selection} from "d3";
 import {SVGHTMLElement} from "../../constants/types";
 import {Window} from "./window";
 import {updateBreakpointStateForSelection} from "../../data";
-import {layouterRender} from "../../layouter";
+import {layouterRender} from "../layouter";
 import {renderTooltip} from "respvis-tooltip";
 
 export function renderWindow<D extends Window>(selection: Selection<SVGHTMLElement, D>) {

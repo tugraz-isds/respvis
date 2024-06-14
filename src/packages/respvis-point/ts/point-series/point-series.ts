@@ -4,6 +4,7 @@ import {PointLabelsDataCollection, PointLabelsUserArgs} from "../point-label";
 
 export type PointSeriesUserArgs = CartesianSeriesUserArgs & {
   radii?: RadiusArg
+  //TODO: Refactor ColorContinuous
   color?: ColorContinuous
   labels?: PointLabelsUserArgs
 }

@@ -10,10 +10,8 @@ import {
   cssContentFromEntries,
   getActiveCSSVars,
   getRelevantCSSVars
-} from "respvis-core/render/toolbar/download-tool/download-chart/apply-download-style/get-active-cssvars";
-import {
-  createCSSRule
-} from "respvis-core/render/toolbar/download-tool/download-chart/apply-download-style/create-cssrule";
+} from "../../../../toolbar/download-tool/download-chart/apply-download-style/get-active-cssvars";
+import {createCSSRule} from "../../../../toolbar/download-tool/download-chart/apply-download-style/create-cssrule";
 
 export function applyDownloadStyle(original: SVGSVGElement, clone: SVGSVGElement, renderer: Renderer) {
   const { windowSettings } = renderer.windowS.datum()

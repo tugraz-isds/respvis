@@ -1,16 +1,17 @@
 import {RenderArgs} from "../chart/renderer";
-import {validateBreakpoints, WidthAndHeightBreakpoints} from "../../data/breakpoints/breakpoints";
+import {validateBreakpoints} from "../../data/breakpoints/breakpoints";
 import {defaultWindowSettings, Revertible, WindowSettings} from "./window-settings";
 import {Tooltip, TooltipUserArgs} from "respvis-tooltip";
+import {LayoutBreakpoints} from "../../data/layout-breakpoints";
 
 export type WindowArgs = RenderArgs & {
   type: string,
-  breakPoints?: Partial<WidthAndHeightBreakpoints>
+  breakPoints?: Partial<LayoutBreakpoints>
   tooltip?: TooltipUserArgs
 }
 
 export type Window = Required<Omit<WindowArgs, 'breakPoints' | 'tooltip'>> & {
-  breakpoints: WidthAndHeightBreakpoints,
+  breakpoints: LayoutBreakpoints,
   windowSettings: Revertible<WindowSettings>,
   tooltip: Tooltip
 }

@@ -1,11 +1,12 @@
 import {LengthDimension, SVGHTMLGroupingElement} from "../../constants";
-import {getLayoutWidthIndex} from "./layout-width";
-import {Breakpoints, getActiveBreakpoints, WidthAndHeightBreakpoints} from "./breakpoints";
+import {getLayoutWidthIndex} from "../breakpoints/layout-width";
+import {Breakpoints, getActiveBreakpoints} from "../breakpoints/breakpoints";
 import {Selection} from "d3";
 import {elementFromSelection} from "../../utilities";
+import {LayoutBreakpoints} from "./index";
 
-export type WithBreakpoints = {
-  breakpoints: WidthAndHeightBreakpoints
+type WithBreakpoints = {
+  breakpoints: LayoutBreakpoints
 }
 
 export function updateBreakpointStateForSelection<T extends SVGHTMLGroupingElement, D extends WithBreakpoints>(selection: Selection<T, D>) {
@@ -14,7 +15,7 @@ export function updateBreakpointStateForSelection<T extends SVGHTMLGroupingEleme
   updateBreakpointState(element, chartBaseValid.breakpoints)
 }
 
-export function updateBreakpointState(element: SVGHTMLGroupingElement, layoutBreakpoints: WidthAndHeightBreakpoints) {
+export function updateBreakpointState(element: SVGHTMLGroupingElement, layoutBreakpoints: LayoutBreakpoints) {
   for (const k in layoutBreakpoints) {
     if (!layoutBreakpoints.hasOwnProperty(k)) continue
     const dimension = k as LengthDimension

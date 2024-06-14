@@ -1,10 +1,10 @@
 import {select, Selection} from 'd3';
-import {elementAbsoluteBounds, elementRelativeBounds} from '../utilities/element';
-import {centerSVGTextBaseline, positionToTransformAttr} from '../utilities/position/position';
-import {rectEquals, rectFromString, rectToAttrs, rectToString,} from '../utilities/graphic-elements/rect';
-import {circleInsideRect, circleToAttrs} from '../utilities/graphic-elements/circle';
-import {cssVars} from "../constants/cssVars";
-import {ellipseInsideRect, ellipseToAttrs} from "../utilities/graphic-elements/ellipse";
+import {elementAbsoluteBounds, elementRelativeBounds} from '../../utilities/element';
+import {centerSVGTextBaseline, positionToTransformAttr} from '../../utilities/position/position';
+import {rectEquals, rectFromString, rectToAttrs, rectToString,} from '../../utilities/graphic-elements/rect';
+import {circleInsideRect, circleToAttrs} from '../../utilities/graphic-elements/circle';
+import {cssVars} from "../../constants/cssVars";
+import {ellipseInsideRect, ellipseToAttrs} from "../../utilities/graphic-elements/ellipse";
 import {SVGTwinInformation} from "./layouter-compute";
 
 export function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGTwinInformation>): void {
