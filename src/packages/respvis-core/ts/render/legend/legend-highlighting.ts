@@ -1,6 +1,6 @@
 import {LegendSelection} from "./render-legend";
 import {select, Selection} from "d3";
-import {ErrorMessages} from "../../utilities/error";
+import {ErrorMessages} from "../../constants/error";
 import {splitKey} from "../../utilities/dom/key";
 import {LegendItem} from "./legend-item";
 

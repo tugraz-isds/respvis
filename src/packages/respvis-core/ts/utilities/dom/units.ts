@@ -5,7 +5,7 @@ import {
   LengthDimension,
   UnitValue
 } from "../../constants/types";
-import {ErrorMessages} from "../error";
+import {ErrorMessages} from "../../constants/error";
 
 //TODO: maybe add additional units like ch, vh, etc.
 // export function cssLengthInPx(length: UnitValue<CSSAbsoluteLengthUnit>): number

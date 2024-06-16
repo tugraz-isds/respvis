@@ -6,7 +6,7 @@ import {Renderer} from "../renderer";
 import {ReRenderContext, resizeEventListener} from "./resize-event-dispatcher";
 import {renderChart} from "./render-chart";
 import {ThrottleScheduled} from "../../../utilities/d3/util";
-import {fixActiveCursor} from "../../util/fix-active-cursor";
+import {fixActiveCursor} from "../../../utilities/d3/fix-active-cursor";
 import {layouterCompute} from "../../layouter";
 
 export type ChartWindowed = Window & ChartData

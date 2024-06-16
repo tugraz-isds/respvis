@@ -5,18 +5,18 @@ import {
   classesForSelection,
   cssVarFromSelection,
   positionToTransformAttr,
-  RenderElement
+  Primitive
 } from "../../utilities";
 import {Orientation} from "../../constants";
 import {Label} from "./label";
 
-type LabelSeriesProps<D extends RenderElement> = {
+type LabelSeriesProps<D extends Primitive> = {
   elements: D[]
   classes: string[]
   orientation: Orientation
 };
 
-export function renderLabelSeries<D extends RenderElement>(parentS: Selection, props: LabelSeriesProps<D>) {
+export function renderLabelSeries<D extends Primitive>(parentS: Selection, props: LabelSeriesProps<D>) {
   const { elements, classes, orientation} = props
   const {selector, names} = classesForSelection(classes)
   const labels = elements.flatMap(element => element.getLabel(orientation))

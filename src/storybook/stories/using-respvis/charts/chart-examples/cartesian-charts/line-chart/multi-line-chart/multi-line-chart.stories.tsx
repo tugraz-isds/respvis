@@ -40,10 +40,8 @@ export const FullyResponsive: Story = {
         values: categories,
         title: 'Continents'
       },
-      markerTooltipGenerator: {
-        tooltips: (_, point) => {
-          return `Year: ${point.xValue}<br/>Pow. Consumption: ${point.yValue}kWh`
-        }
+      markerTooltipGenerator: (_, point) => {
+        return `Year: ${point.xValue}<br/>Pow. Consumption: ${point.yValue}kWh`
       },
       flipped: {
         dependentOn: 'width',

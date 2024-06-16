@@ -111,10 +111,8 @@ export const singleLineChartResponsiveAxisTicks: LineChartUserArgs = {
 export const singleLineChartLabelsAndTooltips: LineChartUserArgs = {
   ...singleLineChartResponsiveAxisTicks,
   series: { ...singleLineChartResponsiveAxisTicks.series,
-    markerTooltipGenerator: {
-      tooltips: function (_, {xValue, yValue}) {
-        return `Year: ${xValue}<br/>Students: ${format('.2f')(yValue)}`
-      }
+    markerTooltipGenerator: function (_, {xValue, yValue}) {
+      return `Year: ${xValue}<br/>Students: ${format('.2f')(yValue)}`
     },
     labels: {
       values: students.map(student => student.toString()),

@@ -1,9 +1,9 @@
-import {rectFromSize} from "../../utilities/graphic-elements/rect";
-import {Size} from "../../utilities/size";
+import {rectFromSize} from "../../data/shapes/rect";
+import {Size} from "../../data/size";
 import {RenderArgs} from "../chart/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
 import {Series} from "../series";
-import {pathRect} from "../../utilities/path/path-rect";
+import {pathRect} from "../path/path-rect";
 
 export type LegendUserArgs = {
   title?: RespValOptional<string>

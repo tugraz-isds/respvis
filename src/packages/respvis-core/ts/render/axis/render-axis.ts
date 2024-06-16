@@ -16,9 +16,9 @@ import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {modifyAxisTicksPostGeneration, renderAxisTicksPreGeneration} from "./render-axis-ticks";
 import {configureTickAngles} from "./configure-tick-angle";
 import {getFilteredScaledValues} from "../../data/scale/validate-scaled-values-axis";
-import {renderBgSVGOnlyBBox} from "../util/bg-svg-only";
+import {renderBgSVGOnlyBBox} from "../bg-svg-only";
 import {AxisLayouts, Orientation} from "../../constants/types";
-import {KeyedAxis} from "./validate-keyed-axis";
+import {KeyedAxis} from "respvis-parcoord/render/validate-keyed-axis";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, Axis>;
 export type KeyedAxisSelection = Selection<SVGSVGElement | SVGGElement, KeyedAxis>;

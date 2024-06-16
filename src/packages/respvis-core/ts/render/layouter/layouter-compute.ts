@@ -1,5 +1,5 @@
 import {select, Selection} from "d3";
-import {rectFromString, rectToString} from "../../utilities";
+import {rectFromString, rectToString} from "../../data";
 import {layoutNodeBounds, layoutNodeClassAttr, layoutNodeDataAttrs, layoutNodeStyleAttr} from "./layout-elements";
 import {layoutNodeChildren} from "./layout-node-children";
 

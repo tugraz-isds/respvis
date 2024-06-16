@@ -5,7 +5,7 @@ import {
   elementSVGPresentationAttrs,
   elementSVGTransformStyles
 } from "../../../../../utilities/element";
-import {ErrorMessages} from "../../../../../utilities/error";
+import {ErrorMessages} from "../../../../../constants/error";
 import {
   cssContentFromEntries,
   getActiveCSSVars,
@@ -57,17 +57,38 @@ function attrsFromComputedStyle(target: SVGElement | HTMLElement, source: Elemen
   for (let prop in svgPresentationStyle) {
     target.setAttribute(prop, svgPresentationStyle[prop]);
   }
-  if (source.tagName === 'text') {
-    //Check if text elements use 'transform-box' and 'transform-origin'
-    //If so, include them as inline styles
-    const svgTransformStyles = elementComputedStyleWithoutDefaults(source, elementSVGTransformStyles);
-    if ('transform-origin' in svgTransformStyles && 'transform-box' in svgTransformStyles) {
-      target.style['transform-origin'] = svgTransformStyles['transform-origin']
-      target.style['transform-box'] = svgTransformStyles['transform-box']
-    }
-  }
+  applyTransformOriginStyles(target, source)
   for (let i = 0; i < source.children.length; ++i) {
     const child = target.children[i] as (SVGElement | HTMLElement)
     attrsFromComputedStyle(child, source.children[i]);
   }
+}
+
+//Check if text elements use 'transform-box' and 'transform-origin'. If so, apply to transform matrix attribute
+function applyTransformOriginStyles(target: SVGElement | HTMLElement, source: Element) {
+  if (source.tagName !== 'text') return
+  const matrixPrev = target.getAttribute('transform')
+  const svgTransformStyles = elementComputedStyleWithoutDefaults(source, elementSVGTransformStyles)
+  if (!('transform-origin' in svgTransformStyles) || !('transform-box' in svgTransformStyles) || !matrixPrev) return
+
+  const transformOriginRegex = /(-?\d*\.?\d+)px (-?\d*\.?\d+)px/;
+  const match = transformOriginRegex.exec(svgTransformStyles['transform-origin'])
+  if (!match) return
+
+  const { x: bboxX, y: bboxY} = (source as SVGTextElement).getBBox()
+  const xTrans = bboxX + parseFloat(match[1])
+  const yTrans = bboxY + parseFloat(match[2])
+
+  const baseMatrix = new DOMMatrix(matrixPrev)
+  const transformToOriginMatrix = new DOMMatrix()
+  transformToOriginMatrix.e = xTrans
+  transformToOriginMatrix.f = yTrans
+  const transformFromOriginMatrix = new DOMMatrix()
+  transformFromOriginMatrix.e = -xTrans
+  transformFromOriginMatrix.f = -yTrans
+
+  const finalMatrix = transformToOriginMatrix.multiply(baseMatrix).multiply(transformFromOriginMatrix)
+
+  const matrixString = `matrix(${finalMatrix.a}, ${finalMatrix.b}, ${finalMatrix.c}, ${finalMatrix.d}, ${finalMatrix.e}, ${finalMatrix.f})`
+  target.setAttribute('transform', matrixString);
 }

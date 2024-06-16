@@ -2,9 +2,9 @@ import {Axis as D3Axis, AxisDomain} from 'd3';
 import {RenderArgs} from "../chart/renderer";
 import {RespValOptional} from "../../data/responsive-value/responsive-value";
 import {ScaledValues} from "../../data/scale/scaled-values-base";
-import {KeyedAxis} from "./validate-keyed-axis";
+import {KeyedAxis} from "respvis-parcoord/render/validate-keyed-axis";
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
-import type {CartesianAxis} from "../../../../respvis-cartesian/ts";
+import type {CartesianAxis} from "respvis-cartesian/render";
 import {Series} from "../series";
 import {
   AxisLayoutHorizontal,
@@ -43,7 +43,7 @@ export interface ConfigureAxisFn {
   (axis: D3Axis<AxisDomain>): void;
 }
 
-export function validateBaseAxis(args: BaseAxisArgs): Axis {
+export function validateBaseAxis(args: BaseAxisArgs): BaseAxis {
   const axis: Axis = {
     originalAxis: this,
     renderer: args.renderer,
@@ -53,13 +53,13 @@ export function validateBaseAxis(args: BaseAxisArgs): Axis {
     subTitle: args.subTitle || '',
     configureAxis: args.configureAxis || (() => {
     }),
-    tickOrientation: args.tickOrientation ?? 0,
-    tickOrientationFlipped: args.tickOrientationFlipped ?? 0,
     breakPoints: validateLayoutBreakpoints(args.breakPoints),
     horizontalLayout: args.horizontalLayout && AxisLayoutsHorizontal.includes(args.horizontalLayout) ?
       args.horizontalLayout : 'bottom',
     verticalLayout: args.verticalLayout && AxisLayoutsVertical.includes(args.verticalLayout) ?
-      args.verticalLayout : 'left'
+      args.verticalLayout : 'left',
+    tickOrientation: args.tickOrientation ?? 0,
+    tickOrientationFlipped: args.tickOrientationFlipped ?? 0,
   }
   axis.originalAxis = axis
   return axis

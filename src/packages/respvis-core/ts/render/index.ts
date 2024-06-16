@@ -5,5 +5,5 @@ export * from './layouter';
 export * from './legend';
 export * from './series';
 export * from './toolbar';
-export * from './util';
 export * from './window';
+export * from './bg-svg-only';

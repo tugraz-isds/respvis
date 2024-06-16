@@ -1,6 +1,6 @@
 import {AxisDomain} from 'd3';
 import {isScaleCategory, isScaleLinear, isScaleTime, ScaledValuesUserArgs} from "./scaled-values";
-import {ErrorMessages} from "../../utilities/error";
+import {ErrorMessages} from "../../constants/error";
 import {AxisKey} from "../../constants/types";
 import {ScaledValuesDate} from "./scaled-values-date";
 import {ScaledValuesLinear} from "./scaled-values-linear";

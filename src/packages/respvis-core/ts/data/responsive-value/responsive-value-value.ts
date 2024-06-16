@@ -1,4 +1,4 @@
-import {ErrorMessages} from "../../utilities/error";
+import {ErrorMessages} from "../../constants/error";
 import {defaultScope, maxBreakpointCount} from "../../constants/other";
 import {BreakpointScope, BreakpointScopeMapping} from "../breakpoints/breakpoint-scope";
 import {LengthDimension} from "../../constants/types";

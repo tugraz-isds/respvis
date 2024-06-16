@@ -1,4 +1,4 @@
-import {ErrorMessages} from "../error";
+import {ErrorMessages} from "../../constants/error";
 import {BaseType, Selection} from "d3";
 
 export function elementFromSelection<T extends BaseType>(selection?: Selection<T>): T {
@@ -56,13 +56,6 @@ export class ThrottleScheduled<T extends (...args: any[]) => K, K> {
     this.lastTime = currentTime
   }
 }
-
-// export function throttleScheduled<T extends (...args: any[]) => K, K>(func: T, delayMs: number) {
-//   const throttleObj = throttle(func, delayMs);
-//   return {
-//     ...throttleObj,
-//   }
-// }
 
 export function addRawSVGToSelection(selection: Selection, rawSVG: string) {
   const parser = new DOMParser()

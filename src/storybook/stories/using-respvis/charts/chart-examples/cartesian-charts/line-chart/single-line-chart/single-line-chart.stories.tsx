@@ -34,10 +34,8 @@ export const Basic: Story = {
     series: {
       x: {values: years},
       y: {values: students},
-      markerTooltipGenerator: {
-        tooltips: function(_, {xValue, yValue}) {
-          return `Year: ${xValue}<br/>Students: ${format('.2f')(yValue)}`
-        }
+      markerTooltipGenerator: function(_, {xValue, yValue}) {
+        return `Year: ${xValue}<br/>Students: ${format('.2f')(yValue)}`
       }
     },
     title: 'Students Registered at TU Graz',

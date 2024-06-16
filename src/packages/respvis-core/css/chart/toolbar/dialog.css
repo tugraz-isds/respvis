@@ -25,12 +25,6 @@
         translate: 0 0;
       }
       > .item + .item, > .item + button  { margin-top: 0.5em }
-
-      .item.item--double-range-filter {
-        .collapsable-wrapper, .collapsable, .double-range-slider {
-          width: 100%;
-        }
-      }
     }
 
     &.dialog--center {
@@ -53,6 +47,7 @@
 
     &.dialog--filter {
       width: min-content;
+      .collapsable-wrapper, .collapsable {min-width: 100%;}
       .collapsable-wrapper, .collapsable, label { width: min-content; }
       .collapsable-opener {
         span:nth-of-type(2) { white-space: nowrap; }
@@ -117,7 +112,8 @@
     transition: grid-template-rows 500ms;
     &.expanded { grid-template-rows: 1fr; }
     .collapsable {
-      overflow: hidden;
+      overflow-y: hidden;
+      /*overflow-x: visible;*/
     }
   }
 

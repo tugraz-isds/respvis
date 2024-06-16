@@ -1,11 +1,12 @@
 import {select, Selection} from 'd3';
 import {elementAbsoluteBounds, elementRelativeBounds} from '../../utilities/element';
-import {centerSVGTextBaseline, positionToTransformAttr} from '../../utilities/position/position';
-import {rectEquals, rectFromString, rectToAttrs, rectToString,} from '../../utilities/graphic-elements/rect';
-import {circleInsideRect, circleToAttrs} from '../../utilities/graphic-elements/circle';
+import {positionToTransformAttr} from '../../data/position/position';
+import {rectEquals, rectFromString, rectToAttrs, rectToString,} from '../../data/shapes/rect';
+import {circleInsideRect, circleToAttrs} from '../../data/shapes/circle';
 import {cssVars} from "../../constants/cssVars";
-import {ellipseInsideRect, ellipseToAttrs} from "../../utilities/graphic-elements/ellipse";
+import {ellipseInsideRect, ellipseToAttrs} from "../../data/shapes/ellipse";
 import {SVGTwinInformation} from "./layouter-compute";
+import {centerSVGTextBaseline} from "respvis-core";
 
 export function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGTwinInformation>): void {
   selection.each((d, i, g) => {

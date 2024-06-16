@@ -1,15 +1,15 @@
 import {CategoriesUserArgs} from "../../data/categories";
 import {RenderArgs, Renderer} from "../chart/renderer";
 import {ActiveKeyMap, SeriesKey} from "../../constants/types";
-import {Size} from "../../utilities/size";
+import {Size} from "../../data/size";
 import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";
 import {mergeKeys} from "../../utilities/dom/key";
 //TODO: Refactor away type dependency to respvis-point
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
-import {elementFromSelection, rectFromString} from "../../utilities";
-import {getCurrentRespVal} from "../../data";
+import {elementFromSelection} from "../../utilities";
+import {getCurrentRespVal, rectFromString} from "../../data";
 import {Selection} from "d3";
-import type {Point} from "../../../../respvis-point/ts";
+import type {Point} from "respvis-point/render";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
 
 export type SeriesUserArgs = {
@@ -31,12 +31,11 @@ export abstract class Series implements RenderArgs {
   categories?: ScaledValuesCategorical
   key: SeriesKey
   keysActive: ActiveKeyMap
-  bounds: Size
   labelCallback: (category: string) => string
   renderer: Renderer
   providesTool = false
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, any>
-  abstract responsiveState: ResponsiveState
+  responsiveState: ResponsiveState
 
   constructor(args: SeriesArgs | Series) {
     const {key, labelCallback} = args
@@ -49,7 +48,6 @@ export abstract class Series implements RenderArgs {
       ...args.categories, parentKey: key,
     }) : undefined
 
-    this.bounds = args.bounds || {width: 600, height: 400}
     this.key = args.key
     this.markerTooltipGenerator = args.markerTooltipGenerator
 
@@ -60,6 +58,12 @@ export abstract class Series implements RenderArgs {
     }
     this.labelCallback = 'class' in args ? args.labelCallback : (labelCallback ?? ((label: string) => label))
     this.renderer = args.renderer
+
+    this.responsiveState = 'class' in args ? args.responsiveState : new ResponsiveState({
+      series: this,
+      originalSeries: this.originalSeries,
+      flipped: ('flipped' in args) ? args.flipped : false
+    })
   }
 
   abstract getCombinedKey(i: number): string
@@ -99,7 +103,7 @@ export type ResponsiveStateArgs = {
   drawAreaHeight?: number
 }
 
-export abstract class ResponsiveState {
+export class ResponsiveState {
   protected _series: Series
   protected _originalSeries: Series
   protected _flipped: RespValByValueOptional<boolean>

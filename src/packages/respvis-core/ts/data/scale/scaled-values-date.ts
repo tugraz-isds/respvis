@@ -2,7 +2,7 @@ import {ScaledValuesDateUserArgs} from "./scaled-values";
 import {ScaledValuesBase, ScaledValuesBaseArgs} from "./scaled-values-base";
 import {max, min, scaleTime, ScaleTime, ZoomTransform} from "d3";
 import {AxisType} from "../../constants/types";
-import {ErrorMessages} from "../../utilities/error";
+import {ErrorMessages} from "../../constants/error";
 
 type ScaledValuesDateArgs = ScaledValuesDateUserArgs & ScaledValuesBaseArgs
 

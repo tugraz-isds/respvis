@@ -9,7 +9,7 @@ import {Series} from "../../series";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {categoryOrderMapToArray} from "../../../data/categories";
 import {mergeKeys} from "../../../utilities/dom/key";
-import {Axis, KeyedAxis} from "../../axis";
+import {Axis} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
 import {CheckBoxLabel} from "../tool/input-label/checkbox-label";
 import {renderButton} from "../tool/render/render-button";
@@ -18,6 +18,7 @@ import {LabelsParentData, renderInputLabels} from "../tool/input-label/render-in
 import {InputLabel} from "../tool/input-label/input-label";
 import {orderScaledValues, ScaledValuesLinearScale} from "../../../data/scale/scaled-values-base";
 import {RangeLabel} from "../tool/input-label/range-label";
+import type {KeyedAxis} from "../../../../../respvis-parcoord/ts/render";
 
 export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Toolbar) {
   const seriesCollection = args.getSeries()
