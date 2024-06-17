@@ -52,9 +52,9 @@ export const Primary: Story = {
         title: 'Years'
       },
       markerTooltipGenerator: ((e, d) => {
-        return `Site: ${d.xValue}<br/>
+        return `Site: ${d.xValue} ${d.key}<br/>
                 Total Remuneration: $${format(',')(d.yValue)}<br/>
-                Year: ${d.tooltipLabel}<br/>`
+                Year: ${d.category}<br/>`
       }),
       flipped: {
         dependentOn: 'width',

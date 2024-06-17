@@ -51,7 +51,7 @@ export function createChartSoldCarsGermany(selector: string) {
       markerTooltipGenerator: ((e, d) => {
         return `Car Price: ${d.yValue}€<br/>
                 Horse Power: ${d.xValue}PS<br/>
-                Make: ${d.tooltipLabel}<br/>
+                Make: ${d.categoryFormatted ?? ''}<br/>
                 Mileage: ${d.radiusValue}km<br/>`
       }),
       flipped: {

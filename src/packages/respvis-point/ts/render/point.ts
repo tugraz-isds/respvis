@@ -1,17 +1,18 @@
-import {Circle, Position, Primitive, PrimitiveArgs} from "respvis-core";
+import {Circle, Position, VisualPrimitive, VisualPrimitiveArgs} from "respvis-core";
 import {PointLabel, PointLabelData} from "./point-label";
 
-export type PointArgs = Circle & PrimitiveArgs & {
+export type PointArgs = Circle & VisualPrimitiveArgs & {
   xValue: any
   yValue: any
   radiusValue?: any
   label?: PointLabelData
 }
 
-export class Point implements Circle, Primitive {
+export class Point implements Circle, VisualPrimitive {
   xValue: any
   yValue: any
-  tooltipLabel: string
+  category?: string
+  categoryFormatted?: string
   radiusValue?: any
   styleClass: string
   key: string
@@ -23,7 +24,8 @@ export class Point implements Circle, Primitive {
   constructor(args: PointArgs) {
     this.xValue = args.xValue
     this.yValue = args.yValue
-    this.tooltipLabel = args.tooltipLabel
+    this.category = args.category
+    this.categoryFormatted = args.categoryFormatted
     this.radiusValue = args.radiusValue
     this.styleClass = args.styleClass
     this.key = args.key
@@ -39,7 +41,7 @@ export class Point implements Circle, Primitive {
       ...this.labelData,
       x: this.getLabelX(),
       y: this.getLabelY(),
-      key: this.key,
+      primitive: this,
       text: this.labelData.format(this, this.labelData.value),
     }
   }

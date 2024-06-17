@@ -40,7 +40,7 @@ export function createMarketSharesChart(selector) {
                 title: 'Device Types'
             },
             markerTooltipGenerator: ((e, d) => {
-                return `Device Type: ${d.tooltipLabel}<br/>
+                return `Device Type: ${d.categoryFormatted ?? ''}<br/>
                 Market Share: ${d3.format(',')(d.yValue)}%<br/>
                 Year: ${d.xValue}<br/>`
             }),

@@ -9,7 +9,7 @@ import {Series} from "../../series";
 import {addSeriesHighlighting} from "../../series/series-highlighting";
 import {renderSeriesTooltip} from "respvis-tooltip";
 import {renderLabelSeries} from "../../label";
-import {Primitive} from "../../primitive/primitive";
+import {VisualPrimitive} from "../../primitive/visual-primitive";
 
 export abstract class SeriesChartMixin extends Chart {
   abstract get windowS(): Selection<HTMLElement, Window & SeriesChartData>
@@ -48,7 +48,7 @@ export abstract class SeriesChartMixin extends Chart {
   }
 
   addSeriesLabels(seriesS: Selection<SVGGElement, Series>) {
-    const seriesElementsS = seriesS.selectAll<any, Primitive>('.bar:not(.exiting):not(.exit-done)')
+    const seriesElementsS = seriesS.selectAll<any, VisualPrimitive>('.bar:not(.exiting):not(.exit-done)')
     renderLabelSeries(this.drawAreaS, {
       elements: seriesElementsS.data(),
       classes: ['series-label'],

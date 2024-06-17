@@ -1,1 +1,1 @@
-export * from './primitive'
+export * from './visual-primitive'

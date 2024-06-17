@@ -15,7 +15,6 @@ import {SeriesTooltipGenerator} from "respvis-tooltip";
 export type SeriesUserArgs = {
   categories?: CategoriesUserArgs
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
-  labelCallback?: (category: string) => string
   flipped?: RespValByValueOptional<boolean>
 }
 
@@ -31,14 +30,13 @@ export abstract class Series implements RenderArgs {
   categories?: ScaledValuesCategorical
   key: SeriesKey
   keysActive: ActiveKeyMap
-  labelCallback: (category: string) => string
   renderer: Renderer
   providesTool = false
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, any>
   responsiveState: ResponsiveState
 
   constructor(args: SeriesArgs | Series) {
-    const {key, labelCallback} = args
+    const {key} = args
 
     this.originalSeries = args.originalSeries ?? this
 
@@ -56,7 +54,6 @@ export abstract class Series implements RenderArgs {
       this.keysActive = {}
       this.keysActive[key] = true
     }
-    this.labelCallback = 'class' in args ? args.labelCallback : (labelCallback ?? ((label: string) => label))
     this.renderer = args.renderer
 
     this.responsiveState = 'class' in args ? args.responsiveState : new ResponsiveState({

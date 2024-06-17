@@ -6,14 +6,14 @@ import {LegendItem} from "./legend-item";
 
 export function createLegendItems(legend: Legend): LegendItem[] {
   const { series, symbols, reverse} = legend;
-  const {categories, labelCallback} = series
+  const {categories} = series
   if (!categories) return []
 
   const {categoryOrderMap, styleClassOrder, keyOrder} = categories.categories
   const categoryOrderedArray = categoryOrderMapToArray(categoryOrderMap)
   const items = categoryOrderedArray.map((c, i) => {
     return {
-      label: labelCallback(c),
+      label:  categories.categories.categoryFormatMap[c],
       styleClass: styleClassOrder[i],
       symbol: arrayIs(symbols) ? symbols[i] : symbols,
       key: mergeKeys([categories.parentKey, keyOrder[i]]),

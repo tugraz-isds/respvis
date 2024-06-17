@@ -65,7 +65,7 @@ export const Primary: Story = {
         title: 'Device Types'
       },
       markerTooltipGenerator: ((e, d) => {
-        return `Device Type: ${d.tooltipLabel}<br/>
+        return `Device Type: ${d.category}<br/>
                 Market Share: ${format(',')(d.yValue)}%<br/>
                 Year: ${d.xValue}<br/>`
       }),

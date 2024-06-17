@@ -1,8 +1,6 @@
-import {Position} from "../../utilities";
-import {Sign} from "../../constants";
+import {Position, VisualPrimitive} from "../../utilities";
 
 export interface Label extends Position {
   text: string
-  key: string,
-  sign?: Sign,
+  primitive: VisualPrimitive
 }

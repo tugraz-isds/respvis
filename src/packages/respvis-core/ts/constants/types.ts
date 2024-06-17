@@ -44,7 +44,7 @@ export type Orientation = typeof Orientations[number]
 export type ScaledValueTag = 'categorical' | 'linear' | 'date'
 
 export type TextAnchor = 'start' | 'end' | 'middle'
-export type Sign = 'positive' | 'negative'
+export type Polarity = 'positive' | 'negative'
 
 
 

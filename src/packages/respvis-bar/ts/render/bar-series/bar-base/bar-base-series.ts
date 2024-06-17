@@ -48,12 +48,14 @@ export abstract class BarBaseSeries extends CartesianSeries {
     for (let i = 0; i < this.y.values.length; ++i) {
       if (this.categories && !this.categories.isValueActive(i)) continue
       if (!x.isValueActive(i) || !y.isValueActive(i)) continue
+      const category = this.categories?.values[i]
       data.push(new Bar({
         ...this.getRect(i),
         xValue: this.x.values[i],
         yValue: this.y.values[i],
         styleClass: this.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
-        tooltipLabel: this.labelCallback(this.categories?.values[i] ?? ''),
+        category,
+        categoryFormatted: category ? this.categories?.categories.categoryFormatMap[category] : undefined,
         label: this.labels?.at(i),
         key: this.getCombinedKey(i) + ` i-${i}`,
       }));

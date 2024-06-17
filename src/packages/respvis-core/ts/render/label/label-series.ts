@@ -5,18 +5,18 @@ import {
   classesForSelection,
   cssVarFromSelection,
   positionToTransformAttr,
-  Primitive
+  VisualPrimitive
 } from "../../utilities";
 import {Orientation} from "../../constants";
 import {Label} from "./label";
 
-type LabelSeriesProps<D extends Primitive> = {
+type LabelSeriesProps<D extends VisualPrimitive> = {
   elements: D[]
   classes: string[]
   orientation: Orientation
 };
 
-export function renderLabelSeries<D extends Primitive>(parentS: Selection, props: LabelSeriesProps<D>) {
+export function renderLabelSeries<D extends VisualPrimitive>(parentS: Selection, props: LabelSeriesProps<D>) {
   const { elements, classes, orientation} = props
   const {selector, names} = classesForSelection(classes)
   const labels = elements.flatMap(element => element.getLabel(orientation))
@@ -30,7 +30,7 @@ export function renderLabelSeries<D extends Primitive>(parentS: Selection, props
 
 export function renderLabels<D extends Label>(seriesS: Selection, labels: D[]) {
   return seriesS.selectAll<SVGTextElement, D>('text')
-    .data(labels, (d) => d.key)
+    .data(labels, (d) => d.primitive.key)
     .call((s) => joinLabelSeries(seriesS, s));
 }
 
@@ -60,7 +60,7 @@ function joinLabelSeries(seriesS: Selection, joinS: Selection<Element, Label>): 
         .call((t) => positionToTransformAttr(t, d))
     )
     .text((d) => d.text)
-    .attr('data-key', (d) => d.key)
-    .attr( 'data-sign', (d) => d.sign ? d.sign : null)
+    .attr('data-key', (d) => d.primitive.key)
+    .attr( 'data-polarity', (d) => d.primitive.polarity ? d.primitive.polarity : null)
     .call((s) => seriesS.dispatch('update', { detail: { selection: s } }));
 }

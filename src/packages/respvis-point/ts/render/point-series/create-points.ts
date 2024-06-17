@@ -4,7 +4,7 @@ import {PointScaleHandler} from "./geometry-scale-handler/point-scale-handler";
 import {PointSeries} from "./point-series";
 
 export function createPoints<T extends boolean, R = T extends false ? Point[] : Point[][]>
-(seriesData: PointSeries, grouped: T) : R {
+(seriesData: PointSeries, grouped: T): R {
   const {key: seriesKey, keysActive, color, renderer, categories, responsiveState} = seriesData
   const chartElement = elementFromSelection(renderer.chartS)
   const flipped = responsiveState.currentlyFlipped
@@ -42,17 +42,20 @@ type CreatePointProps = {
   color?: ColorContinuous,
   seriesData: PointSeries
 }
+
 function createPoint(props: CreatePointProps) {
   const {geometryHandler, i, color, seriesData} = props
+  const category = seriesData.categories?.values[i]
   return new Point({
-      ...geometryHandler.getPointCircle(i),
-      xValue: geometryHandler.getCurrentXValues().values[i],
-      yValue: geometryHandler.getCurrentYValues().values[i],
-      color: color?.scale(color?.values[i]),
-      radiusValue: geometryHandler.getRadiusValue(i),
-      key: seriesData.getCombinedKey(i) + ` i-${i}`,
-      styleClass: seriesData.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
-      tooltipLabel: seriesData.labelCallback(seriesData.categories?.values[i] ?? ''),
-      label: seriesData.labels?.getArgValid(i)
-    })
+    ...geometryHandler.getPointCircle(i),
+    xValue: geometryHandler.getCurrentXValues().values[i],
+    yValue: geometryHandler.getCurrentYValues().values[i],
+    color: color?.scale(color?.values[i]),
+    radiusValue: geometryHandler.getRadiusValue(i),
+    key: seriesData.getCombinedKey(i) + ` i-${i}`,
+    styleClass: seriesData.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
+    category,
+    categoryFormatted: category ? seriesData.categories?.categories.categoryFormatMap[category] : undefined,
+    label: seriesData.labels?.getArgValid(i)
+  })
 }

@@ -28,7 +28,7 @@ export function renderGroupedBarChart(selector: string) {
       markerTooltipGenerator: ((e, d) => {
         return `Site: ${d.xValue}<br/>
                 Total Remuneration: $${d3.format(',')(d.yValue)}<br/>
-                Year: ${d.tooltipLabel}<br/>`
+                Year: ${d.categoryFormatted ?? ''}<br/>`
       }),
       flipped: {
         dependentOn: 'width',
