@@ -7,9 +7,8 @@ export function renderMovableCrossTooltip(series: Series) {
   const tooltipS = select(tooltipSelector)
   const tooltip = renderer.windowS.datum().tooltip
 
-  const renderContent = () => {
-    const active = renderer.windowS.datum().windowSettings.get('movableCrossActive')
-      && tooltip.movableCrossTooltipVisible && !tooltip.seriesTooltipVisible
+  const renderContent = (active: boolean) => {
+
     const toolTipCrossStateS = tooltipS
       .selectAll('.item.tooltip--cross')
       .data(active ? [null] : [])
@@ -22,10 +21,15 @@ export function renderMovableCrossTooltip(series: Series) {
     return {toolTipCrossStateS, crossStateTextS}
   }
 
-  const onDrawAreaMove = (e) => {
-    tooltip.movableCrossTooltipVisible = renderer.windowS.datum().windowSettings.get('movableCrossActive')
-    const {crossStateTextS} = renderContent()
-    if (!tooltip.movableCrossTooltipVisible) return
+  const onDrawAreaMove = (e: PointerEvent, active: boolean) => {
+    const windowD = renderer.windowS.datum()
+    tooltip.movableCrossTooltipVisible = windowD.windowSettings.get('movableCrossActive')
+
+    const {crossStateTextS} = renderContent(active)
+    if (!active) return
+
+    const positionStrategy = windowD.tooltip.positionStrategyInspect
+    windowD.tooltip.applyPositionStrategy(e, positionStrategy)
 
     const backgroundE = elementFromSelection(renderer.drawAreaBgS) as Element
     const rect = backgroundE.getBoundingClientRect()
@@ -42,18 +46,21 @@ export function renderMovableCrossTooltip(series: Series) {
     if (secondText.size() > 0) secondText.text(vertical ? `${verticalName}: ${vertical}` : secondText.text())
   }
 
-  const onDrawAreaLeave = () => {
+  const onDrawAreaLeave = (active: boolean) => {
     tooltip.movableCrossTooltipVisible = false
-    renderContent()
+    renderContent(active)
   }
   const onWindowMove = (e) => {
+    const active = renderer.windowS.datum().windowSettings.get('movableCrossActive')
+      && tooltip.movableCrossTooltipVisible && !tooltip.seriesTooltipVisible
+
     const rect = elementFromSelection(renderer.drawAreaBgS).getBoundingClientRect()
     if (!(e.clientX < rect.x || e.clientX > rect.x + rect.width ||
       e.clientY < rect.y || e.clientY > rect.y + rect.height)) {
-      onDrawAreaMove(e)
+      onDrawAreaMove(e, active)
       return
     }
-    onDrawAreaLeave()
+    onDrawAreaLeave(active)
   }
 
   renderer.windowS.on('pointermove.LeaveMovableCrossTooltip', onWindowMove)

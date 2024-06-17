@@ -16,10 +16,14 @@ export function renderSeriesTooltip<E extends Element, D>(seriesS: Selection<Ele
     .join('div')
     .classed('item tooltip--series', true)
 
-  seriesS.on('pointerover.tooltip', (e, d) => {
+  seriesS.on('pointermove.tooltip', (e) => {
+    const positionStrategy = tooltip.positionStrategySeries
+    tooltip.applyPositionStrategy(e, positionStrategy)
+  }).on('pointerover.tooltip', (e, d) => {
     const item = e.target;
-    if (!d.markerTooltipGenerator || !item) return;
-    const data = select<E, D>(item).datum();
+    if (!d.markerTooltipGenerator || !item) return
+    const data = select<E, D>(item).datum()
+
     tooltip.seriesTooltipVisible = true
     select(tooltipSelector).html(d.markerTooltipGenerator(item, data));
   }).on('pointerout.tooltip', () => {

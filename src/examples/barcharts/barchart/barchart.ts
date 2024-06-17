@@ -70,7 +70,7 @@ export async function createBarCart(selector: string) {
       tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,
       configureAxis: (axis) => axis.tickFormat(d3.format('.2s')),
-    },
+    }
   }
 
   //Example for custom chart with no highlight and tooltips

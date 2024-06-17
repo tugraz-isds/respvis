@@ -3,29 +3,49 @@ import {Position, Size} from 'respvis-core';
 
 const toolTipId = 'tooltip-rv'
 export const tooltipSelector = `#${toolTipId}`
+export const tooltipPositionStrategies = ['none', 'sticky'] as const
+export type TooltipPositionStrategy = typeof tooltipPositionStrategies[number]
 
 export type TooltipUserArgs = {
   active?: boolean
-  useAutoPositioning?: boolean
+  positionStrategySeries?: TooltipPositionStrategy
+  positionStrategyInspect?: TooltipPositionStrategy
   autoOffset?: number
 }
 export type TooltipArgs = TooltipUserArgs
 type TooltipData = Required<TooltipArgs>
 
 export class Tooltip implements TooltipData {
-  useAutoPositioning: boolean;
+  positionStrategySeries: TooltipPositionStrategy;
+  positionStrategyInspect: TooltipPositionStrategy;
   autoOffset: number;
   active = true
   seriesTooltipVisible = false
   movableCrossTooltipVisible = false
   constructor(args?: TooltipArgs) {
-    this.useAutoPositioning = args?.useAutoPositioning ?? true
+    this.positionStrategySeries = args?.positionStrategySeries ?? 'sticky'
+    this.positionStrategyInspect = args?.positionStrategyInspect ?? 'sticky'
     this.autoOffset = args?.autoOffset ?? 8
     this.active = args?.active ?? true
   }
   numberOfVisibleTools() {
     return (this.seriesTooltipVisible ? 1 : 0) +
       (this.movableCrossTooltipVisible ? 1 : 0)
+  }
+  applyPositionStrategy(e: PointerEvent, positionStrategy: TooltipPositionStrategy) {
+    const tooltipS = select<HTMLDivElement, any>(tooltipSelector)
+    const mousePosition = { x: e.clientX, y: e.clientY }
+    console.log(positionStrategy)
+    switch (positionStrategy) {
+      case 'sticky': {
+        updateTooltipPositionCSSVars(tooltipS, {position: mousePosition, offset: this.autoOffset})
+      } break;
+      case "none": default: {}
+    }
+    tooltipPositionStrategies.forEach(strategy => {
+      tooltipS.classed(`tooltip-position-${strategy}`, false)
+    })
+    tooltipS.classed(`tooltip-position-${positionStrategy}`, true)
   }
 }
 
@@ -40,7 +60,7 @@ export interface TooltipPosition {
   offset?: number;
 }
 
-export function positionTooltipAuto(tooltipS: Selection<HTMLDivElement>, config: TooltipPosition) {
+export function updateTooltipPositionCSSVars(tooltipS: Selection<HTMLDivElement>, config: TooltipPosition) {
   const offset = config.offset || 8
   const position = config.position
   const windowSize: Size = {width: window.innerWidth, height: window.innerHeight};
@@ -51,14 +71,19 @@ export function positionTooltipAuto(tooltipS: Selection<HTMLDivElement>, config:
 
   const left = offsetDirection.x >= 0;
   const top = offsetDirection.y >= 0;
+
   const leftOffset = position.x + offsetDirection.x * offset;
   const rightOffset = windowSize.width - leftOffset;
   const topOffset = position.y + offsetDirection.y * offset;
   const bottomOffset = windowSize.height - topOffset;
 
   tooltipS
-    .style(left ? 'right' : 'left', null)
-    .style(left ? 'left' : 'right', `${left ? leftOffset : rightOffset}px`)
-    .style(top ? 'bottom' : 'top', null)
-    .style(top ? 'top' : 'bottom', `${top ? topOffset : bottomOffset}px`);
+    .style('--place-left', left ? ' ' : 'initial')
+    .style('--place-right', !left ? ' ' : 'initial')
+    .style('--place-top', top ? ' ' : 'initial')
+    .style('--place-bottom', !top ? ' ' : 'initial')
+    .style('--left-offset', leftOffset + 'px')
+    .style('--right-offset', rightOffset + 'px')
+    .style('--top-offset', topOffset + 'px')
+    .style('--bottom-offset', bottomOffset + 'px')
 }

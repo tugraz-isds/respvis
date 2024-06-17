@@ -1,5 +1,5 @@
 import {select, Selection} from "d3";
-import {positionTooltipAuto, setTooltipVisibility, tooltipSelector} from "./tooltip";
+import {setTooltipVisibility, tooltipSelector} from "./tooltip";
 import {elementFromSelection, Window} from "respvis-core";
 
 export function renderTooltip(): Selection<HTMLDivElement> {
@@ -15,9 +15,6 @@ export function renderTooltip(): Selection<HTMLDivElement> {
   drawAreaS.on('pointermove.tooltipVisibility', function(e) {
     const window = windowS.data().find(window => window.tooltip.numberOfVisibleTools() > 0)
     setTooltipVisibility(!!window ? 'visible' : 'hidden')
-    const tooltipS = select<HTMLDivElement, any>(tooltipSelector)
-    const mousePosition = { x: e.clientX, y: e.clientY }
-    positionTooltipAuto(tooltipS, {position: mousePosition, offset: window?.tooltip.autoOffset})
   }).on('pointerout.tooltipVisibility', function() {
     setTooltipVisibility('hidden')
   })
@@ -33,10 +30,6 @@ export function renderTooltip(): Selection<HTMLDivElement> {
     }
     const visibleTools = windowHovered?.tooltip.numberOfVisibleTools() ?? 0
     setTooltipVisibility(visibleTools > 0 ? 'visible' : 'hidden')
-
-    const tooltipS = select<HTMLDivElement, any>(tooltipSelector)
-    const mousePosition = { x: e.clientX, y: e.clientY }
-    positionTooltipAuto(tooltipS, {position: mousePosition, offset: windowHovered?.tooltip.autoOffset})
   })
   return tooltipS
 }
