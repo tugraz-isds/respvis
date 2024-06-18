@@ -24,13 +24,16 @@ import {
 import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal, scalePoint, ScalePoint, Selection} from "d3";
 import {renderTool} from "../parcoord-chart/render/render-tool";
 import {KeyedAxis, validateKeyedAxis} from "../validate-keyed-axis";
+import {SeriesTooltipGenerator} from "respvis-tooltip";
+import {Line} from "respvis-line";
 
 export type ParcoordSeriesUserArgs = SeriesUserArgs & {
   dimensions: {
     scaledValues: ScaledValuesUserArgs<AxisDomainRV>
     axis: BaseAxisUserArgs
     zoom?: ZoomArgs
-  }[]
+  }[],
+  markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Line>
 }
 
 export type ParcoordArgs = SeriesArgs & ParcoordSeriesUserArgs & {
@@ -49,6 +52,8 @@ export class ParcoordSeries extends Series {
   axesInverted: boolean[]
   responsiveState: ParcoordResponsiveState
   providesTool = true
+  //TODO: implement usage and initialization of markerTooltipGenerator for parcoords
+  markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Line>
 
   constructor(args: ParcoordArgs | ParcoordSeries) {
     super(args)

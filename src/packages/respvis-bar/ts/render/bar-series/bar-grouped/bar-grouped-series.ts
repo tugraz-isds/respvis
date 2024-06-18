@@ -8,6 +8,7 @@ export type BarGroupedSeriesUserArgs = BarBaseSeriesUserArgs & {
 }
 
 export type BarGroupedSeriesArgs = BarBaseSeriesArgs & BarGroupedSeriesUserArgs
+
 export class BarGroupedSeries extends BarBaseSeries {
   type: 'grouped'
   categories: ScaledValuesCategorical

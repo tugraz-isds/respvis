@@ -33,7 +33,7 @@ export type CartesianSeriesArgs = SeriesArgs & CartesianSeriesUserArgs & {
   originalSeries?: CartesianSeries
 }
 
-export class CartesianSeries extends Series {
+export abstract class CartesianSeries extends Series {
   originalSeries: CartesianSeries
   x: ScaledValues
   y: ScaledValues
@@ -41,7 +41,7 @@ export class CartesianSeries extends Series {
   zoom?: Zoom
   renderer: CartesianRenderer
 
-  constructor(args: CartesianSeriesArgs | CartesianSeries) {
+  protected constructor(args: CartesianSeriesArgs | CartesianSeries) {
     super(args)
     this.originalSeries = args.originalSeries ?? this
     const [xAligned, yAligned] = ('tag' in args.x && 'tag' in args.y) ? [args.x, args.y] :
@@ -111,7 +111,5 @@ export class CartesianSeries extends Series {
     return clone
   }
 
-  clone() {
-    return new CartesianSeries({...this})
-  }
+  abstract clone(): CartesianSeries
 }

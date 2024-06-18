@@ -9,12 +9,11 @@ import {RespValByValueOptional} from "../../data/responsive-value/responsive-val
 import {elementFromSelection} from "../../utilities";
 import {getCurrentRespVal, rectFromString} from "../../data";
 import {Selection} from "d3";
-import type {Point} from "respvis-point/render";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
 
 export type SeriesUserArgs = {
   categories?: CategoriesUserArgs
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
+  markerTooltipGenerator?: SeriesTooltipGenerator<SVGElement, any>
   flipped?: RespValByValueOptional<boolean>
 }
 
@@ -32,10 +31,10 @@ export abstract class Series implements RenderArgs {
   keysActive: ActiveKeyMap
   renderer: Renderer
   providesTool = false
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, any>
   responsiveState: ResponsiveState
+  abstract markerTooltipGenerator?: SeriesTooltipGenerator<SVGElement, any>
 
-  constructor(args: SeriesArgs | Series) {
+  protected constructor(args: SeriesArgs | Series) {
     const {key} = args
 
     this.originalSeries = args.originalSeries ?? this
@@ -47,7 +46,6 @@ export abstract class Series implements RenderArgs {
     }) : undefined
 
     this.key = args.key
-    this.markerTooltipGenerator = args.markerTooltipGenerator
 
     if ('class' in args) this.keysActive = {...args.keysActive}
     else {

@@ -28,9 +28,8 @@ export class Tooltip implements TooltipData {
     this.autoOffset = args?.autoOffset ?? 8
     this.active = args?.active ?? true
   }
-  numberOfVisibleTools() {
-    return (this.seriesTooltipVisible ? 1 : 0) +
-      (this.movableCrossTooltipVisible ? 1 : 0)
+  isVisible() {
+    return this.seriesTooltipVisible || this.movableCrossTooltipVisible
   }
   applyPositionStrategy(e: PointerEvent, positionStrategy: TooltipPositionStrategy) {
     const tooltipS = select<HTMLDivElement, any>(tooltipSelector)

@@ -9,11 +9,13 @@ import {
 import {Bar} from "../../bar";
 import {BarBaseResponsiveState} from "./bar-base-responsive-state";
 import {BarLabelsDataCollection, BarLabelsUserArg} from "../../bar-label";
+import {SeriesTooltipGenerator} from "respvis-tooltip";
 
-export type BarBaseSeriesUserArgs = CartesianSeriesUserArgs & {
+export type BarBaseSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
   x: ScaledValuesCategoricalUserArgs
   originalSeries?: BarBaseSeries
   labels?: BarLabelsUserArg
+  markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Bar>
 }
 
 export type BarBaseSeriesArgs = BarBaseSeriesUserArgs & CartesianSeriesArgs
@@ -23,6 +25,7 @@ export abstract class BarBaseSeries extends CartesianSeries {
   responsiveState: BarBaseResponsiveState
   originalSeries: BarBaseSeries
   labels?: BarLabelsDataCollection
+  markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Bar>
   protected constructor(args: BarBaseSeriesArgs | BarBaseSeries) {
     super(args);
     this.originalSeries = args.originalSeries ?? this
@@ -38,6 +41,7 @@ export abstract class BarBaseSeries extends CartesianSeries {
 
     if ('class' in args) this.labels = args.labels
     else if (args.labels) this.labels = new BarLabelsDataCollection(args.labels)
+    this.markerTooltipGenerator = args.markerTooltipGenerator
   }
 
   getBarRects(): Bar[] {

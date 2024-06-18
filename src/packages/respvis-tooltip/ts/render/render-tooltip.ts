@@ -12,8 +12,8 @@ export function renderTooltip(): Selection<HTMLDivElement> {
     .join('div')
     .attr('id', 'tooltip-rv')
 
-  drawAreaS.on('pointermove.tooltipVisibility', function(e) {
-    const window = windowS.data().find(window => window.tooltip.numberOfVisibleTools() > 0)
+  drawAreaS.on('pointermove.tooltipVisibility', function() {
+    const window = windowS.data().find(window => window.tooltip.isVisible())
     setTooltipVisibility(!!window ? 'visible' : 'hidden')
   }).on('pointerout.tooltipVisibility', function() {
     setTooltipVisibility('hidden')
@@ -28,8 +28,7 @@ export function renderTooltip(): Selection<HTMLDivElement> {
     if (windowHovered) {
       windowHovered.tooltip.movableCrossTooltipVisible = windowHovered.windowSettings.get('movableCrossActive')
     }
-    const visibleTools = windowHovered?.tooltip.numberOfVisibleTools() ?? 0
-    setTooltipVisibility(visibleTools > 0 ? 'visible' : 'hidden')
+    setTooltipVisibility(windowHovered?.tooltip.isVisible() ? 'visible' : 'hidden')
   })
   return tooltipS
 }

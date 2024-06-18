@@ -18,17 +18,17 @@ export abstract class CartesianChartMixin extends Chart {
     return (this._verticalAxisS && !this._verticalAxisS.empty()) ? this._verticalAxisS :
       this.chartS.selectAll<SVGGElement, CartesianAxis>('.axis-left, .axis-right')
   }
-  cartesianAxisRender() {
+  renderCartesianAxis() {
     const flipped = this.chartS.datum().series.responsiveState.currentlyFlipped
     this.chartS.classed('chart-cartesian', true)
       .attr('data-flipped', flipped)
     renderCartesianAxes(this.chartS)
   }
-  originLineRender() { renderOriginLine(this.chartS) }
-  cartesianGridRender() { renderGrid(this.chartS) }
+  renderOriginLine() { renderOriginLine(this.chartS) }
+  renderCartesianGrid() { renderGrid(this.chartS) }
   addCartesianFeatures() {
-    this.cartesianAxisRender()
-    this.originLineRender()
-    this.cartesianGridRender()
+    this.renderCartesianAxis()
+    this.renderOriginLine()
+    this.renderCartesianGrid()
   }
 }
