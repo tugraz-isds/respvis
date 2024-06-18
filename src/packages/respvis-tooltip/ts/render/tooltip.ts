@@ -34,7 +34,6 @@ export class Tooltip implements TooltipData {
   applyPositionStrategy(e: PointerEvent, positionStrategy: TooltipPositionStrategy) {
     const tooltipS = select<HTMLDivElement, any>(tooltipSelector)
     const mousePosition = { x: e.clientX, y: e.clientY }
-    console.log(positionStrategy)
     switch (positionStrategy) {
       case 'sticky': {
         updateTooltipPositionCSSVars(tooltipS, {position: mousePosition, offset: this.autoOffset})

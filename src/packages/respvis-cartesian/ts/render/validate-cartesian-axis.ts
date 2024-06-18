@@ -21,7 +21,8 @@ export function validateCartesianAxis(args: CartesianAxisArgs): CartesianAxis {
     ...validateBaseAxis(args),
     originalAxis: this,
     series: args.series,
-    gridLineFactor: args.gridLineFactor
+    gridLineFactor: (typeof args.gridLineFactor === 'number' && args.gridLineFactor > 0.01) ?
+      args.gridLineFactor : undefined
   }
   axis.originalAxis = axis
   return axis

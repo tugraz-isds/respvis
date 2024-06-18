@@ -17,6 +17,7 @@
     }
   }
   &.tooltip-position-sticky {
+    /*based on: https://css-tricks.com/the-css-custom-property-toggle-trick/*/
     --place-left: initial;
     --left-offset: 0;
     --left-offset-applied: var(--place-left) var(--left-offset);

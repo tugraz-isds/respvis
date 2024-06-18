@@ -25,10 +25,10 @@ export abstract class CartesianChartMixin extends Chart {
     renderCartesianAxes(this.chartS)
   }
   renderOriginLine() { renderOriginLine(this.chartS) }
-  renderCartesianGrid() { renderGrid(this.chartS) }
+  renderGrid() { renderGrid(this.chartS) }
   addCartesianFeatures() {
     this.renderCartesianAxis()
     this.renderOriginLine()
-    this.renderCartesianGrid()
+    this.renderGrid()
   }
 }
