@@ -13,7 +13,7 @@ import {Meta} from "@storybook/blocks";
 - Change Movable Cross Tool to Select Tooltip Type Tool.
   Use Movable Cross as tool option.
 - For Inspect Tool + Cartesian Chart: Add Horizontal and Vertical Lines, connecting cross cursor with axes.
-
+- Setting for toggling between category and sequential colors.
 
 ## Restructuring
 
@@ -22,8 +22,8 @@ import {Meta} from "@storybook/blocks";
 - Add TSLint and Prettier to enforce naming conventions.
 - Have a look at color-continuous data component and update
   point series color and radii properties.
-
-
+- Restructure Legend in multiple containers (size, category, color scale),
+  which can be aligned independently.
 
 ## Documentation and Testing
 
@@ -52,3 +52,14 @@ import {Meta} from "@storybook/blocks";
 - Layouting: A rapid change of the chart size, like opening dev tools, does not lead to rerender
   sometimes.
 - Line Chart: Double Range Slider colored range wrong.
+
+
+
+## Notes
+
+- Importing and using functions in respvis-core from respvis-cartesian
+  leads to error(Undefined CartesianResponsiveState constructor). Maybe
+  this is inavoidable due to the multi package structure and problems must
+  be solved with union types instead. Anyway, this problem does not affect
+  library users, since everything works fine when importing from outside of
+  respvis packages.

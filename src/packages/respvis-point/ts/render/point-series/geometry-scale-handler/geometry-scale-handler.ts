@@ -1,13 +1,19 @@
-import {elementFromSelection, getCurrentRespVal, Renderer, RespValByValueOptional, ScaledValues} from "respvis-core";
+import {
+  elementFromSelection,
+  getCurrentRespVal,
+  Renderer,
+  RespValByValueOptional,
+  ScaledValuesSpatial
+} from "respvis-core";
 
-export type RenderState<X extends ScaledValues, Y extends ScaledValues> = {
+export type RenderState<X extends ScaledValuesSpatial, Y extends ScaledValuesSpatial> = {
   flipped: RespValByValueOptional<boolean>
   renderer: Renderer
   originalXValues: X
   originalYValues: Y
 }
 
-export class GeometryScaleHandler<X extends ScaledValues, Y extends ScaledValues> {
+export class GeometryScaleHandler<X extends ScaledValuesSpatial, Y extends ScaledValuesSpatial> {
   originalXValues: X
   originalYValues: Y
   renderer: Renderer

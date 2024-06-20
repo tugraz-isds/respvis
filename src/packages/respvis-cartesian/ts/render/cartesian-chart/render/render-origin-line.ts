@@ -1,11 +1,11 @@
-import {pathLine, ScaledValues, ScaledValuesLinear} from "respvis-core";
+import {pathLine, ScaledValuesLinear, ScaledValuesSpatial} from "respvis-core";
 import {CartesianChartSelection} from "../validate-cartesian-chart";
 
 export function renderOriginLine<T extends CartesianChartSelection>(chartS: T): void {
   const {horizontalAxisS, verticalAxisS, drawAreaS} = chartS.datum().series.renderer
   const gridAreaS = drawAreaS.selectAll('.grid-area')
 
-  function needsBaseLine(values: ScaledValues) {
+  function needsBaseLine(values: ScaledValuesSpatial) {
     if (values.tag !== 'linear') return false
     const hasNegativeVal = values.values.find(val => val < 0)
     const hasPositiveVal = values.values.find(val => val > 0)

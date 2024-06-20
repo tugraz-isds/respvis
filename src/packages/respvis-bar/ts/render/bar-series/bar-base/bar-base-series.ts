@@ -46,12 +46,13 @@ export abstract class BarBaseSeries extends CartesianSeries {
 
   getBarRects(): Bar[] {
     const data: Bar[] = []
-    const {x, y} = this
+    const {x, y, color} = this
+    const optionalColorValues = color?.axis.scaledValues
 
     if (!this.keysActive[this.key]) return data
     for (let i = 0; i < this.y.values.length; ++i) {
       if (this.categories && !this.categories.isValueActive(i)) continue
-      if (!x.isValueActive(i) || !y.isValueActive(i)) continue
+      if (!x.isValueActive(i) || !y.isValueActive(i) || !(optionalColorValues?.isValueActive(i) ?? true)) continue
       const category = this.categories?.values[i]
       data.push(new Bar({
         ...this.getRect(i),

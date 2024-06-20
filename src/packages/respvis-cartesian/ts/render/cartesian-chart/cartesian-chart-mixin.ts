@@ -26,7 +26,7 @@ export abstract class CartesianChartMixin extends Chart {
   }
   renderOriginLine() { renderOriginLine(this.chartS) }
   renderGrid() { renderGrid(this.chartS) }
-  addCartesianFeatures() {
+  renderCartesianComponents() {
     this.renderCartesianAxis()
     this.renderOriginLine()
     this.renderGrid()

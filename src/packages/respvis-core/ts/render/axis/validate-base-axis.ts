@@ -1,33 +1,16 @@
 import {Axis as D3Axis, AxisDomain} from 'd3';
 import {RenderArgs} from "../chart/renderer";
-import {RespValOptional} from "../../data/responsive-value/responsive-value";
-import {ScaledValues} from "../../data/scale/scaled-values-base";
+import {ScaledValuesSpatial} from "../../data/scale/scaled-values-base";
 import {KeyedAxis} from "respvis-parcoord/render/validate-keyed-axis";
-import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 import type {CartesianAxis} from "respvis-cartesian/render";
 import {Series} from "../series";
-import {
-  AxisLayoutHorizontal,
-  AxisLayoutsHorizontal,
-  AxisLayoutsVertical,
-  AxisLayoutVertical
-} from "../../constants/types";
 import {LayoutBreakpoints} from "../../data/layout-breakpoints";
-import {LayoutBreakpointsUserArgs, validateLayoutBreakpoints} from "../../data/layout-breakpoints/layout-breakpoints";
+import {LightWeightAxisUserArgs, validateLightWeightAxis} from "./validate-lightweight-axis";
 
-export type BaseAxisUserArgs = {
-  breakPoints?: LayoutBreakpointsUserArgs
-  title?: RespValOptional<string>
-  subTitle?: RespValOptional<string>
-  horizontalLayout?: AxisLayoutHorizontal
-  verticalLayout?: AxisLayoutVertical
-  configureAxis?: RespValOptional<ConfigureAxisFn>
-  tickOrientation?: RespValByValueOptional<number>
-  tickOrientationFlipped?: RespValByValueOptional<number>
-}
+export type BaseAxisUserArgs = LightWeightAxisUserArgs
 
 export type BaseAxisArgs = BaseAxisUserArgs & RenderArgs & {
-  scaledValues: ScaledValues
+  scaledValues: ScaledValuesSpatial
   series: Series
 }
 
@@ -44,22 +27,10 @@ export interface ConfigureAxisFn {
 }
 
 export function validateBaseAxis(args: BaseAxisArgs): BaseAxis {
-  const axis: Axis = {
+  const axis: BaseAxis = {
+    ...validateLightWeightAxis(args),
     originalAxis: this,
-    renderer: args.renderer,
-    series: args.series,
-    scaledValues: args.scaledValues,
-    title: args.title || '',
-    subTitle: args.subTitle || '',
-    configureAxis: args.configureAxis || (() => {
-    }),
-    breakPoints: validateLayoutBreakpoints(args.breakPoints),
-    horizontalLayout: args.horizontalLayout && AxisLayoutsHorizontal.includes(args.horizontalLayout) ?
-      args.horizontalLayout : 'bottom',
-    verticalLayout: args.verticalLayout && AxisLayoutsVertical.includes(args.verticalLayout) ?
-      args.verticalLayout : 'left',
-    tickOrientation: args.tickOrientation ?? 0,
-    tickOrientationFlipped: args.tickOrientationFlipped ?? 0,
+    series: args.series
   }
   axis.originalAxis = axis
   return axis

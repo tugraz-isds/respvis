@@ -2,11 +2,12 @@ import {
   alignScaledValuesLengths,
   AxisDomainRV,
   AxisType,
+  BaseAxis,
   combineKeys,
   elementFromSelection,
   getCurrentRespVal,
-  ScaledValues,
   ScaledValuesCategorical,
+  ScaledValuesSpatial,
   ScaledValuesUserArgs,
   Series,
   SeriesArgs,
@@ -35,8 +36,8 @@ export type CartesianSeriesArgs = SeriesArgs & CartesianSeriesUserArgs & {
 
 export abstract class CartesianSeries extends Series {
   originalSeries: CartesianSeries
-  x: ScaledValues
-  y: ScaledValues
+  x: ScaledValuesSpatial
+  y: ScaledValuesSpatial
   responsiveState: CartesianResponsiveState
   zoom?: Zoom
   renderer: CartesianRenderer
@@ -108,6 +109,11 @@ export abstract class CartesianSeries extends Series {
     const clone = this.clone()
     clone.x = this.x.cloneFiltered()
     clone.y = this.y.cloneFiltered()
+    if (this.color) {
+      const colorFiltered = this.color.axis.scaledValues.cloneFiltered()
+      const axis: BaseAxis = {...this.color.axis, scaledValues: colorFiltered}
+      clone.color = {...this.color, axis}
+    }
     return clone
   }
 

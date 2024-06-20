@@ -29,9 +29,11 @@ export function validateCartesianChart(args: CartesianChartArgs): CartesianChart
     series,
     x: validateCartesianAxis({...x, renderer, scaledValues: series.x, series}),
     y: validateCartesianAxis({...y, renderer, scaledValues: series.y, series}),
-    getAxes: function () { return [this.x, this.y] },
-    getSeries: function () { return [this.series] },
-    getMainSeries: function () { return this.series },
+    getAxes: function (this:CartesianChartData) {
+      return [this.x, this.y, ...(this.series.color ? [this.series.color.axis] : [])]
+    },
+    getSeries: function (this:CartesianChartData) { return [this.series] },
+    getMainSeries: function (this:CartesianChartData) { return this.series },
     legend: validateLegend({...args.legend, renderer, series}),
     ...validateChart(args),
   }

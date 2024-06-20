@@ -7,12 +7,20 @@ import {mergeKeys} from "../../utilities/dom/key";
 //TODO: Refactor away type dependency to respvis-point
 import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
 import {elementFromSelection} from "../../utilities";
-import {getCurrentRespVal, rectFromString} from "../../data";
+import {
+  getCurrentRespVal,
+  rectFromString,
+  ScaledValuesSequentialColor,
+  ScaledValuesSequentialColorUserArgs,
+  validateScaledValuesSequentialColor
+} from "../../data";
 import {Selection} from "d3";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
 
 export type SeriesUserArgs = {
   categories?: CategoriesUserArgs
+  //TODO: Refactor ColorContinuous
+  color?: ScaledValuesSequentialColorUserArgs
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGElement, any>
   flipped?: RespValByValueOptional<boolean>
 }
@@ -27,6 +35,7 @@ export abstract class Series implements RenderArgs {
   class = true
   originalSeries: Series
   categories?: ScaledValuesCategorical
+  color?: ScaledValuesSequentialColor
   key: SeriesKey
   keysActive: ActiveKeyMap
   renderer: Renderer
@@ -36,7 +45,7 @@ export abstract class Series implements RenderArgs {
 
   protected constructor(args: SeriesArgs | Series) {
     const {key} = args
-
+    this.renderer = args.renderer
     this.originalSeries = args.originalSeries ?? this
 
     //TODO: pass correct parameters here
@@ -45,6 +54,9 @@ export abstract class Series implements RenderArgs {
       ...args.categories, parentKey: key,
     }) : undefined
 
+    if ('class' in args) this.color = args.color
+    else this.color = args.color ? validateScaledValuesSequentialColor({...args.color, renderer: this.renderer, series: this}) : undefined
+
     this.key = args.key
 
     if ('class' in args) this.keysActive = {...args.keysActive}
@@ -52,7 +64,6 @@ export abstract class Series implements RenderArgs {
       this.keysActive = {}
       this.keysActive[key] = true
     }
-    this.renderer = args.renderer
 
     this.responsiveState = 'class' in args ? args.responsiveState : new ResponsiveState({
       series: this,

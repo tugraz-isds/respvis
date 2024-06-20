@@ -37,8 +37,7 @@ export class BarChart extends Chart {
     this.drawAreaS.selectAll('.series-label')
       .attr( 'layout-strategy', bars[0]?.labelData?.positionStrategy ?? null)
 
-    this.addCartesianFeatures()
-    this.addFilterListener()
+    this.renderCartesianComponents()
   }
 }
 

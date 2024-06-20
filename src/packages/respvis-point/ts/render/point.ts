@@ -5,20 +5,22 @@ export type PointArgs = Circle & VisualPrimitiveArgs & {
   xValue: any
   yValue: any
   radiusValue?: any
+  colorValue?: any
   label?: PointLabelData
 }
 
 export class Point implements Circle, VisualPrimitive {
   xValue: any
   yValue: any
+  center: Position;
   category?: string
   categoryFormatted?: string
+  radius: number;
   radiusValue?: any
+  color?: number | undefined;
+  colorValue?: any;
   styleClass: string
   key: string
-  center: Position;
-  radius: number;
-  color?: string | undefined;
   labelData?: PointLabelData
 
   constructor(args: PointArgs) {
@@ -32,6 +34,7 @@ export class Point implements Circle, VisualPrimitive {
     this.center = args.center
     this.radius = args.radius
     this.color = args.color
+    this.colorValue = args.colorValue
     this.labelData = args.label
   }
 

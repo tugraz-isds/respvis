@@ -8,7 +8,7 @@ import {addSeriesHighlighting, renderLabelSeries} from "respvis-core"
 
 export type ScatterplotSVGChartSelection = Selection<SVGSVGElement | SVGGElement, ScatterPlotData>
 
-export function renderScatterPlot(chartS: ScatterplotSVGChartSelection) {
+export function renderScatterPlotContent(chartS: ScatterplotSVGChartSelection) {
   const series = chartS.datum().series.cloneFiltered().cloneZoomed() as PointSeries
   const points = createPoints(series, false)
   const drawAreaS = chartS.datum().renderer.drawAreaS

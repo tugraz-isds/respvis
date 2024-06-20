@@ -10,15 +10,32 @@
     font-size: var(--font-size-legend-title);
     margin: 0 0.5em;
   }
-  .cross-state {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-  }
   .items {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+  }
+  &:has(.legend__color-scale) {
+    padding: 1rem;
+  }
+  .items + .legend__color-scale {
+    margin-top: 1rem;
+  }
+  .legend__color-scale {
+    display: grid;
+    grid-template: auto auto / auto;
+    grid-template-areas:
+      'color-scale'
+      'axis';
+    width: 100%;
+    .rect {
+      grid-area: color-scale;
+      height: calc(1.6 * var(--font-size-axis-title));
+      width: 100%;
+    }
+    .axis {
+      grid-area: axis;
+    }
   }
 }
 

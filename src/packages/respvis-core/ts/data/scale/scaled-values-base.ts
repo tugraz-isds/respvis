@@ -5,20 +5,22 @@ import {ZoomTransform} from "d3";
 import {ScaledValuesLinear} from "./scaled-values-linear";
 import {ScaledValuesDate} from "./scaled-values-date";
 import {ScaledValuesCategorical} from "./scaled-values-categorical";
+import {ScaledValuesSequential} from "./scaled-values-sequential";
 
 export type ScaledValuesBaseArgs = { parentKey: string }
 
 export type ScaledValuesLinearScale = ScaledValuesLinear | ScaledValuesDate
-export type ScaledValues = ScaledValuesLinearScale | ScaledValuesCategorical
+export type ScaledValuesSpatial = ScaledValuesLinearScale | ScaledValuesCategorical
+export type ScaledValues = ScaledValuesSpatial | ScaledValuesSequential
 
 export type ScaledValuesOrdered<T> = {
-  [K in ScaledValues["tag"]]: {
-    values: Extract<ScaledValues, { tag: K }>,
+  [K in ScaledValuesSpatial["tag"]]: {
+    values: Extract<ScaledValuesSpatial, { tag: K }>,
     wrapper: T
   }[]
 }
 
-export function orderScaledValues<T>(values: ScaledValues[], wrappers: T[]): ScaledValuesOrdered<T> {
+export function orderScaledValues<T>(values: ScaledValuesSpatial[], wrappers: T[]): ScaledValuesOrdered<T> {
   const valuesOrdered: ScaledValuesOrdered<T> = { linear: [], categorical: [], date: [] }
   values.forEach((val, index) => {
     //@ts-ignore
@@ -92,11 +94,11 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
   setKeyActiveIfDefined(key: string, value: boolean) {
   }
 
-  cloneFiltered(): ScaledValues {
+  cloneFiltered(): ScaledValuesSpatial {
     return this.clone()
   }
 
-  cloneZoomed(transform: ZoomTransform, axisType: AxisType): ScaledValues {
+  cloneZoomed(transform: ZoomTransform, axisType: AxisType): ScaledValuesSpatial {
     return this.clone()
   }
 
@@ -107,7 +109,7 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
     return clone
   }
 
-  abstract clone(): ScaledValues
+  abstract clone(): ScaledValuesSpatial
 }
 
 const percentRangeFormulaWithInverse = {

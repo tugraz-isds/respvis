@@ -1,11 +1,11 @@
 import {GeometryScaleHandler, RenderState} from "./geometry-scale-handler";
-import {Circle, ScaledValues, ScaledValuesLinear} from "respvis-core";
+import {Circle, ScaledValuesLinear, ScaledValuesSpatial} from "respvis-core";
 
-type RenderStatePoint = RenderState<ScaledValues, ScaledValues> & {
+type RenderStatePoint = RenderState<ScaledValuesSpatial, ScaledValuesSpatial> & {
   radii: ScaledValuesLinear | number
 }
 
-export class PointScaleHandler extends GeometryScaleHandler<ScaledValues, ScaledValues> {
+export class PointScaleHandler extends GeometryScaleHandler<ScaledValuesSpatial, ScaledValuesSpatial> {
   public radii: ScaledValuesLinear | number
   constructor(state: RenderStatePoint) {
     super(state);

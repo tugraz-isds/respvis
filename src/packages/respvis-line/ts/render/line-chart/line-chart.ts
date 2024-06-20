@@ -28,8 +28,7 @@ export class LineChart extends Chart {
     super.renderContent()
     this.renderSeriesChartComponents()
     renderLineChart(this.chartS)
-    this.addCartesianFeatures()
-    this.addFilterListener()
+    this.renderCartesianComponents()
   }
 }
 

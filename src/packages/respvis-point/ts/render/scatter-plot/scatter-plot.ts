@@ -1,5 +1,5 @@
 import {Selection} from 'd3';
-import {renderScatterPlot} from "./render-scatter-plot";
+import {renderScatterPlotContent} from "./render-scatter-plot-content";
 import {ScatterPlotData, ScatterPlotUserArgs, validateScatterPlot} from "./validate-scatter-plot";
 import {CartesianChartMixin} from "respvis-cartesian";
 import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
@@ -27,9 +27,8 @@ export class ScatterPlot extends Chart {
   protected override renderContent() {
     super.renderContent()
     this.renderSeriesChartComponents()
-    renderScatterPlot(this.chartS)
-    this.addCartesianFeatures()
-    this.addFilterListener()
+    renderScatterPlotContent(this.chartS)
+    this.renderCartesianComponents()
   }
 }
 

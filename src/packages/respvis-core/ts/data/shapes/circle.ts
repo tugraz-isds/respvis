@@ -5,7 +5,7 @@ import {Rect, rectCenter} from './rect';
 export interface Circle {
   center: Position;
   radius: number;
-  color?: string;
+  color?: number;
 }
 
 export function circleRound(circle: Circle, decimals: number = 0): Circle {

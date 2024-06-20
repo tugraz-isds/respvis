@@ -39,6 +39,7 @@ export function joinPointSeries(
     .attr('cx', (d) => d.center.x)
     .attr('cy', (d) => d.center.y)
     .attr('data-style', (d) => !d.color ? d.styleClass : null)
+    .attr('fill', (d) => d.color ? d.color : null)
     .attr('data-key', (d) => d.key)
     .call((s) => seriesSelection.dispatch('update', {detail: {selection: s}}));
 }

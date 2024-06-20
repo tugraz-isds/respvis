@@ -5,11 +5,11 @@ import {AxisKey} from "../../constants/types";
 import {ScaledValuesDate} from "./scaled-values-date";
 import {ScaledValuesLinear} from "./scaled-values-linear";
 import {ScaledValuesCategorical} from "./scaled-values-categorical";
-import {ScaledValues, ScaledValuesBase} from "./scaled-values-base";
+import {ScaledValuesBase, ScaledValuesSpatial} from "./scaled-values-base";
 
 export type AxisDomainRV = Extract<AxisDomain, number | string | Date>
 
-export function validateScaledValuesAxis(axisScaleArgs: ScaledValuesUserArgs<AxisDomainRV>, axisKey: AxisKey): ScaledValues {
+export function validateScaledValuesAxis(axisScaleArgs: ScaledValuesUserArgs<AxisDomainRV>, axisKey: AxisKey): ScaledValuesSpatial {
   const {values, scale} = axisScaleArgs
 
   if (values.length <= 0) throw new Error(ErrorMessages.responsiveValueHasNoValues)

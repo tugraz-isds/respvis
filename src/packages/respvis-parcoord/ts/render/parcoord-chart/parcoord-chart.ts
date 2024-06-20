@@ -27,7 +27,6 @@ export class ParcoordChart extends Chart {
     super.renderContent()
     this.renderSeriesChartComponents()
     renderParcoordChart(this.chartS!)
-    this.addFilterListener()
   }
 }
 

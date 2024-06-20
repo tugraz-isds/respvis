@@ -43,6 +43,7 @@ export abstract class SeriesChartMixin extends Chart {
     const chartSelection = this.chartS!
     const chartD = chartSelection.datum()
     chartD.getSeries().forEach(series => series.responsiveState.update())
+    this.addFilterListener()
     renderLegend(chartSelection, chartD.legend).call(addLegendHoverHighlighting)
     renderToolbar(this.windowS!, chartSelection.datum())
   }

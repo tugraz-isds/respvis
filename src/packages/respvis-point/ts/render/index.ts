@@ -1,5 +1,5 @@
 export * from './scatter-plot/scatter-plot'
-export * from './scatter-plot/render-scatter-plot'
+export * from './scatter-plot/render-scatter-plot-content'
 export * from "./scatter-plot/validate-scatter-plot"
 export * from './point-series/point-series'
 export * from "./point-series/render-points"
