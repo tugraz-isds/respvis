@@ -51,7 +51,7 @@ export const singleLineChartDateValues = {
 
 export const singleLineChartResponsiveTitle: LineChartUserArgs = {
   ...singleLineChartDateValues,
-  breakPoints: {
+  breakpoints: {
     width: {
       values: [20, 30, 50],
       unit: 'rem'
@@ -71,7 +71,7 @@ export const singleLineChartResponsiveAxisTicks: LineChartUserArgs = {
   ...singleLineChartResponsiveTitle,
   x: {
     ...singleLineChartResponsiveTitle.x,
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [15, 30, 50],
         unit: 'rem'
@@ -122,7 +122,7 @@ export const singleLineChartLabelsAndTooltips: LineChartUserArgs = {
   },
   // x: {
   //   ...singleLineChartResponsiveTitle.x,
-  //   breakPoints: {
+  //   breakpoints: {
   //     width: {
   //       values: [15, 30, 50],
   //       unit: 'rem'

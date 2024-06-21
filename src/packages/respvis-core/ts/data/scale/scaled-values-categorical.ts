@@ -3,17 +3,18 @@ import {ScaledValuesBase, ScaledValuesBaseArgs} from "./scaled-values-base";
 import {scaleBand, ScaleBand, ZoomTransform} from "d3";
 import {Categories, validateCategories} from "../categories";
 import {ActiveKeyMap, AxisType} from "../../constants/types";
-import {RespValOptional} from "../responsive-value/responsive-value";
+import {RespVal, RespValUserArgs, validateRespVal} from "../responsive-value/responsive-value";
 
 type ScaledValuesCategoricalArgs = ScaledValuesCategoricalUserArgs & ScaledValuesBaseArgs & {
-  title: RespValOptional<string>
+  title: RespValUserArgs<string>
 }
+
 export class ScaledValuesCategorical extends ScaledValuesBase<string> {
   tag = 'categorical' as const
   readonly values: string[]
   readonly scale: ScaleBand<string>
   readonly flippedScale: ScaleBand<string>
-  readonly title: RespValOptional<string>
+  readonly title: RespVal<string>
   readonly categories: Categories
   readonly keysActive: ActiveKeyMap
 
@@ -22,7 +23,7 @@ export class ScaledValuesCategorical extends ScaledValuesBase<string> {
     this.values = args.values
     this.scale = args.scale ?? scaleBand([0, 600]).domain(this.values).padding(0.1)
     this.flippedScale = this.scale.copy()
-    this.title = args.title
+    this.title = 'tag' in args ? args.title : validateRespVal(args.title)
 
     //TODO: this is no real alignment validation. Fix this!
     this.categories = 'categories' in args ? args.categories : validateCategories(this.values, {

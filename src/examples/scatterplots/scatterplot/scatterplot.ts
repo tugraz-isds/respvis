@@ -36,14 +36,14 @@ export function createScatterplot(selector: string) {
       },
       radii: {
         values: mileages,
-        scale: {
+        axis: {},
+        extrema: {
           dependentOn: 'width',
-          value: radiusScale,
-          mapping: {
-            0: s => s.range([3, 12]),
-            2: s => s.range([4, 16]),
-            3: s => s.range([5, 20])
-          }
+          breakpointValues: {
+            0: {minimum: 3, maximum: 12},
+            1: {minimum: 10, maximum: 20},
+            2: {minimum: 20, maximum: 40},
+          },
         },
       },
       markerTooltipGenerator: ((e, d: Point) => {
@@ -58,7 +58,7 @@ export function createScatterplot(selector: string) {
       },
       // labels: makes
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [40, 60],
         unit: 'rem'
@@ -66,7 +66,7 @@ export function createScatterplot(selector: string) {
     },
     title: {
       dependentOn: 'width',
-      mapping: {0 : 'Car Characteristics', 2: 'Car Characteristics from AutoScout24 in Germany'}
+      mapping: {0: 'Car Characteristics', 2: 'Car Characteristics from AutoScout24 in Germany'}
     },
     x: {
       title: {
@@ -74,7 +74,7 @@ export function createScatterplot(selector: string) {
         scope: 'self',
         mapping: {0: 'HP in [PS]', 1: 'Horse P. [PS]', 2: 'Horse Power in [PS]'}
       },
-      breakPoints: {
+      breakpoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'
@@ -87,7 +87,8 @@ export function createScatterplot(selector: string) {
       configureAxis: {
         dependentOn: 'width',
         scope: 'chart',
-        mapping: {0: (axis) => axis.tickFormat(formatWithDecimalZero(d3.format('.2s'))),
+        mapping: {
+          0: (axis) => axis.tickFormat(formatWithDecimalZero(d3.format('.2s'))),
           2: (axis) => axis.tickFormat(formatWithDecimalZero(d3.format(',')))
         }
       }

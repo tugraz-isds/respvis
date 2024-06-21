@@ -57,7 +57,7 @@ export function createChartSoldCarsGermany(selector) {
       //   return label + '1'
       // }
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [20, 30, 65],
         unit: 'rem'
@@ -72,7 +72,7 @@ export function createChartSoldCarsGermany(selector) {
         dependentOn: 'width',
         mapping: {0: 'Make', 1: 'Car Make'}
       },
-      breakPoints: {
+      breakpoints: {
         width: {
           values: [10, 40, 50],
           unit: 'rem'

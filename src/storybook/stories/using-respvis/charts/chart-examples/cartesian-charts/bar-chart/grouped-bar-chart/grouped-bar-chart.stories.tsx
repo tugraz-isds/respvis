@@ -69,7 +69,7 @@ export const Primary: Story = {
         offset: 6, positionStrategy: 'dynamic'
       }
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -84,7 +84,7 @@ export const Primary: Story = {
     // },
     x: {
       title: 'Country',
-      breakPoints: {
+      breakpoints: {
         width: axisBreakPointsWidth,
         height: axisBreakPointsHeight
       },
@@ -95,7 +95,7 @@ export const Primary: Story = {
     y: {
       title: 'Total Remuneration',
       subTitle: '[EU]',
-      breakPoints: {
+      breakpoints: {
         height: axisBreakPointsHeight,
         width: axisBreakPointsWidth
       },

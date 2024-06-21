@@ -14,12 +14,12 @@ export type ScatterPlotData = Omit<CartesianChartData, 'series'> & {
 
 export function validateScatterPlot(scatterArgs: ScatterPlotArgs): ScatterPlotData {
   const {renderer, x, y,
-    legend, breakPoints,
+    legend, breakpoints,
     title, subTitle
   } = scatterArgs
   const series = new PointSeries({...scatterArgs.series, key: 's-0', renderer})
   const cartesianData =
-    validateCartesianChart({renderer, series, x, y, legend, breakPoints, title, subTitle})
+    validateCartesianChart({renderer, series, x, y, legend, breakpoints, title, subTitle})
 
   return {
     ...cartesianData,

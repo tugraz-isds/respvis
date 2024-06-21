@@ -1,18 +1,19 @@
 import {Selection} from "d3";
-import {SVGHTMLElement} from "../../constants/types";
+import {SVGHTMLElementLegacy} from "../../constants/types";
 import {Window} from "./window";
-import {updateBreakpointStateForSelection} from "../../data";
 import {layouterRender} from "../layouter";
 import {renderTooltip} from "respvis-tooltip";
+import {elementFromSelection} from "../../utilities";
 
-export function renderWindow<D extends Window>(selection: Selection<SVGHTMLElement, D>) {
-  const data = selection.datum()
-  selection.datum(data)
+export function renderWindow<D extends Window>(windowS: Selection<SVGHTMLElementLegacy, D>) {
+  const data = windowS.datum()
+  windowS.datum(data)
     .classed('window-rv', true)
     .classed(`window-rv-${data.type}`, true)
-  updateBreakpointStateForSelection(selection)
 
-  const layouterS = selection
+  data.breakpoints.updateCSSVars(elementFromSelection(windowS))
+
+  const layouterS = windowS
     .selectAll<HTMLDivElement, any>('.layouter')
     .data([data])
     .join('div')
@@ -27,5 +28,5 @@ export function renderWindow<D extends Window>(selection: Selection<SVGHTMLEleme
     renderTooltip()
   }
 
-  return {chartWindowS: selection, layouterS, chartS}
+  return {chartWindowS: windowS, layouterS, chartS}
 }

@@ -1,8 +1,8 @@
-import {SVGHTMLElement} from "../../../../../constants/types";
+import {SVGHTMLElementLegacy} from "../../../../../constants/types";
 
 export type CSSVarsEntries = Record<string, string>
 
-export function getActiveCSSVars(element: SVGHTMLElement) {
+export function getActiveCSSVars(element: SVGHTMLElementLegacy) {
   const computedStyles = window.getComputedStyle(element);
   const cssVariables: CSSVarsEntries = {};
 

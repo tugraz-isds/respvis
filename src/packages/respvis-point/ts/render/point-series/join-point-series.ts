@@ -38,6 +38,7 @@ export function joinPointSeries(
     )
     .attr('cx', (d) => d.center.x)
     .attr('cy', (d) => d.center.y)
+    .attr('r', (d) => d.radius)
     .attr('data-style', (d) => !d.color ? d.styleClass : null)
     .attr('fill', (d) => d.color ? d.color : null)
     .attr('data-key', (d) => d.key)

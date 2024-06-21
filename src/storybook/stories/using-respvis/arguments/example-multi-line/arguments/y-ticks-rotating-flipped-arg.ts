@@ -2,7 +2,7 @@ import {BaseAxisUserArgs} from "respvis-core";
 
 export const y: BaseAxisUserArgs = {
   title: 'Consumption',
-  breakPoints: {
+  breakpoints: {
     width: {
       values: [10, 30, 50],
       unit: 'rem'

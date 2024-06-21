@@ -65,7 +65,7 @@ export const SimpleAxisThinning: Story = {
         }
       },
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'

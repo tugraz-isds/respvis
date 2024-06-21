@@ -1,5 +1,5 @@
 import {dispatch, Selection} from "d3";
-import {SVGHTMLElement} from "../../../constants/types";
+import {SVGHTMLElementLegacy} from "../../../constants/types";
 import {renderWindow, Window, WindowArgs, windowValidation} from "../../window";
 import {ChartData, ChartDataUserArgs, validateChart} from "./validate-chart";
 import {Renderer} from "../renderer";
@@ -21,7 +21,7 @@ export class Chart implements Renderer {
   protected resizeObserver?: ResizeObserver
   private immediateInteractionThrottle?: ThrottleScheduled<any, any>
   private standardInteractionThrottle?: ThrottleScheduled<any, any>
-  legendS?: Selection<SVGHTMLElement>
+  legendS?: Selection<SVGHTMLElementLegacy>
   private unmounted: boolean = false;
 
   constructor(windowSelection: Selection<HTMLDivElement>, args: ChartUserArgs) {

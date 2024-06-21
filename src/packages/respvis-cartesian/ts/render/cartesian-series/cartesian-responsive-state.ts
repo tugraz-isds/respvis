@@ -16,11 +16,11 @@ export class CartesianResponsiveState extends ResponsiveState {
     this._series = args.series
     this._originalSeries = args.originalSeries
   }
-  currentXVals() {
+  horizontalVals() {
     return this.currentlyFlipped ? this._series.y : this._series.x
   }
 
-  currentYVals() {
+  verticalVals() {
     return this.currentlyFlipped ? this._series.x : this._series.y
   }
   update() {

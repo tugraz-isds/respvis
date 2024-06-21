@@ -1,11 +1,11 @@
-import {RespValOptional} from "../responsive-value/responsive-value";
+import {RespVal, RespValUserArgs, validateRespVal} from "../responsive-value/responsive-value";
 import {arrayAlignLengths} from "../../utilities/array";
 import {CategoryKey} from "../../constants/types";
 import {getCategoryOrderArray, getCategoryOrderMap} from "./categories-util";
 
 export type CategoriesUserArgs = {
   values: string[],
-  title: RespValOptional<string>,
+  title: RespValUserArgs<string>,
   format?: ((value: string) => string) | Record<string, string>
 }
 
@@ -13,7 +13,7 @@ export type CategoriesArgs = CategoriesUserArgs & {
   parentKey: string
 }
 
-export type Categories = Omit<CategoriesArgs, 'format'> & {
+export type Categories = Omit<CategoriesArgs, 'format' | 'title'> & {
   categoryOrderMap: Record<string, number>
   categoryFormatMap: Record<string, string>
   categoryOrder: string[]
@@ -21,6 +21,7 @@ export type Categories = Omit<CategoriesArgs, 'format'> & {
   keyOrder: CategoryKey[]
   styleClassOrder: string[]
   styleClassValues: string[]
+  title: RespVal<string>
 }
 
 export function validateCategories(referenceData: unknown[], args: CategoriesArgs): Categories  {
@@ -45,7 +46,7 @@ export function validateCategories(referenceData: unknown[], args: CategoriesArg
 
 
   return {
-    title,
+    title: validateRespVal(title),
     values,
     parentKey,
     categoryOrderMap,

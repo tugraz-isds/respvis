@@ -5,14 +5,17 @@ import {Size} from "../../data/size";
 import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";
 import {mergeKeys} from "../../utilities/dom/key";
 //TODO: Refactor away type dependency to respvis-point
-import {RespValByValueOptional} from "../../data/responsive-value/responsive-value-value";
-import {elementFromSelection} from "../../utilities";
+import {
+  RespValByValueOptional,
+  RespValByValueUserArgs,
+  validateResponsiveValByValue
+} from "../../data/responsive-value/responsive-value-value";
 import {
   getCurrentRespVal,
   rectFromString,
-  ScaledValuesSequentialColor,
-  ScaledValuesSequentialColorUserArgs,
-  validateScaledValuesSequentialColor
+  SequentialColor,
+  SequentialColorUserArgs,
+  validateSequentialColor
 } from "../../data";
 import {Selection} from "d3";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
@@ -20,9 +23,9 @@ import {SeriesTooltipGenerator} from "respvis-tooltip";
 export type SeriesUserArgs = {
   categories?: CategoriesUserArgs
   //TODO: Refactor ColorContinuous
-  color?: ScaledValuesSequentialColorUserArgs
+  color?: SequentialColorUserArgs
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGElement, any>
-  flipped?: RespValByValueOptional<boolean>
+  flipped?: RespValByValueUserArgs<boolean>
 }
 
 export type SeriesArgs = SeriesUserArgs & RenderArgs & {
@@ -35,7 +38,7 @@ export abstract class Series implements RenderArgs {
   class = true
   originalSeries: Series
   categories?: ScaledValuesCategorical
-  color?: ScaledValuesSequentialColor
+  color?: SequentialColor
   key: SeriesKey
   keysActive: ActiveKeyMap
   renderer: Renderer
@@ -55,7 +58,7 @@ export abstract class Series implements RenderArgs {
     }) : undefined
 
     if ('class' in args) this.color = args.color
-    else this.color = args.color ? validateScaledValuesSequentialColor({...args.color, renderer: this.renderer, series: this}) : undefined
+    else this.color = args.color ? validateSequentialColor({...args.color, renderer: this.renderer, series: this}) : undefined
 
     this.key = args.key
 
@@ -103,7 +106,7 @@ export abstract class Series implements RenderArgs {
 export type ResponsiveStateArgs = {
   series: Series
   originalSeries: Series
-  flipped?: RespValByValueOptional<boolean>
+  flipped?: RespValByValueUserArgs<boolean>
   currentlyFlipped?: boolean
   drawAreaWidth?: number
   drawAreaHeight?: number
@@ -120,7 +123,7 @@ export class ResponsiveState {
   constructor(args: ResponsiveStateArgs) {
     this._series = args.series
     this._originalSeries = args.originalSeries
-    this._flipped = args.flipped ?? false
+    this._flipped = args.flipped ? validateResponsiveValByValue(args.flipped) : false
     this._currentlyFlipped = args.currentlyFlipped ?? false
     this._drawAreaWidth = args.drawAreaWidth ?? 0
     this._drawAreaHeight = args.drawAreaHeight ?? 0
@@ -160,8 +163,7 @@ export class ResponsiveState {
     const {width, height} = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
     this._drawAreaWidth = width
     this._drawAreaHeight = height
-    const chartElement = elementFromSelection(this._series.renderer.chartS)
-    this._currentlyFlipped = getCurrentRespVal(this._flipped, {chart: chartElement})
+    this._currentlyFlipped = getCurrentRespVal(this._flipped, {chart: this._series.renderer.chartS})
   }
 
   cloneProps(): ResponsiveStateArgs {

@@ -1,18 +1,12 @@
 import {Point} from "../point";
-import {defaultStyleClass, elementFromSelection, getRadiusScaledValues} from "respvis-core";
-import {PointScaleHandler} from "./geometry-scale-handler/point-scale-handler";
+import {defaultStyleClass} from "respvis-core";
 import {PointSeries} from "./point-series";
 
 export function createPoints<T extends boolean, R = T extends false ? Point[] : Point[][]>
-(seriesData: PointSeries, grouped: T): R {
-  const {key: seriesKey, keysActive, renderer, categories, responsiveState} = seriesData
-  const chartElement = elementFromSelection(renderer.chartS)
-  const flipped = responsiveState.currentlyFlipped
+(series: PointSeries, grouped: T): R {
+  const {key: seriesKey, keysActive, categories} = series
 
-  const {x, y, color} = seriesData
-  const drawAreaElement = elementFromSelection(renderer.drawAreaS)
-  const radii = getRadiusScaledValues(seriesData.radii, {chart: chartElement, self: drawAreaElement})
-  const geometryHandler = new PointScaleHandler({originalYValues: y, originalXValues: x, flipped, radii, renderer})
+  const {x, y, color} = series
 
   const optionalColorValues = color?.axis.scaledValues
 
@@ -26,7 +20,7 @@ export function createPoints<T extends boolean, R = T extends false ? Point[] : 
   for (let i = 0; i < x.values.length; i++) {
     if (categories && !categories.isValueActive(i)) continue
     if (!x.isValueActive(i) || !y.isValueActive(i) || !(optionalColorValues?.isValueActive(i) ?? true)) continue
-    const point = createPoint({geometryHandler, seriesData, i})
+    const point = createPoint(series, i)
     pointsSingleGroup.push(point)
     if (pointsGrouped && categories) {
       const category = categories.values[i]
@@ -38,26 +32,19 @@ export function createPoints<T extends boolean, R = T extends false ? Point[] : 
   return (grouped === false) ? pointsSingleGroup as R : pointsGrouped! as R
 }
 
-type CreatePointProps = {
-  geometryHandler: PointScaleHandler
-  i: number
-  seriesData: PointSeries
-}
-
-function createPoint(props: CreatePointProps) {
-  const {geometryHandler, i, seriesData} = props
-  const category = seriesData.categories?.values[i]
+function createPoint(series: PointSeries, i: number) {
+  const category = series.categories?.values[i]
   return new Point({
-    ...geometryHandler.getPointCircle(i),
-    xValue: geometryHandler.getCurrentXValues().values[i],
-    yValue: geometryHandler.getCurrentYValues().values[i],
-    color: seriesData.color?.scale(seriesData.color?.values[i]),
-    colorValue: seriesData.color?.values[i],
-    radiusValue: geometryHandler.getRadiusValue(i),
-    key: seriesData.getCombinedKey(i) + ` i-${i}`,
-    styleClass: seriesData.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
+    ...series.responsiveState.getPointCircle(i),
+    xValue: series.responsiveState.horizontalVals().values[i],
+    yValue: series.responsiveState.verticalVals().values[i],
+    color: series.color?.scale(series.color?.values[i]),
+    colorValue: series.color?.values[i],
+    radiusValue: series.responsiveState.getRadiusValue(i),
+    key: series.getCombinedKey(i) + ` i-${i}`,
+    styleClass: series.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
     category,
-    categoryFormatted: category ? seriesData.categories?.categories.categoryFormatMap[category] : undefined,
-    label: seriesData.labels?.getArgValid(i)
+    categoryFormatted: category ? series.categories?.categories.categoryFormatMap[category] : undefined,
+    label: series.labels?.getArgValid(i)
   })
 }

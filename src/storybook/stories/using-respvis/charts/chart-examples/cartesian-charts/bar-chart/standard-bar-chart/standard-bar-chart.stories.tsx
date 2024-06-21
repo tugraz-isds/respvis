@@ -62,7 +62,7 @@ export const Primary: Story = {
       },
       labels: { values: populations, offset: 6}
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -74,7 +74,7 @@ export const Primary: Story = {
     },
     x: {
       title: 'Cities',
-      breakPoints: {
+      breakpoints: {
         width: axisBreakPointsWidth,
         height: axisBreakPointsHeight
       },
@@ -84,7 +84,7 @@ export const Primary: Story = {
     },
     y: {
       title: 'Population',
-      breakPoints: {
+      breakpoints: {
         height: axisBreakPointsHeight,
         width: axisBreakPointsWidth
       },

@@ -1,5 +1,5 @@
 import {Selection} from "d3";
-import {SVGHTMLElement} from "../../constants/types";
+import {SVGHTMLElementLegacy} from "../../constants/types";
 import {AxisSelection} from "./render-axis";
 
 export function renderAxisTicksPreGeneration(axisS: AxisSelection) {
@@ -15,7 +15,7 @@ export function renderAxisTicksPreGeneration(axisS: AxisSelection) {
     .attr('data-ignore-layout-children', true)
 }
 
-export function modifyAxisTicksPostGeneration(ticksS: Selection<SVGHTMLElement>) {
+export function modifyAxisTicksPostGeneration(ticksS: Selection<SVGHTMLElementLegacy>) {
   ticksS
     .attr('fill', null)
     .attr('font-family', null)

@@ -1,1 +1,1 @@
-export type {LayoutBreakpoints} from "./layout-breakpoints";
+export {LayoutBreakpoints} from "./layout-breakpoints";

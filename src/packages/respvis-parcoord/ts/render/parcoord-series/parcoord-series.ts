@@ -4,7 +4,6 @@ import {
   AxisLayout,
   BaseAxisUserArgs,
   combineKeys,
-  elementFromSelection,
   ErrorMessages,
   getCurrentRespVal,
   ResponsiveState,
@@ -121,7 +120,7 @@ export class ParcoordSeries extends Series {
 
   getScaledValuesAtScreenPosition(x: number, y: number) {
     const activeSeries = this.cloneFiltered()
-    const chartE = elementFromSelection(activeSeries.axes[0].renderer.chartS)
+    const chartS = activeSeries.axes[0].renderer.chartS
     const flipped = this.responsiveState.currentlyFlipped
     const axisPosition = flipped ? y : x
     const dimensionPosition = flipped ? x : y
@@ -138,7 +137,7 @@ export class ParcoordSeries extends Series {
 
     const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (val => val)
     const format = axis.d3Axis?.tickFormat() ?? scaleFormat
-    const axisName = getCurrentRespVal(axis.title, {chart: chartE})
+    const axisName = getCurrentRespVal(axis.title, {chart: chartS})
     const dimensionValue = format(axis.scaledValues.atScreenPosition(dimensionPosition), 0)
     return {
       horizontal: flipped ? dimensionValue : axisName,

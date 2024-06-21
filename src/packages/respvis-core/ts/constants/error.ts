@@ -1,4 +1,7 @@
 export const ErrorMessages = {
+  defaultError: 'An internal error occurred in RespVis!',
+  invalidResponsiveValue: 'You passed an invalid responisve value object!',
+  invalidExtremaCombination: 'You passed an invalid combination of minimum and maximum values!',
   elementNotExisting: 'An accessed element did not exist!',
   responsiveValueHasNoValues: 'A responsive value was not provided with any value!',
   invalidScaledValuesCombination: 'You passed an invalid scale for the corresponding domain of values!',

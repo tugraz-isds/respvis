@@ -10,7 +10,7 @@ export function createGroupedBar(props: CreateGroupedBarProps) {
   const {i, series} = props
 
   const flipped = series.responsiveState.currentlyFlipped
-  const categoryGroupValues = flipped ? series.responsiveState.currentYVals() : series.responsiveState.currentXVals()
+  const categoryGroupValues = flipped ? series.responsiveState.verticalVals() : series.responsiveState.horizontalVals()
   const wholeBarRect = series.responsiveState.getBarRect(i)
 
   const innerScaleDomain = getActiveKeys(series.categories.keysActive)

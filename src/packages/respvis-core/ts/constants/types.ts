@@ -1,4 +1,5 @@
-export type SVGHTMLElement = SVGGElement | HTMLElement
+export type SVGHTMLElement = SVGElement | HTMLElement
+export type SVGHTMLElementLegacy = SVGGElement | HTMLElement
 export type SVGGroupingElement = SVGSVGElement | SVGGElement | SVGClipPathElement
 export type SVGHTMLGroupingElement = SVGGroupingElement | HTMLElement
 
@@ -49,7 +50,7 @@ export type Polarity = 'positive' | 'negative'
 
 
 export type KeyType = 'series' | 'axis' | 'category' | 'individual'
-export type AxisKey = `a-${number}` | `ac-${number}`
+export type AxisKey = `a-${number}` | `ac-${number}` | `ar-${number}`
 export type SeriesKey = `s-${number}`
 export type CategoryKey = `c-${number}`
 export type IndividualKey = `i-${number}`

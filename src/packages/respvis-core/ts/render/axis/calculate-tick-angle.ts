@@ -1,7 +1,4 @@
-import {
-  getResponsiveValueInformation,
-  isResponsiveValueByValue,
-} from "../../data/responsive-value/responsive-value-value";
+import {RespValByValue} from "../../data/responsive-value/responsive-value-value";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {Breakpoints, getActiveBreakpoints} from "../../data/breakpoints/breakpoints";
 import {cssLengthInPx} from "../../utilities/dom/units";
@@ -28,30 +25,32 @@ export function calculateTickAngles(axisS: AxisSelection) {
 }
 
 function calculateTickAngleOrInterpolationData(axisS: AxisSelection) {
-  const {renderer, breakPoints, ...restAxisD} = axisS.datum()
+  const {renderer, breakpoints: breakpointsAxis, ...restAxisD} = axisS.datum()
   const isFlipped = restAxisD.series.responsiveState.currentlyFlipped
   const tickOrientation = isFlipped ? restAxisD.tickOrientationFlipped : restAxisD.tickOrientation
 
-  if (!isResponsiveValueByValue(tickOrientation)) {
+  if (!(tickOrientation instanceof RespValByValue)) {
     return tickOrientation
   }
 
   const chartElement = elementFromSelection(renderer.chartS)
-  const axisDomainElement = elementFromSelection(axisS.select<SVGGroupingElement>('.domain'))
-  const scopes = {chart: chartElement, self: axisDomainElement}
+  const axisDomainS = axisS
+    .select<SVGGroupingElement>('.domain')
+    .datum(axisS.datum())
+  const scopes = {chart: renderer.chartS, self: axisDomainS}
 
   const {
     element, layout, valueAtPreLayoutIndex,
     valueAtPostLayoutIndex, valueAtLayoutIndex,
     postLayoutIndex, preLayoutIndex
-  } = getResponsiveValueInformation(tickOrientation, scopes)
+  } = tickOrientation.getResponsiveValueInformation(scopes)
 
   if (valueAtLayoutIndex !== null) return valueAtLayoutIndex
   if (valueAtPreLayoutIndex === null || preLayoutIndex === null) return 0
   if (valueAtPostLayoutIndex === null || postLayoutIndex === null) return valueAtPreLayoutIndex
 
   const breakpoints = element === chartElement ?
-    renderer.windowS.datum().breakpoints[layout] : breakPoints[layout]
+    renderer.windowS.datum().breakpoints[layout] : breakpointsAxis[layout]
   
   return {
     preOrientation: valueAtPreLayoutIndex,

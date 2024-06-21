@@ -1,6 +1,5 @@
 import {range, select, Selection} from "d3";
-import {elementFromSelection} from "../../utilities/d3/util";
-import {SVGHTMLElement} from "../../constants/types";
+import {SVGHTMLElementLegacy} from "../../constants/types";
 import {Legend} from "./validate-legend";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {renderLegendItems} from "./legend-item/render-legend-items";
@@ -8,7 +7,7 @@ import {uniqueId} from "../../utilities";
 import {Axis, renderAxisLayout} from "../axis";
 import {rectFromString} from "../../data";
 
-export type LegendSelection = Selection<SVGHTMLElement, Legend>
+export type LegendSelection = Selection<SVGHTMLElementLegacy, Legend>
 
 export function renderLegend(parentS: Selection, legend: Legend): LegendSelection {
   const legendS = parentS
@@ -19,7 +18,7 @@ export function renderLegend(parentS: Selection, legend: Legend): LegendSelectio
   legend.renderer.legendS = legendS
 
   legendS.each((legendD, i, g) => {
-    const legendS = select<SVGHTMLElement, Legend>(g[i])
+    const legendS = select<SVGHTMLElementLegacy, Legend>(g[i])
     renderTitle(legendS)
     renderLegendItems(legendS)
     renderColorScale(legendS)
@@ -28,16 +27,15 @@ export function renderLegend(parentS: Selection, legend: Legend): LegendSelectio
   return legendS
 }
 
-function renderTitle(selection: LegendSelection) {
-  const legendD = selection.datum()
-  const chartElement = elementFromSelection(legendD.renderer.chartS)
-  const legendElement = elementFromSelection(selection) as SVGGElement
-  selection
+function renderTitle(legendS: LegendSelection) {
+  const {renderer, title} = legendS.datum()
+  //TODO: add self to mapping when legend has breakpoints
+  legendS
     .selectChildren('.title')
     .data([null])
     .join('text')
     .classed('title', true)
-    .text(getCurrentRespVal(legendD.title, {chart: chartElement, self: legendElement}))
+    .text(getCurrentRespVal(title, {chart: renderer.chartS}))
 }
 
 function renderColorScale(legendS: LegendSelection) {

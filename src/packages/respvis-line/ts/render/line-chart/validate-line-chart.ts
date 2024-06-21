@@ -14,12 +14,12 @@ export type LineChartData = CartesianChartData & {
 
 export function validateLineChart(args: LineChartArgs): LineChartData {
   const {renderer, x, y,
-    legend, breakPoints,
+    legend, breakpoints,
     title, subTitle
   } = args
   const series = new LineSeries({...args.series, key: 's-0', renderer})
   const cartesianData =
-    validateCartesianChart({renderer, series, x, y, legend, breakPoints, title, subTitle})
+    validateCartesianChart({renderer, series, x, y, legend, breakpoints, title, subTitle})
 
   return {
     ...cartesianData,

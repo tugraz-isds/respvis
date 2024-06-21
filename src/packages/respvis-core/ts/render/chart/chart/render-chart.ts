@@ -7,12 +7,11 @@ import {rectFromString} from "../../../data/shapes/rect";
 import {AxisOrientation, isCSSBreakpointLengthValue, SVGGroupingElement} from "../../../constants/types";
 import {uniqueId} from "../../../utilities/unique";
 import {cssLengthInPx} from "../../../utilities/dom/units";
-import {updateBreakpointStateForSelection} from "../../../data";
 
 export type ChartBaseSelection<T extends SVGGroupingElement, D extends ChartData> = Selection<T, D>;
 
 export function renderChart<T extends SVGGroupingElement, D extends ChartData>(chartS: Selection<T, D>) {
-  updateBreakpointStateForSelection(chartS)
+  chartS.datum().breakpoints.updateCSSVars(elementFromSelection(chartS))
 
   chartS.classed('chart', true)
     .classed('layout-container', true)
@@ -94,7 +93,6 @@ function renderPaddingContainers<T extends SVGGroupingElement, D extends ChartDa
     .classed(`padding-container--${orientation}`, true)
 }
 
-
 function renderHeader(selection: Selection<SVGGroupingElement, ChartData>) {
   return selection
     .selectAll<SVGSVGElement, ChartData>('.header')
@@ -105,10 +103,9 @@ function renderHeader(selection: Selection<SVGGroupingElement, ChartData>) {
 
 function renderTitle<T extends SVGGroupingElement, D extends ChartData>
 (header: Selection<any, D>, chart: Selection<T, D>) {
-  const chartElement = elementFromSelection(chart)
   return header
     .selectAll('.title')
-    .data((d) => [getCurrentRespVal(d.title, {chart: chartElement})])
+    .data((d) => [getCurrentRespVal(d.title, {chart})])
     .join('g')
     .classed('title', true)
     .selectAll('text')
@@ -119,10 +116,9 @@ function renderTitle<T extends SVGGroupingElement, D extends ChartData>
 
 function renderSubtitle<T extends SVGGroupingElement, D extends ChartData>
 (header: ChartBaseSelection<any, D>, chart: ChartBaseSelection<T, D>) {
-  const chartElement = elementFromSelection(chart)
   return header
     .selectAll('.subtitle')
-    .data((d) => [getCurrentRespVal(d.subTitle, {chart: chartElement})])
+    .data((d) => [getCurrentRespVal(d.subTitle, {chart})])
     .join('g')
     .classed('subtitle', true)
     .selectAll('text')

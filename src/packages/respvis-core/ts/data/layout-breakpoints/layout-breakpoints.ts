@@ -1,13 +1,27 @@
-import {LengthDimension} from "../../constants";
-import {Breakpoints, BreakpointsUserArgs, validateBreakpoints} from "../breakpoints/breakpoints";
+import {LengthDimension, SVGHTMLElement} from "../../constants";
+import {Breakpoints, BreakpointsUserArgs} from "../breakpoints/breakpoints";
+import {Selection} from "d3";
 
 export type LayoutBreakpointsUserArgs = Partial<Record<LengthDimension, BreakpointsUserArgs>>
 export type LayoutBreakpointsArgs = LayoutBreakpointsUserArgs
-export type LayoutBreakpoints = Record<LengthDimension, Breakpoints>
 
-export function validateLayoutBreakpoints(args?: LayoutBreakpointsArgs) {
-  return {
-    width: validateBreakpoints(args?.width),
-    height: validateBreakpoints(args?.height)
+export class LayoutBreakpoints {
+  width: Breakpoints
+  height: Breakpoints
+  constructor(args?: LayoutBreakpointsArgs) {
+    this.width = new Breakpoints(args?.width)
+    this.height = new Breakpoints(args?.height ? {...args.height, dimension: 'height'} : {
+      values: [], unit: 'rem', dimension: 'height'
+    })
+  }
+  updateCSSVars(element: SVGHTMLElement) {
+    this.width.updateLayoutCSSVars(element)
+    this.height.updateLayoutCSSVars(element)
   }
 }
+
+
+export type WithLayoutBreakpoints = {
+  breakpoints: LayoutBreakpoints
+}
+export type LayoutBreakpointsSelection = Selection<SVGHTMLElement, WithLayoutBreakpoints>

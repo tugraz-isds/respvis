@@ -42,7 +42,7 @@ export async function createBarCart(selector: string) {
       },
       labels: { values: data.populations, offset: 6}
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -54,7 +54,7 @@ export async function createBarCart(selector: string) {
     },
     x: {
       title: 'Cities',
-      breakPoints: {
+      breakpoints: {
         width: axisBoundsWidth,
         height: axisBoundsHeight
       },
@@ -63,7 +63,7 @@ export async function createBarCart(selector: string) {
     },
     y: {
       title: 'Population',
-      breakPoints: {
+      breakpoints: {
         height: axisBoundsHeight,
         width: axisBoundsWidth
       },

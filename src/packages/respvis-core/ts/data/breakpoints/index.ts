@@ -1,3 +1,1 @@
-export {updateBreakpointState, updateBreakpointStateForSelection} from "../layout-breakpoints/update-layout-breakpoints";
-export {getLayoutWidths, getLayoutWidth} from "./layout-width";
-export type {LayoutWidths} from "./layout-width"
+export {getLayoutWidthIndicesFromCSS, getLayoutWidthIndexFromCSS} from "../layout-breakpoints/layout-width";

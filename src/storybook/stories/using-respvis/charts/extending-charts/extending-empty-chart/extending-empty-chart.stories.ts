@@ -28,7 +28,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<AxisChartUserArgs>
 
-const breakPoints: LayoutBreakpoints = {
+const breakpoints: LayoutBreakpoints = {
   width: {
     values: [20, 40, 60],
     unit: "rem"
@@ -82,7 +82,7 @@ const rightToBottomAxis: AxisChartAxisUserArgs = {
 export const Primary: Story = {
   args: {
     title: 'Axis Chart',
-    breakPoints,
+    breakpoints: breakpoints,
     axes: [
       bottomToRightAxis,
       leftToTopAxis,
@@ -95,7 +95,7 @@ export const Primary: Story = {
 export const Flipping: Story = {
   args: {
     title: 'Axis Chart',
-    breakPoints,
+    breakpoints: breakpoints,
     axes: [
       bottomToRightAxis,
       leftToTopAxis,

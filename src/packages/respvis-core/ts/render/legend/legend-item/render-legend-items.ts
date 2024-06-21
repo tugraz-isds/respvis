@@ -2,14 +2,14 @@ import {LegendItem} from "./legend-item";
 import {select} from "d3";
 import {rectFromString} from "../../../data/shapes/rect";
 import {LegendSelection} from "../render-legend";
-import {SVGHTMLElement} from "../../../constants/types";
+import {SVGHTMLElementLegacy} from "../../../constants/types";
 import {Legend} from "../validate-legend";
 import {renderBgSVGOnlyBBox} from "../../bg-svg-only";
 import {Size} from "../../../data/size";
 import {createLegendItems} from "./create-legend-items";
 
 export function renderLegendItems(legendS: LegendSelection) {
-  const itemS = legendS.selectAll<SVGHTMLElement, Legend>('.items')
+  const itemS = legendS.selectAll<SVGHTMLElementLegacy, Legend>('.items')
     .data([null])
     .join('g')
     .classed('items', true)

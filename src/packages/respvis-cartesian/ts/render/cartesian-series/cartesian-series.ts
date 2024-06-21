@@ -4,7 +4,6 @@ import {
   AxisType,
   BaseAxis,
   combineKeys,
-  elementFromSelection,
   getCurrentRespVal,
   ScaledValuesCategorical,
   ScaledValuesSpatial,
@@ -12,8 +11,7 @@ import {
   Series,
   SeriesArgs,
   SeriesUserArgs,
-  SVGGroupingElement,
-  SVGHTMLElement,
+  SVGHTMLElementLegacy,
   validateScaledValuesAxis,
   validateZoom,
   Zoom,
@@ -72,14 +70,14 @@ export abstract class CartesianSeries extends Series {
   }
 
   getScaledValuesAtScreenPosition(x: number, y: number) {
-    function getAxisData(axisS: Selection<SVGHTMLElement, CartesianAxis>) {
+    function getAxisData(axisS: Selection<SVGHTMLElementLegacy, CartesianAxis>) {
       const axis = axisS.datum()
       const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (h => h)
       return {
         format: axis.d3Axis?.tickFormat() ?? scaleFormat,
         title: getCurrentRespVal(axis.title, {
-          self: elementFromSelection(axisS) as SVGGroupingElement,
-          chart: elementFromSelection(axis.renderer.chartS)
+          self: axisS,
+          chart: axis.renderer.chartS
         })
       }
     }

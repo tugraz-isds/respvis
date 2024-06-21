@@ -7,7 +7,7 @@ import {
   ChartDataUserArgs,
   Orientation,
   Orientations,
-  RespValByValueOptional,
+  RespValByValueUserArgs,
   ScaledValuesUserArgs,
   validateBaseAxis,
   validateChart,
@@ -26,7 +26,7 @@ type AxisChartAxisValid = BaseAxis & {
 
 export type AxisChartUserArgs = ChartDataUserArgs & {
   axes: AxisChartAxisUserArgs[]
-  flipped?: RespValByValueOptional<boolean>
+  flipped?: RespValByValueUserArgs<boolean>
 }
 
 type AxisChartArgs = ChartDataArgs & AxisChartUserArgs

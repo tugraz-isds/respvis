@@ -1,12 +1,12 @@
 import {AxisSelection} from "./render-axis";
 import {select, Selection} from "d3";
-import {SVGHTMLElement} from "../../constants/types";
+import {SVGHTMLElementLegacy} from "../../constants/types";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {cssLengthInPx} from "../../utilities/dom/units";
 import {calculateTickAngles} from "./calculate-tick-angle";
 import {normalizeAngle} from "../../utilities/angle";
 
-export function configureTickAngles(axisS: AxisSelection, ticksS: Selection<SVGHTMLElement>) {
+export function configureTickAngles(axisS: AxisSelection, ticksS: Selection<SVGHTMLElementLegacy>) {
   const angle = calculateTickAngles(axisS)
   ticksS.selectAll<Element, any>('.tick').each((d, i, g) => {
     configureTickAngle(select(g[i]), angle, axisS)

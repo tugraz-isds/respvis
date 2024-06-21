@@ -23,8 +23,8 @@ export class BarBaseResponsiveState extends CartesianResponsiveState {
 
   getBarRect(i: number) {
     return this.currentlyFlipped ?
-      this.getBarRectHorizontal(i, this.currentXVals() as ScaledValuesLinear, this.currentYVals() as ScaledValuesCategorical) :
-      this.getBarRectVertical(i, this.currentYVals() as ScaledValuesLinear, this.currentXVals() as ScaledValuesCategorical)
+      this.getBarRectHorizontal(i, this.horizontalVals() as ScaledValuesLinear, this.verticalVals() as ScaledValuesCategorical) :
+      this.getBarRectVertical(i, this.verticalVals() as ScaledValuesLinear, this.horizontalVals() as ScaledValuesCategorical)
   }
 
   getBarRectVertical(i: number, linearVals: ScaledValuesLinear, categoryVals: ScaledValuesCategorical) {

@@ -4,8 +4,7 @@ import {ScaledValuesSpatial} from "../../data/scale/scaled-values-base";
 import {KeyedAxis} from "respvis-parcoord/render/validate-keyed-axis";
 import type {CartesianAxis} from "respvis-cartesian/render";
 import {Series} from "../series";
-import {LayoutBreakpoints} from "../../data/layout-breakpoints";
-import {LightWeightAxisUserArgs, validateLightWeightAxis} from "./validate-lightweight-axis";
+import {LightWeightAxis, LightWeightAxisUserArgs, validateLightWeightAxis} from "./validate-lightweight-axis";
 
 export type BaseAxisUserArgs = LightWeightAxisUserArgs
 
@@ -14,9 +13,9 @@ export type BaseAxisArgs = BaseAxisUserArgs & RenderArgs & {
   series: Series
 }
 
-export type BaseAxis = Required<Omit<BaseAxisArgs, 'breakPoints'>> & {
-  breakPoints: LayoutBreakpoints,
+export type BaseAxis = LightWeightAxis & {
   originalAxis: BaseAxis,
+  series: Series
   d3Axis?: D3Axis<any> //axis available after first render
 }
 

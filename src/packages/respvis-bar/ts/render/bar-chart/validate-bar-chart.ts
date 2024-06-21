@@ -17,7 +17,7 @@ export type BarChartData = CartesianChartData & {
 
 export function validateBarChart(args: BarChartArgs): BarChartData {
   const {renderer, x, y,
-    legend, breakPoints,
+    legend, breakpoints,
     title, subTitle
   } = args
   const series = args.series.type === 'stacked' ?
@@ -25,7 +25,7 @@ export function validateBarChart(args: BarChartArgs): BarChartData {
     new BarGroupedSeries({...args.series, key: 's-0', renderer}) :
     new BarStandardSeries({...args.series, key: 's-0', renderer})
   const cartesianData =
-    validateCartesianChart({renderer, series, x, y, legend, breakPoints, title, subTitle})
+    validateCartesianChart({renderer, series, x, y, legend, breakpoints, title, subTitle})
   return {
     ...cartesianData,
     series

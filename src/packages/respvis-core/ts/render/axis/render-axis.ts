@@ -10,7 +10,6 @@ import {
   Transition
 } from "d3";
 import {elementFromSelection} from "../../utilities/d3/util";
-import {updateBreakpointState} from "../../data";
 import {Axis} from "./validate-base-axis";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {modifyAxisTicksPostGeneration, renderAxisTicksPreGeneration} from "./render-axis-ticks";
@@ -58,7 +57,7 @@ export function renderAxisSequence(axisS: KeyedAxisSelection, orientation: Orien
 function renderAxis(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
   const axisD = axisS.datum()
   const axisElement = elementFromSelection(axisS)
-  const chartElement = elementFromSelection(axisD.renderer.chartS)
+  const chartS = axisD.renderer.chartS
 
   const titleWrapperS = axisS
     .selectAll('.title-wrapper')
@@ -74,7 +73,7 @@ function renderAxis(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
     .selectAll('text')
     .data([null])
     .join('text')
-    .text(getCurrentRespVal(axisD.title, {chart: chartElement, self: axisElement}))
+    .text(getCurrentRespVal(axisD.title, {chart: chartS, self: axisS}))
 
   titleWrapperS.selectAll('.subtitle')
     .data(axisD.subTitle ? [null] : [])
@@ -83,30 +82,33 @@ function renderAxis(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
     .selectAll('text')
     .data([null])
     .join('text')
-    .text(getCurrentRespVal(axisD.subTitle, {chart: chartElement, self: axisElement}))
+    .text(getCurrentRespVal(axisD.subTitle, {chart: chartS, self: axisS}))
 
   const ticksS = renderAxisTicksPreGeneration(axisS)
   a(ticksS);
   modifyAxisTicksPostGeneration(ticksS)
-  updateBreakpointState(axisElement, axisD.breakPoints)
+  axisD.breakpoints.updateCSSVars(axisElement)
   configureTickAngles(axisS, ticksS)
 }
 
 function d3Axis(
   axisGenerator: (scale: AxisScale<AxisDomain>) => D3Axis<AxisDomain>,
-  selection: AxisSelection
+  axisS: AxisSelection
 ): D3Axis<AxisDomain> {
-  const {scaledValues, breakPoints, configureAxis, renderer} = selection.datum()
-  const axisElement = elementFromSelection(selection)
-  updateBreakpointState(axisElement, breakPoints)
-  const chartElement = elementFromSelection(renderer.chartS)
-  const configureAxisValid = getCurrentRespVal(configureAxis, {chart: chartElement, self: axisElement})
+  const {scaledValues, breakpoints, configureAxis, renderer} = axisS.datum()
+  const axisElement = elementFromSelection(axisS)
+
+  breakpoints.updateCSSVars(axisElement)
+
+  const configureAxisValid = getCurrentRespVal(configureAxis,
+    {chart: renderer.chartS, self: axisS
+    })
 
   const filteredScaledValues = getFilteredScaledValues(scaledValues)
 
   const axis = axisGenerator(filteredScaledValues.scale)
   configureAxisValid(axis)
-  selection.datum().d3Axis = axis
-  selection.datum().originalAxis.d3Axis = axis
+  axisS.datum().d3Axis = axis
+  axisS.datum().originalAxis.d3Axis = axis
   return axis;
 }
