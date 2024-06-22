@@ -1,6 +1,6 @@
 import {CartesianResponsiveState, CartesianResponsiveStateArgs} from "respvis-cartesian";
 import {PointSeries} from "respvis-point";
-import {BubbleRadius, Circle, elementFromSelection, ErrorMessages} from "respvis-core";
+import {BubbleRadius, Circle, elementFromSelection} from "respvis-core";
 import {RespValInterpolated} from "respvis-core/data/responsive-value/responsive-value-interpolated";
 
 type PointResponsiveStateArgs = CartesianResponsiveStateArgs & {
@@ -20,6 +20,7 @@ export class PointResponsiveState extends CartesianResponsiveState {
 
   update() {
     super.update();
+
     const radii = this._originalSeries.radii
     const chart = this._series.renderer.chartS
 
@@ -32,45 +33,26 @@ export class PointResponsiveState extends CartesianResponsiveState {
         radii.scale.range([radii.extrema.minimum, radii.extrema.maximum]); return
       }
 
-      const {
-        preBreakpointIndex,
-        preBreakpointValue,
-        preBreakPointLength,
-        postBreakpointIndex,
-        postBreakpointValue,
-        postBreakPointLength } = radii.extrema.getRespValInterpolated({chart})
+      let {preBreakpoint, postBreakpoint,
+      firstBreakpoint, lastBreakpoint} =
+        radii.extrema.getRespValInterpolated({chart})
 
-      if (preBreakpointValue === null && postBreakpointValue !== null) {
-        radii.scale.range([postBreakpointValue.minimum, postBreakpointValue.maximum]); return
-      } else if (preBreakpointValue !== null && postBreakpointValue === null) {
-        radii.scale.range([preBreakpointValue.minimum, preBreakpointValue.maximum]); return
+      if (postBreakpoint === null) {
+        radii.scale.range([lastBreakpoint.value.minimum, lastBreakpoint.value.maximum]); return
+      }
+      if (preBreakpoint === null) {
+        preBreakpoint = firstBreakpoint
+        preBreakpoint.length = 0
       }
 
-      if (preBreakpointValue === null || postBreakpointValue === null
-      || preBreakpointIndex === null || postBreakpointIndex === null) throw new Error(ErrorMessages.defaultError)
-
       const elementLength = elementFromSelection(chart).getBoundingClientRect()[radii.extrema.dependentOn]
+      const breakpointDiff = postBreakpoint.length - preBreakpoint.length
+      const currentDiff = elementLength - preBreakpoint.length
+      const minimumDiff = postBreakpoint.value.minimum - preBreakpoint.value.minimum
+      const maximumDiff = postBreakpoint.value.maximum - preBreakpoint.value.maximum
 
-
-      const breakpointDiff = postBreakPointLength - preBreakPointLength
-      const currentDiff = elementLength - preBreakpointIndex
-      const minimumDiff = postBreakpointValue.minimum - preBreakpointValue.minimum
-      const maximumDiff = postBreakpointValue.maximum - preBreakpointValue.maximum
-
-      const minimum = preBreakpointValue.minimum + currentDiff / breakpointDiff * minimumDiff
-      const maximum = preBreakpointValue.maximum + currentDiff / breakpointDiff * maximumDiff
-
-      // console.log('START')
-      // console.log("preBreakpointIndex", preBreakpointIndex)
-      // console.log("preBreakPointLength", preBreakPointLength)
-      // console.log("preBreakpointValue", preBreakpointValue)
-      // console.log("postBreakpointIndex", postBreakpointIndex)
-      // console.log("postBreakPointLength", postBreakPointLength)
-      // console.log("postBreakpointValue", postBreakpointValue)
-      // console.log("preBreakpointValue.minimum", preBreakpointValue.minimum)
-      // console.log("minimumDiff", minimumDiff)
-      // console.log("minimum", minimum)
-
+      const minimum = preBreakpoint.value.minimum + currentDiff / breakpointDiff * minimumDiff
+      const maximum = preBreakpoint.value.maximum + currentDiff / breakpointDiff * maximumDiff
       radii.scale.range([minimum, maximum])
     }
   }
@@ -82,7 +64,6 @@ export class PointResponsiveState extends CartesianResponsiveState {
       //TODO: FINISH THIS!
       return 5 //getCurrentRespVal(radii, {chart})
     }
-
     return radii.scale(radii.values[i])
   }
 

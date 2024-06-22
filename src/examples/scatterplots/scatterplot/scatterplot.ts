@@ -14,9 +14,6 @@ export function createScatterplot(selector: string) {
   const baseScaleY = d3.scaleLinear()
     .domain([0, Math.max(...allPrices)])
     .nice()
-  const radiusScale = d3.scaleLinear()
-    .domain([0, Math.max(...allMileages)])
-    .range([5, 20])
 
   const data: ScatterPlotUserArgs = {
     series: {
@@ -41,8 +38,8 @@ export function createScatterplot(selector: string) {
           dependentOn: 'width',
           breakpointValues: {
             0: {minimum: 3, maximum: 12},
-            1: {minimum: 10, maximum: 20},
-            2: {minimum: 20, maximum: 40},
+            1: {minimum: 5, maximum: 15},
+            2: {minimum: 7, maximum: 18},
           },
         },
       },

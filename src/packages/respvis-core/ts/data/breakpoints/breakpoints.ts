@@ -28,17 +28,16 @@ export class Breakpoints {
     this.dimension = args?.dimension ?? 'width'
   }
 
-  getLengthAt(breakPointIndex: number) {
-    if (breakPointIndex < 0) return `0${this.unit}`
-    if (breakPointIndex > this.values.length) return pxUpperLimit
-    if (this.values[breakPointIndex] === undefined) return undefined
+  getLengthAt(breakPointIndex: number, defaultMinWidth: string, defaultMaxWidth: string) {
+    if (breakPointIndex < 0) return defaultMinWidth
+    if (breakPointIndex >= this.values.length) return defaultMaxWidth
     return `${this.values[breakPointIndex]}${this.unit}`
   }
 
   getSurroundingLengths(layoutWidthIndex: number) {
     return [
-      this.getLengthAt(layoutWidthIndex - 1) ?? `0${this.unit}`,
-      this.getLengthAt(layoutWidthIndex) ?? pxUpperLimit,
+      this.getLengthAt(layoutWidthIndex - 1, `0${this.unit}`, pxUpperLimit),
+      this.getLengthAt(layoutWidthIndex, `0${this.unit}`, pxUpperLimit)
     ]
   }
 

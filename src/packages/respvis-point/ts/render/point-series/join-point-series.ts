@@ -2,6 +2,8 @@ import {select, Selection} from "d3";
 import {Point} from "../point";
 import {addTransitionClass, circleMinimized, circleToAttrs} from "respvis-core";
 
+//TODO: points size to css transition. Look at lines for reference!
+//TODO: test use cases for scaling
 export function joinPointSeries(
   seriesSelection: Selection,
   joinSelection: Selection<Element, Point>

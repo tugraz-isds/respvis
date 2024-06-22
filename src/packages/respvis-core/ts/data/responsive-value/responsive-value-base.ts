@@ -38,6 +38,22 @@ export abstract class RespValBase<T> {
     return null
   }
 
+  getFirstValidLayoutIndex() {
+    const keys = Object.keys(this.mapping)
+    for (let i = 0; i < keys.length; i++) {
+      const index = parseInt(keys[i])
+      if (!isNaN(index)) return index
+    }
+    return null
+  }
+
+  getLastValidLayoutIndex() {
+    const indices = Object.keys(this.mapping)
+      .map((key) => parseInt(key))
+      .filter((key) => !isNaN(key))
+    return Math.max(...indices)
+  }
+
   getCurrentLayoutIndexFromCSS(mapping: BreakpointScopeMapping) {
     const layoutBreakpointsS = this.getLayoutSelection(mapping)
     const element = elementFromSelection(layoutBreakpointsS)

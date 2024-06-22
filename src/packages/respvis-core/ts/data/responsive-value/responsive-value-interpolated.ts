@@ -35,23 +35,32 @@ export class RespValInterpolated<T> extends RespValBase<T> {
   getRespValInterpolated(scopes: BreakpointScopeMapping) {
     const desiredElement = this.scope ? scopes[this.scope] : undefined
     const layoutBreakpointsS = desiredElement ? desiredElement : scopes[defaultScope]
-    const chartElement = elementFromSelection(layoutBreakpointsS)
+    const element = elementFromSelection(layoutBreakpointsS)
+    const breakpointsTransformed = this.getBreakpoints(scopes).getTransformed(element)
+    const respVal = this
 
     const layout = this.dependentOn
     const layoutWidthIndex = getLayoutWidthIndexFromCSS(elementFromSelection(layoutBreakpointsS), layout)
 
-    const preBreakpointIndex = this.getFirstValidPreLayoutIndex(layoutWidthIndex + 1)
-    const preBreakpointValue = preBreakpointIndex !== null ? this.mapping[preBreakpointIndex] : null
+    const preBreakpointIndex = this.getFirstValidPreLayoutIndex(layoutWidthIndex)
+    const preBreakpoint = getBreakpointData(preBreakpointIndex)
 
     const postBreakpointIndex = this.getFirstValidPostLayoutIndex(layoutWidthIndex)
-    const postBreakpointValue = postBreakpointIndex !== null ? this.mapping[postBreakpointIndex] : null
+    const postBreakpoint = getBreakpointData(postBreakpointIndex)
 
-    const breakpointsTransformed = this.getBreakpoints(scopes).getTransformed(chartElement)
-    const [preBreakPointLength, postBreakPointLength] = breakpointsTransformed
-      .getSurroundingLengths(layoutWidthIndex).map(length => cssLengthInPx(length as CSSLengthValue, chartElement))
+    const firstBreakpoint = getBreakpointData(this.getFirstValidLayoutIndex())!
+    const lastBreakpoint = getBreakpointData(this.getLastValidLayoutIndex())!
 
-    return { preBreakpointIndex, preBreakpointValue, preBreakPointLength,
-      postBreakpointIndex, postBreakpointValue, postBreakPointLength }
+    function getBreakpointData(index: number | null) {
+      if (index === null) return null
+      const defaultMaxLength = breakpointsTransformed.values[breakpointsTransformed.values.length - 1] + breakpointsTransformed.unit
+      return { index,
+        value: respVal.mapping[index],
+        length: cssLengthInPx(breakpointsTransformed.getLengthAt(index, '0px', defaultMaxLength) as CSSLengthValue, element)
+      }
+    }
+
+    return { preBreakpoint, postBreakpoint, firstBreakpoint, lastBreakpoint }
   }
 
   estimate(layoutIndex: number): T {
