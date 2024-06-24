@@ -147,7 +147,7 @@ export class ParcoordSeries extends Series {
     }
   }
 
-  toolRender(toolbarS: Selection<HTMLDivElement>) {
+  renderTool(toolbarS: Selection<HTMLDivElement>) {
     renderTool(toolbarS, this)
   }
 

@@ -37,6 +37,13 @@ export function circleToAttrs(selectionOrTransition: SelectionOrTransition, circ
   selectionOrTransition.attr('fill', circle.color ?? null)
 }
 
+export function circleToAttrsFromSelection(selectionOrTransition: SelectionOrTransition<any, Circle>) {
+  selectionOrTransition.attr('cx', (d) => d.center.x) //Typescript Problem on chaining?
+  selectionOrTransition.attr('cy', (d) => d.center.y)
+  selectionOrTransition.attr('r', (d) => d.radius)
+  selectionOrTransition.attr('fill', (d) => d.color ?? null)
+}
+
 export function circleFromAttrs(selectionOrTransition: SelectionOrTransition): Circle {
   const s = selectionOrTransition.selection();
   return {

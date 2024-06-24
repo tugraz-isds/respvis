@@ -12,19 +12,18 @@ export function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGTwin
   selection.each((d, i, g) => {
     const propTrue = (p: string) => p.trim() === 'true';
     const computedStyleHTMLElement = window.getComputedStyle(g[i]);
-    const computedStyleSVGElement = window.getComputedStyle(d.element);
     const fitWidth = propTrue(computedStyleHTMLElement.getPropertyValue('--fit-width'));
     const fitHeight = propTrue(computedStyleHTMLElement.getPropertyValue('--fit-height'));
 
-    let style = '';
     if (fitWidth || fitHeight) {
       const bbox = d.element.getBoundingClientRect();
-      if (fitWidth) style += `width: ${bbox.width}px; `;
-      if (fitHeight) style += `height: ${bbox.height}px; `;
+      if (fitWidth) g[i].style.setProperty('width', `${bbox.width}px`)
+      if (fitHeight) g[i].style.setProperty('height', `${bbox.height}px`)
     }
-    g[i].setAttribute('style', style);
+
     for (let varIndex = 0, len = cssVars.length; varIndex < len; varIndex++) {
-      g[i].style.setProperty(cssVars[varIndex], computedStyleSVGElement.getPropertyValue(cssVars[varIndex]))
+      const prop = d.element.style.getPropertyValue(cssVars[varIndex])
+      if (prop !== undefined) g[i].style.setProperty(cssVars[varIndex], prop)
     }
   });
 }

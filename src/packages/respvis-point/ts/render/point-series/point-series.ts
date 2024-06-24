@@ -1,4 +1,4 @@
-import {Radius, RadiusUserArgs} from "respvis-core";
+import {LegendSelection, Radius, RadiusUserArgs} from "respvis-core";
 import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
 import {PointLabelsDataCollection, PointLabelsUserArgs} from "../point-label";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
@@ -6,6 +6,7 @@ import type {Point} from "../point";
 import {isInterpolatedRadiusUserArgs, validateInterpolatedRadius} from "respvis-core/data/radius/interpolated-radius";
 import {validateBubbleRadius} from "respvis-core/data/radius/bubble-radius";
 import {PointResponsiveState} from "./point-responsive-state";
+import {renderRadiusScale} from "./render-radius-scale";
 
 export type PointSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
   radii?: RadiusUserArgs
@@ -40,6 +41,22 @@ export class PointSeries extends CartesianSeries {
 
     if ('class' in args) this.labels = args.labels
     else if (args.labels) this.labels = new PointLabelsDataCollection(args.labels)
+  }
+
+  renderLegendInfo(legendS: LegendSelection) {
+    super.renderLegendInfo(legendS)
+    renderRadiusScale(legendS, this)
+  }
+
+  cloneFiltered(): PointSeries {
+    const clone = super.cloneFiltered() as PointSeries
+    //TODO
+    // if (typeof clone.radii === 'object' && 'tag' in clone.radii) {
+    //   const scaledValues = clone.radii.axis.scaledValues.cloneFiltered()
+    //   const axis: BaseAxis = {...clone.radii.axis, scaledValues}
+    //   clone.radii = {...clone.radii, axis}
+    // }
+    return clone
   }
 
   clone() {

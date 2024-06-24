@@ -19,6 +19,7 @@ import {
 } from "../../data";
 import {Selection} from "d3";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
+import {LegendSelection} from "../legend";
 
 export type SeriesUserArgs = {
   categories?: CategoriesUserArgs
@@ -89,7 +90,9 @@ export abstract class Series implements RenderArgs {
     return this.categories
   }
 
-  toolRender(toolbarS: Selection<HTMLDivElement>) {}
+  renderTool(toolbarS: Selection<HTMLDivElement>) {}
+
+  renderLegendInfo(legendS: LegendSelection) {}
 
   abstract getScaledValuesAtScreenPosition(horizontal: number, vertical: number) : {
     horizontal: string,

@@ -28,6 +28,6 @@ export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesColle
   });
 
   seriesCollection.forEach(series => {
-    series.toolRender(toolbarS)
+    series.renderTool(toolbarS)
   })
 }

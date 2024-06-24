@@ -1,13 +1,14 @@
 import {Dispatch, Selection} from "d3";
-import {SVGGroupingElement, SVGHTMLElementLegacy} from "../../constants/types";
+import {SVGGroupingElement} from "../../constants/types";
 import {ChartWindowed} from "./chart/chart";
+import {Legend} from "../legend";
 
 export type Renderer = {
     readonly filterDispatch: Dispatch<{ dataKey: string }>
-    legendS?: Selection<SVGHTMLElementLegacy>
 
     get windowS(): Selection<HTMLElement, ChartWindowed>
     get chartS(): Selection<SVGGroupingElement, ChartWindowed>
+    get legendS(): Selection<SVGGroupingElement, Legend>
     get paddingWrapperS(): Selection<SVGGroupingElement>
     get layouterS(): Selection<HTMLDivElement>
     get drawAreaS(): Selection<SVGGroupingElement>

@@ -1,5 +1,5 @@
 import {Selection} from "d3";
-import {addLegendHoverHighlighting, renderChart, renderLegend} from "respvis-core";
+import {renderChart} from "respvis-core";
 import {LineChartData} from "./validate-line-chart";
 import {LineSeries} from "../line-series/line-series-validation";
 import {renderLineSeries} from "../line-series/render-line-series";
@@ -7,12 +7,9 @@ import {renderLineSeries} from "../line-series/render-line-series";
 export type LineChartSVGChartSelection = Selection<SVGSVGElement | SVGGElement, LineChartData>;
 
 export function renderLineChart(selection: LineChartSVGChartSelection) {
-  const { legend } = selection.datum()
   renderChart(selection).chartS
     .classed('chart-line', true)
     .call(renderAllSeriesOfLines)
-  const legendS = renderLegend(selection, legend)
-  addLegendHoverHighlighting(legendS)
 }
 
 function renderAllSeriesOfLines(chartS: LineChartSVGChartSelection) {

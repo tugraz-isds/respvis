@@ -1,4 +1,4 @@
-import {ScaledValuesLinearUserArgs, validateScaledValuesAxis} from "../scale";
+import {ScaledValuesLinear, ScaledValuesLinearUserArgs, validateScaledValuesAxis} from "../scale";
 import {BaseAxis, BaseAxisUserArgs, Renderer, Series, validateBaseAxis} from "../../render";
 import {ErrorMessages} from "../../constants";
 import {scaleLinear, ScaleLinear} from "d3";
@@ -20,8 +20,13 @@ export type BubbleRadiusArgs = BubbleRadiusUserArgs & {
   series: Series
 }
 
+type LinearRangeAxis = Omit<BaseAxis, 'scaledValues'> & {
+  scaledValues: ScaledValuesLinear
+}
+
 export type BubbleRadius = Omit<BubbleRadiusArgs, 'series' | 'renderer' | 'axis' | 'extrema'> & {
-  axis: BaseAxis,
+  tag: 'bubble'
+  axis: LinearRangeAxis,
   scale: ScaleLinear<number, number, never>
   extrema: RespValInterpolatedOptional<Extrema>
 }
@@ -37,10 +42,11 @@ export function validateBubbleRadius(args: BubbleRadiusArgs): BubbleRadius {
   const scale = args.scale ??
     scaleLinear().domain([Math.min(...values), Math.max(...values)]).nice()
 
-  const axis = validateBaseAxis({renderer, series,
+  const axis = validateBaseAxis({...args.axis, renderer, series,
     scaledValues: validateScaledValuesAxis({values},'ar-0'),
-  })
-  return {extrema, values, scale, axis}
+  }) as LinearRangeAxis
+
+  return {extrema, values, scale, axis, tag: 'bubble'}
 }
 
 function validateBubbleRadiusExtrema(extremaArgs: RespValInterpolatedUserArgs<Extrema>) {

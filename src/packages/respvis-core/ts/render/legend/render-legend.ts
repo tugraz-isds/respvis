@@ -1,5 +1,5 @@
 import {range, select, Selection} from "d3";
-import {SVGHTMLElementLegacy} from "../../constants/types";
+import {SVGHTMLElement, SVGHTMLElementLegacy} from "../../constants/types";
 import {Legend} from "./validate-legend";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {renderLegendItems} from "./legend-item/render-legend-items";
@@ -7,7 +7,7 @@ import {uniqueId} from "../../utilities";
 import {Axis, renderAxisLayout} from "../axis";
 import {rectFromString} from "../../data";
 
-export type LegendSelection = Selection<SVGHTMLElementLegacy, Legend>
+export type LegendSelection = Selection<SVGHTMLElement, Legend>
 
 export function renderLegend(parentS: Selection, legend: Legend): LegendSelection {
   const legendS = parentS
@@ -15,14 +15,13 @@ export function renderLegend(parentS: Selection, legend: Legend): LegendSelectio
     .data([legend])
     .join('g')
     .classed('legend', true)
-  legend.renderer.legendS = legendS
-
-  legendS.each((legendD, i, g) => {
-    const legendS = select<SVGHTMLElementLegacy, Legend>(g[i])
-    renderTitle(legendS)
-    renderLegendItems(legendS)
-    renderColorScale(legendS)
-  })
+    .each((legendD, i, g) => {
+      const legendS = select<SVGHTMLElementLegacy, Legend>(g[i])
+      renderTitle(legendS)
+      renderLegendItems(legendS)
+      renderColorScale(legendS)
+    })
+  legend.series
 
   return legendS
 }

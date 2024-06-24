@@ -33,13 +33,20 @@ export function createScatterplot(selector: string) {
       },
       radii: {
         values: mileages,
-        axis: {},
+        axis: {
+          title: 'Mileage',
+          horizontalLayout: 'bottom',
+          configureAxis: (axis => {
+            axis.ticks(2)
+            axis.tickFormat(d3.format('.2s'))
+          })
+        },
         extrema: {
           dependentOn: 'width',
           breakpointValues: {
             0: {minimum: 3, maximum: 12},
             1: {minimum: 5, maximum: 15},
-            2: {minimum: 7, maximum: 18},
+            3: {minimum: 7, maximum: 30},
           },
         },
       },
@@ -57,7 +64,7 @@ export function createScatterplot(selector: string) {
     },
     breakpoints: {
       width: {
-        values: [40, 60],
+        values: [40, 60, 120],
         unit: 'rem'
       }
     },

@@ -24,7 +24,10 @@ export class PointResponsiveState extends CartesianResponsiveState {
     const radii = this._originalSeries.radii
     const chart = this._series.renderer.chartS
 
-    if (radii instanceof RespValInterpolated || typeof radii === 'number') return
+    if (typeof radii === 'number') return
+    if (radii instanceof RespValInterpolated) {
+      return
+    }
 
     interpolateBubbleRadius(radii)
 
@@ -59,12 +62,33 @@ export class PointResponsiveState extends CartesianResponsiveState {
 
   getRadius(i: number): number {
     const radii = this._originalSeries.radii
+    const chart = this._series.renderer.chartS
     if (typeof radii === 'number') return radii
     if (radii instanceof RespValInterpolated) {
-      //TODO: FINISH THIS!
-      return 5 //getCurrentRespVal(radii, {chart})
+      return interpolateInterpolatedRadius(radii)
     }
     return radii.scale(radii.values[i])
+
+    function interpolateInterpolatedRadius(radii: RespValInterpolated<number>) {
+      let {preBreakpoint, postBreakpoint,
+        firstBreakpoint, lastBreakpoint} =
+        radii.getRespValInterpolated({chart})
+
+      if (postBreakpoint === null) {
+        return lastBreakpoint.value
+      }
+      if (preBreakpoint === null) {
+        preBreakpoint = firstBreakpoint
+        preBreakpoint.length = 0
+      }
+
+      const elementLength = elementFromSelection(chart).getBoundingClientRect()[radii.dependentOn]
+      const breakpointLengthDiff = postBreakpoint.length - preBreakpoint.length
+      const currentLengthDiff = elementLength - preBreakpoint.length
+      const valueDiff = postBreakpoint.value - preBreakpoint.value
+
+      return preBreakpoint.value + currentLengthDiff / breakpointLengthDiff * valueDiff
+    }
   }
 
   getRadiusValue(i: number) {

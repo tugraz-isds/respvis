@@ -6,9 +6,10 @@ export function createPoints<T extends boolean, R = T extends false ? Point[] : 
 (series: PointSeries, grouped: T): R {
   const {key: seriesKey, keysActive, categories} = series
 
-  const {x, y, color} = series
+  const {x, y, color, radii} = series
 
   const optionalColorValues = color?.axis.scaledValues
+  const optionalRadiiValues = typeof radii === 'object' && 'tag' in radii ? radii.axis.scaledValues : undefined
 
   const pointsSingleGroup: Point[] = []
   const pointsGrouped: Point[][] = new Array(categories ? categories.categories.keyOrder.length : 1)
@@ -19,7 +20,8 @@ export function createPoints<T extends boolean, R = T extends false ? Point[] : 
 
   for (let i = 0; i < x.values.length; i++) {
     if (categories && !categories.isValueActive(i)) continue
-    if (!x.isValueActive(i) || !y.isValueActive(i) || !(optionalColorValues?.isValueActive(i) ?? true)) continue
+    if (!x.isValueActive(i) || !y.isValueActive(i) ||
+      !(optionalColorValues?.isValueActive(i) ?? true) || (!optionalRadiiValues?.isValueActive(i) ?? true)) continue
     const point = createPoint(series, i)
     pointsSingleGroup.push(point)
     if (pointsGrouped && categories) {

@@ -1,6 +1,7 @@
 import {CartesianChartData, CartesianChartUserArgs, validateCartesianChart} from "respvis-cartesian";
 import {PointSeries, PointSeriesUserArgs} from "../point-series/point-series";
-import {RenderArgs} from "respvis-core";
+import {BubbleRadius, RenderArgs} from "respvis-core";
+import {RespValInterpolated} from "respvis-core/data/responsive-value/responsive-value-interpolated";
 
 export type ScatterPlotUserArgs = Omit<CartesianChartUserArgs, 'series'> & {
   series: PointSeriesUserArgs
@@ -21,6 +22,15 @@ export function validateScatterPlot(scatterArgs: ScatterPlotArgs): ScatterPlotDa
   const cartesianData =
     validateCartesianChart({renderer, series, x, y, legend, breakpoints, title, subTitle})
 
+
+  const radii = series.radii
+  const hasBubbleRadius = typeof radii !== 'number' && !(radii instanceof RespValInterpolated)
+  cartesianData.getAxes = !hasBubbleRadius ? cartesianData.getAxes : function (this:ScatterPlotData) {
+    return [this.x, this.y,
+      ...(this.series.color ? [this.series.color.axis] : []),
+      (this.series.radii as BubbleRadius).axis
+    ]
+  }
   return {
     ...cartesianData,
     series,
