@@ -21,7 +21,7 @@ export function createPoints<T extends boolean, R = T extends false ? Point[] : 
   for (let i = 0; i < x.values.length; i++) {
     if (categories && !categories.isValueActive(i)) continue
     if (!x.isValueActive(i) || !y.isValueActive(i) ||
-      !(optionalColorValues?.isValueActive(i) ?? true) || (!optionalRadiiValues?.isValueActive(i) ?? true)) continue
+      !(optionalColorValues?.isValueActive(i) ?? true) || !(optionalRadiiValues?.isValueActive(i) ?? true)) continue
     const point = createPoint(series, i)
     pointsSingleGroup.push(point)
     if (pointsGrouped && categories) {

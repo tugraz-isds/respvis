@@ -35,6 +35,22 @@ export function createChartSoldCarsGermany(selector) {
       radii: {
         values: prices,
         scale: radiusScale,
+        extrema: {
+          dependentOn: 'width',
+          breakpointValues: {
+            0: {minimum: 3, maximum: 12},
+            1: {minimum: 5, maximum: 15},
+            3: {minimum: 7, maximum: 30},
+          }
+        },
+        axis: {
+          title: 'Prices',
+          horizontalLayout: 'bottom',
+          configureAxis: (axis => {
+            axis.ticks(2)
+            axis.tickFormat(d3.format('.2s'))
+          })
+        }
       },
       markerTooltipGenerator: ((e, d: Point) => {
         return `Car Price: ${d.yValue}€<br/>

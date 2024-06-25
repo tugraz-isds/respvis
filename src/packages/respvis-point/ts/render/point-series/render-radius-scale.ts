@@ -7,16 +7,7 @@ export function renderRadiusScale(legendS: LegendSelection, series: PointSeries)
   const {radii} = series as PointSeries
   if (typeof radii === 'number' || radii instanceof RespValInterpolated) return
 
-  const {minIndex, maxIndex, min, max} = radii.axis.scaledValues.values.reduce((acc, current, currentIndex) => {
-    if (!radii.axis.scaledValues.isValueActive(currentIndex)) return acc
-    return {
-      ...((acc.minIndex === -1 || current < acc.min) ? {min: current, minIndex: currentIndex} : acc),
-      ...((acc.maxIndex === -1 || current > acc.max) ? {max: current, maxIndex: currentIndex} : acc)
-    }
-  }, {minIndex: -1, maxIndex: -1, min: -1, max: -1})
-
-  const minRadius = radii.scale(min)
-  const maxRadius = radii.scale(max)
+  const [minRadius, maxRadius] = radii.scale.range()
 
   legendS.style(cssVarDefaultsKeys["--min-radius"], `${minRadius}px`)
     .style(cssVarDefaultsKeys["--max-radius"], `${maxRadius}px`)
