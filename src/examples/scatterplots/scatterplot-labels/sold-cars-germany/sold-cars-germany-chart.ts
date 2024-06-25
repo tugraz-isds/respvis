@@ -52,11 +52,14 @@ export function createChartSoldCarsGermany(selector) {
           })
         }
       },
+      // radii: {
+      //   dependentOn: 'width',
+      //   breakpointValues: { 0: 3, 1: 10, 2: 20}
+      // },
       markerTooltipGenerator: ((e, d: Point) => {
-        return `Car Price: ${d.yValue}€<br/>
-                Horse Power: ${d.xValue}PS<br/>
-                Make: ${d.categoryFormatted ?? ''}<br/>
-                Mileage: ${d.radiusValue}km<br/>`
+        return `Car Price: ${d.radiusValue}€<br/>
+                Horse Power: ${d.yValue}PS<br/>
+                Make: ${d.xValue ?? ''}<br/>`
       }),
       zoom: {
         in: 20,

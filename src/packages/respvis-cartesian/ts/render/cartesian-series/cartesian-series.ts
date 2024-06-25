@@ -112,6 +112,9 @@ export abstract class CartesianSeries extends Series {
       const axis: BaseAxis = {...this.color.axis, scaledValues: colorFiltered}
       clone.color = {...this.color, axis}
     }
+    if (this.categories) {
+      clone.categories = this.categories.cloneFiltered()
+    }
     return clone
   }
 

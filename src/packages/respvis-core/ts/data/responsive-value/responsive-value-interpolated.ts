@@ -45,7 +45,7 @@ export class RespValInterpolated<T> extends RespValBase<T> {
     const preBreakpointIndex = this.getFirstValidPreLayoutIndex(layoutWidthIndex)
     const preBreakpoint = getBreakpointData(preBreakpointIndex)
 
-    const postBreakpointIndex = this.getFirstValidPostLayoutIndex(layoutWidthIndex)
+    const postBreakpointIndex = this.getFirstValidPostLayoutIndex(preBreakpointIndex !== null ? preBreakpointIndex : -1)
     const postBreakpoint = getBreakpointData(postBreakpointIndex)
 
     const firstBreakpoint = getBreakpointData(this.getFirstValidLayoutIndex())!
