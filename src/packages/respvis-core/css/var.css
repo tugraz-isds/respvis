@@ -20,9 +20,12 @@
   --color-axes-line: #7f7c77; /*rgb(0, 0, 0, 0.5);*/
   --color-origin-line: var(--color-axes-line);
   --color-grid-line: var(--color-origin-line);
-  --color-element-stroke: rgb(0, 0, 0, 0.6);
+  --color-element-stroke: rgb(0, 0, 0);
+  --element-stroke-opacity: 0.6;
   --color-bar-stroke: var(--color-element-stroke);
+  --bar-stroke-opacity: var(--element-stroke-opacity);
   --color-point-stroke: var(--color-element-stroke);
+  --point-stroke-opacity: var(--element-stroke-opacity);
 
   --color-categorical-0: #78b4c6;
   --color-categorical-1: #1c9820;

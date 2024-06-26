@@ -38,7 +38,7 @@ export function renderMarginOptions(selection: Selection, renderer: Renderer) {
       return new NumberLabel({
         label: `Margin-${option.abbreviation}`,
         type: windowSettingsKeys[option.settingKey],
-        value: currentSettings[option.settingKey],
+        value: currentSettings.get(option.settingKey),
         min: 0, max: 10000, step: 1, size: 5,
         onInput: onInputNumber,
         onChange: onChangeNumber,

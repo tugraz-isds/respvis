@@ -35,7 +35,7 @@ export class PointLabelsDataCollection implements PointLabelsData {
     this.format = args.format ?? ((point, label) => label)
   }
 
-  getArgValid(i: number) : PointLabelData {
+  getLabelData(i: number) : PointLabelData {
     return { value: this.values[i], offset: this.offset,
       positionStrategyHorizontal: this.positionStrategyHorizontal, positionStrategyVertical: this.positionStrategyVertical,
       format: this.format

@@ -47,6 +47,6 @@ function createPoint(series: PointSeries, i: number) {
     styleClass: series.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
     category,
     categoryFormatted: category ? series.categories?.categories.categoryFormatMap[category] : undefined,
-    label: series.labels?.getArgValid(i)
+    label: series.labels?.getLabelData(i)
   })
 }
