@@ -47,7 +47,7 @@ export abstract class Series implements RenderArgs {
   responsiveState: ResponsiveState
   abstract markerTooltipGenerator?: SeriesTooltipGenerator<SVGElement, any>
 
-  protected constructor(args: SeriesArgs | Series) {
+  constructor(args: SeriesArgs | Series) {
     const {key} = args
     this.renderer = args.renderer
     this.originalSeries = args.originalSeries ?? this

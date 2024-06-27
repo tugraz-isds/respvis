@@ -6,8 +6,8 @@
   align-self: start;
   cursor: default;
   gap: 0.25rem;
-  --max-radius: 0;
-  --min-radius: 0;
+  --max-radius: 0px;
+  --min-radius: 0px;
   .title {
     font-size: var(--font-size-legend-title);
     margin: 0 0.5em;
@@ -18,8 +18,8 @@
     gap: 0.4rem;
   }
   &:has(.legend__color-scale, .legend__radius-scale) {
-    padding-right: max(1rem, var(--max-radius, 0));
-    padding-left: max(1rem, var(--min-radius, 0));
+    padding-right: max(1rem, var(--max-radius, 0px));
+    padding-left: max(1rem, var(--min-radius, 0px));
   }
   .items + .legend__color-scale {
     margin-top: 1rem;

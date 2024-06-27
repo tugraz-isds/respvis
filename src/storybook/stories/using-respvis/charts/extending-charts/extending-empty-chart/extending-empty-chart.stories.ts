@@ -3,9 +3,9 @@ import {rawCode} from "../../../../util/raw-code";
 import {renderChart} from "../../../../util/chart-extensions/axis-chart/render-chart";
 import {AxisChartAxisUserArgs, AxisChartUserArgs} from "storybook-util/chart-extensions/axis-chart/validate-axis-chart";
 import {AustrianCitiesData} from "data"
-import {LayoutBreakpoints} from "respvis-core/data/layout-breakpoints";
-import {RespValByValueOptional} from "respvis-core";
+import {RespValByValueUserArgs} from "respvis-core";
 import AxisFlippingCSS from "./axis-flipping.css?raw";
+import {LayoutBreakpointsUserArgs} from "respvis-core/data/layout-breakpoints/layout-breakpoints";
 
 const {cities, populations} = AustrianCitiesData.default
 
@@ -28,7 +28,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<AxisChartUserArgs>
 
-const breakpoints: LayoutBreakpoints = {
+const breakpoints: LayoutBreakpointsUserArgs = {
   width: {
     values: [20, 40, 60],
     unit: "rem"
@@ -39,17 +39,17 @@ const breakpoints: LayoutBreakpoints = {
   }
 }
 
-const tickOrientationHorizontalCities: RespValByValueOptional<number> = {
+const tickOrientationHorizontalCities: RespValByValueUserArgs<number> = {
   dependentOn: 'width',
   mapping: {0: 90, 2: 0}
 }
 
-const tickOrientationHorizontalPopulation: RespValByValueOptional<number> = {
+const tickOrientationHorizontalPopulation: RespValByValueUserArgs<number> = {
   dependentOn: 'width',
   mapping: {0: -90, 2: -20}
 }
 
-const tickOrientationVertical: RespValByValueOptional<number> = {
+const tickOrientationVertical: RespValByValueUserArgs<number> = {
   dependentOn: 'height',
   mapping: {0: 0, 2: 30}
 }

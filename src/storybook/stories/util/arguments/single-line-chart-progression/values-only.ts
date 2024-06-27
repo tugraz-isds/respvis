@@ -59,7 +59,7 @@ export const singleLineChartResponsiveTitle: LineChartUserArgs = {
   },
   title: {
     dependentOn: 'width',
-    mapping: {0: 'Registered Students', 1: 'Students at TU Graz', 3: 'Students Registered at TU Graz'}
+    mapping: {0: 'Students', 1: 'Students TU Graz', 3: 'Students Registered at TU Graz'}
   },
   subTitle: {
     dependentOn: 'width',

@@ -73,7 +73,11 @@ export const renderMultiLineChart = (selector: string) => {
         mapping: {0: 90, 3: 0},
       },
       gridLineFactor: 2
-    }
+    },
+    // legend: {
+    //   symbols: (e, s) => pathCircle(e, circleInsideRect({...s, x: 0, y:0})),
+    //   reverse: true
+    // }
   }
 
   const chartWindow = select(selector).append('div')
