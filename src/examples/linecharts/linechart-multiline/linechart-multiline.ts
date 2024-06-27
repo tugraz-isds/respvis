@@ -4,6 +4,8 @@ import {mapPowerConsumptionData} from './data/electric-power-consumption.js'
 
 export const renderMultiLineChart = (selector: string) => {
   const {yUSA, yEurope, yAsia, yearsJSDateFormat} = mapPowerConsumptionData()
+  // const domainConsumption = [0, 14000]
+  // scale: scalePow().domain(domainConsumption).exponent(2)
 
   const categories = [
     ...yUSA.map(() => 'USA'),

@@ -1,5 +1,5 @@
 import {BaseAxis, BaseAxisUserArgs, Renderer, Series, validateBaseAxis} from "../../render";
-import {validateScaledValuesAxis} from "../scale";
+import {validateScaledValuesSpatial} from "../scale";
 import {ScaledValuesSequential} from "../scale/scaled-values-sequential";
 
 export type SequentialColorUserArgs = ScaledValuesSequential & {
@@ -17,7 +17,7 @@ export type SequentialColor = Pick<SequentialColorArgs, 'scale' | 'values'> & {
 
 export function validateSequentialColor(arg: SequentialColorArgs): SequentialColor {
   const {axis, renderer, values, scale, series} = arg
-  const scaledValues = validateScaledValuesAxis({values}, 'ac-0')
+  const scaledValues = validateScaledValuesSpatial({values}, 'ac-0')
   return { values, scale,
     axis: validateBaseAxis({...axis, scaledValues, renderer, series})
   }

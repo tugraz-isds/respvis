@@ -1,5 +1,4 @@
 import {
-  AxisDomainRV,
   BaseAxis,
   BaseAxisUserArgs,
   ChartData,
@@ -8,15 +7,16 @@ import {
   Orientation,
   Orientations,
   RespValByValueUserArgs,
-  ScaledValuesUserArgs,
+  ScaledValuesSpatialDomain,
+  ScaledValuesSpatialUserArgs,
   validateBaseAxis,
   validateChart,
-  validateScaledValuesAxis
+  validateScaledValuesSpatial
 } from "../../../../../packages";
 import {EmptySeries} from "../empty-series";
 
 export type AxisChartAxisUserArgs = BaseAxisUserArgs & {
-  vals: ScaledValuesUserArgs<AxisDomainRV>
+  vals: ScaledValuesSpatialUserArgs<ScaledValuesSpatialDomain>
   standardOrientation?: Orientation
 }
 
@@ -42,7 +42,7 @@ export function validateAxisChart(args: AxisChartArgs): AxisChartValid {
     ...validateChart(args),
     series,
     axes: args.axes.map((axis, index) => {
-      const scaledValues = validateScaledValuesAxis(axis.vals, `a-${index}`)
+      const scaledValues = validateScaledValuesSpatial(axis.vals, `a-${index}`)
       const standardOrientation = (axis.standardOrientation && Orientations.includes(axis.standardOrientation)) ?
         axis.standardOrientation : 'horizontal'
       return {

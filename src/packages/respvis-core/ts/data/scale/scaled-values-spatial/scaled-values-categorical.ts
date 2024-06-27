@@ -1,15 +1,19 @@
-import {ScaledValuesCategoricalUserArgs} from "./scaled-values";
-import {ScaledValuesBase, ScaledValuesBaseArgs} from "./scaled-values-base";
+import {ScaledValuesSpatialBase, ScaledValuesSpatialBaseArgs} from "./scaled-values-spatial-base";
 import {scaleBand, ScaleBand, ZoomTransform} from "d3";
-import {Categories, validateCategories} from "../categories";
-import {ActiveKeyMap, AxisType} from "../../constants/types";
-import {RespVal, RespValUserArgs, validateRespVal} from "../responsive-value/responsive-value";
+import {Categories, validateCategories} from "../../categories";
+import {ActiveKeyMap, AxisType} from "../../../constants/types";
+import {RespVal, RespValUserArgs, validateRespVal} from "../../responsive-value/responsive-value";
 
-type ScaledValuesCategoricalArgs = ScaledValuesCategoricalUserArgs & ScaledValuesBaseArgs & {
+export type ScaledValuesCategoricalUserArgs = {
+  values: string[],
+  scale?: ScaleBand<string>
+}
+
+type ScaledValuesCategoricalArgs = ScaledValuesCategoricalUserArgs & ScaledValuesSpatialBaseArgs & {
   title: RespValUserArgs<string>
 }
 
-export class ScaledValuesCategorical extends ScaledValuesBase<string> {
+export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
   tag = 'categorical' as const
   readonly values: string[]
   readonly scale: ScaleBand<string>

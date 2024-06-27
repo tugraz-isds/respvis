@@ -1,10 +1,10 @@
 import {Axis as D3Axis, AxisDomain} from 'd3';
 import {RenderArgs} from "../chart/renderer";
-import {ScaledValuesSpatial} from "../../data/scale/scaled-values-base";
 import {KeyedAxis} from "respvis-parcoord/render/validate-keyed-axis";
 import type {CartesianAxis} from "respvis-cartesian/render";
 import {Series} from "../series";
 import {LightWeightAxis, LightWeightAxisUserArgs, validateLightWeightAxis} from "./validate-lightweight-axis";
+import {ScaledValuesSpatial} from "../../data";
 
 export type BaseAxisUserArgs = LightWeightAxisUserArgs
 

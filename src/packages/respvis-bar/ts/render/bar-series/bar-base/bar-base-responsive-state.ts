@@ -1,6 +1,6 @@
 import {CartesianResponsiveState, CartesianResponsiveStateArgs} from "respvis-cartesian";
 import {BarBaseSeries} from "./bar-base-series";
-import {ScaledValuesCategorical, ScaledValuesLinear} from "respvis-core";
+import {ScaledValuesCategorical, ScaledValuesNumeric} from "respvis-core";
 
 type BarBaseResponsiveStateArgs = CartesianResponsiveStateArgs & {
   series: BarBaseSeries
@@ -23,11 +23,11 @@ export class BarBaseResponsiveState extends CartesianResponsiveState {
 
   getBarRect(i: number) {
     return this.currentlyFlipped ?
-      this.getBarRectHorizontal(i, this.horizontalVals() as ScaledValuesLinear, this.verticalVals() as ScaledValuesCategorical) :
-      this.getBarRectVertical(i, this.verticalVals() as ScaledValuesLinear, this.horizontalVals() as ScaledValuesCategorical)
+      this.getBarRectHorizontal(i, this.horizontalVals() as ScaledValuesNumeric, this.verticalVals() as ScaledValuesCategorical) :
+      this.getBarRectVertical(i, this.verticalVals() as ScaledValuesNumeric, this.horizontalVals() as ScaledValuesCategorical)
   }
 
-  getBarRectVertical(i: number, linearVals: ScaledValuesLinear, categoryVals: ScaledValuesCategorical) {
+  getBarRectVertical(i: number, linearVals: ScaledValuesNumeric, categoryVals: ScaledValuesCategorical) {
     return {
       x: barRectFormula.barCategoryStart(categoryVals, i),
       y: barRectFormula.barLinearStart(linearVals, i),
@@ -36,7 +36,7 @@ export class BarBaseResponsiveState extends CartesianResponsiveState {
     }
   }
 
-  getBarRectHorizontal(i: number, linearVals: ScaledValuesLinear, categoryVals: ScaledValuesCategorical) {
+  getBarRectHorizontal(i: number, linearVals: ScaledValuesNumeric, categoryVals: ScaledValuesCategorical) {
     return {
       x: barRectFormula.barLinearStart(linearVals, i),
       y: barRectFormula.barCategoryStart(categoryVals, i),
@@ -58,6 +58,6 @@ export class BarBaseResponsiveState extends CartesianResponsiveState {
 const barRectFormula = {
   barCategoryStart: (vals: ScaledValuesCategorical, i: number) => vals.getScaledValueStart(i),
   barCategoryLength: (vals: ScaledValuesCategorical, _: number) => vals.scale.bandwidth(),
-  barLinearStart: (vals: ScaledValuesLinear, i: number) => Math.min(vals.getScaledValueEnd(i), vals.scale(0)!),
-  barLinearLength: (vals: ScaledValuesLinear, i: number) => Math.abs(vals.scale(0)! - vals.getScaledValue(i)),
+  barLinearStart: (vals: ScaledValuesNumeric, i: number) => Math.min(vals.getScaledValueEnd(i), vals.scale(0)!),
+  barLinearLength: (vals: ScaledValuesNumeric, i: number) => Math.abs(vals.scale(0)! - vals.getScaledValue(i)),
 } as const

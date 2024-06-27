@@ -14,7 +14,6 @@ import {Axis} from "./validate-base-axis";
 import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {modifyAxisTicksPostGeneration, renderAxisTicksPreGeneration} from "./render-axis-ticks";
 import {configureTickAngles} from "./configure-tick-angle";
-import {getFilteredScaledValues} from "../../data/scale/validate-scaled-values-axis";
 import {renderBgSVGOnlyBBox} from "../bg-svg-only";
 import {AxisLayouts, Orientation} from "../../constants/types";
 import {KeyedAxis} from "respvis-parcoord/render/validate-keyed-axis";
@@ -104,7 +103,7 @@ function d3Axis(
     {chart: renderer.chartS, self: axisS
     })
 
-  const filteredScaledValues = getFilteredScaledValues(scaledValues)
+  const filteredScaledValues = scaledValues.cloneFiltered()
 
   const axis = axisGenerator(filteredScaledValues.scale)
   configureAxisValid(axis)

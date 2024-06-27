@@ -1,4 +1,4 @@
-import {ScaledValuesDate, ScaledValuesLinear} from "respvis-core";
+import {ScaledValuesNumeric, ScaledValuesTemporal} from "respvis-core";
 import {BarStackedSeries} from "./bar-stacked-series";
 
 type CreateStackedBarProps = {
@@ -25,7 +25,7 @@ export function createStackedBar(props: CreateStackedBarProps) {
   const innerValueStart = aggScaledValues.scale(aggScaledValues.values[i])
 
   function getHorizontalStackedBar() {
-    const x = series.y as (ScaledValuesLinear | ScaledValuesDate)
+    const x = series.y as (ScaledValuesNumeric | ScaledValuesTemporal)
     return  {
       x: wholeBarRect.x + innerValueStart,
       y: wholeBarRect.y,
@@ -35,7 +35,7 @@ export function createStackedBar(props: CreateStackedBarProps) {
   }
 
   function getVerticalStackedBar() {
-    const y = series.y as (ScaledValuesLinear | ScaledValuesDate)
+    const y = series.y as (ScaledValuesNumeric | ScaledValuesTemporal)
     return  {
       x: wholeBarRect.x,
       y: aggScaledValues.scale.range()[1] - innerValueStart - aggScaledValues.scale(y.values[i]),

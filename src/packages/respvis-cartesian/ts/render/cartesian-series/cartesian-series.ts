@@ -1,18 +1,18 @@
 import {
   alignScaledValuesLengths,
-  AxisDomainRV,
   AxisType,
   BaseAxis,
   combineKeys,
   getCurrentRespVal,
   ScaledValuesCategorical,
   ScaledValuesSpatial,
-  ScaledValuesUserArgs,
+  ScaledValuesSpatialDomain,
+  ScaledValuesSpatialUserArgs,
   Series,
   SeriesArgs,
   SeriesUserArgs,
   SVGHTMLElementLegacy,
-  validateScaledValuesAxis,
+  validateScaledValuesSpatial,
   validateZoom,
   Zoom,
   ZoomArgs
@@ -23,8 +23,8 @@ import {CartesianAxis} from "../validate-cartesian-axis";
 import {Selection} from "d3";
 
 export type CartesianSeriesUserArgs = SeriesUserArgs & {
-  x: ScaledValuesUserArgs<AxisDomainRV>
-  y: ScaledValuesUserArgs<AxisDomainRV>
+  x: ScaledValuesSpatialUserArgs<ScaledValuesSpatialDomain>
+  y: ScaledValuesSpatialUserArgs<ScaledValuesSpatialDomain>
   zoom?: ZoomArgs
 }
 
@@ -45,8 +45,8 @@ export abstract class CartesianSeries extends Series {
     this.originalSeries = args.originalSeries ?? this
     const [xAligned, yAligned] = ('tag' in args.x && 'tag' in args.y) ? [args.x, args.y] :
       alignScaledValuesLengths(args.x, args.y)
-    this.x = 'tag' in xAligned ? xAligned : validateScaledValuesAxis(xAligned, 'a-0')
-    this.y = 'tag' in yAligned ? yAligned : validateScaledValuesAxis(yAligned, 'a-1')
+    this.x = 'tag' in xAligned ? xAligned : validateScaledValuesSpatial(xAligned, 'a-0')
+    this.y = 'tag' in yAligned ? yAligned : validateScaledValuesSpatial(yAligned, 'a-1')
 
     this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
       new CartesianResponsiveState({

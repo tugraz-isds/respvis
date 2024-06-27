@@ -1,6 +1,6 @@
 import {CartesianChartSelection} from "../validate-cartesian-chart";
 import {CartesianAxis} from "../../validate-cartesian-axis";
-import {Axis, AxisSelection, renderAxisLayout, ScaledValuesAggregation, ScaledValuesLinear} from "respvis-core";
+import {Axis, AxisSelection, renderAxisLayout, ScaledValuesAggregator, ScaledValuesNumeric} from "respvis-core";
 
 export function renderCartesianAxes<T extends CartesianChartSelection>(chartS: T) {
   const {renderer, ...data} = chartS.datum()
@@ -13,14 +13,14 @@ export function renderCartesianAxes<T extends CartesianChartSelection>(chartS: T
   const paddingWrapperS = chartS.selectAll('.padding-wrapper')
 
   //TODO: clean this stacked bar chart mess up
-  const aggScaledValues = ('aggScaledValues' in series && series.aggScaledValues instanceof ScaledValuesAggregation) ?
+  const aggScaledValues = ('aggScaledValues' in series && series.aggScaledValues instanceof ScaledValuesAggregator) ?
     series.aggScaledValues.aggregateCached() : undefined
 
-  const horizontalAxisDAgg = (aggScaledValues && horizontalAxisD.scaledValues instanceof ScaledValuesLinear) ?
+  const horizontalAxisDAgg = (aggScaledValues && horizontalAxisD.scaledValues instanceof ScaledValuesNumeric) ?
     {...horizontalAxisD, scaledValues: aggScaledValues} : horizontalAxisD
   horizontalAxisDAgg.scaledValues.scale.range(horizontalAxisD.scaledValues.scale.range())
 
-  const verticalAxisDAgg = (aggScaledValues && verticalAxisD.scaledValues instanceof ScaledValuesLinear) ?
+  const verticalAxisDAgg = (aggScaledValues && verticalAxisD.scaledValues instanceof ScaledValuesNumeric) ?
     {...verticalAxisD, scaledValues: aggScaledValues} : verticalAxisD
   verticalAxisDAgg.scaledValues.scale.range(verticalAxisD.scaledValues.scale.range())
 

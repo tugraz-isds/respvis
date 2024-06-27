@@ -1,6 +1,5 @@
 import {
   arrayAlignLengths,
-  AxisDomainRV,
   AxisLayout,
   BaseAxisUserArgs,
   combineKeys,
@@ -9,13 +8,14 @@ import {
   ResponsiveState,
   ResponsiveStateArgs,
   ScaledValuesCategorical,
-  ScaledValuesUserArgs,
+  ScaledValuesSpatialDomain,
+  ScaledValuesSpatialUserArgs,
   Series,
   SeriesArgs,
   SeriesKey,
   SeriesUserArgs,
   Size,
-  validateScaledValuesAxis,
+  validateScaledValuesSpatial,
   validateZoom,
   Zoom,
   ZoomArgs
@@ -28,7 +28,7 @@ import {Line} from "respvis-line";
 
 export type ParcoordSeriesUserArgs = SeriesUserArgs & {
   dimensions: {
-    scaledValues: ScaledValuesUserArgs<AxisDomainRV>
+    scaledValues: ScaledValuesSpatialUserArgs<ScaledValuesSpatialDomain>
     axis: BaseAxisUserArgs
     zoom?: ZoomArgs
   }[],
@@ -65,7 +65,7 @@ export class ParcoordSeries extends Series {
         return validateKeyedAxis({
           ...dimension.axis, renderer,
           series: this,
-          scaledValues: validateScaledValuesAxis(dimension.scaledValues, `a-${index}`),
+          scaledValues: validateScaledValuesSpatial(dimension.scaledValues, `a-${index}`),
           key: `a-${index}`
         })
       })

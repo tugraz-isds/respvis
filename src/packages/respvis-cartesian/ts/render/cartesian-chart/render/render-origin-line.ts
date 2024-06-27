@@ -1,4 +1,4 @@
-import {pathLine, ScaledValuesLinear, ScaledValuesSpatial} from "respvis-core";
+import {pathLine, ScaledValuesNumeric, ScaledValuesSpatial} from "respvis-core";
 import {CartesianChartSelection} from "../validate-cartesian-chart";
 
 export function renderOriginLine<T extends CartesianChartSelection>(chartS: T): void {
@@ -13,7 +13,7 @@ export function renderOriginLine<T extends CartesianChartSelection>(chartS: T): 
   }
 
   if (needsBaseLine(horizontalAxisS.datum().scaledValues)) {
-    const vals = horizontalAxisS.datum().scaledValues as ScaledValuesLinear
+    const vals = horizontalAxisS.datum().scaledValues as ScaledValuesNumeric
     const x1 = vals.scale(0)
     const x2 = x1
     const [y1, y2] = verticalAxisS.datum().scaledValues.scale.range()
@@ -25,7 +25,7 @@ export function renderOriginLine<T extends CartesianChartSelection>(chartS: T): 
   } else gridAreaS.selectAll('.line.line--origin.line--vertical').remove()
 
   if (needsBaseLine(verticalAxisS.datum().scaledValues)) {
-    const vals = verticalAxisS.datum().scaledValues as ScaledValuesLinear
+    const vals = verticalAxisS.datum().scaledValues as ScaledValuesNumeric
     const y1 = vals.scale(0)
     const y2 = y1
     const [x1, x2] = horizontalAxisS.datum().scaledValues.scale.range()

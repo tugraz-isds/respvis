@@ -1,35 +1,13 @@
-import {AxisType, Orientation, ScaledValueTag, ToArray} from "../../constants/types";
-import {AxisDomainRV} from "./validate-scaled-values-axis";
-import {ScaleBase} from "./scales";
+import {AxisType, Orientation, ScaledValueTag, ToArray} from "../../../constants/types";
+import {ScaledValuesSpatialDomain} from "./validate-scaled-values-spatial";
+import {ScaleBase} from "../scales";
 import {ZoomTransform} from "d3";
-import {ScaledValuesLinear} from "./scaled-values-linear";
-import {ScaledValuesDate} from "./scaled-values-date";
-import {ScaledValuesCategorical} from "./scaled-values-categorical";
-import {ScaledValuesSequential} from "./scaled-values-sequential";
 
-export type ScaledValuesBaseArgs = { parentKey: string }
+import {ScaledValuesSpatial} from "./scaled-values-spatial";
 
-export type ScaledValuesLinearScale = ScaledValuesLinear | ScaledValuesDate
-export type ScaledValuesSpatial = ScaledValuesLinearScale | ScaledValuesCategorical
-export type ScaledValues = ScaledValuesSpatial | ScaledValuesSequential
+export type ScaledValuesSpatialBaseArgs = { parentKey: string }
 
-export type ScaledValuesOrdered<T> = {
-  [K in ScaledValuesSpatial["tag"]]: {
-    values: Extract<ScaledValuesSpatial, { tag: K }>,
-    wrapper: T
-  }[]
-}
-
-export function orderScaledValues<T>(values: ScaledValuesSpatial[], wrappers: T[]): ScaledValuesOrdered<T> {
-  const valuesOrdered: ScaledValuesOrdered<T> = { linear: [], categorical: [], date: [] }
-  values.forEach((val, index) => {
-    //@ts-ignore
-    valuesOrdered[val.tag].push({values: val, wrapper: wrappers[index]})
-  })
-  return valuesOrdered
-}
-
-export abstract class ScaledValuesBase<T extends AxisDomainRV> {
+export abstract class ScaledValuesSpatialBase<T extends ScaledValuesSpatialDomain> {
   abstract readonly tag: ScaledValueTag
   abstract readonly values: ToArray<T>
   abstract readonly scale: ScaleBase<T>
@@ -39,7 +17,7 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
   orientation: Orientation = "horizontal"
   horizontalRange: number[] = [0, 1]
   verticalRange: number[] = [1, 0]
-  protected constructor(args: ScaledValuesBaseArgs) {
+  protected constructor(args: ScaledValuesSpatialBaseArgs) {
     this.parentKey = args.parentKey
     this.inverted = false
   }
@@ -113,19 +91,19 @@ export abstract class ScaledValuesBase<T extends AxisDomainRV> {
 }
 
 const percentRangeFormulaWithInverse = {
-  horizontal: <T extends AxisDomainRV>(percent: number, scaledValues: ScaledValuesBase<T>) => {
+  horizontal: <T extends ScaledValuesSpatialDomain>(percent: number, scaledValues: ScaledValuesSpatialBase<T>) => {
     return scaledValues.scale.range()[1] * percent
   },
-  vertical: <T extends AxisDomainRV>(percent: number, scaledValues: ScaledValuesBase<T>) => {
+  vertical: <T extends ScaledValuesSpatialDomain>(percent: number, scaledValues: ScaledValuesSpatialBase<T>) => {
     return scaledValues.scale.range()[0] - scaledValues.scale.range()[0] * percent
   }
 }
 
 const percentRangeFormulaWithoutInverse = {
-  horizontal: <T extends AxisDomainRV>(percent: number, scaledValues: ScaledValuesBase<T>) => {
+  horizontal: <T extends ScaledValuesSpatialDomain>(percent: number, scaledValues: ScaledValuesSpatialBase<T>) => {
     return scaledValues.getRangeInverseUndone()[1] * percent
   },
-  vertical: <T extends AxisDomainRV>(percent: number, scaledValues: ScaledValuesBase<T>) => {
+  vertical: <T extends ScaledValuesSpatialDomain>(percent: number, scaledValues: ScaledValuesSpatialBase<T>) => {
     return scaledValues.getRangeInverseUndone()[0] - scaledValues.getRangeInverseUndone()[0] * percent
   }
 }

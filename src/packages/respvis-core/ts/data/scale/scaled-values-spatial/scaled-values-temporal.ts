@@ -1,19 +1,23 @@
-import {ScaledValuesDateUserArgs} from "./scaled-values";
-import {ScaledValuesBase, ScaledValuesBaseArgs} from "./scaled-values-base";
+import {ScaledValuesSpatialBase, ScaledValuesSpatialBaseArgs} from "./scaled-values-spatial-base";
 import {max, min, scaleTime, ScaleTime, ZoomTransform} from "d3";
-import {AxisType} from "../../constants/types";
-import {ErrorMessages} from "../../constants/error";
+import {AxisType} from "../../../constants/types";
+import {ErrorMessages} from "../../../constants/error";
 
-type ScaledValuesDateArgs = ScaledValuesDateUserArgs & ScaledValuesBaseArgs
+export type ScaledValuesTemporalUserArgs = {
+  values: Date[],
+  scale?: ScaleTime<number, number, never>
+}
 
-export class ScaledValuesDate extends ScaledValuesBase<Date> {
+type ScaledValuesTemporalArgs = ScaledValuesTemporalUserArgs & ScaledValuesSpatialBaseArgs
+
+export class ScaledValuesTemporal extends ScaledValuesSpatialBase<Date> {
   tag = 'date' as const
   values: Date[]
   scale: ScaleTime<number, number, never>
   flippedScale: ScaleTime<number, number, never>
   filteredRanges: [Date, Date][]
 
-  constructor(args: ScaledValuesDateArgs | ScaledValuesDate) {
+  constructor(args: ScaledValuesTemporalArgs | ScaledValuesTemporal) {
     super(args)
     this.values = args.values
     const extentMin = min(this.values)
@@ -36,9 +40,9 @@ export class ScaledValuesDate extends ScaledValuesBase<Date> {
     return false
   }
 
-  cloneZoomed(transform: ZoomTransform, axisType: AxisType): ScaledValuesDate {
+  cloneZoomed(transform: ZoomTransform, axisType: AxisType): ScaledValuesTemporal {
     const scale = axisType === 'x' ? transform.rescaleX(this.scale) : transform.rescaleY(this.scale)
-    return new ScaledValuesDate({...this, scale})
+    return new ScaledValuesTemporal({...this, scale})
   }
 
   cloneFiltered() {
@@ -49,7 +53,7 @@ export class ScaledValuesDate extends ScaledValuesBase<Date> {
     return this.scale.invert(value)
   }
 
-  clone(): ScaledValuesDate {
-    return new ScaledValuesDate({...this, scale: this.scale.copy()})
+  clone(): ScaledValuesTemporal {
+    return new ScaledValuesTemporal({...this, scale: this.scale.copy()})
   }
 }

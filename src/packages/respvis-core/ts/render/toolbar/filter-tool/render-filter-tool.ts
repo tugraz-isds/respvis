@@ -10,15 +10,15 @@ import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value
 import {categoryOrderMapToArray} from "../../../data/categories";
 import {mergeKeys} from "../../../utilities/dom/key";
 import {Axis} from "../../axis";
-import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
+import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-spatial/scaled-values-categorical";
 import {CheckBoxLabel} from "../tool/input-label/checkbox-label";
 import {renderButton} from "../tool/render/render-button";
 import {renderSimpleTooltip} from "../tool/render/render-simple-tooltip";
 import {LabelsParentData, renderInputLabels} from "../tool/input-label/render-input-labels";
 import {InputLabel} from "../tool/input-label/input-label";
-import {orderScaledValues, ScaledValuesLinearScale} from "../../../data/scale/scaled-values-base";
 import {RangeLabel} from "../tool/input-label/range-label";
 import type {KeyedAxis} from "../../../../../respvis-parcoord/ts/render";
+import {orderScaledValuesSpatial, ScaledValuesSpatialNumericOrTemporal} from "respvis-core";
 
 export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Toolbar) {
   const seriesCollection = args.getSeries()
@@ -37,7 +37,7 @@ export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Tool
     if (seriesCollection.length > 1) renderSeriesControl(dialogS, series)
     renderCategoryControls(dialogS, series)
   })
-  const axesOrdered = orderScaledValues(axes.map(axis => axis.scaledValues), axes);
+  const axesOrdered = orderScaledValuesSpatial(axes.map(axis => axis.scaledValues), axes);
   [...axesOrdered.linear, ...axesOrdered.date].forEach(axisOrdered => renderAxisLinearControls(dialogS, axisOrdered.wrapper, axisOrdered.values))
   axesOrdered.categorical.forEach(axis => renderAxisControls(dialogS, axis.wrapper))
 
@@ -70,7 +70,7 @@ function renderSeriesControl(menuToolsItemsS: Selection, series: Series) {
 }
 
 //TODO: Refactor Double Input Range in own file
-function renderAxisLinearControls(menuToolsItemsS: Selection, axis: Axis, values: ScaledValuesLinearScale) {
+function renderAxisLinearControls(menuToolsItemsS: Selection, axis: Axis, values: ScaledValuesSpatialNumericOrTemporal) {
   const {renderer} = axis
   const title = getCurrentRespVal(axis.title, {chart: renderer.chartS})
   const domain: number[] = values.scale.domain().map(d => d.valueOf())

@@ -2,7 +2,7 @@ import {CategoriesUserArgs} from "../../data/categories";
 import {RenderArgs, Renderer} from "../chart/renderer";
 import {ActiveKeyMap, SeriesKey} from "../../constants/types";
 import {Size} from "../../data/size";
-import {ScaledValuesCategorical} from "../../data/scale/scaled-values-categorical";
+import {ScaledValuesCategorical} from "../../data/scale/scaled-values-spatial/scaled-values-categorical";
 import {mergeKeys} from "../../utilities/dom/key";
 //TODO: Refactor away type dependency to respvis-point
 import {
