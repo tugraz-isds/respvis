@@ -1,9 +1,9 @@
 import {Radius} from "./radius";
-import {getCurrentRespVal} from "../responsive-value/responsive-value";
-import {BreakpointScopeMapping} from "../breakpoints/breakpoint-scope";
-import {ScaledValuesNumeric} from "../scale/scaled-values-spatial/scaled-values-numeric";
-import {noParentKey} from "../../constants/other";
 import {isBubbleRadiusUserArgs} from "./bubble-radius";
+import {getCurrentRespVal} from "../responsive-value";
+import {BreakpointScopeMapping} from "../breakpoints";
+import {ScaledValuesNumeric} from "../scale";
+import {noParentKey} from "../../constants/other";
 
 export function getRadiusScaledValues(radius: Radius, mapping: BreakpointScopeMapping) {
   if (isBubbleRadiusUserArgs(radius)) {

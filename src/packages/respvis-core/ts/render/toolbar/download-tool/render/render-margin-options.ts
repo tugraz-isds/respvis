@@ -1,5 +1,7 @@
 import {Selection} from "d3";
-import {Renderer, renderFieldset, windowSettingsKeys} from "respvis-core";
+import {Renderer} from "../../../chart";
+import {renderFieldset} from "../../tool";
+import {windowSettingsKeys} from "../../../window";
 import {NumberLabel} from "../../tool/input-label/number-label";
 
 export function renderMarginOptions(selection: Selection, renderer: Renderer) {

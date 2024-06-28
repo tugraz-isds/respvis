@@ -1,7 +1,12 @@
 import {PointSeries} from "respvis-point";
-import {Axis, LegendSelection, rectFromString, renderAxisLayout} from "respvis-core";
-import {RespValInterpolated} from "respvis-core/data/responsive-value/responsive-value-interpolated";
-import {cssVarDefaultsKeys} from "respvis-core/constants/cssVars";
+import {
+  Axis,
+  cssVarDefaultsKeys,
+  LegendSelection,
+  rectFromString,
+  renderAxisLayout,
+  RespValInterpolated
+} from "respvis-core";
 
 export function renderRadiusScale(legendS: LegendSelection, series: PointSeries) {
   const {radii} = series as PointSeries

@@ -4,8 +4,7 @@ import {ChartData, ChartDataUserArgs, validateChart} from "./validate-chart";
 import {Renderer} from "../renderer";
 import {ReRenderContext, resizeEventListener} from "./resize-event-dispatcher";
 import {renderChart} from "./render-chart";
-import {ThrottleScheduled} from "../../../utilities/d3/util";
-import {fixActiveCursor} from "../../../utilities/d3/fix-active-cursor";
+import {fixActiveCursor, ThrottleScheduled} from "../../../utilities";
 import {layouterCompute} from "../../layouter";
 import {Legend} from "../../legend";
 

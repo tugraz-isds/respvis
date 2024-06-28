@@ -16,7 +16,7 @@ import {modifyAxisTicksPostGeneration, renderAxisTicksPreGeneration} from "./ren
 import {configureTickAngles} from "./configure-tick-angle";
 import {renderBgSVGOnlyBBox} from "../bg-svg-only";
 import {AxisLayouts, Orientation} from "../../constants/types";
-import {KeyedAxis} from "respvis-parcoord/render/validate-keyed-axis";
+import type {KeyedAxis} from "../../../../respvis-parcoord/ts/render/validate-keyed-axis";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, Axis>;
 export type KeyedAxisSelection = Selection<SVGSVGElement | SVGGElement, KeyedAxis>;

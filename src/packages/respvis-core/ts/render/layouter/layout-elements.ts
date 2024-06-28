@@ -6,7 +6,7 @@ import {circleInsideRect, circleToAttrs} from '../../data/shapes/circle';
 import {cssVars} from "../../constants/cssVars";
 import {ellipseInsideRect, ellipseToAttrs} from "../../data/shapes/ellipse";
 import {SVGTwinInformation} from "./layouter-compute";
-import {centerSVGTextBaseline} from "respvis-core";
+import {centerSVGTextBaseline} from "../../utilities";
 
 export function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGTwinInformation>): void {
   selection.each((d, i, g) => {

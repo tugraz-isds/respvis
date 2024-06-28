@@ -1,10 +1,15 @@
-import {LegendSelection, Radius, RadiusUserArgs} from "respvis-core";
+import {
+  isInterpolatedRadiusUserArgs,
+  LegendSelection,
+  Radius,
+  RadiusUserArgs,
+  validateBubbleRadius,
+  validateInterpolatedRadius
+} from "respvis-core";
 import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
 import {PointLabelsDataCollection, PointLabelsUserArgs} from "../point-label";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
 import type {Point} from "../point";
-import {isInterpolatedRadiusUserArgs, validateInterpolatedRadius} from "respvis-core/data/radius/interpolated-radius";
-import {validateBubbleRadius} from "respvis-core/data/radius/bubble-radius";
 import {PointResponsiveState} from "./point-responsive-state";
 import {renderRadiusScale} from "./render-radius-scale";
 

@@ -1,14 +1,16 @@
-import {ScaledValuesNumeric, ScaledValuesNumericUserArgs, validateScaledValuesSpatial} from "../scale";
-import {BaseAxis, BaseAxisUserArgs, Renderer, Series, validateBaseAxis} from "../../render";
 import {ErrorMessages} from "../../constants";
-import {scaleLinear, ScaleLinear} from "d3";
+import {ScaledValuesNumeric, ScaledValuesNumericUserArgs, validateScaledValuesSpatial} from "../scale";
+import {BaseAxis, BaseAxisUserArgs, validateBaseAxis} from "../../render/axis";
+import {Renderer} from "../../render/chart";
+import {Series} from "../../render/series";
 import {
   RespValInterpolated,
   RespValInterpolatedOptional,
   RespValInterpolatedUserArgs,
   validateRespValInterpolated
-} from "../responsive-value/responsive-value-interpolated";
+} from "../responsive-value";
 import {Extrema, isExtrema} from "./extrema";
+import {scaleLinear, ScaleLinear} from "d3";
 
 export type BubbleRadiusUserArgs = ScaledValuesNumericUserArgs & {
   extrema: RespValInterpolatedUserArgs<Extrema>

@@ -1,7 +1,6 @@
 import {CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
 import {PointLabelsUserArgs, PointSeries} from "respvis-point";
-import {InterpolatedRadius, InterpolatedRadiusUserArgs} from "respvis-core";
-import {validateRespValInterpolated} from "respvis-core/data/responsive-value/responsive-value-interpolated";
+import {InterpolatedRadius, InterpolatedRadiusUserArgs, validateRespValInterpolated} from "respvis-core";
 
 export type LineSeriesUserArgs = CartesianSeriesUserArgs & {
   labels?: PointLabelsUserArgs

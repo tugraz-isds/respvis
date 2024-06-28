@@ -1,4 +1,4 @@
-import {genKeyObjectFromObject} from "respvis-core";
+import {genKeyObjectFromObject} from "./types";
 
 export const cssVarsDefaults = {
   // '--layout-width-factor': 0,

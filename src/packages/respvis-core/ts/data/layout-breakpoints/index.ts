@@ -1,1 +1,2 @@
-export {LayoutBreakpoints} from "./layout-breakpoints";
+export * from "./layout-breakpoints";
+export * from "./layout-width";

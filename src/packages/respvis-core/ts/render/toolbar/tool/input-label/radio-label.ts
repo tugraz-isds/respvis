@@ -1,7 +1,7 @@
 import {Selection} from "d3";
 import {InputLabel, InputLabelDataBase} from "./input-label";
 import {renderSimpleTooltip} from "../render/render-simple-tooltip";
-import {addRawSVGToSelection} from "respvis-core";
+import {addRawSVGToSelection} from "../../../../utilities";
 import InfoSVG from '../../../../../../../assets/svg/tablericons/info-icon.svg'
 
 export type RadioLabelsData = Omit<RadioLabelData, 'value' | 'label'> & {

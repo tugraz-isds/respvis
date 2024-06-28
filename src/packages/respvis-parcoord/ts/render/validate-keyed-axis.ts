@@ -1,5 +1,4 @@
-import {BaseAxis, BaseAxisArgs, validateBaseAxis} from "respvis-core/render/axis/validate-base-axis";
-import {ActiveKeyMap, AxisKey} from "respvis-core/constants/types";
+import {ActiveKeyMap, AxisKey, BaseAxis, BaseAxisArgs, validateBaseAxis} from "respvis-core";
 import type {ParcoordSeries} from "./index";
 
 export type KeyedAxisArgs = BaseAxisArgs & {

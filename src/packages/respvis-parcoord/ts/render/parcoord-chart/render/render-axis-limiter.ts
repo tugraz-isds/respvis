@@ -9,7 +9,7 @@ import {
   throttle
 } from "respvis-core";
 import {drag, Selection} from "d3";
-import {KeyedAxis} from "respvis-parcoord";
+import {KeyedAxis} from "../../validate-keyed-axis";
 
 export function renderAxisLimiter(axisS: Selection<SVGGElement, KeyedAxis>) {
   renderChevronLimiter(axisS)

@@ -1,8 +1,10 @@
 import {defaultScope, maxBreakpointCount} from "../../constants/other";
 import {BreakpointScope, BreakpointScopeMapping} from "../breakpoints/breakpoint-scope";
 import {CSSLengthValue, LengthDimension} from "../../constants/types";
-import {getLayoutWidthIndexFromCSS} from "../breakpoints";
-import {cssLengthInPx, elementFromSelection, ErrorMessages, RespValBase} from "respvis-core";
+import {getLayoutWidthIndexFromCSS} from "../layout-breakpoints";
+import {cssLengthInPx, elementFromSelection} from "../../utilities";
+import {ErrorMessages} from "../../constants";
+import {RespValBase} from "./responsive-value-base";
 
 type RespValInterpolatedUserArgsResponsive<T> = {
   readonly breakpointValues: { 0: T, [key: number]: T },

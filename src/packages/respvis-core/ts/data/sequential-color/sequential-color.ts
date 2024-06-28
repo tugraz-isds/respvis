@@ -1,4 +1,6 @@
-import {BaseAxis, BaseAxisUserArgs, Renderer, Series, validateBaseAxis} from "../../render";
+import {BaseAxis, BaseAxisUserArgs, validateBaseAxis} from "../../render/axis";
+import {Series} from "../../render/series";
+import {Renderer} from "../../render/chart";
 import {validateScaledValuesSpatial} from "../scale";
 import {ScaledValuesSequential} from "../scale/scaled-values-sequential";
 

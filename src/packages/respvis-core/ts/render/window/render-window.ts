@@ -2,8 +2,8 @@ import {Selection} from "d3";
 import {SVGHTMLElementLegacy} from "../../constants/types";
 import {Window} from "./window";
 import {layouterRender} from "../layouter";
-import {renderTooltip} from "respvis-tooltip";
 import {elementFromSelection} from "../../utilities";
+import {renderTooltip} from "respvis-tooltip";
 
 export function renderWindow<D extends Window>(windowS: Selection<SVGHTMLElementLegacy, D>) {
   const data = windowS.datum()

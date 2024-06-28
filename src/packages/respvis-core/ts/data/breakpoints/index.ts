@@ -1,1 +1,2 @@
-export {getLayoutWidthIndicesFromCSS, getLayoutWidthIndexFromCSS} from "../layout-breakpoints/layout-width";
+export * from './breakpoints'
+export * from './breakpoint-scope'

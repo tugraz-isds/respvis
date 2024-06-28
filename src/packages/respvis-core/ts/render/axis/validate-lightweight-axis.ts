@@ -1,19 +1,16 @@
-import {LayoutBreakpoints, LayoutBreakpointsUserArgs,} from "../../data/layout-breakpoints/layout-breakpoints";
+import {AxisLayoutHorizontal, AxisLayoutsHorizontal, AxisLayoutsVertical, AxisLayoutVertical,} from "../../constants";
+import {ConfigureAxisFn} from "./validate-base-axis";
+import {LayoutBreakpoints, LayoutBreakpointsUserArgs,} from "../../data/layout-breakpoints";
 import {
-  AxisLayoutHorizontal,
-  AxisLayoutsHorizontal,
-  AxisLayoutsVertical,
-  AxisLayoutVertical,
-  ConfigureAxisFn,
-  RenderArgs,
   RespVal,
   RespValByValueOptional,
   RespValByValueUserArgs,
   RespValUserArgs,
-  ScaledValuesSpatial,
   validateResponsiveValByValue,
   validateRespVal
-} from "respvis-core";
+} from '../../../ts/data/responsive-value'
+import {ScaledValuesSpatial} from "../../data/scale";
+import {RenderArgs} from "../chart";
 import {Axis as D3Axis} from "d3-axis";
 
 export type LightWeightAxisUserArgs = {
@@ -49,7 +46,8 @@ export function validateLightWeightAxis(args: LightWeightAxisArgs): LightWeightA
     scaledValues: args.scaledValues,
     title: validateRespVal(args.title || ''),
     subTitle: validateRespVal(args.subTitle || ''),
-    configureAxis: validateRespVal(args.configureAxis || (() => {})),
+    configureAxis: validateRespVal(args.configureAxis || (() => {
+    })),
     breakpoints: new LayoutBreakpoints(args.breakpoints),
     horizontalLayout: args.horizontalLayout && AxisLayoutsHorizontal.includes(args.horizontalLayout) ?
       args.horizontalLayout : 'bottom',

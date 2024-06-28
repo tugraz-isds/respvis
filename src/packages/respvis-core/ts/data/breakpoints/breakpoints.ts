@@ -1,6 +1,6 @@
 import {CSSBreakpointLengthUnit, LengthDimension, SVGHTMLElement, UnitValue} from "../../constants/types";
 import {defaultLayoutIndex, pxUpperLimit} from "../../constants/other";
-import {convertToPx} from "respvis-core";
+import {convertToPx} from "../../utilities";
 
 export type BreakpointsUserArgs = {
   values: readonly number[],

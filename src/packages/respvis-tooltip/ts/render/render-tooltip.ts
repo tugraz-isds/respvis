@@ -1,6 +1,6 @@
+import {elementFromSelection, Window} from "respvis-core";
 import {select, Selection} from "d3";
 import {setTooltipVisibility, tooltipSelector} from "./tooltip";
-import {elementFromSelection, Window} from "respvis-core";
 
 export function renderTooltip(): Selection<HTMLDivElement> {
   const bodyS = select('html > body')
