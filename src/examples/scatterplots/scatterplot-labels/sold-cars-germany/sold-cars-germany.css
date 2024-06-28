@@ -2,7 +2,7 @@
   width: 100%;
   .window-rv {
     container-type: inline-size;
-    --chart-padding-top: 0.5rem;
+    --chart-padding-top: 1.5rem;
     --chart-padding-right: 1rem;
     @container style(--layout-width: 0) or style(--layout-width: 1) or style(--layout-width: 2) {
       .axis-y .tick {

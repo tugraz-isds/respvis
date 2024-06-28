@@ -2,7 +2,7 @@ import type {StoryContext} from "@storybook/html";
 import {renderChartMeta} from "../../render/render-chart-meta";
 import {select, Selection} from "d3";
 import {AxisChart} from "./axis-chart";
-import {AxisChartUserArgs} from "./axis-chart-validation";
+import {AxisChartUserArgs} from "./validate-axis-chart";
 
 export const renderChart = (args: AxisChartUserArgs, context: StoryContext<AxisChartUserArgs>) => {
   return renderChartMeta(args, context, (args, id) => {

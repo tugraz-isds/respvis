@@ -51,7 +51,7 @@ export const singleLineChartDateValues = {
 
 export const singleLineChartResponsiveTitle: LineChartUserArgs = {
   ...singleLineChartDateValues,
-  breakPoints: {
+  breakpoints: {
     width: {
       values: [20, 30, 50],
       unit: 'rem'
@@ -59,7 +59,7 @@ export const singleLineChartResponsiveTitle: LineChartUserArgs = {
   },
   title: {
     dependentOn: 'width',
-    mapping: {0: 'Registered Students', 1: 'Students at TU Graz', 3: 'Students Registered at TU Graz'}
+    mapping: {0: 'Students', 1: 'Students TU Graz', 3: 'Students Registered at TU Graz'}
   },
   subTitle: {
     dependentOn: 'width',
@@ -71,7 +71,7 @@ export const singleLineChartResponsiveAxisTicks: LineChartUserArgs = {
   ...singleLineChartResponsiveTitle,
   x: {
     ...singleLineChartResponsiveTitle.x,
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [15, 30, 50],
         unit: 'rem'
@@ -111,10 +111,8 @@ export const singleLineChartResponsiveAxisTicks: LineChartUserArgs = {
 export const singleLineChartLabelsAndTooltips: LineChartUserArgs = {
   ...singleLineChartResponsiveAxisTicks,
   series: { ...singleLineChartResponsiveAxisTicks.series,
-    markerTooltipGenerator: {
-      tooltips: function (_, {xValue, yValue}) {
-        return `Year: ${xValue}<br/>Students: ${format('.2f')(yValue)}`
-      }
+    markerTooltipGenerator: function (_, {xValue, yValue}) {
+      return `Year: ${xValue}<br/>Students: ${format('.2f')(yValue)}`
     },
     labels: {
       values: students.map(student => student.toString()),
@@ -124,7 +122,7 @@ export const singleLineChartLabelsAndTooltips: LineChartUserArgs = {
   },
   // x: {
   //   ...singleLineChartResponsiveTitle.x,
-  //   breakPoints: {
+  //   breakpoints: {
   //     width: {
   //       values: [15, 30, 50],
   //       unit: 'rem'

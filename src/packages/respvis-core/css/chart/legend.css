@@ -6,19 +6,64 @@
   align-self: start;
   cursor: default;
   gap: 0.25rem;
+  --max-radius: 0px;
+  --min-radius: 0px;
   .title {
     font-size: var(--font-size-legend-title);
     margin: 0 0.5em;
-  }
-  .cross-state {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
   }
   .items {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+  }
+  &:has(.legend__color-scale, .legend__radius-scale) {
+    padding-right: max(1rem, var(--max-radius, 0px));
+    padding-left: max(1rem, var(--min-radius, 0px));
+  }
+  .items + .legend__color-scale {
+    margin-top: 1rem;
+  }
+  .legend__color-scale {
+    display: grid;
+    grid-template: auto auto / auto;
+    grid-template-areas:
+      'color-scale'
+      'axis';
+    width: 100%;
+    .rect {
+      grid-area: color-scale;
+      height: calc(1.6 * var(--font-size-axis-title));
+      width: 100%;
+    }
+    .axis {
+      grid-area: axis;
+    }
+  }
+  .legend__radius-scale {
+    display: grid;
+    grid-template: auto auto / auto;
+    grid-template-areas:
+      'elements'
+      'axis';
+    width: 100%;
+    .elements {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      grid-area: elements;
+      height: calc(1rem + 2 * var(--max-radius));
+      width: 100%;
+      min-width: calc(calc(1rem + 2 * var(--max-radius)) + 2 * var(--min-radius));
+      .point {
+        --fit-height: true;
+        --fit-width: true;
+        fill: none;
+      }
+    }
+    .axis {
+      grid-area: axis;
+    }
   }
 }
 

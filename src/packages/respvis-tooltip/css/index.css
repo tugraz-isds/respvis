@@ -15,11 +15,25 @@
       font-weight: normal;
       font-size: var(--font-size-tooltip-label);
     }
-    /*&.tooltip--cross {*/
-    /*  h3 {*/
-    /*    border-top: 0.0625rem solid var(--control-elements-chart-color3);*/
-    /*  }*/
-    /*}*/
+  }
+  &.tooltip-position-sticky {
+    /*based on: https://css-tricks.com/the-css-custom-property-toggle-trick/*/
+    --place-left: initial;
+    --left-offset: 0;
+    --left-offset-applied: var(--place-left) var(--left-offset);
+    --place-right: initial;
+    --right-offset: 0;
+    --right-offset-applied: var(--place-right) var(--right-offset);
+    --place-top: initial;
+    --top-offset: 0;
+    --top-offset-applied: var(--place-top) var(--top-offset);
+    --place-bottom: initial;
+    --bottom-offset: 0;
+    --bottom-offset-applied: var(--place-bottom) var(--bottom-offset);
+    left: var(--left-offset-applied, unset);
+    right: var(--right-offset-applied, unset);
+    top: var(--top-offset-applied, unset);
+    bottom: var(--bottom-offset-applied, unset);
   }
 }
 

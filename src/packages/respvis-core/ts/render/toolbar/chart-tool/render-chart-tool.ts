@@ -2,7 +2,7 @@ import {select, Selection} from "d3";
 import {renderTool} from "../tool/render/render-tool";
 import {renderButton} from "../tool/render/render-button";
 import {addRawSVGToSelection} from "../../../utilities/d3/util";
-import chartSVGRaw from "../../../../../../assets/svg/tablericons/chart-bar.svg";
+import chartSVGRaw from "../../../../../../assets/svg/tablericons/chart-settings.svg";
 import {renderSimpleTooltip} from "../tool/render/render-simple-tooltip";
 import {bindOpenerToDialog, DialogData, renderDialog} from "../tool/render/render-dialog";
 import {Series} from "../../series";
@@ -20,12 +20,14 @@ export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesColle
   const dialogS = renderDialog(dialogContainerS, 'dialog--center', 'dialog--chart')
   bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300, type: 'modal'})
 
-  dialogS.on('cancel', function (e) {
+  dialogS.on('close', function (e) {
     e.preventDefault()
+    seriesCollection[0]?.renderer.windowS.datum().windowSettings.reset()
     select<HTMLDialogElement, DialogData>(this.closest('dialog')!).datum()?.triggerExit()
+    seriesCollection[0]?.renderer.windowS.dispatch('resize')
   });
 
   seriesCollection.forEach(series => {
-    series.toolRender(toolbarS)
+    series.renderTool(toolbarS)
   })
 }

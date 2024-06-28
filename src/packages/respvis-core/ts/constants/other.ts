@@ -1,6 +1,11 @@
 
 export const maxBreakpointCount = 30
 
+export const defaultExtrema = {
+  min: 5,
+  max: 30
+} as const
+
 export const pxUpperLimit = '10000px'
 export const pxLowerLimit = '0px'
 

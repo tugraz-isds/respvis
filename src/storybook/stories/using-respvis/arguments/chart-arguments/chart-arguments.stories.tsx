@@ -5,7 +5,7 @@ import {rawCode} from "../../../util/raw-code";
 import {PowerConsumptionData} from 'data'
 import {renderLineChart} from "../../../util/render/render-line.chart";
 import FullyResponsiveCSS from '../example-multi-line/example-multi-line.css?inline'
-import {breakPoints} from "../example-multi-line/arguments/breakPoints-argument";
+import {breakpoints} from "../example-multi-line/arguments/breakPoints-argument";
 import {title} from "../example-multi-line/arguments/title-argument";
 import {subTitle} from "../example-multi-line/arguments/subTitle-argument";
 
@@ -44,7 +44,7 @@ export const ChartArgs: Story = {
         title: 'Continents'
       }
     },
-    breakPoints,
+    breakpoints: breakpoints,
     title,
     subTitle,
     x: {
@@ -55,7 +55,7 @@ export const ChartArgs: Story = {
         scope: 'self',
         mapping: {0: 90, 3: 0},
       },
-      breakPoints: {
+      breakpoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'
@@ -65,7 +65,7 @@ export const ChartArgs: Story = {
     },
     y: {
       title: 'Consumption',
-      breakPoints: {
+      breakpoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'

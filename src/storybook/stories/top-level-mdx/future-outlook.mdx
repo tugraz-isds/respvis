@@ -13,15 +13,19 @@ import {Meta} from "@storybook/blocks";
 - Change Movable Cross Tool to Select Tooltip Type Tool.
   Use Movable Cross as tool option.
 - For Inspect Tool + Cartesian Chart: Add Horizontal and Vertical Lines, connecting cross cursor with axes.
-
+- Setting for toggling between category and sequential colors.
+- Find a way for easily changing underlying data of charts for different space requirements.
+- Add defaults for clamping css vars of chart title, subtitle, labels
 
 ## Restructuring
 
 - Test removal of path aliases and working with workspace
   module resolution instead.
 - Add TSLint and Prettier to enforce naming conventions.
-
-
+- Have a look at color-continuous data component and update
+  point series color and radii properties.
+- Restructure Legend in multiple containers (size, category, color scale),
+  which can be aligned independently.
 
 ## Documentation and Testing
 
@@ -44,9 +48,20 @@ import {Meta} from "@storybook/blocks";
   - Drag & Drop Fuel Axis to Start of Chart.
   - Activate Price and Horsepower Axes again.
   - Fuel Axis can't be drag and dropped anymore. Instead, mileage axis is drag & dropped.
-- Parallel Coordinates Chart: Dragging Numeric Axes slightly changes scale. This leads to
-  a lot of lines disappearing. Dragging same Axis slighly again recovers old axis scale.
+- Linear Filtering and Enter Exit Transitions are Conflicting. To reproduce do fast linear filtering
+  in multi-line chart.
 - Parallel Coordinates Chart: Line CSS Transition not enabled.
 - Layouting: A rapid change of the chart size, like opening dev tools, does not lead to rerender
   sometimes.
-- Download: Rotated Axis Text looks different in downloaded chart svg
+- Line Chart: Double Range Slider colored range wrong.
+
+
+
+## Notes
+
+- Importing and using functions in respvis-core from respvis-cartesian
+  leads to error(Undefined CartesianResponsiveState constructor). Maybe
+  this is inavoidable due to the multi package structure and problems must
+  be solved with union types instead. Anyway, this problem does not affect
+  library users, since everything works fine when importing from outside of
+  respvis packages.

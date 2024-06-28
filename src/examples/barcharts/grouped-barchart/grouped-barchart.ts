@@ -28,7 +28,7 @@ export function renderGroupedBarChart(selector: string) {
       markerTooltipGenerator: ((e, d) => {
         return `Site: ${d.xValue}<br/>
                 Total Remuneration: $${d3.format(',')(d.yValue)}<br/>
-                Year: ${d.tooltipLabel}<br/>`
+                Year: ${d.categoryFormatted ?? ''}<br/>`
       }),
       flipped: {
         dependentOn: 'width',
@@ -43,7 +43,7 @@ export function renderGroupedBarChart(selector: string) {
         offset: 6, positionStrategy: 'dynamic'
       }
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [20, 45, 50],
         unit: 'rem'
@@ -58,7 +58,7 @@ export function renderGroupedBarChart(selector: string) {
     // },
     x: {
       title: 'Country',
-      breakPoints: {
+      breakpoints: {
         width: axisBreakPointsWidth,
         height: axisBreakPointsHeight
       },
@@ -68,7 +68,7 @@ export function renderGroupedBarChart(selector: string) {
     y: {
       title: 'Total Remuneration',
       subTitle: '[EU]',
-      breakPoints: {
+      breakpoints: {
         height: axisBreakPointsHeight,
         width: axisBreakPointsWidth
       },

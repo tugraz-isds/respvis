@@ -10,10 +10,21 @@ export function downloadChart<Datum>(
   renderer: Renderer
 ): void {
   chartSelection.each((d, i, g) => {
+    const {
+      downloadStyleType, downloadRemoveClasses,
+      downloadRemoveDataKeys, downloadRemoveDataStyles,
+      downloadMarginLeft, downloadMarginTop,
+      downloadMarginRight, downloadMarginBottom
+    } = renderer.windowS.datum().windowSettings.state
+
     const clonedChart = <SVGSVGElement>g[i].cloneNode(true);
     const width = clonedChart.getAttribute('width');
     const height = clonedChart.getAttribute('height');
-    clonedChart.setAttribute('viewBox', `0, 0, ${width}, ${height}`);
+    const finalX = `${0 - parseInt(downloadMarginLeft)}`
+    const finalY = `${0 - parseInt(downloadMarginTop)}`
+    const finalWidth = `${parseInt(width ?? '0') + parseInt(downloadMarginLeft) + parseInt(downloadMarginRight)}`
+    const finalHeight = `${parseInt(height ?? '0') + parseInt(downloadMarginTop) + parseInt(downloadMarginBottom)}`
+    clonedChart.setAttribute('viewBox', `${finalX}, ${finalY}, ${finalWidth}, ${finalHeight}`);
     clonedChart.removeAttribute('width');
     clonedChart.removeAttribute('height');
     clonedChart.removeAttribute('x');
@@ -27,20 +38,17 @@ export function downloadChart<Datum>(
     const cloneContainer = document.createElement('div');
     cloneContainer.append(clonedChart);
 
-    const { downloadStyleType, downloadRemoveClasses,
-      downloadRemoveDataKeys, downloadRemoveDataStyles } = renderer.windowS.datum().windowSettings
-
     //prev regex / (layout|bounds|data-ignore-layout|data-ignore-layout-children)=".*?"/g
-    const classString =  (downloadStyleType === 'inline' && downloadRemoveClasses) ? '|class' : ''
-    const dataKeyString =  (downloadRemoveDataKeys) ? '|data-key' : ''
-    const dataStyleString =  (downloadStyleType === 'inline' && downloadRemoveDataStyles) ? '|data-style' : ''
+    const classString = (downloadStyleType === 'inline' && downloadRemoveClasses) ? '|class' : ''
+    const dataKeyString = (downloadRemoveDataKeys) ? '|data-key' : ''
+    const dataStyleString = (downloadStyleType === 'inline' && downloadRemoveDataStyles) ? '|data-style' : ''
     const optionalAttrs = classString + dataKeyString + dataStyleString
     const regex = new RegExp(`\\s(layout|bounds|data-ignore-layout|data-ignore-layout-children${optionalAttrs})=".*?"`, 'g')
 
     let cloneHTML = cloneContainer.innerHTML.replace(regex, '')
     cloneHTML = prettifySVG(cloneHTML, renderer)
     const blobType = 'image/svg+xml;charset=utf-8';
-    const blob = new Blob([cloneHTML], { type: blobType });
+    const blob = new Blob([cloneHTML], {type: blobType});
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     fileName = fileName instanceof Function ? fileName.call(g[i], d, i, g) : fileName;

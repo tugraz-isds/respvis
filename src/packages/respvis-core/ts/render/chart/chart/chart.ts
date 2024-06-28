@@ -1,13 +1,12 @@
 import {dispatch, Selection} from "d3";
-import {SVGHTMLElement} from "../../../constants/types";
 import {renderWindow, Window, WindowArgs, windowValidation} from "../../window";
 import {ChartData, ChartDataUserArgs, validateChart} from "./validate-chart";
 import {Renderer} from "../renderer";
-import {ReRenderContext, resizeEventListener} from "../../../resize-event-dispatcher";
+import {ReRenderContext, resizeEventListener} from "./resize-event-dispatcher";
 import {renderChart} from "./render-chart";
-import {ThrottleScheduled} from "../../../utilities/d3/util";
-import {fixActiveCursor} from "../../util/fix-active-cursor";
-import {layouterCompute} from "../../../layouter";
+import {fixActiveCursor, ThrottleScheduled} from "../../../utilities";
+import {layouterCompute} from "../../layouter";
+import {Legend} from "../../legend";
 
 export type ChartWindowed = Window & ChartData
 export type ChartUserArgs = Omit<WindowArgs & ChartDataUserArgs, 'renderer'>
@@ -21,7 +20,6 @@ export class Chart implements Renderer {
   protected resizeObserver?: ResizeObserver
   private immediateInteractionThrottle?: ThrottleScheduled<any, any>
   private standardInteractionThrottle?: ThrottleScheduled<any, any>
-  legendS?: Selection<SVGHTMLElement>
   private unmounted: boolean = false;
 
   constructor(windowSelection: Selection<HTMLDivElement>, args: ChartUserArgs) {
@@ -47,6 +45,12 @@ export class Chart implements Renderer {
   get chartS(): Selection<SVGSVGElement, ChartWindowed> {
     return (this._chartS && !this._chartS.empty()) ? this._chartS :
       this.layouterS.selectAll<SVGSVGElement, ChartWindowed>('svg.chart')
+  }
+
+  _legendS?: Selection<SVGGElement, Legend>
+  get legendS(): Selection<SVGGElement, Legend> {
+    return (this._legendS && !this._legendS.empty()) ? this._legendS :
+      this.chartS.selectAll<SVGGElement, Legend>('.legend')
   }
 
   _paddingWrapperS?: Selection<SVGGElement, ChartWindowed>

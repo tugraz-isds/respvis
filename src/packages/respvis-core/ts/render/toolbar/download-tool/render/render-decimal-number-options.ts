@@ -6,7 +6,7 @@ import {windowSettingsKeys} from "../../../window/window-settings";
 import {renderFieldset} from "../../tool/render/render-fieldset";
 
 export function renderDecimalNumberOptions(selection: Selection, renderer: Renderer) {
-  const currentSettings = renderer.windowS.datum().windowSettings
+  const currentSettings = renderer.windowS.datum().windowSettings.state
   const onChangeActive = (e: InputEvent, type: string) => {
     currentSettings[type] = (e.target as HTMLInputElement).checked
     renderer.windowS.dispatch('resize')
@@ -35,7 +35,7 @@ export function renderDecimalNumberOptions(selection: Selection, renderer: Rende
       label: '',
       type: windowSettingsKeys.downloadAttributeMaxDecimals,
       value: currentSettings.downloadAttributeMaxDecimals,
-      min: 1, max: 20, step: 1,
+      min: 1, max: 20, step: 1, size: 2,
       onInput: onInputNumber,
       onChange: onChangeNumber,
       activeClasses: !currentSettings.downloadAttributeMaxDecimalsActive ? ['disabled'] : [],

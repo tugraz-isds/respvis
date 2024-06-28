@@ -34,7 +34,7 @@ export function sum(array: number[]) {
   return array.reduce((sum, val) => sum + val, 0)
 }
 
-export function arrayOrder(arr: number[]) {
+export function getArrayOrder(arr: number[]) {
   const arrOrder = arr.map(() => 1)
   for (let j = 0; j < arr.length; j++) {
     for (let i = j + 1; i < arr.length; i++) {
@@ -43,4 +43,20 @@ export function arrayOrder(arr: number[]) {
     }
   }
   return arrOrder
+}
+
+export function isNumberArray(arr: any[]): arr is number[] {
+  return arr.length > 0 && typeof arr[0] === 'number'
+}
+
+export function isStringArray(arr: any[]): arr is string[] {
+  return arr.length > 0 && typeof arr[0] === 'string'
+}
+
+export function isDateArray(arr: any[]): arr is Date[] {
+  return arr.length > 0 && arr[0] instanceof Date
+}
+
+export function hasValueOf(arr: any[]): arr is { valueOf: () => number }[] {
+  return arr.length > 0 && typeof arr[0].valueOf === "number"
 }

@@ -9,7 +9,7 @@ export const x: BaseAxisUserArgs = {
     scope: 'self',
     mapping: {0: 90, 3: 0},
   },
-  breakPoints: {
+  breakpoints: {
     width: {
       values: [10, 30, 50],
       unit: 'rem'

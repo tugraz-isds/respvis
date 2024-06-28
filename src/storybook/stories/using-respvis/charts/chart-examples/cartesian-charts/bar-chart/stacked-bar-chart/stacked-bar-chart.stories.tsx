@@ -64,13 +64,11 @@ export const Primary: Story = {
         values: platformsWhole,
         title: 'Device Types'
       },
-      markerTooltipGenerator: {
-        tooltips: ((e, d) => {
-          return `Device Type: ${d.tooltipLabel}<br/>
+      markerTooltipGenerator: ((e, d) => {
+        return `Device Type: ${d.category}<br/>
                 Market Share: ${format(',')(d.yValue)}%<br/>
                 Year: ${d.xValue}<br/>`
-        })
-      },
+      }),
       flipped: {
         dependentOn: 'width',
         mapping: {0: true, 2: false}
@@ -88,7 +86,7 @@ export const Primary: Story = {
         }
       }
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -99,7 +97,7 @@ export const Primary: Story = {
     },
     x: {
       title: 'Year',
-      breakPoints: {
+      breakpoints: {
         width: axisBreakPointsWidth,
         height: axisBreakPointsHeight
       },
@@ -109,7 +107,7 @@ export const Primary: Story = {
     y: {
       title: 'Market Share',
       configureAxis: (a) => a.tickFormat((v) => `${v}%`),
-      breakPoints: {
+      breakpoints: {
         height: axisBreakPointsHeight,
         width: axisBreakPointsWidth
       },

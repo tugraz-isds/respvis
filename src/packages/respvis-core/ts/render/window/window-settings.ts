@@ -1,3 +1,5 @@
+import {genKeyObjectFromObject} from "../../constants";
+
 type DownloadStyleType = 'inline' | 'embedded'
 type ZoomType = 'geometric' | 'semantic' | 'fish-eye' | 'cartesian'
 type DownloadType = 'svg' | 'jpg' | 'png' //TODO: add support for raster images
@@ -19,6 +21,11 @@ export type WindowSettings = {
   downloadPrettifyActive: boolean
   downloadPrettifyIndentionSpaces: string
 
+  downloadMarginLeft: string
+  downloadMarginTop: string
+  downloadMarginRight: string
+  downloadMarginBottom: string
+
   // ------------------ parcoord
   parcoordEquidistantAxes: boolean
 
@@ -31,20 +38,6 @@ export type WindowSettings = {
   // gridActive: BooleanString
 }
 
-export const windowSettingsKeys: Record<keyof WindowSettings, keyof WindowSettings> = {
-  downloadStyleType: 'downloadStyleType',
-  downloadRemoveClasses: 'downloadRemoveClasses',
-  downloadRemoveDataKeys: 'downloadRemoveDataKeys',
-  downloadRemoveBgElements: 'downloadRemoveBgElements',
-  downloadRemoveDataStyles: 'downloadRemoveDataStyles',
-  downloadPrettifyActive: 'downloadPrettifyActive',
-  downloadPrettifyIndentionSpaces: 'downloadPrettifyIndentionSpaces',
-  movableCrossActive: "movableCrossActive",
-  downloadAttributeMaxDecimals: "downloadAttributeMaxDecimals",
-  downloadAttributeMaxDecimalsActive: "downloadAttributeMaxDecimalsActive",
-  parcoordEquidistantAxes: "parcoordEquidistantAxes"
-}
-
 export const defaultWindowSettings: WindowSettings = {
   downloadStyleType: 'inline',
   downloadRemoveClasses: true,
@@ -53,10 +46,41 @@ export const defaultWindowSettings: WindowSettings = {
   downloadRemoveBgElements: true,
   downloadPrettifyActive: true,
   downloadPrettifyIndentionSpaces: '2',
+  downloadMarginLeft: '0',
+  downloadMarginBottom: '0',
+  downloadMarginRight: '0',
+  downloadMarginTop: '0',
+
   movableCrossActive: false,
   downloadAttributeMaxDecimals: '1',
   downloadAttributeMaxDecimalsActive: true,
   parcoordEquidistantAxes: true
 } as const
 
+export const windowSettingsKeys=
+  genKeyObjectFromObject(defaultWindowSettings)
 
+export class Revertible<T> {
+  state: T
+  snapshot: Partial<T>
+  constructor(defaultState: T) {
+    this.state = defaultState
+    this.snapshot = {}
+  }
+  setImmediately<K extends keyof T>(key: K, value: T[K]) {
+    this.state[key] = value
+  }
+  setDeferred<K extends keyof T>(key: K, value: T[K]) {
+    this.snapshot[key] = value
+  }
+  get<K extends keyof T>(key: K) { return this.state[key] }
+  update() {
+    for (const key in this.snapshot) {
+      this.state[key] = this.snapshot[key] ?? this.state[key]
+    }
+    this.reset()
+  }
+  reset() {
+    this.snapshot = {}
+  }
+}

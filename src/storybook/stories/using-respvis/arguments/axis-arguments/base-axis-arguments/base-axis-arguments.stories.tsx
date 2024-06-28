@@ -4,7 +4,7 @@ import {rawCode} from "../../../../util/raw-code";
 import {PowerConsumptionData} from 'data'
 import {renderLineChart} from "../../../../util/render/render-line.chart";
 import FullyResponsiveCSS from '../../example-multi-line/example-multi-line.css?inline'
-import {breakPoints} from "../../example-multi-line/arguments/breakPoints-argument";
+import {breakpoints} from "../../example-multi-line/arguments/breakPoints-argument";
 import {title} from "../../example-multi-line/arguments/title-argument";
 import {subTitle} from "../../example-multi-line/arguments/subTitle-argument";
 import {x as xBase} from "../../example-multi-line/arguments/x-axis-base-arg";
@@ -47,7 +47,7 @@ export const AxisConfigArguments: Story = {
         title: 'Continents'
       }
     },
-    breakPoints,
+    breakpoints: breakpoints,
     title,
     subTitle,
     x : xBase,

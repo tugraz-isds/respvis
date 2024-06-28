@@ -4,6 +4,8 @@ import {mapPowerConsumptionData} from './data/electric-power-consumption.js'
 
 export const renderMultiLineChart = (selector: string) => {
   const {yUSA, yEurope, yAsia, yearsJSDateFormat} = mapPowerConsumptionData()
+  // const domainConsumption = [0, 14000]
+  // scale: scalePow().domain(domainConsumption).exponent(2)
 
   const categories = [
     ...yUSA.map(() => 'USA'),
@@ -19,13 +21,13 @@ export const renderMultiLineChart = (selector: string) => {
         title: 'Continents'
       },
       markerTooltipGenerator: (_, point) =>
-        `Year: ${point.xValue}<br/>Pow. Consumption: ${point.yValue}kWh`,
+        `Year: ${(point.xValue as Date).getFullYear()}<br/>Pow. Consumption: ${point.yValue}kWh`,
       zoom: {
         in: 20,
         out: 1
       }
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [25, 30, 50],
         unit: 'rem'
@@ -47,7 +49,7 @@ export const renderMultiLineChart = (selector: string) => {
         scope: 'self',
         mapping: {0: 90, 3: 0},
       },
-      breakPoints: {
+      breakpoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'
@@ -56,11 +58,12 @@ export const renderMultiLineChart = (selector: string) => {
       configureAxis: (axis) => {
         axis.ticks(timeYear.every(2))
         axis.tickFormat(timeFormat('%Y'))
-      }
+      },
+      gridLineFactor: 1
     },
     y: {
       title: 'Consumption',
-      breakPoints: {
+      breakpoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'
@@ -71,7 +74,12 @@ export const renderMultiLineChart = (selector: string) => {
         scope: 'self',
         mapping: {0: 90, 3: 0},
       },
-    }
+      gridLineFactor: 2
+    },
+    // legend: {
+    //   symbols: (e, s) => pathCircle(e, circleInsideRect({...s, x: 0, y:0})),
+    //   reverse: true
+    // }
   }
 
   const chartWindow = select(selector).append('div')

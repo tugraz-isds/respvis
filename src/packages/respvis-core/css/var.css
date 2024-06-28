@@ -20,9 +20,12 @@
   --color-axes-line: #7f7c77; /*rgb(0, 0, 0, 0.5);*/
   --color-origin-line: var(--color-axes-line);
   --color-grid-line: var(--color-origin-line);
-  --color-element-stroke: rgb(0, 0, 0, 0.6);
+  --color-element-stroke: rgb(0, 0, 0);
+  --element-stroke-opacity: 0.6;
   --color-bar-stroke: var(--color-element-stroke);
+  --bar-stroke-opacity: var(--element-stroke-opacity);
   --color-point-stroke: var(--color-element-stroke);
+  --point-stroke-opacity: var(--element-stroke-opacity);
 
   --color-categorical-0: #78b4c6;
   --color-categorical-1: #1c9820;
@@ -38,6 +41,7 @@
 
   --control-elements-color: rgb(239, 239, 239);
   --control-elements-chart-color1: rgb(248, 229, 121);
+  --control-elements-chart-color1-20: rgb(248, 229, 121, 0.2);
   --control-elements-chart-color1-40: rgb(248, 229, 121, 0.4);
   --control-elements-chart-color2: rgb(255, 255, 255);
   --control-elements-chart-color3: var(--color-axes-line);

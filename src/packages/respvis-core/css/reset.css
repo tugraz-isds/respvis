@@ -16,6 +16,14 @@
     cursor: pointer;
   }
 
+  /* Ensure chrome type browsers display input number element properly by default */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    opacity: 1;
+    display: block;
+    pointer-events: auto;
+  }
+
   img, svg {
     max-width: 100%;
     max-height: 100%;

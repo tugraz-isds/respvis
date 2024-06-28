@@ -6,6 +6,7 @@
   .chart-parcoord {
     --chart-padding-left: 4rem;
     --chart-padding-right: 4rem;
+    --chart-padding-top: 4rem;
   }
   @container (width < 50rem) {
     .chart {

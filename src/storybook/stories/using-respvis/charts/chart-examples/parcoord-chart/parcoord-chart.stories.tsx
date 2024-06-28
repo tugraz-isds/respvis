@@ -82,7 +82,7 @@ export const Primary: Story = {
         dependentOn: 'width'
       }
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [20, 30, 70],
         unit: 'rem'

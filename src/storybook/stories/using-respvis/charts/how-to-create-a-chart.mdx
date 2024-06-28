@@ -18,15 +18,15 @@ the best development conditions. RespVis is fully typed and can
 be used the best when imported in TypeScript files. By using an
 IDE of choice, one will get useful hints about which arguments
 are expected when creating a new chart. Using a bundler like
-webpack, rollup or parcel will additionally ease the process of
-using TypeScript with plain HTML.
+webpack, rollup or parcel will additionally ease the usage of TypeScript
+with plain HTML.
 
 This tutorial expects the project to be set up with parcel, the
 zero configuration build tool. The tutorial will begin from scratch
 and explains how to progressively add functionally to achieve a fully
 responsive line chart:
 ```
-# Create line-chart project
+# Create root directory of line-chart project
 mkdir line-chart
 cd line-chart
 
@@ -40,10 +40,18 @@ Next, a chart directory with all necessary files is created. These files will
 contain the code to render the finished chart at the end of this tutorial:
 ```
 # In line-chart directory
+
+# Create chart directory
 mkdir chart
 cd chart
+
+#Create HTML file
 touch line-chart.html
+
+#Create CSS file
 touch line-chart.css
+
+#Create TypeScript file
 touch line-chart.ts
 ```
 The last thing to do before beginning to create a chart is to
@@ -100,8 +108,8 @@ implement `line-chart.ts`. The LineChartUserArgs type helps
 in figuring out which arguments are required:
 
 <Source code={`
-import { LineChart, LineChartUserArgs } from 'respvis';
-import * as d3 from 'd3';
+import { LineChart, LineChartUserArgs, formatWithDecimalZero } from 'respvis';
+import {select, format, timeFormat, timeYear} from "d3";
 
 //  Data Source: Studierendenstatistik
 //  https://online.tugraz.at/tug_online/studierendenstatistik.html
@@ -133,7 +141,7 @@ export function createLineChart(selector: string) {
     y: {}
   }
 
-  const chartWindow = d3.select(selector).append('div')
+  const chartWindow = select(selector).append('div')
   const chart = new LineChart(chartWindow, args)
   chart.buildChart()
 }
@@ -169,8 +177,8 @@ to specify the dimensions of the chart in `line-chart.css`
   min-height: 25rem;
 }`} language={"css"}/>
 
-When serving the index.html file by running `npx parcel ./line-chart/index.html`
-from the root directory one will see fruits of him/her work already:
+When serving the index.html file by running `npx parcel ./chart/line-chart.html`
+from the root directory one will see the fruits of him/her work already:
 
 <SourceCollapseBlockByStoryObj story={CurrentStories.Basic}/>
 
@@ -266,7 +274,11 @@ export function createLineChart(selector: string) {
 
 Passing values this way will make axes formatting much easier and enables
 the implementation of additional interactions which are not possible for
-categories, like zooming and numeric filtering.
+categories, like zooming and numeric filtering. You can directly see the change
+when comparing the filter menu provided by the toolbar of the previous chart with
+the menu of the current chart. You will see that the categorical filter control
+elements for the year axis changed into numerical filter controls.
+
 Using Date values changes the x-coordinate of the first point to be exactly
 located at the y-axis. This is undesirable, for aesthetic reasons. Adding
 padding to the draw-area by making use of the padding containers will
@@ -274,6 +286,9 @@ neutralise this effect:
 
 <Source code={`
 #chart {
+  width: 100%;
+  height: 75vh;
+  min-height: 25rem;
   .window-rv {
     --chart-padding-left: 1rem;
   }
@@ -317,11 +332,11 @@ const args: LineChartUserArgs = {
   },
   title: {
     dependentOn: 'width',
-    mapping: {0: 'Registered Students', 1 : 'Students at TU Graz', 3: 'Students Registered at TU Graz'}
+    mapping: {0: 'Students', 1: 'Students TU Graz', 3: 'Students Registered at TU Graz'}
   },
   subTitle: {
     dependentOn: 'width',
-    mapping: {0: 'TU Graz', 1 : ''}
+    mapping: {0: 'TU Graz', 1: ''}
   }
   ...
 }
@@ -384,7 +399,12 @@ const args: LineChartUserArgs = {
   },
   y: {
     // If no breakpoints are specified, the axis will use
-    // the breakpoints of the chart as reference
+    // the breakpoints of the chart as reference. In the
+    // current case, the labels of the y axis will be shortened
+    // for the layout widths 0 and 1 of the chart using the metric
+    // SI units. As soon as the chart reaches layout width 2, the
+    // labels will be shown in full length, where groups of three
+    // digits are separated by commas.
     configureAxis: {
       dependentOn: 'width',
       scope: 'chart',
@@ -410,9 +430,35 @@ overcrowded when space gets tiny.
 One possible solution is to remove the axes and work with tooltips and labels instead:
 
 <Source code={`
+...
+const userArgs: LineChartUserArgs = {
+  ...
+  series: {
+    ...
+    markerTooltips: {
+      tooltips: function (_, {xValue, yValue}) {
+          return \`Year: \${xValue}<br/>Students: \${format('.2f')(yValue)}\`
+        },
+    },
+    labels: {
+      values: students.map(student => student.toString()),
+      offset: 6,
+      format: (bar, label) => format('.3s')(label as any)
+    }
+    ...
+  },
+  ...
+}
+`} language={"typescript"}/>
+
+<Source code={`
 #chart {
+  width: 100%;
+  height: 75vh;
+  min-height: 25rem;
   .window-rv {
     --chart-padding-top: 1rem;
+    --chart-padding-left: 1rem;
     container-type: inline-size;
 
     .draw-area {
@@ -422,6 +468,9 @@ One possible solution is to remove the axes and work with tooltips and labels in
     }
 
     @container (width < 15rem) {
+      .axis {
+        display: none;
+      }
       .draw-area {
         .point {
           opacity: 0;
@@ -435,7 +484,6 @@ One possible solution is to remove the axes and work with tooltips and labels in
       }
     }
   }
-}
 }`} language={"css"}/>
 
 <SourceCollapseBlockByStoryObj story={CurrentStories.TooltipsAndLabelsInsteadOfAxes}/>

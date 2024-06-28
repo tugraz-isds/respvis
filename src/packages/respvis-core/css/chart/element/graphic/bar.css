@@ -1,6 +1,7 @@
 .element.bar {
   stroke-width: 1;
   stroke: var(--color-bar-stroke);
+  stroke-opacity: var(--bar-stroke-opacity);
 }
 
 .highlight .bar,

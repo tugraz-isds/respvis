@@ -40,7 +40,7 @@ export function createMarketSharesChart(selector) {
                 title: 'Device Types'
             },
             markerTooltipGenerator: ((e, d) => {
-                return `Device Type: ${d.tooltipLabel}<br/>
+                return `Device Type: ${d.categoryFormatted ?? ''}<br/>
                 Market Share: ${d3.format(',')(d.yValue)}%<br/>
                 Year: ${d.xValue}<br/>`
             }),
@@ -57,7 +57,7 @@ export function createMarketSharesChart(selector) {
                 }
             }
         },
-        breakPoints: {
+        breakpoints: {
             width: {
                 values: [20, 30, 50],
                 unit: 'rem'
@@ -68,7 +68,7 @@ export function createMarketSharesChart(selector) {
         },
         x: {
             title: 'Year',
-            breakPoints: {
+            breakpoints: {
                 width: axisBreakPointsWidth,
                 height: axisBreakPointsHeight
             },
@@ -78,7 +78,7 @@ export function createMarketSharesChart(selector) {
         y: {
             title: 'Market Share',
             configureAxis: (a) => a.tickFormat((v) => `${v}%`),
-            breakPoints: {
+            breakpoints: {
                 height: axisBreakPointsHeight,
                 width: axisBreakPointsWidth
             },

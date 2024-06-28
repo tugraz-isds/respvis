@@ -10,6 +10,18 @@ export function addTransitionClass<T extends BaseType, D>(transition: Transition
     })
 }
 
+export function addTransitionClassSelection<T extends BaseType, D>(s: Selection<T, D>) {
+  s.each(function () {
+      select(this).classed("mid-d3-transit", true);
+  })
+}
+
+export function removeTransitionClassSelection<T extends BaseType, D>(s: Selection<T, D>) {
+  s.each(function () {
+    select(this).classed("mid-d3-transit", false);
+  })
+}
+
 // export function addEnterClass<T extends BaseType, D>(selection: Selection<T, D>, delayMS = 250) {
 //   function delayEntering() {
 //     return selection.classed('animated', true)

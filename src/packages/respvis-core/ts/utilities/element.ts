@@ -1,5 +1,5 @@
 import {select} from 'd3';
-import {Rect, rectRound} from './graphic-elements/rect';
+import {Rect, rectRound} from '../data/shapes/rect';
 
 export function elementRelativeBounds(element: Element): Rect {
   console.assert(element.isConnected, 'Element needs to be attached to the DOM.');

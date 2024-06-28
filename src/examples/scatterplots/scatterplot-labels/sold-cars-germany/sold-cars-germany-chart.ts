@@ -35,12 +35,31 @@ export function createChartSoldCarsGermany(selector) {
       radii: {
         values: prices,
         scale: radiusScale,
+        extrema: {
+          dependentOn: 'width',
+          breakpointValues: {
+            0: {minimum: 3, maximum: 12},
+            1: {minimum: 5, maximum: 15},
+            3: {minimum: 7, maximum: 30},
+          }
+        },
+        axis: {
+          title: 'Prices',
+          horizontalLayout: 'bottom',
+          configureAxis: (axis => {
+            axis.ticks(2)
+            axis.tickFormat(d3.format('.2s'))
+          })
+        }
       },
+      // radii: {
+      //   dependentOn: 'width',
+      //   breakpointValues: { 0: 3, 1: 10, 2: 20}
+      // },
       markerTooltipGenerator: ((e, d: Point) => {
-        return `Car Price: ${d.yValue}€<br/>
-                Horse Power: ${d.xValue}PS<br/>
-                Make: ${d.tooltipLabel}<br/>
-                Mileage: ${d.radiusValue}km<br/>`
+        return `Car Price: ${d.radiusValue}€<br/>
+                Horse Power: ${d.yValue}PS<br/>
+                Make: ${d.xValue ?? ''}<br/>`
       }),
       zoom: {
         in: 20,
@@ -57,7 +76,7 @@ export function createChartSoldCarsGermany(selector) {
       //   return label + '1'
       // }
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [20, 30, 65],
         unit: 'rem'
@@ -72,7 +91,7 @@ export function createChartSoldCarsGermany(selector) {
         dependentOn: 'width',
         mapping: {0: 'Make', 1: 'Car Make'}
       },
-      breakPoints: {
+      breakpoints: {
         width: {
           values: [10, 40, 50],
           unit: 'rem'

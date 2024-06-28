@@ -31,7 +31,7 @@ export function createBarChart(selector: string) {
         offset: 3
       }
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -43,7 +43,7 @@ export function createBarChart(selector: string) {
     },
     x: {
       title: 'Months',
-      breakPoints: {
+      breakpoints: {
         width: axisBreakPointsWidth,
         height: axisBreakPointsHeight
       },
@@ -54,7 +54,7 @@ export function createBarChart(selector: string) {
     y: {
       title: 'Anomalies',
       subTitle: '[°C]',
-      breakPoints: {
+      breakpoints: {
         height: axisBreakPointsHeight,
         width: axisBreakPointsWidth
       },
@@ -113,7 +113,7 @@ export function createBarChartAggregated(selector: string) {
         mapping: {0: true, 2: false}
       },
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [20, 30, 50],
         unit: 'rem'
@@ -125,7 +125,7 @@ export function createBarChartAggregated(selector: string) {
     },
     x: {
       title: 'Months',
-      breakPoints: {
+      breakpoints: {
         width: axisBreakPointsWidth,
         height: axisBreakPointsHeight
       },
@@ -136,7 +136,7 @@ export function createBarChartAggregated(selector: string) {
     y: {
       title: 'Anomalies',
       subTitle: '[°C]',
-      breakPoints: {
+      breakpoints: {
         height: axisBreakPointsHeight,
         width: axisBreakPointsWidth
       },

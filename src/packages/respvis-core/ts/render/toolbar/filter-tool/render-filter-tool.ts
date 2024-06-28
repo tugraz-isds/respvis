@@ -1,7 +1,7 @@
 import {select, Selection} from "d3";
 import {renderTool} from "../tool/render/render-tool";
 import {bindOpenerToDialog, renderDialog} from "../tool/render/render-dialog";
-import {addRawSVGToSelection, elementFromSelection} from "../../../utilities/d3/util";
+import {addRawSVGToSelection} from "../../../utilities/d3/util";
 import filterSVGRaw from "../../../../../../assets/svg/tablericons/filter.svg";
 import {FieldSetData, renderFieldset} from "../tool/render/render-fieldset";
 import {Toolbar} from "../render-toolbar";
@@ -9,15 +9,16 @@ import {Series} from "../../series";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {categoryOrderMapToArray} from "../../../data/categories";
 import {mergeKeys} from "../../../utilities/dom/key";
-import {Axis, KeyedAxis} from "../../axis";
-import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-categorical";
+import {Axis} from "../../axis";
+import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-spatial/scaled-values-categorical";
 import {CheckBoxLabel} from "../tool/input-label/checkbox-label";
 import {renderButton} from "../tool/render/render-button";
 import {renderSimpleTooltip} from "../tool/render/render-simple-tooltip";
 import {LabelsParentData, renderInputLabels} from "../tool/input-label/render-input-labels";
 import {InputLabel} from "../tool/input-label/input-label";
-import {orderScaledValues, ScaledValuesLinearScale} from "../../../data/scale/scaled-values-base";
 import {RangeLabel} from "../tool/input-label/range-label";
+import type {KeyedAxis} from "../../../../../respvis-parcoord/ts/render";
+import {orderScaledValuesSpatial, ScaledValuesSpatialNumericOrTemporal} from "../../../data";
 
 export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Toolbar) {
   const seriesCollection = args.getSeries()
@@ -36,7 +37,7 @@ export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Tool
     if (seriesCollection.length > 1) renderSeriesControl(dialogS, series)
     renderCategoryControls(dialogS, series)
   })
-  const axesOrdered = orderScaledValues(axes.map(axis => axis.scaledValues), axes);
+  const axesOrdered = orderScaledValuesSpatial(axes.map(axis => axis.scaledValues), axes);
   [...axesOrdered.linear, ...axesOrdered.date].forEach(axisOrdered => renderAxisLinearControls(dialogS, axisOrdered.wrapper, axisOrdered.values))
   axesOrdered.categorical.forEach(axis => renderAxisControls(dialogS, axis.wrapper))
 
@@ -69,10 +70,9 @@ function renderSeriesControl(menuToolsItemsS: Selection, series: Series) {
 }
 
 //TODO: Refactor Double Input Range in own file
-function renderAxisLinearControls(menuToolsItemsS: Selection, axis: Axis, values: ScaledValuesLinearScale) {
+function renderAxisLinearControls(menuToolsItemsS: Selection, axis: Axis, values: ScaledValuesSpatialNumericOrTemporal) {
   const {renderer} = axis
-  const chartElement = elementFromSelection(renderer.chartS)
-  const title = getCurrentRespVal(axis.title, {chart: chartElement})
+  const title = getCurrentRespVal(axis.title, {chart: renderer.chartS})
   const domain: number[] = values.scale.domain().map(d => d.valueOf())
   const [minFilter, maxFilter] = [values.filteredRanges[0][0].valueOf(), values.filteredRanges[0][1].valueOf()]
   const [minDomain, maxDomain] = [Math.min(...domain), Math.max(...domain)]
@@ -149,12 +149,10 @@ function renderAxisLinearControls(menuToolsItemsS: Selection, axis: Axis, values
 
 function renderCategoryControls(menuToolsItemsS: Selection, series: Series) {
   const {categories, renderer} = series
-  const chartElement = elementFromSelection(renderer.chartS)
-
   if (!categories) return
 
   const {title: categoriesTitle, categoryOrderMap: categoryOrderMap, keyOrder} = categories.categories
-  const categoryText = getCurrentRespVal(categoriesTitle, {chart: chartElement})
+  const categoryText = getCurrentRespVal(categoriesTitle, {chart: renderer.chartS})
 
   const options = categoryOrderMapToArray(categoryOrderMap)
   const keys = keyOrder.map(key => mergeKeys([categories.parentKey, key]))
@@ -188,8 +186,7 @@ function renderCategoryControls(menuToolsItemsS: Selection, series: Series) {
 function renderAxisControls(menuToolsItemsS: Selection, axis: Axis) {
   const {renderer} = axis
   const axisScaledValues = axis.scaledValues
-  const chartElement = elementFromSelection(renderer.chartS)
-  const title = getCurrentRespVal(axis.title, {chart: chartElement})
+  const title = getCurrentRespVal(axis.title, {chart: renderer.chartS})
   const {keys, options} = getAxisCategoryProps(axis)
 
   const onClick = (e) => {
@@ -214,7 +211,7 @@ function renderAxisControls(menuToolsItemsS: Selection, axis: Axis) {
   if (keys.length === 0 && !('key' in axis)) return
 
   const data: (LabelsParentData & FieldSetData)[] = [{
-    legend: getCurrentRespVal(`${title ?? axisScaledValues.parentKey.toUpperCase()}`, {chart: chartElement}),
+    legend: getCurrentRespVal(`${title ?? axisScaledValues.parentKey.toUpperCase()}`, {chart: renderer.chartS}),
     collapsable: (!('key' in axis) || keys.length > 1),
     filterable: 'key' in axis ? createKeyedAxisCheckboxLabel(axis) : undefined,
     labelData

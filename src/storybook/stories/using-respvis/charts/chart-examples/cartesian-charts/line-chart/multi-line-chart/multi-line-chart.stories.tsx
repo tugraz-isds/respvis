@@ -40,10 +40,8 @@ export const FullyResponsive: Story = {
         values: categories,
         title: 'Continents'
       },
-      markerTooltipGenerator: {
-        tooltips: (_, point) => {
-          return `Year: ${point.xValue}<br/>Pow. Consumption: ${point.yValue}kWh`
-        }
+      markerTooltipGenerator: (_, point) => {
+        return `Year: ${point.xValue}<br/>Pow. Consumption: ${point.yValue}kWh`
       },
       flipped: {
         dependentOn: 'width',
@@ -54,7 +52,7 @@ export const FullyResponsive: Story = {
         out: 1
       }
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [25, 30, 50],
         unit: 'rem'
@@ -76,7 +74,7 @@ export const FullyResponsive: Story = {
         scope: 'self',
         mapping: {0: 90, 3: 0},
       },
-      breakPoints: {
+      breakpoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'
@@ -87,7 +85,7 @@ export const FullyResponsive: Story = {
     },
     y: {
       title: 'Consumption',
-      breakPoints: {
+      breakpoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'

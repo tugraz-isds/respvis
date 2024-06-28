@@ -9,10 +9,10 @@ import {DialogData} from "./tool/render/render-dialog";
 import {clickSAddEnterExitAttributes} from "./tool/animation/animtation";
 import {renderChartTool} from "./chart-tool/render-chart-tool";
 
-export type Toolbar = Pick<SeriesChartData, 'renderer' | 'legend' | 'getSeries' | 'getAxes'>
+export type Toolbar = Pick<SeriesChartData, 'renderer' | 'getSeries' | 'getAxes'>
 
-export function renderToolbar(chartS: Selection, args: Toolbar): void {
-  const toolbarS = chartS
+export function renderToolbar(windowS: Selection, args: Toolbar) {
+  const toolbarS = windowS
     .selectAll<HTMLDivElement, any>('.toolbar')
     .data([null])
     .join('div')

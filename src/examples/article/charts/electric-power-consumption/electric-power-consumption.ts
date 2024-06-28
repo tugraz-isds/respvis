@@ -18,13 +18,13 @@ export const createPowerConsumptionChart = (selector: string) => {
                 values: categories,
                 title: 'Continents'
             },
-            markerTooltipGenerator: (_, point) => `Year: ${point.xValue}<br/>Pow. Consumption: ${point.yValue}kWh`,
+            markerTooltipGenerator: (_, point) => `Year: ${(point.xValue as Date).getFullYear()}<br/>Pow. Consumption: ${point.yValue}kWh`,
             zoom: {
                 in: 20,
                 out: 1
             }
         },
-        breakPoints: {
+        breakpoints: {
             width: {
                 values: [25, 30, 50],
                 unit: 'rem'
@@ -46,7 +46,7 @@ export const createPowerConsumptionChart = (selector: string) => {
                 scope: 'self',
                 mapping: {0: 90, 3: 0},
             },
-            breakPoints: {
+            breakpoints: {
                 width: {
                     values: [10, 30, 50],
                     unit: 'rem'
@@ -57,7 +57,7 @@ export const createPowerConsumptionChart = (selector: string) => {
         },
         y: {
             title: 'Consumption',
-            breakPoints: {
+            breakpoints: {
                 width: {
                     values: [10, 30, 50],
                     unit: 'rem'

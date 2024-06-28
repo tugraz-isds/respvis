@@ -1,2 +1,1 @@
-export * from './line-chart';
-export * from './line-series';
+export * from './render'

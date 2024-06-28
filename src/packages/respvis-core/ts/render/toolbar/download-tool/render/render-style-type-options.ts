@@ -6,7 +6,7 @@ import {RadioLabel} from "../../tool/input-label/radio-label";
 import {renderFieldset} from "../../tool/render/render-fieldset";
 
 export function renderStyleTypeOptions(selection: Selection, renderer: Renderer) {
-  const currentSettings = renderer.windowS.datum().windowSettings
+  const currentSettings = renderer.windowS.datum().windowSettings.state
   const onChange = (e: InputEvent, type: string) => {
     currentSettings[type] = (e.target as HTMLInputElement).value
     renderer.windowS.dispatch('resize')
@@ -22,7 +22,7 @@ export function renderStyleTypeOptions(selection: Selection, renderer: Renderer)
     labelData: [
       new RadioLabel({...sharedData, value: 'inline', label: 'Inline CSS (styles in elements)'}),
       new RadioLabel({...sharedData,
-        value: 'embedded', label: 'Embedded CSS (styles in styleblock)'
+        value: 'embedded', label: 'Embedded CSS (styles in style block)'
         , info: 'Success of this method is not guaranteed.'
       }),
     ]

@@ -1,4 +1,5 @@
-export type SVGHTMLElement = SVGGElement | HTMLElement
+export type SVGHTMLElement = SVGElement | HTMLElement
+export type SVGHTMLElementLegacy = SVGGElement | HTMLElement
 export type SVGGroupingElement = SVGSVGElement | SVGGElement | SVGClipPathElement
 export type SVGHTMLGroupingElement = SVGGroupingElement | HTMLElement
 
@@ -44,12 +45,12 @@ export type Orientation = typeof Orientations[number]
 export type ScaledValueTag = 'categorical' | 'linear' | 'date'
 
 export type TextAnchor = 'start' | 'end' | 'middle'
-export type Sign = 'positive' | 'negative'
+export type Polarity = 'positive' | 'negative'
 
 
 
 export type KeyType = 'series' | 'axis' | 'category' | 'individual'
-export type AxisKey = `a-${number}`
+export type AxisKey = `a-${number}` | `ac-${number}` | `ar-${number}`
 export type SeriesKey = `s-${number}`
 export type CategoryKey = `c-${number}`
 export type IndividualKey = `i-${number}`
@@ -76,3 +77,15 @@ export const categoryRegex = /^c-\d+$/
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 export type ToArray<T> = T extends any ? T[] : never;
+
+
+export type KeyObjectFromObject<T extends Object> = {
+  [K in keyof T]: K;
+}
+
+export function genKeyObjectFromObject<T extends Object>(object: T) {
+  return Object.keys(object).reduce((prev, accu ) => {
+    prev[accu] = accu
+    return prev
+  }, {}) as KeyObjectFromObject<T>
+}

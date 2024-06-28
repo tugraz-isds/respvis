@@ -2,13 +2,13 @@
   &[data-flipped="true"] {
     .series-label[layout-strategy="positive"] text { text-anchor: start; }
     .series-label[layout-strategy="negative"] text { text-anchor: end; }
-    .series-label[layout-strategy="dynamic"] text[data-sign="positive"] { text-anchor: start; }
-    .series-label[layout-strategy="dynamic"] text[data-sign="negative"] { text-anchor: end; }
+    .series-label[layout-strategy="dynamic"] text[data-polarity="positive"] { text-anchor: start; }
+    .series-label[layout-strategy="dynamic"] text[data-polarity="negative"] { text-anchor: end; }
   }
   &[data-flipped="false"] {
     .series-label[layout-strategy="positive"] text { dominant-baseline: auto; }
     .series-label[layout-strategy="negative"] text { dominant-baseline: hanging; }
-    .series-label[layout-strategy="dynamic"] text[data-sign="positive"] { dominant-baseline: auto; }
-    .series-label[layout-strategy="dynamic"] text[data-sign="negative"] { dominant-baseline: hanging; }
+    .series-label[layout-strategy="dynamic"] text[data-polarity="positive"] { dominant-baseline: auto; }
+    .series-label[layout-strategy="dynamic"] text[data-polarity="negative"] { dominant-baseline: hanging; }
   }
 }

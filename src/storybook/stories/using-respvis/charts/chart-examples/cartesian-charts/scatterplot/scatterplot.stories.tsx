@@ -61,31 +61,36 @@ export const Primary: Story = {
       },
       radii: {
         values: mileages,
-        scale: {
+        axis: {
+          title: 'Mileage',
+          horizontalLayout: 'bottom',
+          configureAxis: (axis => {
+            axis.ticks(2)
+            axis.tickFormat(format('.2s'))
+          })
+        },
+        extrema: {
           dependentOn: 'width',
-          value: radiusScale,
-          mapping: {
-            0: s => s.range([3, 12]),
-            2: s => s.range([4, 16]),
-            3: s => s.range([5, 20])
-          }
+          breakpointValues: {
+            0: {minimum: 3, maximum: 12},
+            1: {minimum: 5, maximum: 15},
+            3: {minimum: 7, maximum: 30},
+          },
         },
       },
-      markerTooltipGenerator: {
-        tooltips: ((e, d: Point) => {
-          return `Car Price: ${d.yValue}€<br/>
+      markerTooltipGenerator: ((e, d: Point) => {
+        return `Car Price: ${d.yValue}€<br/>
                 Horse Power: ${d.xValue}PS<br/>
-                Make: ${d.tooltipLabel}<br/>
+                Make: ${d.category}<br/>
                 Mileage: ${d.radiusValue}km<br/>`
-        })
-      },
+      }),
       zoom: {
         in: 20,
         out: 1
       },
       // labels: makes
     },
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [40, 60],
         unit: 'rem'
@@ -101,7 +106,7 @@ export const Primary: Story = {
         scope: 'self',
         mapping: {0: 'HP in [PS]', 1: 'Horse P. [PS]', 2: 'Horse Power in [PS]'}
       },
-      breakPoints: {
+      breakpoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'

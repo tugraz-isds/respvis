@@ -9,7 +9,7 @@ import {Series} from "../../series";
 import {addSeriesHighlighting} from "../../series/series-highlighting";
 import {renderSeriesTooltip} from "respvis-tooltip";
 import {renderLabelSeries} from "../../label";
-import {RenderElement} from "../../../utilities/graphic-elements/render-element";
+import {VisualPrimitive} from "../../primitive/visual-primitive";
 
 export abstract class SeriesChartMixin extends Chart {
   abstract get windowS(): Selection<HTMLElement, Window & SeriesChartData>
@@ -43,12 +43,14 @@ export abstract class SeriesChartMixin extends Chart {
     const chartSelection = this.chartS!
     const chartD = chartSelection.datum()
     chartD.getSeries().forEach(series => series.responsiveState.update())
+    this.addFilterListener()
     renderLegend(chartSelection, chartD.legend).call(addLegendHoverHighlighting)
+    chartD.getSeries().forEach(series => series.renderLegendInfo(this.legendS))
     renderToolbar(this.windowS!, chartSelection.datum())
   }
 
   addSeriesLabels(seriesS: Selection<SVGGElement, Series>) {
-    const seriesElementsS = seriesS.selectAll<any, RenderElement>('.bar:not(.exiting):not(.exit-done)')
+    const seriesElementsS = seriesS.selectAll<any, VisualPrimitive>('.bar:not(.exiting):not(.exit-done)')
     renderLabelSeries(this.drawAreaS, {
       elements: seriesElementsS.data(),
       classes: ['series-label'],
