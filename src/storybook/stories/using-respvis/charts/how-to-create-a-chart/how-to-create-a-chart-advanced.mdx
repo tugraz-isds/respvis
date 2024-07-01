@@ -3,6 +3,7 @@ import {
   SourceCollapseBlockByStoryObj
 } from "../../../util/documentation-components/blocks/SourceCollapseBlock/SourceCollapseBlock";
 import CurrentMeta, * as CurrentStories from './how-to-create-a-chart.stories'
+import {tutorialFileStructure} from "../../../util/assets/raw-strings/tutorial-file-structure";
 
 <Meta of={CurrentMeta} name='How to create a Chart (Advanced Setup)'/>
 
@@ -13,7 +14,7 @@ import CurrentMeta, * as CurrentStories from './how-to-create-a-chart.stories'
 This guide is intended for people who know and want to use the
 advantages of the Node.js ecosystem. It is a guide for people who
 want to work with RespVis using Node.js, npm or any other package
-manager, bundling tools like Parcel and Typescript.
+manager, bundling tools like Parcel, and Typescript.
 
 Before starting with the implementation guide, a few words about
 the best development conditions. RespVis is fully typed and can
@@ -27,7 +28,15 @@ ease the usage of TypeScript with plain HTML.
 This tutorial expects the project to be set up with parcel, the
 zero configuration build tool. The tutorial will begin from scratch
 and explains how to progressively add functionally to achieve a fully
-responsive line chart:
+responsive line chart. First, all files and directories must be created.
+This can be done by simply using a file manager or command line interface.
+Before continuing with the next section, one must create the following files
+and directories:
+
+<Source code={tutorialFileStructure} language={"text"}/>
+
+This can be achieved by first creating a new project:
+
 ```
 # Create root directory of line-chart project
 mkdir line-chart
@@ -38,7 +47,10 @@ npm init -y
 
 # Install Parcel as a development dependency
 npm install --save-dev parcel
+
+
 ```
+
 Next, a chart directory with all necessary files is created. These files will
 contain the code to render the finished chart at the end of this tutorial:
 ```
@@ -114,7 +126,7 @@ implement `line-chart.ts`. The LineChartUserArgs type helps
 in figuring out which arguments are required:
 
 <Source code={`
-import { LineChart, LineChartUserArgs, formatWithDecimalZero } from 'respvis';
+import { LineChart, LineChartUserArgs, formatWithDecimalZero, select, format, timeFormat, timeYear } from 'respvis';
 import {select, format, timeFormat, timeYear} from "d3";
 
 //  Data Source: Studierendenstatistik
