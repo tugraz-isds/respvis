@@ -10,13 +10,13 @@ import {
   singleLineChartValuesOnly
 } from "storybook-util/arguments/single-line-chart-progression/values-only";
 import {chartExampleMeta} from "storybook-util/render/meta/chart-example-meta";
-import AddPaddingLeftCSS from '../../util/arguments/single-line-chart-progression/add-padding-left.css?raw'
-import RemoveAxesCSS from '../../util/arguments/single-line-chart-progression/remove-axes.css?raw'
-import TooltipsAndLabelsCSS from '../../util/arguments/single-line-chart-progression/tooltips-and-labels.css?raw'
+import AddPaddingLeftCSS from 'storybook-util/arguments/single-line-chart-progression/add-padding-left.css?raw'
+import RemoveAxesCSS from 'storybook-util/arguments/single-line-chart-progression/remove-axes.css?raw'
+import TooltipsAndLabelsCSS from 'storybook-util/arguments/single-line-chart-progression/tooltips-and-labels.css?raw'
 
 const meta = {
   ...chartExampleMeta,
-  title: 'Using RespVis/Charts/How to create a Chart',
+  title: 'Using RespVis/Charts/How to create a Chart/How to create a Chart',
   render: renderLineChart
 } satisfies Meta<LineChartUserArgs>;
 

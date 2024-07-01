@@ -2,6 +2,7 @@ import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "res
 import {
   defaultStyleClass,
   ErrorMessages,
+  Key,
   Rect,
   ScaledValuesCategorical,
   ScaledValuesCategoricalUserArgs
@@ -62,7 +63,7 @@ export abstract class BarBaseSeries extends CartesianSeries {
         category,
         categoryFormatted: category ? this.categories?.categories.categoryFormatMap[category] : undefined,
         label: this.labels?.at(i),
-        key: this.getCombinedKey(i) + ` i-${i}`,
+        key: new Key(this.getCombinedKey(i) + ` i-${i}`),
       }));
     }
     return data

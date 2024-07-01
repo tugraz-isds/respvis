@@ -29,6 +29,7 @@
   "include": [
     "./stories/**/*",
     "../../declarations/*.d.ts",
+    "./vite-env.d.ts"
   ],
   "exclude": ["node_modules", "**/*.spec.ts", "**/package"]
 }

@@ -1,11 +1,10 @@
-import * as d3 from './libs/d3-7.6.0/d3.js'
 import data from './data/austrian-cities.js'
 
 // Make sure to have executed gulp build task before importing from respvis-bar (dependency-based)
 // Note that no watcher is configured for dependency-based modules, so live coding will not work
 // when making changes in ts source code
 // import {BarChart, BarChartUserArgs} from './libs/respvis/respvis-bar.js'
-import {BarChart, BarChartUserArgs} from './libs/respvis/respvis.js'
+import {BarChart, BarChartUserArgs, format, select} from './libs/respvis/respvis.js'
 
 export async function createBarCart(selector: string) {
   const tickOrientationHorizontal = {
@@ -69,7 +68,7 @@ export async function createBarCart(selector: string) {
       },
       tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,
-      configureAxis: (axis) => axis.tickFormat(d3.format('.2s')),
+      configureAxis: (axis) => axis.tickFormat(format('.2s')),
     }
   }
 
@@ -95,7 +94,7 @@ export async function createBarCart(selector: string) {
   //   }
   // }
 
-  const chartWindow = d3.select(selector).append('div')
+  const chartWindow = select(selector).append('div')
   const renderer = new BarChart(chartWindow, barChartArgs)
   renderer.buildChart()
 

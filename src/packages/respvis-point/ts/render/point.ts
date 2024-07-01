@@ -1,4 +1,4 @@
-import {Circle, Position, VisualPrimitive, VisualPrimitiveArgs} from "respvis-core";
+import {Circle, Key, Position, VisualPrimitive, VisualPrimitiveArgs} from "respvis-core";
 import {PointLabel, PointLabelData} from "./point-label";
 
 export type PointArgs = Circle & VisualPrimitiveArgs & {
@@ -20,7 +20,7 @@ export class Point implements Circle, VisualPrimitive {
   color?: number | undefined;
   colorValue?: any;
   styleClass: string
-  key: string
+  key: Key
   labelData?: PointLabelData
 
   constructor(args: PointArgs) {

@@ -5,3 +5,4 @@ export * from './util'
 export * from './formats'
 export {centerSVGTextBaseline} from "./text";
 export {fixActiveCursor} from "./fix-active-cursor";
+export * from "./re-exports";

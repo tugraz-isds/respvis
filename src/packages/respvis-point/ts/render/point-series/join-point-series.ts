@@ -43,7 +43,7 @@ export function joinPointSeries(seriesS: Selection, joinS: Selection<Element, Po
     .attr('cy', (d) => d.center.y)
     .attr('data-style', (d) => !d.color ? d.styleClass : null)
     .attr('fill', (d) => d.color ? d.color : null)
-    .attr('data-key', (d) => d.key)
+    .attr('data-key', (d) => d.key.rawKey)
     .call((s) => seriesS.dispatch('update', {detail: {selection: s}}))
     .each(function (d, i, g) {
       const s = select<Element, Point>(g[i])

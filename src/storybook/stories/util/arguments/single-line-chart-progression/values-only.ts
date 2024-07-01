@@ -22,9 +22,7 @@ export const singleLineChartValuesOnly: LineChartUserArgs = {
     y: {
       values: students
     }
-  },
-  x: {},
-  y: {}
+  }
 }
 
 export const singleLineChartLabeled: LineChartUserArgs = {

@@ -31,7 +31,7 @@ function renderLineSeriesPoints(pointS: Selection<Element, LineSeries>, pointGro
     .classed('point-category', true)
     .each(function (d, i, g) {
       select(g[i]).selectAll<SVGCircleElement, Point>('.point')
-        .data(pointGroups[i], (d) => d.key)
+        .data(pointGroups[i], (d) => d.key.rawKey)
         .call((s) => joinPointSeries(pointS, s))
     })
 }

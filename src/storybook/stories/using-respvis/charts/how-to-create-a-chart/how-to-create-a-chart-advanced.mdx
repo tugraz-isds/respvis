@@ -1,25 +1,28 @@
 import {Meta, Source} from "@storybook/blocks";
 import {
   SourceCollapseBlockByStoryObj
-} from "../../util/documentation-components/blocks/SourceCollapseBlock/SourceCollapseBlock";
+} from "../../../util/documentation-components/blocks/SourceCollapseBlock/SourceCollapseBlock";
 import CurrentMeta, * as CurrentStories from './how-to-create-a-chart.stories'
 
-<Meta of={CurrentMeta}/>
+<Meta of={CurrentMeta} name='How to create a Chart (Advanced Setup)'/>
 
-
-# How to create a Chart
-
-
+# How to create a Chart (Advanced Setup with NPM)
 
 ## Getting Started
+
+This guide is intended for people who know and want to use the
+advantages of the Node.js ecosystem. It is a guide for people who
+want to work with RespVis using Node.js, npm or any other package
+manager, bundling tools like Parcel and Typescript.
 
 Before starting with the implementation guide, a few words about
 the best development conditions. RespVis is fully typed and can
 be used the best when imported in TypeScript files. By using an
-IDE of choice, one will get useful hints about which arguments
-are expected when creating a new chart. Using a bundler like
-webpack, rollup or parcel will additionally ease the usage of TypeScript
-with plain HTML.
+IDE of choice, [VSCode](https://code.visualstudio.com/) and
+[Webstorm](https://www.jetbrains.com/webstorm/), one will get useful
+hints about which arguments are expected when creating a new chart.
+Using a bundler like webpack, rollup or parcel will additionally
+ease the usage of TypeScript with plain HTML.
 
 This tutorial expects the project to be set up with parcel, the
 zero configuration build tool. The tutorial will begin from scratch
@@ -61,6 +64,9 @@ the full functionality of the library.
 If one wants to only install required sub
 packages, one can find further information in the
 [packages guide](?path=/docs/using-respvis-packages--docs).
+
+When running `npx parcel ./chart/line-chart.html` from the root directory one will
+see the fruits of him/her work already.
 
 
 
@@ -136,9 +142,7 @@ export function createLineChart(selector: string) {
       y: {
         values: students
       }
-    },
-    x: {},
-    y: {}
+    }
   }
 
   const chartWindow = select(selector).append('div')
@@ -177,8 +181,8 @@ to specify the dimensions of the chart in `line-chart.css`
   min-height: 25rem;
 }`} language={"css"}/>
 
-When serving the index.html file by running `npx parcel ./chart/line-chart.html`
-from the root directory one will see the fruits of him/her work already:
+When serving the `line-chart.html` file one will see the fruits of him/her
+work already:
 
 <SourceCollapseBlockByStoryObj story={CurrentStories.Basic}/>
 

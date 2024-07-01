@@ -28,7 +28,10 @@ const config: StorybookConfig = {
       plugins: [
         svgRawPlugin(),
         tsconfigPaths({})
-      ]
+      ],
+      define: {
+        '__RESPVIS_VERSION__': JSON.stringify(process.env.npm_package_version),
+      }
     });
   },
 };

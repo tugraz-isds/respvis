@@ -1,5 +1,5 @@
 import {Point} from "../point";
-import {defaultStyleClass} from "respvis-core";
+import {defaultStyleClass, Key} from "respvis-core";
 import {PointSeries} from "./point-series";
 
 export function createPoints<T extends boolean, R = T extends false ? Point[] : Point[][]>
@@ -43,7 +43,7 @@ function createPoint(series: PointSeries, i: number) {
     color: series.color?.scale(series.color?.values[i]),
     colorValue: series.color?.values[i],
     radiusValue: series.responsiveState.getRadiusValue(i),
-    key: series.getCombinedKey(i) + ` i-${i}`,
+    key: new Key(series.getCombinedKey(i) + ` i-${i}`),
     styleClass: series.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
     category,
     categoryFormatted: category ? series.categories?.categories.categoryFormatMap[category] : undefined,

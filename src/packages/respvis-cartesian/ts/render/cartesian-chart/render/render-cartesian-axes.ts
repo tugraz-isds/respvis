@@ -1,6 +1,12 @@
 import {CartesianChartSelection} from "../validate-cartesian-chart";
 import {CartesianAxis} from "../../validate-cartesian-axis";
-import {Axis, AxisSelection, renderAxisLayout, ScaledValuesAggregator, ScaledValuesNumeric} from "respvis-core";
+import {
+  Axis,
+  AxisSelection,
+  renderAxisLayout,
+  ScaledValuesCumulativeAggregator,
+  ScaledValuesNumeric
+} from "respvis-core";
 
 export function renderCartesianAxes<T extends CartesianChartSelection>(chartS: T) {
   const {renderer, ...data} = chartS.datum()
@@ -13,7 +19,7 @@ export function renderCartesianAxes<T extends CartesianChartSelection>(chartS: T
   const paddingWrapperS = chartS.selectAll('.padding-wrapper')
 
   //TODO: clean this stacked bar chart mess up
-  const aggScaledValues = ('aggScaledValues' in series && series.aggScaledValues instanceof ScaledValuesAggregator) ?
+  const aggScaledValues = ('aggScaledValues' in series && series.aggScaledValues instanceof ScaledValuesCumulativeAggregator) ?
     series.aggScaledValues.aggregateCached() : undefined
 
   const horizontalAxisDAgg = (aggScaledValues && horizontalAxisD.scaledValues instanceof ScaledValuesNumeric) ?

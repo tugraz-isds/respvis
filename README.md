@@ -10,16 +10,19 @@ The core package of RespVis provides its own layouting mechanism for SVG
 chart components (title, x-axis, y-axis, legend, etc.), using standard
 CSS Grid or Flexbox syntax.
 
+Have a look at the [latest release](https://github.com/tugraz-isds/respvis/releases/latest) of
+RespVis which holds a package.zip, containing the latest standalone version of the library in ES 
+format.
+
 
 ## Getting Started
 
 For learning how RespVis can be used to create responsive visualisations,
-have a look at ourtutorials:
+have a look at our tutorials:
 - The [tutorial for creating RespVis viusalizations](https://respvis-docs.netlify.app/?path=/docs/using-respvis-charts-how-to-create-a-chart--docs) 
   is a good starting point if you have never used RespVis before.
 - The extensive [library usage guide](https://respvis-docs.netlify.app/?path=/docs/using-respvis-using-respvis--docs) 
   covers everything which is important when creating visualizations with RespVis.
-
 
 
 ## Documentation

@@ -15,7 +15,7 @@ export function renderBarSeries(parentS: Selection<Element>, series: BarSeries[]
       const seriesS = select<Element, BarSeries>(g[i]);
       seriesS
         .selectAll<SVGRectElement, BarArgs>('rect')
-        .data(d.getBarRects(), (d) => d.key)
+        .data(d.getBarRects(), (d) => d.key.rawKey)
         .call((s) => joinBarSeries(seriesS, s));
     })
 }
