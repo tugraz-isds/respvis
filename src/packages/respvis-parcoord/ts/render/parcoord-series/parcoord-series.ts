@@ -105,6 +105,10 @@ export class ParcoordSeries extends Series {
     })
 
     this.axesInverted = 'class' in args ? args.axesInverted : this.axes.map(() => false)
+
+    if (this.categories && this.categories.values.length !== this.axes[0].scaledValues.values.length) {
+      throw new Error(ErrorMessages.categoricalValuesMismatch)
+    }
   }
 
   getCombinedKey(i: number): string {

@@ -1,8 +1,7 @@
 import {range, select, Selection} from "d3";
 import {SVGHTMLElement, SVGHTMLElementLegacy} from "../../constants/types";
 import {Legend} from "./validate-legend";
-import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
-import {renderLegendItems} from "./legend-item/render-legend-items";
+import {renderLegendCategories} from "./legend-item/render-legend-categories";
 import {uniqueId} from "../../utilities";
 import {Axis, renderAxisLayout} from "../axis";
 import {rectFromString} from "../../data";
@@ -17,27 +16,14 @@ export function renderLegend(parentS: Selection, legend: Legend): LegendSelectio
     .classed('legend', true)
     .each((legendD, i, g) => {
       const legendS = select<SVGHTMLElementLegacy, Legend>(g[i])
-      renderTitle(legendS)
-      renderLegendItems(legendS)
-      renderColorScale(legendS)
+      renderLegendCategories(legendS)
+      renderLegendColorScale(legendS)
     })
-  legend.series
 
   return legendS
 }
 
-function renderTitle(legendS: LegendSelection) {
-  const {renderer, title} = legendS.datum()
-  //TODO: add self to mapping when legend has breakpoints
-  legendS
-    .selectChildren('.title')
-    .data([null])
-    .join('text')
-    .classed('title', true)
-    .text(getCurrentRespVal(title, {chart: renderer.chartS}))
-}
-
-function renderColorScale(legendS: LegendSelection) {
+function renderLegendColorScale(legendS: LegendSelection) {
   const {series, renderer} = legendS.datum()
   if (!series.color) return
 

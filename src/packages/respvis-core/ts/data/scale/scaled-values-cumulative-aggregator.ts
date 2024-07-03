@@ -21,15 +21,14 @@ export class ScaledValuesCumulativeAggregator {
 
   aggregateCached(): ScaledValuesNumeric {
     if (this.aggregationResult) return this.aggregationResult
-    const numberCategories = this.categoricalValues.categories.categoryOrder.length
+    const numberCategories = this.categoricalValues.categories.categoryArray.length
     const groupedValues: number[][] = new Array<null>(numberCategories).fill(null).map(() => [])
     const summedValues: number[] = new Array<number>(numberCategories).fill(0)
-    const numberValues = this.categoricalValues.categories.values.length
+    const numberValues = this.categoricalValues.values.length
     const cumulativeValues: number[] = new Array<number>(numberValues).fill(0)
 
-    const orderMap = this.categoricalValues.categories.categoryOrderMap
-    this.categoricalValues.values.forEach((category, i) => {
-      const categoryOrder = orderMap[category]
+    this.categoricalValues.values.forEach((_, i) => {
+      const categoryOrder = this.categoricalValues.getOrder(i)
       const currentValue = this.numericalValues.values[i]
       groupedValues[categoryOrder].push(currentValue)
       if (this.additionalCategories && !this.additionalCategories.isValueActive(i)) return
@@ -38,7 +37,7 @@ export class ScaledValuesCumulativeAggregator {
     }, [])
 
     const aggregatedValuesOrder = groupedValues.map(vals => sum(vals))
-    console.assert(aggregatedValuesOrder.length === this.categoricalValues.categories.categoryOrder.length)
+    console.assert(aggregatedValuesOrder.length === this.categoricalValues.categories.categoryArray.length)
     const aggregatedDomain = [this.numericalValues.scale.domain()[0], Math.max(...aggregatedValuesOrder)]
 
     this.aggregationResult = new ScaledValuesNumeric({

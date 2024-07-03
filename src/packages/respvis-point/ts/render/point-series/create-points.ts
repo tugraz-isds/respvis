@@ -12,7 +12,7 @@ export function createPoints<T extends boolean, R = T extends false ? Point[] : 
   const optionalRadiiValues = typeof radii === 'object' && 'tag' in radii ? radii.axis.scaledValues : undefined
 
   const pointsSingleGroup: Point[] = []
-  const pointsGrouped: Point[][] = new Array(categories ? categories.categories.keyOrder.length : 1)
+  const pointsGrouped: Point[][] = new Array(categories ? categories.categories.categoryArray.length : 1)
     .fill(0).map(() => [])
 
   if (!keysActive[seriesKey] && !grouped) return pointsSingleGroup as R
@@ -26,7 +26,7 @@ export function createPoints<T extends boolean, R = T extends false ? Point[] : 
     pointsSingleGroup.push(point)
     if (pointsGrouped && categories) {
       const category = categories.values[i]
-      const order = categories.categories.categoryOrderMap[category]
+      const order = categories.categories.categoryMap[category].order
       pointsGrouped[order].push(point)
     } else pointsGrouped[0].push(point)
   }
@@ -44,9 +44,9 @@ function createPoint(series: PointSeries, i: number) {
     colorValue: series.color?.values[i],
     radiusValue: series.responsiveState.getRadiusValue(i),
     key: new Key(series.getCombinedKey(i) + ` i-${i}`),
-    styleClass: series.categories?.categories.styleClassValues[i] ?? defaultStyleClass,
+    styleClass: series.categories?.getStyleClass(i) ?? defaultStyleClass,
     category,
-    categoryFormatted: category ? series.categories?.categories.categoryFormatMap[category] : undefined,
+    categoryFormatted: category ? series.categories?.categories.categoryMap[category].formatValue : undefined,
     label: series.labels?.getLabelData(i)
   })
 }

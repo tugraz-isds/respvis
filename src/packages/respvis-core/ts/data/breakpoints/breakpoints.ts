@@ -80,8 +80,6 @@ export class Breakpoints {
   }
 
   updateLayoutCSSVars(element: SVGHTMLElement) {
-    // if (!layoutBreakpoints.hasOwnProperty(k)) continue
-
     const transformedBreakpoints = this.getTransformed(element)
     const layoutWidthIndex = transformedBreakpoints.getCurrentLayoutWidthIndex(element)
     const [preBreakPointLength, postBreakPointLength] = transformedBreakpoints.getSurroundingLengths(layoutWidthIndex)

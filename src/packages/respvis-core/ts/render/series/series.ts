@@ -80,8 +80,8 @@ export abstract class Series implements RenderArgs {
 
   getMergedKeys() {
     if (this.categories) {
-      return this.categories.categories.keyOrder.map(cKey =>
-        mergeKeys([this.key, cKey]))
+      return this.categories.categories.categoryArray.map(c =>
+        mergeKeys([this.key, c.key]))
     }
     return [this.key]
   }

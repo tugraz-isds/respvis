@@ -1,7 +1,10 @@
 import {defaultScope, maxBreakpointCount} from "../../constants/other";
-import {BreakpointScope, BreakpointScopeMapping} from "../breakpoints/breakpoint-scope";
+import {
+  ComponentBreakpointsScope,
+  ComponentBreakpointsScopeMapping
+} from "../breakpoints/component-breakpoints/component-breakpoints-scope";
 import {CSSLengthValue, LengthDimension} from "../../constants/types";
-import {getLayoutWidthIndexFromCSS} from "../layout-breakpoints";
+import {getLayoutWidthIndexFromCSS} from "../breakpoints/component-breakpoints";
 import {cssLengthInPx, elementFromSelection} from "../../utilities";
 import {ErrorMessages} from "../../constants";
 import {RespValBase} from "./responsive-value-base";
@@ -9,7 +12,7 @@ import {RespValBase} from "./responsive-value-base";
 type RespValInterpolatedUserArgsResponsive<T> = {
   readonly breakpointValues: { 0: T, [key: number]: T },
   readonly dependentOn: LengthDimension,
-  readonly scope?: BreakpointScope
+  readonly scope?: ComponentBreakpointsScope
 }
 
 export type RespValInterpolatedUserArgs<T> = T | RespValInterpolatedUserArgsResponsive<T>
@@ -34,7 +37,7 @@ export class RespValInterpolated<T> extends RespValBase<T> {
     this.mapping = args.breakpointValues
   }
 
-  getRespValInterpolated(scopes: BreakpointScopeMapping) {
+  getRespValInterpolated(scopes: ComponentBreakpointsScopeMapping) {
     const desiredElement = this.scope ? scopes[this.scope] : undefined
     const layoutBreakpointsS = desiredElement ? desiredElement : scopes[defaultScope]
     const element = elementFromSelection(layoutBreakpointsS)
@@ -51,10 +54,10 @@ export class RespValInterpolated<T> extends RespValBase<T> {
     const postBreakpoint = getBreakpointData(postBreakpointIndex)
 
     const firstBreakpoint = getBreakpointData(this.getFirstValidLayoutIndex())!
-    const lastBreakpoint = getBreakpointData(this.getLastValidLayoutIndex())!
+    const lastBreakpoint = getBreakpointData(this.getLastValidLayoutIndex(breakpointsTransformed.values.length))!
 
     function getBreakpointData(index: number | null) {
-      if (index === null) return null
+      if (index === null || index >= breakpointsTransformed.values.length || index < 0) return null
       const defaultMaxLength = breakpointsTransformed.values[breakpointsTransformed.values.length - 1] + breakpointsTransformed.unit
       return { index,
         value: respVal.mapping[index],
@@ -62,7 +65,7 @@ export class RespValInterpolated<T> extends RespValBase<T> {
       }
     }
 
-    return { preBreakpoint, postBreakpoint, firstBreakpoint, lastBreakpoint }
+    return { preBreakpoint, postBreakpoint, firstBreakpoint, lastBreakpoint, element }
   }
 
   estimate(layoutIndex: number): T {

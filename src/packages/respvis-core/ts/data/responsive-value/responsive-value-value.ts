@@ -1,6 +1,9 @@
 import {ErrorMessages} from "../../constants/error";
 import {maxBreakpointCount} from "../../constants/other";
-import {BreakpointScope, BreakpointScopeMapping} from "../breakpoints/breakpoint-scope";
+import {
+  ComponentBreakpointsScope,
+  ComponentBreakpointsScopeMapping
+} from "../breakpoints/component-breakpoints/component-breakpoints-scope";
 import {LengthDimension} from "../../constants/types";
 import {elementFromSelection} from "../../utilities";
 import {RespValBase} from "./responsive-value-base";
@@ -8,7 +11,7 @@ import {RespValBase} from "./responsive-value-base";
 type RespValByValueUserArgsResponsive<T> = {
   readonly mapping: { 0: T, [key: number]: T },
   readonly dependentOn: LengthDimension,
-  readonly scope?: BreakpointScope
+  readonly scope?: ComponentBreakpointsScope
 }
 
 export type RespValByValueUserArgs<T> = T | RespValByValueUserArgsResponsive<T>
@@ -33,7 +36,7 @@ export class RespValByValue<T> extends RespValBase<T> {
     this.mapping = args.mapping
   }
 
-  getResponsiveValueInformation(scopeMapping: BreakpointScopeMapping) {
+  getResponsiveValueInformation(scopeMapping: ComponentBreakpointsScopeMapping) {
     const element = elementFromSelection(this.getLayoutSelection(scopeMapping))
     const breakpoints = this.getBreakpoints(scopeMapping)
 

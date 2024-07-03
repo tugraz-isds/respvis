@@ -23,12 +23,18 @@ export class PointResponsiveState extends CartesianResponsiveState {
     const radii = this._originalSeries.radii
     const chart = this._series.renderer.chartS
 
-    if (typeof radii === 'number') return
-    if (radii instanceof RespValInterpolated) {
-      return
-    }
 
-    interpolateBubbleRadius(radii)
+    updateRadii()
+
+    chart.style('--max-radius', this.getMaxRadius() + 'px')
+
+    function updateRadii() {
+      if (typeof radii === 'number') return
+      if (radii instanceof RespValInterpolated) {
+        return
+      }
+      interpolateBubbleRadius(radii)
+    }
 
     function interpolateBubbleRadius(radii: BubbleRadius) {
       if (!(radii.extrema instanceof RespValInterpolated)) {
@@ -43,8 +49,7 @@ export class PointResponsiveState extends CartesianResponsiveState {
         radii.scale.range([lastBreakpoint.value.minimum, lastBreakpoint.value.maximum]); return
       }
       if (preBreakpoint === null) {
-        preBreakpoint = firstBreakpoint
-        preBreakpoint.length = 0
+        radii.scale.range([firstBreakpoint.value.minimum, firstBreakpoint.value.maximum]); return
       }
 
       const elementLength = elementFromSelection(chart).getBoundingClientRect()[radii.extrema.dependentOn]
@@ -88,6 +93,13 @@ export class PointResponsiveState extends CartesianResponsiveState {
 
       return preBreakpoint.value + currentLengthDiff / breakpointLengthDiff * valueDiff
     }
+  }
+
+  getMaxRadius() {
+    const radii = this._originalSeries.radii
+    return (typeof radii === 'number') ? radii :
+      radii instanceof RespValInterpolated ? this.getRadius(0) :
+        Math.max(...radii.scale.range())
   }
 
   getRadiusValue(i: number) {

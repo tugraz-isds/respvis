@@ -34,7 +34,7 @@ export function sum(array: number[]) {
   return array.reduce((sum, val) => sum + val, 0)
 }
 
-export function getArrayOrder(arr: number[]) {
+export function mapArrayToOrders(arr: number[]) {
   const arrOrder = arr.map(() => 1)
   for (let j = 0; j < arr.length; j++) {
     for (let i = j + 1; i < arr.length; i++) {
@@ -43,6 +43,11 @@ export function getArrayOrder(arr: number[]) {
     }
   }
   return arrOrder
+}
+
+export function clearDuplicatedValues<T>(array: T[]) {
+  return array.reduce<T[]>(
+    (prev, current) => prev.includes(current) ? prev : [...prev, current], [])
 }
 
 export function isNumberArray(arr: any[]): arr is number[] {

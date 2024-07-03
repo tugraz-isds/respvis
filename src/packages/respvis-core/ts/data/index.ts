@@ -1,5 +1,5 @@
 export * from './breakpoints'
-export * from './layout-breakpoints'
+export * from './breakpoints/component-breakpoints'
 export * from './categories'
 export * from './sequential-color'
 export * from './radius'

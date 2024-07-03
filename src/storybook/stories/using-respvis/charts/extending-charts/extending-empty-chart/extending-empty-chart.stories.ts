@@ -5,7 +5,7 @@ import {AxisChartAxisUserArgs, AxisChartUserArgs} from "storybook-util/chart-ext
 import {AustrianCitiesData} from "data"
 import {RespValByValueUserArgs} from "respvis-core";
 import AxisFlippingCSS from "./axis-flipping.css?raw";
-import {LayoutBreakpointsUserArgs} from "respvis-core/data/layout-breakpoints/layout-breakpoints";
+import {ComponentBreakpointsUserArgs} from "respvis-core/data/breakpoints/component-breakpoints/component-breakpoints";
 
 const {cities, populations} = AustrianCitiesData.default
 
@@ -28,7 +28,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<AxisChartUserArgs>
 
-const breakpoints: LayoutBreakpointsUserArgs = {
+const breakpoints: ComponentBreakpointsUserArgs = {
   width: {
     values: [20, 40, 60],
     unit: "rem"

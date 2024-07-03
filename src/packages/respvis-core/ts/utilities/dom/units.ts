@@ -14,12 +14,13 @@ import {ErrorMessages} from "../../constants/error";
 export function cssLengthInPx(length: UnitValue<CSSLengthUnit>, element?: Element, dim?: LengthDimension) {
   const match = length.match(CSSLengthRegex)
   if (!match) return 0
-  const [, value, unit] = match as [any, number, CSSLengthUnit]
-  if (unit === 'px') return value
-  if (unit === 'rem') return value * parseFloat(getComputedStyle(document.documentElement).fontSize)
-  if (unit === 'em' && element) return value * parseFloat(getComputedStyle(element).fontSize)
+  const [, value, unit] = match as [any, number | string, CSSLengthUnit]
+  const valueNumber = typeof value === 'string' ? parseFloat(value) : value
+  if (unit === 'px') return valueNumber
+  if (unit === 'rem') return valueNumber * parseFloat(getComputedStyle(document.documentElement).fontSize)
+  if (unit === 'em' && element) return valueNumber * parseFloat(getComputedStyle(element).fontSize)
   if (unit === 'em' && !element) throw new Error(ErrorMessages.evaluatingCSSUnitError)
-  if(unit === '%' && element && dim) return value / 100 * element.getBoundingClientRect()[dim]
+  if(unit === '%' && element && dim) return valueNumber / 100 * element.getBoundingClientRect()[dim]
   if(unit === '%' && !(element && dim)) throw new Error(ErrorMessages.evaluatingCSSUnitError)
   throw new Error(ErrorMessages.evaluatingCSSUnitError)
 }

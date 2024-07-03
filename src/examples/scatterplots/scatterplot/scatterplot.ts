@@ -46,7 +46,7 @@ export function createScatterplot(selector: string) {
           breakpointValues: {
             0: {minimum: 3, maximum: 12},
             1: {minimum: 5, maximum: 15},
-            3: {minimum: 7, maximum: 30},
+            2: {minimum: 7, maximum: 30},
           },
         },
       },

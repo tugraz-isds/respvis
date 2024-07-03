@@ -30,16 +30,24 @@ export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
     this.title = 'tag' in args ? args.title : validateRespVal(args.title)
 
     //TODO: this is no real alignment validation. Fix this!
-    this.categories = 'categories' in args ? args.categories : validateCategories(this.values, {
+    this.categories = 'categories' in args ? args.categories : validateCategories({
       values: this.values,
       title: args.title,
       parentKey: args.parentKey
-    })
+    }, this.values)
 
-    this.keysActive = 'keysActive' in args ? args.keysActive : this.categories.keyOrder.reduce((prev, c) => {
-      prev[`${args.parentKey}-${c}`] = true
+    this.keysActive = 'keysActive' in args ? args.keysActive : this.categories.categoryArray.reduce((prev, c) => {
+      prev[`${args.parentKey}-${c.key}`] = true
       return prev
     }, {})
+  }
+
+  getOrder(i: number) {
+    return this.categories.categoryMap[this.values[i]].order
+  }
+
+  getStyleClass(i: number) {
+    return this.categories.categoryMap[this.values[i]].styleClass
   }
 
   getScaledValueStart(i: number) {
@@ -68,14 +76,17 @@ export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
   }
 
   getCombinedKey(i: number) {
-    return this.parentKey + '-' + this.categories.keyValues[i]
+    const category = this.values[i]
+    return this.parentKey + '-' + this.categories.categoryMap[category].key
   }
 
   getCategoryData(i: number) {
-    const categoryKey = this.categories.keyValues[i]
+    const rawCategory = this.values[i]
+    const category = this.categories.categoryMap[rawCategory]
+    const categoryKey = category.key
     const parentKey = this.parentKey
     const combinedKey = parentKey + '-' + categoryKey
-    const styleClass = this.categories.styleClassOrder[i]
+    const styleClass = category.styleClass
     return {categoryKey, parentKey, combinedKey, styleClass}
   }
 
@@ -84,8 +95,8 @@ export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
   }
 
   cloneFiltered() {
-    const activeDomain = this.categories.values.reduce((prev, current, i) => {
-      const key = `${this.parentKey}-${this.categories.keyValues[i]}`
+    const activeDomain = this.values.reduce((prev, current) => {
+      const key = `${this.parentKey}-${this.categories.categoryMap[current].key}`
       return this.keysActive[key] ? [...prev, current] : prev
     }, [])
     const clone = this.clone()

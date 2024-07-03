@@ -40,7 +40,7 @@ export function createChartSoldCarsGermany(selector) {
           breakpointValues: {
             0: {minimum: 3, maximum: 12},
             1: {minimum: 5, maximum: 15},
-            3: {minimum: 7, maximum: 30},
+            2: {minimum: 7, maximum: 30},
           }
         },
         axis: {
@@ -100,7 +100,7 @@ export function createChartSoldCarsGermany(selector) {
       tickOrientation: {
         scope: 'self',
         dependentOn: 'width',
-        mapping: {0: 90, 2: 0}
+        breakpointValues: {0: 90, 2: 0}
       }
     },
     y: {

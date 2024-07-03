@@ -7,12 +7,22 @@ import {Legend} from "../validate-legend";
 import {renderBgSVGOnlyBBox} from "../../bg-svg-only";
 import {Size} from "../../../data/size";
 import {createLegendItems} from "./create-legend-items";
+import {getCurrentRespVal} from "../../../data";
 
-export function renderLegendItems(legendS: LegendSelection) {
-  const itemS = legendS.selectAll<SVGHTMLElementLegacy, Legend>('.items')
+export function renderLegendCategories(legendS: LegendSelection) {
+
+  const legendCategoriesS = legendS.selectAll<SVGHTMLElementLegacy, Legend>('.legend__categories')
+    .data([legendS.datum()])
+    .join('g')
+    .classed('legend__categories', true)
+
+  renderTitle(legendCategoriesS)
+
+  const itemS = legendCategoriesS.selectAll<SVGHTMLElementLegacy, Legend>('.items')
     .data([null])
     .join('g')
     .classed('items', true)
+
 
   itemS
     .selectAll<SVGGElement, LegendItem>('.legend-item')
@@ -50,4 +60,17 @@ export function renderLegendItems(legendS: LegendSelection) {
       const item = (<Element>e.currentTarget)
       if (item) item.classList.toggle('highlight', e.type.endsWith('over'))
     })
+}
+
+function renderTitle(legendS: LegendSelection) {
+  const {renderer, title} = legendS.datum()
+  //TODO: add self to mapping when legend has breakpoints
+  const text = getCurrentRespVal(title, {chart: renderer.chartS})
+  legendS
+    .selectChildren('.title')
+    .data([text])
+    .join('text')
+    .classed('title', true)
+    .classed('empty', d => !d)
+    .text(d => d)
 }

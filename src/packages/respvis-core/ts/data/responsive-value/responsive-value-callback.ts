@@ -1,5 +1,5 @@
 import {LengthDimension} from "../../constants/types";
-import {BreakpointScope} from "../breakpoints/breakpoint-scope";
+import {ComponentBreakpointsScope} from "../breakpoints/component-breakpoints/component-breakpoints-scope";
 
 import {RespValBase} from "./responsive-value-base";
 
@@ -7,7 +7,7 @@ export type RespValByCallbackUserArgsResponsive<T> = {
   value: T,
   mapping: { [key: number]: (value: T) => any },
   dependentOn: LengthDimension,
-  scope?: BreakpointScope
+  scope?: ComponentBreakpointsScope
 }
 
 export type RespValByCallbackUserArgs<T> = T | RespValByCallbackUserArgsResponsive<T>

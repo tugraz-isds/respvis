@@ -1,23 +1,26 @@
-import {BreakpointScope, BreakpointScopeMapping} from "../breakpoints/breakpoint-scope";
+import {
+  ComponentBreakpointsScope,
+  ComponentBreakpointsScopeMapping
+} from "../breakpoints/component-breakpoints/component-breakpoints-scope";
 import {defaultScope, LengthDimension} from "../../constants";
 import {elementFromSelection} from "../../utilities";
 
 export abstract class RespValBase<T> {
-  readonly scope?: BreakpointScope
+  readonly scope?: ComponentBreakpointsScope
   readonly dependentOn: LengthDimension
   abstract mapping: any
 
-  protected constructor(dependentOn: LengthDimension, scope?: BreakpointScope) {
+  protected constructor(dependentOn: LengthDimension, scope?: ComponentBreakpointsScope) {
     this.dependentOn = dependentOn;
     this.scope = scope;
   }
 
-  getLayoutSelection(scopeMapping: BreakpointScopeMapping) {
+  getLayoutSelection(scopeMapping: ComponentBreakpointsScopeMapping) {
     const selection = this.scope ? scopeMapping[this.scope] : undefined
     return selection ? selection : scopeMapping[defaultScope]
   }
 
-  getBreakpoints(scopeMapping: BreakpointScopeMapping) {
+  getBreakpoints(scopeMapping: ComponentBreakpointsScopeMapping) {
     const layoutSelection = this.getLayoutSelection(scopeMapping)
     return layoutSelection.datum().breakpoints[this.dependentOn]
   }
@@ -44,17 +47,17 @@ export abstract class RespValBase<T> {
       const index = parseInt(keys[i])
       if (!isNaN(index)) return index
     }
-    return null
+    return 0
   }
 
-  getLastValidLayoutIndex() {
+  getLastValidLayoutIndex(breakpointLength: number) {
     const indices = Object.keys(this.mapping)
       .map((key) => parseInt(key))
-      .filter((key) => !isNaN(key))
+      .filter((key) => !isNaN(key) && key < breakpointLength)
     return Math.max(...indices)
   }
 
-  getCurrentLayoutIndexFromCSS(mapping: BreakpointScopeMapping) {
+  getCurrentLayoutIndexFromCSS(mapping: ComponentBreakpointsScopeMapping) {
     const layoutBreakpointsS = this.getLayoutSelection(mapping)
     const element = elementFromSelection(layoutBreakpointsS)
     return this.getBreakpoints(mapping).getCurrentLayoutWidthIndexFromCSS(element)

@@ -35,7 +35,7 @@ function createLines(activeAxes: KeyedAxis[]) {
     if (positions.length === 0) continue
     lines.push({
       key: combineKeys([series.key, `i-${valueIndex}`]), //TODO
-      styleClass: series.categories ? series.categories.categories.styleClassValues[valueIndex] : defaultStyleClass,
+      styleClass: series.categories ? series.categories.getStyleClass(valueIndex) : defaultStyleClass,
       positions
     })
   }

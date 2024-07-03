@@ -10,12 +10,12 @@ export async function createBarCart(selector: string) {
   const tickOrientationHorizontal = {
     scope: 'self',
       dependentOn: 'width',
-      mapping: {0: 90, 3: 0} //{0: 90, 1: -180, 3: 179} // demonstration purposes
+      breakpointValues: {0: 90, 2: 0} //{0: 90, 1: -180, 3: 179} // demonstration purposes
   } as const
   const tickOrientationVertical = {
     scope: 'self',
     dependentOn: 'height',
-    mapping: {0: 0, 3: 90} //{0: -180, 1: -180, 3: 179} // demonstration purposes
+    breakpointValues: {0: 0, 2: 90} //{0: -180, 1: -180, 3: 179} // demonstration purposes
   } as const
   const axisBoundsWidth = {
     values: [10, 30, 50],

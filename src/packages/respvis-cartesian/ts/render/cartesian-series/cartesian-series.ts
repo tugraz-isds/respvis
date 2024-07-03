@@ -3,6 +3,7 @@ import {
   AxisType,
   BaseAxis,
   combineKeys,
+  ErrorMessages,
   getCurrentRespVal,
   ScaledValuesCategorical,
   ScaledValuesSpatial,
@@ -56,6 +57,10 @@ export abstract class CartesianSeries extends Series {
       })
     this.zoom = 'class' in args ? args.zoom : args.zoom ? validateZoom(args.zoom) : undefined
     this.renderer = args.renderer as CartesianRenderer
+
+    if (this.categories && this.categories.values.length !== this.x.values.length) {
+      throw new Error(ErrorMessages.categoricalValuesMismatch)
+    }
   }
 
   getScaledValues() {

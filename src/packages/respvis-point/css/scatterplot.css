@@ -3,6 +3,11 @@
   .series-label[layout-strategy-horizontal="right"] text { text-anchor: start; }
   .series-label[layout-strategy-vertical="top"] text { dominant-baseline: auto; }
   .series-label[layout-strategy-vertical="bottom"] text { dominant-baseline: hanging; }
+
+  --chart-padding-right: var(--max-radius, 0px);
+  /*--chart-padding-left: var(--max-radius, 0px);*/
+  --chart-padding-top: var(--max-radius, 0px);
+  --chart-padding-bottom: var(--max-radius, 0px);
 }
 
 .series-point {

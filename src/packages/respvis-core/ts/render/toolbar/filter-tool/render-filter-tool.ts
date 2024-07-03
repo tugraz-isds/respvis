@@ -7,7 +7,6 @@ import {FieldSetData, renderFieldset} from "../tool/render/render-fieldset";
 import {Toolbar} from "../render-toolbar";
 import {Series} from "../../series";
 import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
-import {categoryOrderMapToArray} from "../../../data/categories";
 import {mergeKeys} from "../../../utilities/dom/key";
 import {Axis} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-spatial/scaled-values-categorical";
@@ -151,11 +150,9 @@ function renderCategoryControls(menuToolsItemsS: Selection, series: Series) {
   const {categories, renderer} = series
   if (!categories) return
 
-  const {title: categoriesTitle, categoryOrderMap: categoryOrderMap, keyOrder} = categories.categories
+  const {title: categoriesTitle} = categories.categories
   const categoryText = getCurrentRespVal(categoriesTitle, {chart: renderer.chartS})
-
-  const options = categoryOrderMapToArray(categoryOrderMap)
-  const keys = keyOrder.map(key => mergeKeys([categories.parentKey, key]))
+  const categoryArray = categories.categories.categoryArray
 
   const onClick = (e) => {
     if (renderer.exitEnterActive()) {
@@ -167,14 +164,15 @@ function renderCategoryControls(menuToolsItemsS: Selection, series: Series) {
   const data: (LabelsParentData & FieldSetData)[] = [{
     legend: categoryText,
     collapsable: true,
-    labelData: options.map((option, index) => {
+    labelData: categoryArray.map((option) => {
       return new CheckBoxLabel({
-        label: option, type: 'category',
-        dataKey: keys[index], defaultVal: categories.isKeyActiveByKey(keys[index]),
+        label: option.value, type: 'category',
+        dataKey: mergeKeys([categories.parentKey, option.key]),
+        defaultVal: categories.isKeyActiveByKey(option.key),
         onClick,
         onChange: () => {
           if (renderer.exitEnterActive()) return
-          renderer.filterDispatch.call('filter', {dataKey: keys[index]}, this)
+          renderer.filterDispatch.call('filter', {dataKey: option.key}, this)
         }
       })
     })
@@ -198,7 +196,7 @@ function renderAxisControls(menuToolsItemsS: Selection, axis: Axis) {
 
   const labelData: InputLabel[] = options.map((option, index) => {
     return new CheckBoxLabel({
-      label: option, type: 'category',
+      label: option.value, type: 'category',
       dataKey: keys[index], defaultVal: axis.scaledValues.isKeyActiveByKey(keys[index]),
       onClick,
       onChange: () => {
@@ -225,9 +223,9 @@ function getAxisCategoryProps(axis: Axis) {
   const axisScaledValues = axis.scaledValues
   return {
     keys: axisScaledValues instanceof ScaledValuesCategorical ?
-      axisScaledValues.categories.keyOrder.map(oKey => `${axisScaledValues.parentKey}-${oKey}`) : [],
+      axisScaledValues.categories.categoryArray.map(c => `${axisScaledValues.parentKey}-${c.key}`) : [],
     options: axisScaledValues instanceof ScaledValuesCategorical ?
-      categoryOrderMapToArray(axisScaledValues.categories.categoryOrderMap) : []
+      axisScaledValues.categories.categoryArray : []
   }
 }
 
