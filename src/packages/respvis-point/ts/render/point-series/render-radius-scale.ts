@@ -1,16 +1,16 @@
 import {PointSeries} from "respvis-point";
 import {
   Axis,
+  BreakpointProperty,
   cssVarDefaultsKeys,
   LegendSelection,
   rectFromString,
-  renderAxisLayout,
-  RespValInterpolated
+  renderAxisLayout
 } from "respvis-core";
 
 export function renderRadiusScale(legendS: LegendSelection, series: PointSeries) {
   const {radii} = series as PointSeries
-  if (typeof radii === 'number' || radii instanceof RespValInterpolated) return
+  if (typeof radii === 'number' || radii instanceof BreakpointProperty) return
 
   const [minRadius, maxRadius] = radii.scale.range()
 

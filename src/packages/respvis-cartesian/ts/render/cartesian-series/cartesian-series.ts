@@ -4,7 +4,7 @@ import {
   BaseAxis,
   combineKeys,
   ErrorMessages,
-  getCurrentRespVal,
+  getCurrentResponsiveValue,
   ScaledValuesCategorical,
   ScaledValuesSpatial,
   ScaledValuesSpatialDomain,
@@ -80,7 +80,7 @@ export abstract class CartesianSeries extends Series {
       const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (h => h)
       return {
         format: axis.d3Axis?.tickFormat() ?? scaleFormat,
-        title: getCurrentRespVal(axis.title, {
+        title: getCurrentResponsiveValue(axis.title, {
           self: axisS,
           chart: axis.renderer.chartS
         })

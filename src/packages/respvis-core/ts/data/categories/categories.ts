@@ -1,13 +1,13 @@
-import {RespVal, RespValUserArgs, validateRespVal} from "../responsive-value/responsive-value";
 import {arrayAlignLengths, clearDuplicatedValues} from "../../utilities/array";
 import {CategoryKey} from "../../constants/types";
+import {ResponsiveValueOptional, ResponsiveValueUserArgs, validateResponsiveValue} from "../responsive-property";
 
 /**
  * @property values - length must match number of all data records in use
  */
 export type CategoriesUserArgs = {
   values: string[],
-  title: RespValUserArgs<string>,
+  title: ResponsiveValueUserArgs<string>,
   format?: ((value: string) => string) | Record<string, string>
 }
 
@@ -16,7 +16,7 @@ export type CategoriesArgs = CategoriesUserArgs & {
 }
 
 export type Categories = Omit<CategoriesArgs, 'format' | 'title'> & {
-  title: RespVal<string>
+  title: ResponsiveValueOptional<string>
   categoryMap: Record<string, Category>
   categoryArray: Category[]
 }
@@ -50,7 +50,7 @@ export function validateCategories(args: CategoriesArgs, referenceData?: unknown
   const categoryArray: Category[] = Object.values(categoryMap).sort((a, b) => a.order > b.order ? 1 : -1)
 
   return {
-    title: validateRespVal(title),
+    title: validateResponsiveValue(title),
     values,
     parentKey,
     categoryMap,

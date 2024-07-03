@@ -7,32 +7,32 @@ import {CSSLengthValue, LengthDimension} from "../../constants/types";
 import {getLayoutWidthIndexFromCSS} from "../breakpoints/component-breakpoints";
 import {cssLengthInPx, elementFromSelection} from "../../utilities";
 import {ErrorMessages} from "../../constants";
-import {RespValBase} from "./responsive-value-base";
+import {ResponsivePropertyBase} from "./responsive-property-base";
 
-type RespValInterpolatedUserArgsResponsive<T> = {
+type BreakpointPropertyUserArgsResponsive<T> = {
   readonly breakpointValues: { 0: T, [key: number]: T },
   readonly dependentOn: LengthDimension,
   readonly scope?: ComponentBreakpointsScope
 }
 
-export type RespValInterpolatedUserArgs<T> = T | RespValInterpolatedUserArgsResponsive<T>
+export type BreakpointPropertyUserArgs<T> = T | BreakpointPropertyUserArgsResponsive<T>
 
-export function isRespValInterpolatedUserArgsResponsive<T>(arg: any): arg is RespValInterpolatedUserArgsResponsive<T> {
+export function isBreakpointPropertyUserArgsResponsive<T>(arg: any): arg is BreakpointPropertyUserArgsResponsive<T> {
   return typeof arg === 'object' && arg !== null && 'breakpointValues' in arg && 'dependentOn' in arg && !('value' in arg)
 }
 
-export function validateRespValInterpolated<T>(args: RespValInterpolatedUserArgs<T>): RespValInterpolatedOptional<T> {
-  if (!isRespValInterpolatedUserArgsResponsive(args)) {
+export function validateBreakpointProperty<T>(args: BreakpointPropertyUserArgs<T>): BreakpointPropertyOptional<T> {
+  if (!isBreakpointPropertyUserArgsResponsive(args)) {
     return args
   }
-  return new RespValInterpolated(args)
+  return new BreakpointProperty(args)
 }
 
-export type RespValInterpolatedOptional<T> = RespValInterpolated<T> | T
-export class RespValInterpolated<T> extends RespValBase<T> {
+export type BreakpointPropertyOptional<T> = BreakpointProperty<T> | T
+export class BreakpointProperty<T> extends ResponsivePropertyBase<T> {
   readonly mapping: { 0: T, [key: number]: T }
 
-  constructor(args: RespValInterpolatedUserArgsResponsive<T>) {
+  constructor(args: BreakpointPropertyUserArgsResponsive<T>) {
     super(args.dependentOn, args.scope)
     this.mapping = args.breakpointValues
   }

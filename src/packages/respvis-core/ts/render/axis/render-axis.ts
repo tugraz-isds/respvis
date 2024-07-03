@@ -11,12 +11,12 @@ import {
 } from "d3";
 import {elementFromSelection} from "../../utilities/d3/util";
 import {Axis} from "./validate-base-axis";
-import {getCurrentRespVal} from "../../data/responsive-value/responsive-value";
 import {modifyAxisTicksPostGeneration, renderAxisTicksPreGeneration} from "./render-axis-ticks";
 import {configureTickAngles} from "./configure-tick-angle";
 import {renderBgSVGOnlyBBox} from "../bg-svg-only";
 import {AxisLayouts, Orientation} from "../../constants/types";
 import type {KeyedAxis} from "../../../../respvis-parcoord/ts/render/validate-keyed-axis";
+import {getCurrentResponsiveValue} from "../../data";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, Axis>;
 export type KeyedAxisSelection = Selection<SVGSVGElement | SVGGElement, KeyedAxis>;
@@ -72,7 +72,7 @@ function renderAxis(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
     .selectAll('text')
     .data([null])
     .join('text')
-    .text(getCurrentRespVal(axisD.title, {chart: chartS, self: axisS}))
+    .text(getCurrentResponsiveValue(axisD.title, {chart: chartS, self: axisS}))
 
   titleWrapperS.selectAll('.subtitle')
     .data(axisD.subTitle ? [null] : [])
@@ -81,7 +81,7 @@ function renderAxis(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {
     .selectAll('text')
     .data([null])
     .join('text')
-    .text(getCurrentRespVal(axisD.subTitle, {chart: chartS, self: axisS}))
+    .text(getCurrentResponsiveValue(axisD.subTitle, {chart: chartS, self: axisS}))
 
   const ticksS = renderAxisTicksPreGeneration(axisS)
   a(ticksS);
@@ -99,7 +99,7 @@ function d3Axis(
 
   breakpoints.updateCSSVars(axisElement)
 
-  const configureAxisValid = getCurrentRespVal(configureAxis,
+  const configureAxisValid = getCurrentResponsiveValue(configureAxis,
     {chart: renderer.chartS, self: axisS
     })
 

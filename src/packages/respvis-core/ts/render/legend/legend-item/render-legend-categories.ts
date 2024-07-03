@@ -7,7 +7,7 @@ import {Legend} from "../validate-legend";
 import {renderBgSVGOnlyBBox} from "../../bg-svg-only";
 import {Size} from "../../../data/size";
 import {createLegendItems} from "./create-legend-items";
-import {getCurrentRespVal} from "../../../data";
+import {getCurrentResponsiveValue} from "../../../data";
 
 export function renderLegendCategories(legendS: LegendSelection) {
 
@@ -65,7 +65,7 @@ export function renderLegendCategories(legendS: LegendSelection) {
 function renderTitle(legendS: LegendSelection) {
   const {renderer, title} = legendS.datum()
   //TODO: add self to mapping when legend has breakpoints
-  const text = getCurrentRespVal(title, {chart: renderer.chartS})
+  const text = getCurrentResponsiveValue(title, {chart: renderer.chartS})
   legendS
     .selectChildren('.title')
     .data([text])

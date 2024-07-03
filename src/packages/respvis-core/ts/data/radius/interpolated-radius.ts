@@ -1,17 +1,17 @@
 import {
-  isRespValInterpolatedUserArgsResponsive,
-  RespValInterpolated,
-  RespValInterpolatedUserArgs,
-  validateRespValInterpolated
-} from "../responsive-value/responsive-value-interpolated";
+  BreakpointProperty,
+  BreakpointPropertyUserArgs,
+  isBreakpointPropertyUserArgsResponsive,
+  validateBreakpointProperty
+} from "../responsive-property/breakpoint-property";
 
-export type InterpolatedRadiusUserArgs = RespValInterpolatedUserArgs<number>
-export type InterpolatedRadius = RespValInterpolated<number> | number
+export type InterpolatedRadiusUserArgs = BreakpointPropertyUserArgs<number>
+export type InterpolatedRadius = BreakpointProperty<number> | number
 
 export function isInterpolatedRadiusUserArgs(args: any): args is InterpolatedRadiusUserArgs {
-  return typeof args === 'number' || isRespValInterpolatedUserArgsResponsive(args)
+  return typeof args === 'number' || isBreakpointPropertyUserArgsResponsive(args)
 }
 
 export function validateInterpolatedRadius(args?: InterpolatedRadiusUserArgs): InterpolatedRadius {
-  return validateRespValInterpolated(args || 5)
+  return validateBreakpointProperty(args || 5)
 }

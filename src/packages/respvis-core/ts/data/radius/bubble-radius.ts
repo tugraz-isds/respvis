@@ -4,16 +4,16 @@ import {BaseAxis, BaseAxisUserArgs, validateBaseAxis} from "../../render/axis";
 import {Renderer} from "../../render/chart";
 import {Series} from "../../render/series";
 import {
-  RespValInterpolated,
-  RespValInterpolatedOptional,
-  RespValInterpolatedUserArgs,
-  validateRespValInterpolated
-} from "../responsive-value";
+  BreakpointProperty,
+  BreakpointPropertyOptional,
+  BreakpointPropertyUserArgs,
+  validateBreakpointProperty
+} from "../responsive-property";
 import {Extrema, isExtrema} from "./extrema";
 import {scaleLinear, ScaleLinear} from "d3";
 
 export type BubbleRadiusUserArgs = ScaledValuesNumericUserArgs & {
-  extrema: RespValInterpolatedUserArgs<Extrema>
+  extrema: BreakpointPropertyUserArgs<Extrema>
   axis: BaseAxisUserArgs
 }
 
@@ -30,7 +30,7 @@ export type BubbleRadius = Omit<BubbleRadiusArgs, 'series' | 'renderer' | 'axis'
   tag: 'bubble'
   axis: LinearRangeAxis,
   scale: ScaleLinear<number, number, never>
-  extrema: RespValInterpolatedOptional<Extrema>
+  extrema: BreakpointPropertyOptional<Extrema>
 }
 
 export function isBubbleRadiusUserArgs(args: any): args is BubbleRadiusUserArgs {
@@ -51,9 +51,9 @@ export function validateBubbleRadius(args: BubbleRadiusArgs): BubbleRadius {
   return {extrema, values, scale, axis, tag: 'bubble'}
 }
 
-function validateBubbleRadiusExtrema(extremaArgs: RespValInterpolatedUserArgs<Extrema>) {
-  const extrema = validateRespValInterpolated(extremaArgs)
-  if (extrema instanceof RespValInterpolated) {
+function validateBubbleRadiusExtrema(extremaArgs: BreakpointPropertyUserArgs<Extrema>) {
+  const extrema = validateBreakpointProperty(extremaArgs)
+  if (extrema instanceof BreakpointProperty) {
     const mapping = extrema.mapping
     Object.values(mapping).forEach((values) => {
       if (values.minimum > values.maximum) throw new Error(ErrorMessages.invalidExtremaCombination)

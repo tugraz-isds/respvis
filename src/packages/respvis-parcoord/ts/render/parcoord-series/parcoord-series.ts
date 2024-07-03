@@ -4,7 +4,7 @@ import {
   BaseAxisUserArgs,
   combineKeys,
   ErrorMessages,
-  getCurrentRespVal,
+  getCurrentResponsiveValue,
   ResponsiveState,
   ResponsiveStateArgs,
   ScaledValuesCategorical,
@@ -141,7 +141,7 @@ export class ParcoordSeries extends Series {
 
     const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (val => val)
     const format = axis.d3Axis?.tickFormat() ?? scaleFormat
-    const axisName = getCurrentRespVal(axis.title, {chart: chartS})
+    const axisName = getCurrentResponsiveValue(axis.title, {chart: chartS})
     const dimensionValue = format(axis.scaledValues.atScreenPosition(dimensionPosition), 0)
     return {
       horizontal: flipped ? dimensionValue : axisName,

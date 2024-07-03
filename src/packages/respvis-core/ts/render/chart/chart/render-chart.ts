@@ -1,12 +1,12 @@
 import {Selection} from 'd3';
 import {ChartData} from "./validate-chart";
 import {elementFromSelection} from "../../../utilities/d3/util";
-import {getCurrentRespVal} from "../../../data/responsive-value/responsive-value";
 import {renderBgSVGOnlyFixed} from "../../bg-svg-only";
 import {rectFromString} from "../../../data/shapes/rect";
 import {AxisOrientation, isCSSBreakpointLengthValue, SVGGroupingElement} from "../../../constants/types";
 import {uniqueId} from "../../../utilities/unique";
 import {cssLengthInPx} from "../../../utilities/dom/units";
+import {getCurrentResponsiveValue} from "../../../data";
 
 export type ChartBaseSelection<T extends SVGGroupingElement, D extends ChartData> = Selection<T, D>;
 
@@ -105,7 +105,7 @@ function renderTitle<T extends SVGGroupingElement, D extends ChartData>
 (header: Selection<any, D>, chart: Selection<T, D>) {
   return header
     .selectAll('.title')
-    .data((d) => [getCurrentRespVal(d.title, {chart})])
+    .data((d) => [getCurrentResponsiveValue(d.title, {chart})])
     .join('g')
     .classed('title', true)
     .selectAll('text')
@@ -118,7 +118,7 @@ function renderSubtitle<T extends SVGGroupingElement, D extends ChartData>
 (header: ChartBaseSelection<any, D>, chart: ChartBaseSelection<T, D>) {
   return header
     .selectAll('.subtitle')
-    .data((d) => [getCurrentRespVal(d.subTitle, {chart})])
+    .data((d) => [getCurrentResponsiveValue(d.subTitle, {chart})])
     .join('g')
     .classed('subtitle', true)
     .selectAll('text')

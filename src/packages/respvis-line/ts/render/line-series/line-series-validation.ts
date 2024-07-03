@@ -1,6 +1,6 @@
 import {CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
 import {type Point, PointLabelsUserArgs, PointSeries} from "respvis-point";
-import {InterpolatedRadius, InterpolatedRadiusUserArgs, validateRespValInterpolated} from "respvis-core";
+import {InterpolatedRadius, InterpolatedRadiusUserArgs, validateBreakpointProperty} from "respvis-core";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
 
 export type LineSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
@@ -20,7 +20,7 @@ export class LineSeries extends PointSeries {
     super(args);
     this.originalSeries = args.originalSeries ?? this
     if ('class' in args) this.radii = args.radii
-    else this.radii = args.radii ? validateRespValInterpolated(args.radii) : 5
+    else this.radii = args.radii ? validateBreakpointProperty(args.radii) : 5
   }
   clone() {
     return new LineSeries(this)

@@ -5,7 +5,7 @@ import {
 import {defaultScope, LengthDimension} from "../../constants";
 import {elementFromSelection} from "../../utilities";
 
-export abstract class RespValBase<T> {
+export abstract class ResponsivePropertyBase<T> {
   readonly scope?: ComponentBreakpointsScope
   readonly dependentOn: LengthDimension
   abstract mapping: any
