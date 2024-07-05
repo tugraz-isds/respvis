@@ -1,5 +1,5 @@
-import {rectFromSize} from "../../data/shapes/rect";
-import {Size} from "../../data/size";
+import {rectFromSize} from "../../utilities/geometry/shapes/rect/rect";
+import {Size} from "../../utilities/geometry/shapes/rect/size";
 import {RenderArgs} from "../chart/renderer";
 import {Series} from "../series";
 import {pathRect} from "../path/path-rect";

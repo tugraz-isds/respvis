@@ -1,4 +1,4 @@
-import {SelectionOrTransition} from '../../utilities/d3/selection';
+import {SelectionOrTransition} from '../../d3/selection';
 
 export interface Position {
   x: number;

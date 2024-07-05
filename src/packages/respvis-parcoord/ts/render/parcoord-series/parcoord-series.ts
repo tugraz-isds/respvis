@@ -1,5 +1,4 @@
 import {
-  arrayAlignLengths,
   AxisLayout,
   BaseAxisUserArgs,
   combineKeys,
@@ -7,6 +6,7 @@ import {
   getCurrentResponsiveValue,
   ResponsiveState,
   ResponsiveStateArgs,
+  RVArray,
   ScaledValuesCategorical,
   ScaledValuesSpatialDomain,
   ScaledValuesSpatialUserArgs,
@@ -77,7 +77,7 @@ export class ParcoordSeries extends Series {
       //TODO: index check
       const alignedCategories = args.categories ? {
         ...args.categories,
-        values: arrayAlignLengths(args.categories.values, this.axes[0].scaledValues.values)[0]
+        values: RVArray.equalizeLengths(args.categories.values, this.axes[0].scaledValues.values)[0]
       } : undefined
       this.categories = alignedCategories ? new ScaledValuesCategorical({...alignedCategories, parentKey: 's-0'}) :
         undefined
@@ -108,6 +108,10 @@ export class ParcoordSeries extends Series {
 
     if (this.categories && this.categories.values.length !== this.axes[0].scaledValues.values.length) {
       throw new Error(ErrorMessages.categoricalValuesMismatch)
+    }
+
+    if (this.color && this.color.values.length !== this.axes[0].scaledValues.values.length) {
+      throw new Error(ErrorMessages.sequentialColorValuesMismatch)
     }
   }
 

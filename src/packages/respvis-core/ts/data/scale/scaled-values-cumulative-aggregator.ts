@@ -1,7 +1,7 @@
-import {sum} from "../../utilities/array";
 import {ScaleLinear, scaleLinear} from "d3";
 import {ScaledValuesNumeric} from "./scaled-values-spatial/scaled-values-numeric";
 import {ScaledValuesCategorical} from "./scaled-values-spatial/scaled-values-categorical";
+import {RVArray} from "../../utilities";
 
 export class ScaledValuesCumulativeAggregator {
   numericalValues: ScaledValuesNumeric
@@ -36,7 +36,7 @@ export class ScaledValuesCumulativeAggregator {
       summedValues[categoryOrder] += this.numericalValues.values[i]
     }, [])
 
-    const aggregatedValuesOrder = groupedValues.map(vals => sum(vals))
+    const aggregatedValuesOrder = groupedValues.map(vals => RVArray.sum(vals))
     console.assert(aggregatedValuesOrder.length === this.categoricalValues.categories.categoryArray.length)
     const aggregatedDomain = [this.numericalValues.scale.domain()[0], Math.max(...aggregatedValuesOrder)]
 

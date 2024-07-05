@@ -1,6 +1,6 @@
 import {Position} from "../position";
-import {SelectionOrTransition} from "../../utilities/d3";
-import {Rect, rectCenter} from "./rect";
+import {SelectionOrTransition} from "../../d3";
+import {Rect, rectCenter} from "./rect/rect";
 
 export interface Ellipse {
   center: Position;

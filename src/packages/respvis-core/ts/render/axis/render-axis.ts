@@ -9,14 +9,14 @@ import {
   Selection,
   Transition
 } from "d3";
-import {elementFromSelection} from "../../utilities/d3/util";
 import {Axis} from "./validate-base-axis";
 import {modifyAxisTicksPostGeneration, renderAxisTicksPreGeneration} from "./render-axis-ticks";
 import {configureTickAngles} from "./configure-tick-angle";
-import {renderBgSVGOnlyBBox} from "../bg-svg-only";
+import {renderBgSVGOnlyBBox} from "../element/bg-svg-only";
 import {AxisLayouts, Orientation} from "../../constants/types";
 import type {KeyedAxis} from "../../../../respvis-parcoord/ts/render/validate-keyed-axis";
 import {getCurrentResponsiveValue} from "../../data";
+import {elementFromSelection} from "../../utilities";
 
 export type AxisSelection = Selection<SVGSVGElement | SVGGElement, Axis>;
 export type KeyedAxisSelection = Selection<SVGSVGElement | SVGGElement, KeyedAxis>;

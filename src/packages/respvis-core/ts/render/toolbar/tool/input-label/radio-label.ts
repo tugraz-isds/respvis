@@ -1,8 +1,8 @@
 import {Selection} from "d3";
 import {InputLabel, InputLabelDataBase} from "./input-label";
 import {renderSimpleTooltip} from "../render/render-simple-tooltip";
-import {addRawSVGToSelection} from "../../../../utilities";
 import InfoSVG from '../../../../../../../assets/svg/tablericons/info-icon.svg'
+import {renderSVG} from "respvis-core";
 
 export type RadioLabelsData = Omit<RadioLabelData, 'value' | 'label'> & {
   options: Pick<RadioLabelData, 'value' | 'label'>[]
@@ -40,7 +40,7 @@ export class RadioLabel implements InputLabel {
         .data([null])
         .join('button')
         .classed('info__button', true)
-      addRawSVGToSelection(infoButtonS, InfoSVG)
+      renderSVG(infoButtonS, InfoSVG)
       renderSimpleTooltip(infoButtonS, {text: info})
     }
     return labelS

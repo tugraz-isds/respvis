@@ -1,5 +1,6 @@
 export const ErrorMessages = {
   categoricalValuesMismatch: 'Number of categorical values does not match with number of reference values!',
+  sequentialColorValuesMismatch: 'Number of sequentially colored values does not match with number of reference values!',
   defaultError: 'An internal error occurred in RespVis!',
   invalidResponsiveValue: 'You passed an invalid responisve value object!',
   invalidExtremaCombination: 'You passed an invalid combination of minimum and maximum values!',

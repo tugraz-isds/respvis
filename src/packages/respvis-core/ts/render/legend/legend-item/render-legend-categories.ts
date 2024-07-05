@@ -1,11 +1,11 @@
 import {LegendItem} from "./legend-item";
 import {select} from "d3";
-import {rectFromString} from "../../../data/shapes/rect";
+import {rectFromString} from "../../../utilities/geometry/shapes/rect/rect";
 import {LegendSelection} from "../render-legend";
 import {SVGHTMLElementLegacy} from "../../../constants/types";
 import {Legend} from "../validate-legend";
-import {renderBgSVGOnlyBBox} from "../../bg-svg-only";
-import {Size} from "../../../data/size";
+import {renderBgSVGOnlyBBox} from "../../element/bg-svg-only";
+import {Size} from "../../../utilities/geometry/shapes/rect/size";
 import {createLegendItems} from "./create-legend-items";
 import {getCurrentResponsiveValue} from "../../../data";
 

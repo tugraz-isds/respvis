@@ -1,6 +1,7 @@
 import {CartesianResponsiveState, CartesianResponsiveStateArgs} from "respvis-cartesian";
-import {PointSeries} from "respvis-point";
-import {BreakpointProperty, BubbleRadius, Circle, elementFromSelection} from "respvis-core";
+import {PointSeries} from "./point-series";
+import {BubbleRadius} from "../../data/radius";
+import {BreakpointProperty, Circle, elementFromSelection} from "respvis-core";
 
 type PointResponsiveStateArgs = CartesianResponsiveStateArgs & {
   series: PointSeries

@@ -1,14 +1,14 @@
-import {ErrorMessages} from "../../constants";
-import {ScaledValuesNumeric, ScaledValuesNumericUserArgs, validateScaledValuesSpatial} from "../scale";
-import {BaseAxis, BaseAxisUserArgs, validateBaseAxis} from "../../render/axis";
-import {Renderer} from "../../render/chart";
-import {Series} from "../../render/series";
+import {ErrorMessages} from "respvis-core/constants";
+import {ScaledValuesNumeric, ScaledValuesNumericUserArgs, validateScaledValuesSpatial} from "respvis-core/data/scale";
+import {BaseAxis, BaseAxisUserArgs, validateBaseAxis} from "respvis-core/render/axis";
+import {Renderer} from "respvis-core/render/chart";
+import {Series} from "respvis-core/render/series";
 import {
   BreakpointProperty,
   BreakpointPropertyOptional,
   BreakpointPropertyUserArgs,
   validateBreakpointProperty
-} from "../responsive-property";
+} from "respvis-core/data/responsive-property";
 import {Extrema, isExtrema} from "./extrema";
 import {scaleLinear, ScaleLinear} from "d3";
 
@@ -31,10 +31,6 @@ export type BubbleRadius = Omit<BubbleRadiusArgs, 'series' | 'renderer' | 'axis'
   axis: LinearRangeAxis,
   scale: ScaleLinear<number, number, never>
   extrema: BreakpointPropertyOptional<Extrema>
-}
-
-export function isBubbleRadiusUserArgs(args: any): args is BubbleRadiusUserArgs {
-  return 'extrema' in args && 'axis' in args
 }
 
 export function validateBubbleRadius(args: BubbleRadiusArgs): BubbleRadius {

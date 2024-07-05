@@ -1,12 +1,12 @@
 import {Selection} from 'd3';
 import {ChartData} from "./validate-chart";
-import {elementFromSelection} from "../../../utilities/d3/util";
-import {renderBgSVGOnlyFixed} from "../../bg-svg-only";
-import {rectFromString} from "../../../data/shapes/rect";
+import {renderBgSVGOnlyFixed} from "../../element/bg-svg-only";
+import {rectFromString} from "../../../utilities/geometry/shapes/rect/rect";
 import {AxisOrientation, isCSSBreakpointLengthValue, SVGGroupingElement} from "../../../constants/types";
 import {uniqueId} from "../../../utilities/unique";
 import {cssLengthInPx} from "../../../utilities/dom/units";
 import {getCurrentResponsiveValue} from "../../../data";
+import {elementFromSelection} from "../../../utilities";
 
 export type ChartBaseSelection<T extends SVGGroupingElement, D extends ChartData> = Selection<T, D>;
 

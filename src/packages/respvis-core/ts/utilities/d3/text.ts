@@ -1,8 +1,14 @@
 import {Selection} from "d3";
 import {Rect} from "../../data";
-import {positionToTransformAttr} from "../../data/position";
+import {positionToTransformAttr} from "../geometry/position";
 
-export function centerSVGTextBaseline(svgS: Selection<SVGTextElement>, bounds: Rect) {
+/**
+ * Note that the SVG text element must have a dominant-baseline value of "central"
+ * for this function to work properly.
+ * @param svgS SVG text element
+ * @param bounds Bounds of Layout Twin Element
+ */
+export function positionSVGTextToLayoutCenter(svgS: Selection<SVGTextElement>, bounds: Rect) {
   const textElement = svgS.node()
   if (!textElement) return
 

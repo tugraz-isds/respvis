@@ -1,17 +1,17 @@
-import {
-  isInterpolatedRadiusUserArgs,
-  LegendSelection,
-  Radius,
-  RadiusUserArgs,
-  validateBubbleRadius,
-  validateInterpolatedRadius
-} from "respvis-core";
+import {LegendSelection} from "respvis-core";
 import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
 import {PointLabelsDataCollection, PointLabelsUserArgs} from "../point-label";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
 import type {Point} from "../point";
 import {PointResponsiveState} from "./point-responsive-state";
 import {renderRadiusScale} from "./render-radius-scale";
+import {
+  isBaseRadiusUserArgs,
+  Radius,
+  RadiusUserArgs,
+  validateBaseRadius,
+  validateBubbleRadius
+} from "../../data/radius";
 
 export type PointSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
   radii?: RadiusUserArgs
@@ -39,7 +39,7 @@ export class PointSeries extends CartesianSeries {
       })
 
     if ('class' in args) this.radii = args.radii
-    else if (isInterpolatedRadiusUserArgs(args.radii) || !args.radii) this.radii = validateInterpolatedRadius(args.radii)
+    else if (isBaseRadiusUserArgs(args.radii) || !args.radii) this.radii = validateBaseRadius(args.radii)
     else this.radii = validateBubbleRadius({...args.radii, renderer: this.renderer, series: this})
 
     this.markerTooltipGenerator = args.markerTooltipGenerator

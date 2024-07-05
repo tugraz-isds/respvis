@@ -1,14 +1,14 @@
 import {easeCubicOut, select, Selection} from 'd3';
 import {
-  addEnterClass,
-  addExitClass,
-  classesForSelection,
+  addCSSTransitionEnterClass,
+  addCSSTransitionExitClass,
+  createSelectionClasses,
   cssVarFromSelection,
-  positionToTransformAttr,
-  VisualPrimitive
 } from "../../utilities";
 import {Orientation} from "../../constants";
 import {Label} from "./label";
+import {VisualPrimitive} from "../primitive";
+import {positionToTransformAttr} from "../../utilities/geometry/position";
 
 type LabelSeriesProps<D extends VisualPrimitive> = {
   elements: D[]
@@ -18,12 +18,12 @@ type LabelSeriesProps<D extends VisualPrimitive> = {
 
 export function renderLabelSeries<D extends VisualPrimitive>(parentS: Selection, props: LabelSeriesProps<D>) {
   const { elements, classes, orientation} = props
-  const {selector, names} = classesForSelection(classes)
+  const {selector, classString} = createSelectionClasses(classes)
   const labels = elements.flatMap(element => element.getLabel(orientation))
   return parentS.selectAll<SVGGElement, any>(selector)
     .data([null])
     .join('g')
-    .classed(names, true)
+    .classed(classString, true)
     .attr('data-ignore-layout-children', true)
     .call((s) => renderLabels(s, labels))
 }
@@ -44,11 +44,11 @@ function joinLabelSeries(seriesS: Selection, joinS: Selection<Element, Label>): 
           .append('text')
           .classed('label', true)
           .each((d, i, g) => positionToTransformAttr(select(g[i]), d))
-          .call(s => addEnterClass(s, tDuration))
+          .call(s => addCSSTransitionEnterClass(s, tDuration))
           .call((s) => seriesS.dispatch('enter', { detail: { selection: s } })),
       undefined,
       (exit) =>
-        exit.call((s) => addExitClass(s, tDuration).on('end', () => {
+        exit.call((s) => addCSSTransitionExitClass(s, tDuration).on('end', () => {
           exit.remove().call((s) => seriesS.dispatch('exit', {detail: {selection: s}}))
         }))
     )

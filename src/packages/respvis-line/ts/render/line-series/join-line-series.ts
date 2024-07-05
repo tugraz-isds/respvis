@@ -1,6 +1,12 @@
 import {select, Selection} from "d3";
 import {Line} from "./line";
-import {addEnterClass, addExitClass, cancelExitClassOnUpdate, cssVarFromSelection, pathLine} from "respvis-core";
+import {
+  addCSSTransitionEnterClass,
+  addCSSTransitionExitClass,
+  cancelExitClassOnUpdate,
+  cssVarFromSelection,
+  pathLine
+} from "respvis-core";
 
 export function joinLineSeries(seriesS: Selection<Element>, joinS: Selection<Element, Line>) {
   const tDurationString = cssVarFromSelection(seriesS, '--transition-time-line-enter-ms')
@@ -11,7 +17,7 @@ export function joinLineSeries(seriesS: Selection<Element>, joinS: Selection<Ele
         enter.append('path')
           .classed('line', true)
           .call(s => {
-            addEnterClass(s, tDuration)
+            addCSSTransitionEnterClass(s, tDuration)
           })
           .call((s) => seriesS.dispatch('enter', {detail: {selection: s}})),
       (update) => update.call(() => {
@@ -19,7 +25,7 @@ export function joinLineSeries(seriesS: Selection<Element>, joinS: Selection<Ele
       }),
       (exit) =>
         exit.call((s) => {
-          addExitClass(s, tDuration).on('end.Remove', function() {
+          addCSSTransitionExitClass(s, tDuration).on('end.Remove', function() {
             if (!select(this).classed('exit-done')) return
             exit.remove().call((s) => seriesS.dispatch('exit', {detail: {selection: s}}))
           })

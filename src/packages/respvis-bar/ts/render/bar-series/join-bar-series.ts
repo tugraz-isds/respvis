@@ -1,7 +1,7 @@
 import {easeCubicOut, select, Selection} from "d3";
 import {BarArgs} from "../bar";
 import {
-  addTransitionClass,
+  addD3TransitionClass,
   cssLengthInPx,
   CSSLengthUnit,
   rectFitStroke,
@@ -30,7 +30,7 @@ export function joinBarSeries(
             select(g[i])
               .transition('minimize')
               .duration(250)
-              .call(addTransitionClass)
+              .call(addD3TransitionClass)
               .call((t) => rectToAttrs(t, rectMinimized(d)))
               .remove()
           )
@@ -39,7 +39,7 @@ export function joinBarSeries(
     .each((d, i, g) =>
       select(g[i])
         .transition('position')
-        .call(addTransitionClass)
+        .call(addD3TransitionClass)
         .duration(250)
         .ease(easeCubicOut)
         .call((t) => {

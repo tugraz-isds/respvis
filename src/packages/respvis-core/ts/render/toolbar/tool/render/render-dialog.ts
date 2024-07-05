@@ -1,5 +1,6 @@
 import {Selection} from "d3";
-import {classesForSelection} from "../../../../utilities/d3/util";
+
+import {createSelectionClasses} from "../../../../utilities";
 
 export type DialogData = {
   toggleTimeout: NodeJS.Timeout | undefined
@@ -10,7 +11,7 @@ export type DialogData = {
 }
 
 export function renderDialog(parentS: Selection, ...classes: string[]) {
-  const {names, selector} = classesForSelection(classes)
+  const {classString, selector} = createSelectionClasses(classes)
   const dialogS = parentS.selectAll<HTMLDialogElement, DialogData>(selector)
   const toggleTimeout = dialogS.empty() ? undefined : dialogS.datum().toggleTimeout
   return dialogS
@@ -21,7 +22,7 @@ export function renderDialog(parentS: Selection, ...classes: string[]) {
       toggleTimeout
     }])
     .join('dialog')
-    .classed(names, true)
+    .classed(classString, true)
 }
 
 type OpenDialogOptions = {

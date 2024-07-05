@@ -1,6 +1,6 @@
 import {Selection} from "d3";
-import {classesForSelection} from "../../utilities/d3/util";
 import {pathScale} from "./path";
+import {createSelectionClasses} from "../../utilities";
 
 type ChevronData = {
   type: 'down' | 'right' | null
@@ -8,12 +8,12 @@ type ChevronData = {
 }
 
 export function pathChevronRender(selection: Selection, classes: string[], data?: ChevronData[]) {
-  const {selector, names} = classesForSelection(classes)
+  const {selector, classString} = createSelectionClasses(classes)
 
   const group = selection.selectAll<SVGGElement, any>(selector)
     .data([null])
     .join('g')
-    .classed(names, true)
+    .classed(classString, true)
     .attr('data-ignore-layout-children', true)
   group.selectAll('path')
     .data(data ?? [{type: "right", scale: 1}])

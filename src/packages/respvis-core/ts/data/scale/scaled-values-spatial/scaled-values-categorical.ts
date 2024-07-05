@@ -6,11 +6,13 @@ import {ResponsiveValueOptional, ResponsiveValueUserArgs, validateResponsiveValu
 
 export type ScaledValuesCategoricalUserArgs = {
   values: string[],
-  scale?: ScaleBand<string>
+  scale?: ScaleBand<string>,
+  categoriesKey?: number
 }
 
 type ScaledValuesCategoricalArgs = ScaledValuesCategoricalUserArgs & ScaledValuesSpatialBaseArgs & {
   title: ResponsiveValueUserArgs<string>
+  categoriesKey: number
 }
 
 export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
@@ -33,7 +35,7 @@ export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
     this.categories = 'categories' in args ? args.categories : validateCategories({
       values: this.values,
       title: args.title,
-      parentKey: args.parentKey
+      categoriesKey: args.parentKey
     }, this.values)
 
     this.keysActive = 'keysActive' in args ? args.keysActive : this.categories.categoryArray.reduce((prev, c) => {

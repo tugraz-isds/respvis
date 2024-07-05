@@ -1,6 +1,6 @@
 import {Selection} from "d3";
-import {classesForSelection} from "../../utilities/d3/util";
 import ArrowUpNarrowSVG from "../../../../../assets/svg/tablericons/arrow-up-narrow.svg"
+import {createSelectionClasses} from "../../utilities";
 
 export function pathArrowsUpDownRender(selection: Selection, classes: string[]) {
   const paths = [
@@ -21,14 +21,14 @@ export function pathArrowBigLeft(selection: Selection, classes: string[]) {
 }
 
 export function renderSVGArrowNarrowUp(selection: Selection, classes: string[]) {
-  const {selector, names} = classesForSelection(classes)
+  const {selector, classString} = createSelectionClasses(classes)
   let rotationGroup = selection.selectAll<SVGGElement, any>('.svg-wrapper' + selector)
   const svgGroup = rotationGroup.selectAll('svg')
   if (rotationGroup.empty() || svgGroup.empty()) {
     rotationGroup = rotationGroup.data([null])
       .join('g')
       .classed('svg-wrapper', true)
-      .classed(names, true)
+      .classed(classString, true)
     rotationGroup.html(ArrowUpNarrowSVG)
     rotationGroup.selectAll('svg')
       .attr('data-ignore-layout-children', true)
@@ -43,12 +43,12 @@ export function renderSVGArrowNarrowUp(selection: Selection, classes: string[]) 
 }
 
 function renderPaths(selection: Selection, classes: string[], paths: string[]) {
-  const {selector, names} = classesForSelection(classes)
+  const {selector, classString} = createSelectionClasses(classes)
   let group = selection.selectAll<SVGGElement, any>(selector)
   if (group.empty()) {
     group = group.data([null])
       .join('g')
-      .classed(names, true)
+      .classed(classString, true)
       .attr('data-ignore-layout-children', true)
   }
   let rotationGroup = group.selectAll('.rotation-group')

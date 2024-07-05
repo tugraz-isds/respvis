@@ -1,6 +1,7 @@
 import {CartesianChartData, CartesianChartUserArgs, validateCartesianChart} from "respvis-cartesian";
 import {PointSeries, PointSeriesUserArgs} from "../point-series/point-series";
-import {BreakpointProperty, BubbleRadius, RenderArgs} from "respvis-core";
+import {BreakpointProperty, RenderArgs} from "respvis-core";
+import {BubbleRadius} from "../../data/radius";
 
 export type ScatterPlotUserArgs = Omit<CartesianChartUserArgs, 'series'> & {
   series: PointSeriesUserArgs

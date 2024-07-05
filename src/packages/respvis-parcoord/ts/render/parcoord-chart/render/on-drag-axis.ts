@@ -1,5 +1,5 @@
 import {D3ZoomEvent, Selection} from "d3";
-import {mapArrayToOrders, relateDragWayToSelection} from "respvis-core";
+import {relateDragWayToSelection, RVArray} from "respvis-core";
 import {KeyedAxis} from "../../validate-keyed-axis";
 
 export function onDragAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxis, drawAreaBackgroundS: Selection<SVGRectElement>) {
@@ -28,7 +28,7 @@ export function onDragEndAxisParcoord(d: KeyedAxis) {
   const equidistantAxesActive = originalSeries.renderer.windowS.datum().windowSettings.get('parcoordEquidistantAxes')
   if (!equidistantAxesActive) return
   const percentageRange = originalSeries.axesPercentageScale.range()
-  const order = mapArrayToOrders(percentageRange)
+  const order = RVArray.mapToRanks(percentageRange)
 
   const newPercentageRange = order.map((eOrder) => (eOrder - 1) / (order.length - 1))
   originalSeries.axesPercentageScale.range(newPercentageRange)

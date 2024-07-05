@@ -1,12 +1,12 @@
 import {select, Selection} from 'd3';
-import {elementAbsoluteBounds, elementRelativeBounds} from '../../utilities/element';
-import {positionToTransformAttr} from '../../data/position/position';
-import {rectEquals, rectFromString, rectToAttrs, rectToString,} from '../../data/shapes/rect';
-import {circleInsideRect, circleToAttrs} from '../../data/shapes/circle';
+import {elementAbsoluteBounds, elementRelativeBounds} from '../../utilities/dom/element';
+import {positionToTransformAttr} from '../../utilities/geometry/position/position';
+import {rectEquals, rectFromString, rectToAttrs, rectToString,} from '../../utilities/geometry/shapes/rect/rect';
+import {circleInsideRect, circleToAttrs} from '../../utilities/geometry/shapes/circle';
 import {cssVars} from "../../constants/cssVars";
-import {ellipseInsideRect, ellipseToAttrs} from "../../data/shapes/ellipse";
+import {ellipseInsideRect, ellipseToAttrs} from "../../utilities/geometry/shapes/ellipse";
 import {SVGTwinInformation} from "./layouter-compute";
-import {centerSVGTextBaseline} from "../../utilities";
+import {positionSVGTextToLayoutCenter} from "../../utilities";
 
 export function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGTwinInformation>): void {
   selection.each((d, i, g) => {
@@ -123,7 +123,7 @@ export function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGTwinInf
           svgS.call((s) => ellipseToAttrs(s, ellipseInsideRect(bounds)));
           break;
         case 'text':
-          centerSVGTextBaseline(svgS as Selection<SVGTextElement>, bounds)
+          positionSVGTextToLayoutCenter(svgS as Selection<SVGTextElement>, bounds)
           break;
         default:
           svgS.call((s) => positionToTransformAttr(s, bounds));

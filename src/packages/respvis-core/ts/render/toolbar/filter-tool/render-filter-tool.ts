@@ -1,12 +1,11 @@
 import {select, Selection} from "d3";
 import {renderTool} from "../tool/render/render-tool";
 import {bindOpenerToDialog, renderDialog} from "../tool/render/render-dialog";
-import {addRawSVGToSelection} from "../../../utilities/d3/util";
 import filterSVGRaw from "../../../../../../assets/svg/tablericons/filter.svg";
 import {FieldSetData, renderFieldset} from "../tool/render/render-fieldset";
 import {Toolbar} from "../render-toolbar";
 import {Series} from "../../series";
-import {mergeKeys} from "../../../utilities/dom/key";
+import {mergeKeys} from "../../../utilities/key";
 import {Axis} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-spatial/scaled-values-categorical";
 import {CheckBoxLabel} from "../tool/input-label/checkbox-label";
@@ -17,6 +16,7 @@ import {InputLabel} from "../tool/input-label/input-label";
 import {RangeLabel} from "../tool/input-label/range-label";
 import type {KeyedAxis} from "../../../../../respvis-parcoord/ts/render";
 import {getCurrentResponsiveValue, orderScaledValuesSpatial, ScaledValuesSpatialNumericOrTemporal} from "../../../data";
+import {renderSVG} from "respvis-core";
 
 export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Toolbar) {
   const seriesCollection = args.getSeries()
@@ -26,7 +26,7 @@ export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Tool
 
   const filterToolS = renderTool(contentS, 'tool--filter')
   const dialogOpenerS = renderButton(filterToolS, 'toolbar__btn')
-  addRawSVGToSelection(dialogOpenerS, filterSVGRaw)
+  renderSVG(dialogOpenerS, filterSVGRaw)
   renderSimpleTooltip(dialogOpenerS, {text: 'Filter'})
   const dialogS = renderDialog(dialogContainerS, 'dialog--side', 'dialog--filter')
   bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300})
@@ -164,14 +164,15 @@ function renderCategoryControls(menuToolsItemsS: Selection, series: Series) {
     legend: categoryText,
     collapsable: true,
     labelData: categoryArray.map((option) => {
+      const dataKey = mergeKeys([categories.parentKey, option.key])
       return new CheckBoxLabel({
         label: option.value, type: 'category',
-        dataKey: mergeKeys([categories.parentKey, option.key]),
+        dataKey,
         defaultVal: categories.isKeyActiveByKey(option.key),
         onClick,
         onChange: () => {
           if (renderer.exitEnterActive()) return
-          renderer.filterDispatch.call('filter', {dataKey: option.key}, this)
+          renderer.filterDispatch.call('filter', {dataKey}, this)
         }
       })
     })

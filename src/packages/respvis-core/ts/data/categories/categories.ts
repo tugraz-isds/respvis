@@ -1,4 +1,4 @@
-import {arrayAlignLengths, clearDuplicatedValues} from "../../utilities/array";
+import {RVArray} from "../../utilities/array";
 import {CategoryKey} from "../../constants/types";
 import {ResponsiveValueOptional, ResponsiveValueUserArgs, validateResponsiveValue} from "../responsive-property";
 
@@ -12,7 +12,7 @@ export type CategoriesUserArgs = {
 }
 
 export type CategoriesArgs = CategoriesUserArgs & {
-  parentKey: string
+  categoriesKey: string
 }
 
 export type Categories = Omit<CategoriesArgs, 'format' | 'title'> & {
@@ -30,10 +30,10 @@ type Category = {
 }
 
 export function validateCategories(args: CategoriesArgs, referenceData?: unknown[]): Categories  {
-  const { values, parentKey, title, format} = args
+  const { values, categoriesKey, title, format} = args
 
-  const [categoriesAligned] = arrayAlignLengths(args.values, referenceData ?? args.values)
-  const categoryOrder = clearDuplicatedValues(categoriesAligned)
+  const [categoriesAligned] = RVArray.equalizeLengths(args.values, referenceData ?? args.values)
+  const categoryOrder = RVArray.clearDuplicatedValues(categoriesAligned)
 
   const categoryMap: Record<string, Category> = categoryOrder.reduce((acc: Record<string, Category>, current, index) => {
     acc[current] = {
@@ -52,7 +52,7 @@ export function validateCategories(args: CategoriesArgs, referenceData?: unknown
   return {
     title: validateResponsiveValue(title),
     values,
-    parentKey,
+    categoriesKey,
     categoryMap,
     categoryArray
   }

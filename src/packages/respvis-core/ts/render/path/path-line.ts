@@ -1,6 +1,6 @@
 import {SelectionOrTransition} from "../../utilities/d3/selection";
-import {Position} from "../../data/position/position";
-import {elementIs} from "../../utilities/element";
+import {Position} from "../../utilities/geometry/position/position";
+import {isElement} from "../../utilities/dom/element";
 import {select} from "d3";
 
 export function pathLine(
@@ -9,7 +9,7 @@ export function pathLine(
 ): void {
   if (positions.length < 2) return;
 
-  selectionOrTransition = elementIs(selectionOrTransition)
+  selectionOrTransition = isElement(selectionOrTransition)
     ? select(selectionOrTransition)
     : selectionOrTransition;
 

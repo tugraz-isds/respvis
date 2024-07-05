@@ -61,6 +61,10 @@ export abstract class CartesianSeries extends Series {
     if (this.categories && this.categories.values.length !== this.x.values.length) {
       throw new Error(ErrorMessages.categoricalValuesMismatch)
     }
+
+    if (this.color && this.color.values.length !== this.x.values.length) {
+      throw new Error(ErrorMessages.sequentialColorValuesMismatch)
+    }
   }
 
   getScaledValues() {

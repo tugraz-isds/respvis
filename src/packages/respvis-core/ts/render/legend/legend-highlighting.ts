@@ -1,7 +1,7 @@
 import {LegendSelection} from "./render-legend";
 import {select, Selection} from "d3";
 import {ErrorMessages} from "../../constants/error";
-import {splitKey} from "../../utilities/dom/key";
+import {splitKey} from "../../utilities/key";
 import {LegendItem} from "./legend-item";
 
 export function addLegendHoverHighlighting(legendS: LegendSelection) {

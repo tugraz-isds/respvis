@@ -1,9 +1,9 @@
 import {select, Selection} from "d3";
-import {addRawSVGToSelection, classesForSelection} from "../../../../utilities/d3/util";
 import {InputLabel} from "../input-label/input-label";
 import CollapseDownRAW from '../../../../../../../assets/svg/tablericons/collapse-down.svg';
-import {mapSelection} from "../../../../utilities/d3/selection";
+import {createSelectionClasses, mapSelection} from "../../../../utilities/d3/selection";
 import {renderInputLabel} from "../input-label/render-input-labels";
+import {renderSVG} from "../../../element/svg";
 
 export type FieldSetData = {
   legend: string
@@ -14,11 +14,11 @@ export type FieldSetData = {
 export function renderFieldset<D extends FieldSetData>(
   parentS: Selection, data: D[], ...classes: string[]) {
 
-  const {names, selector} = classesForSelection(classes)
+  const {classString, selector} = createSelectionClasses(classes)
   const itemS = parentS.selectAll<HTMLFieldSetElement, InputLabel>(selector)
     .data(data)
     .join('fieldset')
-    .classed(names, true)
+    .classed(classString, true)
 
   itemS.each(function (d, i, g) {
     const currentItemS = select<HTMLFieldSetElement, typeof d>(g[i])
@@ -51,7 +51,7 @@ function fieldsetLegendRender(legendS: Selection<HTMLLegendElement>, data: Field
     .data(data.collapsable ? [CollapseDownRAW] : [])
     .join('span')
     .classed('collapse-icon', true)
-    .each((d,i,g) => addRawSVGToSelection(select(g[i]), CollapseDownRAW))
+    .each((d,i,g) => renderSVG(select(g[i]), CollapseDownRAW))
 }
 
 export function fieldsetCollapseWrapperRender<D extends FieldSetData>

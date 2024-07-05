@@ -1,6 +1,6 @@
 import {SelectionOrTransition} from "../../utilities/d3/selection";
-import {Circle} from "../../data/shapes/circle";
-import {elementIs} from "../../utilities/element";
+import {Circle} from "../../utilities/geometry/shapes/circle";
+import {isElement} from "../../utilities/dom/element";
 import {select} from "d3";
 
 export function pathCircle(
@@ -12,7 +12,7 @@ export function pathCircle(
     radius: r,
   } = circle;
 
-  selectionOrTransition = elementIs(selectionOrTransition)
+  selectionOrTransition = isElement(selectionOrTransition)
     ? select(selectionOrTransition)
     : selectionOrTransition;
 

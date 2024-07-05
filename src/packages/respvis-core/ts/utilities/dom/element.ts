@@ -1,5 +1,4 @@
-import {select} from 'd3';
-import {Rect, rectRound} from '../data/shapes/rect';
+import {Rect, rectRound} from '../geometry/shapes/rect/rect';
 
 export function elementRelativeBounds(element: Element): Rect {
   console.assert(element.isConnected, 'Element needs to be attached to the DOM.');
@@ -56,11 +55,7 @@ export function elementComputedStyleWithoutDefaults(
   return diff;
 }
 
-export function elementData<Data extends any>(element: Element): Data {
-  return select<Element, Data>(element).datum();
-}
-
-export function elementIs(obj: any): obj is Element {
+export function isElement(obj: any): obj is Element {
   return obj instanceof Element || obj instanceof HTMLElement || obj instanceof SVGElement;
 }
 
