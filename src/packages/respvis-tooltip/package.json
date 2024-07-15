@@ -28,6 +28,6 @@
   "homepage": "https://github.com/tugraz-isds/respvis#readme",
   "peerDependencies": {
     "d3": "^7.2.1",
-    "respvis-core": "^3.0.0"
+    "respvis-core": "^3.1.0"
   }
 }

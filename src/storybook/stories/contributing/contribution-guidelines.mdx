@@ -19,14 +19,19 @@ it is important to stick to the
 ## Releasing
 
 When doing a release, make sure to follow these steps:
-- Check that the current branch is master.
+- Check that the current branch is develop.
 - Raise the version of all package.jsons.
   They all must be the same.
+- Raise the version of all package.jsons peer-dependencies.
+  They all must be the same.
+- Make sure that all packages follow the import/export policy.
+- Add release commit in develop and merge to master.
+- Check that the current branch is now master.
 - Create a new tag. It must be named to: `v<major>.<minor>.<patch>`
   and must match with the versions of the package.jsons.
 - Push the created tag.
-- Publish all packages on npm
-- Create a release from the new tag on GitHub
+- Publish all packages on the public npm registry.
+- Create a release from the new tag on GitHub.
 
 
 
