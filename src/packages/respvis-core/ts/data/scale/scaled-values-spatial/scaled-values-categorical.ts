@@ -1,18 +1,21 @@
 import {ScaledValuesSpatialBase, ScaledValuesSpatialBaseArgs} from "./scaled-values-spatial-base";
 import {scaleBand, ScaleBand, ZoomTransform} from "d3";
-import {Categories, validateCategories} from "../../categories";
-import {ActiveKeyMap, AxisType} from "../../../constants/types";
-import {ResponsiveValueOptional, ResponsiveValueUserArgs, validateResponsiveValue} from "../../responsive-property";
+import {Categories, CategoriesUserArgs, isCategoryUserArgs} from "../../categories";
+import {AxisType, KeyPrefix} from "../../../constants/types";
+import {ResponsiveValueOptional} from "../../responsive-property";
+import {Key} from "../../../utilities";
 
-export type ScaledValuesCategoricalUserArgs = {
-  values: string[],
+export type ScaledValuesCategoricalUserArgs = CategoriesUserArgs & {
   scale?: ScaleBand<string>,
-  categoriesKey?: number
 }
 
-type ScaledValuesCategoricalArgs = ScaledValuesCategoricalUserArgs & ScaledValuesSpatialBaseArgs & {
-  title: ResponsiveValueUserArgs<string>
-  categoriesKey: number
+export function isScaledValuesCategoricalUserArgs(args: any): args is ScaledValuesCategoricalUserArgs {
+  return isCategoryUserArgs(args.values)
+}
+
+export type ScaledValuesCategoricalArgs = Pick<ScaledValuesCategoricalUserArgs, 'values' | 'scale'> &
+  ScaledValuesSpatialBaseArgs & {
+  categories: Categories
 }
 
 export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
@@ -22,26 +25,14 @@ export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
   readonly flippedScale: ScaleBand<string>
   readonly title: ResponsiveValueOptional<string>
   readonly categories: Categories
-  readonly keysActive: ActiveKeyMap
 
   constructor(args: ScaledValuesCategoricalArgs | ScaledValuesCategorical) {
     super(args)
     this.values = args.values
     this.scale = args.scale ?? scaleBand([0, 600]).domain(this.values).padding(0.1)
     this.flippedScale = this.scale.copy()
-    this.title = 'tag' in args ? args.title : validateResponsiveValue(args.title)
-
-    //TODO: this is no real alignment validation. Fix this!
-    this.categories = 'categories' in args ? args.categories : validateCategories({
-      values: this.values,
-      title: args.title,
-      categoriesKey: args.parentKey
-    }, this.values)
-
-    this.keysActive = 'keysActive' in args ? args.keysActive : this.categories.categoryArray.reduce((prev, c) => {
-      prev[`${args.parentKey}-${c.key}`] = true
-      return prev
-    }, {})
+    this.categories = args.categories
+    this.title = args.categories.title
   }
 
   getOrder(i: number) {
@@ -66,7 +57,7 @@ export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
 
   isKeyActiveByKey(key: string) {
     // noinspection PointlessBooleanExpressionJS
-    return this.keysActive[key] !== false
+    return this.categories.categoryMap[key].key.active
   }
 
   isValueActive(i: number) {
@@ -75,6 +66,14 @@ export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
 
   setKeyActiveIfDefined(key: string, value: boolean) {
     if (this.keysActive[key] !== undefined) this.keysActive[key] = value
+  }
+
+  getKeys(i: number): Key<KeyPrefix>[] {
+    const rawCategory = this.values[i]
+    const category = this.categories.categoryMap[rawCategory]
+    const categoryKey = category.key
+    const categoriesKey = this.categories.key
+    return [categoryKey, categoriesKey]
   }
 
   getCombinedKey(i: number) {
@@ -86,10 +85,10 @@ export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
     const rawCategory = this.values[i]
     const category = this.categories.categoryMap[rawCategory]
     const categoryKey = category.key
-    const parentKey = this.parentKey
-    const combinedKey = parentKey + '-' + categoryKey
+    const categoriesKey = this.categories.key
+    // const combinedKey = parentKey + '-' + categoryKey
     const styleClass = category.styleClass
-    return {categoryKey, parentKey, combinedKey, styleClass}
+    return {categoryKey, categoriesKey, styleClass}
   }
 
   cloneZoomed(transform: ZoomTransform, axisType: AxisType) {

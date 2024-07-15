@@ -1,6 +1,6 @@
 import {Selection} from "d3";
 import {ParcoordChartData} from "../validate-parcoord-chart";
-import {Axis, combineKeys, defaultStyleClass, Position} from "respvis-core";
+import {Axis, CompositeKey, defaultStyleClass, Key, Position} from "respvis-core";
 import {joinLineSeries, Line} from "respvis-line";
 import {ParcoordSeries} from "../../parcoord-series";
 import {KeyedAxis} from "../../validate-keyed-axis";
@@ -19,7 +19,7 @@ export function renderLineSeriesParcoord(chartS: Selection<Element, ParcoordChar
 
 
   lineSeriesS.selectAll<SVGPathElement, Line>('path')
-    .data(lines, (d) => d.key)
+    .data(lines, (d) => d.key.getRawKey())
     .call(s => joinLineSeries(lineSeriesS, s))
 }
 
@@ -27,14 +27,14 @@ function createLines(activeAxes: KeyedAxis[]) {
   const lines: Line[] = []
   const series = activeAxes[0].series
   const maxIndex = activeAxes[0].scaledValues.values.length
-  if (!series.keysActive[series.key]) return lines
+  if (!series.key.active) return lines
 
   for (let valueIndex = 0; valueIndex < maxIndex; valueIndex++) {
     if (series.categories && !series.categories.isValueActive(valueIndex)) continue
     const positions = createLinePositions(activeAxes, valueIndex, series)
     if (positions.length === 0) continue
     lines.push({
-      key: combineKeys([series.key, `i-${valueIndex}`]), //TODO
+      key: new CompositeKey([series.key, new Key('i', [valueIndex])]),
       styleClass: series.categories ? series.categories.getStyleClass(valueIndex) : defaultStyleClass,
       positions
     })
@@ -50,7 +50,7 @@ function createLinePositions(activeAxes: KeyedAxis[], valueIndex: number, series
     const valPos = axis.scaledValues.getScaledValue(valueIndex)
     if (!axis.scaledValues.isValueActive(valueIndex) || !axis.isValueInRangeLimit(valPos)) return []
 
-    const axisPosPercent = series.originalSeries.axesPercentageScale(axis.key)
+    const axisPosPercent = series.originalSeries.axesPercentageScale(axis.key.getRawKey())
     const axisPosReal = series.percentageScreenScale(axisPosPercent)
     positions.push({
       y: flipped ? axisPosReal : valPos,

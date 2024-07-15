@@ -30,7 +30,7 @@ export type LightWeightAxisArgs = LightWeightAxisUserArgs & RenderArgs & {
 
 export type LightWeightAxis = Required<Omit<LightWeightAxisArgs,
   'breakpoints' | 'tickOrientation' | 'tickOrientationFlipped' | 'title' |
-  'subTitle' | 'configureAxis'>> & {
+  'subTitle' | 'configureAxis' | 'key'>> & {
   title: ResponsiveValueOptional<string>
   subTitle: ResponsiveValueOptional<string>
   configureAxis: ResponsiveValueOptional<ConfigureAxisFn>
@@ -54,7 +54,7 @@ export function validateLightWeightAxis(args: LightWeightAxisArgs): LightWeightA
     verticalLayout: args.verticalLayout && AxisLayoutsVertical.includes(args.verticalLayout) ?
       args.verticalLayout : 'left',
     tickOrientation: validateBreakpointProperty(args.tickOrientation ?? 0),
-    tickOrientationFlipped: validateBreakpointProperty(args.tickOrientationFlipped ?? 0),
+    tickOrientationFlipped: validateBreakpointProperty(args.tickOrientationFlipped ?? 0)
   }
   return axis
 }

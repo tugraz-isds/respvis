@@ -4,7 +4,7 @@ import {joinPointSeries} from "./join-point-series";
 
 export function renderPoints(seriesS: Selection, points: Point[]) {
   seriesS.selectAll<SVGCircleElement, Point>('.point')
-    .data(points, (d) => d.key.rawKey)
+    .data(points, (d) => d.key.getRawKey())
     .call((s) => joinPointSeries(seriesS, s));
   return seriesS
 }

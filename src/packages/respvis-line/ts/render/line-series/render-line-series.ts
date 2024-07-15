@@ -31,7 +31,7 @@ function renderLineSeriesPoints(pointS: Selection<Element, LineSeries>, pointGro
     .classed('point-category', true)
     .each(function (d, i, g) {
       select(g[i]).selectAll<SVGCircleElement, Point>('.point')
-        .data(pointGroups[i], (d) => d.key.rawKey)
+        .data(pointGroups[i], (d) => d.key.getRawKey())
         .call((s) => joinPointSeries(pointS, s))
     })
 }
@@ -46,6 +46,6 @@ function renderLineSeriesLines(lineS: Selection<Element, LineSeries>, pointGroup
   })).filter(line => line.positions.length !== 0)
 
   lineS.selectAll<SVGPathElement, Line>('path')
-    .data(lines, (d) => d.key)
+    .data(lines, (d) => d.key.getRawKey())
     .call(s => joinLineSeries(lineS, s))
 }

@@ -49,6 +49,6 @@ export function joinBarSeries(
         })
     )
     .attr('data-style', (d) => d.styleClass)
-    .attr('data-key', (d) => d.key.rawKey)
+    .attr('data-key', (d) => d.key.getRawKey())
     .call((s) => seriesSelection.dispatch('update', {detail: {selection: s}}));
 }

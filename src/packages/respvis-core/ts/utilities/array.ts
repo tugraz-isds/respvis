@@ -9,12 +9,12 @@ export namespace RVArray {
     return array.reduce((sum, val) => sum + val, 0)
   }
 
-  export function mapToRanks(arr: number[]) {
-    const arrOrder = arr.map(() => 1)
-    for (let j = 0; j < arr.length; j++) {
-      for (let i = j + 1; i < arr.length; i++) {
-        if (arr[j] > arr[i]) arrOrder[j] = arrOrder[j] + 1
-        else if (arr[j] < arr[i]) arrOrder[i] = arrOrder[i] + 1
+  export function mapToRanks(array: number[]) {
+    const arrOrder = array.map(() => 1)
+    for (let j = 0; j < array.length; j++) {
+      for (let i = j + 1; i < array.length; i++) {
+        if (array[j] > array[i]) arrOrder[j] = arrOrder[j] + 1
+        else if (array[j] < array[i]) arrOrder[i] = arrOrder[i] + 1
       }
     }
     return arrOrder
@@ -23,6 +23,15 @@ export namespace RVArray {
   export function clearDuplicatedValues<T>(array: T[]) {
     return array.reduce<T[]>(
       (prev, current) => prev.includes(current) ? prev : [...prev, current], [])
+  }
+
+  //src: https://stackoverflow.com/questions/14446511/most-efficient-method-to-groupby-on-an-array-of-objects
+  export function groupBy<T extends Record<PropertyKey, any>,
+    K extends keyof T>(array: T[], key:  K & (T[K] extends PropertyKey ? K : never)) {
+    return array.reduce((acc, val) => {
+      (acc[val[key]] = acc[val[key]] || []).push(val);
+      return acc;
+    }, {} as Record<T[K], T[]>);
   }
 
   export function isNumberArray(arr: any[]): arr is number[] {

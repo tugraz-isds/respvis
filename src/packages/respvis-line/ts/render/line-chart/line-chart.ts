@@ -2,7 +2,7 @@ import {Selection} from 'd3';
 import {CartesianChartMixin} from "respvis-cartesian";
 import {LineChartData, LineChartUserArgs, validateLineChart} from "./validate-line-chart";
 import {renderLineChart} from "./render-line-chart";
-import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
+import {applyMixins, Chart, SeriesChartMixin, Window, windowValidation} from "respvis-core";
 
 export type WindowSelection = Selection<HTMLDivElement, Window & LineChartData>;
 export type ChartSelection = Selection<SVGSVGElement, Window & LineChartData>;
@@ -10,10 +10,10 @@ export type ChartSelection = Selection<SVGSVGElement, Window & LineChartData>;
 export interface LineChart extends SeriesChartMixin, CartesianChartMixin {}
 export class LineChart extends Chart {
   constructor(windowSelection: Selection<HTMLDivElement>, data: LineChartUserArgs) {
-    super(windowSelection, {...data, type: 'line'})
+    super()
     const chartData = validateLineChart({...data, renderer: this})
     this._windowS = windowSelection as WindowSelection
-    const initialWindowData = this.windowS.datum()
+    const initialWindowData = windowValidation({...data, type: 'line', renderer: this})
     this.windowS.datum({...initialWindowData, ...chartData})
   }
 

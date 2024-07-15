@@ -18,7 +18,10 @@ export type BarStackedSeriesUserArgs = BarBaseSeriesUserArgs & {
   categories: CategoriesUserArgs
 }
 
-export type BarStackedSeriesArgs = BarBaseSeriesArgs & BarStackedSeriesUserArgs
+export type BarStackedSeriesArgs = BarBaseSeriesArgs & Pick<BarStackedSeriesUserArgs, 'aggregationScale'> & {
+  y: ScaledValuesNumeric
+}
+
 export class BarStackedSeries extends BarBaseSeries {
   type: 'stacked'
   aggregationScale?: ScaleLinear<number, number, never>

@@ -48,12 +48,25 @@ export type TextAnchor = 'start' | 'end' | 'middle'
 export type Polarity = 'positive' | 'negative'
 
 
+export type BaseAxisPrefix = `ab`
+export type ColorAxisPrefix = `ac`
+export type KeyedAxisPrefix = `ak`
+export type RadiiAxisPrefix = `ar`
+export type AxisPrefix = BaseAxisPrefix | KeyedAxisPrefix | ColorAxisPrefix | RadiiAxisPrefix
 
-export type KeyType = 'series' | 'axis' | 'category' | 'individual'
-export type AxisKey = `a-${number}` | `ac-${number}` | `ar-${number}`
-export type SeriesKey = `s-${number}`
-export type CategoryKey = `c-${number}`
-export type IndividualKey = `i-${number}`
+export type CategoryGroupPrefix = `cg`
+export type CategoryPrefix = `c`
+
+export type IndividualPrefix = `i`
+
+export type SeriesPrefix = `s`
+
+export type KeyPrefix = AxisPrefix | CategoryGroupPrefix | CategoryPrefix | IndividualPrefix | SeriesPrefix
+
+export type PrefixKeyed<T extends string> = `${T}-${number}`
+export type PrefixDoubleKeyed<T extends string> = `${T}-${number}-${number}`
+
+
 
 export const AxisLayoutsHorizontal = ['bottom', 'top'] as const
 export type AxisLayoutHorizontal = typeof AxisLayoutsHorizontal[number]

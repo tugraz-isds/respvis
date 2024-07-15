@@ -1,20 +1,20 @@
 import {
   AxisLayout,
   BaseAxisUserArgs,
-  combineKeys,
   ErrorMessages,
   getCurrentResponsiveValue,
+  RenderArgs,
   ResponsiveState,
   ResponsiveStateArgs,
-  RVArray,
   ScaledValuesCategorical,
+  ScaledValuesSpatial,
+  ScaledValuesSpatialArgs,
   ScaledValuesSpatialDomain,
   ScaledValuesSpatialUserArgs,
   Series,
   SeriesArgs,
-  SeriesKey,
   SeriesUserArgs,
-  Size,
+  validateChartCategories,
   validateScaledValuesSpatial,
   validateZoom,
   Zoom,
@@ -35,13 +35,54 @@ export type ParcoordSeriesUserArgs = SeriesUserArgs & {
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Line>
 }
 
-export type ParcoordArgs = SeriesArgs & ParcoordSeriesUserArgs & {
+export type ParcoordArgs = SeriesArgs & Omit<ParcoordSeriesUserArgs, 'dimensions'> & {
   originalSeries?: ParcoordSeries
-  key: SeriesKey
-  bounds?: Size,
+  zooms: (Zoom | undefined)[]
+  dimensions: ScaledValuesSpatial[]
+  axes: BaseAxisUserArgs[]
 }
 
+export function prepareParcoordSeriesArgs<T extends ParcoordSeriesUserArgs & RenderArgs>(args: T) {
+  const [cs, ...cdim] =
+    validateChartCategories([args.categories, ...args.dimensions.map(dim => dim.scaledValues)])
+
+  //TODO: alignment of values
+  const categoriesArgs = (cs && args.categories) ? {...args.categories, categories: cs} : undefined
+
+  const dimArgs = cdim.map((cdimCurr, index) => {
+    const scaledValuesArgs = cdimCurr ? {...args.dimensions[index].scaledValues, categories: cdimCurr} :
+      args.dimensions[index].scaledValues as ScaledValuesSpatialArgs<any>
+    return validateScaledValuesSpatial(scaledValuesArgs)
+  })
+
+  const zooms = args.dimensions.map(dimension => {
+    return dimension.zoom ? validateZoom(dimension.zoom) : undefined
+  })
+
+  const axes = args.dimensions.map(dimension => dimension.axis)
+
+  const seriesArgs = {...args,
+    key: args.key ?? 0,
+    categories: categoriesArgs ? validateScaledValuesSpatial(categoriesArgs) as ScaledValuesCategorical : undefined,
+    dimensions: dimArgs,
+    axes,
+    zooms
+  }
+
+  if (categoriesArgs && categoriesArgs.values.length !== dimArgs.values.length) {
+    throw new Error(ErrorMessages.categoricalValuesMismatch)
+  }
+
+  if (args.color && args.color.values.length !== dimArgs.values.length) {
+    throw new Error(ErrorMessages.sequentialColorValuesMismatch)
+  }
+
+  return seriesArgs
+}
+
+
 export class ParcoordSeries extends Series {
+  categories?: ScaledValuesCategorical | undefined;
   originalSeries: ParcoordSeries
   axes: KeyedAxis[]
   axesScale: ScalePoint<string>
@@ -59,43 +100,30 @@ export class ParcoordSeries extends Series {
     const {renderer} = args
     this.originalSeries = args.originalSeries ?? this
 
-    //TODO: data aligning
     this.axes = 'class' in args ? args.axes :
       args.dimensions.map((dimension, index) => {
         return validateKeyedAxis({
-          ...dimension.axis, renderer,
+          ...args.axes[index], renderer,
           series: this,
-          scaledValues: validateScaledValuesSpatial(dimension.scaledValues, `a-${index}`),
-          key: `a-${index}`
+          scaledValues: dimension,
+          key: index
         })
       })
 
     if (this.axes.length === 1) throw new Error(ErrorMessages.parcoordMinAxesCount)
 
-    if ('class' in args) this.categories = args.categories
-    else {
-      //TODO: index check
-      const alignedCategories = args.categories ? {
-        ...args.categories,
-        values: RVArray.equalizeLengths(args.categories.values, this.axes[0].scaledValues.values)[0]
-      } : undefined
-      this.categories = alignedCategories ? new ScaledValuesCategorical({...alignedCategories, parentKey: 's-0'}) :
-        undefined
-    }
+    this.categories = args.categories
 
     const denominator = this.axes.length > 1 ? this.axes.length - 1 : 1
     this.axesPercentageScale = ('class' in args) ? args.axesPercentageScale : scaleOrdinal<string, number>()
-      .domain(this.axes.map((axis) => axis.key))
+      .domain(this.axes.map((axis) => axis.key.getRawKey()))
       .range(this.axes.map((axis, index) => index / denominator))
 
     this.percentageScreenScale = ('class' in args) ? args.percentageScreenScale : scaleLinear().domain([0, 1])
 
-    this.axesScale = scalePoint()
-      .domain(this.axes.map((axis) => axis.key))
+    this.axesScale = scalePoint().domain(this.axes.map((axis) => axis.key.getRawKey()))
     
-    this.zooms = 'class' in args ? args.zooms : args.dimensions.map(dimension => {
-      return dimension.zoom ? validateZoom(dimension.zoom) : undefined
-    })
+    this.zooms = args.zooms
 
     this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
       new ParcoordResponsiveState({
@@ -105,24 +133,11 @@ export class ParcoordSeries extends Series {
     })
 
     this.axesInverted = 'class' in args ? args.axesInverted : this.axes.map(() => false)
-
-    if (this.categories && this.categories.values.length !== this.axes[0].scaledValues.values.length) {
-      throw new Error(ErrorMessages.categoricalValuesMismatch)
-    }
-
-    if (this.color && this.color.values.length !== this.axes[0].scaledValues.values.length) {
-      throw new Error(ErrorMessages.sequentialColorValuesMismatch)
-    }
-  }
-
-  getCombinedKey(i: number): string {
-    const seriesCategoryKey = this.categories ? this.categories.getCategoryData(i).combinedKey : undefined
-    return combineKeys([this.key, this.axes[i].key, seriesCategoryKey])
   }
 
   getAxesDragDropOrdered() {
     return [...this.axes].sort((axis1, axis2) => {
-      return this.axesPercentageScale(axis1.key) < this.axesPercentageScale(axis2.key) ? -1 : 1
+      return this.axesPercentageScale(axis1.key.getRawKey()) < this.axesPercentageScale(axis2.key.getRawKey()) ? -1 : 1
     })
   }
 
@@ -133,7 +148,7 @@ export class ParcoordSeries extends Series {
     const axisPosition = flipped ? y : x
     const dimensionPosition = flipped ? x : y
     function axisDiff(axis: KeyedAxis) {
-      const currentAxisPosition = activeSeries.axesScale(axis.key)!
+      const currentAxisPosition = activeSeries.axesScale(axis.key.getRawKey())!
       return Math.abs(currentAxisPosition - axisPosition)
     }
     const { axis } = activeSeries.axes.reduce((prev, current) => {
@@ -160,15 +175,14 @@ export class ParcoordSeries extends Series {
   }
 
   cloneFiltered() {
-    const activeIndices = !this.keysActive[this.key] ? [] :
-      this.axes.map((_, index) => index)
-        .filter(index => this.axes[index].isKeyActiveByKey(this.axes[index].key))
+    const activeIndices = !this.key.active ? [] :
+      this.axes.map((_, index) => index).filter(index => this.axes[index].key.active)
 
     const activeAxes = activeIndices.map(index => this.axes[index])
     activeAxes.forEach(axis => axis.scaledValues = axis.scaledValues.cloneFiltered())
 
-    const activeDomain = activeAxes.map(axis => axis.key)
-    const activeRange = activeAxes.map(axis => this.axesPercentageScale(axis.key))
+    const activeDomain = activeAxes.map(axis => axis.key.getRawKey())
+    const activeRange = activeAxes.map(axis => this.axesPercentageScale(axis.key.getRawKey()))
 
     const clone = this.clone()
     clone.axes = activeAxes
@@ -241,7 +255,7 @@ export class ParcoordResponsiveState extends ResponsiveState {
 
   getAxisPosition(axisIndex: number) {
     const axis = this._series.axes[axisIndex]
-    const percentage = this._series.axesPercentageScale(axis.key) ?? 0
+    const percentage = this._series.axesPercentageScale(axis.key.getRawKey()) ?? 0
     return this.currentlyFlipped ? { x: 0, y: this._series.percentageScreenScale(percentage)} :
       { x: this._series.percentageScreenScale(percentage), y: 0 }
   }

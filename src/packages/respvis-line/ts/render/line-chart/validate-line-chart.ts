@@ -1,4 +1,9 @@
-import {CartesianChartData, CartesianChartUserArgs, validateCartesianChart} from "respvis-cartesian";
+import {
+  CartesianChartData,
+  CartesianChartUserArgs,
+  prepareCartesianSeriesArgs,
+  validateCartesianChart
+} from "respvis-cartesian";
 import {LineSeries, LineSeriesUserArgs} from "../line-series/line-series-validation";
 import {RenderArgs} from "respvis-core";
 
@@ -17,7 +22,9 @@ export function validateLineChart(args: LineChartArgs): LineChartData {
     legend, breakpoints,
     title, subTitle
   } = args
-  const series = new LineSeries({...args.series, key: 's-0', renderer})
+
+  const series = new LineSeries(prepareCartesianSeriesArgs({...args.series, renderer}))
+
   const cartesianData =
     validateCartesianChart({renderer, series, x, y, legend, breakpoints, title, subTitle})
 

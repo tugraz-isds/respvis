@@ -1,9 +1,9 @@
 import {CategoriesUserArgs} from "../../data/categories";
 import {RenderArgs, Renderer} from "../chart/renderer";
-import {ActiveKeyMap, SeriesKey} from "../../constants/types";
+import {SeriesPrefix} from "../../constants/types";
 import {Size} from "../../utilities/geometry/shapes/rect/size";
 import {ScaledValuesCategorical} from "../../data/scale/scaled-values-spatial/scaled-values-categorical";
-import {mergeKeys} from "../../utilities/key";
+import {Key, mergeKeys} from "../../utilities/key";
 //TODO: Refactor away type dependency to respvis-point
 import {
   ResponsiveValueOptional,
@@ -23,25 +23,25 @@ import {LegendSelection} from "../legend";
 
 export type SeriesUserArgs = {
   categories?: CategoriesUserArgs
-  //TODO: Refactor ColorContinuous
   color?: SequentialColorUserArgs
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGElement, any>
   flipped?: ResponsiveValueUserArgs<boolean>
+  key?: number
 }
 
 export type SeriesArgs = SeriesUserArgs & RenderArgs & {
+  categories?: ScaledValuesCategorical
   originalSeries?: Series
-  key: SeriesKey
   bounds?: Size
+  key: number
 }
 
 export abstract class Series implements RenderArgs {
   class = true
   originalSeries: Series
-  categories?: ScaledValuesCategorical
+  abstract categories?: ScaledValuesCategorical
   color?: SequentialColor
-  key: SeriesKey
-  keysActive: ActiveKeyMap
+  key: Key<SeriesPrefix>
   renderer: Renderer
   providesTool = false
   responsiveState: ResponsiveState
@@ -52,22 +52,10 @@ export abstract class Series implements RenderArgs {
     this.renderer = args.renderer
     this.originalSeries = args.originalSeries ?? this
 
-    //TODO: pass correct parameters here
-    if ('class' in args) this.categories = args.categories
-    else this.categories = args.categories ? new ScaledValuesCategorical({
-      ...args.categories, parentKey: key,
-    }) : undefined
-
     if ('class' in args) this.color = args.color
     else this.color = args.color ? validateSequentialColor({...args.color, renderer: this.renderer, series: this}) : undefined
 
-    this.key = args.key
-
-    if ('class' in args) this.keysActive = {...args.keysActive}
-    else {
-      this.keysActive = {}
-      this.keysActive[key] = true
-    }
+    this.key = ('class' in args) ? args.key : new Key('s', [args.key])
 
     this.responsiveState = 'class' in args ? args.responsiveState : new ResponsiveState({
       series: this,
@@ -76,7 +64,7 @@ export abstract class Series implements RenderArgs {
     })
   }
 
-  abstract getCombinedKey(i: number): string
+  // abstract getKeys(i: number): string
 
   getMergedKeys() {
     if (this.categories) {

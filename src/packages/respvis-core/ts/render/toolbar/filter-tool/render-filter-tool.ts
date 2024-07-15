@@ -5,7 +5,6 @@ import filterSVGRaw from "../../../../../../assets/svg/tablericons/filter.svg";
 import {FieldSetData, renderFieldset} from "../tool/render/render-fieldset";
 import {Toolbar} from "../render-toolbar";
 import {Series} from "../../series";
-import {mergeKeys} from "../../../utilities/key";
 import {Axis} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-spatial/scaled-values-categorical";
 import {CheckBoxLabel} from "../tool/input-label/checkbox-label";
@@ -55,10 +54,10 @@ function renderSeriesControl(menuToolsItemsS: Selection, series: Series) {
     collapsable: true,
     labelData: [new CheckBoxLabel({
       label: 'Series', type: 'series',
-      dataKey: key, defaultVal: series.keysActive[key] ? true : false,
+      dataKey: key.getRawKey(), defaultVal: series.key.active ? true : false,
       onClick,
       onChange: () => {
-        renderer.filterDispatch.call('filter', {dataKey: key}, this)
+        renderer.filterDispatch.call('filter', {dataKey: key.getRawKey()}, this)
       }
     })
     ]
@@ -103,7 +102,7 @@ function renderAxisLinearControls(menuToolsItemsS: Selection, axis: Axis, values
   const data: (LabelsParentData & FieldSetData)[] = [{
     legend: title,
     collapsable: true,
-    filterable: 'key' in axis ? createKeyedAxisCheckboxLabel(axis) : undefined,
+    filterable: 'upperRangeLimitPercent' in axis ? createKeyedAxisCheckboxLabel(axis) : undefined,
     labelData: values.filteredRanges.map((range) => {
       const axisFormatFunction = axis.d3Axis?.tickFormat() ?? values.scale.tickFormat()
       return [
@@ -128,7 +127,7 @@ function renderAxisLinearControls(menuToolsItemsS: Selection, axis: Axis, values
       ]
     }).flat()
   }]
-  const fieldSetS = renderFieldset(menuToolsItemsS, data, 'item', 'item--double-range-filter', `filter-axis-${values.parentKey}`)
+  const fieldSetS = renderFieldset(menuToolsItemsS, data, 'item', 'item--double-range-filter', `filter-${axis.key.getRawKey()}`)
   const doubleRangeSliderS = fieldSetS.selectAll('.double-range-slider')
     .data((d) => [d]).join('div')
     .classed('double-range-slider', true)
@@ -164,15 +163,15 @@ function renderCategoryControls(menuToolsItemsS: Selection, series: Series) {
     legend: categoryText,
     collapsable: true,
     labelData: categoryArray.map((option) => {
-      const dataKey = mergeKeys([categories.parentKey, option.key])
+      const key = option.key
       return new CheckBoxLabel({
         label: option.value, type: 'category',
-        dataKey,
-        defaultVal: categories.isKeyActiveByKey(option.key),
+        dataKey: key.getRawKey(),
+        defaultVal: option.key.active,
         onClick,
         onChange: () => {
           if (renderer.exitEnterActive()) return
-          renderer.filterDispatch.call('filter', {dataKey}, this)
+          renderer.filterDispatch.call('filter', {dataKey: key.getRawKey()}, this)
         }
       })
     })
@@ -209,13 +208,13 @@ function renderAxisControls(menuToolsItemsS: Selection, axis: Axis) {
   if (keys.length === 0 && !('key' in axis)) return
 
   const data: (LabelsParentData & FieldSetData)[] = [{
-    legend: getCurrentResponsiveValue(`${title ?? axisScaledValues.parentKey.toUpperCase()}`, {chart: renderer.chartS}),
+    legend: getCurrentResponsiveValue(`${title ?? axis.key.getRawKey().toUpperCase()}`, {chart: renderer.chartS}),
     collapsable: (!('key' in axis) || keys.length > 1),
-    filterable: 'key' in axis ? createKeyedAxisCheckboxLabel(axis) : undefined,
+    filterable: 'upperRangeLimitPercent' in axis ? createKeyedAxisCheckboxLabel(axis) : undefined,
     labelData
   }]
 
-  const fieldSetS = renderFieldset(menuToolsItemsS, data, 'item', 'item--checkbox-series', `filter-axis-${axisScaledValues.parentKey}`)
+  const fieldSetS = renderFieldset(menuToolsItemsS, data, 'item', 'item--checkbox-series', `filter-${axis.key.getRawKey()}`)
   renderInputLabels(fieldSetS)
 }
 
@@ -223,22 +222,22 @@ function getAxisCategoryProps(axis: Axis) {
   const axisScaledValues = axis.scaledValues
   return {
     keys: axisScaledValues instanceof ScaledValuesCategorical ?
-      axisScaledValues.categories.categoryArray.map(c => `${axisScaledValues.parentKey}-${c.key}`) : [],
+      axisScaledValues.categories.categoryArray.map(c => `${axis.key.getRawKey()}-${c.key}`) : [],
     options: axisScaledValues instanceof ScaledValuesCategorical ?
       axisScaledValues.categories.categoryArray : []
   }
 }
 
 function createKeyedAxisCheckboxLabel(axis: KeyedAxis) {
-  const defaultVal = axis.keysActive[axis.key]
+  const defaultVal = axis.key.active
   const axisNecessary = (axis.series.cloneFiltered()?.axes.length <= 2 && defaultVal)
   return new CheckBoxLabel({
     activeClasses: axisNecessary ? ['disabled'] : undefined,
     inactiveClasses: !axisNecessary ? ['disabled'] : undefined,
     label: '', type: 'category',
-    dataKey: axis.key, defaultVal,
+    dataKey: axis.key.getRawKey(), defaultVal,
     onChange: () => {
-      axis.series.renderer.filterDispatch.call('filter', {dataKey: axis.key}, this)
+      axis.series.renderer.filterDispatch.call('filter', {dataKey: axis.key.getRawKey()}, this)
     }
   })
 }

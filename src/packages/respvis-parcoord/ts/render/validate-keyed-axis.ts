@@ -1,8 +1,8 @@
-import {ActiveKeyMap, AxisKey, BaseAxis, BaseAxisArgs, validateBaseAxis} from "respvis-core";
+import {BaseAxis, BaseAxisArgs, Key, KeyedAxisPrefix, validateBaseAxis} from "respvis-core";
 import type {ParcoordSeries} from "./index";
 
 export type KeyedAxisArgs = BaseAxisArgs & {
-  key: AxisKey
+  key: number
   series: ParcoordSeries
 }
 
@@ -11,34 +11,20 @@ export type KeyedAxis = BaseAxis & {
   //If a chart similar to parcoord is integrated, create interface
   //Current Solution is also bad as type must be imported from parcoord-package
   series: ParcoordSeries
-  key: AxisKey
-  keysActive: ActiveKeyMap
-  setKeyActiveIfDefined: (key: string, value: boolean) => void
-  isKeyActiveByKey: (key: string) => boolean
+  key: Key<KeyedAxisPrefix>
   upperRangeLimitPercent: number
   lowerRangeLimitPercent: number
   isValueInRangeLimit: (val: any) => boolean
 }
 
 export function validateKeyedAxis(args:KeyedAxisArgs): KeyedAxis {
-  const keysActive = {}
-  keysActive[args.key] = true
-
   const axis = {
     ...validateBaseAxis(args),
     originalAxis: this,
     series: args.series,
-    key: args.key,
-    keysActive,
+    key: new Key('ak', [args.key]),
     upperRangeLimitPercent: 1,
     lowerRangeLimitPercent: 0,
-    setKeyActiveIfDefined: function(key: string, value: boolean) {
-      if (this.keysActive[key] !== undefined) this.keysActive[key] = value
-    },
-    isKeyActiveByKey: function(key: string) {
-      // noinspection PointlessBooleanExpressionJS
-      return this.keysActive[key] !== false
-    },
     isValueInRangeLimit: function (val: number) {
       const axisIndex = this.series.axes.findIndex(axis => axis.key === this.key)
       const flipped = this.series.responsiveState.currentlyFlipped

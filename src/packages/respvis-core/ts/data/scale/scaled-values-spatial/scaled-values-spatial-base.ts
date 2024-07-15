@@ -1,24 +1,23 @@
-import {AxisType, Orientation, ScaledValueTag, ToArray} from "../../../constants/types";
+import {AxisType, KeyPrefix, Orientation, ScaledValueTag, ToArray} from "../../../constants/types";
 import {ScaledValuesSpatialDomain} from "./validate-scaled-values-spatial";
 import {ScaleBase} from "../scales";
 import {ZoomTransform} from "d3";
 
 import {ScaledValuesSpatial} from "./scaled-values-spatial";
+import {Key} from "../../../utilities";
 
-export type ScaledValuesSpatialBaseArgs = { parentKey: string }
+export type ScaledValuesSpatialBaseArgs = { }
 
 export abstract class ScaledValuesSpatialBase<T extends ScaledValuesSpatialDomain> {
   abstract readonly tag: ScaledValueTag
   abstract readonly values: ToArray<T>
   abstract readonly scale: ScaleBase<T>
   abstract readonly flippedScale: ScaleBase<T>
-  readonly parentKey: string
   inverted: boolean
   orientation: Orientation = "horizontal"
   horizontalRange: number[] = [0, 1]
   verticalRange: number[] = [1, 0]
   protected constructor(args: ScaledValuesSpatialBaseArgs) {
-    this.parentKey = args.parentKey
     this.inverted = false
   }
 
@@ -59,6 +58,10 @@ export abstract class ScaledValuesSpatialBase<T extends ScaledValuesSpatialDomai
   getCurrentRangeInversed() {
     const originalRange = this.scale.range()
     return [originalRange[1], originalRange[0]]
+  }
+
+  getKeys(i: number): Key<KeyPrefix>[] {
+    return []
   }
 
   abstract atScreenPosition(value: number): T

@@ -1,4 +1,4 @@
-import {Key, Orientation, Polarity, Position, Rect, VisualPrimitive, VisualPrimitiveArgs} from "respvis-core";
+import {CompositeKey, Orientation, Polarity, Position, Rect, VisualPrimitive, VisualPrimitiveArgs} from "respvis-core";
 import {BarLabel, BarLabelData} from "./bar-label";
 
 export type BarArgs = Rect & VisualPrimitiveArgs & {
@@ -17,7 +17,7 @@ export class Bar implements BarArgs, VisualPrimitive {
   category?: string
   categoryFormatted?: string
   styleClass: string
-  key: Key
+  key: CompositeKey
   labelData?: BarLabelData
   polarity: Polarity
 

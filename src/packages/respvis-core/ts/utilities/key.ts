@@ -1,4 +1,4 @@
-import {ActiveKeyMap} from "../constants/types";
+import {ActiveKeyMap, KeyPrefix} from "../constants/types";
 
 export function splitKey(key: string) {
   return key.split(/[ ,]+/)
@@ -20,16 +20,42 @@ export function getActiveKeys(keysActive: ActiveKeyMap) {
   return Object.keys(keysActive).filter((key) => keysActive[key])
 }
 
-export class Key {
-  rawKey: string
+export class Key<T extends string> {
+  readonly prefix: T
+  readonly index: number[]
+  active: boolean
 
-  constructor(rawKey: string) {
-    this.rawKey = rawKey
+  constructor(prefix: T, index: number[], active?: boolean) {
+    this.prefix = prefix
+    this.index = index
+    this.active = active ?? true
   }
 
-  getIndex(): number | undefined {
-    const matchIndex = this.rawKey.match(/\bi-(\d+)\b/)
-    if (!matchIndex) return undefined
-    return parseInt(matchIndex[1])
+  getRawKey(): string {
+    return this.prefix + this.index.reduce((acc, value) => {
+      return acc + '-' + value
+    }, '')
+  }
+}
+
+
+//composite key
+export class CompositeKey {
+  map: Record<KeyPrefix, Key<KeyPrefix> | undefined>
+
+  constructor(keys: Key<KeyPrefix>[]) {
+    this.map = this.assignKeys(keys)
+  }
+
+  assignKeys(keys: Key<KeyPrefix>[]) {
+    this.map = this.map ?? {}
+    keys.forEach(key => this.map[key.prefix] = key)
+    return this.map
+  }
+
+  getRawKey() {
+    return Object.values(this.map).reduce((acc, value) => {
+      return acc + ((value !== undefined) ? value?.getRawKey() : '')
+    }, '')
   }
 }

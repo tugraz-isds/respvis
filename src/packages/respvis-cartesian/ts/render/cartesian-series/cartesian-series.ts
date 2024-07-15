@@ -2,17 +2,19 @@ import {
   alignScaledValuesLengths,
   AxisType,
   BaseAxis,
-  combineKeys,
   ErrorMessages,
   getCurrentResponsiveValue,
+  RenderArgs,
   ScaledValuesCategorical,
   ScaledValuesSpatial,
+  ScaledValuesSpatialArgs,
   ScaledValuesSpatialDomain,
   ScaledValuesSpatialUserArgs,
   Series,
   SeriesArgs,
   SeriesUserArgs,
   SVGHTMLElementLegacy,
+  validateChartCategories,
   validateScaledValuesSpatial,
   validateZoom,
   Zoom,
@@ -29,14 +31,43 @@ export type CartesianSeriesUserArgs = SeriesUserArgs & {
   zoom?: ZoomArgs
 }
 
-export type CartesianSeriesArgs = SeriesArgs & CartesianSeriesUserArgs & {
+export type CartesianSeriesArgs = Omit<CartesianSeriesUserArgs, 'x' | 'y'> & SeriesArgs & {
+  x: ScaledValuesSpatial
+  y: ScaledValuesSpatial
   originalSeries?: CartesianSeries
+}
+
+export function prepareCartesianSeriesArgs<T extends CartesianSeriesUserArgs & RenderArgs>(args: T) {
+
+  const [cs, cx, cy] =
+    validateChartCategories([args.categories, args.x, args.y])
+
+  const xArgs = cx ? {...args.x, categories: cx} : args.x as ScaledValuesSpatialArgs<any>
+  const yArgs = cy ? {...args.y, categories: cy} : args.y as ScaledValuesSpatialArgs<any>
+  const categoriesArgs = (cs && args.categories) ? {...args.categories, categories: cs} : undefined
+
+  const [xAligned, yAligned] = alignScaledValuesLengths(xArgs, yArgs)
+  //TODO: align categories
+
+  const seriesArgs = {...args,
+    key: args.key ?? 0,
+    categories: categoriesArgs ? validateScaledValuesSpatial(categoriesArgs) as ScaledValuesCategorical : undefined,
+    x: validateScaledValuesSpatial(xAligned),
+    y: validateScaledValuesSpatial(yAligned)
+  }
+
+  if (seriesArgs.categories && seriesArgs.categories.values.length !== seriesArgs.x.values.length) {
+    throw new Error(ErrorMessages.categoricalValuesMismatch)
+  }
+
+  return seriesArgs
 }
 
 export abstract class CartesianSeries extends Series {
   originalSeries: CartesianSeries
   x: ScaledValuesSpatial
   y: ScaledValuesSpatial
+  categories?: ScaledValuesCategorical
   responsiveState: CartesianResponsiveState
   zoom?: Zoom
   renderer: CartesianRenderer
@@ -44,10 +75,11 @@ export abstract class CartesianSeries extends Series {
   protected constructor(args: CartesianSeriesArgs | CartesianSeries) {
     super(args)
     this.originalSeries = args.originalSeries ?? this
-    const [xAligned, yAligned] = ('tag' in args.x && 'tag' in args.y) ? [args.x, args.y] :
-      alignScaledValuesLengths(args.x, args.y)
-    this.x = 'tag' in xAligned ? xAligned : validateScaledValuesSpatial(xAligned, 'a-0')
-    this.y = 'tag' in yAligned ? yAligned : validateScaledValuesSpatial(yAligned, 'a-1')
+    this.x = args.x
+    this.y = args.y
+    this.categories = args.categories
+    this.zoom = 'class' in args ? args.zoom : args.zoom ? validateZoom(args.zoom) : undefined
+    this.renderer = args.renderer as CartesianRenderer
 
     this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
       new CartesianResponsiveState({
@@ -55,12 +87,6 @@ export abstract class CartesianSeries extends Series {
         originalSeries: this.originalSeries,
         flipped: ('flipped' in args) ? args.flipped : false
       })
-    this.zoom = 'class' in args ? args.zoom : args.zoom ? validateZoom(args.zoom) : undefined
-    this.renderer = args.renderer as CartesianRenderer
-
-    if (this.categories && this.categories.values.length !== this.x.values.length) {
-      throw new Error(ErrorMessages.categoricalValuesMismatch)
-    }
 
     if (this.color && this.color.values.length !== this.x.values.length) {
       throw new Error(ErrorMessages.sequentialColorValuesMismatch)
@@ -71,11 +97,9 @@ export abstract class CartesianSeries extends Series {
     return {x: this.x, y: this.y}
   }
 
-  getCombinedKey(i: number) {
-    const xKey = this.x instanceof ScaledValuesCategorical ? this.x.getCategoryData(i).combinedKey : undefined
-    const yKey = this.y instanceof ScaledValuesCategorical ? this.y.getCategoryData(i).combinedKey : undefined
-    const seriesCategoryKey = this.categories ? this.categories.getCategoryData(i).combinedKey : undefined
-    return combineKeys([this.key, seriesCategoryKey, xKey, yKey])
+  getKeys(i: number) {
+    const categoryKeys = this.categories ? this.categories.getKeys(i) : []
+    return [this.key, ...this.x.getKeys(i), ...this.y.getKeys(i), ...categoryKeys]
   }
 
   getScaledValuesAtScreenPosition(x: number, y: number) {

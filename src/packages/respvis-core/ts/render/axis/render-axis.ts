@@ -50,7 +50,7 @@ export function renderAxisSequence(axisS: KeyedAxisSelection, orientation: Orien
   axisS.classed('axis-sequence', true)
   axisS.selectAll('.title-wrapper')
     .classed('layout-container', true)
-  return axisS.attr('data-key', (d) => d.key)
+  return axisS.attr('data-key', (d) => d.key.getRawKey())
 }
 
 function renderAxis(axisS: AxisSelection, a: D3Axis<AxisDomain>): void {

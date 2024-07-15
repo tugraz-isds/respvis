@@ -1,10 +1,10 @@
 import {Point} from "../point";
-import {defaultStyleClass, Key} from "respvis-core";
+import {CompositeKey, defaultStyleClass, Key} from "respvis-core";
 import {PointSeries} from "./point-series";
 
 export function createPoints<T extends boolean, R = T extends false ? Point[] : Point[][]>
 (series: PointSeries, grouped: T): R {
-  const {key: seriesKey, keysActive, categories} = series
+  const {key: seriesKey, categories} = series
 
   const {x, y, color, radii} = series
 
@@ -15,8 +15,9 @@ export function createPoints<T extends boolean, R = T extends false ? Point[] : 
   const pointsGrouped: Point[][] = new Array(categories ? categories.categories.categoryArray.length : 1)
     .fill(0).map(() => [])
 
-  if (!keysActive[seriesKey] && !grouped) return pointsSingleGroup as R
-  if (!keysActive[seriesKey] && grouped) return pointsGrouped as R
+
+  if (!series.key.active && !grouped) return pointsSingleGroup as R
+  if (!series.key.active && grouped) return pointsGrouped as R
 
   for (let i = 0; i < x.values.length; i++) {
     if (categories && !categories.isValueActive(i)) continue
@@ -43,7 +44,7 @@ function createPoint(series: PointSeries, i: number) {
     color: series.color?.scale(series.color?.values[i]),
     colorValue: series.color?.values[i],
     radiusValue: series.responsiveState.getRadiusValue(i),
-    key: new Key(series.getCombinedKey(i) + ` i-${i}`),
+    key: new CompositeKey([...this.getKeys(i), new Key('i', [i])]),
     styleClass: series.categories?.getStyleClass(i) ?? defaultStyleClass,
     category,
     categoryFormatted: category ? series.categories?.categories.categoryMap[category].formatValue : undefined,

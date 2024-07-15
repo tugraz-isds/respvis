@@ -1,4 +1,9 @@
-import {CartesianChartData, CartesianChartUserArgs, validateCartesianChart} from "respvis-cartesian";
+import {
+  CartesianChartData,
+  CartesianChartUserArgs,
+  prepareCartesianSeriesArgs,
+  validateCartesianChart
+} from "respvis-cartesian";
 import {PointSeries, PointSeriesUserArgs} from "../point-series/point-series";
 import {BreakpointProperty, RenderArgs} from "respvis-core";
 import {BubbleRadius} from "../../data/radius";
@@ -13,15 +18,16 @@ export type ScatterPlotData = Omit<CartesianChartData, 'series'> & {
   series: PointSeries;
 }
 
-export function validateScatterPlot(scatterArgs: ScatterPlotArgs): ScatterPlotData {
+export function validateScatterPlot(args: ScatterPlotArgs): ScatterPlotData {
   const {renderer, x, y,
     legend, breakpoints,
     title, subTitle
-  } = scatterArgs
-  const series = new PointSeries({...scatterArgs.series, key: 's-0', renderer})
+  } = args
+
+  const series = new PointSeries(prepareCartesianSeriesArgs({...args.series, renderer}))
+
   const cartesianData =
     validateCartesianChart({renderer, series, x, y, legend, breakpoints, title, subTitle})
-
 
   const radii = series.radii
   const hasBubbleRadius = typeof radii !== 'number' && !(radii instanceof BreakpointProperty)

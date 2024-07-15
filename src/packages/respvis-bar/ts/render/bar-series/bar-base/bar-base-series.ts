@@ -1,5 +1,6 @@
 import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
 import {
+  CompositeKey,
   defaultStyleClass,
   ErrorMessages,
   Key,
@@ -19,7 +20,9 @@ export type BarBaseSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltip
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Bar>
 }
 
-export type BarBaseSeriesArgs = BarBaseSeriesUserArgs & CartesianSeriesArgs
+export type BarBaseSeriesArgs = Omit<BarBaseSeriesUserArgs, 'x' | 'y'> & CartesianSeriesArgs & {
+  x: ScaledValuesCategorical
+}
 
 export abstract class BarBaseSeries extends CartesianSeries {
   x: ScaledValuesCategorical
@@ -50,7 +53,7 @@ export abstract class BarBaseSeries extends CartesianSeries {
     const {x, y, color} = this
     const optionalColorValues = color?.axis.scaledValues
 
-    if (!this.keysActive[this.key]) return data
+    if (!this.key.active) return data
     for (let i = 0; i < this.y.values.length; ++i) {
       if (this.categories && !this.categories.isValueActive(i)) continue
       if (!x.isValueActive(i) || !y.isValueActive(i) || !(optionalColorValues?.isValueActive(i) ?? true)) continue
@@ -63,7 +66,7 @@ export abstract class BarBaseSeries extends CartesianSeries {
         category,
         categoryFormatted: category ? this.categories?.categories.categoryMap[category].formatValue : undefined,
         label: this.labels?.at(i),
-        key: new Key(this.getCombinedKey(i) + ` i-${i}`),
+        key: new CompositeKey([...this.getKeys(i), new Key('i', [i])]),
       }));
     }
     return data

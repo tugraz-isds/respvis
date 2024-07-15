@@ -15,7 +15,7 @@ export function renderAxisSeries(chartS: Selection<Element, ParcoordChartData>) 
 
   axisSeriesS
     .selectAll<SVGGElement, KeyedAxis>('.axis.axis-sequence')
-    .data(filteredSeries.axes, (d) => d.key)
+    .data(filteredSeries.axes, (d) => d.key.getRawKey())
     .join('g')
     .each((d, i, g) => {
       const axisS = select<SVGGElement, KeyedAxis>(g[i])

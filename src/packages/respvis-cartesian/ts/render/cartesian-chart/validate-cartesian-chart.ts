@@ -24,11 +24,10 @@ export type CartesianChartSelection = Selection<SVGSVGElement | SVGGElement, Car
 
 export function validateCartesianChart(args: CartesianChartArgs): CartesianChartData {
   const {renderer, series, x, y} = args
-
   return {
     series,
-    x: validateCartesianAxis({...(x ?? {}), renderer, scaledValues: series.x, series}),
-    y: validateCartesianAxis({...(y ?? {}), renderer, scaledValues: series.y, series}),
+    x: validateCartesianAxis({...(x ?? {}), renderer, scaledValues: series.x, series, key: 0}),
+    y: validateCartesianAxis({...(y ?? {}), renderer, scaledValues: series.y, series, key: 1}),
     getAxes: function (this:CartesianChartData) {
       return [this.x, this.y, ...(this.series.color ? [this.series.color.axis] : [])]
     },

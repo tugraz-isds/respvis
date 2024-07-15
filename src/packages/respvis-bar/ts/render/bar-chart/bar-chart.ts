@@ -1,7 +1,7 @@
 import {Selection} from "d3";
 import {BarChartData, BarChartUserArgs, validateBarChart} from "./validate-bar-chart";
 import {CartesianChartMixin} from "respvis-cartesian";
-import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
+import {applyMixins, Chart, SeriesChartMixin, Window, windowValidation} from "respvis-core";
 import {Bar, BarSeries, renderBarSeries} from "../bar-series";
 
 type WindowSelection = Selection<HTMLDivElement, Window & BarChartData>
@@ -10,10 +10,10 @@ type ChartSelection = Selection<SVGSVGElement, Window & BarChartData>
 export interface BarChart extends CartesianChartMixin, SeriesChartMixin {}
 export class BarChart extends Chart {
   constructor(windowSelection: Selection<HTMLDivElement>, data: BarChartUserArgs) {
-    super(windowSelection, {...data, type: 'bar'})
+    super()
     const chartData = validateBarChart({...data, renderer: this})
     this._windowS = windowSelection as WindowSelection
-    const initialWindowData = this.windowS.datum()
+    const initialWindowData = windowValidation({...data, type: 'bar', renderer: this})
     this.windowS.datum({...initialWindowData, ...chartData})
   }
   _windowS: WindowSelection

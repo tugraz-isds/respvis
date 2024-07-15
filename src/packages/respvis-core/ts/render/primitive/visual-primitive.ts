@@ -1,12 +1,12 @@
 import {Label} from "../label";
 import {Orientation, Polarity} from "../../constants";
-import {Key} from "../../utilities";
+import {CompositeKey} from "../../utilities";
 
 export interface VisualPrimitiveArgs {
   category?: string
   categoryFormatted?: string
   styleClass: string
-  key: Key
+  key: CompositeKey
 }
 
 export interface VisualPrimitive extends VisualPrimitiveArgs {

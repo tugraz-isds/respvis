@@ -7,7 +7,7 @@ export function onDragAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxis, drawA
   if (!dragWay) return
   const originalSeries = d.series.originalSeries
   const oldPercentageDomain = originalSeries.axesPercentageScale.domain()
-  const axisIndex = oldPercentageDomain.indexOf(d.key)
+  const axisIndex = oldPercentageDomain.indexOf(d.key.getRawKey())
   const newPercentageRange = originalSeries.axesPercentageScale.range()
 
   const oldPercentage = originalSeries.axesPercentageScale.range()[axisIndex]
