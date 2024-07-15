@@ -5,7 +5,7 @@ import chartSVGRaw from "../../../../../../assets/svg/tablericons/chart-settings
 import {renderSimpleTooltip} from "../tool/render/render-simple-tooltip";
 import {bindOpenerToDialog, DialogData, renderDialog} from "../tool/render/render-dialog";
 import {Series} from "../../series";
-import {renderSVG} from "respvis-core";
+import {renderSVGs} from "respvis-core";
 
 export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesCollection: Series[]) {
   if (seriesCollection.filter(series => series.providesTool).length <= 0) return
@@ -15,7 +15,7 @@ export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesColle
   const dialogContainerS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__dialog-container')
 
   const dialogOpenerS = renderButton(chartToolS, 'toolbar__btn')
-  renderSVG(dialogOpenerS, chartSVGRaw)
+  renderSVGs(dialogOpenerS, [chartSVGRaw])
   renderSimpleTooltip(dialogOpenerS, {text: 'Chart Settings'})
   const dialogS = renderDialog(dialogContainerS, 'dialog--center', 'dialog--chart')
   bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300, type: 'modal'})

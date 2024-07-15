@@ -7,12 +7,10 @@ import {ResponsiveValueOptional, ResponsiveValueUserArgs, validateResponsiveValu
 export type ScaledValuesCategoricalUserArgs = {
   values: string[],
   scale?: ScaleBand<string>,
-  categoriesKey?: number
 }
 
 type ScaledValuesCategoricalArgs = ScaledValuesCategoricalUserArgs & ScaledValuesSpatialBaseArgs & {
   title: ResponsiveValueUserArgs<string>
-  categoriesKey: number
 }
 
 export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {

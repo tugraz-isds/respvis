@@ -1,6 +1,8 @@
 import {SelectionOrTransition} from '../../d3/selection';
 import {Position, positionEquals, positionRound} from '../position/position';
 import {Rect, rectCenter} from './rect/rect';
+import {isElement} from "../../dom/element";
+import {select} from "d3";
 
 export interface Circle {
   center: Position;
@@ -81,4 +83,25 @@ export function circleOutsideRect(rect: Rect): Circle {
     center: rectCenter(rect),
     radius: Math.sqrt(Math.pow(rect.width, 2) + Math.pow(rect.height, 2)) / 2,
   };
+}
+
+export function circleToPath(
+  selectionOrTransition: SelectionOrTransition | Element,
+  circle: Circle
+): void {
+  const {
+    center: {x: cx, y: cy},
+    radius: r,
+  } = circle;
+
+  selectionOrTransition = isElement(selectionOrTransition)
+    ? select(selectionOrTransition)
+    : selectionOrTransition;
+
+  selectionOrTransition.attr(
+    'd',
+    `M ${cx - r} ${cy} 
+    a ${r},${r} 0 1,0 ${r * 2},0 
+    a ${r},${r} 0 1,0 -${r * 2},0`
+  );
 }

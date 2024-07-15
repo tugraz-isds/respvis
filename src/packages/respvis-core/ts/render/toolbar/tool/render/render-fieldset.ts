@@ -3,7 +3,7 @@ import {InputLabel} from "../input-label/input-label";
 import CollapseDownRAW from '../../../../../../../assets/svg/tablericons/collapse-down.svg';
 import {createSelectionClasses, mapSelection} from "../../../../utilities/d3/selection";
 import {renderInputLabel} from "../input-label/render-input-labels";
-import {renderSVG} from "../../../element/svg";
+import {renderSVGs} from "../../../element/svg";
 
 export type FieldSetData = {
   legend: string
@@ -51,7 +51,7 @@ function fieldsetLegendRender(legendS: Selection<HTMLLegendElement>, data: Field
     .data(data.collapsable ? [CollapseDownRAW] : [])
     .join('span')
     .classed('collapse-icon', true)
-    .each((d,i,g) => renderSVG(select(g[i]), CollapseDownRAW))
+    .each((d,i,g) => renderSVGs(select(g[i]), [CollapseDownRAW]))
 }
 
 export function fieldsetCollapseWrapperRender<D extends FieldSetData>

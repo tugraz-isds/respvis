@@ -1,11 +1,10 @@
 import {CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
-import {BaseRadius, BaseRadiusUserArgs, type Point, PointLabelsUserArgs, PointSeries} from "respvis-point";
-import {validateBreakpointProperty} from "respvis-core";
+import {type Point, PointLabelsUserArgs, PointSeries, RadiusUserArgs} from "respvis-point";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
 
 export type LineSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
   labels?: PointLabelsUserArgs
-  radii?: BaseRadiusUserArgs
+  radii?: RadiusUserArgs
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
 }
 
@@ -14,14 +13,11 @@ export type LineSeriesArgs = LineSeriesUserArgs & Omit<CartesianSeriesArgs, 'ori
 }
 
 export class LineSeries extends PointSeries {
-  radii: BaseRadius
   originalSeries: LineSeries
 
   constructor(args: LineSeriesArgs | LineSeries) {
     super(args);
     this.originalSeries = args.originalSeries ?? this
-    if ('class' in args) this.radii = args.radii
-    else this.radii = args.radii ? validateBreakpointProperty(args.radii) : 5
   }
 
   clone() {

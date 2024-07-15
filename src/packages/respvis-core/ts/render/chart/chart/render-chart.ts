@@ -1,6 +1,6 @@
 import {Selection} from 'd3';
 import {ChartData} from "./validate-chart";
-import {renderBgSVGOnlyFixed} from "../../element/bg-svg-only";
+import {renderBgSVGOnlyByRect} from "../../element/bg-svg-only";
 import {rectFromString} from "../../../utilities/geometry/shapes/rect/rect";
 import {AxisOrientation, isCSSBreakpointLengthValue, SVGGroupingElement} from "../../../constants/types";
 import {uniqueId} from "../../../utilities/unique";
@@ -44,7 +44,7 @@ function renderDrawArea<T extends SVGGroupingElement, D extends ChartData>(paddi
     .attr('data-ignore-layout-children', true)
 
   const boundsAttr = rectFromString(drawArea.attr('bounds') || '0, 0, 0, 0');
-  const background = renderBgSVGOnlyFixed(drawArea, {...boundsAttr, x: 0, y: 0})
+  const background = renderBgSVGOnlyByRect(drawArea, {...boundsAttr, x: 0, y: 0})
     .classed('background', true)
 
   const gridArea = drawArea.selectAll('.grid-area')
@@ -75,7 +75,7 @@ function renderDrawArea<T extends SVGGroupingElement, D extends ChartData>(paddi
     width: boundsAttr.width + paddingLeft + paddingRight,
     height: boundsAttr.height + paddingTop + paddingBottom
   }
-  renderBgSVGOnlyFixed(drawAreaClipPath, clipPathRect)
+  renderBgSVGOnlyByRect(drawAreaClipPath, clipPathRect)
   drawArea.attr('clip-path', `url(#${drawAreaClipPath.attr('id')})`)
 
   return {

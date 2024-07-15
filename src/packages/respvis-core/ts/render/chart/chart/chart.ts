@@ -161,7 +161,7 @@ export class Chart implements Renderer {
     if (!layouterCompute(this.layouterS)) return
     this.rerenderAfterResizeScheduled = setTimeout(() => {
       this.onResizeRender()
-    }, 100)
+    }, 20)
   }
 
   private onStandardInteractionRender() {

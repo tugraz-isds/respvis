@@ -8,6 +8,8 @@ import {
   positionToString,
 } from '../../position/position';
 import {Size, sizeEquals, sizeFromAttrs, sizeRound, sizeToAttrs, sizeToString} from './size';
+import {isElement} from "../../../dom/element";
+import {select} from "d3";
 
 export interface Rect extends Position, Size {}
 
@@ -108,4 +110,12 @@ export function rectFromAttrs(selectionOrTransition: SelectionOrTransition): Rec
 
 export function rectFromSize(size: Size): Rect {
   return { x: 0, y: 0, ...size };
+}
+
+export function rectToPath(selectionOrTransition: SelectionOrTransition | Element, rect: Rect) {
+  const {x, y, width: w, height: h} = rect;
+  selectionOrTransition = isElement(selectionOrTransition)
+    ? select(selectionOrTransition)
+    : selectionOrTransition;
+  selectionOrTransition.attr('d', `M ${x} ${y} h ${w} v ${h} h ${-w} v ${-h}`);
 }

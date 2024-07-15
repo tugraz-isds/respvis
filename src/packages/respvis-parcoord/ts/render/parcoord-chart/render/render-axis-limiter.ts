@@ -2,7 +2,6 @@ import {
   backgroundSVGOnly,
   bboxDiffSVG,
   cssVarFromSelection,
-  pathChevronRender,
   relateDragWayToSelection,
   relateDragWayToSelectionByDiff,
   renderBgSVGOnlyBBox,
@@ -10,7 +9,8 @@ import {
 } from "respvis-core";
 import {drag, Selection} from "d3";
 import {KeyedAxis} from "../../validate-keyed-axis";
-import {calcDiffLimited, calcLimited} from "respvis-core/utilities/math";
+import {calcLimited} from "respvis-core/utilities/math";
+import {pathChevronRender} from "./render-path-chevron";
 
 export function renderAxisLimiter(axisS: Selection<SVGGElement, KeyedAxis>) {
   renderChevronLimiter(axisS)
@@ -132,7 +132,7 @@ function addLimiterDrag(axisS: Selection<SVGGElement, KeyedAxis>) {
       const percentDiff = getPercentDiff(e)
       if (percentDiff === undefined) return;
       const appliedDiff =
-        calcDiffLimited(percentDiff, -axisD.lowerRangeLimitPercent, 1 - axisD.upperRangeLimitPercent)
+        calcLimited(percentDiff, -axisD.lowerRangeLimitPercent, 1 - axisD.upperRangeLimitPercent)
       axisD.upperRangeLimitPercent += appliedDiff
       axisD.lowerRangeLimitPercent += appliedDiff
     }

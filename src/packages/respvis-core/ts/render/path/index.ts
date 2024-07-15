@@ -1,5 +1,0 @@
-export * from './path-arrow'
-export * from './path-chevron'
-export * from './path-circle'
-export * from './path-line'
-export * from './path-rect'

@@ -33,8 +33,11 @@ function createLines(activeAxes: KeyedAxis[]) {
     if (series.categories && !series.categories.isValueActive(valueIndex)) continue
     const positions = createLinePositions(activeAxes, valueIndex, series)
     if (positions.length === 0) continue
+
+    const categoryKey = series.categories?.getCombinedKey(valueIndex)
+
     lines.push({
-      key: combineKeys([series.key, `i-${valueIndex}`]), //TODO
+      key: combineKeys([series.key, ...(categoryKey ? [categoryKey] : []), `i-${valueIndex}`]),
       styleClass: series.categories ? series.categories.getStyleClass(valueIndex) : defaultStyleClass,
       positions
     })

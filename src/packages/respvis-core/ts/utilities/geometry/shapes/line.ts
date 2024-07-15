@@ -1,9 +1,9 @@
-import {SelectionOrTransition} from "../../utilities/d3/selection";
-import {Position} from "../../utilities/geometry/position/position";
-import {isElement} from "../../utilities/dom/element";
+import {SelectionOrTransition} from "../../d3";
+import {Position} from "../position";
+import {isElement} from "../../dom/element";
 import {select} from "d3";
 
-export function pathLine(
+export function lineToPath(
   selectionOrTransition: SelectionOrTransition | Element,
   positions: Position[]
 ): void {

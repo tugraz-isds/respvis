@@ -5,7 +5,7 @@ import {
   DialogData,
   renderFieldset,
   renderInputLabels,
-  renderSVG,
+  renderSVGs,
   WindowSettings,
   windowSettingsKeys
 } from "respvis-core";
@@ -56,5 +56,5 @@ function confirmButtonRender(selection: Selection<HTMLDialogElement, DialogData>
     .data([null])
     .join("span")
     .text('Ok')
-  renderSVG(buttonS, checkSVGRaw)
+  renderSVGs(buttonS, [checkSVGRaw])
 }

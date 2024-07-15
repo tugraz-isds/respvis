@@ -1,8 +1,7 @@
-import {rectFromSize} from "../../utilities/geometry/shapes/rect/rect";
+import {rectFromSize, rectToPath} from "../../utilities/geometry/shapes/rect/rect";
 import {Size} from "../../utilities/geometry/shapes/rect/size";
 import {RenderArgs} from "../chart/renderer";
 import {Series} from "../series";
-import {pathRect} from "../path/path-rect";
 import {ResponsiveValueOptional, ResponsiveValueUserArgs, validateResponsiveValue} from "../../data";
 
 export type LegendUserArgs = {
@@ -28,6 +27,6 @@ export function validateLegend(data: LegendArgs): Legend {
     renderer, series,
     title: validateResponsiveValue(data.title || ''),
     reverse: data.reverse ?? false,
-    symbols: data.symbols || ((e, s) => pathRect(e, rectFromSize(s))),
+    symbols: data.symbols || ((e, s) => rectToPath(e, rectFromSize(s))),
   };
 }

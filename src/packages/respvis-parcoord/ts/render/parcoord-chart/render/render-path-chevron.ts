@@ -1,6 +1,9 @@
 import {Selection} from "d3";
-import {pathScale} from "./path";
-import {createSelectionClasses} from "../../utilities";
+import {createSelectionClasses} from "respvis-core/utilities";
+
+// Icon Path Sources:
+//   https://tablericons.com/
+//   https://feathericons.com/
 
 type ChevronData = {
   type: 'down' | 'right' | null
@@ -15,6 +18,7 @@ export function pathChevronRender(selection: Selection, classes: string[], data?
     .join('g')
     .classed(classString, true)
     .attr('data-ignore-layout-children', true)
+
   group.selectAll('path')
     .data(data ?? [{type: "right", scale: 1}])
     .join('path')
@@ -30,4 +34,11 @@ export function pathChevronRender(selection: Selection, classes: string[], data?
 
   // M6,0.8 l6,6 l6,-6
   return group
+}
+
+function pathScale(d: string, scale: number) {
+  const numberPattern = /[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?/g
+  return d.replace(numberPattern, function(match) {
+    return (parseFloat(match) * scale).toString();
+  })
 }

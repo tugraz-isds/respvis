@@ -2,6 +2,7 @@ import {easeCubicOut, select, Selection} from 'd3';
 import {
   addCSSTransitionEnterClass,
   addCSSTransitionExitClass,
+  cancelExitClassOnUpdate,
   createSelectionClasses,
   cssVarFromSelection,
 } from "../../utilities";
@@ -17,7 +18,7 @@ type LabelSeriesProps<D extends VisualPrimitive> = {
 };
 
 export function renderLabelSeries<D extends VisualPrimitive>(parentS: Selection, props: LabelSeriesProps<D>) {
-  const { elements, classes, orientation} = props
+  const {elements, classes, orientation} = props
   const {selector, classString} = createSelectionClasses(classes)
   const labels = elements.flatMap(element => element.getLabel(orientation))
   return parentS.selectAll<SVGGElement, any>(selector)
@@ -45,12 +46,16 @@ function joinLabelSeries(seriesS: Selection, joinS: Selection<Element, Label>): 
           .classed('label', true)
           .each((d, i, g) => positionToTransformAttr(select(g[i]), d))
           .call(s => addCSSTransitionEnterClass(s, tDuration))
-          .call((s) => seriesS.dispatch('enter', { detail: { selection: s } })),
-      undefined,
+          .call((s) => seriesS.dispatch('enter', {detail: {selection: s}})),
+      (update) => update.call(() => {
+        update.call(cancelExitClassOnUpdate)
+      }),
       (exit) =>
-        exit.call((s) => addCSSTransitionExitClass(s, tDuration).on('end', () => {
-          exit.remove().call((s) => seriesS.dispatch('exit', {detail: {selection: s}}))
-        }))
+        exit.call((s) => addCSSTransitionExitClass(s, tDuration)
+          .on('end', function() {
+            if (!select(this).classed('exit-done')) return
+            exit.remove().call((s) => seriesS.dispatch('exit', {detail: {selection: s}}))
+          }))
     )
     .each((d, i, g) =>
       select(g[i])
@@ -61,6 +66,6 @@ function joinLabelSeries(seriesS: Selection, joinS: Selection<Element, Label>): 
     )
     .text((d) => d.text)
     .attr('data-key', (d) => d.primitive.key.rawKey)
-    .attr( 'data-polarity', (d) => d.primitive.polarity ? d.primitive.polarity : null)
-    .call((s) => seriesS.dispatch('update', { detail: { selection: s } }));
+    .attr('data-polarity', (d) => d.primitive.polarity ? d.primitive.polarity : null)
+    .call((s) => seriesS.dispatch('update', {detail: {selection: s}}));
 }

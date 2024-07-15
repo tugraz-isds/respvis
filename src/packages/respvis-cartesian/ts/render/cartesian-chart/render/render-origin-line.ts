@@ -1,4 +1,4 @@
-import {pathLine, ScaledValuesNumeric, ScaledValuesSpatial} from "respvis-core";
+import {lineToPath, ScaledValuesNumeric, ScaledValuesSpatial} from "respvis-core";
 import {CartesianChartSelection} from "../validate-cartesian-chart";
 
 export function renderOriginLine<T extends CartesianChartSelection>(chartS: T): void {
@@ -20,7 +20,7 @@ export function renderOriginLine<T extends CartesianChartSelection>(chartS: T): 
     gridAreaS.selectAll('.line.line--origin.line--vertical')
       .data([null])
       .join('path')
-      .call((s) => pathLine(s, [{x: x1, y: y1}, {x: x2, y: y2}]))
+      .call((s) => lineToPath(s, [{x: x1, y: y1}, {x: x2, y: y2}]))
       .classed('line line--origin line--vertical', true)
   } else gridAreaS.selectAll('.line.line--origin.line--vertical').remove()
 
@@ -33,6 +33,6 @@ export function renderOriginLine<T extends CartesianChartSelection>(chartS: T): 
       .data([null])
       .join('path')
       .classed('line line--origin line--horizontal', true)
-      .call((s) => pathLine(s, [{x: x1, y: y1}, {x: x2, y: y2}]))
+      .call((s) => lineToPath(s, [{x: x1, y: y1}, {x: x2, y: y2}]))
   } else gridAreaS.selectAll('.line.line--origin.line--horizontal').remove()
 }

@@ -6,7 +6,5 @@ export * from './legend';
 export * from './series';
 export * from './toolbar';
 export * from './window';
-export * from './element/bg-svg-only';
 export * from './primitive'
-export * from './path'
-export {renderSVG} from "./element/svg";
+export * from './element'

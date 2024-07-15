@@ -83,7 +83,7 @@ export abstract class Series implements RenderArgs {
       return this.categories.categories.categoryArray.map(c =>
         mergeKeys([this.key, c.key]))
     }
-    return [this.key]
+    return []
   }
 
   getCategories() {

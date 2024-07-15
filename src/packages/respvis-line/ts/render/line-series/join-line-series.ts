@@ -5,7 +5,7 @@ import {
   addCSSTransitionExitClass,
   cancelExitClassOnUpdate,
   cssVarFromSelection,
-  pathLine
+  lineToPath
 } from "respvis-core";
 
 export function joinLineSeries(seriesS: Selection<Element>, joinS: Selection<Element, Line>) {
@@ -15,7 +15,7 @@ export function joinLineSeries(seriesS: Selection<Element>, joinS: Selection<Ele
     .join(
       (enter) =>
         enter.append('path')
-          .classed('line', true)
+          .classed('element line', true)
           .call(s => {
             addCSSTransitionEnterClass(s, tDuration)
           })
@@ -30,7 +30,7 @@ export function joinLineSeries(seriesS: Selection<Element>, joinS: Selection<Ele
             exit.remove().call((s) => seriesS.dispatch('exit', {detail: {selection: s}}))
           })
         }))
-    .each((line, i, g) => pathLine(g[i], line.positions))
+    .each((line, i, g) => lineToPath(g[i], line.positions))
     .attr('data-style', (d) => d.styleClass)
     .attr('data-key', (d) => d.key)
     .call((s) => seriesS.dispatch('update', {detail: {selection: s}}))

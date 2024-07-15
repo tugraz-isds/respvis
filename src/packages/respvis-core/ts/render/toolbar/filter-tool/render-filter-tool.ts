@@ -16,7 +16,7 @@ import {InputLabel} from "../tool/input-label/input-label";
 import {RangeLabel} from "../tool/input-label/range-label";
 import type {KeyedAxis} from "../../../../../respvis-parcoord/ts/render";
 import {getCurrentResponsiveValue, orderScaledValuesSpatial, ScaledValuesSpatialNumericOrTemporal} from "../../../data";
-import {renderSVG} from "respvis-core";
+import {renderSVGs} from "respvis-core";
 
 export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Toolbar) {
   const seriesCollection = args.getSeries()
@@ -26,7 +26,7 @@ export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Tool
 
   const filterToolS = renderTool(contentS, 'tool--filter')
   const dialogOpenerS = renderButton(filterToolS, 'toolbar__btn')
-  renderSVG(dialogOpenerS, filterSVGRaw)
+  renderSVGs(dialogOpenerS, [filterSVGRaw])
   renderSimpleTooltip(dialogOpenerS, {text: 'Filter'})
   const dialogS = renderDialog(dialogContainerS, 'dialog--side', 'dialog--filter')
   bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300})
@@ -168,7 +168,7 @@ function renderCategoryControls(menuToolsItemsS: Selection, series: Series) {
       return new CheckBoxLabel({
         label: option.value, type: 'category',
         dataKey,
-        defaultVal: categories.isKeyActiveByKey(option.key),
+        defaultVal: categories.isKeyActiveByKey(dataKey),
         onClick,
         onChange: () => {
           if (renderer.exitEnterActive()) return
