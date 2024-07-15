@@ -16,7 +16,7 @@ export function renderParcoord(selector: string) {
   } as const
   const sharedTickOrientationFlipped = {
     dependentOn: 'width',
-    mapping: {0: 90, 3: 0}
+    breakpointValues: {0: 90, 2: 0}
   } as const
   const sampleSize = 500
 

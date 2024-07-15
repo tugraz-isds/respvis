@@ -1,12 +1,12 @@
 import {
-  arrayAlignLengths,
   AxisLayout,
   BaseAxisUserArgs,
   combineKeys,
   ErrorMessages,
-  getCurrentRespVal,
+  getCurrentResponsiveValue,
   ResponsiveState,
   ResponsiveStateArgs,
+  RVArray,
   ScaledValuesCategorical,
   ScaledValuesSpatialDomain,
   ScaledValuesSpatialUserArgs,
@@ -77,7 +77,7 @@ export class ParcoordSeries extends Series {
       //TODO: index check
       const alignedCategories = args.categories ? {
         ...args.categories,
-        values: arrayAlignLengths(args.categories.values, this.axes[0].scaledValues.values)[0]
+        values: RVArray.equalizeLengths(args.categories.values, this.axes[0].scaledValues.values)[0]
       } : undefined
       this.categories = alignedCategories ? new ScaledValuesCategorical({...alignedCategories, parentKey: 's-0'}) :
         undefined
@@ -105,6 +105,14 @@ export class ParcoordSeries extends Series {
     })
 
     this.axesInverted = 'class' in args ? args.axesInverted : this.axes.map(() => false)
+
+    if (this.categories && this.categories.values.length !== this.axes[0].scaledValues.values.length) {
+      throw new Error(ErrorMessages.categoricalValuesMismatch)
+    }
+
+    if (this.color && this.color.values.length !== this.axes[0].scaledValues.values.length) {
+      throw new Error(ErrorMessages.sequentialColorValuesMismatch)
+    }
   }
 
   getCombinedKey(i: number): string {
@@ -137,7 +145,7 @@ export class ParcoordSeries extends Series {
 
     const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (val => val)
     const format = axis.d3Axis?.tickFormat() ?? scaleFormat
-    const axisName = getCurrentRespVal(axis.title, {chart: chartS})
+    const axisName = getCurrentResponsiveValue(axis.title, {chart: chartS})
     const dimensionValue = format(axis.scaledValues.atScreenPosition(dimensionPosition), 0)
     return {
       horizontal: flipped ? dimensionValue : axisName,

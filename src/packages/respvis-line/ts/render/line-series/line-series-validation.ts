@@ -1,10 +1,11 @@
 import {CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
-import {PointLabelsUserArgs, PointSeries} from "respvis-point";
-import {InterpolatedRadius, InterpolatedRadiusUserArgs, validateRespValInterpolated} from "respvis-core";
+import {type Point, PointLabelsUserArgs, PointSeries, RadiusUserArgs} from "respvis-point";
+import {SeriesTooltipGenerator} from "respvis-tooltip";
 
-export type LineSeriesUserArgs = CartesianSeriesUserArgs & {
+export type LineSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
   labels?: PointLabelsUserArgs
-  radii?: InterpolatedRadiusUserArgs
+  radii?: RadiusUserArgs
+  markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
 }
 
 export type LineSeriesArgs = LineSeriesUserArgs & Omit<CartesianSeriesArgs, 'originalSeries'> & {
@@ -12,14 +13,13 @@ export type LineSeriesArgs = LineSeriesUserArgs & Omit<CartesianSeriesArgs, 'ori
 }
 
 export class LineSeries extends PointSeries {
-  radii: InterpolatedRadius
   originalSeries: LineSeries
+
   constructor(args: LineSeriesArgs | LineSeries) {
     super(args);
     this.originalSeries = args.originalSeries ?? this
-    if ('class' in args) this.radii = args.radii
-    else this.radii = args.radii ? validateRespValInterpolated(args.radii) : 5
   }
+
   clone() {
     return new LineSeries(this)
   }

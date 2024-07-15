@@ -2,7 +2,6 @@ import {select, Selection} from "d3";
 import downloadSVGRaw from '../../../../../../../assets/svg/tablericons/download.svg'
 import cancelSVGRaw from '../../../../../../../assets/svg/feathericons/x-circle.svg'
 import {Renderer} from "../../../chart/renderer";
-import {addRawSVGToSelection} from "../../../../utilities/d3/util";
 import {bindOpenerToDialog, DialogData, renderDialog} from "../../tool/render/render-dialog";
 import {renderTool} from "../../tool/render/render-tool";
 import {downloadChart} from "../download-chart/download-chart";
@@ -14,6 +13,7 @@ import {renderAttributeRemovalOptions} from "./render-attribute-removal-options"
 import {renderDecimalNumberOptions} from "./render-decimal-number-options";
 import {renderPrettifyOptions} from "./render-prettify-options";
 import {renderMarginOptions} from "./render-margin-options";
+import {renderSVGs} from "../../../element/svg";
 
 export function renderDownloadTool(toolbarS: Selection<HTMLDivElement>, renderer: Renderer) {
   const contentS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__content')
@@ -21,7 +21,7 @@ export function renderDownloadTool(toolbarS: Selection<HTMLDivElement>, renderer
   const dialogContainerS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__dialog-container')
 
   const dialogOpenerS = renderButton(downloadToolS, 'toolbar__btn')
-  addRawSVGToSelection(dialogOpenerS, downloadSVGRaw)
+  renderSVGs(dialogOpenerS, [downloadSVGRaw])
   renderSimpleTooltip(dialogOpenerS, {text: 'Download'})
   const dialogS = renderDialog(dialogContainerS, 'dialog--center', 'dialog--download')
   bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300, type: 'modal'})
@@ -53,7 +53,7 @@ function downloadButtonRender(selection: Selection<HTMLDialogElement, DialogData
     .data([null])
     .join("span")
     .text('Download SVG')
-  addRawSVGToSelection(buttonS, downloadSVGRaw)
+  renderSVGs(buttonS, [downloadSVGRaw])
 }
 
 function cancelButtonRender(selection: Selection<HTMLDialogElement, DialogData>) {
@@ -70,5 +70,5 @@ function cancelButtonRender(selection: Selection<HTMLDialogElement, DialogData>)
     .data([null])
     .join("span")
     .text('Cancel')
-  addRawSVGToSelection(buttonS, cancelSVGRaw)
+  renderSVGs(buttonS, [cancelSVGRaw])
 }

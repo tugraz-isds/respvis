@@ -1,27 +1,31 @@
 import {select, Selection} from "d3";
 import {createPoints, joinPointSeries, Point} from "respvis-point";
 import {LineSeries} from "./line-series-validation";
-import {addSeriesHighlighting, defaultStyleClass, renderLabelSeries} from "respvis-core";
-import {renderSeriesTooltip} from "respvis-tooltip";
+import {combineKeys, createSelectionClasses, defaultStyleClass} from "respvis-core";
 import {Line} from "./line";
 import {joinLineSeries} from "./join-line-series";
 
-export function renderLineSeries(pointLineS: Selection<Element, LineSeries>): void {
-  const series = pointLineS.datum()
+export function renderLineSeries(parentS: Selection<Element>, series: LineSeries, ...classes: string[]) {
+  const {classString, selector} = createSelectionClasses(classes)
+  const createSelection = (type: 'line-line' | 'line-point') => {
+    return parentS
+      .selectAll<SVGSVGElement, LineSeries>(`${selector}.series-line`)
+      .data([null])
+      .join('g')
+      .classed(`${classString} series-line`, true)
+      .selectAll<SVGSVGElement, LineSeries>(`.series-${type}`)
+      .data<LineSeries>([series])
+      .join('g')
+      .classed(`series-${type}`, true)
+      .attr('data-ignore-layout-children', true)
+  }
+
+  const lineS = createSelection('line-line')
+  const pointS = createSelection('line-point')
   const pointGroups = createPoints(series, true)
-  const pointGroupsFlat = pointGroups.flat()
-  pointLineS.filter('.series-point-line')
-    .call((s) => renderLineSeriesPoints(s, pointGroups))
-    .call(addSeriesHighlighting)
-    .call(renderSeriesTooltip)
-    .call(() => renderLabelSeries(series.renderer.drawAreaS, {
-        elements: pointGroupsFlat,
-        classes: ['series-label'],
-        orientation: pointLineS.datum().responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
-      }).attr( 'layout-strategy-horizontal', pointGroupsFlat[0]?.labelData?.positionStrategyHorizontal ?? null)
-        .attr( 'layout-strategy-vertical', pointGroupsFlat[0]?.labelData?.positionStrategyVertical ?? null)
-    )
-  renderLineSeriesLines(pointLineS.filter('.series-line'), pointGroups)
+  renderLineSeriesPoints(pointS, pointGroups)
+  renderLineSeriesLines(lineS, pointGroups)
+  return parentS.selectAll<SVGSVGElement, LineSeries>('.series-line-line , .series-line-point')
 }
 
 function renderLineSeriesPoints(pointS: Selection<Element, LineSeries>, pointGroups: Point[][]) {
@@ -31,14 +35,17 @@ function renderLineSeriesPoints(pointS: Selection<Element, LineSeries>, pointGro
     .classed('point-category', true)
     .each(function (d, i, g) {
       select(g[i]).selectAll<SVGCircleElement, Point>('.point')
-        .data(pointGroups[i], (d) => d.key)
+        .data(pointGroups[i], (d) => d.key.rawKey)
         .call((s) => joinPointSeries(pointS, s))
     })
 }
 
 function renderLineSeriesLines(lineS: Selection<Element, LineSeries>, pointGroups: Point[][]) {
   const lineSeries = lineS.datum()
-  const keySelectors = lineSeries.getMergedKeys()
+  const categoryKeys = lineSeries.getMergedKeys()
+  const keySelectors = categoryKeys.length > 0 ?
+    categoryKeys.map(key => combineKeys([lineSeries.key, key])) : [lineSeries.key]
+
   const lines: Line[] = keySelectors.map((key, i) => ({
     key,
     positions: pointGroups[i].map(point => point.center),

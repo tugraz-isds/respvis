@@ -6,8 +6,8 @@ import {CartesianAxis, CartesianAxisUserArgs, validateCartesianAxis} from "../va
 export type CartesianChartUserArgs = SeriesChartUserArgs & {
   series: CartesianSeriesUserArgs
   // additionalSeries:
-  x: CartesianAxisUserArgs
-  y: CartesianAxisUserArgs
+  x?: CartesianAxisUserArgs
+  y?: CartesianAxisUserArgs
 }
 
 export type CartesianChartArgs = SeriesChartArgs & Omit<CartesianChartUserArgs, 'series'> & {
@@ -27,8 +27,8 @@ export function validateCartesianChart(args: CartesianChartArgs): CartesianChart
 
   return {
     series,
-    x: validateCartesianAxis({...x, renderer, scaledValues: series.x, series}),
-    y: validateCartesianAxis({...y, renderer, scaledValues: series.y, series}),
+    x: validateCartesianAxis({...(x ?? {}), renderer, scaledValues: series.x, series}),
+    y: validateCartesianAxis({...(y ?? {}), renderer, scaledValues: series.y, series}),
     getAxes: function (this:CartesianChartData) {
       return [this.x, this.y, ...(this.series.color ? [this.series.color.axis] : [])]
     },

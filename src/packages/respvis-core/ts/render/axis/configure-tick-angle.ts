@@ -1,10 +1,10 @@
 import {AxisSelection} from "./render-axis";
 import {select, Selection} from "d3";
 import {SVGHTMLElementLegacy} from "../../constants/types";
-import {elementFromSelection} from "../../utilities/d3/util";
 import {cssLengthInPx} from "../../utilities/dom/units";
 import {calculateTickAngles} from "./calculate-tick-angle";
-import {normalizeAngle} from "../../utilities/angle";
+import {normalizeAngle} from "../../utilities/geometry/angle";
+import {elementFromSelection} from "respvis-core";
 
 export function configureTickAngles(axisS: AxisSelection, ticksS: Selection<SVGHTMLElementLegacy>) {
   const angle = calculateTickAngles(axisS)

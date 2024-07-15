@@ -15,17 +15,19 @@ import {Meta} from "@storybook/blocks";
 - For Inspect Tool + Cartesian Chart: Add Horizontal and Vertical Lines, connecting cross cursor with axes.
 - Setting for toggling between category and sequential colors.
 - Find a way for easily changing underlying data of charts for different space requirements.
-- Add defaults for clamping css vars of chart title, subtitle, labels
+- Add defaults for clamping css vars of chart title, subtitle, labels.
+- Add possibility for multiple series categories.
 
 ## Restructuring
 
 - Test removal of path aliases and working with workspace
   module resolution instead.
 - Add TSLint and Prettier to enforce naming conventions.
-- Have a look at color-continuous data component and update
   point series color and radii properties.
 - Restructure Legend in multiple containers (size, category, color scale),
   which can be aligned independently.
+- Add required responsive title to scaled values of all kinds.
+  Add optional callback for axis titles which is by default this responsive value.
 
 ## Documentation and Testing
 
@@ -41,20 +43,10 @@ import {Meta} from "@storybook/blocks";
 ## Bugs
 
 - Firefox: Fast resizing of charts with many data points leads to strange error log
-- Self-contained grouped bar chart example: Labels disappear partially on numeric filtering
-- Parallel Coordinates Chart: Filtering Axes troubles Axes Drag & Drop. To Reproduce:
-  - Go to Self contained examples parcoord.
-  - Disable Price and Horsepower Axes.
-  - Drag & Drop Fuel Axis to Start of Chart.
-  - Activate Price and Horsepower Axes again.
-  - Fuel Axis can't be drag and dropped anymore. Instead, mileage axis is drag & dropped.
-- Linear Filtering and Enter Exit Transitions are Conflicting. To reproduce do fast linear filtering
-  in multi-line chart.
-- Parallel Coordinates Chart: Line CSS Transition not enabled.
+  (does not appear in safe mode, probably because of an extension?)
+- Rapid linear filtering needs additional update or points can be lost. Reproduce in multi-line chart.
 - Layouting: A rapid change of the chart size, like opening dev tools, does not lead to rerender
-  sometimes.
-- Line Chart: Double Range Slider colored range wrong.
-
+  sometimes (changed 2nd resize rerender delay, watch if the problem is gone).
 
 
 ## Notes
@@ -65,3 +57,6 @@ import {Meta} from "@storybook/blocks";
   be solved with union types instead. Anyway, this problem does not affect
   library users, since everything works fine when importing from outside of
   respvis packages.
+
+
+

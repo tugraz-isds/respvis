@@ -1,27 +1,27 @@
 import {AxisLayoutHorizontal, AxisLayoutsHorizontal, AxisLayoutsVertical, AxisLayoutVertical,} from "../../constants";
 import {ConfigureAxisFn} from "./validate-base-axis";
-import {LayoutBreakpoints, LayoutBreakpointsUserArgs,} from "../../data/layout-breakpoints";
+import {ComponentBreakpoints, ComponentBreakpointsUserArgs,} from "../../data/breakpoints/component-breakpoints";
 import {
-  RespVal,
-  RespValByValueOptional,
-  RespValByValueUserArgs,
-  RespValUserArgs,
-  validateResponsiveValByValue,
-  validateRespVal
-} from '../../../ts/data/responsive-value'
+  BreakpointPropertyOptional,
+  BreakpointPropertyUserArgs,
+  ResponsiveValueOptional,
+  ResponsiveValueUserArgs,
+  validateBreakpointProperty,
+  validateResponsiveValue
+} from '../../data/responsive-property'
 import {ScaledValuesSpatial} from "../../data/scale";
 import {RenderArgs} from "../chart";
 import {Axis as D3Axis} from "d3-axis";
 
 export type LightWeightAxisUserArgs = {
-  breakpoints?: LayoutBreakpointsUserArgs
-  title?: RespValUserArgs<string>
-  subTitle?: RespValUserArgs<string>
+  breakpoints?: ComponentBreakpointsUserArgs
+  title?: ResponsiveValueUserArgs<string>
+  subTitle?: ResponsiveValueUserArgs<string>
   horizontalLayout?: AxisLayoutHorizontal
   verticalLayout?: AxisLayoutVertical
-  configureAxis?: RespValUserArgs<ConfigureAxisFn>
-  tickOrientation?: RespValByValueUserArgs<number>
-  tickOrientationFlipped?: RespValByValueUserArgs<number>
+  configureAxis?: ResponsiveValueUserArgs<ConfigureAxisFn>
+  tickOrientation?: BreakpointPropertyUserArgs<number>
+  tickOrientationFlipped?: BreakpointPropertyUserArgs<number>
 }
 
 export type LightWeightAxisArgs = LightWeightAxisUserArgs & RenderArgs & {
@@ -31,12 +31,12 @@ export type LightWeightAxisArgs = LightWeightAxisUserArgs & RenderArgs & {
 export type LightWeightAxis = Required<Omit<LightWeightAxisArgs,
   'breakpoints' | 'tickOrientation' | 'tickOrientationFlipped' | 'title' |
   'subTitle' | 'configureAxis'>> & {
-  title: RespVal<string>
-  subTitle: RespVal<string>
-  configureAxis: RespVal<ConfigureAxisFn>
-  breakpoints: LayoutBreakpoints,
-  tickOrientation: RespValByValueOptional<number>
-  tickOrientationFlipped: RespValByValueOptional<number>
+  title: ResponsiveValueOptional<string>
+  subTitle: ResponsiveValueOptional<string>
+  configureAxis: ResponsiveValueOptional<ConfigureAxisFn>
+  breakpoints: ComponentBreakpoints,
+  tickOrientation: BreakpointPropertyOptional<number>
+  tickOrientationFlipped: BreakpointPropertyOptional<number>
   d3Axis?: D3Axis<any> //axis available after first render
 }
 
@@ -44,17 +44,17 @@ export function validateLightWeightAxis(args: LightWeightAxisArgs): LightWeightA
   const axis: LightWeightAxis = {
     renderer: args.renderer,
     scaledValues: args.scaledValues,
-    title: validateRespVal(args.title || ''),
-    subTitle: validateRespVal(args.subTitle || ''),
-    configureAxis: validateRespVal(args.configureAxis || (() => {
+    title: validateResponsiveValue(args.title || ''),
+    subTitle: validateResponsiveValue(args.subTitle || ''),
+    configureAxis: validateResponsiveValue(args.configureAxis || (() => {
     })),
-    breakpoints: new LayoutBreakpoints(args.breakpoints),
+    breakpoints: new ComponentBreakpoints(args.breakpoints),
     horizontalLayout: args.horizontalLayout && AxisLayoutsHorizontal.includes(args.horizontalLayout) ?
       args.horizontalLayout : 'bottom',
     verticalLayout: args.verticalLayout && AxisLayoutsVertical.includes(args.verticalLayout) ?
       args.verticalLayout : 'left',
-    tickOrientation: validateResponsiveValByValue(args.tickOrientation ?? 0),
-    tickOrientationFlipped: validateResponsiveValByValue(args.tickOrientationFlipped ?? 0),
+    tickOrientation: validateBreakpointProperty(args.tickOrientation ?? 0),
+    tickOrientationFlipped: validateBreakpointProperty(args.tickOrientationFlipped ?? 0),
   }
   return axis
 }

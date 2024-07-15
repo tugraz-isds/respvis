@@ -50,7 +50,7 @@ export abstract class SeriesChartMixin extends Chart {
   }
 
   addSeriesLabels(seriesS: Selection<SVGGElement, Series>) {
-    const seriesElementsS = seriesS.selectAll<any, VisualPrimitive>('.bar:not(.exiting):not(.exit-done)')
+    const seriesElementsS = seriesS.selectAll<any, VisualPrimitive>('.element:not(.exiting):not(.exit-done)')
     renderLabelSeries(this.drawAreaS, {
       elements: seriesElementsS.data(),
       classes: ['series-label'],

@@ -1,6 +1,6 @@
-import {CSSBreakpointLengthUnit, LengthDimension, SVGHTMLElement, UnitValue} from "../../constants/types";
+import {CSSBreakpointLengthUnit, CSSLengthValue, LengthDimension, SVGHTMLElement,} from "../../constants/types";
 import {defaultLayoutIndex, pxUpperLimit} from "../../constants/other";
-import {convertToPx} from "../../utilities";
+import {cssLengthInPx} from "../../utilities";
 
 export type BreakpointsUserArgs = {
   values: readonly number[],
@@ -8,14 +8,6 @@ export type BreakpointsUserArgs = {
 }
 export type BreakpointsArgs = BreakpointsUserArgs & {
   dimension?: LengthDimension
-}
-
-export function getActiveBreakpoints(layoutWidthIndex: number, breakpoints: Breakpoints)
-  : [UnitValue<CSSBreakpointLengthUnit>, UnitValue<CSSBreakpointLengthUnit>] {
-  const {unit, values} = breakpoints
-  const preBreak = `${layoutWidthIndex > 0 ? values[layoutWidthIndex - 1] : 0}${unit}` as const
-  const postBreak = layoutWidthIndex < values.length ? `${values[layoutWidthIndex]}${unit}` as const : pxUpperLimit
-  return [preBreak, postBreak]
 }
 
 export class Breakpoints {
@@ -46,7 +38,8 @@ export class Breakpoints {
     const referenceValue = rect[this.dimension]
     if (this.values.length === 0) return 0
     for (let i = 0; i < this.values.length; i++) {
-      if (referenceValue < convertToPx(element, this.values[i],  this.unit)) return i
+      const cssLength = (this.values[i].toString() + this.unit.toString()) as CSSLengthValue
+      if (referenceValue < cssLengthInPx(cssLength, element)) return i
     }
     return this.values.length
   }
@@ -80,8 +73,6 @@ export class Breakpoints {
   }
 
   updateLayoutCSSVars(element: SVGHTMLElement) {
-    // if (!layoutBreakpoints.hasOwnProperty(k)) continue
-
     const transformedBreakpoints = this.getTransformed(element)
     const layoutWidthIndex = transformedBreakpoints.getCurrentLayoutWidthIndex(element)
     const [preBreakPointLength, postBreakPointLength] = transformedBreakpoints.getSurroundingLengths(layoutWidthIndex)

@@ -1,10 +1,11 @@
 import {Selection} from "d3";
-import {classesForSelection} from "../../../../utilities/d3/util";
+
+import {createSelectionClasses} from "respvis-core";
 
 export function renderButton(parentS: Selection, ...classes: string[]) {
-  const {names, selector} = classesForSelection(classes)
+  const {classString, selector} = createSelectionClasses(classes)
   return parentS.selectAll<HTMLButtonElement, any>(selector)
     .data([null])
     .join('button')
-    .classed(names, true)
+    .classed(classString, true)
 }

@@ -44,7 +44,7 @@ export const createPowerConsumptionChart = (selector: string) => {
             tickOrientation: {
                 dependentOn: 'width',
                 scope: 'self',
-                mapping: {0: 90, 3: 0},
+                breakpointValues: {0: 90, 2: 0},
             },
             breakpoints: {
                 width: {
@@ -66,7 +66,7 @@ export const createPowerConsumptionChart = (selector: string) => {
             tickOrientationFlipped: {
                 dependentOn: 'width',
                 scope: 'self',
-                mapping: {0: 90, 3: 0},
+                breakpointValues: {0: 90, 2: 0},
             },
         }
     }

@@ -1,0 +1,512 @@
+import {Meta, Source} from "@storybook/blocks";
+import {
+  SourceCollapseBlockByStoryObj
+} from "../../../util/documentation-components/blocks/SourceCollapseBlock/SourceCollapseBlock";
+import CurrentMeta, * as CurrentStories from './how-to-create-a-chart.stories'
+import {tutorialFileStructure} from "../../../util/assets/raw-strings/tutorial-file-structure";
+
+<Meta of={CurrentMeta} name='How to create a Chart (Advanced Setup)'/>
+
+# How to create a Chart (Advanced Setup with NPM)
+
+## Getting Started
+
+This guide is intended for people who know and want to use the
+advantages of the Node.js ecosystem. It is a guide for people who
+want to work with RespVis using Node.js, npm or any other package
+manager, bundling tools like Parcel, and Typescript.
+
+Before starting with the implementation guide, a few words about
+the best development conditions. RespVis is fully typed and can
+be used the best when imported in TypeScript files. By using an
+IDE of choice, [VSCode](https://code.visualstudio.com/) and
+[Webstorm](https://www.jetbrains.com/webstorm/), one will get useful
+hints about which arguments are expected when creating a new chart.
+Using a bundler like webpack, rollup or parcel will additionally
+ease the usage of TypeScript with plain HTML.
+
+This tutorial expects the project to be set up with parcel, the
+zero configuration build tool. The tutorial will begin from scratch
+and explains how to progressively add functionally to achieve a fully
+responsive line chart. First, all files and directories must be created.
+This can be done by simply using a file manager or command line interface.
+Before continuing with the next section, one must create the following files
+and directories:
+
+<Source code={tutorialFileStructure} language={"text"}/>
+
+This can be achieved by first creating a new project:
+
+```
+# Create root directory of line-chart project
+mkdir line-chart
+cd line-chart
+
+# Initialize npm project
+npm init -y
+
+# Install Parcel as a development dependency
+npm install --save-dev parcel
+
+
+```
+
+Next, a chart directory with all necessary files is created. These files will
+contain the code to render the finished chart at the end of this tutorial:
+```
+# In line-chart directory
+
+# Create chart directory
+mkdir chart
+cd chart
+
+#Create HTML file
+touch line-chart.html
+
+#Create CSS file
+touch line-chart.css
+
+#Create TypeScript file
+touch line-chart.ts
+```
+The last thing to do before beginning to create a chart is to
+install the necessary RespVis packages: `npm install respvis`.
+This will install the extensive RespVis package containing
+the full functionality of the library.
+If one wants to only install required sub
+packages, one can find further information in the
+[packages guide](?path=/docs/using-respvis-packages--docs).
+
+When running `npx parcel ./chart/line-chart.html` from the root directory one will
+see the fruits of him/her work already.
+
+
+
+## Implementing a basic Line Chart
+
+After completing the setup, one can finally begin with the real implementation.
+The first implementation step is to write the necessary markup to `line-chart.html`:
+
+<Source code={`
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <title>Line Chart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="../node_modules/respvis/package/respvis.css"/>
+  <link rel="stylesheet" href="./line-chart.css"/>
+</head>
+<body>
+
+<div id="chart"> </div>
+
+<script type="module">
+  import {createLineChart} from "./line-chart.ts";
+  createLineChart('#chart')
+</script>
+
+</body>
+</html>
+
+`} language={"html"}/>
+
+The above markup:
+1. includes `respvis.css` which is provided by RespVis and is located in
+   `node_modules`. The file contains all default styling provided by the library.
+2. includes `line-chart.css`, a local CSS file for customizing the appearance of
+   the line chart.
+3. defines an empty `<div>` element which will serve as chart-container.
+4. imports and executes the function to render a line chart from `line-chart.ts`,
+   a TypeScript module. The function expects the selector of
+   the chart-container element as the only argument.
+
+For the above markup to function properly it is necessary to
+implement `line-chart.ts`. The LineChartUserArgs type helps
+in figuring out which arguments are required:
+
+<Source code={`
+import { LineChart, LineChartUserArgs, formatWithDecimalZero, select, format, timeFormat, timeYear } from 'respvis';
+import {select, format, timeFormat, timeYear} from "d3";
+
+//  Data Source: Studierendenstatistik
+//  https://online.tugraz.at/tug_online/studierendenstatistik.html
+
+// Categories: Winter, Studierende, Ordentlich, gemeldet
+// ordentlich gemeldet, ohne Mitbeleger, jeweils im WS
+
+const students = [
+  8291, 8785, 9203, 9766, 10245, 11211, 11681, 12105, 12323,
+  12565, 12764, 13167, 13454, 13737, 13373, 13566, 13673, 13712
+]
+
+const years = [
+  "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012",
+  "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021"
+]
+
+export function createLineChart(selector: string) {
+  const args: LineChartUserArgs = {
+    series: {
+      x: {
+        values: years
+      },
+      y: {
+        values: students
+      }
+    }
+  }
+
+  const chartWindow = select(selector).append('div')
+  const chart = new LineChart(chartWindow, args)
+  chart.buildChart()
+}
+`} language={"typescript"}/>
+
+The above code snippet performs the following actions:
+1. Importing the necessary dependencies from RespVis and D3.
+2. Defining the underlying data. The source of the data is
+   included in comments.
+3. Defining the function for rendering the line chart:
+   - First, the args object is defined. It contains the minimum number of
+     properties necessary to still match the type LineChartUserArgs.
+     As can be seen, passing x and y values is a minimum requirement,
+     since a line chart without values would not make any sense. There
+     are many optional parameters for improving appearance and responsiveness.
+     These can be added later, but the above example works at least without an
+     error occurring.
+   - Second, the chart is created and rendered. This is achieved by first
+     using the passed selector to select and append a \<div\> to the chart-wrapper
+     element. The created \<div\> and args object are passed to the LineChart
+     constructor which takes care of validation and returns the ready to use chart
+     object. Finally, by calling `chart.buildChart()` the chart executes all necessary
+     actions to render its content.
+
+The only thing left to do to get the basic example working is
+to specify the dimensions of the chart in `line-chart.css`
+(fow your own example you can choose whatever dimensions fit best):
+
+<Source code={`
+#chart {
+  width: 100%;
+  height: 75vh;
+  min-height: 25rem;
+}`} language={"css"}/>
+
+When serving the `line-chart.html` file one will see the fruits of him/her
+work already:
+
+<SourceCollapseBlockByStoryObj story={CurrentStories.Basic}/>
+
+
+
+## Improving Basic Chart
+
+The [basic chart](#story-basic) misses fundamental information. A chart viewer
+will not be able to understand the underlying data at all. To change this,
+the chart must be titled and labeled accordingly:
+
+<Source code={`
+...
+const args: LineChartUserArgs = {
+  series: {
+    x: {
+      values: years
+    },
+    y: {
+      values: students
+    }
+  },
+  title: 'Students Registered at TU Graz',
+  subTitle: '',
+  x: {
+    title: 'Year',
+    subTitle: '[2012 to 2021]',
+  },
+  y: {
+    title: 'Students',
+    subTitle: '[Winter Semester]',
+  }
+}
+...
+`} language={"typescript"}/>
+
+
+<SourceCollapseBlockByStoryObj story={CurrentStories.Labeled}/>
+
+The [labeled chart](#story-labeled) looks much better already.
+Before continuing with adding responsive transformations, take a
+look at how values are defined for the x dimension:
+
+<Source code={`
+...
+const years = [
+  "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012",
+  "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021"
+]
+
+export function createLineChart(selector: string) {
+  const args: LineChartUserArgs = {
+    series: {
+      x: {
+        values: years
+      },
+      ...
+    },
+    ...
+  }
+  ...
+}
+`} language={"typescript"}/>
+
+As can be seen, the x dimension reflects time, but is given pure strings
+to work with. If time or other numeric data is passed like this, RespVis
+will interpret it as categorical data. This may or may not be desired.
+In most cases, however, it is recommended to pass numeric data as JavaScript
+number primitives and date information as JavaScript Date objects:
+
+<Source code={`
+...
+const years = [
+  "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012",
+  "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021"
+]
+
+const yearsJsDate = years.map(year => new Date(year))
+
+export function createLineChart(selector: string) {
+  const args: LineChartUserArgs = {
+    series: {
+      x: {
+        values: yearsJsDate
+      },
+      ...
+    },
+    ...
+  }
+  ...
+}
+`} language={"typescript"}/>
+
+Passing values this way will make axes formatting much easier and enables
+the implementation of additional interactions which are not possible for
+categories, like zooming and numeric filtering. You can directly see the change
+when comparing the filter menu provided by the toolbar of the previous chart with
+the menu of the current chart. You will see that the categorical filter control
+elements for the year axis changed into numerical filter controls.
+
+Using Date values changes the x-coordinate of the first point to be exactly
+located at the y-axis. This is undesirable, for aesthetic reasons. Adding
+padding to the draw-area by making use of the padding containers will
+neutralise this effect:
+
+<Source code={`
+#chart {
+  width: 100%;
+  height: 75vh;
+  min-height: 25rem;
+  .window-rv {
+    --chart-padding-left: 1rem;
+  }
+}`} language={"css"}/>
+
+<SourceCollapseBlockByStoryObj story={CurrentStories.WithDateValues}/>
+
+
+
+The [resulting chart](#story-with-date-values) looks already, although improvable, pretty decent
+given that enough space is available. However, if space is getting narrower,
+the appearance of the chart will suffer greatly:
+- Narrowing of the width leads to chart title being cut off.
+- Narrowing of the width leads to intersecting x-axis labels.
+- Narrowing of the height leads to intersecting y-axis labels.
+- Narrowing leads to overcrowding of data points.
+- Narrowing leads to axes and titles occupying too much space.
+
+RespVis provides several ways to deal with these issues. The
+showcased solutions are, for sure, not the only ones but are
+curated and well tested.
+
+### Fixing the Chart Title
+
+To fix the issue of a chart title being cut off on narrow spaces,
+one can make use of the
+[breakpoints](?path=/docs/using-respvis-arguments-chart-arguments--docs#breakpoints-argument)
+and the responsive capabilities of the
+[title](?path=/docs/using-respvis-arguments-chart-arguments--docs#title-argument) argument.
+In addition, one can decide to move information from the title to the smaller subtitle:
+
+<Source code={`
+...
+const args: LineChartUserArgs = {
+  ...
+  breakPoints: {
+    width: {
+      values: [20, 30, 50],
+      unit: 'rem'
+    }
+  },
+  title: {
+    dependentOn: 'width',
+    mapping: {0: 'Students', 1: 'Students TU Graz', 3: 'Students Registered at TU Graz'}
+  },
+  subTitle: {
+    dependentOn: 'width',
+    mapping: {0: 'TU Graz', 1: ''}
+  }
+  ...
+}
+...
+`} language={"typescript"}/>
+
+<SourceCollapseBlockByStoryObj story={CurrentStories.WithResponsiveTitle}/>
+
+
+
+### Responsive Axis Ticks
+
+To prevent axis ticks from intersecting with each other, one can thin
+out and/or rotate the labels. This can be achieved by adding the following
+properties to the chart arguments:
+
+<Source code={`
+...
+const args: LineChartUserArgs = {
+  ...
+  x: {
+    // Breakpoints can also be added to axes
+    breakPoints: {
+      width: {
+        values: [10, 30, 50],
+        unit: 'rem'
+      }
+    },
+    // By using breakpoints and configureAxis one
+    // can adjust the generated axis object to have
+    // a desired number of ticks. In the current case,
+    // each year will have a corresponding tick if
+    // the axis has a width over 50rem. Otherwise,
+    // only each second year will have a corresponding
+    // tick.
+    configureAxis: {
+      dependentOn: "width",
+      mapping: {
+        0: (axis) => {
+          axis.ticks(timeYear.every(2))
+          axis.tickFormat(timeFormat('%Y'))
+        },
+        3: (axis) => {
+          axis.ticks(timeYear.every(1))
+          axis.tickFormat(timeFormat('%Y'))
+        },
+      }
+    },
+    // By using breakpoints and tickOrientation one
+    // can adjust the orientation depending on the
+    // current layout width. The current mapping
+    // can be read as: Ticks have 90° orientation
+    // in layout width 0, 0° orientation in layout
+    // width 3 and in between these widths the
+    // tick orientation is interpolated.
+    tickOrientation: {
+    dependentOn: 'width',
+      mapping: { 0: 90, 3: 0}
+    }
+  },
+  y: {
+    // If no breakpoints are specified, the axis will use
+    // the breakpoints of the chart as reference. In the
+    // current case, the labels of the y axis will be shortened
+    // for the layout widths 0 and 1 of the chart using the metric
+    // SI units. As soon as the chart reaches layout width 2, the
+    // labels will be shown in full length, where groups of three
+    // digits are separated by commas.
+    configureAxis: {
+      dependentOn: 'width',
+      scope: 'chart',
+      mapping: {0: (axis) => axis.tickFormat(formatWithDecimalZero(format('.2s'))),
+        2: (axis) => axis.tickFormat(formatWithDecimalZero(format(',')))
+      }
+    }
+  }
+  ...
+}
+...
+`} language={"typescript"}/>
+
+<SourceCollapseBlockByStoryObj story={CurrentStories.WithResponsiveAxisTicks}/>
+
+
+
+### Removing Axes and working with Tooltips and Labels
+
+The [current chart state](#story-with-responsive-axis-ticks) is nearly perfect.
+The only thing left to do is solving the problem of the draw-area becoming too
+overcrowded when space gets tiny.
+One possible solution is to remove the axes and work with tooltips and labels instead:
+
+<Source code={`
+...
+const userArgs: LineChartUserArgs = {
+  ...
+  series: {
+    ...
+    markerTooltips: {
+      tooltips: function (_, {xValue, yValue}) {
+          return \`Year: \${xValue}<br/>Students: \${format('.2f')(yValue)}\`
+        },
+    },
+    labels: {
+      values: students.map(student => student.toString()),
+      offset: 6,
+      format: (bar, label) => format('.3s')(label as any)
+    }
+    ...
+  },
+  ...
+}
+`} language={"typescript"}/>
+
+<Source code={`
+#chart {
+  width: 100%;
+  height: 75vh;
+  min-height: 25rem;
+  .window-rv {
+    --chart-padding-top: 1rem;
+    --chart-padding-left: 1rem;
+    container-type: inline-size;
+
+    .draw-area {
+      .label {
+        display: none;
+      }
+    }
+
+    @container (width < 15rem) {
+      .axis {
+        display: none;
+      }
+      .draw-area {
+        .point {
+          opacity: 0;
+          &:first-of-type, &:last-of-type {
+            opacity: 1;
+          }
+        }
+        .label:first-of-type, .label:last-of-type {
+          display: block;
+        }
+      }
+    }
+  }
+}`} language={"css"}/>
+
+<SourceCollapseBlockByStoryObj story={CurrentStories.TooltipsAndLabelsInsteadOfAxes}/>
+
+The [final result](#story-tooltips-and-labels-instead-of-axes) of this
+tutorial is a fully responsive chart, capable of adapting its content
+depending on varying conditions. To implement additional features and
+interaction possibilities one may explore the
+[arguments section](?path=/docs/using-respvis-arguments-arguments--docs)
+

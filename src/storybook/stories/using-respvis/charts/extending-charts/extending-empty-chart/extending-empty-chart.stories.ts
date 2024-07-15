@@ -3,9 +3,9 @@ import {rawCode} from "../../../../util/raw-code";
 import {renderChart} from "../../../../util/chart-extensions/axis-chart/render-chart";
 import {AxisChartAxisUserArgs, AxisChartUserArgs} from "storybook-util/chart-extensions/axis-chart/validate-axis-chart";
 import {AustrianCitiesData} from "data"
-import {RespValByValueUserArgs} from "respvis-core";
+import {BreakpointPropertyUserArgs} from "respvis-core";
 import AxisFlippingCSS from "./axis-flipping.css?raw";
-import {LayoutBreakpointsUserArgs} from "respvis-core/data/layout-breakpoints/layout-breakpoints";
+import {ComponentBreakpointsUserArgs} from "respvis-core/data/breakpoints/component-breakpoints/component-breakpoints";
 
 const {cities, populations} = AustrianCitiesData.default
 
@@ -28,7 +28,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<AxisChartUserArgs>
 
-const breakpoints: LayoutBreakpointsUserArgs = {
+const breakpoints: ComponentBreakpointsUserArgs = {
   width: {
     values: [20, 40, 60],
     unit: "rem"
@@ -39,19 +39,19 @@ const breakpoints: LayoutBreakpointsUserArgs = {
   }
 }
 
-const tickOrientationHorizontalCities: RespValByValueUserArgs<number> = {
+const tickOrientationHorizontalCities: BreakpointPropertyUserArgs<number> = {
   dependentOn: 'width',
-  mapping: {0: 90, 2: 0}
+  breakpointValues: {0: 90, 2: 0}
 }
 
-const tickOrientationHorizontalPopulation: RespValByValueUserArgs<number> = {
+const tickOrientationHorizontalPopulation: BreakpointPropertyUserArgs<number> = {
   dependentOn: 'width',
-  mapping: {0: -90, 2: -20}
+  breakpointValues: {0: -90, 2: -20}
 }
 
-const tickOrientationVertical: RespValByValueUserArgs<number> = {
+const tickOrientationVertical: BreakpointPropertyUserArgs<number> = {
   dependentOn: 'height',
-  mapping: {0: 0, 2: 30}
+  breakpointValues: {0: 0, 2: 30}
 }
 
 const bottomToRightAxis: AxisChartAxisUserArgs = {
@@ -70,7 +70,7 @@ const topToLeftAxis: AxisChartAxisUserArgs = {
   vals: {values: cities}, title: 'Cities', standardOrientation: "horizontal", horizontalLayout: 'top',
   tickOrientation: {
     dependentOn: 'width',
-    mapping: {0: -90, 2: 0}
+    breakpointValues: {0: -90, 2: 0}
   }
 }
 

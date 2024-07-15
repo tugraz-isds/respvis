@@ -1,14 +1,15 @@
 import {easeCubicOut, select, Selection} from 'd3';
 import {
-  addEnterClass,
-  addExitClass,
-  classesForSelection,
+  addCSSTransitionEnterClass,
+  addCSSTransitionExitClass,
+  cancelExitClassOnUpdate,
+  createSelectionClasses,
   cssVarFromSelection,
-  positionToTransformAttr,
-  VisualPrimitive
 } from "../../utilities";
 import {Orientation} from "../../constants";
 import {Label} from "./label";
+import {VisualPrimitive} from "../primitive";
+import {positionToTransformAttr} from "../../utilities/geometry/position";
 
 type LabelSeriesProps<D extends VisualPrimitive> = {
   elements: D[]
@@ -17,20 +18,20 @@ type LabelSeriesProps<D extends VisualPrimitive> = {
 };
 
 export function renderLabelSeries<D extends VisualPrimitive>(parentS: Selection, props: LabelSeriesProps<D>) {
-  const { elements, classes, orientation} = props
-  const {selector, names} = classesForSelection(classes)
+  const {elements, classes, orientation} = props
+  const {selector, classString} = createSelectionClasses(classes)
   const labels = elements.flatMap(element => element.getLabel(orientation))
   return parentS.selectAll<SVGGElement, any>(selector)
     .data([null])
     .join('g')
-    .classed(names, true)
+    .classed(classString, true)
     .attr('data-ignore-layout-children', true)
     .call((s) => renderLabels(s, labels))
 }
 
 export function renderLabels<D extends Label>(seriesS: Selection, labels: D[]) {
   return seriesS.selectAll<SVGTextElement, D>('text')
-    .data(labels, (d) => d.primitive.key)
+    .data(labels, (d) => d.primitive.key.rawKey)
     .call((s) => joinLabelSeries(seriesS, s));
 }
 
@@ -44,13 +45,17 @@ function joinLabelSeries(seriesS: Selection, joinS: Selection<Element, Label>): 
           .append('text')
           .classed('label', true)
           .each((d, i, g) => positionToTransformAttr(select(g[i]), d))
-          .call(s => addEnterClass(s, tDuration))
-          .call((s) => seriesS.dispatch('enter', { detail: { selection: s } })),
-      undefined,
+          .call(s => addCSSTransitionEnterClass(s, tDuration))
+          .call((s) => seriesS.dispatch('enter', {detail: {selection: s}})),
+      (update) => update.call(() => {
+        update.call(cancelExitClassOnUpdate)
+      }),
       (exit) =>
-        exit.call((s) => addExitClass(s, tDuration).on('end', () => {
-          exit.remove().call((s) => seriesS.dispatch('exit', {detail: {selection: s}}))
-        }))
+        exit.call((s) => addCSSTransitionExitClass(s, tDuration)
+          .on('end', function() {
+            if (!select(this).classed('exit-done')) return
+            exit.remove().call((s) => seriesS.dispatch('exit', {detail: {selection: s}}))
+          }))
     )
     .each((d, i, g) =>
       select(g[i])
@@ -60,7 +65,7 @@ function joinLabelSeries(seriesS: Selection, joinS: Selection<Element, Label>): 
         .call((t) => positionToTransformAttr(t, d))
     )
     .text((d) => d.text)
-    .attr('data-key', (d) => d.primitive.key)
-    .attr( 'data-polarity', (d) => d.primitive.polarity ? d.primitive.polarity : null)
-    .call((s) => seriesS.dispatch('update', { detail: { selection: s } }));
+    .attr('data-key', (d) => d.primitive.key.rawKey)
+    .attr('data-polarity', (d) => d.primitive.polarity ? d.primitive.polarity : null)
+    .call((s) => seriesS.dispatch('update', {detail: {selection: s}}));
 }

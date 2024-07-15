@@ -4,7 +4,7 @@ import {ChartData, ChartDataUserArgs, validateChart} from "./validate-chart";
 import {Renderer} from "../renderer";
 import {ReRenderContext, resizeEventListener} from "./resize-event-dispatcher";
 import {renderChart} from "./render-chart";
-import {fixActiveCursor, ThrottleScheduled} from "../../../utilities";
+import {attachActiveCursorLocking, ThrottleScheduled} from "../../../utilities";
 import {layouterCompute} from "../../layouter";
 import {Legend} from "../../legend";
 
@@ -161,7 +161,7 @@ export class Chart implements Renderer {
     if (!layouterCompute(this.layouterS)) return
     this.rerenderAfterResizeScheduled = setTimeout(() => {
       this.onResizeRender()
-    }, 100)
+    }, 20)
   }
 
   private onStandardInteractionRender() {
@@ -195,7 +195,7 @@ export class Chart implements Renderer {
     const {chartS} = renderWindow(this.windowS)
     renderChart(chartS)
     chartS.classed(`chart-${data.type}`, true)
-    fixActiveCursor(chartS)
+    attachActiveCursorLocking(chartS)
   }
 
   protected renderContent() {}

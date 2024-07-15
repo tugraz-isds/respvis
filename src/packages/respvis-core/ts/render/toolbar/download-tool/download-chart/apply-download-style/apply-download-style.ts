@@ -4,7 +4,7 @@ import {
   elementComputedStyleWithoutDefaults,
   elementSVGPresentationAttrs,
   elementSVGTransformStyles
-} from "../../../../../utilities/element";
+} from "../../../../../utilities/dom/element";
 import {ErrorMessages} from "../../../../../constants/error";
 import {
   cssContentFromEntries,

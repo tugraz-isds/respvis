@@ -6,4 +6,5 @@ export * from './legend';
 export * from './series';
 export * from './toolbar';
 export * from './window';
-export * from './bg-svg-only';
+export * from './primitive'
+export * from './element'

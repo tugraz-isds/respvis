@@ -22,9 +22,7 @@ export const singleLineChartValuesOnly: LineChartUserArgs = {
     y: {
       values: students
     }
-  },
-  x: {},
-  y: {}
+  }
 }
 
 export const singleLineChartLabeled: LineChartUserArgs = {
@@ -92,7 +90,7 @@ export const singleLineChartResponsiveAxisTicks: LineChartUserArgs = {
     },
     tickOrientation: {
       dependentOn: 'width',
-      mapping: {0: 90, 3: 0}
+      breakpointValues: {0: 90, 2: 0}
     }
   },
   y: {

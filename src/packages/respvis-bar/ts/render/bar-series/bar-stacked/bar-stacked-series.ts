@@ -2,8 +2,8 @@ import {ScaleLinear} from "d3";
 import {
   CategoriesUserArgs,
   ErrorMessages,
-  ScaledValuesAggregator,
   ScaledValuesCategorical,
+  ScaledValuesCumulativeAggregator,
   ScaledValuesNumeric,
   ScaledValuesNumericUserArgs
 } from "respvis-core";
@@ -22,7 +22,7 @@ export type BarStackedSeriesArgs = BarBaseSeriesArgs & BarStackedSeriesUserArgs
 export class BarStackedSeries extends BarBaseSeries {
   type: 'stacked'
   aggregationScale?: ScaleLinear<number, number, never>
-  aggScaledValues: ScaledValuesAggregator
+  aggScaledValues: ScaledValuesCumulativeAggregator
   x: ScaledValuesCategorical
   y: ScaledValuesNumeric
   categories: ScaledValuesCategorical
@@ -38,11 +38,11 @@ export class BarStackedSeries extends BarBaseSeries {
     this.y = y
     this.categories = super.getCategories() as ScaledValuesCategorical
     if (!this.categories) throw new Error(ErrorMessages.missingArgumentForSeries)
-    this.aggScaledValues = new ScaledValuesAggregator(this.y, this.x, this.categories, this.aggregationScale)
+    this.aggScaledValues = new ScaledValuesCumulativeAggregator(this.y, this.x, this.categories, this.aggregationScale)
   }
 
   override getBarRects(): Bar[] {
-    this.aggScaledValues = new ScaledValuesAggregator(this.y, this.x, this.categories, this.aggregationScale)
+    this.aggScaledValues = new ScaledValuesCumulativeAggregator(this.y, this.x, this.categories, this.aggregationScale)
     return super.getBarRects();
   }
 

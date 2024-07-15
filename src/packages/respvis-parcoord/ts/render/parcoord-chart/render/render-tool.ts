@@ -1,11 +1,11 @@
 import {select, Selection} from "d3";
 import {ParcoordSeries} from "../../parcoord-series/parcoord-series";
 import {
-  addRawSVGToSelection,
   CheckBoxLabel,
   DialogData,
   renderFieldset,
   renderInputLabels,
+  renderSVGs,
   WindowSettings,
   windowSettingsKeys
 } from "respvis-core";
@@ -56,5 +56,5 @@ function confirmButtonRender(selection: Selection<HTMLDialogElement, DialogData>
     .data([null])
     .join("span")
     .text('Ok')
-  addRawSVGToSelection(buttonS, checkSVGRaw)
+  renderSVGs(buttonS, [checkSVGRaw])
 }

@@ -37,7 +37,7 @@ type Story = StoryObj<BarChartUserArgs>;
 const tickOrientationHorizontal = {
   scope: 'self',
   dependentOn: 'width',
-  mapping: {0: 90, 3: 0} //{0: 90, 1: -180, 3: 179} // demonstration purposes
+  breakpointValues: {0: 90, 2: 0} //{0: 90, 1: -180, 3: 179} // demonstration purposes
 } as const
 const axisBreakPointsWidth = {
   values: [10, 30, 50],

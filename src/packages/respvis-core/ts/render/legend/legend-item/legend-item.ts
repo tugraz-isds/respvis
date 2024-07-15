@@ -1,4 +1,4 @@
-import {Size} from "../../../utilities";
+import {Size} from "../../../utilities/geometry/shapes";
 
 export interface LegendItem {
   label: string

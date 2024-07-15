@@ -1,2 +1,2 @@
 export * from './breakpoints'
-export * from './breakpoint-scope'
+export * from './component-breakpoints/component-breakpoints-scope'

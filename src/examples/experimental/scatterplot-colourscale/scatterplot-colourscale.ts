@@ -41,7 +41,7 @@ export function createScatterplot(selector: string) {
           title: 'Mileage',
           horizontalLayout: 'bottom',
           configureAxis: (axis => {
-            axis.ticks(2)
+            // axis.ticks(2)
             axis.tickFormat(d3.format('.2s'))
           })
         }

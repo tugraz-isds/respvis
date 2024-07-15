@@ -3,7 +3,8 @@ import {
   AxisType,
   BaseAxis,
   combineKeys,
-  getCurrentRespVal,
+  ErrorMessages,
+  getCurrentResponsiveValue,
   ScaledValuesCategorical,
   ScaledValuesSpatial,
   ScaledValuesSpatialDomain,
@@ -56,6 +57,14 @@ export abstract class CartesianSeries extends Series {
       })
     this.zoom = 'class' in args ? args.zoom : args.zoom ? validateZoom(args.zoom) : undefined
     this.renderer = args.renderer as CartesianRenderer
+
+    if (this.categories && this.categories.values.length !== this.x.values.length) {
+      throw new Error(ErrorMessages.categoricalValuesMismatch)
+    }
+
+    if (this.color && this.color.values.length !== this.x.values.length) {
+      throw new Error(ErrorMessages.sequentialColorValuesMismatch)
+    }
   }
 
   getScaledValues() {
@@ -75,7 +84,7 @@ export abstract class CartesianSeries extends Series {
       const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (h => h)
       return {
         format: axis.d3Axis?.tickFormat() ?? scaleFormat,
-        title: getCurrentRespVal(axis.title, {
+        title: getCurrentResponsiveValue(axis.title, {
           self: axisS,
           chart: axis.renderer.chartS
         })

@@ -2,7 +2,6 @@ import {
   backgroundSVGOnly,
   bboxDiffSVG,
   cssVarFromSelection,
-  pathChevronRender,
   relateDragWayToSelection,
   relateDragWayToSelectionByDiff,
   renderBgSVGOnlyBBox,
@@ -10,6 +9,8 @@ import {
 } from "respvis-core";
 import {drag, Selection} from "d3";
 import {KeyedAxis} from "../../validate-keyed-axis";
+import {calcLimited} from "respvis-core/utilities/math";
+import {pathChevronRender} from "./render-path-chevron";
 
 export function renderAxisLimiter(axisS: Selection<SVGGElement, KeyedAxis>) {
   renderChevronLimiter(axisS)
@@ -115,22 +116,25 @@ function addLimiterDrag(axisS: Selection<SVGGElement, KeyedAxis>) {
   }
 
   const onDrag = (e, limit: 'upper' | 'lower' | 'rect') => {
+
     const onUpperLower = () => {
       const percent = getPercent(e)
       if (percent === undefined) return
       if (limit === 'upper') {
-        axisD.upperRangeLimitPercent = percent >= axisD.lowerRangeLimitPercent ? percent : axisD.lowerRangeLimitPercent
+        axisD.upperRangeLimitPercent = calcLimited(percent, axisD.lowerRangeLimitPercent, 1)
       }
       if (limit === 'lower') {
-        axisD.lowerRangeLimitPercent = percent <= axisD.upperRangeLimitPercent ? percent : axisD.upperRangeLimitPercent
+        axisD.lowerRangeLimitPercent = calcLimited(percent, 0, axisD.upperRangeLimitPercent)
       }
     }
+
     const onRect = () => {
       const percentDiff = getPercentDiff(e)
-      if (percentDiff === undefined || axisD.lowerRangeLimitPercent + percentDiff < 0
-        || axisD.upperRangeLimitPercent + percentDiff > 1 ) return
-      axisD.upperRangeLimitPercent += percentDiff
-      axisD.lowerRangeLimitPercent += percentDiff
+      if (percentDiff === undefined) return;
+      const appliedDiff =
+        calcLimited(percentDiff, -axisD.lowerRangeLimitPercent, 1 - axisD.upperRangeLimitPercent)
+      axisD.upperRangeLimitPercent += appliedDiff
+      axisD.lowerRangeLimitPercent += appliedDiff
     }
     limit === 'rect' ? onRect() : onUpperLower()
     originalSeries.renderer.windowS.dispatch('resize')

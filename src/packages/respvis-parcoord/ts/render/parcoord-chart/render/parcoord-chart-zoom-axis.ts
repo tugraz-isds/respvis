@@ -1,5 +1,5 @@
 import {D3ZoomEvent, drag, Selection, zoomIdentity} from "d3";
-import {getArrayOrder, throttle} from "respvis-core";
+import {RVArray, throttle} from "respvis-core";
 import {onDragAxisParcoord, onDragEndAxisParcoord} from "./on-drag-axis";
 import {KeyedAxis} from "../../validate-keyed-axis";
 
@@ -41,7 +41,7 @@ function addCursorClasses(axisS: Selection<SVGGElement, KeyedAxis>) {
   const flipped = originalSeries.responsiveState.currentlyFlipped
   const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
   const percentageRange = originalSeries.axesPercentageScale.range()
-  const orderArray = getArrayOrder(percentageRange)
+  const orderArray = RVArray.mapToRanks(percentageRange)
   const titleWrapperS = axisS.selectAll('.title-wrapper')
   titleWrapperS.classed('cursor', true)
     .classed('cursor--drag-horizontal', !flipped)

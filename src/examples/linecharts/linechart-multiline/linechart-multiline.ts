@@ -47,7 +47,7 @@ export const renderMultiLineChart = (selector: string) => {
       tickOrientation: {
         dependentOn: 'width',
         scope: 'self',
-        mapping: {0: 90, 3: 0},
+        breakpointValues: {0: 90, 2: 0},
       },
       breakpoints: {
         width: {
@@ -72,7 +72,7 @@ export const renderMultiLineChart = (selector: string) => {
       tickOrientationFlipped: {
         dependentOn: 'width',
         scope: 'self',
-        mapping: {0: 90, 3: 0},
+        breakpointValues: {0: 90, 2: 0},
       },
       gridLineFactor: 2
     },

@@ -1,6 +1,7 @@
-import {renderBgSVGOnlyBBox, renderSVGArrowNarrowUp} from "respvis-core";
+import {createSelectionClasses, renderBgSVGOnlyBBox, renderSVGs} from "respvis-core";
 import {Selection} from "d3";
 import {KeyedAxis} from "../../validate-keyed-axis";
+import ArrowUpNarrowSVG from "../../../../../../assets/svg/tablericons/arrow-up-narrow.svg"
 
 export function renderAxisInverter(axisS: Selection<SVGGElement, KeyedAxis>) {
   const { series } = axisS.datum()
@@ -61,4 +62,21 @@ export function renderAxisInverterHorizontalChart(axisS: Selection<SVGGElement, 
       originalSeries.renderer.windowS.dispatch('resize')
     }, 500)
   })
+}
+
+function renderSVGArrowNarrowUp(selection: Selection, classes: string[]) {
+  const {selector, classString} = createSelectionClasses(classes)
+  let rotationGroup = selection.selectAll<SVGGElement, any>('.svg-wrapper' + selector)
+  const svgGroup = rotationGroup.selectAll('svg')
+  if (rotationGroup.empty() || svgGroup.empty()) {
+    rotationGroup = rotationGroup.data([null])
+      .join('g')
+      .classed('svg-wrapper', true)
+      .classed(classString, true)
+    renderSVGs(rotationGroup, [ArrowUpNarrowSVG])
+    rotationGroup.selectAll('svg')
+      .attr('data-ignore-layout-children', true)
+    return rotationGroup
+  }
+  return rotationGroup
 }

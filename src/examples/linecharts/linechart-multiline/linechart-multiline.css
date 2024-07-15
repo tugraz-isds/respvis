@@ -13,10 +13,9 @@
 
   .legend {
     margin-left: 2rem;
-  }
-
-  .legend-item {
-    margin-top: 1rem;
+    .items {
+      gap: 1rem;
+    }
   }
 
   .point, .axis-x .tick {

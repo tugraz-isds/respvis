@@ -1,7 +1,7 @@
 import {easeCubicOut, select, Selection} from "d3";
 import {BarArgs} from "../bar";
 import {
-  addTransitionClass,
+  addD3TransitionClass,
   cssLengthInPx,
   CSSLengthUnit,
   rectFitStroke,
@@ -14,8 +14,7 @@ export function joinBarSeries(
   seriesSelection: Selection,
   joinSelection: Selection<SVGRectElement, BarArgs>
 ): void {
-  joinSelection
-    .join(
+  joinSelection.join(
       (enter) =>
         enter
           .append('rect')
@@ -30,16 +29,20 @@ export function joinBarSeries(
             select(g[i])
               .transition('minimize')
               .duration(250)
-              .call(addTransitionClass)
+              .call(addD3TransitionClass)
               .call((t) => rectToAttrs(t, rectMinimized(d)))
               .remove()
           )
           .call((s) => seriesSelection.dispatch('exit', {detail: {selection: s}}))
     )
+    .classed('exiting', false)
+    .classed('exit-done', false)
+    .attr('data-style', (d) => d.styleClass)
+    .attr('data-key', (d) => d.key.rawKey)
     .each((d, i, g) =>
       select(g[i])
         .transition('position')
-        .call(addTransitionClass)
+        .call(addD3TransitionClass)
         .duration(250)
         .ease(easeCubicOut)
         .call((t) => {
@@ -48,7 +51,5 @@ export function joinBarSeries(
           return rectToAttrs(t, rectFitStroke(d, strokeSize))
         })
     )
-    .attr('data-style', (d) => d.styleClass)
-    .attr('data-key', (d) => d.key)
     .call((s) => seriesSelection.dispatch('update', {detail: {selection: s}}));
 }

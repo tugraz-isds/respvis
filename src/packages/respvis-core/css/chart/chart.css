@@ -24,6 +24,10 @@
   .padding-container--bottom {
     height: var(--chart-padding-bottom, 0);
   }
+
+  .title.empty, .subtitle.empty {
+    display: none;
+  }
 }
 
 @media (hover: none) {

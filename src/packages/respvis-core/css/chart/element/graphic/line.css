@@ -3,9 +3,14 @@ path.line {
   stroke-width: 2;
   &.animated {
     stroke-width: 0;
-    transition: stroke-width calc(var(--transition-time-line-enter-ms) * 1ms);
+    transition: stroke-width calc(var(--transition-time-line-enter-ms) * 1ms),
+    filter calc(var(--transition-time-line-enter-ms) * 1ms);
     &.entering, &.enter-done {
       stroke-width: 2;
+      &.highlight {
+        stroke-width: 4;
+        filter: brightness(var(--highlight-brightness));
+      }
     }
   }
 
@@ -19,7 +24,7 @@ path.line {
   }
 }
 
-.highlight path.line,
-path.line.highlight {
+.highlight path.line:not(.exiting, .exit-done),
+path.line.highlight:not(.exiting, .exit-done) {
   stroke-width: 4;
 }

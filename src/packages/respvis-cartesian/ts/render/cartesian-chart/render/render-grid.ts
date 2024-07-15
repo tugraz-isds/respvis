@@ -1,6 +1,6 @@
 import {CartesianChartSelection} from "../validate-cartesian-chart";
-import {pathLine} from "respvis-core";
 import {select} from "d3";
+import {lineToPath} from "respvis-core";
 
 export function renderGrid<T extends CartesianChartSelection>(chartS: T) {
   const {series} = chartS.datum()
@@ -41,7 +41,7 @@ export function renderGrid<T extends CartesianChartSelection>(chartS: T) {
     gridAreaS.selectAll('.line.line--grid.line--horizontal')
       .data(linePositions)
       .join('path')
-      .each((d, i, g) => pathLine(select(g[i]), [
+      .each((d, i, g) => lineToPath(select(g[i]), [
         {x: x1, y: d}, {x: x2, y: d}]))
       .classed('line line--grid line--horizontal', true)
   }
@@ -73,7 +73,7 @@ export function renderGrid<T extends CartesianChartSelection>(chartS: T) {
     gridAreaS.selectAll('.line.line--grid.line--vertical')
       .data(linePositions)
       .join('path')
-      .each((d, i, g) => pathLine(select(g[i]), [
+      .each((d, i, g) => lineToPath(select(g[i]), [
         {x: d, y: y1}, {x: d, y: y2}]))
       .classed('line line--grid line--vertical', true)
   }

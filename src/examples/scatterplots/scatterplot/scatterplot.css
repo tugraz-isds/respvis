@@ -39,6 +39,9 @@
         justify-content: center;
         & > .title { display: none; }
 
+        .legend__categories {
+          width: 100%;
+        }
         .items {
           display: grid;
           width: 100%;
