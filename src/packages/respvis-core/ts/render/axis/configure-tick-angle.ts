@@ -4,7 +4,7 @@ import {SVGHTMLElementLegacy} from "../../constants/types";
 import {cssLengthInPx} from "../../utilities/dom/units";
 import {calculateTickAngles} from "./calculate-tick-angle";
 import {normalizeAngle} from "../../utilities/geometry/angle";
-import {elementFromSelection} from "respvis-core";
+import {elementFromSelection} from "../../utilities/d3";
 
 export function configureTickAngles(axisS: AxisSelection, ticksS: Selection<SVGHTMLElementLegacy>) {
   const angle = calculateTickAngles(axisS)

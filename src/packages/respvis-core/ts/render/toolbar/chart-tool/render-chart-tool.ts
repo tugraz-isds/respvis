@@ -5,7 +5,7 @@ import chartSVGRaw from "../../../../../../assets/svg/tablericons/chart-settings
 import {renderSimpleTooltip} from "../tool/render/render-simple-tooltip";
 import {bindOpenerToDialog, DialogData, renderDialog} from "../tool/render/render-dialog";
 import {Series} from "../../series";
-import {renderSVGs} from "respvis-core";
+import {renderSVGs} from "../../element";
 
 export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesCollection: Series[]) {
   if (seriesCollection.filter(series => series.providesTool).length <= 0) return

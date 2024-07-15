@@ -1,8 +1,14 @@
-import {ErrorMessages} from "respvis-core/constants";
-import {ScaledValuesNumeric, ScaledValuesNumericUserArgs, validateScaledValuesSpatial} from "respvis-core/data/scale";
-import {BaseAxis, BaseAxisUserArgs, validateBaseAxis} from "respvis-core/render/axis";
-import {Renderer} from "respvis-core/render/chart";
-import {Series} from "respvis-core/render/series";
+import {
+  BaseAxis,
+  BaseAxisUserArgs,
+  ErrorMessages,
+  Renderer,
+  ScaledValuesNumeric,
+  ScaledValuesNumericUserArgs,
+  Series,
+  validateBaseAxis,
+  validateScaledValuesSpatial
+} from "respvis-core";
 import {
   BreakpointProperty,
   BreakpointPropertyOptional,

@@ -16,7 +16,7 @@ import {InputLabel} from "../tool/input-label/input-label";
 import {RangeLabel} from "../tool/input-label/range-label";
 import type {KeyedAxis} from "../../../../../respvis-parcoord/ts/render";
 import {getCurrentResponsiveValue, orderScaledValuesSpatial, ScaledValuesSpatialNumericOrTemporal} from "../../../data";
-import {renderSVGs} from "respvis-core";
+import {renderSVGs} from "../../element";
 
 export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Toolbar) {
   const seriesCollection = args.getSeries()

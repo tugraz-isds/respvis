@@ -2,7 +2,7 @@ import {Selection} from "d3";
 import {InputLabel, InputLabelDataBase} from "./input-label";
 import {renderSimpleTooltip} from "../render/render-simple-tooltip";
 import InfoSVG from '../../../../../../../assets/svg/tablericons/info-icon.svg'
-import {renderSVGs} from "respvis-core";
+import {renderSVGs} from "../../../element";
 
 export type RadioLabelsData = Omit<RadioLabelData, 'value' | 'label'> & {
   options: Pick<RadioLabelData, 'value' | 'label'>[]

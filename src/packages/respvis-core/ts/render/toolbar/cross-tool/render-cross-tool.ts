@@ -6,7 +6,7 @@ import {renderSimpleTooltip} from "../tool/render/render-simple-tooltip";
 import {clickSAddEnterExitAttributes} from "../tool/animation/animtation";
 import {renderMovableCrossTooltip} from "respvis-tooltip";
 import {Series} from "../../series";
-import {renderSVGs} from "respvis-core";
+import {renderSVGs} from "../../element";
 
 export function renderCrossTool(toolbarS: Selection<HTMLDivElement>, seriesCollection: Series[]) {
   if (seriesCollection.length <= 0) return

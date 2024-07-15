@@ -1,6 +1,6 @@
 import {Selection} from "d3";
 
-import {createSelectionClasses} from "respvis-core";
+import {createSelectionClasses} from "../../../../utilities/d3";
 
 type TooltipSimpleData = {
   text: string

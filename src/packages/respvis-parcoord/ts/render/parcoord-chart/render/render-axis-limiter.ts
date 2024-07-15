@@ -1,6 +1,7 @@
 import {
   backgroundSVGOnly,
   bboxDiffSVG,
+  calcLimited,
   cssVarFromSelection,
   relateDragWayToSelection,
   relateDragWayToSelectionByDiff,
@@ -9,7 +10,6 @@ import {
 } from "respvis-core";
 import {drag, Selection} from "d3";
 import {KeyedAxis} from "../../validate-keyed-axis";
-import {calcLimited} from "respvis-core/utilities/math";
 import {pathChevronRender} from "./render-path-chevron";
 
 export function renderAxisLimiter(axisS: Selection<SVGGElement, KeyedAxis>) {

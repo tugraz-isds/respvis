@@ -1,5 +1,5 @@
 import {Selection} from "d3";
-import {createSelectionClasses} from "respvis-core/utilities";
+import {createSelectionClasses} from "respvis-core";
 
 // Icon Path Sources:
 //   https://tablericons.com/
