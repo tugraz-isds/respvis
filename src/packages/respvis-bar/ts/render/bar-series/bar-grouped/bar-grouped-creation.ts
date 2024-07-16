@@ -6,7 +6,7 @@ type CreateGroupedBarProps = {
   series: BarGroupedSeries
   i: number
 }
-export function createGroupedBar(props: CreateGroupedBarProps) {
+export function createGroupedBarRect(props: CreateGroupedBarProps) {
   const {i, series} = props
 
   const flipped = series.responsiveState.currentlyFlipped

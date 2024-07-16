@@ -1,5 +1,5 @@
 import {CategoriesUserArgs, ErrorMessages, ScaledValuesCategorical} from "respvis-core";
-import {createGroupedBar} from "./bar-grouped-creation";
+import {createGroupedBarRect} from "./bar-grouped-creation";
 import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "../bar-base/bar-base-series";
 
 export type BarGroupedSeriesUserArgs = BarBaseSeriesUserArgs & {
@@ -21,7 +21,7 @@ export class BarGroupedSeries extends BarBaseSeries {
   }
 
   getRect(i: number) {
-    return createGroupedBar({series: this, i})
+    return createGroupedBarRect({series: this, i})
   }
 
   clone() {

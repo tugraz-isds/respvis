@@ -7,7 +7,7 @@ import {
   ScaledValuesNumeric,
   ScaledValuesNumericUserArgs
 } from "respvis-core";
-import {createStackedBar} from "./bar-stacked-creation";
+import {createStackedBarRect} from "./bar-stacked-creation";
 import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "../bar-base/bar-base-series";
 import {Bar} from "../../bar";
 
@@ -47,7 +47,7 @@ export class BarStackedSeries extends BarBaseSeries {
   }
 
   getRect(i: number) {
-    return createStackedBar({ series: this, i })
+    return createStackedBarRect({ series: this, i })
   }
 
   cloneZoomed(): BarStackedSeries {

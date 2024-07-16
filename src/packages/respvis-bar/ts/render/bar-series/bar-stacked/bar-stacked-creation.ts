@@ -5,7 +5,7 @@ type CreateStackedBarProps = {
   series: BarStackedSeries
   i: number
 }
-export function createStackedBar(props: CreateStackedBarProps) {
+export function createStackedBarRect(props: CreateStackedBarProps) {
   const {i, series} = props
   const {responsiveState} = series
   const aggScaledValues = series.aggScaledValues.aggregateCached()
