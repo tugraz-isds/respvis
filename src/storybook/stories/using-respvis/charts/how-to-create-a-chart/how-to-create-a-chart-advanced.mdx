@@ -127,7 +127,6 @@ in figuring out which arguments are required:
 
 <Source code={`
 import { LineChart, LineChartUserArgs, formatWithDecimalZero, select, format, timeFormat, timeYear } from 'respvis';
-import {select, format, timeFormat, timeYear} from "d3";
 
 //  Data Source: Studierendenstatistik
 //  https://online.tugraz.at/tug_online/studierendenstatistik.html
@@ -340,7 +339,7 @@ In addition, one can decide to move information from the title to the smaller su
 ...
 const args: LineChartUserArgs = {
   ...
-  breakPoints: {
+  breakpoints: {
     width: {
       values: [20, 30, 50],
       unit: 'rem'
@@ -375,7 +374,7 @@ const args: LineChartUserArgs = {
   ...
   x: {
     // Breakpoints can also be added to axes
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [10, 30, 50],
         unit: 'rem'
@@ -403,14 +402,14 @@ const args: LineChartUserArgs = {
     },
     // By using breakpoints and tickOrientation one
     // can adjust the orientation depending on the
-    // current layout width. The current mapping
+    // current layout width. The current breakpointValues
     // can be read as: Ticks have 90° orientation
-    // in layout width 0, 0° orientation in layout
-    // width 3 and in between these widths the
-    // tick orientation is interpolated.
+    // if breakpoint 0 is undercut, 0° orientation if
+    // breakpoint 2 is exceeded and in between these breakpoints
+    // the tick orientation is interpolated.
     tickOrientation: {
     dependentOn: 'width',
-      mapping: { 0: 90, 3: 0}
+      breakpointValues: { 0: 90, 2: 0}
     }
   },
   y: {
@@ -451,10 +450,8 @@ const userArgs: LineChartUserArgs = {
   ...
   series: {
     ...
-    markerTooltips: {
-      tooltips: function (_, {xValue, yValue}) {
-          return \`Year: \${xValue}<br/>Students: \${format('.2f')(yValue)}\`
-        },
+    markerTooltipGenerator: function (_, {xValue, yValue}) {
+        return \`Year: \${xValue}<br/>Students: \${format('.2f')(yValue)}\`
     },
     labels: {
       values: students.map(student => student.toString()),

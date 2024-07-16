@@ -92,7 +92,7 @@ For the above markup to function properly it is necessary to
 implement `line-chart.js`:
 
 <Source code={`
-import { LineChart, formatWithDecimalZero, select, format, timeFormat, timeYear } from 'respvis';
+import { LineChart, formatWithDecimalZero, select, format, timeFormat, timeYear } from './package/respvis.js';
 
 //  Data Source: Studierendenstatistik
 //  https://online.tugraz.at/tug_online/studierendenstatistik.html
@@ -101,30 +101,30 @@ import { LineChart, formatWithDecimalZero, select, format, timeFormat, timeYear 
 // ordentlich gemeldet, ohne Mitbeleger, jeweils im WS
 
 const students = [
-  8291, 8785, 9203, 9766, 10245, 11211, 11681, 12105, 12323,
-  12565, 12764, 13167, 13454, 13737, 13373, 13566, 13673, 13712
+    8291, 8785, 9203, 9766, 10245, 11211, 11681, 12105, 12323,
+    12565, 12764, 13167, 13454, 13737, 13373, 13566, 13673, 13712
 ]
 
 const years = [
-  "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012",
-  "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021"
+    "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012",
+    "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021"
 ]
 
 export function createLineChart(selector) {
-  const args = {
-    series: {
-      x: {
-        values: years
-      },
-      y: {
-        values: students
-      }
+    const args = {
+        series: {
+            x: {
+                values: years
+            },
+            y: {
+                values: students
+            }
+        }
     }
-  }
 
-  const chartWindow = select(selector).append('div')
-  const chart = new LineChart(chartWindow, args)
-  chart.buildChart()
+    const chartWindow = select(selector).append('div')
+    const chart = new LineChart(chartWindow, args)
+    chart.buildChart()
 }
 `} language={"typescript"}/>
 
@@ -304,7 +304,7 @@ In addition, one can decide to move information from the title to the smaller su
 ...
 const args = {
   ...
-  breakPoints: {
+  breakpoints: {
     width: {
       values: [20, 30, 50],
       unit: 'rem'
@@ -339,7 +339,7 @@ const args = {
   ...
   x: {
     // Breakpoints can also be added to axes
-    breakPoints: {
+    breakpoints: {
       width: {
         values: [10, 30, 50],
         unit: 'rem'
@@ -367,14 +367,14 @@ const args = {
     },
     // By using breakpoints and tickOrientation one
     // can adjust the orientation depending on the
-    // current layout width. The current mapping
+    // current layout width. The current breakpointValues
     // can be read as: Ticks have 90° orientation
-    // in layout width 0, 0° orientation in layout
-    // width 3 and in between these widths the
-    // tick orientation is interpolated.
+    // if breakpoint 0 is undercut, 0° orientation if
+    // breakpoint 2 is exceeded and in between these breakpoints
+    // the tick orientation is interpolated.
     tickOrientation: {
     dependentOn: 'width',
-      mapping: { 0: 90, 3: 0}
+      breakpointValues: { 0: 90, 2: 0}
     }
   },
   y: {
@@ -415,10 +415,8 @@ const args = {
   ...
   series: {
     ...
-    markerTooltips: {
-      tooltips: function (_, {xValue, yValue}) {
-          return \`Year: \${xValue}<br/>Students: \${format('.2f')(yValue)}\`
-        },
+    markerTooltipGenerator: function (_, {xValue, yValue}) {
+        return \`Year: \${xValue}<br/>Students: \${format('.2f')(yValue)}\`
     },
     labels: {
       values: students.map(student => student.toString()),
