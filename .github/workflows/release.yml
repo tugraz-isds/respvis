@@ -3,6 +3,7 @@ name: Production workflow
 
 # When workflow is triggered
 on:
+  workflow_dispatch:
   release:
     types: [created]
 

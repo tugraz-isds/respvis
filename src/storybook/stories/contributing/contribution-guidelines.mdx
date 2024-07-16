@@ -30,8 +30,15 @@ When doing a release, make sure to follow these steps:
 - Create a new tag. It must be named to: `v<major>.<minor>.<patch>`
   and must match with the versions of the package.jsons.
 - Push the created tag.
-- Publish all packages on the public npm registry.
+- Publish all packages on the public npm registry (make sure working
+  directory is project root).
+  Use `npm publish --dry-run` for testing.
+  Use `npm publish --workspaces` for publishing all sub packages at once.
+  Use `npm publish` for publishing extensive package.
 - Create a release from the new tag on GitHub.
+- Add the self-contained RespVis bundle as package.zip to release files
+  (include respvis.js, respvis.js.map, respvis.min.js, respvis.min.js.map,
+  respvis.css, respvis.d.ts).
 
 
 
