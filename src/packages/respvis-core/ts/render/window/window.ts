@@ -16,7 +16,7 @@ export type Window = Required<Omit<WindowArgs, 'breakpoints' | 'tooltip'>> & {
   tooltip: Tooltip
 }
 
-export function windowValidation(args: WindowArgs): Window {
+export function validateWindow(args: WindowArgs): Window {
   return {...args,
     breakpoints: new ComponentBreakpoints(args.breakpoints),
     windowSettings: new Revertible<WindowSettings>({ ...defaultWindowSettings }),

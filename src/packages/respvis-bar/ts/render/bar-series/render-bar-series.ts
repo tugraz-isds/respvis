@@ -2,7 +2,7 @@ import {select, Selection} from "d3";
 import {BarSeries} from "./bar-series";
 import {BarArgs} from "../bar";
 import {joinBarSeries} from "./join-bar-series";
-import {BarStandardSeries} from "./bar-standard-series";
+import {BarStandardSeries} from "./bar-base/bar-standard-series";
 import {createSelectionClasses} from "respvis-core";
 
 export function renderBarSeries(parentS: Selection<Element>, series: BarSeries, ...classes: string[]) {
@@ -15,7 +15,7 @@ export function renderBarSeries(parentS: Selection<Element>, series: BarSeries, 
       const seriesS = select<Element, BarSeries>(g[i]);
       seriesS
         .selectAll<SVGRectElement, BarArgs>('rect')
-        .data(d.getBarRects(), (d) => d.key.rawKey)
+        .data(d.getBars(), (d) => d.key.rawKey)
         .call((s) => joinBarSeries(seriesS, s));
     })
 }

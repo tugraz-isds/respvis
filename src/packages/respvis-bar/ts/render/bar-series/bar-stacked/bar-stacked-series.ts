@@ -1,28 +1,26 @@
-import {ScaleLinear} from "d3";
 import {
   CategoriesUserArgs,
   ErrorMessages,
   ScaledValuesCategorical,
-  ScaledValuesCumulativeAggregator,
+  ScaledValuesCumulativeSummation,
   ScaledValuesNumeric,
-  ScaledValuesNumericUserArgs
 } from "respvis-core";
 import {createStackedBarRect} from "./bar-stacked-creation";
 import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "../bar-base/bar-base-series";
 import {Bar} from "../../bar";
+import {ScaleNumeric} from "respvis-core/data/scale/scales";
 
 export type BarStackedSeriesUserArgs = BarBaseSeriesUserArgs & {
   type: 'stacked'
-  aggregationScale?: ScaleLinear<number, number, never>
-  y: ScaledValuesNumericUserArgs
+  aggregationScale?: ScaleNumeric
   categories: CategoriesUserArgs
 }
 
 export type BarStackedSeriesArgs = BarBaseSeriesArgs & BarStackedSeriesUserArgs
 export class BarStackedSeries extends BarBaseSeries {
   type: 'stacked'
-  aggregationScale?: ScaleLinear<number, number, never>
-  aggScaledValues: ScaledValuesCumulativeAggregator
+  aggregationScale?: ScaleNumeric
+  aggScaledValues: ScaledValuesCumulativeSummation
   x: ScaledValuesCategorical
   y: ScaledValuesNumeric
   categories: ScaledValuesCategorical
@@ -38,12 +36,12 @@ export class BarStackedSeries extends BarBaseSeries {
     this.y = y
     this.categories = super.getCategories() as ScaledValuesCategorical
     if (!this.categories) throw new Error(ErrorMessages.missingArgumentForSeries)
-    this.aggScaledValues = new ScaledValuesCumulativeAggregator(this.y, this.x, this.categories, this.aggregationScale)
+    this.aggScaledValues = new ScaledValuesCumulativeSummation(this.y, this.x, this.categories, this.aggregationScale)
   }
 
-  override getBarRects(): Bar[] {
-    this.aggScaledValues = new ScaledValuesCumulativeAggregator(this.y, this.x, this.categories, this.aggregationScale)
-    return super.getBarRects();
+  override getBars(): Bar[] {
+    this.aggScaledValues = new ScaledValuesCumulativeSummation(this.y, this.x, this.categories, this.aggregationScale)
+    return super.getBars();
   }
 
   getRect(i: number) {

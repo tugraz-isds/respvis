@@ -40,6 +40,10 @@ export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
       prev[`${args.parentKey}-${c.key}`] = true
       return prev
     }, {})
+
+    if ('tag' in args) {
+      this.inverted = args.inverted
+    }
   }
 
   getOrder(i: number) {

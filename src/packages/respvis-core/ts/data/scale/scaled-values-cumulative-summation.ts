@@ -1,25 +1,26 @@
-import {ScaleLinear, scaleLinear} from "d3";
+import {scaleLinear} from "d3";
 import {ScaledValuesNumeric} from "./scaled-values-spatial/scaled-values-numeric";
 import {ScaledValuesCategorical} from "./scaled-values-spatial/scaled-values-categorical";
 import {RVArray} from "../../utilities";
+import {ScaleNumeric} from "./scales";
 
-export class ScaledValuesCumulativeAggregator {
+export class ScaledValuesCumulativeSummation {
   numericalValues: ScaledValuesNumeric
   categoricalValues: ScaledValuesCategorical
   additionalCategories: ScaledValuesCategorical
-  aggregatedScale?: ScaleLinear<number, number, never>
+  aggregatedScale?: ScaleNumeric
   private aggregationResult?: ScaledValuesNumeric
   constructor(linearValues: ScaledValuesNumeric,
               categoricalValues: ScaledValuesCategorical,
               additionalCategories: ScaledValuesCategorical,
-              aggregatedScale?: ScaleLinear<number, number, never>) {
+              aggregatedScale?: ScaleNumeric) {
     this.numericalValues = linearValues
     this.categoricalValues = categoricalValues
     this.additionalCategories = additionalCategories
     this.aggregatedScale = aggregatedScale
   }
 
-  aggregateCached(): ScaledValuesNumeric {
+  sumCached(): ScaledValuesNumeric {
     if (this.aggregationResult) return this.aggregationResult
     const numberCategories = this.categoricalValues.categories.categoryArray.length
     const groupedValues: number[][] = new Array<null>(numberCategories).fill(null).map(() => [])

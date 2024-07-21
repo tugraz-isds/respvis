@@ -1,17 +1,12 @@
 import {scaleBand} from "d3";
-import {getActiveKeys, ScaledValuesCategorical} from "respvis-core";
+import {getActiveKeys, Rect, ScaledValuesCategorical} from "respvis-core";
 import {BarGroupedSeries} from "./bar-grouped-series";
 
-type CreateGroupedBarProps = {
-  series: BarGroupedSeries
-  i: number
-}
-export function createGroupedBarRect(props: CreateGroupedBarProps) {
-  const {i, series} = props
+export function createGroupedBarRect(series: BarGroupedSeries, i: number): Rect {
 
   const flipped = series.responsiveState.currentlyFlipped
   const categoryGroupValues = flipped ? series.responsiveState.verticalVals() : series.responsiveState.horizontalVals()
-  const wholeBarRect = series.responsiveState.getBarRect(i)
+  const wholeBarRect = series.responsiveState.getBarBaseRect(i)
 
   const innerScaleDomain = getActiveKeys(series.categories.keysActive)
   const innerScale = scaleBand<string>()

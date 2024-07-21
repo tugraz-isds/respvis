@@ -5,7 +5,8 @@ import {
   Key,
   Rect,
   ScaledValuesCategorical,
-  ScaledValuesCategoricalUserArgs
+  ScaledValuesCategoricalUserArgs,
+  ScaledValuesNumericUserArgs
 } from "respvis-core";
 import {Bar} from "../../bar";
 import {BarBaseResponsiveState} from "./bar-base-responsive-state";
@@ -14,6 +15,7 @@ import {SeriesTooltipGenerator} from "respvis-tooltip";
 
 export type BarBaseSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
   x: ScaledValuesCategoricalUserArgs
+  y: ScaledValuesNumericUserArgs
   originalSeries?: BarBaseSeries
   labels?: BarLabelsUserArg
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Bar>
@@ -45,11 +47,10 @@ export abstract class BarBaseSeries extends CartesianSeries {
     this.markerTooltipGenerator = args.markerTooltipGenerator
   }
 
-  getBarRects(): Bar[] {
+  getBars(): Bar[] {
     const data: Bar[] = []
     const {x, y, color} = this
     const optionalColorValues = color?.axis.scaledValues
-
     if (!this.keysActive[this.key]) return data
     for (let i = 0; i < this.y.values.length; ++i) {
       if (this.categories && !this.categories.isValueActive(i)) continue
@@ -57,13 +58,14 @@ export abstract class BarBaseSeries extends CartesianSeries {
       const category = this.categories?.values[i]
       data.push(new Bar({
         ...this.getRect(i),
-        xValue: this.x.values[i],
-        yValue: this.y.values[i],
+        xValue: x.values[i],
+        yValue: y.values[i],
         styleClass: this.categories?.getStyleClass(i) ?? defaultStyleClass,
         category,
         categoryFormatted: category ? this.categories?.categories.categoryMap[category].formatValue : undefined,
         label: this.labels?.at(i),
         key: new Key(this.getCombinedKey(i) + ` i-${i}`),
+        inverted: this.y.inverted
       }));
     }
     return data

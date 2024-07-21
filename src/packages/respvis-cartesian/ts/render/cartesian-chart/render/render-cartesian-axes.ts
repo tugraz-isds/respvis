@@ -4,7 +4,7 @@ import {
   Axis,
   AxisSelection,
   renderAxisLayout,
-  ScaledValuesCumulativeAggregator,
+  ScaledValuesCumulativeSummation,
   ScaledValuesNumeric
 } from "respvis-core";
 
@@ -19,8 +19,8 @@ export function renderCartesianAxes<T extends CartesianChartSelection>(chartS: T
   const paddingWrapperS = chartS.selectAll('.padding-wrapper')
 
   //TODO: clean this stacked bar chart mess up
-  const aggScaledValues = ('aggScaledValues' in series && series.aggScaledValues instanceof ScaledValuesCumulativeAggregator) ?
-    series.aggScaledValues.aggregateCached() : undefined
+  const aggScaledValues = ('aggScaledValues' in series && series.aggScaledValues instanceof ScaledValuesCumulativeSummation) ?
+    series.aggScaledValues.sumCached() : undefined
 
   const horizontalAxisDAgg = (aggScaledValues && horizontalAxisD.scaledValues instanceof ScaledValuesNumeric) ?
     {...horizontalAxisD, scaledValues: aggScaledValues} : horizontalAxisD

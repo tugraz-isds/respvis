@@ -21,7 +21,7 @@ export class BarGroupedSeries extends BarBaseSeries {
   }
 
   getRect(i: number) {
-    return createGroupedBarRect({series: this, i})
+    return createGroupedBarRect(this, i)
   }
 
   clone() {

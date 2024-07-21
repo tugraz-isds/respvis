@@ -62,12 +62,17 @@ export function renderStackedBarChart(selector: string) {
     },
     breakpoints: {
       width: {
-        values: [20, 30, 50],
+        values: [20, 30, 40, 50],
         unit: 'rem'
       }
     },
     legend: {
-      title: 'Device Types'
+      title: {
+        dependentOn: 'width',
+        mapping: {
+          0: '', 3: 'Device Types'
+        }
+      }
     },
     x: {
       title: 'Year',
@@ -91,7 +96,7 @@ export function renderStackedBarChart(selector: string) {
     },
     title: {
       dependentOn: 'width',
-      mapping: {0: 'Device Types', 2: 'Market Share of Device Types'}
+      mapping: {0: 'Device Types', 3: 'Market Share of Device Types'}
     }
     // zoom: { //TODO: make stacked bar chart work with zooming!
     //   in: 20,

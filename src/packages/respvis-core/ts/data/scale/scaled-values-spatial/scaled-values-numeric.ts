@@ -1,11 +1,11 @@
 import {ScaledValuesSpatialBase, ScaledValuesSpatialBaseArgs} from "./scaled-values-spatial-base";
-import {scaleLinear, ScaleLinear, ScaleLogarithmic, ScalePower, ZoomTransform} from "d3";
+import {scaleLinear, ZoomTransform} from "d3";
 import {AxisType} from "../../../constants/types";
+import {ScaleNumeric} from "../scales";
 
 export type ScaledValuesNumericUserArgs = {
   values: number[],
-  scale?: ScaleLinear<number, number, never> | ScaleLogarithmic<number, number> |
-    ScalePower<number, number>
+  scale?: ScaleNumeric
 }
 
 type ScaledValuesNumericArgs = ScaledValuesNumericUserArgs & ScaledValuesSpatialBaseArgs
@@ -13,10 +13,8 @@ type ScaledValuesNumericArgs = ScaledValuesNumericUserArgs & ScaledValuesSpatial
 export class ScaledValuesNumeric extends ScaledValuesSpatialBase<number> {
   tag = 'linear' as const
   values: number[]
-  scale: ScaleLinear<number, number, never> | ScaleLogarithmic<number, number> |
-    ScalePower<number, number>
-  flippedScale: ScaleLinear<number, number, never> | ScaleLogarithmic<number, number> |
-    ScalePower<number, number>
+  scale: ScaleNumeric
+  flippedScale: ScaleNumeric
   filteredRanges: [number, number][]
 
   constructor(args: ScaledValuesNumericArgs | ScaledValuesNumeric) {
@@ -27,6 +25,7 @@ export class ScaledValuesNumeric extends ScaledValuesSpatialBase<number> {
     this.flippedScale = this.scale.copy()
     if ('tag' in args) {
       this.filteredRanges = args.filteredRanges
+      this.inverted = args.inverted
     } else {
       this.filteredRanges = [this.scale.domain() as [number, number]]
     }

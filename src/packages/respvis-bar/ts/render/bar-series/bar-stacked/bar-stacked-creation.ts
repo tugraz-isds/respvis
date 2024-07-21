@@ -8,11 +8,11 @@ type CreateStackedBarProps = {
 export function createStackedBarRect(props: CreateStackedBarProps) {
   const {i, series} = props
   const {responsiveState} = series
-  const aggScaledValues = series.aggScaledValues.aggregateCached()
+  const aggScaledValues = series.aggScaledValues.sumCached()
 
   const scaledValuesOriginalY = series.y
   const flipped = responsiveState.currentlyFlipped
-  const wholeBarRect = responsiveState.getBarRect(i)
+  const wholeBarRect = responsiveState.getBarBaseRect(i)
 
 
   const scaledValuesOriginalYRange = scaledValuesOriginalY.scale.range()

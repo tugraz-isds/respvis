@@ -1,6 +1,6 @@
 import {CartesianResponsiveState, CartesianResponsiveStateArgs} from "respvis-cartesian";
 import {BarBaseSeries} from "./bar-base-series";
-import {ScaledValuesCategorical, ScaledValuesNumeric} from "respvis-core";
+import {Rect, ScaledValuesCategorical, ScaledValuesNumeric} from "respvis-core";
 
 type BarBaseResponsiveStateArgs = CartesianResponsiveStateArgs & {
   series: BarBaseSeries
@@ -21,13 +21,13 @@ export class BarBaseResponsiveState extends CartesianResponsiveState {
     super.update();
   }
 
-  getBarRect(i: number) {
+  getBarBaseRect(i: number): Rect {
     return this.currentlyFlipped ?
       this.getBarRectHorizontal(i, this.horizontalVals() as ScaledValuesNumeric, this.verticalVals() as ScaledValuesCategorical) :
       this.getBarRectVertical(i, this.verticalVals() as ScaledValuesNumeric, this.horizontalVals() as ScaledValuesCategorical)
   }
 
-  getBarRectVertical(i: number, linearVals: ScaledValuesNumeric, categoryVals: ScaledValuesCategorical) {
+  private getBarRectVertical(i: number, linearVals: ScaledValuesNumeric, categoryVals: ScaledValuesCategorical) {
     return {
       x: barRectFormula.barCategoryStart(categoryVals, i),
       y: barRectFormula.barLinearStart(linearVals, i),
@@ -36,7 +36,7 @@ export class BarBaseResponsiveState extends CartesianResponsiveState {
     }
   }
 
-  getBarRectHorizontal(i: number, linearVals: ScaledValuesNumeric, categoryVals: ScaledValuesCategorical) {
+  private getBarRectHorizontal(i: number, linearVals: ScaledValuesNumeric, categoryVals: ScaledValuesCategorical) {
     return {
       x: barRectFormula.barLinearStart(linearVals, i),
       y: barRectFormula.barCategoryStart(categoryVals, i),

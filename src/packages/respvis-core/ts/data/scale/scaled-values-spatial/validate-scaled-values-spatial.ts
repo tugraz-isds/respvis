@@ -6,7 +6,7 @@ import {ScaledValuesNumeric} from "./scaled-values-numeric";
 import {ScaledValuesCategorical} from "./scaled-values-categorical";
 import {RVArray} from "../../../utilities";
 import {ScaledValuesSpatial, ScaledValuesSpatialUserArgs} from "./scaled-values-spatial";
-import {isScaleCategory, isScaleLinear, isScaleTime} from "../scales";
+import {isScaleCategory, isScaleNumeric, isScaleTime} from "../scales";
 
 const {equalizeLengths, hasValueOf, isDateArray, isNumberArray, isStringArray} = RVArray
 
@@ -24,7 +24,7 @@ export function validateScaledValuesSpatial(axisScaleArgs: ScaledValuesSpatialUs
   }
 
   if (isNumberArray(values) || hasValueOf(values)) {
-    if (scale && !isScaleLinear(scale)) {
+    if (scale && !isScaleNumeric(scale)) {
       throw new Error(ErrorMessages.invalidScaledValuesCombination)
     }
     const valuesNum = isNumberArray(values) ?

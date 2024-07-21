@@ -27,6 +27,7 @@ export class ScaledValuesTemporal extends ScaledValuesSpatialBase<Date> {
     this.flippedScale = this.scale.copy()
     if ('tag' in args) {
       this.filteredRanges = args.filteredRanges
+      this.inverted = args.inverted
     } else {
       this.filteredRanges = [this.scale.domain() as [Date, Date]]
     }

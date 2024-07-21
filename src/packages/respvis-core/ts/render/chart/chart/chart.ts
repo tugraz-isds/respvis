@@ -1,12 +1,13 @@
 import {dispatch, Selection} from "d3";
-import {renderWindow, Window, WindowArgs, windowValidation} from "../../window";
+import {renderWindow, validateWindow, Window, WindowArgs} from "../../window";
 import {ChartData, ChartDataUserArgs, validateChart} from "./validate-chart";
 import {Renderer} from "../renderer";
 import {ReRenderContext, resizeEventListener} from "./resize-event-dispatcher";
 import {renderChart} from "./render-chart";
 import {attachActiveCursorLocking, ThrottleScheduled} from "../../../utilities";
-import {layouterCompute} from "../../layouter";
+import {layouterCompute, renderLayouter} from "../../layouter";
 import {Legend} from "../../legend";
+import {renderTooltip} from "respvis-tooltip";
 
 export type ChartWindowed = Window & ChartData
 export type ChartUserArgs = Omit<WindowArgs & ChartDataUserArgs, 'renderer'>
@@ -22,11 +23,11 @@ export class Chart implements Renderer {
   private standardInteractionThrottle?: ThrottleScheduled<any, any>
   private unmounted: boolean = false;
 
-  constructor(windowSelection: Selection<HTMLDivElement>, args: ChartUserArgs) {
-    const initialWindowData = windowValidation({...args, renderer: this})
+  constructor(windowSelection: Selection<HTMLElement>, args: ChartUserArgs) {
+    const initialWindowData = validateWindow({...args, renderer: this})
     const chartData = validateChart({...args, renderer: this})
     windowSelection.datum({...initialWindowData, ...chartData})
-    this._windowS = windowSelection as Selection<HTMLDivElement, ChartWindowed>
+    this._windowS = windowSelection as Selection<HTMLElement, ChartWindowed>
   }
 
   _windowS?: Selection<HTMLElement, ChartWindowed>
@@ -192,10 +193,15 @@ export class Chart implements Renderer {
 
   private renderChart() {
     const data = this.windowS.datum()
-    const {chartS} = renderWindow(this.windowS)
-    renderChart(chartS)
-    chartS.classed(`chart-${data.type}`, true)
-    attachActiveCursorLocking(chartS)
+    renderWindow(this.windowS)
+    renderLayouter(this.windowS)
+    renderChart(this.layouterS, data, `chart-${data.type}`)
+
+    if (data.tooltip.active) {
+      renderTooltip()
+    }
+
+    attachActiveCursorLocking(this.chartS)
   }
 
   protected renderContent() {}

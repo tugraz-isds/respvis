@@ -1,7 +1,8 @@
 import {Selection} from "d3";
 import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
 import {ParcoordChartData, ParcoordChartUserArgs, validateParcoordChart} from "./validate-parcoord-chart";
-import {renderParcoordChart} from "./render/render-parcoord-chart";
+import {renderLineSeriesParcoord} from "./render/render-line-series";
+import {renderAxisSeries} from "./render/render-axis-series";
 
 type WindowSelection = Selection<HTMLDivElement, Window & ParcoordChartData>
 type ChartSelection = Selection<SVGSVGElement, Window & ParcoordChartData>
@@ -26,7 +27,8 @@ export class ParcoordChart extends Chart {
   protected renderContent(): void {
     super.renderContent()
     this.renderSeriesChartComponents()
-    renderParcoordChart(this.chartS!)
+    this.chartS.call(renderLineSeriesParcoord)
+      .call(renderAxisSeries)
   }
 }
 

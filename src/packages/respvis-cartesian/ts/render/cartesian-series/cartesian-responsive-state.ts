@@ -23,9 +23,15 @@ export class CartesianResponsiveState extends ResponsiveState {
   verticalVals() {
     return this.currentlyFlipped ? this._series.x : this._series.y
   }
+
   update() {
     super.update();
-    const {horizontal, vertical} = this.drawAreaRange()
+    let {horizontal, vertical} = this.drawAreaRange()
+
+    const inversionState = this._originalSeries.renderer.updateAxisInversionState()
+    if (inversionState.horizontal) horizontal.reverse()
+    if (inversionState.vertical) vertical.reverse()
+
     const [xOrientation, yOrientation] = this.currentlyFlipped ? ['vertical', 'horizontal'] as const : ['horizontal', 'vertical'] as const
     this._originalSeries.x.updateRange(horizontal, vertical, xOrientation)
     this._originalSeries.y.updateRange(horizontal, vertical, yOrientation)

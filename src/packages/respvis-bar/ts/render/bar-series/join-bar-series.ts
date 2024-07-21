@@ -1,5 +1,5 @@
 import {easeCubicOut, select, Selection} from "d3";
-import {BarArgs} from "../bar";
+import {Bar} from "../bar";
 import {
   addD3TransitionClass,
   cssLengthInPx,
@@ -12,7 +12,7 @@ import {
 
 export function joinBarSeries(
   seriesSelection: Selection,
-  joinSelection: Selection<SVGRectElement, BarArgs>
+  joinSelection: Selection<SVGRectElement, Bar>
 ): void {
   joinSelection.join(
       (enter) =>

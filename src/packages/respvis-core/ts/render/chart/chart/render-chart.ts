@@ -6,16 +6,20 @@ import {AxisOrientation, isCSSBreakpointLengthValue, SVGGroupingElement} from ".
 import {uniqueId} from "../../../utilities/unique";
 import {cssLengthInPx} from "../../../utilities/dom/units";
 import {getCurrentResponsiveValue} from "../../../data";
-import {elementFromSelection} from "../../../utilities";
+import {createSelectionClasses, elementFromSelection} from "../../../utilities";
 
-export type ChartBaseSelection<T extends SVGGroupingElement, D extends ChartData> = Selection<T, D>;
+type ChartBaseSelection<T extends SVGGroupingElement, D extends ChartData> = Selection<T, D>;
 
-export function renderChart<T extends SVGGroupingElement, D extends ChartData>(chartS: Selection<T, D>) {
-  chartS.datum().breakpoints.updateCSSVars(elementFromSelection(chartS))
-
-  chartS.classed('chart', true)
-    .classed('layout-container', true)
+export function renderChart<D extends ChartData>(parentS: Selection, data: D, ...classes: string[]) {
+  const {classString, selector} = createSelectionClasses(classes)
+  const chartS = parentS
+    .selectAll<SVGSVGElement, D>(`svg.chart${selector}.layout-container`)
+    .data([data])
+    .join('svg')
+    .classed(`chart ${classString} layout-container`, true)
     .attr('xmlns', 'http://www.w3.org/2000/svg')
+
+  chartS.datum().breakpoints.updateCSSVars(elementFromSelection(chartS))
 
   const paddingWrapperS = renderPaddingWrapper(chartS)
   const {drawArea, ...restDrawArea} = renderDrawArea(paddingWrapperS)

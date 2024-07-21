@@ -5,6 +5,7 @@ export type BarArgs = Rect & VisualPrimitiveArgs & {
   xValue: any
   yValue: any
   label?: BarLabelData
+  inverted?: boolean
 }
 
 export class Bar implements BarArgs, VisualPrimitive {
@@ -20,6 +21,7 @@ export class Bar implements BarArgs, VisualPrimitive {
   key: Key
   labelData?: BarLabelData
   polarity: Polarity
+  inverted: boolean
 
   constructor(args: BarArgs) {
     this.x = args.x
@@ -33,7 +35,8 @@ export class Bar implements BarArgs, VisualPrimitive {
     this.styleClass = args.styleClass
     this.key = args.key
     this.labelData = args.label
-    this.polarity = this.yValue >= 0 ? 'positive' : 'negative'
+    this.inverted = args.inverted ?? false
+    this.polarity = this.positionOnTop() ? 'positive' : 'negative'
   }
 
   getLabel(orientation: Orientation): BarLabel | [] {
@@ -47,24 +50,25 @@ export class Bar implements BarArgs, VisualPrimitive {
   }
   private getLabelPositionVertical(): Position {
     const { offset, positionStrategy, offsetX, offsetY } = this.labelData!
-    const yPositive = this.yValue >= 0
-    const strategyPositive = (yPositive && positionStrategy === 'dynamic') || positionStrategy === 'positive'
     return {
       x: offsetX + this.x + this.width / 2,
-      y: offsetY + (strategyPositive ? this.y - offset :
-        positionStrategy === 'center' ? this.y + this.height / 2 :
-          this.y + this.height + offset),
+      y: offsetY + this.y + (positionStrategy === 'center' ? this.height / 2 :
+        this.positionOnTop() ? (-1 * offset) : (this.height + offset)),
     }
   }
   private getLabelPositionHorizontal(): Position {
     const { offset, positionStrategy, offsetX, offsetY } = this.labelData!
-    const yPositive = this.yValue >= 0
-    const strategyPositive = (yPositive && positionStrategy === 'dynamic') || positionStrategy === 'positive'
     return {
-      x: offsetX + ( strategyPositive ? this.x + this.width + offset :
-        positionStrategy === 'center' ? this.x + this.width / 2 :
-          this.x - offset),
+      x: offsetX + this.x + (positionStrategy === 'center' ? this.width / 2 :
+        this.positionOnTop() ? (this.width + offset) : (-1 * offset)),
       y: offsetY + this.y + this.height / 2,
     }
+  }
+  private positionOnTop() {
+    const positionStrategy = this.labelData?.positionStrategy ?? 'dynamic'
+    const yPositive = this.yValue >= 0
+    return ((this.inverted !== yPositive) && positionStrategy === 'dynamic') ||
+      (!this.inverted && positionStrategy === 'positive') ||
+      (this.inverted && positionStrategy === 'negative')
   }
 }

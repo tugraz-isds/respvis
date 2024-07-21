@@ -2,9 +2,14 @@ import {select, Selection} from "d3";
 import {rectFromString, rectToString} from "../../data";
 import {layoutNodeBounds, layoutNodeClassAttr, layoutNodeDataAttrs, layoutNodeStyleAttr} from "./layout-elements";
 import {layoutNodeChildren} from "./layout-node-children";
+import {createSelectionClasses} from "../../utilities";
 
-export function layouterRender(selection: Selection<HTMLDivElement>): void {
-  selection.classed('layouter', true);
+export function renderLayouter(parentS: Selection, ...classes: string[]) {
+  const {classString, selector} = createSelectionClasses(classes)
+  return parentS.selectAll<HTMLDivElement, any>(`${selector}.layouter`)
+    .data([null])
+    .join('div')
+    .classed(`${classString} layouter`, true)
 }
 
 export type SVGTwinInformation = {
