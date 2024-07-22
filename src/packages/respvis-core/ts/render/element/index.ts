@@ -1,2 +1,2 @@
 export * from './bg-svg-only'
-export * from "./svg"
+export * from "./svg-series"

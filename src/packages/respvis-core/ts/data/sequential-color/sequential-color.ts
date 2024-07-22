@@ -1,5 +1,5 @@
 import {BaseAxis, BaseAxisUserArgs, validateBaseAxis} from "../../render/axis";
-import {Series} from "../../render/series";
+import {DataSeries} from "../../render/data-series";
 import {Renderer} from "../../render/chart";
 import {validateScaledValuesSpatial} from "../scale";
 import {ScaledValuesSequential} from "../scale/scaled-values-sequential";
@@ -10,7 +10,7 @@ export type SequentialColorUserArgs = ScaledValuesSequential & {
 
 export type SequentialColorArgs = SequentialColorUserArgs & {
   renderer: Renderer
-  series: Series
+  series: DataSeries
 }
 
 export type SequentialColor = Pick<SequentialColorArgs, 'scale' | 'values'> & {

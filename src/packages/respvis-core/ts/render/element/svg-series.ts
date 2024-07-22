@@ -1,6 +1,6 @@
 import {Selection} from "d3";
 
-export function renderSVGs(parentS: Selection, rawSVGs: string[]) {
+export function renderSVGSeries(parentS: Selection, rawSVGs: string[]) {
   const parser = new DOMParser()
   const svgElements = rawSVGs.map(rawSVG => {
     const svgDocument = parser.parseFromString(rawSVG, 'image/svg+xml')
@@ -9,7 +9,10 @@ export function renderSVGs(parentS: Selection, rawSVGs: string[]) {
 
   parentS.selectAll('svg')
     .data(svgElements)
-    .join(enter => enter.append(() => enter.datum()))
+    .join(enter => enter.append(() => enter.datum())
+      ,undefined,
+      exit => exit.remove()
+    )
   return parentS
   // parentS.html(rawSVG) //alternative
 }

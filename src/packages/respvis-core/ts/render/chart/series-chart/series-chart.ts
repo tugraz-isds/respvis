@@ -1,6 +1,6 @@
 import {ChartData, ChartDataArgs, ChartDataUserArgs} from "../chart";
 import {Axis} from "../../axis";
-import {Series} from "../../series";
+import {DataSeries} from "../../data-series";
 import {Legend, LegendUserArgs} from "../../legend";
 
 export type SeriesChartUserArgs = ChartDataUserArgs & {
@@ -13,7 +13,7 @@ export type SeriesChartArgs = ChartDataArgs & {
 
 export type SeriesChartData = ChartData & {
   getAxes: () => Axis[]
-  getSeries: () => Series[]
-  getMainSeries: () => Series
+  getSeries: () => DataSeries[]
+  getMainSeries: () => DataSeries
   legend: Legend
 }

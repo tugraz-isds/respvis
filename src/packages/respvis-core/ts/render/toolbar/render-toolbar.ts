@@ -7,7 +7,7 @@ import ChevronsDown from "../../../../../assets/svg/tablericons/chevrons-down.sv
 import {DialogData} from "./tool/render/render-dialog";
 import {clickSAddEnterExitAttributes} from "./tool/animation/animtation";
 import {renderChartTool} from "./chart-tool/render-chart-tool";
-import {renderSVGs} from "../element/svg";
+import {renderSVGSeries} from "../element/svg-series";
 
 export type Toolbar = Pick<SeriesChartData, 'renderer' | 'getSeries' | 'getAxes'>
 
@@ -47,7 +47,7 @@ export function renderToolbar(windowS: Selection, args: Toolbar) {
     .join('div')
     .classed('toolbar__dialog-container', true)
 
-  renderSVGs(toolbarOpenerS, [ChevronsDown])
+  renderSVGSeries(toolbarOpenerS, [ChevronsDown])
 
   renderFilterTool(toolbarS, args)
   renderDownloadTool(toolbarS, args.renderer)

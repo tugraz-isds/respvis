@@ -1,8 +1,8 @@
-import {elementFromSelection, Series} from "respvis-core";
+import {DataSeries, elementFromSelection} from "respvis-core";
 import {select} from "d3";
 import {tooltipSelector} from "./tooltip";
 
-export function renderMovableCrossTooltip(series: Series) {
+export function renderMovableCrossTooltip(series: DataSeries) {
   const { renderer} = series
   const tooltipS = select(tooltipSelector)
   const tooltip = renderer.windowS.datum().tooltip

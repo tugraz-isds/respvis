@@ -1,7 +1,7 @@
 import {select, Selection} from "d3";
-import {Series} from "./series";
+import {DataSeries} from "./data-series";
 
-export function addSeriesHighlighting(seriesS: Selection<any, Series>) {
+export function addSeriesHighlighting(seriesS: Selection<any, DataSeries>) {
   return seriesS.on('pointerover.seriespointhighlight pointerout.seriespointhighlight', (e: PointerEvent) => {
       const target = (<Element>e.target)
       const key = select(target).attr('data-key')

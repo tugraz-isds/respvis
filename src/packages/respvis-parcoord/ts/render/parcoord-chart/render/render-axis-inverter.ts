@@ -1,4 +1,4 @@
-import {createSelectionClasses, renderBgSVGOnlyBBox, renderSVGs} from "respvis-core";
+import {createSelectionClasses, renderBgSVGOnlyBBox, renderSVGSeries} from "respvis-core";
 import {Selection} from "d3";
 import {KeyedAxis} from "../../validate-keyed-axis";
 import ArrowUpNarrowSVG from "../../../../../../assets/svg/tablericons/arrow-up-narrow.svg"
@@ -73,7 +73,7 @@ function renderSVGArrowNarrowUp(selection: Selection, classes: string[]) {
       .join('g')
       .classed('svg-wrapper', true)
       .classed(classString, true)
-    renderSVGs(rotationGroup, [ArrowUpNarrowSVG])
+    renderSVGSeries(rotationGroup, [ArrowUpNarrowSVG])
     rotationGroup.selectAll('svg')
       .attr('data-ignore-layout-children', true)
     return rotationGroup

@@ -1,7 +1,7 @@
 import {rectFromSize, rectToPath} from "../../utilities/geometry/shapes/rect/rect";
 import {Size} from "../../utilities/geometry/shapes/rect/size";
 import {RenderArgs} from "../chart/renderer";
-import {Series} from "../series";
+import {DataSeries} from "../data-series";
 import {ResponsiveValueOptional, ResponsiveValueUserArgs, validateResponsiveValue} from "../../data";
 
 export type LegendUserArgs = {
@@ -13,7 +13,7 @@ export type LegendUserArgs = {
 }
 
 export type LegendArgs = LegendUserArgs & RenderArgs & {
-  series: Series
+  series: DataSeries
 }
 
 export type Legend = Required<Omit<LegendArgs, 'title'>> & {

@@ -2,6 +2,9 @@ import {
   AxisLayout,
   BaseAxisUserArgs,
   combineKeys,
+  DataSeries,
+  DataSeriesArgs,
+  DataSeriesUserArgs,
   ErrorMessages,
   getCurrentResponsiveValue,
   ResponsiveState,
@@ -10,10 +13,7 @@ import {
   ScaledValuesCategorical,
   ScaledValuesSpatialDomain,
   ScaledValuesSpatialUserArgs,
-  Series,
-  SeriesArgs,
   SeriesKey,
-  SeriesUserArgs,
   Size,
   validateScaledValuesSpatial,
   validateZoom,
@@ -26,7 +26,7 @@ import {KeyedAxis, validateKeyedAxis} from "../validate-keyed-axis";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
 import {Line} from "respvis-line";
 
-export type ParcoordSeriesUserArgs = SeriesUserArgs & {
+export type ParcoordSeriesUserArgs = DataSeriesUserArgs & {
   dimensions: {
     scaledValues: ScaledValuesSpatialUserArgs<ScaledValuesSpatialDomain>
     axis: BaseAxisUserArgs
@@ -35,13 +35,13 @@ export type ParcoordSeriesUserArgs = SeriesUserArgs & {
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Line>
 }
 
-export type ParcoordArgs = SeriesArgs & ParcoordSeriesUserArgs & {
+export type ParcoordArgs = DataSeriesArgs & ParcoordSeriesUserArgs & {
   originalSeries?: ParcoordSeries
   key: SeriesKey
   bounds?: Size,
 }
 
-export class ParcoordSeries extends Series {
+export class ParcoordSeries extends DataSeries {
   originalSeries: ParcoordSeries
   axes: KeyedAxis[]
   axesScale: ScalePoint<string>

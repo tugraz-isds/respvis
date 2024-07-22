@@ -2,7 +2,7 @@ import {Selection} from "d3";
 import {InputLabel, InputLabelDataBase} from "./input-label";
 import {renderSimpleTooltip} from "../render/render-simple-tooltip";
 import InfoSVG from '../../../../../../../assets/svg/tablericons/info-icon.svg'
-import {renderSVGs} from "../../../element";
+import {renderSVGSeries} from "../../../element";
 
 export type RadioLabelsData = Omit<RadioLabelData, 'value' | 'label'> & {
   options: Pick<RadioLabelData, 'value' | 'label'>[]
@@ -40,7 +40,7 @@ export class RadioLabel implements InputLabel {
         .data([null])
         .join('button')
         .classed('info__button', true)
-      renderSVGs(infoButtonS, [InfoSVG])
+      renderSVGSeries(infoButtonS, [InfoSVG])
       renderSimpleTooltip(infoButtonS, {text: info})
     }
     return labelS

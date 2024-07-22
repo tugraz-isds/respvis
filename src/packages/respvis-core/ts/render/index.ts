@@ -3,8 +3,8 @@ export * from './chart';
 export * from './label';
 export * from './layouter';
 export * from './legend';
-export * from './series';
+export * from './data-series';
 export * from './toolbar';
 export * from './window';
-export * from './primitive'
+export * from './marker-primitive'
 export * from './element'

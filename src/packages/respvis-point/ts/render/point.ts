@@ -1,7 +1,7 @@
-import {Circle, Key, Position, VisualPrimitive, VisualPrimitiveArgs} from "respvis-core";
+import {Circle, Key, MarkerPrimitive, MarkerPrimitiveArgs, Position} from "respvis-core";
 import {PointLabel, PointLabelData} from "./point-label";
 
-export type PointArgs = Circle & VisualPrimitiveArgs & {
+export type PointArgs = Circle & MarkerPrimitiveArgs & {
   xValue: any
   yValue: any
   radiusValue?: any
@@ -9,7 +9,7 @@ export type PointArgs = Circle & VisualPrimitiveArgs & {
   label?: PointLabelData
 }
 
-export class Point implements Circle, VisualPrimitive {
+export class Point implements Circle, MarkerPrimitive {
   xValue: any
   yValue: any
   center: Position;

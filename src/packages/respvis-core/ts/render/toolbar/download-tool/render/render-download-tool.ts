@@ -13,7 +13,7 @@ import {renderAttributeRemovalOptions} from "./render-attribute-removal-options"
 import {renderDecimalNumberOptions} from "./render-decimal-number-options";
 import {renderPrettifyOptions} from "./render-prettify-options";
 import {renderMarginOptions} from "./render-margin-options";
-import {renderSVGs} from "../../../element/svg";
+import {renderSVGSeries} from "../../../element/svg-series";
 
 export function renderDownloadTool(toolbarS: Selection<HTMLDivElement>, renderer: Renderer) {
   const contentS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__content')
@@ -21,7 +21,7 @@ export function renderDownloadTool(toolbarS: Selection<HTMLDivElement>, renderer
   const dialogContainerS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__dialog-container')
 
   const dialogOpenerS = renderButton(downloadToolS, 'toolbar__btn')
-  renderSVGs(dialogOpenerS, [downloadSVGRaw])
+  renderSVGSeries(dialogOpenerS, [downloadSVGRaw])
   renderSimpleTooltip(dialogOpenerS, {text: 'Download'})
   const dialogS = renderDialog(dialogContainerS, 'dialog--center', 'dialog--download')
   bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300, type: 'modal'})
@@ -53,7 +53,7 @@ function downloadButtonRender(selection: Selection<HTMLDialogElement, DialogData
     .data([null])
     .join("span")
     .text('Download SVG')
-  renderSVGs(buttonS, [downloadSVGRaw])
+  renderSVGSeries(buttonS, [downloadSVGRaw])
 }
 
 function cancelButtonRender(selection: Selection<HTMLDialogElement, DialogData>) {
@@ -70,5 +70,5 @@ function cancelButtonRender(selection: Selection<HTMLDialogElement, DialogData>)
     .data([null])
     .join("span")
     .text('Cancel')
-  renderSVGs(buttonS, [cancelSVGRaw])
+  renderSVGSeries(buttonS, [cancelSVGRaw])
 }

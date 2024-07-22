@@ -4,7 +4,7 @@ import {bindOpenerToDialog, renderDialog} from "../tool/render/render-dialog";
 import filterSVGRaw from "../../../../../../assets/svg/tablericons/filter.svg";
 import {FieldSetData, renderFieldset} from "../tool/render/render-fieldset";
 import {Toolbar} from "../render-toolbar";
-import {Series} from "../../series";
+import {DataSeries} from "../../data-series";
 import {mergeKeys} from "../../../utilities/key";
 import {Axis} from "../../axis";
 import {ScaledValuesCategorical} from "../../../data/scale/scaled-values-spatial/scaled-values-categorical";
@@ -16,7 +16,7 @@ import {InputLabel} from "../tool/input-label/input-label";
 import {RangeLabel} from "../tool/input-label/range-label";
 import type {KeyedAxis} from "../../../../../respvis-parcoord/ts/render";
 import {getCurrentResponsiveValue, orderScaledValuesSpatial, ScaledValuesSpatialNumericOrTemporal} from "../../../data";
-import {renderSVGs} from "../../element";
+import {renderSVGSeries} from "../../element";
 
 export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Toolbar) {
   const seriesCollection = args.getSeries()
@@ -26,7 +26,7 @@ export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Tool
 
   const filterToolS = renderTool(contentS, 'tool--filter')
   const dialogOpenerS = renderButton(filterToolS, 'toolbar__btn')
-  renderSVGs(dialogOpenerS, [filterSVGRaw])
+  renderSVGSeries(dialogOpenerS, [filterSVGRaw])
   renderSimpleTooltip(dialogOpenerS, {text: 'Filter'})
   const dialogS = renderDialog(dialogContainerS, 'dialog--side', 'dialog--filter')
   bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300})
@@ -42,7 +42,7 @@ export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Tool
   return filterToolS
 }
 
-function renderSeriesControl(menuToolsItemsS: Selection, series: Series) {
+function renderSeriesControl(menuToolsItemsS: Selection, series: DataSeries) {
   const {key, renderer} = series
   const onClick = (e) => {
     if (renderer.exitEnterActive()) {
@@ -145,7 +145,7 @@ function renderAxisLinearControls(menuToolsItemsS: Selection, axis: Axis, values
   doubleRangeSliderS.selectAll('input').classed('double-range-slider__input', true)
 }
 
-function renderCategoryControls(menuToolsItemsS: Selection, series: Series) {
+function renderCategoryControls(menuToolsItemsS: Selection, series: DataSeries) {
   const {categories, renderer} = series
   if (!categories) return
 

@@ -1,11 +1,11 @@
 import {
   BaseAxis,
   BaseAxisUserArgs,
+  DataSeries,
   ErrorMessages,
   Renderer,
   ScaledValuesNumeric,
   ScaledValuesNumericUserArgs,
-  Series,
   validateBaseAxis,
   validateScaledValuesSpatial
 } from "respvis-core";
@@ -26,7 +26,7 @@ export type BubbleRadiusUserArgs = ScaledValuesNumericUserArgs & {
 
 export type BubbleRadiusArgs = BubbleRadiusUserArgs & {
   renderer: Renderer
-  series: Series
+  series: DataSeries
 }
 
 type LinearRangeAxis = Omit<BaseAxis, 'scaledValues'> & {

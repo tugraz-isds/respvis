@@ -1,5 +1,5 @@
 import {select, Selection} from 'd3';
-import {Series} from 'respvis-core';
+import {DataSeries} from 'respvis-core';
 import {tooltipSelector} from './tooltip';
 
 /**
@@ -7,7 +7,7 @@ import {tooltipSelector} from './tooltip';
  */
 export type SeriesTooltipGenerator<E extends Element, D> = (item: E, data: D) => string;
 
-export function renderSeriesTooltip<E extends Element, D>(seriesS: Selection<Element, Series>) {
+export function renderSeriesTooltip<E extends Element, D>(seriesS: Selection<Element, DataSeries>) {
   const tooltip = seriesS.datum().renderer.windowS.datum().tooltip
 
   const seriesTooltipS = select(tooltipSelector)

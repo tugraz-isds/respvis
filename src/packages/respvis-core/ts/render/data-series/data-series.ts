@@ -21,7 +21,7 @@ import {Selection} from "d3";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
 import {LegendSelection} from "../legend";
 
-export type SeriesUserArgs = {
+export type DataSeriesUserArgs = {
   categories?: CategoriesUserArgs
   //TODO: Refactor ColorContinuous
   color?: SequentialColorUserArgs
@@ -29,15 +29,15 @@ export type SeriesUserArgs = {
   flipped?: ResponsiveValueUserArgs<boolean>
 }
 
-export type SeriesArgs = SeriesUserArgs & RenderArgs & {
-  originalSeries?: Series
+export type DataSeriesArgs = DataSeriesUserArgs & RenderArgs & {
+  originalSeries?: DataSeries
   key: SeriesKey
   bounds?: Size
 }
 
-export abstract class Series implements RenderArgs {
+export abstract class DataSeries implements RenderArgs {
   class = true
-  originalSeries: Series
+  originalSeries: DataSeries
   categories?: ScaledValuesCategorical
   color?: SequentialColor
   key: SeriesKey
@@ -47,7 +47,7 @@ export abstract class Series implements RenderArgs {
   responsiveState: ResponsiveState
   abstract markerTooltipGenerator?: SeriesTooltipGenerator<SVGElement, any>
 
-  constructor(args: SeriesArgs | Series) {
+  constructor(args: DataSeriesArgs | DataSeries) {
     const {key} = args
     this.renderer = args.renderer
     this.originalSeries = args.originalSeries ?? this
@@ -101,14 +101,14 @@ export abstract class Series implements RenderArgs {
     verticalName: string
   }
 
-  abstract clone(): Series
+  abstract clone(): DataSeries
 }
 
 
 
 export type ResponsiveStateArgs = {
-  series: Series
-  originalSeries: Series
+  series: DataSeries
+  originalSeries: DataSeries
   flipped?: ResponsiveValueUserArgs<boolean>
   currentlyFlipped?: boolean
   drawAreaWidth?: number
@@ -116,8 +116,8 @@ export type ResponsiveStateArgs = {
 }
 
 export class ResponsiveState {
-  protected _series: Series
-  protected _originalSeries: Series
+  protected _series: DataSeries
+  protected _originalSeries: DataSeries
   protected _flipped: ResponsiveValueOptional<boolean>
   protected _currentlyFlipped: boolean
   protected _drawAreaWidth: number

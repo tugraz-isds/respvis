@@ -4,10 +4,10 @@ import {renderButton} from "../tool/render/render-button";
 import chartSVGRaw from "../../../../../../assets/svg/tablericons/chart-settings.svg";
 import {renderSimpleTooltip} from "../tool/render/render-simple-tooltip";
 import {bindOpenerToDialog, DialogData, renderDialog} from "../tool/render/render-dialog";
-import {Series} from "../../series";
-import {renderSVGs} from "../../element";
+import {DataSeries} from "../../data-series";
+import {renderSVGSeries} from "../../element";
 
-export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesCollection: Series[]) {
+export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesCollection: DataSeries[]) {
   if (seriesCollection.filter(series => series.providesTool).length <= 0) return
 
   const contentS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__content')
@@ -15,7 +15,7 @@ export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesColle
   const dialogContainerS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__dialog-container')
 
   const dialogOpenerS = renderButton(chartToolS, 'toolbar__btn')
-  renderSVGs(dialogOpenerS, [chartSVGRaw])
+  renderSVGSeries(dialogOpenerS, [chartSVGRaw])
   renderSimpleTooltip(dialogOpenerS, {text: 'Chart Settings'})
   const dialogS = renderDialog(dialogContainerS, 'dialog--center', 'dialog--chart')
   bindOpenerToDialog({dialogOpenerS, dialogS, transitionMS: 300, type: 'modal'})

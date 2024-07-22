@@ -5,11 +5,11 @@ import {Window} from "../../window";
 import {renderLegend} from "../../legend";
 import {addLegendHoverHighlighting} from "../../legend/legend-highlighting";
 import {renderToolbar} from "../../toolbar/render-toolbar";
-import {Series} from "../../series";
-import {addSeriesHighlighting} from "../../series/series-highlighting";
+import {DataSeries} from "../../data-series";
+import {addSeriesHighlighting} from "../../data-series/data-series-highlighting";
 import {renderSeriesTooltip} from "respvis-tooltip";
 import {renderLabelSeries} from "../../label";
-import {VisualPrimitive} from "../../primitive/visual-primitive";
+import {MarkerPrimitive} from "../../marker-primitive/marker-primitive";
 
 export abstract class SeriesChartMixin extends Chart {
   abstract get windowS(): Selection<HTMLElement, Window & SeriesChartData>
@@ -49,8 +49,8 @@ export abstract class SeriesChartMixin extends Chart {
     renderToolbar(this.windowS!, chartSelection.datum())
   }
 
-  addSeriesLabels(seriesS: Selection<SVGGElement, Series>) {
-    const seriesElementsS = seriesS.selectAll<any, VisualPrimitive>('.element:not(.exiting):not(.exit-done)')
+  addSeriesLabels(seriesS: Selection<SVGGElement, DataSeries>) {
+    const seriesElementsS = seriesS.selectAll<any, MarkerPrimitive>('.element:not(.exiting):not(.exit-done)')
     renderLabelSeries(this.drawAreaS, {
       elements: seriesElementsS.data(),
       classes: ['series-label'],
@@ -58,7 +58,7 @@ export abstract class SeriesChartMixin extends Chart {
     })
   }
 
-  addAllSeriesFeatures(seriesS: Selection<SVGGElement, Series>) {
+  addAllSeriesFeatures(seriesS: Selection<SVGGElement, DataSeries>) {
     seriesS.call(addSeriesHighlighting)
       .call(renderSeriesTooltip)
       .call((s) => this.addSeriesLabels(s))

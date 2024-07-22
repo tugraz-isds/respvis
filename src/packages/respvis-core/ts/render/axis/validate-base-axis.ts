@@ -1,6 +1,6 @@
 import {Axis as D3Axis, AxisDomain} from 'd3';
 import {RenderArgs} from "../chart";
-import {Series} from "../series";
+import {DataSeries} from "../data-series";
 import {ScaledValuesSpatial} from "../../data/scale";
 import {LightWeightAxis, LightWeightAxisUserArgs, validateLightWeightAxis} from "./validate-lightweight-axis";
 import type {KeyedAxis} from "../../../../respvis-parcoord/ts/render/validate-keyed-axis";
@@ -10,12 +10,12 @@ export type BaseAxisUserArgs = LightWeightAxisUserArgs
 
 export type BaseAxisArgs = BaseAxisUserArgs & RenderArgs & {
   scaledValues: ScaledValuesSpatial
-  series: Series
+  series: DataSeries
 }
 
 export type BaseAxis = LightWeightAxis & {
   originalAxis: BaseAxis,
-  series: Series
+  series: DataSeries
   d3Axis?: D3Axis<any> //axis available after first render
 }
 

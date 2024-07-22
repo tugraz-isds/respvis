@@ -3,15 +3,15 @@ import {
   AxisType,
   BaseAxis,
   combineKeys,
+  DataSeries,
+  DataSeriesArgs,
+  DataSeriesUserArgs,
   ErrorMessages,
   getCurrentResponsiveValue,
   ScaledValuesCategorical,
   ScaledValuesSpatial,
   ScaledValuesSpatialDomain,
   ScaledValuesSpatialUserArgs,
-  Series,
-  SeriesArgs,
-  SeriesUserArgs,
   SVGHTMLElementLegacy,
   validateScaledValuesSpatial,
   validateZoom,
@@ -23,17 +23,17 @@ import {CartesianRenderer} from "../cartesian-chart/cartesian-renderer";
 import {CartesianAxis} from "../validate-cartesian-axis";
 import {Selection} from "d3";
 
-export type CartesianSeriesUserArgs = SeriesUserArgs & {
+export type CartesianSeriesUserArgs = DataSeriesUserArgs & {
   x: ScaledValuesSpatialUserArgs<ScaledValuesSpatialDomain>
   y: ScaledValuesSpatialUserArgs<ScaledValuesSpatialDomain>
   zoom?: ZoomArgs
 }
 
-export type CartesianSeriesArgs = SeriesArgs & CartesianSeriesUserArgs & {
+export type CartesianSeriesArgs = DataSeriesArgs & CartesianSeriesUserArgs & {
   originalSeries?: CartesianSeries
 }
 
-export abstract class CartesianSeries extends Series {
+export abstract class CartesianSeries extends DataSeries {
   originalSeries: CartesianSeries
   x: ScaledValuesSpatial
   y: ScaledValuesSpatial

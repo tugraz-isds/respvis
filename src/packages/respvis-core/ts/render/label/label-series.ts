@@ -8,16 +8,16 @@ import {
 } from "../../utilities";
 import {Orientation} from "../../constants";
 import {Label} from "./label";
-import {VisualPrimitive} from "../primitive";
+import {MarkerPrimitive} from "../marker-primitive";
 import {positionToTransformAttr} from "../../utilities/geometry/position";
 
-type LabelSeriesProps<D extends VisualPrimitive> = {
+type LabelSeriesProps<D extends MarkerPrimitive> = {
   elements: D[]
   classes: string[]
   orientation: Orientation
 };
 
-export function renderLabelSeries<D extends VisualPrimitive>(parentS: Selection, props: LabelSeriesProps<D>) {
+export function renderLabelSeries<D extends MarkerPrimitive>(parentS: Selection, props: LabelSeriesProps<D>) {
   const {elements, classes, orientation} = props
   const {selector, classString} = createSelectionClasses(classes)
   const labels = elements.flatMap(element => element.getLabel(orientation))

@@ -7,7 +7,6 @@ import {renderChart} from "./render-chart";
 import {attachActiveCursorLocking, ThrottleScheduled} from "../../../utilities";
 import {layouterCompute, renderLayouter} from "../../layouter";
 import {Legend} from "../../legend";
-import {renderTooltip} from "respvis-tooltip";
 
 export type ChartWindowed = Window & ChartData
 export type ChartUserArgs = Omit<WindowArgs & ChartDataUserArgs, 'renderer'>
@@ -196,10 +195,6 @@ export class Chart implements Renderer {
     renderWindow(this.windowS)
     renderLayouter(this.windowS)
     renderChart(this.layouterS, data, `chart-${data.type}`)
-
-    if (data.tooltip.active) {
-      renderTooltip()
-    }
 
     attachActiveCursorLocking(this.chartS)
   }

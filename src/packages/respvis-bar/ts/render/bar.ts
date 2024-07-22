@@ -1,14 +1,14 @@
-import {Key, Orientation, Polarity, Position, Rect, VisualPrimitive, VisualPrimitiveArgs} from "respvis-core";
+import {Key, MarkerPrimitive, MarkerPrimitiveArgs, Orientation, Polarity, Position, Rect} from "respvis-core";
 import {BarLabel, BarLabelData} from "./bar-label";
 
-export type BarArgs = Rect & VisualPrimitiveArgs & {
+export type BarArgs = Rect & MarkerPrimitiveArgs & {
   xValue: any
   yValue: any
   label?: BarLabelData
   inverted?: boolean
 }
 
-export class Bar implements BarArgs, VisualPrimitive {
+export class Bar implements BarArgs, MarkerPrimitive {
   x: number
   y: number
   width: number
