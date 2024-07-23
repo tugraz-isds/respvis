@@ -1,6 +1,6 @@
 import {dispatch, Selection} from "d3";
-import {renderWindow, validateWindow, Window, WindowArgs} from "../../window";
-import {ChartData, ChartDataUserArgs, validateChart} from "./validate-chart";
+import {renderWindow, Window} from "../../window";
+import {ChartData} from "./validate-chart";
 import {Renderer} from "../renderer";
 import {ReRenderContext, resizeEventListener} from "./resize-event-dispatcher";
 import {renderChart} from "./render-chart";
@@ -9,9 +9,8 @@ import {layouterCompute, renderLayouter} from "../../layouter";
 import {Legend} from "../../legend";
 
 export type ChartWindowed = Window & ChartData
-export type ChartUserArgs = Omit<WindowArgs & ChartDataUserArgs, 'renderer'>
 
-export class Chart implements Renderer {
+export abstract class Chart implements Renderer {
   private addedListeners = false
   protected initialRenderHappened = false
   public readonly filterDispatch = dispatch<{ dataKey: string }>('filter')
@@ -22,14 +21,7 @@ export class Chart implements Renderer {
   private standardInteractionThrottle?: ThrottleScheduled<any, any>
   private unmounted: boolean = false;
 
-  constructor(windowSelection: Selection<HTMLElement>, args: ChartUserArgs) {
-    const initialWindowData = validateWindow({...args, renderer: this})
-    const chartData = validateChart({...args, renderer: this})
-    windowSelection.datum({...initialWindowData, ...chartData})
-    this._windowS = windowSelection as Selection<HTMLElement, ChartWindowed>
-  }
-
-  _windowS?: Selection<HTMLElement, ChartWindowed>
+  abstract _windowS: Selection<HTMLElement, ChartWindowed>
   get windowS(): Selection<HTMLElement, ChartWindowed> {
     return (this._windowS && !this._windowS.empty()) ? this._windowS :
       this.windowS.selectAll<HTMLElement, ChartWindowed>('.window-rv')

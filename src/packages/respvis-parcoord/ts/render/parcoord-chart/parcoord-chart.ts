@@ -1,18 +1,18 @@
 import {Selection} from "d3";
-import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
+import {addSeriesHighlighting, applyMixins, Chart, DataSeriesChartMixin, validateWindow, Window} from "respvis-core";
 import {ParcoordChartData, ParcoordChartUserArgs, validateParcoordChart} from "./validate-parcoord-chart";
-import {renderLineSeriesParcoord} from "./render/render-line-series";
-import {renderAxisSeries} from "./render/render-axis-series";
+import {ParcoordSeries} from "../parcoord-series";
+import {renderParcoordSeries} from "../parcoord-series/render/render-parcoord-series";
 
 type WindowSelection = Selection<HTMLDivElement, Window & ParcoordChartData>
 type ChartSelection = Selection<SVGSVGElement, Window & ParcoordChartData>
 
-export interface ParcoordChart extends SeriesChartMixin {}
+export interface ParcoordChart extends DataSeriesChartMixin {}
 export class ParcoordChart extends Chart {
   constructor(windowSelection: Selection<HTMLDivElement>, data: ParcoordChartUserArgs) {
-    super(windowSelection, {...data, type: 'parcoord'})
+    super()
     this._windowS = windowSelection as WindowSelection
-    const initialWindowData = this.windowS.datum()
+    const initialWindowData = validateWindow({...data, type: 'parcoord', renderer: this})
     const chartData = validateParcoordChart({...data, renderer: this})
     this.windowS.datum({...initialWindowData, ...chartData})
   }
@@ -24,13 +24,16 @@ export class ParcoordChart extends Chart {
       this.layouterS.selectAll('svg.chart')) as ChartSelection
   }
 
-  protected renderContent(): void {
+  protected renderContent() {
     super.renderContent()
     this.renderSeriesChartComponents()
-    this.chartS.call(renderLineSeriesParcoord)
-      .call(renderAxisSeries)
+
+    const series = this.chartS.datum().series.cloneFiltered().cloneZoomed().cloneInverted() as ParcoordSeries
+    const {lineSeriesS} = renderParcoordSeries(this.drawAreaS, [series])
+
+    lineSeriesS.call(addSeriesHighlighting)
   }
 }
 
-applyMixins(ParcoordChart, [SeriesChartMixin])
+applyMixins(ParcoordChart, [DataSeriesChartMixin])
 

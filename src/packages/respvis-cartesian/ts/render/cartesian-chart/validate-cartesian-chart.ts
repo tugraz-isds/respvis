@@ -1,20 +1,26 @@
 import {Selection} from 'd3';
-import {SeriesChartArgs, SeriesChartData, SeriesChartUserArgs, validateChart, validateLegend} from "respvis-core";
+import {
+  DataSeriesChartArgs,
+  DataSeriesChartData,
+  DataSeriesChartUserArgs,
+  validateChart,
+  validateLegend
+} from "respvis-core";
 import {CartesianSeries, CartesianSeriesUserArgs} from "../cartesian-series";
 import {CartesianAxis, CartesianAxisUserArgs, validateCartesianAxis} from "../validate-cartesian-axis";
 
-export type CartesianChartUserArgs = SeriesChartUserArgs & {
+export type CartesianChartUserArgs = DataSeriesChartUserArgs & {
   series: CartesianSeriesUserArgs
   // additionalSeries:
   x?: CartesianAxisUserArgs
   y?: CartesianAxisUserArgs
 }
 
-export type CartesianChartArgs = SeriesChartArgs & Omit<CartesianChartUserArgs, 'series'> & {
+export type CartesianChartArgs = DataSeriesChartArgs & Omit<CartesianChartUserArgs, 'series'> & {
   series: CartesianSeries
 }
 
-export type CartesianChartData = SeriesChartData & {
+export type CartesianChartData = DataSeriesChartData & {
   series: CartesianSeries
   x: CartesianAxis
   y: CartesianAxis

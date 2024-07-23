@@ -1,30 +1,18 @@
 import {Selection} from "d3";
-import {ParcoordChartData} from "../validate-parcoord-chart";
-import {Axis, combineKeys, defaultStyleClass, Position} from "respvis-core";
+import {combineKeys, defaultStyleClass, Position} from "respvis-core";
 import {joinLineSeries, Line} from "respvis-line";
-import {ParcoordSeries} from "../../parcoord-series";
+import {ParcoordSeries} from "../index";
 import {KeyedAxis} from "../../validate-keyed-axis";
 
-export function renderLineSeriesParcoord(chartS: Selection<Element, ParcoordChartData>) {
-  const {series} = chartS.datum()
-  const lineSeriesS = chartS.selectAll('.draw-area')
-    .selectAll<SVGGElement, Axis>(`.series-parcoord-lines`)
-    .data([series])
-    .join('g')
-    .classed(`series-parcoord-lines`, true)
-
-  const filteredSeries = series.cloneFiltered().cloneZoomed().cloneInverted()
-  const activeAxes = filteredSeries.getAxesDragDropOrdered()
-  const lines = activeAxes.length > 0 ? createLines(activeAxes) : []
-
-
-  lineSeriesS.selectAll<SVGPathElement, Line>('path')
-    .data(lines, (d) => d.key)
-    .call(s => joinLineSeries(lineSeriesS, s))
+export function renderParcoordLineSeries(seriesS: Selection<SVGGElement, ParcoordSeries>) {
+  seriesS.selectAll<SVGPathElement, Line>('path')
+    .data(d => createLines(d.getAxesDragDropOrdered()), (d) => d.key)
+    .call(s => joinLineSeries(seriesS, s))
 }
 
 function createLines(activeAxes: KeyedAxis[]) {
   const lines: Line[] = []
+  if (activeAxes.length === 0) return lines
   const series = activeAxes[0].series
   const maxIndex = activeAxes[0].scaledValues.values.length
   if (!series.keysActive[series.key]) return lines

@@ -1,19 +1,19 @@
 import {Selection} from "d3";
 import {BarChartData, BarChartUserArgs, validateBarChart} from "./validate-bar-chart";
 import {CartesianChartMixin} from "respvis-cartesian";
-import {applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
-import {Bar, BarSeries, renderBarSeries} from "../bar-series";
+import {applyMixins, Chart, DataSeriesChartMixin, validateWindow, Window} from "respvis-core";
+import {BarSeries, renderBarSeries} from "../bar-series";
 
 type WindowSelection = Selection<HTMLDivElement, Window & BarChartData>
 type ChartSelection = Selection<SVGSVGElement, Window & BarChartData>
 
-export interface BarChart extends CartesianChartMixin, SeriesChartMixin {}
+export interface BarChart extends CartesianChartMixin, DataSeriesChartMixin {}
 export class BarChart extends Chart {
   constructor(windowSelection: Selection<HTMLDivElement>, data: BarChartUserArgs) {
-    super(windowSelection, {...data, type: 'bar'})
-    const chartData = validateBarChart({...data, renderer: this})
+    super()
     this._windowS = windowSelection as WindowSelection
-    const initialWindowData = this.windowS.datum()
+    const initialWindowData = validateWindow({...data, type: 'bar', renderer: this})
+    const chartData = validateBarChart({...data, renderer: this})
     this.windowS.datum({...initialWindowData, ...chartData})
   }
   _windowS: WindowSelection
@@ -29,17 +29,15 @@ export class BarChart extends Chart {
     this.renderSeriesChartComponents()
 
     const series = this.chartS.datum().series.cloneFiltered().cloneZoomed() as BarSeries
-    const seriesS = renderBarSeries(this.drawAreaS, series)
-    const barS = seriesS.selectAll<SVGRectElement, Bar>('.bar:not(.exiting):not(.exit-done)')
-    const bars = barS.data()
+    const {seriesS, barS} = renderBarSeries(this.drawAreaS, [series])
 
     this.addAllSeriesFeatures(seriesS)
     this.drawAreaS.selectAll('.series-label')
-      .attr( 'layout-strategy', bars[0]?.labelData?.positionStrategy ?? null)
-      .attr( 'data-inverted', bars[0]?.inverted ? 'true' : null)
+      .attr( 'layout-strategy', barS.data()[0]?.labelData?.positionStrategy ?? null)
+      .attr( 'data-inverted', barS.data()[0]?.inverted ? 'true' : null)
 
     this.renderCartesianComponents()
   }
 }
 
-applyMixins(BarChart, [CartesianChartMixin, SeriesChartMixin])
+applyMixins(BarChart, [CartesianChartMixin, DataSeriesChartMixin])

@@ -1,4 +1,12 @@
-import {Axis, Chart, rectFromString, renderAxisLayout, renderToolbar, Window} from "../../../../../packages";
+import {
+  Axis,
+  Chart,
+  rectFromString,
+  renderAxisLayout,
+  renderToolbar,
+  validateWindow,
+  Window
+} from "../../../../../packages";
 import {Selection} from "d3";
 import {AxisChartUserArgs, AxisChartValid, validateAxisChart} from "./validate-axis-chart";
 
@@ -8,10 +16,10 @@ type ChartSelection = Selection<SVGSVGElement, Window & AxisChartValid>
 export interface AxisChart {}
 export class AxisChart extends Chart {
   constructor(s: Selection<HTMLDivElement>, args: AxisChartUserArgs ) {
-    super(s, {...args, type: 'cartesian'})
-    const chartData = validateAxisChart({...args, renderer: this})
+    super()
     this._windowS = s as WindowSelection
-    const initialWindowData = this.windowS.datum()
+    const initialWindowData = validateWindow({...args, type: 'cartesian', renderer: this})
+    const chartData = validateAxisChart({...args, renderer: this})
     this.windowS.datum({...initialWindowData, ...chartData})
   }
   _windowS: WindowSelection

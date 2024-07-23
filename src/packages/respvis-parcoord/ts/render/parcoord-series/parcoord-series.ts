@@ -21,7 +21,7 @@ import {
   ZoomArgs
 } from "respvis-core";
 import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal, scalePoint, ScalePoint, Selection} from "d3";
-import {renderTool} from "../parcoord-chart/render/render-tool";
+import {renderTool} from "./render/render-tool";
 import {KeyedAxis, validateKeyedAxis} from "../validate-keyed-axis";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
 import {Line} from "respvis-line";

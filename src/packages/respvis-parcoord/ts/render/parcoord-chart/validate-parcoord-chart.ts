@@ -1,13 +1,13 @@
-import {RenderArgs, SeriesChartData, SeriesChartUserArgs, validateChart, validateLegend} from "respvis-core";
+import {DataSeriesChartData, DataSeriesChartUserArgs, RenderArgs, validateChart, validateLegend} from "respvis-core";
 import {ParcoordSeries, ParcoordSeriesUserArgs} from "../parcoord-series";
 
-export type ParcoordChartUserArgs = Omit<SeriesChartUserArgs, 'series'> & {
+export type ParcoordChartUserArgs = Omit<DataSeriesChartUserArgs, 'series'> & {
   series: ParcoordSeriesUserArgs
 }
 
 export type ParcoordChartArgs = ParcoordChartUserArgs & RenderArgs
 
-export type ParcoordChartData = SeriesChartData & {
+export type ParcoordChartData = DataSeriesChartData & {
   series: ParcoordSeries
 }
 

@@ -1,5 +1,5 @@
 import {select, Selection} from "d3";
-import {ParcoordSeries} from "../../parcoord-series/parcoord-series";
+import {ParcoordSeries} from "../parcoord-series";
 import {
   CheckBoxLabel,
   DialogData,

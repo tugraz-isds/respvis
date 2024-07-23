@@ -1,5 +1,5 @@
 import {Selection} from "d3";
-import {SeriesChartData} from "../chart/series-chart/series-chart";
+import {DataSeriesChartData} from "../chart/series-chart/series-chart";
 import {renderDownloadTool} from "./download-tool";
 import {renderFilterTool} from "./filter-tool/render-filter-tool";
 import {renderCrossTool} from "./cross-tool/render-cross-tool";
@@ -9,7 +9,7 @@ import {clickSAddEnterExitAttributes} from "./tool/animation/animtation";
 import {renderChartTool} from "./chart-tool/render-chart-tool";
 import {renderSVGSeries} from "../element/svg-series";
 
-export type Toolbar = Pick<SeriesChartData, 'renderer' | 'getSeries' | 'getAxes'>
+export type Toolbar = Pick<DataSeriesChartData, 'renderer' | 'getSeries' | 'getAxes'>
 
 export function renderToolbar(windowS: Selection, args: Toolbar) {
   const toolbarS = windowS

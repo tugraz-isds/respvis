@@ -3,15 +3,15 @@ import {Axis} from "../../axis";
 import {DataSeries} from "../../data-series";
 import {Legend, LegendUserArgs} from "../../legend";
 
-export type SeriesChartUserArgs = ChartDataUserArgs & {
+export type DataSeriesChartUserArgs = ChartDataUserArgs & {
   legend?: LegendUserArgs
 }
 
-export type SeriesChartArgs = ChartDataArgs & {
+export type DataSeriesChartArgs = ChartDataArgs & {
   legend?: LegendUserArgs
 }
 
-export type SeriesChartData = ChartData & {
+export type DataSeriesChartData = ChartData & {
   getAxes: () => Axis[]
   getSeries: () => DataSeries[]
   getMainSeries: () => DataSeries

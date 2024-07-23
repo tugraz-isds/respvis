@@ -1,20 +1,19 @@
 import {Selection} from 'd3';
 import {CartesianChartMixin} from "respvis-cartesian";
 import {LineChartData, LineChartUserArgs, validateLineChart} from "./validate-line-chart";
-import {addSeriesHighlighting, applyMixins, Chart, SeriesChartMixin, Window} from "respvis-core";
+import {addSeriesHighlighting, applyMixins, Chart, DataSeriesChartMixin, validateWindow, Window} from "respvis-core";
 import {LineSeries, renderLineSeries} from "../line-series";
-import {Point} from "respvis-point";
 
 export type WindowSelection = Selection<HTMLDivElement, Window & LineChartData>;
 export type ChartSelection = Selection<SVGSVGElement, Window & LineChartData>;
 
-export interface LineChart extends SeriesChartMixin, CartesianChartMixin {}
+export interface LineChart extends DataSeriesChartMixin, CartesianChartMixin {}
 export class LineChart extends Chart {
   constructor(windowSelection: Selection<HTMLDivElement>, data: LineChartUserArgs) {
-    super(windowSelection, {...data, type: 'line'})
-    const chartData = validateLineChart({...data, renderer: this})
+    super()
     this._windowS = windowSelection as WindowSelection
-    const initialWindowData = this.windowS.datum()
+    const initialWindowData = validateWindow({...data, type: 'line', renderer: this})
+    const chartData = validateLineChart({...data, renderer: this})
     this.windowS.datum({...initialWindowData, ...chartData})
   }
 
@@ -30,22 +29,17 @@ export class LineChart extends Chart {
     this.renderSeriesChartComponents()
 
     const series = this.chartS.datum().series.cloneFiltered().cloneZoomed() as LineSeries
-    const seriesS = renderLineSeries(this.drawAreaS, series)
+    const {lineSeriesS, pointSeriesS,
+      pointS} = renderLineSeries(this.drawAreaS, [series])
 
-    const seriesLineS = seriesS.filter('.series-line-line')
-    const seriesPointS = seriesS.filter('.series-line-point')
-
-    const pointS = seriesS.selectAll<SVGRectElement, Point>('.point:not(.exiting):not(.exit-done)')
-    const points = pointS.data()
-
-    this.addAllSeriesFeatures(seriesPointS)
-    seriesLineS.call(addSeriesHighlighting)
+    this.addAllSeriesFeatures(pointSeriesS)
+    lineSeriesS.call(addSeriesHighlighting)
     this.drawAreaS.selectAll('.series-label')
-      .attr( 'layout-strategy-horizontal', points[0]?.labelData?.positionStrategyHorizontal ?? null)
-      .attr( 'layout-strategy-vertical', points[0]?.labelData?.positionStrategyVertical ?? null)
+      .attr( 'layout-strategy-horizontal', pointS.data()[0]?.labelData?.positionStrategyHorizontal ?? null)
+      .attr( 'layout-strategy-vertical', pointS.data()[0]?.labelData?.positionStrategyVertical ?? null)
 
     this.renderCartesianComponents()
   }
 }
 
-applyMixins(LineChart, [SeriesChartMixin, CartesianChartMixin])
+applyMixins(LineChart, [DataSeriesChartMixin, CartesianChartMixin])

@@ -1,6 +1,6 @@
 import {Chart} from "../chart";
 import {Selection} from "d3";
-import {SeriesChartData} from "./series-chart";
+import {DataSeriesChartData} from "./series-chart";
 import {Window} from "../../window";
 import {renderLegend} from "../../legend";
 import {addLegendHoverHighlighting} from "../../legend/legend-highlighting";
@@ -11,9 +11,9 @@ import {renderSeriesTooltip} from "respvis-tooltip";
 import {renderLabelSeries} from "../../label";
 import {MarkerPrimitive} from "../../marker-primitive/marker-primitive";
 
-export abstract class SeriesChartMixin extends Chart {
-  abstract get windowS(): Selection<HTMLElement, Window & SeriesChartData>
-  abstract get chartS(): Selection<SVGSVGElement, Window & SeriesChartData>
+export abstract class DataSeriesChartMixin extends Chart {
+  abstract get windowS(): Selection<HTMLElement, Window & DataSeriesChartData>
+  abstract get chartS(): Selection<SVGSVGElement, Window & DataSeriesChartData>
 
   addFilterListener() {
     const renderer = this
