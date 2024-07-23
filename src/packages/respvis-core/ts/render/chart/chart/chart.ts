@@ -191,7 +191,7 @@ export abstract class Chart implements Renderer {
     attachActiveCursorLocking(this.chartS)
   }
 
-  protected renderContent() {}
+  protected abstract renderContent(): void
 
   unmountChart() {
     this.unmounted = true

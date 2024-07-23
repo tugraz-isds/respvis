@@ -20,7 +20,16 @@ import {
   Zoom,
   ZoomArgs
 } from "respvis-core";
-import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal, scalePoint, ScalePoint, Selection} from "d3";
+import {
+  scaleLinear,
+  ScaleLinear,
+  scaleOrdinal,
+  ScaleOrdinal,
+  scalePoint,
+  ScalePoint,
+  Selection,
+  ZoomTransform
+} from "d3";
 import {renderTool} from "./render/render-tool";
 import {KeyedAxis, validateKeyedAxis} from "../validate-keyed-axis";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
@@ -229,12 +238,14 @@ export class ParcoordResponsiveState extends ResponsiveState {
   protected _series: ParcoordSeries
   protected _originalSeries: ParcoordSeries
   protected _axisLayout: AxisLayout
+  protected _drawAreaRangesBeforeFlippped: ReturnType<typeof this.drawAreaRange>
 
   constructor(args: ParcoordResponsiveStateArgs) {
     super(args);
     this._series = args.series
     this._originalSeries = args.originalSeries
     this._axisLayout = this.currentlyFlipped ? 'bottom' : 'left'
+    this._drawAreaRangesBeforeFlippped = this.drawAreaRange()
   }
 
   get axisLayout() { return this._axisLayout }
@@ -247,7 +258,12 @@ export class ParcoordResponsiveState extends ResponsiveState {
   }
 
   update() {
-    super.update();
+    this.updateZoomOnFlip()
+    super.update()
+    this.updateScales()
+  }
+
+  private updateScales() {
     const {horizontal, vertical} = this.drawAreaRange()
     const currentAxesSpaceRange = this.currentlyFlipped ? vertical : horizontal
 
@@ -258,6 +274,17 @@ export class ParcoordResponsiveState extends ResponsiveState {
     axes.forEach(axis => axis.scaledValues.updateRange(horizontal, vertical, orientation))
     percentageScreenScale.range(currentAxesSpaceRange)
     axesScale.range(currentAxesSpaceRange)
+  }
+
+  private updateZoomOnFlip() {
+    if (this._previouslyFlipped === this._currentlyFlipped) return
+
+    this._originalSeries.zooms.forEach((zoom, i) => {
+      if (!zoom?.currentTransform || zoom.currentTransform.k === 1) return
+      // const t = zoom.currentTransform
+      // reset zoom on flipping. TODO: Desired would be a rescaling from x to y and vice versa
+      zoom.currentTransform = new ZoomTransform(1, 0, 0)
+    })
   }
 
   cloneProps(): ParcoordResponsiveStateArgs {

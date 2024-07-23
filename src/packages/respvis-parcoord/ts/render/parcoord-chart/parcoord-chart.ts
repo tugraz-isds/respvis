@@ -25,7 +25,6 @@ export class ParcoordChart extends Chart {
   }
 
   protected renderContent() {
-    super.renderContent()
     this.renderSeriesChartComponents()
 
     const series = this.chartS.datum().series.cloneFiltered().cloneZoomed().cloneInverted() as ParcoordSeries

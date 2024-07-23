@@ -25,7 +25,6 @@ export class BarChart extends Chart {
   }
 
   protected override renderContent() {
-    super.renderContent()
     this.renderSeriesChartComponents()
 
     const series = this.chartS.datum().series.cloneFiltered().cloneZoomed() as BarSeries

@@ -111,6 +111,7 @@ export type ResponsiveStateArgs = {
   originalSeries: DataSeries
   flipped?: ResponsiveValueUserArgs<boolean>
   currentlyFlipped?: boolean
+  previouslyFlipped?: boolean
   drawAreaWidth?: number
   drawAreaHeight?: number
 }
@@ -120,6 +121,7 @@ export class ResponsiveState {
   protected _originalSeries: DataSeries
   protected _flipped: ResponsiveValueOptional<boolean>
   protected _currentlyFlipped: boolean
+  protected _previouslyFlipped: boolean
   protected _drawAreaWidth: number
   protected _drawAreaHeight: number
 
@@ -128,6 +130,7 @@ export class ResponsiveState {
     this._originalSeries = args.originalSeries
     this._flipped = args.flipped ? validateResponsiveValue(args.flipped) : false
     this._currentlyFlipped = args.currentlyFlipped ?? false
+    this._previouslyFlipped = this._currentlyFlipped
     this._drawAreaWidth = args.drawAreaWidth ?? 0
     this._drawAreaHeight = args.drawAreaHeight ?? 0
   }
@@ -166,13 +169,15 @@ export class ResponsiveState {
     const {width, height} = rectFromString(drawArea.attr('bounds') || '0, 0, 600, 400')
     this._drawAreaWidth = width
     this._drawAreaHeight = height
+
+    this._previouslyFlipped = this._currentlyFlipped
     this._currentlyFlipped = getCurrentResponsiveValue(this._flipped, {chart: this._series.renderer.chartS})
   }
 
   cloneProps(): ResponsiveStateArgs {
     return {
       series: this._series, originalSeries: this._originalSeries,
-      flipped: this.flipped, currentlyFlipped: this.currentlyFlipped,
+      flipped: this.flipped, currentlyFlipped: this.currentlyFlipped, previouslyFlipped: this._previouslyFlipped,
       drawAreaWidth: this.drawAreaWidth, drawAreaHeight: this.drawAreaHeight,
     }
   }
