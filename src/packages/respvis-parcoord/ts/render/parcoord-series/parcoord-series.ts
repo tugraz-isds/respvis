@@ -61,16 +61,25 @@ export class ParcoordSeries extends DataSeries {
   responsiveState: ParcoordResponsiveState
   providesTool = true
   //TODO: implement usage and initialization of markerTooltipGenerator for parcoords
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Line>
+  markerTooltipGenerator?: SeriesTooltipGenerator<SVGPathElement, Line>
 
   constructor(args: ParcoordArgs | ParcoordSeries) {
     super(args)
     const {renderer} = args
     this.originalSeries = args.originalSeries ?? this
 
-    //TODO: data aligning
-    this.axes = 'class' in args ? args.axes :
-      args.dimensions.map((dimension, index) => {
+    if ('class' in args) {
+      Object.assign(this, args);
+      this.axes = args.axes
+      if (this.axes.length === 1) throw new Error(ErrorMessages.parcoordMinAxesCount)
+      this.categories = args.categories
+      this.axesPercentageScale = args.axesPercentageScale
+      this.percentageScreenScale = args.percentageScreenScale
+      this.zooms = args.zooms
+      this.responsiveState = args.responsiveState.clone({series: this})
+      this.axesInverted = args.axesInverted
+    } else {
+      this.axes = args.dimensions.map((dimension, index) => { //TODO: data aligning
         return validateKeyedAxis({
           ...dimension.axis, renderer,
           series: this,
@@ -79,41 +88,36 @@ export class ParcoordSeries extends DataSeries {
         })
       })
 
-    if (this.axes.length === 1) throw new Error(ErrorMessages.parcoordMinAxesCount)
+      if (this.axes.length === 1) throw new Error(ErrorMessages.parcoordMinAxesCount)
 
-    if ('class' in args) this.categories = args.categories
-    else {
-      //TODO: index check
-      const alignedCategories = args.categories ? {
-        ...args.categories,
-        values: RVArray.equalizeLengths(args.categories.values, this.axes[0].scaledValues.values)[0]
-      } : undefined
-      this.categories = alignedCategories ? new ScaledValuesCategorical({...alignedCategories, parentKey: 's-0'}) :
-        undefined
+      if (args.categories) {
+        const alignedCategories = { ...args.categories, //TODO: index check
+          values: RVArray.equalizeLengths(args.categories.values, this.axes[0].scaledValues.values)[0]
+        }
+        this.categories = new ScaledValuesCategorical({...alignedCategories, parentKey: 's-0'})
+      }
+
+      const denominator = this.axes.length > 1 ? this.axes.length - 1 : 1
+      this.axesPercentageScale =  scaleOrdinal<string, number>()
+        .domain(this.axes.map((axis) => axis.key))
+        .range(this.axes.map((axis, index) => index / denominator))
+
+      this.percentageScreenScale = scaleLinear().domain([0, 1])
+
+      this.zooms = args.dimensions.map(dimension => {
+        return dimension.zoom ? validateZoom(dimension.zoom) : undefined
+      })
+
+      this.responsiveState = new ParcoordResponsiveState({
+          series: this,
+          originalSeries: this.originalSeries,
+          flipped: ('flipped' in args) ? args.flipped : false
+        })
+
+      this.axesInverted = this.axes.map(() => false)
     }
 
-    const denominator = this.axes.length > 1 ? this.axes.length - 1 : 1
-    this.axesPercentageScale = ('class' in args) ? args.axesPercentageScale : scaleOrdinal<string, number>()
-      .domain(this.axes.map((axis) => axis.key))
-      .range(this.axes.map((axis, index) => index / denominator))
-
-    this.percentageScreenScale = ('class' in args) ? args.percentageScreenScale : scaleLinear().domain([0, 1])
-
-    this.axesScale = scalePoint()
-      .domain(this.axes.map((axis) => axis.key))
-    
-    this.zooms = 'class' in args ? args.zooms : args.dimensions.map(dimension => {
-      return dimension.zoom ? validateZoom(dimension.zoom) : undefined
-    })
-
-    this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
-      new ParcoordResponsiveState({
-      series: this,
-      originalSeries: this.originalSeries,
-      flipped: ('flipped' in args) ? args.flipped : false
-    })
-
-    this.axesInverted = 'class' in args ? args.axesInverted : this.axes.map(() => false)
+    this.axesScale = scalePoint().domain(this.axes.map((axis) => axis.key))
 
     if (this.categories && this.categories.values.length !== this.axes[0].scaledValues.values.length) {
       throw new Error(ErrorMessages.categoricalValuesMismatch)
@@ -141,16 +145,18 @@ export class ParcoordSeries extends DataSeries {
     const flipped = this.responsiveState.currentlyFlipped
     const axisPosition = flipped ? y : x
     const dimensionPosition = flipped ? x : y
+
     function axisDiff(axis: KeyedAxis) {
       const currentAxisPosition = activeSeries.axesScale(axis.key)!
       return Math.abs(currentAxisPosition - axisPosition)
     }
-    const { axis } = activeSeries.axes.reduce((prev, current) => {
+
+    const {axis} = activeSeries.axes.reduce((prev, current) => {
       const currentDiff = axisDiff(current)
       return currentDiff < prev.diff ? {
         axis: current, diff: currentDiff
       } : prev
-    }, { axis: activeSeries.axes[0], diff: axisDiff(activeSeries.axes[0]) })
+    }, {axis: activeSeries.axes[0], diff: axisDiff(activeSeries.axes[0])})
 
     const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (val => val)
     const format = axis.d3Axis?.tickFormat() ?? scaleFormat
@@ -228,7 +234,6 @@ export class ParcoordSeries extends DataSeries {
 }
 
 
-
 type ParcoordResponsiveStateArgs = ResponsiveStateArgs & {
   series: ParcoordSeries
   originalSeries: ParcoordSeries
@@ -248,12 +253,14 @@ export class ParcoordResponsiveState extends ResponsiveState {
     this._drawAreaRangesBeforeFlippped = this.drawAreaRange()
   }
 
-  get axisLayout() { return this._axisLayout }
+  get axisLayout() {
+    return this._axisLayout
+  }
 
   getAxisPosition(key: string) {
     const percentage = this._series.axesPercentageScale(key) ?? 0
-    return this.currentlyFlipped ? { x: 0, y: this._series.percentageScreenScale(percentage)} :
-      { x: this._series.percentageScreenScale(percentage), y: 0 }
+    return this.currentlyFlipped ? {x: 0, y: this._series.percentageScreenScale(percentage)} :
+      {x: this._series.percentageScreenScale(percentage), y: 0}
   }
 
   update() {
@@ -287,7 +294,7 @@ export class ParcoordResponsiveState extends ResponsiveState {
   }
 
   cloneProps(): ParcoordResponsiveStateArgs {
-    return { ...super.cloneProps(), series: this._series, originalSeries: this._originalSeries }
+    return {...super.cloneProps(), series: this._series, originalSeries: this._originalSeries}
   }
 
   clone(args?: Partial<ParcoordResponsiveStateArgs>) {

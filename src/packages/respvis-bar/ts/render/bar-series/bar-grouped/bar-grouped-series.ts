@@ -16,7 +16,7 @@ export class BarGroupedSeries extends BarBaseSeries {
   constructor(args: BarGroupedSeriesArgs | BarGroupedSeries) {
     super(args);
     this.type = 'grouped'
-    this.categories = super.getCategories() as ScaledValuesCategorical
+    this.categories = this.categories as ScaledValuesCategorical
     if (!this.categories) throw new Error(ErrorMessages.missingArgumentForSeries)
   }
 
