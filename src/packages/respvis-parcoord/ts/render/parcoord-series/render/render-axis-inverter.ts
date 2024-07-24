@@ -11,55 +11,57 @@ export function renderAxisInverter(axisS: Selection<SVGGElement, KeyedAxis>) {
 }
 
 export function renderAxisInverterVerticalChart(axisS: Selection<SVGGElement, KeyedAxis>) {
-  const { series } = axisS.datum()
+  const { renderer, originalData } = axisS.datum().series
+  const { axes, axesInverted } = originalData
+
   axisS.selectAll('.title-wrapper .axis-inverter').remove()
-  const originalSeries = series.originalSeries
   const inverterIconS = renderSVGArrowNarrowUp(axisS, ['axis-inverter', 'axis-inverter-horizontal'])
     .classed('layout-container', true)
 
   const inverterIconBgS = renderBgSVGOnlyBBox(inverterIconS, [{ scale: 1.6 }], inverterIconS)
-  const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
+  const axisIndex = axes.findIndex(axis => axis.key === axisS.datum().key)
 
-  axisS.classed('axis-inverted', originalSeries.axesInverted[axisIndex])
+  axisS.classed('axis-inverted', axesInverted[axisIndex])
   inverterIconBgS
     .classed('cursor cursor--invert-horizontal', true)
-    .classed('cursor--invert-right', originalSeries.axesInverted[axisIndex])
+    .classed('cursor--invert-right', axesInverted[axisIndex])
     .on('click', function() {
-    const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
-    originalSeries.axesInverted[axisIndex] = !originalSeries.axesInverted[axisIndex]
-    axisS.classed('axis-inverted', originalSeries.axesInverted[axisIndex])
-    inverterIconBgS.classed('cursor--invert-right', originalSeries.axesInverted[axisIndex])
-    originalSeries.renderer.windowS.dispatch('resize')
+    const axisIndex = axes.findIndex(axis => axis.key === axisS.datum().key)
+    axesInverted[axisIndex] = !axesInverted[axisIndex]
+    axisS.classed('axis-inverted', axesInverted[axisIndex])
+    inverterIconBgS.classed('cursor--invert-right', axesInverted[axisIndex])
+    renderer.windowS.dispatch('resize')
     setTimeout(() => {
-      originalSeries.renderer.windowS.dispatch('resize')
+      renderer.windowS.dispatch('resize')
     }, 500)
   })
 }
 
 export function renderAxisInverterHorizontalChart(axisS: Selection<SVGGElement, KeyedAxis>) {
-  const { series } = axisS.datum()
+  const { renderer, originalData } = axisS.datum().series
+  const { axes, axesInverted } = originalData
+
   axisS.selectChildren('.axis-inverter').remove()
-  const originalSeries = series.originalSeries
   const titleWrapperS = axisS.selectAll('.title-wrapper')
   const subtitleS = titleWrapperS.selectAll('.subtitle')
   const inverterIconParentS = subtitleS.empty() ? titleWrapperS : subtitleS
   const inverterIconS = renderSVGArrowNarrowUp(inverterIconParentS, ['axis-inverter'])
   const inverterIconBgS = renderBgSVGOnlyBBox(inverterIconS, [{ scale: 1.6 }], inverterIconS)
 
-  const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
+  const axisIndex = axes.findIndex(axis => axis.key === axisS.datum().key)
 
-  axisS.classed('axis-inverted', originalSeries.axesInverted[axisIndex])
+  axisS.classed('axis-inverted', axesInverted[axisIndex])
   inverterIconBgS
     .classed('cursor cursor--invert-vertical', true)
-    .classed('cursor--invert-up', originalSeries.axesInverted[axisIndex])
+    .classed('cursor--invert-up', axesInverted[axisIndex])
     .on('click', function() {
-    const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
-    originalSeries.axesInverted[axisIndex] = !originalSeries.axesInverted[axisIndex]
-      axisS.classed('axis-inverted', originalSeries.axesInverted[axisIndex])
-      inverterIconBgS.classed('cursor--invert-up', originalSeries.axesInverted[axisIndex])
-      originalSeries.renderer.windowS.dispatch('resize')
+    const axisIndex = axes.findIndex(axis => axis.key === axisS.datum().key)
+    axesInverted[axisIndex] = !axesInverted[axisIndex]
+      axisS.classed('axis-inverted', axesInverted[axisIndex])
+      inverterIconBgS.classed('cursor--invert-up', axesInverted[axisIndex])
+      renderer.windowS.dispatch('resize')
     setTimeout(() => {
-      originalSeries.renderer.windowS.dispatch('resize')
+      renderer.windowS.dispatch('resize')
     }, 500)
   })
 }

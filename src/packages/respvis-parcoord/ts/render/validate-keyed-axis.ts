@@ -40,10 +40,11 @@ export function validateKeyedAxis(args:KeyedAxisArgs): KeyedAxis {
       return this.keysActive[key] !== false
     },
     isValueInRangeLimit: function (this: KeyedAxis, val: number) {
-      const axisIndex = this.series.axes.findIndex(axis => axis.key === this.key)
+      const {axes, axesInverted} = this.series.renderData
+      const axisIndex = axes.findIndex(axis => axis.key === this.key)
       const flipped = this.series.responsiveState.currentlyFlipped
-      const inverted = this.series.axesInverted[axisIndex]
-      // this.series.
+      const inverted = axesInverted[axisIndex]
+
       const scaledValues = this.scaledValues
       const range = scaledValues.scale.range()
       if (flipped) {

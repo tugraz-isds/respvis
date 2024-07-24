@@ -10,13 +10,13 @@ export function handleAxisZoomAndDrag(axisS: Selection<SVGGElement, KeyedAxis>, 
   const onDrag = (e) => {
     if (e.sourceEvent.type === "mousemove" || e.sourceEvent.type === "touchmove") {
       throttledDrag.func(e)
-      axisD.series.originalSeries.renderer.windowS.dispatch('resize')
+      axisD.series.original.renderer.windowS.dispatch('resize')
     }
   }
   const onZoom = (e) => {
     if (e.sourceEvent.type === "dblclick") return
     throttledZoom.func(e)
-    axisD.series.originalSeries.renderer.windowS.dispatch('resize')
+    axisD.series.original.renderer.windowS.dispatch('resize')
   }
   const onZoomEnd = (e) => {
     if (e.sourceEvent.type === "mouseup") {
@@ -28,7 +28,7 @@ export function handleAxisZoomAndDrag(axisS: Selection<SVGGElement, KeyedAxis>, 
   )
   axisS.call(addCursorClasses)
 
-  const zoomB = axisD.series.zooms[i]
+  const zoomB = axisD.series.renderData.zooms[i]
   if (!zoomB) return
   axisS.call(zoomB.behaviour.scaleExtent([zoomB.out, zoomB.in])
     .on('zoom.zoomAndDrag', onZoom)
@@ -37,10 +37,12 @@ export function handleAxisZoomAndDrag(axisS: Selection<SVGGElement, KeyedAxis>, 
 }
 
 function addCursorClasses(axisS: Selection<SVGGElement, KeyedAxis>) {
-  const originalSeries = axisS.datum().series.originalSeries
-  const flipped = originalSeries.responsiveState.currentlyFlipped
-  const axisIndex = originalSeries.axes.findIndex(axis => axis.key === axisS.datum().key)
-  const percentageRange = originalSeries.axesPercentageScale.range()
+  const {responsiveState, originalData} = axisS.datum().series
+  const {axes, axesPercentageScale} = originalData
+
+  const flipped = responsiveState.currentlyFlipped
+  const axisIndex = axes.findIndex(axis => axis.key === axisS.datum().key)
+  const percentageRange = axesPercentageScale.range()
   const orderArray = RVArray.mapToRanks(percentageRange)
   const titleWrapperS = axisS.selectAll('.title-wrapper')
   titleWrapperS.classed('cursor', true)
@@ -54,14 +56,14 @@ function addCursorClasses(axisS: Selection<SVGGElement, KeyedAxis>) {
 
 function onZoomAxis(e: D3ZoomEvent<any, any>, d: KeyedAxis) {
   const transform = e.transform
-  const originalSeries = d.series.originalSeries
-  const axisIndex = originalSeries.axes.findIndex(axis => axis.key === d.key)
-  const zoom = originalSeries.zooms[axisIndex]
+  const {axes, zooms} = d.series.originalData
+  const axisIndex = axes.findIndex(axis => axis.key === d.key)
+  const zoom = zooms[axisIndex]
   if (!zoom) return
   zoom.currentTransform = transform
   zoom.currentTransform = (e.sourceEvent.type === "mousemove" && e.transform.k === 1) ? zoomIdentity : transform
 
-  const {horizontal, verticalInverted} = originalSeries.responsiveState.drawAreaRange()
+  const {horizontal, verticalInverted} = d.series.responsiveState.drawAreaRange()
   const extent: [[number, number], [number, number]] = [
     [horizontal[0], verticalInverted[0]],
     [horizontal[1], verticalInverted[1]],

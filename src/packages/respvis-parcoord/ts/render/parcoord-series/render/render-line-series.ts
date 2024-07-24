@@ -41,8 +41,10 @@ function createLinePositions(activeAxes: KeyedAxis[], valueIndex: number, series
     const valPos = axis.scaledValues.getScaledValue(valueIndex)
     if (!axis.scaledValues.isValueActive(valueIndex) || !axis.isValueInRangeLimit(valPos)) return []
 
-    const axisPosPercent = series.originalSeries.axesPercentageScale(axis.key)
-    const axisPosReal = series.percentageScreenScale(axisPosPercent)
+    const axisPosPercent = series.originalData.axesPercentageScale(axis.key)
+    const axisPosReal = series.renderData.percentageScreenScale(axisPosPercent)
+    //TODO: check if should be otherwise
+    // const axisPosReal = series.percentageScreenScale(axisPosPercent)
     positions.push({
       y: flipped ? axisPosReal : valPos,
       x: flipped ? valPos : axisPosReal

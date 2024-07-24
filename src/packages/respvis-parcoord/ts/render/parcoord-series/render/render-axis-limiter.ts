@@ -98,8 +98,10 @@ function alignLimiters(axisS: Selection<SVGGElement, KeyedAxis>) {
 }
 
 function addLimiterDrag(axisS: Selection<SVGGElement, KeyedAxis>) {
-  const originalSeries = axisS.datum().series.originalSeries
-  const axisD = originalSeries.axes.find(axis => axis.key === axisS.datum().key)
+  const {originalData, renderer, responsiveState} = axisS.datum().series
+  const {axes} = originalData
+
+  const axisD = axes.find(axis => axis.key === axisS.datum().key)
   if (!axisD) return
 
   const upperChevronBackgroundS = axisS.selectAll('.slider-up').selectAll(`.${backgroundSVGOnly}`)
@@ -107,15 +109,15 @@ function addLimiterDrag(axisS: Selection<SVGGElement, KeyedAxis>) {
   const rectLimiterS = axisS.selectAll('.slider-rect')
 
   function getPercent(e) {
-    const dragDown = relateDragWayToSelection(e, originalSeries.renderer.drawAreaBgS)
+    const dragDown = relateDragWayToSelection(e, renderer.drawAreaBgS)
     if (dragDown === undefined) return undefined
-    return originalSeries.responsiveState.currentlyFlipped ? dragDown.fromLeftPercent : 1 - dragDown.fromTopPercent
+    return responsiveState.currentlyFlipped ? dragDown.fromLeftPercent : 1 - dragDown.fromTopPercent
   }
 
   function getPercentDiff(e) {
-    const dragDown = relateDragWayToSelectionByDiff(e, originalSeries.renderer.drawAreaBgS)
+    const dragDown = relateDragWayToSelectionByDiff(e, renderer.drawAreaBgS)
     if (dragDown === undefined) return undefined
-    return originalSeries.responsiveState.currentlyFlipped ? dragDown.dxRelative : -dragDown.dyRelative
+    return responsiveState.currentlyFlipped ? dragDown.dxRelative : -dragDown.dyRelative
   }
 
   const onDrag = (e, limit: 'upper' | 'lower' | 'rect') => {
@@ -140,7 +142,7 @@ function addLimiterDrag(axisS: Selection<SVGGElement, KeyedAxis>) {
       axisD.lowerRangeLimitPercent += appliedDiff
     }
     limit === 'rect' ? onRect() : onUpperLower()
-    originalSeries.renderer.windowS.dispatch('resize')
+    renderer.windowS.dispatch('resize')
   }
 
   const throttledDrag = throttle(onDrag, 25)

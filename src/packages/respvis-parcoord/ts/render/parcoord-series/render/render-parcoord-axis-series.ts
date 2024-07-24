@@ -9,7 +9,7 @@ import {ParcoordSeries} from "respvis-parcoord";
 export function renderParcoordAxisSeries(seriesS: Selection<Element, ParcoordSeries>) {
   seriesS
     .selectAll<SVGGElement, KeyedAxis>('.axis.axis-sequence')
-    .data(d => d.axes, (d) => d.key)
+    .data(d => d.renderData.axes, (d) => d.key)
     .join('g')
     .each((d, i, g) => {
       const axisS = select<SVGGElement, KeyedAxis>(g[i])

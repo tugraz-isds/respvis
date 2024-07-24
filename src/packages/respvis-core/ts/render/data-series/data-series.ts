@@ -29,14 +29,14 @@ export type DataSeriesUserArgs = {
 }
 
 export type DataSeriesArgs = DataSeriesUserArgs & RenderArgs & {
-  originalSeries?: DataSeries
+  original?: DataSeries
   key: SeriesKey
   bounds?: Size
 }
 
 export abstract class DataSeries implements RenderArgs {
   class = true
-  originalSeries: DataSeries
+  original: DataSeries
   categories?: ScaledValuesCategorical
   color?: SequentialColor
   key: SeriesKey
@@ -49,7 +49,7 @@ export abstract class DataSeries implements RenderArgs {
   constructor(args: DataSeriesArgs | DataSeries) {
     const {key} = args
     this.renderer = args.renderer
-    this.originalSeries = args.originalSeries ?? this
+    this.original = args.original ?? this
 
     //TODO: pass correct parameters here
     if ('class' in args) this.categories = args.categories
@@ -70,7 +70,7 @@ export abstract class DataSeries implements RenderArgs {
 
     this.responsiveState = 'class' in args ? args.responsiveState : new ResponsiveState({
       series: this,
-      originalSeries: this.originalSeries,
+      originalSeries: this.original,
       flipped: ('flipped' in args) ? args.flipped : false
     })
   }

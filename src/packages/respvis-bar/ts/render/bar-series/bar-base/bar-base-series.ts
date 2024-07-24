@@ -16,7 +16,7 @@ import {SeriesTooltipGenerator} from "respvis-tooltip";
 export type BarBaseSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
   x: ScaledValuesCategoricalUserArgs
   y: ScaledValuesNumericUserArgs
-  originalSeries?: BarBaseSeries
+  original?: BarBaseSeries
   labels?: BarLabelsUserArg
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Bar>
 }
@@ -26,19 +26,19 @@ export type BarBaseSeriesArgs = BarBaseSeriesUserArgs & CartesianSeriesArgs
 export abstract class BarBaseSeries extends CartesianSeries {
   x: ScaledValuesCategorical
   responsiveState: BarBaseResponsiveState
-  originalSeries: BarBaseSeries
+  original: BarBaseSeries
   labels?: BarLabelsDataCollection
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Bar>
   protected constructor(args: BarBaseSeriesArgs | BarBaseSeries) {
     super(args);
-    this.originalSeries = args.originalSeries ?? this
+    this.original = args.original ?? this
     const { x } = this.getScaledValues()
     if(!(x instanceof ScaledValuesCategorical)) throw new Error(ErrorMessages.invalidScaledValuesCombination)
     this.x = x
     this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
       new BarBaseResponsiveState({
         series: this,
-        originalSeries: this.originalSeries,
+        originalSeries: this.original,
         flipped: ('flipped' in args) ? args.flipped : false
       })
 

@@ -49,7 +49,7 @@ function confirmButtonRender(selection: Selection<HTMLDialogElement, DialogData>
     .on('click.confirm', function () {
       series.renderer.windowS.datum().windowSettings.update()
       select<HTMLDialogElement, DialogData>(this.closest('dialog')!).datum()?.triggerExit()
-      onDragEndAxisParcoord(series.axes[0])
+      onDragEndAxisParcoord(series.renderData.axes[0])
     });
 
   buttonS.selectAll('span')

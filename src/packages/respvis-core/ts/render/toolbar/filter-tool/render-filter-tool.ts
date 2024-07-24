@@ -231,7 +231,12 @@ function getAxisCategoryProps(axis: Axis) {
 
 function createKeyedAxisCheckboxLabel(axis: KeyedAxis) {
   const defaultVal = axis.keysActive[axis.key]
-  const axisNecessary = (axis.series.cloneFiltered()?.axes.length <= 2 && defaultVal)
+
+  const axisNecessary = (axis.series.renderData.axes.length <= 2 && defaultVal)
+  // const axes = axis.series.originalData.axes //TODO: delete this if works without
+  // const axisNecessar = axes.map((_, index) => index)
+  //   .filter(index => axes[index].isKeyActiveByKey(axes[index].key)).length <= 2 && defaultVal
+
   return new CheckBoxLabel({
     activeClasses: axisNecessary ? ['disabled'] : undefined,
     inactiveClasses: !axisNecessary ? ['disabled'] : undefined,

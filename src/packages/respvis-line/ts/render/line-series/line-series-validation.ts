@@ -8,16 +8,16 @@ export type LineSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGen
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
 }
 
-export type LineSeriesArgs = LineSeriesUserArgs & Omit<CartesianSeriesArgs, 'originalSeries'> & {
-  originalSeries?: LineSeries
+export type LineSeriesArgs = LineSeriesUserArgs & Omit<CartesianSeriesArgs, 'original'> & {
+  original?: LineSeries
 }
 
 export class LineSeries extends PointSeries {
-  originalSeries: LineSeries
+  original: LineSeries
 
   constructor(args: LineSeriesArgs | LineSeries) {
     super(args);
-    this.originalSeries = args.originalSeries ?? this
+    this.original = args.original ?? this
   }
 
   clone() {

@@ -30,11 +30,11 @@ export type CartesianSeriesUserArgs = DataSeriesUserArgs & {
 }
 
 export type CartesianSeriesArgs = DataSeriesArgs & CartesianSeriesUserArgs & {
-  originalSeries?: CartesianSeries
+  original?: CartesianSeries
 }
 
 export abstract class CartesianSeries extends DataSeries {
-  originalSeries: CartesianSeries
+  original: CartesianSeries
   x: ScaledValuesSpatial
   y: ScaledValuesSpatial
   responsiveState: CartesianResponsiveState
@@ -43,7 +43,7 @@ export abstract class CartesianSeries extends DataSeries {
 
   protected constructor(args: CartesianSeriesArgs | CartesianSeries) {
     super(args)
-    this.originalSeries = args.originalSeries ?? this
+    this.original = args.original ?? this
     const [xAligned, yAligned] = ('tag' in args.x && 'tag' in args.y) ? [args.x, args.y] :
       alignScaledValuesLengths(args.x, args.y)
     this.x = 'tag' in xAligned ? xAligned : validateScaledValuesSpatial(xAligned, 'a-0')
@@ -52,7 +52,7 @@ export abstract class CartesianSeries extends DataSeries {
     this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
       new CartesianResponsiveState({
         series: this,
-        originalSeries: this.originalSeries,
+        originalSeries: this.original,
         flipped: ('flipped' in args) ? args.flipped : false
       })
     this.zoom = 'class' in args ? args.zoom : args.zoom ? validateZoom(args.zoom) : undefined

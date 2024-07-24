@@ -6,7 +6,7 @@ export function handleZoom(series: CartesianSeries) {
   const throttledZoom = throttle((e) => onZoomDrawArea(e, series), 50)
   const onZoom = (e) => {
     throttledZoom.func(e)
-    series.originalSeries.renderer.windowS.dispatch('resize')
+    series.original.renderer.windowS.dispatch('resize')
   }
   const zoom = series.zoom
   if (!zoom) return
@@ -15,7 +15,7 @@ export function handleZoom(series: CartesianSeries) {
 
 function onZoomDrawArea(e: D3ZoomEvent<any, any>, series: CartesianSeries) {
   const transform = e.transform
-  const originalSeries = series.originalSeries
+  const originalSeries = series.original
   const zoom = originalSeries.zoom
   if (!zoom) return
   zoom.currentTransform = (e.transform.k === 1) ? zoomIdentity : transform

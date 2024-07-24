@@ -1,7 +1,6 @@
 import {Selection} from "d3";
 import {addSeriesHighlighting, applyMixins, Chart, DataSeriesChartMixin, validateWindow, Window} from "respvis-core";
 import {ParcoordChartData, ParcoordChartUserArgs, validateParcoordChart} from "./validate-parcoord-chart";
-import {ParcoordSeries} from "../parcoord-series";
 import {renderParcoordSeries} from "../parcoord-series/render/render-parcoord-series";
 
 type WindowSelection = Selection<HTMLDivElement, Window & ParcoordChartData>
@@ -27,7 +26,8 @@ export class ParcoordChart extends Chart {
   protected renderContent() {
     this.renderSeriesChartComponents()
 
-    const series = this.chartS.datum().series.cloneFiltered().cloneZoomed().cloneInverted() as ParcoordSeries
+    const series = this.chartS.datum().series
+      .cloneToRenderData().applyFilter().applyZoom().applyInversion()
     const {lineSeriesS} = renderParcoordSeries(this.drawAreaS, [series])
 
     lineSeriesS.call(addSeriesHighlighting)

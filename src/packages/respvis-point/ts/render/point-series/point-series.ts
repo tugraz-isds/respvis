@@ -15,7 +15,7 @@ import {
 
 export type PointSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
   radii?: RadiusUserArgs
-  originalSeries?: PointSeries
+  original?: PointSeries
   labels?: PointLabelsUserArgs
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
 }
@@ -27,14 +27,14 @@ export class PointSeries extends CartesianSeries {
   labels?: PointLabelsDataCollection
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
   responsiveState: PointResponsiveState
-  originalSeries: PointSeries
+  original: PointSeries
   constructor(args: PointSeriesArgs | PointSeries) {
     super(args)
-    this.originalSeries = args.originalSeries ?? this
+    this.original = args.original ?? this
     this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
       new PointResponsiveState({
         series: this,
-        originalSeries: this.originalSeries,
+        originalSeries: this.original,
         flipped: ('flipped' in args) ? args.flipped : false
       })
 
