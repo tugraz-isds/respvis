@@ -32,14 +32,14 @@ export function validateKeyedAxis(args:KeyedAxisArgs): KeyedAxis {
     keysActive,
     upperRangeLimitPercent: 1,
     lowerRangeLimitPercent: 0,
-    setKeyActiveIfDefined: function(key: string, value: boolean) {
+    setKeyActiveIfDefined: function(this: KeyedAxis, key: string, value: boolean) {
       if (this.keysActive[key] !== undefined) this.keysActive[key] = value
     },
-    isKeyActiveByKey: function(key: string) {
+    isKeyActiveByKey: function(this: KeyedAxis, key: string) {
       // noinspection PointlessBooleanExpressionJS
       return this.keysActive[key] !== false
     },
-    isValueInRangeLimit: function (val: number) {
+    isValueInRangeLimit: function (this: KeyedAxis, val: number) {
       const axisIndex = this.series.axes.findIndex(axis => axis.key === this.key)
       const flipped = this.series.responsiveState.currentlyFlipped
       const inverted = this.series.axesInverted[axisIndex]

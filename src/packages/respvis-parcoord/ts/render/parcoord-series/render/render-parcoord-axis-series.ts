@@ -20,7 +20,7 @@ export function renderParcoordAxisSeries(seriesS: Selection<Element, ParcoordSer
       renderAxisInverter(axisS)
     })
     .attr('transform', (d, i) => {
-      const {x, y} = d.series.responsiveState.getAxisPosition(i)
+      const {x, y} = d.series.responsiveState.getAxisPosition(d.key)
       return `translate(${x}, ${y})`
     })
     .each((d, i, g) => seriesS.dispatch('enter', {

@@ -6,20 +6,23 @@ export function onDragAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxis, drawA
   const dragWay = relateDragWayToSelection(e, drawAreaBackgroundS)
   if (!dragWay) return
   const originalSeries = d.series.originalSeries
-  const oldPercentageDomain = originalSeries.axesPercentageScale.domain()
-  const axisIndex = oldPercentageDomain.indexOf(d.key)
-  const newPercentageRange = originalSeries.axesPercentageScale.range()
+  const percentageDomain = originalSeries.axesPercentageScale.domain()
+  const axisIndex = percentageDomain.indexOf(d.key)
+  const percentageRange = originalSeries.axesPercentageScale.range()
 
-  const oldPercentage = originalSeries.axesPercentageScale.range()[axisIndex]
+  const oldPercentage = percentageRange[axisIndex]
   const newPercentage = d.series.responsiveState.currentlyFlipped ? 1 - dragWay.fromTopPercent : dragWay.fromLeftPercent
-  newPercentageRange.forEach((currP, currPI) => {
-    if (currP === newPercentage && currPI !== axisIndex) {
-      newPercentageRange[currPI] = currP + (oldPercentage > newPercentage ? 0.01 : -0.01)
-    }
-  })
+  rearrangeAxesWithEqualPercentage()
 
-  newPercentageRange[axisIndex] = d.series.responsiveState.currentlyFlipped ? 1 - dragWay.fromTopPercent : dragWay.fromLeftPercent
-  originalSeries.axesPercentageScale.range(newPercentageRange)
+  percentageRange[axisIndex] = newPercentage
+  originalSeries.axesPercentageScale.range(percentageRange)
+
+  function rearrangeAxesWithEqualPercentage() {
+    percentageRange.forEach((currP, currPI) => {
+      if (!(currP === newPercentage && currPI !== axisIndex)) return
+      percentageRange[currPI] = currP + (oldPercentage > newPercentage ? 0.01 : -0.01)
+    })
+  }
 }
 
 export function onDragEndAxisParcoord(d: KeyedAxis) {
@@ -34,6 +37,5 @@ export function onDragEndAxisParcoord(d: KeyedAxis) {
   originalSeries.axesPercentageScale.range(newPercentageRange)
   originalSeries.renderer.windowS.dispatch('resize')
 }
-
 
 

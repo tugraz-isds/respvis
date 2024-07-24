@@ -8,15 +8,18 @@ import {
   renderBgSVGOnlyBBox,
   throttle
 } from "respvis-core";
-import {drag, Selection} from "d3";
+import {drag, select, Selection} from "d3";
 import {KeyedAxis} from "../../validate-keyed-axis";
 import {pathChevronRender} from "./render-path-chevron";
 
 export function renderAxisLimiter(axisS: Selection<SVGGElement, KeyedAxis>) {
-  renderChevronLimiter(axisS)
-  renderRectLimiter(axisS)
-  alignLimiters(axisS)
-  addLimiterDrag(axisS)
+  axisS.each(function(d, i, g) {
+    select<SVGGElement, KeyedAxis>(g[i])
+      .call(renderChevronLimiter)
+      .call(renderRectLimiter)
+      .call(alignLimiters)
+      .call(addLimiterDrag)
+  })
 }
 
 function renderChevronLimiter(axisS: Selection<SVGGElement, KeyedAxis>) {

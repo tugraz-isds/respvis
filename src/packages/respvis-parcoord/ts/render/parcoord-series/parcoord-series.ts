@@ -250,9 +250,8 @@ export class ParcoordResponsiveState extends ResponsiveState {
 
   get axisLayout() { return this._axisLayout }
 
-  getAxisPosition(axisIndex: number) {
-    const axis = this._series.axes[axisIndex]
-    const percentage = this._series.axesPercentageScale(axis.key) ?? 0
+  getAxisPosition(key: string) {
+    const percentage = this._series.axesPercentageScale(key) ?? 0
     return this.currentlyFlipped ? { x: 0, y: this._series.percentageScreenScale(percentage)} :
       { x: this._series.percentageScreenScale(percentage), y: 0 }
   }
