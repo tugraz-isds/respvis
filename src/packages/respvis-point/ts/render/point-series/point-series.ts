@@ -12,7 +12,7 @@ export class PointSeries extends CartesianSeries {
 
   constructor(args: PointSeriesArgs) {
     super()
-    this.originalData = validatePointSeriesArgs(args)
+    this.originalData = validatePointSeriesArgs(args, this)
     this.renderData = this.originalData
     this.renderer = args.renderer
     this.responsiveState = new PointResponsiveState({

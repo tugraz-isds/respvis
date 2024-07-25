@@ -40,15 +40,22 @@ export abstract class CartesianSeries extends DataSeries {
     const [xDirection, yDirection]: [AxisType, AxisType] =
       this.responsiveState.currentlyFlipped ? ['y', 'x'] : ['x', 'y']
 
-    this.renderData.x = x.cloneZoomed(zoom.currentTransform, xDirection)
-    this.renderData.x = y.cloneZoomed(zoom.currentTransform, yDirection)
+    this.renderData = {...this.renderData,
+      x: x.cloneZoomed(zoom.currentTransform, xDirection),
+      y: y.cloneZoomed(zoom.currentTransform, yDirection)
+    }
+
     return this
   }
 
   applyFilter(): CartesianSeries {
     const {x, y, color, categories} = this.renderData
-    this.renderData.x = x.cloneFiltered()
-    this.renderData.x = y.cloneFiltered()
+
+    this.renderData = {...this.renderData,
+      x: x.cloneFiltered(),
+      y: y.cloneFiltered()
+    }
+
     if (color) {
       const colorFiltered = color.axis.scaledValues.cloneFiltered()
       const axis: BaseAxis = {...color.axis, scaledValues: colorFiltered}

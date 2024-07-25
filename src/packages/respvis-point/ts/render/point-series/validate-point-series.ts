@@ -23,16 +23,19 @@ export type PointSeriesData = CartesianSeriesData & {
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
 }
 
-export function validatePointSeriesArgs(args: PointSeriesArgs): PointSeriesData {
+export function validatePointSeriesArgs(args: PointSeriesArgs, series: PointSeries): PointSeriesData {
   return {
     ...validateCartesianSeriesArgs(args),
     radii: (isBaseRadiusUserArgs(args.radii) || !args.radii) ? validateBaseRadius(args.radii) :
-      validateBubbleRadius({...args.radii, renderer: this.renderer, series: this}),
+      validateBubbleRadius({...args.radii, renderer: args.renderer, series}),
     markerTooltipGenerator: args.markerTooltipGenerator,
     labels: args.labels ? new PointLabelsDataCollection(args.labels) : undefined,
   }
 }
 
 export function clonePointSeriesData(original: PointSeriesData): PointSeriesData {
-  return {...original}
+  return {...original,
+    x: original.x.clone(),
+    y: original.y.clone(),
+  }
 }
