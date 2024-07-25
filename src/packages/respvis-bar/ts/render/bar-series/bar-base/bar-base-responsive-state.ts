@@ -4,17 +4,14 @@ import {Rect, ScaledValuesCategorical, ScaledValuesNumeric} from "respvis-core";
 
 type BarBaseResponsiveStateArgs = CartesianResponsiveStateArgs & {
   series: BarBaseSeries
-  originalSeries: BarBaseSeries
 }
 
 export class BarBaseResponsiveState extends CartesianResponsiveState {
   protected _series: BarBaseSeries
-  protected _originalSeries: BarBaseSeries
 
   constructor(args: BarBaseResponsiveStateArgs) {
     super(args)
     this._series = args.series
-    this._originalSeries = args.originalSeries
   }
 
   update() {
@@ -46,8 +43,7 @@ export class BarBaseResponsiveState extends CartesianResponsiveState {
   }
 
   cloneProps(): BarBaseResponsiveStateArgs {
-    const originalSeries = this._originalSeries
-    return { ...super.cloneProps(), series: this._series, originalSeries }
+    return { ...super.cloneProps(), series: this._series }
   }
 
   clone(args?: Partial<BarBaseResponsiveStateArgs>) {

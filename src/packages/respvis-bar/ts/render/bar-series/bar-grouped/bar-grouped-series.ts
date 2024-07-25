@@ -1,6 +1,13 @@
 import {CategoriesUserArgs, ErrorMessages, ScaledValuesCategorical} from "respvis-core";
 import {createGroupedBarRect} from "./bar-grouped-creation";
-import {BarBaseSeries, BarBaseSeriesArgs, BarBaseSeriesUserArgs} from "../bar-base/bar-base-series";
+import {BarBaseSeries} from "../bar-base/bar-base-series";
+import {
+  BarBaseSeriesArgs,
+  BarBaseSeriesData,
+  BarBaseSeriesUserArgs,
+  validateBarBaseSeriesArgs
+} from "../bar-base/bar-base-validation";
+import {cloneCartesianSeriesData} from "respvis-cartesian";
 
 export type BarGroupedSeriesUserArgs = BarBaseSeriesUserArgs & {
   type: 'grouped'
@@ -9,22 +16,48 @@ export type BarGroupedSeriesUserArgs = BarBaseSeriesUserArgs & {
 
 export type BarGroupedSeriesArgs = BarBaseSeriesArgs & BarGroupedSeriesUserArgs
 
+export type BarGroupedSeriesData = BarBaseSeriesData & {
+  categories: ScaledValuesCategorical
+}
+
+function validateBarGroupedSeriesArgs(args: BarGroupedSeriesArgs): BarGroupedSeriesData {
+  const data: BarGroupedSeriesData = validateBarBaseSeriesArgs(args) as BarGroupedSeriesData
+  if (!data.categories) throw new Error(ErrorMessages.missingArgumentForSeries)
+  return data
+}
+
 export class BarGroupedSeries extends BarBaseSeries {
   type: 'grouped'
-  categories: ScaledValuesCategorical
+  originalData: BarGroupedSeriesData
+  renderData: BarGroupedSeriesData
 
-  constructor(args: BarGroupedSeriesArgs | BarGroupedSeries) {
+  constructor(args: BarGroupedSeriesArgs) {
     super(args);
     this.type = 'grouped'
-    this.categories = this.categories as ScaledValuesCategorical
-    if (!this.categories) throw new Error(ErrorMessages.missingArgumentForSeries)
+    this.originalData = validateBarGroupedSeriesArgs(args)
+    this.renderData = this.originalData
   }
 
   getRect(i: number) {
     return createGroupedBarRect(this, i)
   }
 
-  clone() {
-    return new BarGroupedSeries(this)
+  cloneToRenderData(): BarGroupedSeries {
+    this.renderData = cloneCartesianSeriesData(this.originalData)
+    return this
+  }
+
+  applyZoom(): BarGroupedSeries {
+    super.applyZoom()
+    return this
+  }
+
+  applyFilter(): BarGroupedSeries {
+    super.applyFilter()
+    return this
+  }
+
+  applyInversion(): BarGroupedSeries {
+    throw new Error('Method not implemented')
   }
 }

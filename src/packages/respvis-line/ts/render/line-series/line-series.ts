@@ -1,6 +1,7 @@
 import {CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
-import {type Point, PointLabelsUserArgs, PointSeries, RadiusUserArgs} from "respvis-point";
+import {clonePointSeriesData, type Point, PointLabelsUserArgs, PointSeries, RadiusUserArgs} from "respvis-point";
 import {SeriesTooltipGenerator} from "respvis-tooltip";
+import {DataSeries} from "respvis-core";
 
 export type LineSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
   labels?: PointLabelsUserArgs
@@ -9,19 +10,25 @@ export type LineSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGen
 }
 
 export type LineSeriesArgs = LineSeriesUserArgs & Omit<CartesianSeriesArgs, 'original'> & {
-  original?: LineSeries
 }
 
 export class LineSeries extends PointSeries {
-  original: LineSeries
 
-  constructor(args: LineSeriesArgs | LineSeries) {
-    super(args);
-    this.original = args.original ?? this
+  cloneToRenderData() {
+    this.renderData = clonePointSeriesData(this.originalData)
+    return this
   }
 
-  clone() {
-    return new LineSeries(this)
+  applyZoom(): PointSeries {
+    return super.applyZoom() as PointSeries
+  }
+
+  applyFilter(): PointSeries {
+    return super.applyFilter() as PointSeries
+  }
+
+  applyInversion(): DataSeries {
+    throw new Error("Method not implemented.");
   }
 }
 

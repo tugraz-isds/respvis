@@ -2,6 +2,7 @@ import {
   CartesianSeriesArgs,
   CartesianSeriesData,
   CartesianSeriesUserArgs,
+  cloneCartesianSeriesData,
   validateCartesianSeriesArgs
 } from "respvis-cartesian";
 import {isBaseRadiusUserArgs, Radius, RadiusUserArgs, validateBaseRadius, validateBubbleRadius} from "../../data";
@@ -33,9 +34,6 @@ export function validatePointSeriesArgs(args: PointSeriesArgs, series: PointSeri
   }
 }
 
-export function clonePointSeriesData(original: PointSeriesData): PointSeriesData {
-  return {...original,
-    x: original.x.clone(),
-    y: original.y.clone(),
-  }
+export function clonePointSeriesData(original: PointSeriesData) {
+  return cloneCartesianSeriesData(original)
 }

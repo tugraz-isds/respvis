@@ -1,17 +1,18 @@
-import {CartesianChartData, CartesianChartUserArgs, validateCartesianChart} from "respvis-cartesian";
+import {CartesianChartData, CartesianChartUserArgs, CartesianRenderer, validateCartesianChart} from "respvis-cartesian";
 import {BarSeries, BarSeriesUserArgs} from "../bar-series/bar-series";
 import {BarStackedSeries} from "../bar-series/bar-stacked/bar-stacked-series";
 import {BarGroupedSeries} from "../bar-series/bar-grouped/bar-grouped-series";
 import {BarStandardSeries} from "../bar-series";
-import {RenderArgs} from "respvis-core";
 
 export type BarChartUserArgs = Omit<CartesianChartUserArgs, 'series'> & {
   series: BarSeriesUserArgs
 }
 
-export type BarChartArgs = BarChartUserArgs & RenderArgs
+export type BarChartArgs = BarChartUserArgs & {
+  renderer: CartesianRenderer
+}
 
-export type BarChartData = CartesianChartData & {
+export type BarChartData = Omit<CartesianChartData, 'series'> & {
   series: BarSeries
 }
 

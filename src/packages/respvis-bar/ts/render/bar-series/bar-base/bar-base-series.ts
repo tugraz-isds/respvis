@@ -1,71 +1,45 @@
-import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
-import {
-  defaultStyleClass,
-  ErrorMessages,
-  Key,
-  Rect,
-  ScaledValuesCategorical,
-  ScaledValuesCategoricalUserArgs,
-  ScaledValuesNumericUserArgs
-} from "respvis-core";
+import {CartesianRenderer, CartesianSeries} from "respvis-cartesian";
+import {defaultStyleClass, Key, Rect} from "respvis-core";
 import {Bar} from "../../bar";
 import {BarBaseResponsiveState} from "./bar-base-responsive-state";
-import {BarLabelsDataCollection, BarLabelsUserArg} from "../../bar-label";
-import {SeriesTooltipGenerator} from "respvis-tooltip";
-
-export type BarBaseSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
-  x: ScaledValuesCategoricalUserArgs
-  y: ScaledValuesNumericUserArgs
-  original?: BarBaseSeries
-  labels?: BarLabelsUserArg
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Bar>
-}
-
-export type BarBaseSeriesArgs = BarBaseSeriesUserArgs & CartesianSeriesArgs
+import {BarBaseSeriesArgs, BarBaseSeriesData} from "./bar-base-validation";
 
 export abstract class BarBaseSeries extends CartesianSeries {
-  x: ScaledValuesCategorical
+  abstract originalData: BarBaseSeriesData
+  abstract renderData: BarBaseSeriesData
   responsiveState: BarBaseResponsiveState
-  original: BarBaseSeries
-  labels?: BarLabelsDataCollection
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Bar>
-  protected constructor(args: BarBaseSeriesArgs | BarBaseSeries) {
-    super(args);
-    this.original = args.original ?? this
-    const { x } = this.getScaledValues()
-    if(!(x instanceof ScaledValuesCategorical)) throw new Error(ErrorMessages.invalidScaledValuesCombination)
-    this.x = x
-    this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
-      new BarBaseResponsiveState({
-        series: this,
-        originalSeries: this.original,
-        flipped: ('flipped' in args) ? args.flipped : false
-      })
+  renderer: CartesianRenderer
 
-    if ('class' in args) this.labels = args.labels
-    else if (args.labels) this.labels = new BarLabelsDataCollection(args.labels)
-    this.markerTooltipGenerator = args.markerTooltipGenerator
+  protected constructor(args: BarBaseSeriesArgs) {
+    super();
+    this.responsiveState = new BarBaseResponsiveState({
+      series: this,
+      flipped: ('flipped' in args) ? args.flipped : false
+    })
+    this.renderer = args.renderer
   }
 
   getBars(): Bar[] {
     const data: Bar[] = []
-    const {x, y, color} = this
+    const {x, y, color,
+      keysActive, key, categories, labels} = this.renderData
+
     const optionalColorValues = color?.axis.scaledValues
-    if (!this.keysActive[this.key]) return data
-    for (let i = 0; i < this.y.values.length; ++i) {
-      if (this.categories && !this.categories.isValueActive(i)) continue
+    if (!keysActive[key]) return data
+    for (let i = 0; i < y.values.length; ++i) {
+      if (categories && !categories.isValueActive(i)) continue
       if (!x.isValueActive(i) || !y.isValueActive(i) || !(optionalColorValues?.isValueActive(i) ?? true)) continue
-      const category = this.categories?.values[i]
+      const category = categories?.values[i]
       data.push(new Bar({
         ...this.getRect(i),
         xValue: x.values[i],
         yValue: y.values[i],
-        styleClass: this.categories?.getStyleClass(i) ?? defaultStyleClass,
+        styleClass: categories?.getStyleClass(i) ?? defaultStyleClass,
         category,
-        categoryFormatted: category ? this.categories?.categories.categoryMap[category].formatValue : undefined,
-        label: this.labels?.at(i),
-        key: new Key(this.getCombinedKey(i) + ` i-${i}`),
-        inverted: this.y.inverted
+        categoryFormatted: category ? categories?.categories.categoryMap[category].formatValue : undefined,
+        label: labels?.at(i),
+        key: new Key(this.renderData.getCombinedKey(i) + ` i-${i}`),
+        inverted: y.inverted
       }));
     }
     return data

@@ -1,6 +1,6 @@
 import {Selection} from "d3";
 import {createPoints, joinPointSeries, Point} from "respvis-point";
-import {LineSeries} from "./line-series-validation";
+import {LineSeries} from "./line-series";
 import {combineKeys, createSelectionClasses, defaultStyleClass, SVGGroupingElement} from "respvis-core";
 import {Line} from "./line";
 import {joinLineSeries} from "./join-line-series";
@@ -49,10 +49,10 @@ function renderPointSubSeries(pointS: Selection<SVGGElement, LineSeries>, pointG
 }
 
 function renderLineSubSeries(seriesS: Selection<SVGGElement, LineSeries>, pointGroups: Point[][]) {
-  const lineSeries = seriesS.datum()
-  const categoryKeys = lineSeries.getMergedKeys()
+  const renderData = seriesS.datum().renderData
+  const categoryKeys = renderData.getMergedKeys()
   const keySelectors = categoryKeys.length > 0 ?
-    categoryKeys.map(key => combineKeys([lineSeries.key, key])) : [lineSeries.key]
+    categoryKeys.map(key => combineKeys([renderData.key, key])) : [renderData.key]
 
   const lines: Line[] = keySelectors.map((key, i) => ({
     key,

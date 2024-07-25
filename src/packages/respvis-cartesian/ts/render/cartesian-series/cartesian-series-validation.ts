@@ -61,8 +61,9 @@ export function validateCartesianSeriesArgs(args: CartesianSeriesArgs) {
   return data
 }
 
-// export function cloneCartesianData() {
-//   // ('tag' in args.x && 'tag' in args.y) ? [args.x, args.y]
-//   // 'tag' in xAligned ? xAligned :
-//   // 'tag' in yAligned ? yAligned :
-// }
+export function cloneCartesianSeriesData<D extends CartesianSeriesData>(original: D): D {
+  return {...original,
+    x: original.x.clone(),
+    y: original.y.clone(),
+  }
+}

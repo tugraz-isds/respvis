@@ -2,7 +2,7 @@ import {Selection} from "d3";
 import {BarChartData, BarChartUserArgs, validateBarChart} from "./validate-bar-chart";
 import {CartesianChartMixin} from "respvis-cartesian";
 import {applyMixins, Chart, DataSeriesChartMixin, validateWindow, Window} from "respvis-core";
-import {BarSeries, renderBarSeries} from "../bar-series";
+import {renderBarSeries} from "../bar-series";
 
 type WindowSelection = Selection<HTMLDivElement, Window & BarChartData>
 type ChartSelection = Selection<SVGSVGElement, Window & BarChartData>
@@ -27,7 +27,7 @@ export class BarChart extends Chart {
   protected override renderContent() {
     this.renderSeriesChartComponents()
 
-    const series = this.chartS.datum().series.cloneFiltered().cloneZoomed() as BarSeries
+    const series = this.chartS.datum().series.cloneToRenderData().applyZoom().applyFilter()
     const {seriesS, barS} = renderBarSeries(this.drawAreaS, [series])
 
     this.addAllSeriesFeatures(seriesS)

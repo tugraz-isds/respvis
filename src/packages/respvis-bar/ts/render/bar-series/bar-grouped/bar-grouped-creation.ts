@@ -3,18 +3,19 @@ import {getActiveKeys, Rect, ScaledValuesCategorical} from "respvis-core";
 import {BarGroupedSeries} from "./bar-grouped-series";
 
 export function createGroupedBarRect(series: BarGroupedSeries, i: number): Rect {
+  const {categories} = series.renderData
 
   const flipped = series.responsiveState.currentlyFlipped
   const categoryGroupValues = flipped ? series.responsiveState.verticalVals() : series.responsiveState.horizontalVals()
   const wholeBarRect = series.responsiveState.getBarBaseRect(i)
 
-  const innerScaleDomain = getActiveKeys(series.categories.keysActive)
+  const innerScaleDomain = getActiveKeys(categories.keysActive)
   const innerScale = scaleBand<string>()
     .domain(innerScaleDomain)
     .range([0, (categoryGroupValues as ScaledValuesCategorical).scale.bandwidth()])
     .padding(0.1); //TODO: create parameter for this
 
-  const categoryKey = series.categories.getCombinedKey(i)
+  const categoryKey = categories.getCombinedKey(i)
   const innerValue = innerScale(categoryKey) ?? 0
 
   return  {

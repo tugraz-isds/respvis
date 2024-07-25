@@ -10,7 +10,7 @@ export function createStackedBarRect(props: CreateStackedBarProps) {
   const {responsiveState} = series
   const aggScaledValues = series.aggScaledValues.sumCached()
 
-  const scaledValuesOriginalY = series.y
+  const scaledValuesOriginalY = series.renderData.y
   const flipped = responsiveState.currentlyFlipped
   const wholeBarRect = responsiveState.getBarBaseRect(i)
 
@@ -25,7 +25,7 @@ export function createStackedBarRect(props: CreateStackedBarProps) {
   const innerValueStart = aggScaledValues.scale(aggScaledValues.values[i])
 
   function getHorizontalStackedBar() {
-    const x = series.y as (ScaledValuesNumeric | ScaledValuesTemporal)
+    const x = series.renderData.y as (ScaledValuesNumeric | ScaledValuesTemporal)
     return  {
       x: wholeBarRect.x + innerValueStart,
       y: wholeBarRect.y,
@@ -35,7 +35,7 @@ export function createStackedBarRect(props: CreateStackedBarProps) {
   }
 
   function getVerticalStackedBar() {
-    const y = series.y as (ScaledValuesNumeric | ScaledValuesTemporal)
+    const y = series.renderData.y as (ScaledValuesNumeric | ScaledValuesTemporal)
     return  {
       x: wholeBarRect.x,
       y: aggScaledValues.scale.range()[1] - innerValueStart - aggScaledValues.scale(y.values[i]),

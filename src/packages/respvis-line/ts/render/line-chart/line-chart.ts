@@ -2,7 +2,7 @@ import {Selection} from 'd3';
 import {CartesianChartMixin} from "respvis-cartesian";
 import {LineChartData, LineChartUserArgs, validateLineChart} from "./validate-line-chart";
 import {addSeriesHighlighting, applyMixins, Chart, DataSeriesChartMixin, validateWindow, Window} from "respvis-core";
-import {LineSeries, renderLineSeries} from "../line-series";
+import {renderLineSeries} from "../line-series";
 
 export type WindowSelection = Selection<HTMLDivElement, Window & LineChartData>;
 export type ChartSelection = Selection<SVGSVGElement, Window & LineChartData>;
@@ -27,7 +27,7 @@ export class LineChart extends Chart {
   protected override renderContent() {
     this.renderSeriesChartComponents()
 
-    const series = this.chartS.datum().series.cloneFiltered().cloneZoomed() as LineSeries
+    const series = this.chartS.datum().series.cloneToRenderData().applyFilter().applyZoom()
     const {lineSeriesS, pointSeriesS,
       pointS} = renderLineSeries(this.drawAreaS, [series])
 
