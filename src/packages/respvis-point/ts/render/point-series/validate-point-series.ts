@@ -26,7 +26,7 @@ export type PointSeriesData = CartesianSeriesData & {
 
 export function validatePointSeriesArgs(args: PointSeriesArgs, series: PointSeries): PointSeriesData {
   return {
-    ...validateCartesianSeriesArgs(args),
+    ...validateCartesianSeriesArgs(args, series),
     radii: (isBaseRadiusUserArgs(args.radii) || !args.radii) ? validateBaseRadius(args.radii) :
       validateBubbleRadius({...args.radii, renderer: args.renderer, series}),
     markerTooltipGenerator: args.markerTooltipGenerator,

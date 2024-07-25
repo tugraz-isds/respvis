@@ -13,8 +13,11 @@
     .axis-inverter {
       height: var(--axis-inverter-height);
       width: var(--axis-inverter-width);
-      svg {
-        transform-origin: calc(var(--axis-inverter-width) / 2) calc(var(--axis-inverter-height) / 2);
+      .transform-wrapper {
+        height: 100%;
+        width: 100%;
+        transform-origin: center;
+        transform-box: fill-box;
         transition: transform 500ms;
       }
       .svg {
@@ -22,7 +25,9 @@
         width: 100%;
       }
       &.axis-inverter-horizontal {
-        svg {
+        height: var(--axis-inverter-width);
+        width: var(--axis-inverter-height);
+        .transform-wrapper {
           transform: translate(calc(-1.3 * var(--axis-inverter-height)), calc(-1 * var(--axis-inverter-height) / 2))
           rotate(90deg);
         }
@@ -30,10 +35,10 @@
     }
 
     &.axis-inverted {
-      .axis-inverter svg {
+      .axis-inverter .transform-wrapper {
         transform: rotate(180deg);
       }
-      .axis-inverter.axis-inverter-horizontal svg {
+      .axis-inverter.axis-inverter-horizontal .transform-wrapper {
         transform: translate(calc(-1.3 * var(--axis-inverter-height)), calc(-1 * var(--axis-inverter-height) / 2))
         rotate(-90deg);
       }

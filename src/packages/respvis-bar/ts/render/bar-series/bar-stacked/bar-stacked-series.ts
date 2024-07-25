@@ -14,7 +14,7 @@ import {
   BarBaseSeriesData,
   BarBaseSeriesUserArgs,
   validateBarBaseSeriesArgs
-} from "../bar-base/bar-base-validation";
+} from "../bar-base/validate-bar-base-series";
 import {cloneCartesianSeriesData} from "respvis-cartesian";
 
 export type BarStackedSeriesUserArgs = BarBaseSeriesUserArgs & {
@@ -31,8 +31,8 @@ export type BarStackedSeriesData = BarBaseSeriesData & {
   aggregationScale?: ScaleNumeric
 }
 
-function validateBarStackedSeriesArgs(args: BarStackedSeriesArgs): BarStackedSeriesData {
-  const data: BarStackedSeriesData = {...validateBarBaseSeriesArgs(args),
+function validateBarStackedSeriesArgs(args: BarStackedSeriesArgs, series: BarStackedSeries): BarStackedSeriesData {
+  const data: BarStackedSeriesData = {...validateBarBaseSeriesArgs(args, series),
     aggregationScale: args.aggregationScale
   } as BarStackedSeriesData
   if (!data.categories) throw new Error(ErrorMessages.missingArgumentForSeries)
@@ -47,7 +47,7 @@ export class BarStackedSeries extends BarBaseSeries {
   aggScaledValues: ScaledValuesCumulativeSummation
   constructor(args: BarStackedSeriesArgs) {
     super(args);
-    this.originalData = validateBarStackedSeriesArgs(args)
+    this.originalData = validateBarStackedSeriesArgs(args, this)
     this.renderData = this.originalData
     this.type = 'stacked'
     const {x, y,categories,

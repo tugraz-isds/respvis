@@ -5,7 +5,7 @@ import {
   BarBaseSeriesData,
   BarBaseSeriesUserArgs,
   validateBarBaseSeriesArgs
-} from "./bar-base-validation";
+} from "./validate-bar-base-series";
 import {cloneCartesianSeriesData} from "respvis-cartesian";
 
 export type BarStandardSeriesUserArgs = BarBaseSeriesUserArgs & {
@@ -20,7 +20,7 @@ export class BarStandardSeries extends BarBaseSeries {
   renderData: BarBaseSeriesData
   constructor(args: BarStandardSeriesArgs) {
     super(args);
-    this.originalData = validateBarBaseSeriesArgs(args)
+    this.originalData = validateBarBaseSeriesArgs(args, this)
     this.renderData = this.originalData
     this.type = args.type ?? 'standard'
   }

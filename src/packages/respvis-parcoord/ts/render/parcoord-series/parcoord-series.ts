@@ -4,21 +4,19 @@ import {renderTool} from "./render/render-tool";
 import {KeyedAxis} from "../validate-keyed-axis";
 import {
   cloneParcoordData,
-  ParcoordData,
   ParcoordSeriesArgs,
+  ParcoordSeriesData,
   validateParcoordSeriesArgs
 } from "./validate-parcoord-series";
 import {ParcoordResponsiveState} from "./parcoord-responsive-state";
 
-export class ParcoordSeries extends DataSeries {
-  originalData: ParcoordData
-  renderData: ParcoordData
+export class ParcoordSeries implements DataSeries {
+  originalData: ParcoordSeriesData
+  renderData: ParcoordSeriesData
   renderer: Renderer
   responsiveState: ParcoordResponsiveState
-  providesTool = true
 
   constructor(args: ParcoordSeriesArgs) {
-    super()
     this.renderer = args.renderer
     this.originalData = validateParcoordSeriesArgs(args, this)
     this.renderData = this.originalData
@@ -28,7 +26,7 @@ export class ParcoordSeries extends DataSeries {
     })
   }
 
-  getAxesDragDropOrdered() { //TODO: to data object?
+  getAxesDragDropOrdered() { //TODO: to data object!
     const {axes,  axesPercentageScale} = this.renderData
     return [...axes].sort((axis1, axis2) => {
       return axesPercentageScale(axis1.key) < axesPercentageScale(axis2.key) ? -1 : 1

@@ -66,7 +66,7 @@ function attrsFromComputedStyle(target: SVGElement | HTMLElement, source: Elemen
 
 //Check if text elements use 'transform-box' and 'transform-origin'. If so, apply to transform matrix attribute
 function applyTransformOriginStyles(target: SVGElement | HTMLElement, source: Element) {
-  if (source.tagName !== 'text') return
+  // if (source.tagName !== 'text') return
   const matrixPrev = target.getAttribute('transform')
   const svgTransformStyles = elementComputedStyleWithoutDefaults(source, elementSVGTransformStyles)
   if (!('transform-origin' in svgTransformStyles) || !('transform-box' in svgTransformStyles) || !matrixPrev) return

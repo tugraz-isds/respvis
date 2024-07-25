@@ -6,7 +6,7 @@ import {
   BarBaseSeriesData,
   BarBaseSeriesUserArgs,
   validateBarBaseSeriesArgs
-} from "../bar-base/bar-base-validation";
+} from "../bar-base/validate-bar-base-series";
 import {cloneCartesianSeriesData} from "respvis-cartesian";
 
 export type BarGroupedSeriesUserArgs = BarBaseSeriesUserArgs & {
@@ -20,8 +20,8 @@ export type BarGroupedSeriesData = BarBaseSeriesData & {
   categories: ScaledValuesCategorical
 }
 
-function validateBarGroupedSeriesArgs(args: BarGroupedSeriesArgs): BarGroupedSeriesData {
-  const data: BarGroupedSeriesData = validateBarBaseSeriesArgs(args) as BarGroupedSeriesData
+function validateBarGroupedSeriesArgs(args: BarGroupedSeriesArgs, series: BarGroupedSeries): BarGroupedSeriesData {
+  const data: BarGroupedSeriesData = validateBarBaseSeriesArgs(args, series) as BarGroupedSeriesData
   if (!data.categories) throw new Error(ErrorMessages.missingArgumentForSeries)
   return data
 }
@@ -34,7 +34,7 @@ export class BarGroupedSeries extends BarBaseSeries {
   constructor(args: BarGroupedSeriesArgs) {
     super(args);
     this.type = 'grouped'
-    this.originalData = validateBarGroupedSeriesArgs(args)
+    this.originalData = validateBarGroupedSeriesArgs(args, this)
     this.renderData = this.originalData
   }
 

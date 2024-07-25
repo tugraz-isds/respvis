@@ -68,17 +68,22 @@ export function renderAxisInverterHorizontalChart(axisS: Selection<SVGGElement, 
 
 function renderSVGArrowNarrowUp(selection: Selection, classes: string[]) {
   const {selector, classString} = createSelectionClasses(classes)
-  let rotationGroup = selection.selectAll<SVGGElement, any>('.svg-wrapper' + selector)
-  const svgGroup = rotationGroup.selectAll('svg')
-  if (rotationGroup.empty() || svgGroup.empty()) {
-    rotationGroup = rotationGroup.data([null])
-      .join('g')
-      .classed('svg-wrapper', true)
-      .classed(classString, true)
-    renderSVGSeries(rotationGroup, [ArrowUpNarrowSVG])
-    rotationGroup.selectAll('svg')
+  const svgWrapperS = selection.selectAll<SVGGElement, any>('.svg-wrapper' + selector)
+    .data([null])
+    .join('g')
+    .classed('svg-wrapper', true)
+    .classed(classString, true)
+
+  const transformWrapperS = svgWrapperS.selectAll('.transform-wrapper')
+    .data([null])
+    .join('g')
+    .classed('transform-wrapper', true)
+
+  const svgGroup = transformWrapperS.selectAll('svg')
+  if (svgGroup.empty()) {
+    renderSVGSeries(transformWrapperS, [ArrowUpNarrowSVG])
+    transformWrapperS.selectAll('svg')
       .attr('data-ignore-layout-children', true)
-    return rotationGroup
   }
-  return rotationGroup
+  return svgWrapperS
 }

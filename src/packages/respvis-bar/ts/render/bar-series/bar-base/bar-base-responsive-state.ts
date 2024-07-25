@@ -41,14 +41,6 @@ export class BarBaseResponsiveState extends CartesianResponsiveState {
       height: barRectFormula.barCategoryLength(categoryVals, i),
     }
   }
-
-  cloneProps(): BarBaseResponsiveStateArgs {
-    return { ...super.cloneProps(), series: this._series }
-  }
-
-  clone(args?: Partial<BarBaseResponsiveStateArgs>) {
-    return new BarBaseResponsiveState({...this.cloneProps(), ...(args ? args : {})})
-  }
 }
 
 const barRectFormula = {

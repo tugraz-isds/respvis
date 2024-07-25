@@ -33,12 +33,12 @@ export type CartesianSeriesData = DataSeriesData & {
   zoom?: Zoom
 }
 
-export function validateCartesianSeriesArgs(args: CartesianSeriesArgs) {
+export function validateCartesianSeriesArgs(args: CartesianSeriesArgs, series: CartesianSeries) {
   const [xAligned, yAligned] =
     alignScaledValuesLengths(args.x, args.y)
 
   const data = {
-    ...validateDataSeriesArgs(args),
+    ...validateDataSeriesArgs(args, series),
     x: validateScaledValuesSpatial(xAligned, 'a-0'),
     y: validateScaledValuesSpatial(yAligned, 'a-1'),
     zoom: args.zoom ? validateZoom(args.zoom) : undefined,

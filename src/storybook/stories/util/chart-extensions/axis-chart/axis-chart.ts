@@ -31,7 +31,6 @@ export class AxisChart extends Chart {
   }
 
   protected renderContent() {
-    super.renderContent()
     const {width, height} = rectFromString(this.drawAreaS.attr('bounds') || '0, 0, 600, 400')
     const {axes, series} = this.chartS.datum()
     this.chartS.classed('chart-cartesian', true)

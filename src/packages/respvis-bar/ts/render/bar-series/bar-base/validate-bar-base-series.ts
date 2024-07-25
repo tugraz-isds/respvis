@@ -28,8 +28,8 @@ export type BarBaseSeriesData = CartesianSeriesData & {
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Bar>
 }
 
-export function validateBarBaseSeriesArgs(args: BarBaseSeriesArgs): BarBaseSeriesData {
-  const cartesianData = validateCartesianSeriesArgs(args) as CartesianSeriesData & { x: ScaledValuesCategorical }
+export function validateBarBaseSeriesArgs(args: BarBaseSeriesArgs, series: BarBaseSeries): BarBaseSeriesData {
+  const cartesianData = validateCartesianSeriesArgs(args, series) as CartesianSeriesData & { x: ScaledValuesCategorical }
   if (!(cartesianData.x instanceof ScaledValuesCategorical)) throw new Error(ErrorMessages.invalidScaledValuesCombination)
   return {
     ...cartesianData,

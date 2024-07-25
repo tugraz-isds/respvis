@@ -46,7 +46,7 @@ export abstract class DataSeriesChartMixin extends Chart {
     chartD.getSeries().forEach(series => series.responsiveState.update())
     this.addFilterListener()
     renderLegend(chartSelection, chartD.legend).call(addLegendHoverHighlighting)
-    chartD.getSeries().forEach(series => series.renderLegendInfo(this.legendS))
+    chartD.getSeries().forEach(series => series.renderLegendInfo?.(this.legendS))
     renderToolbar(this.windowS!, chartSelection.datum())
   }
 

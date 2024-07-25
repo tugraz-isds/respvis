@@ -8,7 +8,7 @@ import {DataSeries} from "../../data-series";
 import {renderSVGSeries} from "../../element";
 
 export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesCollection: DataSeries[]) {
-  if (seriesCollection.filter(series => series.providesTool).length <= 0) return
+  if (seriesCollection.filter(series => series.renderTool).length <= 0) return
 
   const contentS = toolbarS.selectAll<HTMLDivElement, any>('.toolbar__content')
   const chartToolS = renderTool(contentS, 'tool--chart')
@@ -28,6 +28,6 @@ export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesColle
   });
 
   seriesCollection.forEach(series => {
-    series.renderTool(toolbarS)
+    series.renderTool?.(toolbarS)
   })
 }

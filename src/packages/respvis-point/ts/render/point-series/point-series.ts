@@ -22,7 +22,6 @@ export class PointSeries extends CartesianSeries {
   }
 
   renderLegendInfo(legendS: LegendSelection) {
-    super.renderLegendInfo(legendS)
     renderRadiusScale(legendS, this)
   }
 

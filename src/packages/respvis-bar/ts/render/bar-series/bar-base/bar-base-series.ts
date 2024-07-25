@@ -2,7 +2,7 @@ import {CartesianRenderer, CartesianSeries} from "respvis-cartesian";
 import {defaultStyleClass, Key, Rect} from "respvis-core";
 import {Bar} from "../../bar";
 import {BarBaseResponsiveState} from "./bar-base-responsive-state";
-import {BarBaseSeriesArgs, BarBaseSeriesData} from "./bar-base-validation";
+import {BarBaseSeriesArgs, BarBaseSeriesData} from "./validate-bar-base-series";
 
 export abstract class BarBaseSeries extends CartesianSeries {
   abstract originalData: BarBaseSeriesData

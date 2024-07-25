@@ -116,12 +116,4 @@ export class PointResponsiveState extends CartesianResponsiveState {
       radius: this.getRadius(i) ?? 5
     }
   }
-
-  cloneProps(): PointResponsiveStateArgs {
-    return { ...super.cloneProps(), series: this._series }
-  }
-
-  clone(args?: Partial<PointResponsiveStateArgs>) {
-    return new PointResponsiveState({...this.cloneProps(), ...(args ? args : {})})
-  }
 }

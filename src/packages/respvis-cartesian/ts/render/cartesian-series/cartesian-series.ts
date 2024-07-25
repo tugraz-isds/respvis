@@ -3,9 +3,9 @@ import {CartesianResponsiveState} from "./cartesian-responsive-state";
 import {CartesianRenderer} from "../cartesian-chart/cartesian-renderer";
 import {CartesianAxis} from "../validate-cartesian-axis";
 import {Selection} from "d3";
-import {CartesianSeriesData} from "./cartesian-series-validation";
+import {CartesianSeriesData} from "./validate-cartesian-series";
 
-export abstract class CartesianSeries extends DataSeries {
+export abstract class CartesianSeries implements DataSeries {
   abstract originalData: CartesianSeriesData
   abstract renderData: CartesianSeriesData
   abstract responsiveState: CartesianResponsiveState
@@ -33,20 +33,7 @@ export abstract class CartesianSeries extends DataSeries {
     }
   }
 
-  applyZoom(): CartesianSeries {
-    const {zoom, x, y} = this.renderData
-    if (!zoom) return this
-
-    const [xDirection, yDirection]: [AxisType, AxisType] =
-      this.responsiveState.currentlyFlipped ? ['y', 'x'] : ['x', 'y']
-
-    this.renderData = {...this.renderData,
-      x: x.cloneZoomed(zoom.currentTransform, xDirection),
-      y: y.cloneZoomed(zoom.currentTransform, yDirection)
-    }
-
-    return this
-  }
+  abstract cloneToRenderData(): CartesianSeries
 
   applyFilter(): CartesianSeries {
     const {x, y, color, categories} = this.renderData
@@ -67,5 +54,20 @@ export abstract class CartesianSeries extends DataSeries {
     return this
   }
 
-  abstract cloneToRenderData(): CartesianSeries
+  applyZoom(): CartesianSeries {
+    const {zoom, x, y} = this.renderData
+    if (!zoom) return this
+
+    const [xDirection, yDirection]: [AxisType, AxisType] =
+      this.responsiveState.currentlyFlipped ? ['y', 'x'] : ['x', 'y']
+
+    this.renderData = {...this.renderData,
+      x: x.cloneZoomed(zoom.currentTransform, xDirection),
+      y: y.cloneZoomed(zoom.currentTransform, yDirection)
+    }
+
+    return this
+  }
+
+  abstract applyInversion(): DataSeries
 }

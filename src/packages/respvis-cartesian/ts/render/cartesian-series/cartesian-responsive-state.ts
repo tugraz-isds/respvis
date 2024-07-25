@@ -34,12 +34,4 @@ export class CartesianResponsiveState extends ResponsiveState {
     this._series.originalData.y.updateRange(horizontal, vertical, yOrientation)
     handleZoom(this._series)
   }
-
-  cloneProps(): CartesianResponsiveStateArgs {
-    return { ...super.cloneProps(), series: this._series }
-  }
-
-  clone(args?: Partial<CartesianResponsiveStateArgs>) {
-    return new CartesianResponsiveState({...this.cloneProps(), ...(args ? args : {})})
-  }
 }

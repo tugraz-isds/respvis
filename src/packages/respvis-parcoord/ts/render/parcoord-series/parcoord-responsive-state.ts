@@ -51,19 +51,11 @@ export class ParcoordResponsiveState extends ResponsiveState {
   private updateZoomOnFlip() {
     if (this._previouslyFlipped === this._currentlyFlipped) return
 
-    this._series.originalData.zooms.forEach((zoom, i) => {
+    this._series.originalData.zooms.forEach((zoom) => {
       if (!zoom?.currentTransform || zoom.currentTransform.k === 1) return
       // const t = zoom.currentTransform
       // reset zoom on flipping. TODO: Desired would be a rescaling from x to y and vice versa
       zoom.currentTransform = new ZoomTransform(1, 0, 0)
     })
-  }
-
-  cloneProps(): ParcoordResponsiveStateArgs {
-    return {...super.cloneProps(), series: this._series}
-  }
-
-  clone(args?: Partial<ParcoordResponsiveStateArgs>) {
-    return new ParcoordResponsiveState({...this.cloneProps(), ...(args ? args : {})})
   }
 }

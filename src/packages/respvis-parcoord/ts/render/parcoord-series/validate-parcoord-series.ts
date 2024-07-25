@@ -36,7 +36,7 @@ export type ParcoordSeriesArgs = DataSeriesArgs & ParcoordSeriesUserArgs & {
   key: SeriesKey
   bounds?: Size,
 }
-export type ParcoordData = DataSeriesData & {
+export type ParcoordSeriesData = DataSeriesData & {
   axes: KeyedAxis[]
   axesScale: ScalePoint<string>
   axesPercentageScale: ScaleOrdinal<string, number>
@@ -47,7 +47,7 @@ export type ParcoordData = DataSeriesData & {
   markerTooltipGenerator?: SeriesTooltipGenerator<SVGPathElement, Line>
 }
 
-export function validateParcoordSeriesArgs(args: ParcoordSeriesArgs, series: ParcoordSeries): ParcoordData {
+export function validateParcoordSeriesArgs(args: ParcoordSeriesArgs, series: ParcoordSeries): ParcoordSeriesData {
   const axes = args.dimensions.map((dimension, index) => { //TODO: data aligning
     return validateKeyedAxis({
       ...dimension.axis,
@@ -75,7 +75,7 @@ export function validateParcoordSeriesArgs(args: ParcoordSeriesArgs, series: Par
   const denominator = axes.length > 1 ? axes.length - 1 : 1
 
   const data = {
-    ...validateDataSeriesArgs(args),
+    ...validateDataSeriesArgs(args, series),
     axes,
     axesScale: scalePoint().domain(axes.map((axis) => axis.key)),
     axesPercentageScale: scaleOrdinal<string, number>()
@@ -85,7 +85,7 @@ export function validateParcoordSeriesArgs(args: ParcoordSeriesArgs, series: Par
       return dimension.zoom ? validateZoom(dimension.zoom) : undefined
     }),
     axesInverted: axes.map(() => false),
-    getCombinedKey(this: ParcoordData, i: number) {
+    getCombinedKey(this: ParcoordSeriesData, i: number) {
       const seriesCategoryKey = this.categories ? this.categories.getCategoryData(i).combinedKey : undefined
       return combineKeys([this.key, this.axes[i].key, seriesCategoryKey])
     }
@@ -98,7 +98,7 @@ export function validateParcoordSeriesArgs(args: ParcoordSeriesArgs, series: Par
   return data
 }
 
-export function cloneParcoordData(original: ParcoordData): ParcoordData {
+export function cloneParcoordData(original: ParcoordSeriesData): ParcoordSeriesData {
   return {
     ...original,
     axes: original.axes.map(axis => {

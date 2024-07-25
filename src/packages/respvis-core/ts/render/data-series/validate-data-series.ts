@@ -4,7 +4,6 @@ import {
   ScaledValuesCategorical,
   SequentialColor,
   SequentialColorUserArgs,
-  Size,
   validateSequentialColor
 } from "../../data";
 import {ActiveKeyMap, SeriesKey} from "../../constants";
@@ -20,9 +19,7 @@ export type DataSeriesUserArgs = {
   flipped?: ResponsiveValueUserArgs<boolean>
 }
 export type DataSeriesArgs = DataSeriesUserArgs & RenderArgs & {
-  original?: DataSeries
   key: SeriesKey
-  bounds?: Size
 }
 export type DataSeriesData = {
   categories?: ScaledValuesCategorical
@@ -34,7 +31,7 @@ export type DataSeriesData = {
   getCombinedKey: (i: number) => string
 }
 
-export function validateDataSeriesArgs(args: DataSeriesArgs): DataSeriesData {
+export function validateDataSeriesArgs(args: DataSeriesArgs, series: DataSeries): DataSeriesData {
   const {key} = args
   const keysActive = {}
   keysActive[key] = true
@@ -44,7 +41,7 @@ export function validateDataSeriesArgs(args: DataSeriesArgs): DataSeriesData {
     categories: args.categories ? new ScaledValuesCategorical({
       ...args.categories, parentKey: key,
     }) : undefined,
-    color: args.color ? validateSequentialColor({...args.color, renderer: this.renderer, series: this}) : undefined,
+    color: args.color ? validateSequentialColor({...args.color, renderer: args.renderer, series}) : undefined,
     key: args.key,
     keysActive,
     getMergedKeys(this: DataSeriesData) {
