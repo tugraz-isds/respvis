@@ -50,7 +50,7 @@ export function renderLegendCategories(legendS: LegendSelection) {
     })
     .attr('data-style', (d) => d.styleClass)
     .attr('data-key', (d) => d.key)
-    .classed('filter-out', (d) => legendS.datum().series.categories?.isKeyActiveByKey(d.key) === false)
+    .classed('filter-out', (d) => legendS.datum().series.originalData.categories?.isKeyActiveByKey(d.key) === false)
     .on('click.filter', function (e, d) {
       if (legendS.datum().renderer.exitEnterActive()) return
       legendS.datum().renderer.filterDispatch

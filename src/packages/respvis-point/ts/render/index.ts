@@ -6,3 +6,4 @@ export * from "./point"
 export * from "./point-series/create-points"
 export * from "./point-label"
 export {joinPointSeries} from "./point-series/join-point-series";
+export * from "./point-series/validate-point-series";

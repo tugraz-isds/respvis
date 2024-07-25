@@ -15,9 +15,9 @@ export function validateParcoordChart(args: ParcoordChartArgs): ParcoordChartDat
   const {renderer} = args
   const series = new ParcoordSeries({...args.series, renderer, key: 's-0'})
   return {
-    getAxes: function () { return this.series.axes },
-    getSeries: function () { return [this.series] },
-    getMainSeries: function () { return this.series },
+    getAxes: function (this:ParcoordChartData) { return this.series.originalData.axes },
+    getSeries: function (this:ParcoordChartData) { return [this.series] },
+    getMainSeries: function (this:ParcoordChartData) { return this.series },
     series,
     legend: validateLegend({...args.legend, renderer, series}),
     ...validateChart(args),

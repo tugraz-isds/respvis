@@ -43,7 +43,8 @@ export function renderFilterTool(toolbarS: Selection<HTMLDivElement>, args: Tool
 }
 
 function renderSeriesControl(menuToolsItemsS: Selection, series: DataSeries) {
-  const {key, renderer} = series
+  const {renderer} = series
+  const {key, keysActive} = series.originalData
   const onClick = (e) => {
     if (renderer.exitEnterActive()) {
       e.preventDefault()
@@ -55,7 +56,7 @@ function renderSeriesControl(menuToolsItemsS: Selection, series: DataSeries) {
     collapsable: true,
     labelData: [new CheckBoxLabel({
       label: 'Series', type: 'series',
-      dataKey: key, defaultVal: series.keysActive[key] ? true : false,
+      dataKey: key, defaultVal: keysActive[key] ? true : false,
       onClick,
       onChange: () => {
         renderer.filterDispatch.call('filter', {dataKey: key}, this)
@@ -146,7 +147,8 @@ function renderAxisLinearControls(menuToolsItemsS: Selection, axis: Axis, values
 }
 
 function renderCategoryControls(menuToolsItemsS: Selection, series: DataSeries) {
-  const {categories, renderer} = series
+  const {renderer, originalData} = series
+  const {categories} = originalData
   if (!categories) return
 
   const {title: categoriesTitle} = categories.categories

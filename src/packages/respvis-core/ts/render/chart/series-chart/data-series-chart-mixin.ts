@@ -30,10 +30,11 @@ export abstract class DataSeriesChartMixin extends Chart {
       })
 
       chartD.getSeries().forEach(series => {
-        if (series.keysActive[currentKey] !== undefined) {
-          series.keysActive[currentKey] = !series.keysActive[currentKey]
+        const {keysActive, categories} = series.originalData
+        if (keysActive[currentKey] !== undefined) {
+          keysActive[currentKey] = !keysActive[currentKey]
         }
-        series.categories?.setKeyActiveIfDefined(currentKey, !series.categories?.keysActive[currentKey])
+        categories?.setKeyActiveIfDefined(currentKey, !categories?.keysActive[currentKey])
       })
       renderer.windowS.dispatch('resize')
     })

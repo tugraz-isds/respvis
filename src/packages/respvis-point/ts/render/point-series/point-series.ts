@@ -1,51 +1,24 @@
-import {LegendSelection} from "respvis-core";
-import {CartesianSeries, CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
-import {PointLabelsDataCollection, PointLabelsUserArgs} from "../point-label";
-import {SeriesTooltipGenerator} from "respvis-tooltip";
-import type {Point} from "../point";
+import {DataSeries, LegendSelection} from "respvis-core";
+import {CartesianRenderer, CartesianSeries} from "respvis-cartesian";
 import {PointResponsiveState} from "./point-responsive-state";
 import {renderRadiusScale} from "./render-radius-scale";
-import {
-  isBaseRadiusUserArgs,
-  Radius,
-  RadiusUserArgs,
-  validateBaseRadius,
-  validateBubbleRadius
-} from "../../data/radius";
-
-export type PointSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
-  radii?: RadiusUserArgs
-  original?: PointSeries
-  labels?: PointLabelsUserArgs
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
-}
-
-export type PointSeriesArgs = PointSeriesUserArgs & CartesianSeriesArgs
+import {clonePointSeriesData, PointSeriesArgs, PointSeriesData, validatePointSeriesArgs} from "./validate-point-series";
 
 export class PointSeries extends CartesianSeries {
-  radii: Radius
-  labels?: PointLabelsDataCollection
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
+  renderer: CartesianRenderer
+  originalData: PointSeriesData
+  renderData: PointSeriesData
   responsiveState: PointResponsiveState
-  original: PointSeries
-  constructor(args: PointSeriesArgs | PointSeries) {
-    super(args)
-    this.original = args.original ?? this
-    this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
-      new PointResponsiveState({
-        series: this,
-        originalSeries: this.original,
-        flipped: ('flipped' in args) ? args.flipped : false
-      })
 
-    if ('class' in args) this.radii = args.radii
-    else if (isBaseRadiusUserArgs(args.radii) || !args.radii) this.radii = validateBaseRadius(args.radii)
-    else this.radii = validateBubbleRadius({...args.radii, renderer: this.renderer, series: this})
-
-    this.markerTooltipGenerator = args.markerTooltipGenerator
-
-    if ('class' in args) this.labels = args.labels
-    else if (args.labels) this.labels = new PointLabelsDataCollection(args.labels)
+  constructor(args: PointSeriesArgs) {
+    super()
+    this.originalData = validatePointSeriesArgs(args)
+    this.renderData = this.originalData
+    this.renderer = args.renderer
+    this.responsiveState = new PointResponsiveState({
+      series: this,
+      flipped: ('flipped' in args) ? args.flipped : false
+    })
   }
 
   renderLegendInfo(legendS: LegendSelection) {
@@ -53,19 +26,26 @@ export class PointSeries extends CartesianSeries {
     renderRadiusScale(legendS, this)
   }
 
-  cloneFiltered(): PointSeries {
-    const clone = super.cloneFiltered() as PointSeries
+  cloneToRenderData() {
+    this.renderData = clonePointSeriesData(this.originalData)
+    return this
+  }
+
+  applyZoom(): PointSeries {
+    return super.applyZoom() as PointSeries
+  }
+
+  applyFilter(): PointSeries {
+    return super.applyFilter() as PointSeries
     //TODO
     // if (typeof clone.radii === 'object' && 'tag' in clone.radii) {
     //   const scaledValues = clone.radii.axis.scaledValues.cloneFiltered()
     //   const axis: BaseAxis = {...clone.radii.axis, scaledValues}
     //   clone.radii = {...clone.radii, axis}
     // }
-    return clone
   }
 
-  clone() {
-    return new PointSeries(this)
+  applyInversion(): DataSeries {
+    throw new Error("Method not implemented.");
   }
 }
-

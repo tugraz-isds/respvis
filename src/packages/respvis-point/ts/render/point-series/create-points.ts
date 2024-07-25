@@ -4,9 +4,9 @@ import {PointSeries} from "./point-series";
 
 export function createPoints<T extends boolean, R = T extends false ? Point[] : Point[][]>
 (series: PointSeries, grouped: T): R {
-  const {key: seriesKey, keysActive, categories} = series
-
-  const {x, y, color, radii} = series
+  const {key: seriesKey, keysActive, categories,
+    x, y, color, radii,
+  } = series.renderData
 
   const optionalColorValues = color?.axis.scaledValues
   const optionalRadiiValues = typeof radii === 'object' && 'tag' in radii ? radii.axis.scaledValues : undefined
@@ -35,18 +35,20 @@ export function createPoints<T extends boolean, R = T extends false ? Point[] : 
 }
 
 function createPoint(series: PointSeries, i: number) {
-  const category = series.categories?.values[i]
+  const {renderData, responsiveState} = series
+  const {categories, color, labels} = renderData
+  const category = categories?.values[i]
   return new Point({
-    ...series.responsiveState.getPointCircle(i),
-    xValue: series.responsiveState.horizontalVals().values[i],
-    yValue: series.responsiveState.verticalVals().values[i],
-    color: series.color?.scale(series.color?.values[i]),
-    colorValue: series.color?.values[i],
-    radiusValue: series.responsiveState.getRadiusValue(i),
-    key: new Key(series.getCombinedKey(i) + ` i-${i}`),
-    styleClass: series.categories?.getStyleClass(i) ?? defaultStyleClass,
+    ...responsiveState.getPointCircle(i),
+    xValue: responsiveState.horizontalVals().values[i],
+    yValue: responsiveState.verticalVals().values[i],
+    color: color?.scale(color?.values[i]),
+    colorValue: color?.values[i],
+    radiusValue: responsiveState.getRadiusValue(i),
+    key: new Key(renderData.getCombinedKey(i) + ` i-${i}`),
+    styleClass: categories?.getStyleClass(i) ?? defaultStyleClass,
     category,
-    categoryFormatted: category ? series.categories?.categories.categoryMap[category].formatValue : undefined,
-    label: series.labels?.getLabelData(i)
+    categoryFormatted: category ? categories?.categories.categoryMap[category].formatValue : undefined,
+    label: labels?.getLabelData(i)
   })
 }

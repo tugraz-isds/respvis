@@ -25,19 +25,20 @@ export function renderLegend(parentS: Selection, legend: Legend): LegendSelectio
 
 function renderLegendColorScale(legendS: LegendSelection) {
   const {series, renderer} = legendS.datum()
-  if (!series.color) return
+  const {color} = series.originalData
+  if (!color) return
 
   const defsS = renderer.chartS.selectAll('defs')
     .data([null])
     .join('defs')
 
   const colorScaleGradientS = defsS.selectAll('.color-scale-gradient')
-    .data([series.color])
+    .data([color])
     .join('linearGradient')
     .classed('color-scale-gradient', true)
   if (!colorScaleGradientS.attr('id')) colorScaleGradientS.attr('id', `color-scale-gradient-${uniqueId()}`)
 
-  const [domainMin, domainMax] = [Math.min(...series.color.scale.domain()), Math.max(...series.color.scale.domain())]
+  const [domainMin, domainMax] = [Math.min(...color.scale.domain()), Math.max(...color.scale.domain())]
   const domainDiff = domainMax - domainMin
 
   // Set the color stops for the gradient
@@ -46,7 +47,7 @@ function renderLegendColorScale(legendS: LegendSelection) {
       .data(range(0, 1.05, 0.05))
       .join("stop")
       .attr("offset", d => d)
-      .attr("stop-color", d => series.color?.scale(domainMin + d * domainDiff) ?? null);
+      .attr("stop-color", d => color?.scale(domainMin + d * domainDiff) ?? null);
   }
 
   // Draw the gradient rectangle
@@ -60,9 +61,9 @@ function renderLegendColorScale(legendS: LegendSelection) {
     .style("fill", `url(#${colorScaleGradientS.attr('id')})`)
 
   const {width, height} = rectFromString(legendColorScaleS.attr('bounds') || '0, 0, 600, 400')
-  series.color.axis.scaledValues.scale.range([0, width])
+  color.axis.scaledValues.scale.range([0, width])
   const legendColorScaleAxisS = legendColorScaleS.selectAll<SVGGElement, Axis>('.axis')
-    .data([series.color.axis])
+    .data([color.axis])
     .join('g')
     .call((s) => renderAxisLayout(s, 'horizontal'))
     .classed('axis', true)

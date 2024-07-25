@@ -33,10 +33,10 @@ export function validateCartesianChart(args: CartesianChartArgs): CartesianChart
 
   return {
     series,
-    x: validateCartesianAxis({...(x ?? {}), renderer, scaledValues: series.x, series}),
-    y: validateCartesianAxis({...(y ?? {}), renderer, scaledValues: series.y, series}),
+    x: validateCartesianAxis({...(x ?? {}), renderer, scaledValues: series.originalData.x, series}),
+    y: validateCartesianAxis({...(y ?? {}), renderer, scaledValues: series.originalData.y, series}),
     getAxes: function (this:CartesianChartData) {
-      return [this.x, this.y, ...(this.series.color ? [this.series.color.axis] : [])]
+      return [this.x, this.y, ...(this.series.originalData.color ? [this.series.originalData.color.axis] : [])]
     },
     getSeries: function (this:CartesianChartData) { return [this.series] },
     getMainSeries: function (this:CartesianChartData) { return this.series },

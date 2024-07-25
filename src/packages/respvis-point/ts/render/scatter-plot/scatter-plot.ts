@@ -2,7 +2,6 @@ import {Selection} from 'd3';
 import {ScatterPlotData, ScatterPlotUserArgs, validateScatterPlot} from "./validate-scatter-plot";
 import {CartesianChartMixin} from "respvis-cartesian";
 import {addSeriesHighlighting, applyMixins, Chart, DataSeriesChartMixin, validateWindow, Window} from "respvis-core";
-import {PointSeries} from "../point-series/point-series";
 import {renderPointSeries} from "../point-series/render-point-series";
 
 type WindowSelection = Selection<HTMLElement, Window & ScatterPlotData>;
@@ -34,7 +33,7 @@ export class ScatterPlot extends Chart {
   protected override renderContent() {
     this.renderSeriesChartComponents()
 
-    const series = this.chartS.datum().series.cloneFiltered().cloneZoomed() as PointSeries
+    const series = this.chartS.datum().series.cloneToRenderData().applyFilter().applyZoom()
     const {seriesS, pointS} = renderPointSeries(this.drawAreaS, [series])
 
     this.addAllSeriesFeatures(seriesS)

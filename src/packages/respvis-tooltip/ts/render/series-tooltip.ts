@@ -21,11 +21,11 @@ export function renderSeriesTooltip<E extends Element, D>(seriesS: Selection<Ele
     tooltip.applyPositionStrategy(e, positionStrategy)
   }).on('pointerover.tooltip', (e, d) => {
     const item = e.target;
-    if (!d.markerTooltipGenerator || !item) return
+    if (!d.renderData.markerTooltipGenerator || !item) return
     const data = select<E, D>(item).datum()
 
     tooltip.seriesTooltipVisible = true
-    select(tooltipSelector).html(d.markerTooltipGenerator(item, data));
+    select(tooltipSelector).html(d.renderData.markerTooltipGenerator(item, data));
   }).on('pointerout.tooltip', () => {
     tooltip.seriesTooltipVisible = false
     select(tooltipSelector).html(null);

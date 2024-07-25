@@ -4,7 +4,7 @@ import {LegendItem} from "./legend-item";
 
 export function createLegendItems(legend: Legend): LegendItem[] {
   const { series, symbols, reverse} = legend;
-  const {categories} = series
+  const {categories} = series.originalData
   if (!categories) return []
 
   const items = categories.categories.categoryArray.map((c, i) => {

@@ -1,113 +1,46 @@
-import {CategoriesUserArgs} from "../../data/categories";
 import {RenderArgs, Renderer} from "../chart/renderer";
-import {ActiveKeyMap, SeriesKey} from "../../constants/types";
-import {Size} from "../../utilities/geometry/shapes/rect/size";
-import {ScaledValuesCategorical} from "../../data/scale/scaled-values-spatial/scaled-values-categorical";
-import {mergeKeys} from "../../utilities/key";
 import {
   ResponsiveValueOptional,
   ResponsiveValueUserArgs,
   validateResponsiveValue
 } from "../../data/responsive-property/responsive-value";
-import {
-  getCurrentResponsiveValue,
-  rectFromString,
-  SequentialColor,
-  SequentialColorUserArgs,
-  validateSequentialColor
-} from "../../data";
+import {getCurrentResponsiveValue, rectFromString} from "../../data";
 import {Selection} from "d3";
-import {SeriesTooltipGenerator} from "respvis-tooltip";
 import {LegendSelection} from "../legend";
-
-export type DataSeriesUserArgs = {
-  categories?: CategoriesUserArgs
-  //TODO: Refactor ColorContinuous
-  color?: SequentialColorUserArgs
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGElement, any>
-  flipped?: ResponsiveValueUserArgs<boolean>
-}
-
-export type DataSeriesArgs = DataSeriesUserArgs & RenderArgs & {
-  original?: DataSeries
-  key: SeriesKey
-  bounds?: Size
-}
+import {DataSeriesData} from "./data-series-validation";
 
 export abstract class DataSeries implements RenderArgs {
-  class = true
-  original: DataSeries
-  categories?: ScaledValuesCategorical
-  color?: SequentialColor
-  key: SeriesKey
-  keysActive: ActiveKeyMap
-  renderer: Renderer
+  abstract originalData: DataSeriesData
+  abstract renderData: DataSeriesData
+  abstract renderer: Renderer
+  abstract responsiveState: ResponsiveState
   providesTool = false
-  responsiveState: ResponsiveState
-  abstract markerTooltipGenerator?: SeriesTooltipGenerator<SVGElement, any>
-
-  constructor(args: DataSeriesArgs | DataSeries) {
-    const {key} = args
-    this.renderer = args.renderer
-    this.original = args.original ?? this
-
-    //TODO: pass correct parameters here
-    if ('class' in args) this.categories = args.categories
-    else this.categories = args.categories ? new ScaledValuesCategorical({
-      ...args.categories, parentKey: key,
-    }) : undefined
-
-    if ('class' in args) this.color = args.color
-    else this.color = args.color ? validateSequentialColor({...args.color, renderer: this.renderer, series: this}) : undefined
-
-    this.key = args.key
-
-    if ('class' in args) this.keysActive = {...args.keysActive}
-    else {
-      this.keysActive = {}
-      this.keysActive[key] = true
-    }
-
-    this.responsiveState = 'class' in args ? args.responsiveState : new ResponsiveState({
-      series: this,
-      originalSeries: this.original,
-      flipped: ('flipped' in args) ? args.flipped : false
-    })
-  }
-
-  abstract getCombinedKey(i: number): string
-
-  getMergedKeys() {
-    if (this.categories) {
-      return this.categories.categories.categoryArray.map(c =>
-        mergeKeys([this.key, c.key]))
-    }
-    return []
-  }
-
-  getCategories() {
-    return this.categories
-  }
+  class = true
 
   renderTool(toolbarS: Selection<HTMLDivElement>) {}
 
   renderLegendInfo(legendS: LegendSelection) {}
 
-  abstract getScaledValuesAtScreenPosition(horizontal: number, vertical: number) : {
+  abstract getScaledValuesAtScreenPosition(horizontal: number, vertical: number): {
     horizontal: string,
     horizontalName: string
     vertical: string,
     verticalName: string
   }
 
-  abstract clone(): DataSeries
-}
+  // TODO: uncomment once all methods exist for all existing data series classes
+  abstract cloneToRenderData(): DataSeries
 
+  abstract applyFilter(): DataSeries
+
+  abstract applyZoom(): DataSeries
+
+  abstract applyInversion(): DataSeries
+}
 
 
 export type ResponsiveStateArgs = {
   series: DataSeries
-  originalSeries: DataSeries
   flipped?: ResponsiveValueUserArgs<boolean>
   currentlyFlipped?: boolean
   previouslyFlipped?: boolean
@@ -117,7 +50,6 @@ export type ResponsiveStateArgs = {
 
 export class ResponsiveState {
   protected _series: DataSeries
-  protected _originalSeries: DataSeries
   protected _flipped: ResponsiveValueOptional<boolean>
   protected _currentlyFlipped: boolean
   protected _previouslyFlipped: boolean
@@ -126,7 +58,6 @@ export class ResponsiveState {
 
   constructor(args: ResponsiveStateArgs) {
     this._series = args.series
-    this._originalSeries = args.originalSeries
     this._flipped = args.flipped ? validateResponsiveValue(args.flipped) : false
     this._currentlyFlipped = args.currentlyFlipped ?? false
     this._previouslyFlipped = this._currentlyFlipped
@@ -175,7 +106,7 @@ export class ResponsiveState {
 
   cloneProps(): ResponsiveStateArgs {
     return {
-      series: this._series, originalSeries: this._originalSeries,
+      series: this._series,
       flipped: this.flipped, currentlyFlipped: this.currentlyFlipped, previouslyFlipped: this._previouslyFlipped,
       drawAreaWidth: this.drawAreaWidth, drawAreaHeight: this.drawAreaHeight,
     }

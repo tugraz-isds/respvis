@@ -14,19 +14,20 @@ function createLines(activeAxes: KeyedAxis[]) {
   const lines: Line[] = []
   if (activeAxes.length === 0) return lines
   const series = activeAxes[0].series
+  const {keysActive, categories, key} = series.renderData
   const maxIndex = activeAxes[0].scaledValues.values.length
-  if (!series.keysActive[series.key]) return lines
+  if (!keysActive[key]) return lines
 
   for (let valueIndex = 0; valueIndex < maxIndex; valueIndex++) {
-    if (series.categories && !series.categories.isValueActive(valueIndex)) continue
+    if (categories && !categories.isValueActive(valueIndex)) continue
     const positions = createLinePositions(activeAxes, valueIndex, series)
     if (positions.length === 0) continue
 
-    const categoryKey = series.categories?.getCombinedKey(valueIndex)
+    const categoryKey = categories?.getCombinedKey(valueIndex)
 
     lines.push({
-      key: combineKeys([series.key, ...(categoryKey ? [categoryKey] : []), `i-${valueIndex}`]),
-      styleClass: series.categories ? series.categories.getStyleClass(valueIndex) : defaultStyleClass,
+      key: combineKeys([key, ...(categoryKey ? [categoryKey] : []), `i-${valueIndex}`]),
+      styleClass: categories ? categories.getStyleClass(valueIndex) : defaultStyleClass,
       positions
     })
   }

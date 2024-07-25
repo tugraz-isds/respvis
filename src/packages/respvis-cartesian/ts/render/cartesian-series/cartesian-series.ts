@@ -1,82 +1,15 @@
-import {
-  alignScaledValuesLengths,
-  AxisType,
-  BaseAxis,
-  combineKeys,
-  DataSeries,
-  DataSeriesArgs,
-  DataSeriesUserArgs,
-  ErrorMessages,
-  getCurrentResponsiveValue,
-  ScaledValuesCategorical,
-  ScaledValuesSpatial,
-  ScaledValuesSpatialDomain,
-  ScaledValuesSpatialUserArgs,
-  SVGHTMLElementLegacy,
-  validateScaledValuesSpatial,
-  validateZoom,
-  Zoom,
-  ZoomArgs
-} from "respvis-core";
+import {AxisType, BaseAxis, DataSeries, getCurrentResponsiveValue, SVGHTMLElementLegacy} from "respvis-core";
 import {CartesianResponsiveState} from "./cartesian-responsive-state";
 import {CartesianRenderer} from "../cartesian-chart/cartesian-renderer";
 import {CartesianAxis} from "../validate-cartesian-axis";
 import {Selection} from "d3";
-
-export type CartesianSeriesUserArgs = DataSeriesUserArgs & {
-  x: ScaledValuesSpatialUserArgs<ScaledValuesSpatialDomain>
-  y: ScaledValuesSpatialUserArgs<ScaledValuesSpatialDomain>
-  zoom?: ZoomArgs
-}
-
-export type CartesianSeriesArgs = DataSeriesArgs & CartesianSeriesUserArgs & {
-  original?: CartesianSeries
-}
+import {CartesianSeriesData} from "./cartesian-series-validation";
 
 export abstract class CartesianSeries extends DataSeries {
-  original: CartesianSeries
-  x: ScaledValuesSpatial
-  y: ScaledValuesSpatial
-  responsiveState: CartesianResponsiveState
-  zoom?: Zoom
-  renderer: CartesianRenderer
-
-  protected constructor(args: CartesianSeriesArgs | CartesianSeries) {
-    super(args)
-    this.original = args.original ?? this
-    const [xAligned, yAligned] = ('tag' in args.x && 'tag' in args.y) ? [args.x, args.y] :
-      alignScaledValuesLengths(args.x, args.y)
-    this.x = 'tag' in xAligned ? xAligned : validateScaledValuesSpatial(xAligned, 'a-0')
-    this.y = 'tag' in yAligned ? yAligned : validateScaledValuesSpatial(yAligned, 'a-1')
-
-    this.responsiveState = 'class' in args ? args.responsiveState.clone({series: this}) :
-      new CartesianResponsiveState({
-        series: this,
-        originalSeries: this.original,
-        flipped: ('flipped' in args) ? args.flipped : false
-      })
-    this.zoom = 'class' in args ? args.zoom : args.zoom ? validateZoom(args.zoom) : undefined
-    this.renderer = args.renderer as CartesianRenderer
-
-    if (this.categories && this.categories.values.length !== this.x.values.length) {
-      throw new Error(ErrorMessages.categoricalValuesMismatch)
-    }
-
-    if (this.color && this.color.values.length !== this.x.values.length) {
-      throw new Error(ErrorMessages.sequentialColorValuesMismatch)
-    }
-  }
-
-  getScaledValues() {
-    return {x: this.x, y: this.y}
-  }
-
-  getCombinedKey(i: number) {
-    const xKey = this.x instanceof ScaledValuesCategorical ? this.x.getCategoryData(i).combinedKey : undefined
-    const yKey = this.y instanceof ScaledValuesCategorical ? this.y.getCategoryData(i).combinedKey : undefined
-    const seriesCategoryKey = this.categories ? this.categories.getCategoryData(i).combinedKey : undefined
-    return combineKeys([this.key, seriesCategoryKey, xKey, yKey])
-  }
+  abstract originalData: CartesianSeriesData
+  abstract renderData: CartesianSeriesData
+  abstract responsiveState: CartesianResponsiveState
+  abstract renderer: CartesianRenderer
 
   getScaledValuesAtScreenPosition(x: number, y: number) {
     function getAxisData(axisS: Selection<SVGHTMLElementLegacy, CartesianAxis>) {
@@ -100,32 +33,32 @@ export abstract class CartesianSeries extends DataSeries {
     }
   }
 
-  cloneZoomed() {
-    if (!this.zoom) return this.clone()
+  applyZoom(): CartesianSeries {
+    const {zoom, x, y} = this.renderData
+    if (!zoom) return this
+
     const [xDirection, yDirection]: [AxisType, AxisType] =
       this.responsiveState.currentlyFlipped ? ['y', 'x'] : ['x', 'y']
-    const xZoomed = this.x.cloneZoomed(this.zoom.currentTransform, xDirection)
-    const yZoomed = this.y.cloneZoomed(this.zoom.currentTransform, yDirection)
-    const clone = this.clone()
-    clone.x = xZoomed
-    clone.y = yZoomed
-    return clone
+
+    this.renderData.x = x.cloneZoomed(zoom.currentTransform, xDirection)
+    this.renderData.x = y.cloneZoomed(zoom.currentTransform, yDirection)
+    return this
   }
 
-  cloneFiltered() {
-    const clone = this.clone()
-    clone.x = this.x.cloneFiltered()
-    clone.y = this.y.cloneFiltered()
-    if (this.color) {
-      const colorFiltered = this.color.axis.scaledValues.cloneFiltered()
-      const axis: BaseAxis = {...this.color.axis, scaledValues: colorFiltered}
-      clone.color = {...this.color, axis}
+  applyFilter(): CartesianSeries {
+    const {x, y, color, categories} = this.renderData
+    this.renderData.x = x.cloneFiltered()
+    this.renderData.x = y.cloneFiltered()
+    if (color) {
+      const colorFiltered = color.axis.scaledValues.cloneFiltered()
+      const axis: BaseAxis = {...color.axis, scaledValues: colorFiltered}
+      this.renderData.color = {...color, axis}
     }
-    if (this.categories) {
-      clone.categories = this.categories.cloneFiltered()
+    if (categories) {
+      this.renderData.categories = categories.cloneFiltered()
     }
-    return clone
+    return this
   }
 
-  abstract clone(): CartesianSeries
+  abstract cloneToRenderData(): CartesianSeries
 }

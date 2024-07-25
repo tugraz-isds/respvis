@@ -9,8 +9,8 @@ import {
 } from "respvis-core";
 
 export function renderCartesianAxes<T extends CartesianChartSelection>(chartS: T) {
-  const {renderer, ...data} = chartS.datum()
-  const series = data.series.cloneZoomed().cloneFiltered()
+  const {renderer, series, ...data} = chartS.datum()
+  // const series = data.series.cloneZoomed().cloneFiltered() //TODO: check if necessary
   const flipped = series.responsiveState.currentlyFlipped
   const [horizontalAxisType, verticalAxisType] = flipped ? ['y', 'x'] : ['x', 'y']
 

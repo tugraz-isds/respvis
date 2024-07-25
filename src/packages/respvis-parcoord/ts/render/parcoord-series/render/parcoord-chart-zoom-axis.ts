@@ -10,13 +10,13 @@ export function handleAxisZoomAndDrag(axisS: Selection<SVGGElement, KeyedAxis>, 
   const onDrag = (e) => {
     if (e.sourceEvent.type === "mousemove" || e.sourceEvent.type === "touchmove") {
       throttledDrag.func(e)
-      axisD.series.original.renderer.windowS.dispatch('resize')
+      axisD.series.renderer.windowS.dispatch('resize')
     }
   }
   const onZoom = (e) => {
     if (e.sourceEvent.type === "dblclick") return
     throttledZoom.func(e)
-    axisD.series.original.renderer.windowS.dispatch('resize')
+    axisD.series.renderer.windowS.dispatch('resize')
   }
   const onZoomEnd = (e) => {
     if (e.sourceEvent.type === "mouseup") {

@@ -5,23 +5,20 @@ import {BreakpointProperty, Circle, elementFromSelection} from "respvis-core";
 
 type PointResponsiveStateArgs = CartesianResponsiveStateArgs & {
   series: PointSeries
-  originalSeries: PointSeries
 }
 
 export class PointResponsiveState extends CartesianResponsiveState {
   protected _series: PointSeries
-  protected _originalSeries: PointSeries
 
   constructor(args: PointResponsiveStateArgs) {
     super(args)
     this._series = args.series
-    this._originalSeries = args.originalSeries
   }
 
   update() {
     super.update();
 
-    const radii = this._originalSeries.radii
+    const radii = this._series.originalData.radii
     const chart = this._series.renderer.chartS
 
 
@@ -66,7 +63,7 @@ export class PointResponsiveState extends CartesianResponsiveState {
   }
 
   getRadius(i: number): number {
-    const radii = this._originalSeries.radii
+    const radii = this._series.originalData.radii
     const chart = this._series.renderer.chartS
     if (typeof radii === 'number') return radii
     if (radii instanceof BreakpointProperty) {
@@ -97,14 +94,14 @@ export class PointResponsiveState extends CartesianResponsiveState {
   }
 
   getMaxRadius() {
-    const radii = this._originalSeries.radii
+    const radii = this._series.originalData.radii
     return (typeof radii === 'number') ? radii :
       radii instanceof BreakpointProperty ? this.getRadius(0) :
         Math.max(...radii.scale.range())
   }
 
   getRadiusValue(i: number) {
-    const radii = this._series.radii
+    const radii = this._series.renderData.radii
     return typeof radii === 'number' ? radii :
       radii instanceof BreakpointProperty ? undefined :
         radii.values[i]
@@ -121,8 +118,7 @@ export class PointResponsiveState extends CartesianResponsiveState {
   }
 
   cloneProps(): PointResponsiveStateArgs {
-    const originalSeries = this._originalSeries
-    return { ...super.cloneProps(), series: this._series, originalSeries }
+    return { ...super.cloneProps(), series: this._series }
   }
 
   clone(args?: Partial<PointResponsiveStateArgs>) {
