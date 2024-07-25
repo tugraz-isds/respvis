@@ -1,5 +1,6 @@
 .slider-rect {
-  fill: var(--control-elements-chart-color1-40);
+  fill: var(--control-elements-chart-color1);
+  fill-opacity: var(--control-elements-chart-color1-opacity-40);
   &:active {
     filter: brightness(150%);
   }

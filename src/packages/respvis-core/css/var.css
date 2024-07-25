@@ -41,8 +41,8 @@
 
   --control-elements-color: rgb(239, 239, 239);
   --control-elements-chart-color1: rgb(248, 229, 121);
-  --control-elements-chart-color1-20: rgb(248, 229, 121, 0.2);
-  --control-elements-chart-color1-40: rgb(248, 229, 121, 0.4);
+  --control-elements-chart-color1-opacity-20: 0.2;
+  --control-elements-chart-color1-opacity-40: 0.4;
   --control-elements-chart-color2: rgb(255, 255, 255);
   --control-elements-chart-color3: var(--color-axes-line);
 
