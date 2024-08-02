@@ -26,7 +26,7 @@ export function renderTooltip(): Selection<HTMLDivElement> {
         e.clientY < rect.y || e.clientY > rect.y + rect.height))
     })
     if (windowHovered) {
-      windowHovered.tooltip.movableCrossTooltipVisible = windowHovered.windowSettings.get('movableCrossActive')
+      windowHovered.tooltip.movableCrossTooltipVisible = windowHovered.settings.get('movableCrossActive')
     }
     setTooltipVisibility(windowHovered?.tooltip.isVisible() ? 'visible' : 'hidden')
   })

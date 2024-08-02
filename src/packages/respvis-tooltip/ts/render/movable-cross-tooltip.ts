@@ -23,7 +23,7 @@ export function renderMovableCrossTooltip(series: DataSeries) {
 
   const onDrawAreaMove = (e: PointerEvent, active: boolean) => {
     const windowD = renderer.windowS.datum()
-    tooltip.movableCrossTooltipVisible = windowD.windowSettings.get('movableCrossActive')
+    tooltip.movableCrossTooltipVisible = windowD.settings.get('movableCrossActive')
 
     const {crossStateTextS} = renderContent(active)
     if (!active) return
@@ -51,7 +51,7 @@ export function renderMovableCrossTooltip(series: DataSeries) {
     renderContent(active)
   }
   const onWindowMove = (e) => {
-    const active = renderer.windowS.datum().windowSettings.get('movableCrossActive')
+    const active = renderer.windowS.datum().settings.get('movableCrossActive')
       && tooltip.movableCrossTooltipVisible && !tooltip.seriesTooltipVisible
 
     const rect = elementFromSelection(renderer.drawAreaBgS).getBoundingClientRect()

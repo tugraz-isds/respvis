@@ -29,7 +29,7 @@ export function onDragEndAxisParcoord(d: KeyedAxis) {
   const {renderer, originalData} = d.series
   const {axesPercentageScale } = originalData
 
-  const equidistantAxesActive = renderer.windowS.datum().windowSettings.get('parcoordEquidistantAxes')
+  const equidistantAxesActive = renderer.windowS.datum().settings.get('parcoordEquidistantAxes')
   if (!equidistantAxesActive) return
   const percentageRange = axesPercentageScale.range()
   const order = RVArray.mapToRanks(percentageRange)

@@ -5,7 +5,7 @@ import {windowSettingsKeys} from "../../../window";
 import {NumberLabel} from "../../tool/input-label/number-label";
 
 export function renderMarginOptions(selection: Selection, renderer: Renderer) {
-  const currentSettings = renderer.windowS.datum().windowSettings
+  const currentSettings = renderer.windowS.datum().settings
 
   const options = [{
     settingKey: windowSettingsKeys.downloadMarginLeft,

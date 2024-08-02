@@ -6,10 +6,10 @@ export function prettifySVG(code: string, renderer: Renderer) {
     .filter(cssVar => cssVar !== '--layout-width' && cssVar !== '--layout-height')
   let prettifiedSVG = removePropertiesFromSVGStyle(code, propertiesToRemove)
 
-  if (!renderer.windowS.datum().windowSettings.get('downloadPrettifyActive')) return prettifiedSVG
+  if (!renderer.windowS.datum().settings.get('downloadPrettifyActive')) return prettifiedSVG
   prettifiedSVG = addNewLinesBeforeOpeningTags(prettifiedSVG)
   prettifiedSVG = addNewlineBeforeGroupCloseTag(prettifiedSVG)
-  const indentationSpaces = ' '.repeat(parseInt(renderer.windowS.datum().windowSettings.get('downloadPrettifyIndentionSpaces')))
+  const indentationSpaces = ' '.repeat(parseInt(renderer.windowS.datum().settings.get('downloadPrettifyIndentionSpaces')))
   prettifiedSVG = addTabsPerNestingLevel(prettifiedSVG, indentationSpaces)
   prettifiedSVG = prettifyStyleTags(prettifiedSVG)
   return prettifiedSVG

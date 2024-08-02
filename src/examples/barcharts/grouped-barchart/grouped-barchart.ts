@@ -79,7 +79,7 @@ export function renderGroupedBarChart(selector: string) {
         dependentOn: 'width',
         scope: 'chart',
         mapping: {0: (axis) => axis.tickFormat(d3.format('.2s')), 3: (axis) => axis.tickFormat()}
-      }
+      },
     }
   }
 

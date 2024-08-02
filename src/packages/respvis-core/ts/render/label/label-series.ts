@@ -11,14 +11,14 @@ import {Label} from "./label";
 import {MarkerPrimitive} from "../marker-primitive";
 import {positionToTransformAttr} from "../../utilities/geometry/position";
 
-type LabelSeriesProps<D extends MarkerPrimitive> = {
+interface LabelSeries<D extends MarkerPrimitive> {
   elements: D[]
   classes: string[]
   orientation: Orientation
-};
+}
 
-export function renderLabelSeries<D extends MarkerPrimitive>(parentS: Selection, props: LabelSeriesProps<D>) {
-  const {elements, classes, orientation} = props
+export function renderLabelSeries<D extends MarkerPrimitive>(parentS: Selection, series: LabelSeries<D>) {
+  const {elements, classes, orientation} = series
   const {selector, classString} = createSelectionClasses(classes)
   const labels = elements.flatMap(element => element.getLabel(orientation))
   return parentS.selectAll<SVGGElement, any>(selector)

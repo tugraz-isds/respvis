@@ -22,7 +22,7 @@ export function renderChartTool(toolbarS: Selection<HTMLDivElement>, seriesColle
 
   dialogS.on('close', function (e) {
     e.preventDefault()
-    seriesCollection[0]?.renderer.windowS.datum().windowSettings.reset()
+    seriesCollection[0]?.renderer.windowS.datum().settings.reset()
     select<HTMLDialogElement, DialogData>(this.closest('dialog')!).datum()?.triggerExit()
     seriesCollection[0]?.renderer.windowS.dispatch('resize')
   });

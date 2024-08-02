@@ -27,9 +27,9 @@ export abstract class CartesianChartMixin extends Chart implements CartesianRend
       vertical: this.verticalAxisS.empty() ? false : getCurrentResponsiveValue(
         this.verticalAxisS.datum().inverted, {chart: this.chartS, self: this._verticalAxisS})
     }
-    // const originalSeries = this.horizontalAxisS.datum().originalAxi.scaledValues
-    if (!this.horizontalAxisS.empty()) this.horizontalAxisS.datum().originalAxis.scaledValues.inverted = inversionState.horizontal
-    if (!this.verticalAxisS.empty()) this.verticalAxisS.datum().originalAxis.scaledValues.inverted = inversionState.vertical
+
+    if (!this.horizontalAxisS.empty()) this.horizontalAxisS.datum().scaledValues.inverted = inversionState.horizontal
+    if (!this.verticalAxisS.empty()) this.verticalAxisS.datum().scaledValues.inverted = inversionState.vertical
     return inversionState
   }
 

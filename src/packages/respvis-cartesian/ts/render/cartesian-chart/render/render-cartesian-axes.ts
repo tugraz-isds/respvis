@@ -35,10 +35,12 @@ export function renderCartesianAxes<T extends CartesianChartSelection>(chartS: T
     .join('g')
     .call((s) => renderAxisLayout(s, 'vertical'))
     .classed(`axis-${verticalAxisType}`, true)
+  data[verticalAxisType].d3Axis = verticalAxisD.d3Axis
 
   paddingWrapperS.selectAll<SVGGElement, Axis>(`.axis-${horizontalAxisType}`)
     .data([horizontalAxisDAgg])
     .join('g')
     .call((s) => renderAxisLayout(s, 'horizontal'))
     .classed(`axis-${horizontalAxisType}`, true)
+  data[horizontalAxisType].d3Axis = horizontalAxisD.d3Axis
 }

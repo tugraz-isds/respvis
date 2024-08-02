@@ -12,14 +12,14 @@ export type WindowArgs = RenderArgs & {
 
 export type Window = Required<Omit<WindowArgs, 'breakpoints' | 'tooltip'>> & {
   breakpoints: ComponentBreakpoints,
-  windowSettings: Revertible<WindowSettings>,
+  settings: Revertible<WindowSettings>,
   tooltip: Tooltip
 }
 
 export function validateWindow(args: WindowArgs): Window {
   return {...args,
     breakpoints: new ComponentBreakpoints(args.breakpoints),
-    windowSettings: new Revertible<WindowSettings>({ ...defaultWindowSettings }),
+    settings: new Revertible<WindowSettings>({ ...defaultWindowSettings }),
     tooltip: new Tooltip(args.tooltip)
   }
 }

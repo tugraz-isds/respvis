@@ -6,7 +6,7 @@ import {windowSettingsKeys} from "../../../window/window-settings";
 import {renderFieldset} from "../../tool/render/render-fieldset";
 
 export function renderDecimalNumberOptions(selection: Selection, renderer: Renderer) {
-  const currentSettings = renderer.windowS.datum().windowSettings.state
+  const currentSettings = renderer.windowS.datum().settings.state
   const onChangeActive = (e: InputEvent, type: string) => {
     currentSettings[type] = (e.target as HTMLInputElement).checked
     renderer.windowS.dispatch('resize')

@@ -14,9 +14,8 @@ export type BaseAxisArgs = BaseAxisUserArgs & RenderArgs & {
 }
 
 export type BaseAxis = LightWeightAxis & {
-  originalAxis: BaseAxis,
   series: DataSeries
-  d3Axis?: D3Axis<any> //axis available after first render
+  d3Axis?: D3Axis<any> //d3 axis generator available after first render of axis
 }
 
 export type Axis = BaseAxis | CartesianAxis | KeyedAxis
@@ -26,11 +25,8 @@ export interface ConfigureAxisFn {
 }
 
 export function validateBaseAxis(args: BaseAxisArgs): BaseAxis {
-  const axis: BaseAxis = {
+  return {
     ...validateLightWeightAxis(args),
-    originalAxis: this,
     series: args.series
   }
-  axis.originalAxis = axis
-  return axis
 }

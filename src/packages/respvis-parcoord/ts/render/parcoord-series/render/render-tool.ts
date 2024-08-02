@@ -19,13 +19,13 @@ export function renderTool(toolbarS: Selection<HTMLDivElement>, series: Parcoord
 }
 
 function equidistantAxesOptionsRender(selection: Selection, series: ParcoordSeries) {
-  const {windowSettings} = series.renderer.windowS.datum()
+  const {settings} = series.renderer.windowS.datum()
   const onChange = (e: InputEvent, type: keyof WindowSettings) => {
-    windowSettings.setDeferred(type, (e.target as HTMLInputElement).checked)
+    settings.setDeferred(type, (e.target as HTMLInputElement).checked)
     // windowSettings[type] = (e.target as HTMLInputElement).checked
   }
-  const defaultVal = windowSettings.snapshot['parcoordEquidistantAxes'] ??
-    windowSettings.get('parcoordEquidistantAxes')
+  const defaultVal = settings.snapshot['parcoordEquidistantAxes'] ??
+    settings.get('parcoordEquidistantAxes')
 
   const data = [{
     legend: 'Parallel Coordinates Settings',
@@ -47,7 +47,7 @@ function confirmButtonRender(selection: Selection<HTMLDialogElement, DialogData>
     .join('button')
     .classed('button--icon button--confirm', true)
     .on('click.confirm', function () {
-      series.renderer.windowS.datum().windowSettings.update()
+      series.renderer.windowS.datum().settings.update()
       select<HTMLDialogElement, DialogData>(this.closest('dialog')!).datum()?.triggerExit()
       onDragEndAxisParcoord(series.renderData.axes[0])
     });

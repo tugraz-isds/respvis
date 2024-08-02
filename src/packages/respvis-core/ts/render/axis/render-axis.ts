@@ -108,6 +108,5 @@ function d3Axis(
   const axis = axisGenerator(filteredScaledValues.scale)
   configureAxisValid(axis)
   axisS.datum().d3Axis = axis
-  axisS.datum().originalAxis.d3Axis = axis
   return axis;
 }

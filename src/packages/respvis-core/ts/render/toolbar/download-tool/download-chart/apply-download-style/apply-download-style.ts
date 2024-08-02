@@ -14,8 +14,8 @@ import {
 import {createCSSRule} from "../../../../toolbar/download-tool/download-chart/apply-download-style/create-cssrule";
 
 export function applyDownloadStyle(original: SVGSVGElement, clone: SVGSVGElement, renderer: Renderer) {
-  const { windowSettings } = renderer.windowS.datum()
-  switch (windowSettings.get('downloadStyleType')) {
+  const { settings } = renderer.windowS.datum()
+  switch (settings.get('downloadStyleType')) {
     case "embedded": embedCSS(original, clone); break
     case "inline": attrsFromComputedStyle(clone, original); break
     default: {
