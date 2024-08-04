@@ -7,7 +7,7 @@ import {addLegendHoverHighlighting} from "../../legend/legend-highlighting";
 import {renderToolbar} from "../../toolbar/render-toolbar";
 import {DataSeries} from "../../data-series";
 import {addSeriesHighlighting} from "../../data-series/data-series-highlighting";
-import {renderSeriesTooltip} from "respvis-tooltip";
+import {renderDataSeriesTooltip} from "respvis-tooltip";
 import {renderLabelSeries} from "../../label";
 import {MarkerPrimitive} from "../../marker-primitive/marker-primitive";
 
@@ -61,7 +61,7 @@ export abstract class DataSeriesChartMixin extends Chart {
 
   addAllSeriesFeatures(seriesS: Selection<SVGGElement, DataSeries>) {
     seriesS.call(addSeriesHighlighting)
-      .call(renderSeriesTooltip)
+      .call(renderDataSeriesTooltip)
       .call((s) => this.addSeriesLabels(s))
   }
 }

@@ -44,7 +44,7 @@ export class Point implements Circle, MarkerPrimitive {
       ...this.labelData,
       x: this.getLabelX(),
       y: this.getLabelY(),
-      primitive: this,
+      marker: this,
       text: this.labelData.format(this, this.labelData.value),
     }
   }

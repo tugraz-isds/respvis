@@ -3,11 +3,11 @@ import {DataSeries} from 'respvis-core';
 import {tooltipSelector} from './tooltip';
 
 /**
- * Generator for the tooltip content of series.
+ * Generator for the tooltip content of data series.
  */
-export type SeriesTooltipGenerator<E extends Element, D> = (item: E, data: D) => string;
+export type DataSeriesTooltipGenerator<E extends Element, D> = (item: E, data: D) => string;
 
-export function renderSeriesTooltip<E extends Element, D>(seriesS: Selection<Element, DataSeries>) {
+export function renderDataSeriesTooltip<E extends Element, D>(seriesS: Selection<Element, DataSeries>) {
   const tooltip = seriesS.datum().renderer.windowS.datum().tooltip
 
   const seriesTooltipS = select(tooltipSelector)

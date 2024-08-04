@@ -1,12 +1,12 @@
 import {CartesianSeriesArgs, CartesianSeriesUserArgs} from "respvis-cartesian";
 import {clonePointSeriesData, type Point, PointLabelsUserArgs, PointSeries, RadiusUserArgs} from "respvis-point";
-import {SeriesTooltipGenerator} from "respvis-tooltip";
+import {DataSeriesTooltipGenerator} from "respvis-tooltip";
 import {DataSeries} from "respvis-core";
 
 export type LineSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
   labels?: PointLabelsUserArgs
   radii?: RadiusUserArgs
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
+  markerTooltipGenerator?: DataSeriesTooltipGenerator<SVGCircleElement, Point>
 }
 
 export type LineSeriesArgs = LineSeriesUserArgs & Omit<CartesianSeriesArgs, 'original'> & {

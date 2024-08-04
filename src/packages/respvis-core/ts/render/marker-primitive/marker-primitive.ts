@@ -3,10 +3,10 @@ import {Orientation, Polarity} from "../../constants";
 import {Key} from "../../utilities";
 
 export interface MarkerPrimitiveArgs {
+  key: Key
+  styleClass: string
   category?: string
   categoryFormatted?: string
-  styleClass: string
-  key: Key
 }
 
 //TODO: extend Position

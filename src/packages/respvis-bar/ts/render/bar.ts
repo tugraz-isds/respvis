@@ -44,7 +44,7 @@ export class Bar implements BarArgs, MarkerPrimitive {
     return {
       ...this.labelData,
       ...(orientation === 'horizontal' ? this.getLabelPositionHorizontal() : this.getLabelPositionVertical()),
-      primitive: this,
+      marker: this,
       text: this.labelData.format(this, this.labelData.value)
     }
   }

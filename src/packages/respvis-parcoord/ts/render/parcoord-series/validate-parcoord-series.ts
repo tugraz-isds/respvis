@@ -17,7 +17,7 @@ import {
   Zoom,
   ZoomArgs
 } from "respvis-core";
-import {SeriesTooltipGenerator} from "respvis-tooltip";
+import {DataSeriesTooltipGenerator} from "respvis-tooltip";
 import {Line} from "respvis-line";
 import {KeyedAxis, validateKeyedAxis} from "../validate-keyed-axis";
 import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal, scalePoint, ScalePoint} from "d3";
@@ -29,7 +29,7 @@ export type ParcoordSeriesUserArgs = DataSeriesUserArgs & {
     axis: BaseAxisUserArgs
     zoom?: ZoomArgs
   }[],
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Line>
+  markerTooltipGenerator?: DataSeriesTooltipGenerator<SVGRectElement, Line>
 }
 export type ParcoordSeriesArgs = DataSeriesArgs & ParcoordSeriesUserArgs & {
   original?: ParcoordSeries
@@ -44,7 +44,7 @@ export type ParcoordSeriesData = DataSeriesData & {
   zooms: (Zoom | undefined)[]
   axesInverted: boolean[]
   //TODO: implement usage and initialization of markerTooltipGenerator for parcoords
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGPathElement, Line>
+  markerTooltipGenerator?: DataSeriesTooltipGenerator<SVGPathElement, Line>
 }
 
 export function validateParcoordSeriesArgs(args: ParcoordSeriesArgs, series: ParcoordSeries): ParcoordSeriesData {

@@ -31,7 +31,7 @@ export function renderLabelSeries<D extends MarkerPrimitive>(parentS: Selection,
 
 export function renderLabels<D extends Label>(seriesS: Selection, labels: D[]) {
   return seriesS.selectAll<SVGTextElement, D>('text')
-    .data(labels, (d) => d.primitive.key.rawKey)
+    .data(labels, (d) => d.marker.key.rawKey)
     .call((s) => joinLabelSeries(seriesS, s));
 }
 
@@ -65,7 +65,7 @@ function joinLabelSeries(seriesS: Selection, joinS: Selection<Element, Label>): 
         .call((t) => positionToTransformAttr(t, d))
     )
     .text((d) => d.text)
-    .attr('data-key', (d) => d.primitive.key.rawKey)
-    .attr('data-polarity', (d) => d.primitive.polarity ? d.primitive.polarity : null)
+    .attr('data-key', (d) => d.marker.key.rawKey)
+    .attr('data-polarity', (d) => d.marker.polarity ? d.marker.polarity : null)
     .call((s) => seriesS.dispatch('update', {detail: {selection: s}}));
 }

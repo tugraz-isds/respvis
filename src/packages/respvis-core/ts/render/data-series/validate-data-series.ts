@@ -8,14 +8,14 @@ import {
 } from "../../data";
 import {ActiveKeyMap, SeriesKey} from "../../constants";
 import {RenderArgs} from "../chart";
-import {SeriesTooltipGenerator} from "respvis-tooltip";
+import {DataSeriesTooltipGenerator} from "respvis-tooltip";
 import {DataSeries} from "./data-series";
 import {mergeKeys} from "../../utilities";
 
 export type DataSeriesUserArgs = {
   categories?: CategoriesUserArgs
   color?: SequentialColorUserArgs
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGElement, any>
+  markerTooltipGenerator?: DataSeriesTooltipGenerator<SVGElement, any>
   flipped?: ResponsiveValueUserArgs<boolean>
 }
 export type DataSeriesArgs = DataSeriesUserArgs & RenderArgs & {
@@ -26,7 +26,7 @@ export type DataSeriesData = {
   color?: SequentialColor
   key: SeriesKey
   keysActive: ActiveKeyMap
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGElement, any>
+  markerTooltipGenerator?: DataSeriesTooltipGenerator<SVGElement, any>
   getMergedKeys: () => string[]
   getCombinedKey: (i: number) => string
 }

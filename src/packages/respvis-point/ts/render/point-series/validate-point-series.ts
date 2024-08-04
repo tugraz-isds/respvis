@@ -7,7 +7,7 @@ import {
 } from "respvis-cartesian";
 import {isBaseRadiusUserArgs, Radius, RadiusUserArgs, validateBaseRadius, validateBubbleRadius} from "../../data";
 import {PointLabelsDataCollection, PointLabelsUserArgs} from "../point-label";
-import {SeriesTooltipGenerator} from "respvis-tooltip";
+import {DataSeriesTooltipGenerator} from "respvis-tooltip";
 import type {Point} from "../point";
 import {PointSeries} from "./point-series";
 
@@ -15,13 +15,13 @@ export type PointSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGe
   radii?: RadiusUserArgs
   original?: PointSeries
   labels?: PointLabelsUserArgs
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
+  markerTooltipGenerator?: DataSeriesTooltipGenerator<SVGCircleElement, Point>
 }
 export type PointSeriesArgs = PointSeriesUserArgs & CartesianSeriesArgs
 export type PointSeriesData = CartesianSeriesData & {
   radii: Radius
   labels?: PointLabelsDataCollection
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGCircleElement, Point>
+  markerTooltipGenerator?: DataSeriesTooltipGenerator<SVGCircleElement, Point>
 }
 
 export function validatePointSeriesArgs(args: PointSeriesArgs, series: PointSeries): PointSeriesData {

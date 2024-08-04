@@ -11,7 +11,7 @@ import {
   ScaledValuesNumericUserArgs
 } from "respvis-core";
 import {Bar, BarLabelsDataCollection, BarLabelsUserArg} from "respvis-bar";
-import {SeriesTooltipGenerator} from "respvis-tooltip";
+import {DataSeriesTooltipGenerator} from "respvis-tooltip";
 import {BarBaseSeries} from "./bar-base-series";
 
 export type BarBaseSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltipGenerator'> & {
@@ -19,13 +19,13 @@ export type BarBaseSeriesUserArgs = Omit<CartesianSeriesUserArgs, 'markerTooltip
   y: ScaledValuesNumericUserArgs
   original?: BarBaseSeries
   labels?: BarLabelsUserArg
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Bar>
+  markerTooltipGenerator?: DataSeriesTooltipGenerator<SVGRectElement, Bar>
 }
 export type BarBaseSeriesArgs = BarBaseSeriesUserArgs & CartesianSeriesArgs
 export type BarBaseSeriesData = CartesianSeriesData & {
   x: ScaledValuesCategorical
   labels?: BarLabelsDataCollection
-  markerTooltipGenerator?: SeriesTooltipGenerator<SVGRectElement, Bar>
+  markerTooltipGenerator?: DataSeriesTooltipGenerator<SVGRectElement, Bar>
 }
 
 export function validateBarBaseSeriesArgs(args: BarBaseSeriesArgs, series: BarBaseSeries): BarBaseSeriesData {
