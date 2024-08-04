@@ -48,7 +48,9 @@
 
 
   /*spacings and lengths*/
+  --px-in-rem: calc(1rem / 16);
   --rect-slider-breadth: 13;
+  --axis-stroke-width: var(--px-in-rem);
   --chart-padding-left: 0;
   --chart-padding-top: 0;
   --chart-padding-right: 0;

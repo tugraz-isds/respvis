@@ -30,6 +30,10 @@ import {Meta} from "@storybook/blocks";
   which can be aligned independently.
 - Add required responsive title to scaled values of all kinds.
   Add optional callback for axis titles which is by default this responsive value.
+- Properties like radii must be interpreted as REM, to be scaled accordingly when
+  the browser font size changes (for example a chart creator specifies 5px or simply 5
+  because it easier to think in px. Internally the value is converted before being used
+  for radii lenghts).
 
 ## Documentation and Testing
 

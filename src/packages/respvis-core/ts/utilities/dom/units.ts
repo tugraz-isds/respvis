@@ -1,4 +1,10 @@
-import {CSSLengthRegex, CSSLengthUnit, LengthDimension, UnitValue} from "../../constants/types";
+import {
+  CSSLengthRegex,
+  CSSLengthUnit,
+  isCSSBreakpointLengthValue,
+  LengthDimension,
+  UnitValue
+} from "../../constants/types";
 import {ErrorMessages} from "../../constants/error";
 
 //TODO: maybe add additional units like ch, vh, etc.
@@ -17,4 +23,10 @@ export function cssLengthInPx(length: UnitValue<CSSLengthUnit>, element?: Elemen
   if(unit === '%' && element && dim) return valueNumber / 100 * element.getBoundingClientRect()[dim]
   if(unit === '%' && !(element && dim)) throw new Error(ErrorMessages.evaluatingCSSUnitError)
   throw new Error(ErrorMessages.evaluatingCSSUnitError)
+}
+
+export function getCSSVarLengthInPx(element: Element, cssVar: string, defaultValue: number) {
+  const val = getComputedStyle(element).getPropertyValue(cssVar)
+  if (isCSSBreakpointLengthValue(val)) return cssLengthInPx(val, element)
+  return defaultValue
 }

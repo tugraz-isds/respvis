@@ -18,12 +18,14 @@
 
   .domain {
     stroke: var(--color-axes-line);
+    stroke-width: var(--axis-stroke-width, 1px);
     fill: none;
   }
 
   .tick {
     line {
       stroke: var(--color-axes-line);
+      stroke-width: var(--axis-stroke-width, 1px);
     }
 
     text {

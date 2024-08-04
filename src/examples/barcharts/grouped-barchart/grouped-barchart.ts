@@ -1,4 +1,4 @@
-import {BarChart, BarChartUserArgs} from './libs/respvis/respvis.js';
+import {BarChart, BarChartUserArgs, layouterCompute} from './libs/respvis/respvis.js';
 import {compensations, sites, years} from './data/compensation-employees.js';
 import * as d3 from './libs/d3-7.6.0/d3.js'
 
@@ -86,4 +86,11 @@ export function renderGroupedBarChart(selector: string) {
   const chartWindow = d3.select(selector).append('div')
   const renderer = new BarChart(chartWindow, barChartArgs)
   renderer.buildChart()
+  const itemHover = () => {
+    layouterCompute(renderer.layouterS)
+    renderer.render()
+  }
+  chartWindow.selectAll('.legend-item')
+    .on('mouseenter', itemHover)
+    .on('mouseleave', itemHover)
 }

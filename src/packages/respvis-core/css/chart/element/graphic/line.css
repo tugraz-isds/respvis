@@ -1,14 +1,14 @@
 path.line {
   fill: none;
-  stroke-width: 2;
+  stroke-width: calc(2 * var(--px-in-rem));
   &.animated {
     stroke-width: 0;
     transition: stroke-width calc(var(--transition-time-line-enter-ms) * 1ms),
     filter calc(var(--transition-time-line-enter-ms) * 1ms);
     &.entering, &.enter-done {
-      stroke-width: 2;
+      stroke-width: calc(2 * var(--px-in-rem));
       &.highlight {
-        stroke-width: 4;
+        stroke-width: calc(4 * var(--px-in-rem));
         filter: brightness(var(--highlight-brightness));
       }
     }
@@ -16,15 +16,15 @@ path.line {
 
   &.line--origin {
     stroke: var(--color-origin-line);
-    stroke-width: 1;
+    stroke-width: calc(1 * var(--px-in-rem));
   }
   &.line--grid {
     stroke: var(--color-grid-line);
-    stroke-width: 0.5;
+    stroke-width: calc(0.5 * var(--px-in-rem));
   }
 }
 
 .highlight path.line:not(.exiting, .exit-done),
 path.line.highlight:not(.exiting, .exit-done) {
-  stroke-width: 4;
+  stroke-width: calc(4 * var(--px-in-rem));
 }

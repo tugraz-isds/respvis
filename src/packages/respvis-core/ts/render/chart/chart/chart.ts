@@ -174,7 +174,7 @@ export abstract class Chart implements Renderer {
     this.onResizeRender()
   }
 
-  private render() {
+  public render() {
     if (!(this.windowS.node() as Element).isConnected || this.unmounted) return
     this.renderChart()
     this.renderContent()
