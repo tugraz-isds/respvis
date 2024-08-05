@@ -12,9 +12,6 @@
     gap: 0.5rem;
     border-radius: 0.25rem;
     transition: transform 100ms linear, filter 100ms linear;
-    &:hover {
-      filter: brightness(90%);
-    }
     &:active {
       transform: scale(0.95);
       filter: brightness(90%);
@@ -58,9 +55,26 @@
     position: relative;
     min-height: 1em;
     min-width: 1em;
-    &:hover .tooltip-simple {
+    &:active .tooltip-simple {
       visibility: visible;
       opacity: 1;
+    }
+  }
+}
+
+/*Add Hover Highlighting on desktop devices*/
+@media (hover: hover) {
+  .window-rv {
+    .button--icon {
+      &:hover {
+        filter: brightness(90%);
+      }
+    }
+    .info__button {
+      &:hover .tooltip-simple {
+        visibility: visible;
+        opacity: 1;
+      }
     }
   }
 }

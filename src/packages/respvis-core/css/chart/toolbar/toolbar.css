@@ -38,7 +38,7 @@
         width: auto;
         transition: rotate 500ms;
       }
-      &:hover, &[transition='enter'] { filter: brightness(80%); }
+      &:active, &[transition='enter'] { filter: brightness(80%); }
     }
 
     .toolbar__btn {
@@ -52,7 +52,7 @@
         height: 100%;
         width: auto;
       }
-      &:hover, &[transition='enter'] { filter: brightness(80%); }
+      &:active, &[transition='enter'] { filter: brightness(80%); }
       &:active { scale: 0.75 }
     }
   }
@@ -85,9 +85,32 @@
 
     .tool {
       height: 100%;
-      & > .toolbar__btn:hover .tooltip-simple {
+      & > .toolbar__btn:active .tooltip-simple {
         visibility: visible;
         opacity: 1;
+      }
+    }
+  }
+}
+
+/*Add Hover Highlighting on desktop devices*/
+@media (hover: hover) {
+  .window-rv {
+    .toolbar {
+      .toolbar__opener {
+        &:hover { filter: brightness(80%); }
+      }
+      .toolbar__btn {
+        &:hover { filter: brightness(80%); }
+      }
+    }
+
+    .toolbar__content {
+      .tool {
+        & > .toolbar__btn:hover .tooltip-simple {
+          visibility: visible;
+          opacity: 1;
+        }
       }
     }
   }
