@@ -1,10 +1,12 @@
 import {select, Selection} from "d3";
 import {renderAxisSequence} from "respvis-core";
-import {handleAxisZoomAndDrag} from "./parcoord-chart-zoom-axis";
+import {setUpAxisZoom} from "./set-up-axis-zoom";
 import {renderAxisLimiter} from "./render-axis-limiter";
 import {renderAxisInverter} from "./render-axis-inverter";
 import {KeyedAxis} from "../../validate-keyed-axis";
 import {ParcoordSeries} from "respvis-parcoord";
+import {setUpAxisDrag} from "./set-up-axis-drag";
+import {updateAxisCursorClasses} from "./update-axis-cursor-classes";
 
 export function renderParcoordAxisSeries(seriesS: Selection<Element, ParcoordSeries>) {
   seriesS
@@ -14,10 +16,13 @@ export function renderParcoordAxisSeries(seriesS: Selection<Element, ParcoordSer
     .each((d, i, g) => {
       const axisS = select<SVGGElement, KeyedAxis>(g[i])
       const orientation = d.series.responsiveState.currentlyFlipped ? 'horizontal' : 'vertical'
+
       renderAxisSequence(axisS, orientation)
       renderAxisLimiter(axisS)
-      handleAxisZoomAndDrag(axisS, i)
+      setUpAxisDrag(axisS, i)
+      setUpAxisZoom(axisS, i)
       renderAxisInverter(axisS)
+      updateAxisCursorClasses(axisS)
     })
     .attr('transform', (d, i) => {
       const {x, y} = d.series.responsiveState.getAxisPosition(d.key)

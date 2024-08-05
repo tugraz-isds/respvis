@@ -3,6 +3,7 @@ import {
   bboxDiffSVG,
   calcLimited,
   cssVarFromSelection,
+  hasDrag,
   relateDragWayToSelection,
   relateDragWayToSelectionByDiff,
   renderBgSVGOnlyBBox,
@@ -109,7 +110,8 @@ function addLimiterDrag(axisS: Selection<SVGGElement, KeyedAxis>) {
   const rectLimiterS = axisS.selectAll('.slider-rect')
 
   function getPercent(e) {
-    const dragDown = relateDragWayToSelection(e, renderer.drawAreaBgS)
+    if (!(e.sourceEvent instanceof MouseEvent || e.sourceEvent instanceof TouchEvent)) return
+    const dragDown = relateDragWayToSelection(e.sourceEvent, renderer.drawAreaBgS)
     if (dragDown === undefined) return undefined
     return responsiveState.currentlyFlipped ? dragDown.fromLeftPercent : 1 - dragDown.fromTopPercent
   }
@@ -147,16 +149,32 @@ function addLimiterDrag(axisS: Selection<SVGGElement, KeyedAxis>) {
 
   const throttledDrag = throttle(onDrag, 25)
 
-  upperChevronBackgroundS.call(drag()
-    .on("drag.dragAxisLimitUpper", (e) => throttledDrag.func(e, 'upper'))
-    .on("end.dragAxisLimitUpper", (e) => onDrag(e, 'upper'))
-  )
-  lowerChevronBackgroundS.call(drag()
-    .on("drag.dragAxisLimitLower", (e) => throttledDrag.func(e, 'lower'))
-    .on("end.dragAxisLimitLower", (e) => onDrag(e, 'lower'))
-  )
-  rectLimiterS.call(drag()
-    .on("drag.dragAxisLimitRect", (e) => throttledDrag.func(e, 'rect'))
-    .on("end.dragAxisLimitRect", (e) => onDrag(e, 'rect'))
-  )
+
+  function setUpUpperLimiterDrag() {
+    if (hasDrag(upperChevronBackgroundS)) return
+    upperChevronBackgroundS.call(drag()
+      .on("drag.dragAxisLimitUpper", (e) => throttledDrag.func(e, 'upper'))
+      .on("end.dragAxisLimitUpper", (e) => onDrag(e, 'upper'))
+    )
+  }
+
+  function setUpLowerLimiterDrag() {
+    if (hasDrag(lowerChevronBackgroundS)) return
+    lowerChevronBackgroundS.call(drag()
+      .on("drag.dragAxisLimitLower", (e) => throttledDrag.func(e, 'lower'))
+      .on("end.dragAxisLimitLower", (e) => onDrag(e, 'lower'))
+    )
+  }
+
+  function setUpRectLimiterDrag() {
+    if (hasDrag(rectLimiterS)) return
+    rectLimiterS.call(drag()
+      .on("drag.dragAxisLimitRect", (e) => throttledDrag.func(e, 'rect'))
+      .on("end.dragAxisLimitRect", (e) => onDrag(e, 'rect'))
+    )
+  }
+
+  setUpUpperLimiterDrag()
+  setUpLowerLimiterDrag()
+  setUpRectLimiterDrag()
 }

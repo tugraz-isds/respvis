@@ -1,18 +1,22 @@
-import {D3DragEvent, D3ZoomEvent, Selection} from "d3";
+import {D3DragEvent, Selection} from "d3";
 import {cursorClasses} from "../../constants/dom/cursor";
 import {detectClassChange} from "../dom";
+import {calcLimited} from "../math";
+import {elementFromSelection} from "./selection";
 
-export function relateDragWayToSelection(e: D3ZoomEvent<any, any> | D3DragEvent<any, any, any>, selection: Selection<Element>) {
+export function relateDragWayToSelection(e: MouseEvent | TouchEvent, selection: Selection<Element>) {
   const rect = selection.node()?.getBoundingClientRect()
-  const event = e.sourceEvent
-  if (!rect || !event) return undefined
+  if (!rect || !e || (e instanceof TouchEvent && e.touches?.[0] === undefined)) return undefined
 
-  let fromLeftTotal = event.clientX - rect.left
-  let fromTopTotal = event.clientY - rect.top
-  fromLeftTotal = fromLeftTotal < 0 ? 0 : fromLeftTotal > rect.width ? rect.width : fromLeftTotal
-  fromTopTotal = fromTopTotal < 0 ? 0 : fromTopTotal > rect.height ? rect.height : fromTopTotal
+  const pointerPositionX = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX
+  const pointerPositionY = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY
+
+  const fromLeftTotal = calcLimited(pointerPositionX - rect.left, 0, rect.width)
+  const fromTopTotal = calcLimited(pointerPositionY - rect.top, 0, rect.height)
+
   const fromLeftPercent = fromLeftTotal / rect.width
   const fromTopPercent = fromTopTotal / rect.height
+
   return {fromLeftPercent, fromTopPercent}
 }
 
@@ -22,6 +26,11 @@ export function relateDragWayToSelectionByDiff(e: D3DragEvent<any, any, any>, se
   const dyRelative = e.dy / rect.height
   const dxRelative = e.dx / rect.width
   return {dyRelative, dxRelative}
+}
+
+export function hasDrag(s: Selection) {
+  return s.empty() ? false : !!elementFromSelection(s)
+    ?.['__on']?.find(listener => 'name' in listener && listener.name === 'drag')
 }
 
 export function attachActiveCursorLocking(selection: Selection<Element>) {

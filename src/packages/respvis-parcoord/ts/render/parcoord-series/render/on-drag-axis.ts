@@ -3,7 +3,8 @@ import {relateDragWayToSelection, RVArray} from "respvis-core";
 import {KeyedAxis} from "../../validate-keyed-axis";
 
 export function onDragAxisParcoord(e: D3ZoomEvent<any, any>, d: KeyedAxis, drawAreaBackgroundS: Selection<SVGRectElement>) {
-  const dragWay = relateDragWayToSelection(e, drawAreaBackgroundS)
+  if (!(e.sourceEvent instanceof MouseEvent || e.sourceEvent instanceof TouchEvent)) return
+  const dragWay = relateDragWayToSelection(e.sourceEvent, drawAreaBackgroundS)
   if (!dragWay) return
   const originalData = d.series.originalData
   const percentageDomain = originalData.axesPercentageScale.domain()
