@@ -4,6 +4,8 @@ export * from './geometry'
 export * from './array'
 export * from './key'
 export * from './math'
-export * from './dom/element'
+export * from './dom/element/element'
 export * from './typescript'
 export * from './unique'
+export {elementAbsoluteBounds} from "./dom/element/element-bounds";
+export {elementRelativeBounds} from "./dom/element/element-bounds";

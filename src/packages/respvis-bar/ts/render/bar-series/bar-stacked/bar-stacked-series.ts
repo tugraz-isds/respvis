@@ -4,11 +4,11 @@ import {
   ScaledValuesCategorical,
   ScaledValuesCumulativeSummation,
   ScaledValuesNumeric,
+  ScaleNumeric,
 } from "respvis-core";
 import {createStackedBarRect} from "./bar-stacked-creation";
 import {BarBaseSeries} from "../bar-base/bar-base-series";
 import {Bar} from "../../bar";
-import {ScaleNumeric} from "respvis-core/data/scale/scales";
 import {
   BarBaseSeriesArgs,
   BarBaseSeriesData,

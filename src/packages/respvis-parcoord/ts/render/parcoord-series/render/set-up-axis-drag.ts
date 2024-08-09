@@ -1,5 +1,5 @@
 import {drag, Selection} from "d3";
-import {KeyedAxis} from "respvis-parcoord";
+import {KeyedAxis} from "../../validate-keyed-axis";
 import {hasDrag, throttle} from "respvis-core";
 import {onDragAxisParcoord, onDragEndAxisParcoord} from "./on-drag-axis";
 

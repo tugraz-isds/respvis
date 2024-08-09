@@ -1,5 +1,5 @@
 import {D3ZoomEvent, zoomIdentity} from "d3";
-import {KeyedAxis} from "respvis-parcoord";
+import {KeyedAxis} from "../../validate-keyed-axis";
 
 export function onZoomAxis(e: D3ZoomEvent<any, any>, d: KeyedAxis) {
   const transform = e.transform

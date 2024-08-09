@@ -8,7 +8,7 @@ import {
   positionToString,
 } from '../../position/position';
 import {Size, sizeEquals, sizeFromAttrs, sizeRound, sizeToAttrs, sizeToString} from './size';
-import {isElement} from "../../../dom/element";
+import {isElement} from "../../../dom/element/element";
 import {select} from "d3";
 
 export interface Rect extends Position, Size {}

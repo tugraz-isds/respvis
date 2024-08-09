@@ -1,7 +1,7 @@
 import {Selection} from "d3";
 import {createSelectionClasses, SVGGroupingElement} from "respvis-core";
 import {Line, LineSeries} from "respvis-line";
-import {ParcoordSeries} from "respvis-parcoord";
+import {ParcoordSeries} from "../parcoord-series";
 import {renderParcoordLineSeries} from "./render-line-series";
 import {renderParcoordAxisSeries} from "./render-parcoord-axis-series";
 

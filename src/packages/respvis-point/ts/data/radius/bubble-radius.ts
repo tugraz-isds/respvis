@@ -6,6 +6,7 @@ import {
   Renderer,
   ScaledValuesNumeric,
   ScaledValuesNumericUserArgs,
+  ScaleNumeric,
   validateBaseAxis,
   validateScaledValuesSpatial
 } from "respvis-core";
@@ -17,7 +18,6 @@ import {
 } from "respvis-core/data/responsive-property";
 import {Extrema, isExtrema} from "./extrema";
 import {scaleLinear} from "d3";
-import {ScaleNumeric} from "respvis-core/data/scale/scales";
 
 export type BubbleRadiusUserArgs = ScaledValuesNumericUserArgs & {
   extrema: BreakpointPropertyUserArgs<Extrema>

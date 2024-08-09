@@ -1,7 +1,7 @@
 import {SelectionOrTransition} from '../../d3/selection';
 import {Position, positionEquals, positionRound} from '../position/position';
 import {Rect, rectCenter} from './rect/rect';
-import {isElement} from "../../dom/element";
+import {isElement} from "../../dom/element/element";
 import {select} from "d3";
 
 export interface Circle {

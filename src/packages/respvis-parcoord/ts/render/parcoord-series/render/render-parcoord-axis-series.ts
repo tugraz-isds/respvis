@@ -4,7 +4,7 @@ import {setUpAxisZoom} from "./set-up-axis-zoom";
 import {renderAxisLimiter} from "./render-axis-limiter";
 import {renderAxisInverter} from "./render-axis-inverter";
 import {KeyedAxis} from "../../validate-keyed-axis";
-import {ParcoordSeries} from "respvis-parcoord";
+import {ParcoordSeries} from "../parcoord-series";
 import {setUpAxisDrag} from "./set-up-axis-drag";
 import {updateAxisCursorClasses} from "./update-axis-cursor-classes";
 

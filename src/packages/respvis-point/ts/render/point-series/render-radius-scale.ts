@@ -1,4 +1,4 @@
-import {PointSeries} from "respvis-point";
+import {PointSeries} from "./point-series";
 import {
   Axis,
   BreakpointProperty,

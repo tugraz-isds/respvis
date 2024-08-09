@@ -1,6 +1,6 @@
 import {SelectionOrTransition} from "../../d3";
 import {Position} from "../position";
-import {isElement} from "../../dom/element";
+import {isElement} from "../../dom/element/element";
 import {select} from "d3";
 
 export function lineToPath(

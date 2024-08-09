@@ -1,5 +1,4 @@
 import {select, Selection} from 'd3';
-import {elementAbsoluteBounds, elementRelativeBounds} from '../../utilities/dom/element';
 import {positionToTransformAttr} from '../../utilities/geometry/position/position';
 import {rectEquals, rectFromString, rectToAttrs, rectToString,} from '../../utilities/geometry/shapes/rect/rect';
 import {circleInsideRect, circleToAttrs} from '../../utilities/geometry/shapes/circle';
@@ -7,6 +6,7 @@ import {cssVars} from "../../constants/cssVars";
 import {ellipseInsideRect, ellipseToAttrs} from "../../utilities/geometry/shapes/ellipse";
 import {SVGTwinInformation} from "./layouter-compute";
 import {positionSVGTextToLayoutCenter} from "../../utilities";
+import {elementAbsoluteBounds, elementRelativeBounds} from "../../utilities/dom/element/element-bounds";
 
 export function layoutNodeStyleAttr(selection: Selection<HTMLDivElement, SVGTwinInformation>): void {
   selection.each((d, i, g) => {

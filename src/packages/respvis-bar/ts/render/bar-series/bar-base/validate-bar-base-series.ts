@@ -10,7 +10,8 @@ import {
   ScaledValuesCategoricalUserArgs,
   ScaledValuesNumericUserArgs
 } from "respvis-core";
-import {Bar, BarLabelsDataCollection, BarLabelsUserArg} from "respvis-bar";
+import {Bar} from "../../bar";
+import {BarLabelsDataCollection, BarLabelsUserArg} from "../../bar-label";
 import {DataSeriesTooltipGenerator} from "respvis-tooltip";
 import {BarBaseSeries} from "./bar-base-series";
 
