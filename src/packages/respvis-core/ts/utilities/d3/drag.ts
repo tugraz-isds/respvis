@@ -6,7 +6,7 @@ import {elementFromSelection} from "./selection";
 
 export function relateDragWayToSelection(e: MouseEvent | TouchEvent, selection: Selection<Element>) {
   const rect = selection.node()?.getBoundingClientRect()
-  if (!rect || !e || (e instanceof TouchEvent && e.touches?.[0] === undefined)) return undefined
+  if (!rect || !e || (window.TouchEvent && e instanceof TouchEvent && e.touches?.[0] === undefined)) return undefined
 
   const pointerPositionX = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX
   const pointerPositionY = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY

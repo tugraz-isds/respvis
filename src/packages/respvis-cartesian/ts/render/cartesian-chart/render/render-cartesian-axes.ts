@@ -14,8 +14,8 @@ export function renderCartesianAxes<T extends CartesianChartSelection>(chartS: T
   const flipped = series.responsiveState.currentlyFlipped
   const [horizontalAxisType, verticalAxisType] = flipped ? ['y', 'x'] as const : ['x', 'y'] as const
 
-  const verticalAxisD: CartesianAxis = {...data[verticalAxisType], scaledValues: series.originalData[verticalAxisType]}
-  const horizontalAxisD: CartesianAxis = {...data[horizontalAxisType], scaledValues: series.originalData[horizontalAxisType]}
+  const verticalAxisD: CartesianAxis = {...data[verticalAxisType], scaledValues: series.renderData[verticalAxisType]}
+  const horizontalAxisD: CartesianAxis = {...data[horizontalAxisType], scaledValues: series.renderData[horizontalAxisType]}
   const paddingWrapperS = chartS.selectAll('.padding-wrapper')
 
   //TODO: clean this stacked bar chart mess up
