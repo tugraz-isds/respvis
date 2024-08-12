@@ -3,19 +3,11 @@ import {compensations, sites, years} from './data/compensation-employees.js';
 import * as d3 from './libs/d3-7.6.0/d3.js'
 
 export function renderGroupedBarChart(selector: string) {
-  const tickOrientationHorizontal = {
-    scope: 'self',
-    dependentOn: 'width',
-    breakpointValues: {0: 90, 2: 0} //{0: 90, 1: -180, 3: 179} // demonstration purposes
-  } as const
   const axisBreakPointsWidth = {
     values: [10, 30, 50],
     unit: 'rem'
   } as const
-  const axisBreakPointsHeight = {
-    values: [10, 20, 30],
-    unit: 'rem'
-  } as const
+
   const barChartArgs: BarChartUserArgs = {
     series: {
       type: 'grouped',
@@ -52,29 +44,23 @@ export function renderGroupedBarChart(selector: string) {
     legend: {
       title: 'Year'
     },
-    // title: {
-    //   dependentOn: 'width',
-    //   mapping: {0: 'Population of Austria', 2: 'Population of Austrian Cities'},
-    // },
     x: {
       title: 'Country',
       breakpoints: {
         width: axisBreakPointsWidth,
-        height: axisBreakPointsHeight
       },
-      // verticalLayout: 'right',
-      // tickOrientation: tickOrientationHorizontal,
-      // tickOrientationFlipped: tickOrientationVertical
     },
     y: {
       title: 'Total Remuneration',
       subTitle: '[EU]',
       breakpoints: {
-        height: axisBreakPointsHeight,
         width: axisBreakPointsWidth
       },
-      // tickOrientation: tickOrientationVertical,
-      tickOrientationFlipped: tickOrientationHorizontal,
+      tickOrientationFlipped: {
+        scope: 'self',
+        dependentOn: 'width',
+        breakpointValues: {0: 90, 2: 0}
+      },
       configureAxis: {
         dependentOn: 'width',
         scope: 'chart',

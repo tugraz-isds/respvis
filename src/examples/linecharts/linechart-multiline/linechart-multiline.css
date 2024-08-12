@@ -7,59 +7,38 @@
     --chart-padding-right: 1rem;
   }
 
-  .series-label .label {
-    display: none;
-  }
-
   .legend {
     margin-left: 2rem;
-    .items {
-      gap: 1rem;
-    }
+    .items { gap: 1rem; }
   }
 
-  .point, .axis-x .tick {
-    display: none;
-  }
+  .point, .axis-x .tick { display: none; }
 
-  @container (width < 30rem) {
-    .point, .axis-x .tick {
-      display: none;
-    }
-
+  @container (width >= 30rem) {
     .point-category {
-      .point:first-of-type, .point:last-of-type { display: block; }
-      .point:nth-of-type(4n) { display: block }
-    }
-    .axis-x .tick:nth-of-type(4n) { display: block}
-  }
-
-  @container (min-width: 30rem) {
-    .point-category {
-      .point:first-of-type, .point:last-of-type { display: block; }
-      .point:nth-of-type(2n) { display: block }
+      .point:first-of-type, .point:last-of-type, .point:nth-of-type(2n) { display: block; }
     }
     .axis-x .tick { display: block}
   }
 
-  @container (max-width: 50rem) {
+  @container (width <= 50rem) {
     .chart {
       grid-template: auto auto 1fr / 1fr;
-      grid-template-areas:
-      'header'
-      'legend'
-      'padding-wrapper';
+      grid-template-areas: 'header' 'legend' 'padding-wrapper';
     }
 
     .legend {
       width: 100%;
-      margin-bottom: 2rem;
-      margin-left: 0.5rem;
+      margin-bottom: 1rem;
     }
-    .legend .items {
-      flex-direction: row;
-      width: 100%;
-      justify-content: space-evenly;
+
+    .legend .items { flex-direction: row; }
+  }
+
+  @container (width < 30rem) {
+    .point-category {
+      .point:first-of-type, .point:last-of-type, .point:nth-of-type(4n) { display: block; }
     }
+    .axis-x .tick:nth-of-type(4n) { display: block}
   }
 }

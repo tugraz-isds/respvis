@@ -8,29 +8,35 @@ import {CartesianRenderer} from "./cartesian-renderer";
 type CartesianChartSelection = Selection<SVGSVGElement, Window & CartesianChartData>
 
 export abstract class CartesianChartMixin extends Chart implements CartesianRenderer {
-  _horizontalAxisS?: Selection<SVGGElement, CartesianAxis>
   abstract get chartS(): CartesianChartSelection
-  get horizontalAxisS(): Selection<SVGGElement, CartesianAxis> {
-    return (this._horizontalAxisS && !this._horizontalAxisS.empty()) ? this._horizontalAxisS :
-      this.chartS.selectAll<SVGGElement, CartesianAxis>('.axis-bottom, .axis-top')
-  }
-  _verticalAxisS?: Selection<SVGGElement, CartesianAxis>
-  get verticalAxisS(): Selection<SVGGElement, CartesianAxis> {
-    return (this._verticalAxisS && !this._verticalAxisS.empty()) ? this._verticalAxisS :
-      this.chartS.selectAll<SVGGElement, CartesianAxis>('.axis-left, .axis-right')
+
+  get xAxisS(): Selection<SVGGElement, CartesianAxis> {
+    return this.chartS.selectAll<SVGGElement, CartesianAxis>('.axis-x')
   }
 
-  updateAxisInversionState() {
-    const inversionState = {
+  get yAxisS(): Selection<SVGGElement, CartesianAxis> {
+    return this.chartS.selectAll<SVGGElement, CartesianAxis>('.axis-y')
+  }
+
+  get horizontalAxisS(): Selection<SVGGElement, CartesianAxis> {
+    return this.chartS.selectAll<SVGGElement, CartesianAxis>('.axis-bottom, .axis-top')
+  }
+
+  get verticalAxisS(): Selection<SVGGElement, CartesianAxis> {
+    return this.chartS.selectAll<SVGGElement, CartesianAxis>('.axis-left, .axis-right')
+  }
+
+  getAxisInversionState() {
+    return {
       horizontal: this.horizontalAxisS.empty() ? false : getCurrentResponsiveValue(
         this.horizontalAxisS.datum().inverted, {chart: this.chartS, self: this.horizontalAxisS}),
       vertical: this.verticalAxisS.empty() ? false : getCurrentResponsiveValue(
-        this.verticalAxisS.datum().inverted, {chart: this.chartS, self: this._verticalAxisS})
+        this.verticalAxisS.datum().inverted, {chart: this.chartS, self: this.verticalAxisS}),
+      x: this.xAxisS.empty() ? false : getCurrentResponsiveValue(
+        this.xAxisS.datum().inverted, {chart: this.chartS, self: this.xAxisS}),
+      y: this.yAxisS.empty() ? false : getCurrentResponsiveValue(
+        this.yAxisS.datum().inverted, {chart: this.chartS, self: this.yAxisS})
     }
-
-    if (!this.horizontalAxisS.empty()) this.horizontalAxisS.datum().scaledValues.inverted = inversionState.horizontal
-    if (!this.verticalAxisS.empty()) this.verticalAxisS.datum().scaledValues.inverted = inversionState.vertical
-    return inversionState
   }
 
   renderCartesianAxis() {

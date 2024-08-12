@@ -4,6 +4,7 @@ import {getTopMakesData} from "./data/sold-cars-germany.js";
 
 export function renderParcoord(selector: string) {
   const {horsePower, prices, mileages, makes, fuel} = getTopMakesData(5)
+
   const sharedAxisConfig = {
     dependentOn: 'width',
     scope: 'chart',
@@ -11,13 +12,16 @@ export function renderParcoord(selector: string) {
       0: (axis: d3.Axis<d3.AxisDomain>) => {
         axis.tickFormat(d3.format('.2s'))
       },
-      3: (() => {})
+      3: (() => {
+      })
     }
   } as const
+
   const sharedTickOrientationFlipped = {
     dependentOn: 'width',
     breakpointValues: {0: 90, 2: 0}
   } as const
+
   const sampleSize = 500
 
   const data: ParcoordChartUserArgs = {
@@ -37,9 +41,7 @@ export function renderParcoord(selector: string) {
           }
         },
         {
-          scaledValues: {
-            values: prices.slice(0, sampleSize)
-          },
+          scaledValues: {values: prices.slice(0, sampleSize)},
           zoom: {
             in: 20,
             out: 1

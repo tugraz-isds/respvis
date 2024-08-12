@@ -2,6 +2,7 @@
   &[data-flipped="true"] {
     .series-label[layout-strategy="positive"] text { text-anchor: start; }
     .series-label[layout-strategy="negative"] text { text-anchor: end; }
+
     .series-label[layout-strategy="dynamic"] text[data-polarity="positive"] { text-anchor: start; }
     .series-label[layout-strategy="dynamic"] text[data-polarity="negative"] { text-anchor: end; }
   }

@@ -4,36 +4,25 @@
   min-height: 25rem;
   container-type: inline-size;
 
-  .window-rv {
-    --transition-time-ms: 750;
-  }
+  .window-rv { --transition-time-ms: 750;}
 
   .chart-parcoord {
     --chart-padding-left: 4rem;
     --chart-padding-right: 4rem;
     --chart-padding-top: 4rem;
+    --chart-padding-bottom: 0.8rem;
 
     path.line.animated.highlight[data-key~="s-0-c-0"] {
-      /*due to flickering for many elements*/
-      filter: unset;
-    }
-  }
-
-  @container (width >= 50rem) {
-    .chart-parcoord {
-      --chart-padding-bottom: 0.8rem;
+      filter: unset; /*due to highlight flickering for many elements*/
     }
   }
 
   @container (width < 50rem) {
     .chart-parcoord {
       --chart-padding-right: 2rem;
-    /*calc(1rem - clamp(0rem, 8vw, 1rem));*/
+      --chart-padding-bottom: 3rem;
       grid-template: auto 1fr auto / 1fr;
-      grid-template-areas:
-      'header'
-      'padding-wrapper'
-      'legend';
+      grid-template-areas: 'header' 'padding-wrapper' 'legend';
     }
 
     .legend {
@@ -41,30 +30,20 @@
       flex-direction: row;
       justify-content: center;
 
-      .title {
-        display: none;
-      }
+      .title { display: none; }
 
-      .legend__categories {
-        width: 100%;
-      }
+      .legend__categories { width: 100%; }
 
       .items {
         display: grid;
         width: 100%;
         justify-content: space-evenly;
         grid-template-columns: auto auto auto;
-
-        .legend-item {
-          justify-content: flex-start;
-        }
       }
     }
   }
+
   @container (width < 40rem) {
-    .chart-parcoord {
-      --chart-padding-right: 2rem;
-    }
     .axis.axis-sequence {
       &[data-key="a-0"] .tick, &[data-key="a-1"] .tick {
         &:nth-of-type(2n) {

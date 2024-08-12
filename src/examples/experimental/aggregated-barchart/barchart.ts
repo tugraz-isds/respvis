@@ -58,6 +58,7 @@ export function createBarChart(selector: string) {
         height: axisBreakPointsHeight,
         width: axisBreakPointsWidth
       },
+      inverted: true,
       // tickOrientation: tickOrientationVertical,
       tickOrientationFlipped: tickOrientationHorizontal,
       configureAxis: (axis) => axis.tickFormat(d3.format('.2')),
