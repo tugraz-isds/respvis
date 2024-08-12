@@ -10,6 +10,9 @@
     [data-style=categorical-2] { --color-categorical-2: #539322; }
   }
   .legend {
+    .title {
+      margin-left: 0.6rem;
+    }
     .items {
       .legend-item {
         width: 5rem;

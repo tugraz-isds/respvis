@@ -41,7 +41,6 @@
   }
   .title {
     font-size: var(--font-size-legend-title);
-    margin: 0 0.5em;
   }
   &:has(.legend__color-scale, .legend__radius-scale) {
     /*padding-right: max(1rem, var(--max-radius, 0px));*/

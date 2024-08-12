@@ -1,31 +1,17 @@
 import {formatWithDecimalZero, Point, ScatterPlot, ScatterPlotUserArgs} from './libs/respvis/respvis.js';
 import * as d3 from './libs/d3-7.6.0/d3.js'
-import {carData, getTopMakesData} from "./data/sold-cars-germany.js";
+import {getTopMakesData} from "./data/sold-cars-germany.js";
 
 export function createScatterplot(selector: string) {
   const {mileages, horsePower, prices, makes} = getTopMakesData(5)
-  const allHorsePower = carData.map(entry => entry.hp)
-  const allPrices = carData.map(entry => entry.price)
-  const allMileages = carData.map(entry => entry.mileage)
-
-  const baseScaleX = d3.scaleLinear()
-    .domain([0, Math.max(...allHorsePower)])
-    .nice()
-  const baseScaleY = d3.scaleLinear()
-    .domain([0, Math.max(...allPrices)])
-    .nice()
 
   const data: ScatterPlotUserArgs = {
     series: {
       x: {
         values: horsePower,
-        // values: horsePowerWithExtrema,
-        scale: baseScaleX
       },
       y: {
         values: prices,
-        // values: pricesWithExtrema,
-        scale: baseScaleY
       },
       categories: {
         values: makes,
@@ -46,7 +32,7 @@ export function createScatterplot(selector: string) {
           breakpointValues: {
             0: {minimum: 3, maximum: 12},
             1: {minimum: 5, maximum: 15},
-            2: {minimum: 7, maximum: 30},
+            2: {minimum: 7, maximum: 20},
           },
         },
       },
@@ -60,11 +46,10 @@ export function createScatterplot(selector: string) {
         in: 20,
         out: 1
       },
-      // labels: makes
     },
     breakpoints: {
       width: {
-        values: [40, 60, 120],
+        values: [40, 60, 90],
         unit: 'rem'
       }
     },
@@ -84,7 +69,19 @@ export function createScatterplot(selector: string) {
           unit: 'rem'
         }
       },
-      configureAxis: (axis) => axis.tickFormat(d3.format('.3d'))
+      configureAxis: {
+        dependentOn: 'width',
+        scope: 'self',
+        mapping: {
+          0: (axis) => {
+            axis.tickFormat(d3.format('.3d'))
+            axis.ticks(7)
+          },
+          2: (axis) => {
+            axis.tickFormat(d3.format('.3d'))
+          }
+        }
+      }
     },
     y: {
       title: 'Car Price [EU]',
