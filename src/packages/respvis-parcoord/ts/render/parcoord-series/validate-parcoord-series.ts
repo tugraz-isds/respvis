@@ -20,7 +20,7 @@ import {
 import {DataSeriesTooltipGenerator} from "respvis-tooltip";
 import {Line} from "respvis-line";
 import {KeyedAxis, validateKeyedAxis} from "../validate-keyed-axis";
-import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal, scalePoint, ScalePoint} from "d3";
+import {scaleLinear, ScaleLinear, scaleOrdinal, ScaleOrdinal} from "d3";
 import {ParcoordSeries} from "./parcoord-series";
 
 export type ParcoordSeriesUserArgs = DataSeriesUserArgs & {
@@ -38,7 +38,6 @@ export type ParcoordSeriesArgs = DataSeriesArgs & ParcoordSeriesUserArgs & {
 }
 export type ParcoordSeriesData = DataSeriesData & {
   axes: KeyedAxis[]
-  axesScale: ScalePoint<string>
   axesPercentageScale: ScaleOrdinal<string, number>
   percentageScreenScale: ScaleLinear<number, number>
   zooms: (Zoom | undefined)[]
@@ -77,7 +76,6 @@ export function validateParcoordSeriesArgs(args: ParcoordSeriesArgs, series: Par
   const data = {
     ...validateDataSeriesArgs(args, series),
     axes,
-    axesScale: scalePoint().domain(axes.map((axis) => axis.key)),
     axesPercentageScale: scaleOrdinal<string, number>()
       .domain(axes.map((axis) => axis.key)).range(axes.map((axis, index) => index / denominator)),
     percentageScreenScale: scaleLinear().domain([0, 1]),
@@ -104,7 +102,6 @@ export function cloneParcoordData(original: ParcoordSeriesData): ParcoordSeriesD
     axes: original.axes.map(axis => {
       return {...axis, scaledValues: axis.scaledValues.clone()}
     }),
-    axesScale: original.axesScale.copy(),
     axesPercentageScale: original.axesPercentageScale.copy(),
     percentageScreenScale: original.percentageScreenScale.copy(),
   }

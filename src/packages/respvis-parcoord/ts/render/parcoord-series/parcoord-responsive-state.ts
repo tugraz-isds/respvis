@@ -42,10 +42,9 @@ export class ParcoordResponsiveState extends ResponsiveState {
     this._axisLayout = this.currentlyFlipped ? 'bottom' : 'left'
     const orientation = this.currentlyFlipped ? 'horizontal' : 'vertical'
 
-    const {axes, axesScale, percentageScreenScale} = this._series.originalData
+    const {axes, percentageScreenScale} = this._series.originalData
     axes.forEach(axis => axis.scaledValues.updateRange(horizontal, vertical, orientation))
     percentageScreenScale.range(currentAxesSpaceRange)
-    axesScale.range(currentAxesSpaceRange)
   }
 
   private updateZoomOnFlip() {

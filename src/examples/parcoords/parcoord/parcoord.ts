@@ -1,4 +1,4 @@
-import {ParcoordChart, ParcoordChartUserArgs} from './libs/respvis/respvis.js';
+import {formatWithDecimalZero, ParcoordChart, ParcoordChartUserArgs} from './libs/respvis/respvis.js';
 import * as d3 from './libs/d3-7.6.0/d3.js'
 import {getTopMakesData} from "./data/sold-cars-germany.js";
 
@@ -9,9 +9,7 @@ export function renderParcoord(selector: string) {
     dependentOn: 'width',
     scope: 'chart',
     mapping: {
-      0: (axis: d3.Axis<d3.AxisDomain>) => {
-        axis.tickFormat(d3.format('.2s'))
-      },
+      0: (axis: d3.Axis<d3.AxisDomain>) => axis.tickFormat(formatWithDecimalZero(d3.format('.2s'))),
       3: (() => {
       })
     }
@@ -25,6 +23,13 @@ export function renderParcoord(selector: string) {
   const sampleSize = 500
 
   const data: ParcoordChartUserArgs = {
+    title: 'Car data',
+    breakpoints: {
+      width: {
+        values: [20, 30, 50],
+        unit: 'rem'
+      }
+    },
     series: {
       dimensions: [
         {
@@ -36,7 +41,6 @@ export function renderParcoord(selector: string) {
           axis: {
             title: "Horsepower",
             subTitle: "[PS]",
-            configureAxis: sharedAxisConfig,
             tickOrientationFlipped: sharedTickOrientationFlipped
           }
         },
@@ -83,13 +87,6 @@ export function renderParcoord(selector: string) {
         dependentOn: 'width'
       }
     },
-    breakpoints: {
-      width: {
-        values: [20, 30, 50],
-        unit: 'rem'
-      }
-    },
-    title: 'Car data'
   }
 
   const chartWindow = d3.select(selector).append('div')

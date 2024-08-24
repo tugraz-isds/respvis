@@ -35,14 +35,14 @@ export class ParcoordSeries implements DataSeries {
 
   getScaledValuesAtScreenPosition(x: number, y: number) {
     const activeSeries = this.applyFilter()
-    const {axes, axesScale} = activeSeries.renderData
+    const {axes, axesPercentageScale, percentageScreenScale} = activeSeries.renderData
     const chartS = axes[0].renderer.chartS
     const flipped = this.responsiveState.currentlyFlipped
     const axisPosition = flipped ? y : x
     const dimensionPosition = flipped ? x : y
 
     function axisDiff(axis: KeyedAxis) {
-      const currentAxisPosition = axesScale(axis.key)!
+      const currentAxisPosition = percentageScreenScale(axesPercentageScale(axis.key))
       return Math.abs(currentAxisPosition - axisPosition)
     }
 
@@ -93,8 +93,6 @@ export class ParcoordSeries implements DataSeries {
       axesInverted: activeIndices.map(index => axesInverted[index])
     }
 
-    this.renderData.axesScale.domain(activeDomain)
-    this.renderData.axesScale.range(this.renderData.axesScale.range())
     this.renderData.axesPercentageScale
       .domain(activeDomain)
       .range(activeRange)
