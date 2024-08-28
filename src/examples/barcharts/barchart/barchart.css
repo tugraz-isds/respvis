@@ -22,3 +22,21 @@
     }
   }
 }
+
+/*Pattern for text wrapping:*/
+/*#chart {*/
+/*  .header {*/
+/*    .title {*/
+/*      width: 100%;*/
+/*      .text {*/
+/*        --fit-width: false;*/
+/*        width: 100%;*/
+/*      }*/
+/*      text {*/
+/*        text-align: center;*/
+/*        --text-wrap: true;*/
+/*        transform: translate(0, 0.5rem);*/
+/*      }*/
+/*    }*/
+/*  }*/
+/*}*/

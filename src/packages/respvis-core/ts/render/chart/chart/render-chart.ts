@@ -7,6 +7,7 @@ import {uniqueId} from "../../../utilities/unique";
 import {cssLengthInPx} from "../../../utilities/dom/units";
 import {getCurrentResponsiveValue} from "../../../data";
 import {createSelectionClasses, elementFromSelection} from "../../../utilities";
+import {wrapText, wrapTextByTwinWidth} from "../../../utilities/d3/text";
 
 type ChartBaseSelection<T extends SVGGroupingElement, D extends ChartData> = Selection<T, D>;
 
@@ -112,10 +113,11 @@ function renderTitle<T extends SVGGroupingElement, D extends ChartData>
     .data((d) => [getCurrentResponsiveValue(d.title, {chart})])
     .join('g')
     .classed('title', true)
-    .selectAll('text')
+    .selectAll<SVGTextElement, any>('text')
     .data((d) => [d])
     .join('text')
-    .text((d) => d);
+    .text((d) => d)
+    .call(s => wrapTextByTwinWidth(s))
 }
 
 function renderSubtitle<T extends SVGGroupingElement, D extends ChartData>
