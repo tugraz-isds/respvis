@@ -11,9 +11,7 @@ export class ParcoordChart extends Chart {
   constructor(windowSelection: Selection<HTMLDivElement>, data: ParcoordChartUserArgs) {
     super()
     this._windowS = windowSelection as WindowSelection
-    const initialWindowData = validateWindow({...data, type: 'parcoord', renderer: this})
-    const chartData = validateParcoordChart({...data, renderer: this})
-    this.windowS.datum({...initialWindowData, ...chartData})
+    this.revalidate(data)
   }
 
   _windowS: WindowSelection
@@ -31,6 +29,12 @@ export class ParcoordChart extends Chart {
     const {lineSeriesS} = renderParcoordSeries(this.drawAreaS, [series])
 
     lineSeriesS.call(addSeriesHighlighting)
+  }
+
+  public revalidate(data: ParcoordChartUserArgs): void {
+    const initialWindowData = validateWindow({...data, type: 'parcoord', renderer: this})
+    const chartData = validateParcoordChart({...data, renderer: this})
+    this.windowS.datum({...initialWindowData, ...chartData})
   }
 }
 

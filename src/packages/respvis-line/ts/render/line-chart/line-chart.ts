@@ -12,9 +12,7 @@ export class LineChart extends Chart {
   constructor(windowSelection: Selection<HTMLDivElement>, data: LineChartUserArgs) {
     super()
     this._windowS = windowSelection as WindowSelection
-    const initialWindowData = validateWindow({...data, type: 'line', renderer: this})
-    const chartData = validateLineChart({...data, renderer: this})
-    this.windowS.datum({...initialWindowData, ...chartData})
+    this.revalidate(data)
   }
 
   _windowS: WindowSelection
@@ -38,6 +36,12 @@ export class LineChart extends Chart {
       .attr( 'layout-strategy-vertical', pointS.data()[0]?.labelData?.positionStrategyVertical ?? null)
 
     this.renderCartesianComponents()
+  }
+
+  public revalidate(data: LineChartUserArgs) {
+    const initialWindowData = validateWindow({...data, type: 'line', renderer: this})
+    const chartData = validateLineChart({...data, renderer: this})
+    this.windowS.datum({...initialWindowData, ...chartData})
   }
 }
 

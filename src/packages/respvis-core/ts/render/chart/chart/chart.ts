@@ -193,6 +193,8 @@ export abstract class Chart implements Renderer {
 
   protected abstract renderContent(): void
 
+  public abstract revalidate(args: any): void
+
   unmountChart() {
     this.unmounted = true
     this.windowS.remove()

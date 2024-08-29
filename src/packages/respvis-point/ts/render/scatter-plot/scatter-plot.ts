@@ -14,9 +14,7 @@ export class ScatterPlot extends Chart {
   constructor(windowSelection: Selection<HTMLDivElement>, data: ScatterPlotUserArgs) {
     super()
     this._windowS = windowSelection as WindowSelection
-    const initialWindowData = validateWindow({...data, type: 'point', renderer: this})
-    const chartData = validateScatterPlot({...data, renderer: this})
-    this.windowS.datum({...initialWindowData, ...chartData})
+    this.revalidate(data)
   }
 
   _windowS: WindowSelection
@@ -44,6 +42,12 @@ export class ScatterPlot extends Chart {
       .attr( 'layout-strategy-vertical', pointS.data()[0]?.labelData?.positionStrategyVertical ?? null)
 
     this.renderCartesianComponents()
+  }
+
+  public revalidate(data: ScatterPlotUserArgs): void {
+    const initialWindowData = validateWindow({...data, type: 'point', renderer: this})
+    const chartData = validateScatterPlot({...data, renderer: this})
+    this.windowS.datum({...initialWindowData, ...chartData})
   }
 }
 

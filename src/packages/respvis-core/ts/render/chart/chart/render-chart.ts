@@ -7,7 +7,7 @@ import {uniqueId} from "../../../utilities/unique";
 import {cssLengthInPx} from "../../../utilities/dom/units";
 import {getCurrentResponsiveValue} from "../../../data";
 import {createSelectionClasses, elementFromSelection} from "../../../utilities";
-import {wrapText, wrapTextByTwinWidth} from "../../../utilities/d3/text";
+import {wrapTextByTwinWidth} from "../../../utilities/d3/text";
 
 type ChartBaseSelection<T extends SVGGroupingElement, D extends ChartData> = Selection<T, D>;
 

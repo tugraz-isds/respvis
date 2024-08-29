@@ -12,9 +12,7 @@ export class BarChart extends Chart {
   constructor(windowSelection: Selection<HTMLDivElement>, data: BarChartUserArgs) {
     super()
     this._windowS = windowSelection as WindowSelection
-    const initialWindowData = validateWindow({...data, type: 'bar', renderer: this})
-    const chartData = validateBarChart({...data, renderer: this})
-    this.windowS.datum({...initialWindowData, ...chartData})
+    this.revalidate(data)
   }
   _windowS: WindowSelection
   get windowS(): WindowSelection { return this._windowS }
@@ -36,6 +34,12 @@ export class BarChart extends Chart {
       .attr( 'data-inverted', barS.data()[0]?.inverted ? 'true' : null)
 
     this.renderCartesianComponents()
+  }
+
+  public revalidate(data: BarChartUserArgs) {
+    const initialWindowData = validateWindow({...data, type: 'bar', renderer: this})
+    const chartData = validateBarChart({...data, renderer: this})
+    this.windowS.datum({...initialWindowData, ...chartData})
   }
 }
 

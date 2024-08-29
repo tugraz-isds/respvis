@@ -98,6 +98,26 @@ export async function createBarCart(selector: string) {
   const renderer = new BarChart(chartWindow, barChartArgs)
   renderer.buildChart()
 
+  //Example for swapping data for different chart sizes
+  // let isWindowSmall = window.matchMedia("(max-width: 600px)").matches
+  // renderer.addCustomListener('resize.dataChange', () => {
+  //   const isWindowSmallCurrent = window.matchMedia("(max-width: 600px)").matches
+  //   if (isWindowSmall !== isWindowSmallCurrent && isWindowSmallCurrent) {
+  //     const newData = JSON.parse(JSON.stringify(barChartArgs))
+  //     newData.series.x.values = data.cities.slice(2)
+  //     newData.series.y.values = data.populations.slice(2)
+  //     newData.y.configureAxis = (axis) => axis.tickFormat(format('.2s'))
+  //     newData.series.markerTooltipGenerator = (i, d) => `City: ${d.xValue}<br/>Population: ${d.yValue}`
+  //
+  //     renderer.revalidate(newData)
+  //   }
+  //   if (isWindowSmall !== isWindowSmallCurrent && !isWindowSmallCurrent) {
+  //     const newData = {...barChartArgs}
+  //     renderer.revalidate(newData)
+  //   }
+  //   isWindowSmall = isWindowSmallCurrent
+  // })
+
 
   // const chartEmpty = new Chart(chartWindow, {...barChartArgs, type: 'bar'})
   //   chartWindow
