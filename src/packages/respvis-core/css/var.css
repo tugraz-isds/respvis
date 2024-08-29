@@ -2,7 +2,6 @@
   /*font-sizes*/
   --root-size: 1rem;
 
-
   --font-size-base: calc(1 * var(--root-size));
   --font-size-title: calc(1.5 * var(--font-size-base));
   --font-size-subtitle: calc(1 * var(--font-size-base));

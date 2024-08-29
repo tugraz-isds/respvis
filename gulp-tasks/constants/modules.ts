@@ -1,6 +1,9 @@
 import {genKeyObject} from "./types";
 
-export const respvisModules = ['respvis-core', 'respvis-bar', 'respvis-cartesian', 'respvis-line', 'respvis-parcoord', 'respvis-point', 'respvis-tooltip'] as const
+export const respvisModules = [
+  'respvis-core', 'respvis-bar', 'respvis-cartesian',
+  'respvis-line', 'respvis-parcoord', 'respvis-point',
+  'respvis-tooltip'] as const
 export type respvisModule = typeof respvisModules[number]
 
 export const externalModules = ['d3'] as const

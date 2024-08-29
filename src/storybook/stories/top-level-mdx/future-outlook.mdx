@@ -12,17 +12,14 @@ import {Meta} from "@storybook/blocks";
   This could be useful for interpolating e.g. font size between two breakpoints in a controlled way.
 - For Inspect Tool + Cartesian Chart: Add Horizontal and Vertical Lines, connecting cross cursor with axes.
 - Setting for toggling between category and sequential colors.
-- Add defaults for clamping css vars of chart title, subtitle, labels.
 - Add possibility for multiple series categories.
 - Explore options for toolbar menu on mobile devices. (Maybe slide vertically instead of horizontally?)
-- Add dowload option to remove interaction elements.
+- Add download option to remove interaction elements.
 
 ## Restructuring
 
-- Test removal of path aliases and working with workspace
-  module resolution instead.
-- Add TSLint and Prettier to enforce naming conventions.
-  point series color and radii properties.
+- Test removal of path aliases and working with workspace module resolution instead.
+- Configure TSLint and Prettier to enforce naming conventions.
 - Restructure Legend in multiple containers (size, category, color scale),
   which can be aligned independently.
 - Add required responsive title to scaled values of all kinds.
@@ -52,8 +49,6 @@ import {Meta} from "@storybook/blocks";
 - Layouting: A rapid change of the chart size, like opening dev tools, does not lead to rerender
   sometimes (changed 2nd resize rerender delay, watch if the problem is gone).
 - Parcoord: When flipping in zoom state
-- Parcoord: On mobile devices: Filter Element Interactions do not work properly. Maybe remove for mobile devices,
-  since the same can be achieved with filter menu?
 - Bar Charts at Initial Render: For e.g. grouped bar chart there is a quick flicker at the first render before
   transitioning to the desired appearance.
 
