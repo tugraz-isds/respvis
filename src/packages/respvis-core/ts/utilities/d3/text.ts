@@ -13,7 +13,8 @@ export function positionSVGTextToLayoutCenter(svgS: Selection<SVGTextElement>, b
   if (!textElement) return
 
   const textSVGWidth = textElement.getBBox().width
-  svgS.attr('x', () => -textSVGWidth / 2 + bounds.width / 2)
+  svgS
+    .attr('x', () => -textSVGWidth / 2 + bounds.width / 2)
     .attr('y', () => bounds.height / 2)
     .call(((s) => positionToTransformAttr(s, bounds)))
 }

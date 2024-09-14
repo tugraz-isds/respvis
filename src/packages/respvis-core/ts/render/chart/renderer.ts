@@ -3,7 +3,7 @@ import {SVGGroupingElement} from "../../constants/types";
 import {ChartWindowed} from "./chart/chart";
 import {Legend} from "../legend";
 
-export type Renderer = {
+export interface Renderer {
   readonly filterDispatch: Dispatch<{ dataKey: string }>
 
   get windowS(): Selection<HTMLElement, ChartWindowed>

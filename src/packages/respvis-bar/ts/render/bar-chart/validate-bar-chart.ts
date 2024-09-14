@@ -4,15 +4,15 @@ import {BarStackedSeries} from "../bar-series/bar-stacked/bar-stacked-series";
 import {BarGroupedSeries} from "../bar-series/bar-grouped/bar-grouped-series";
 import {BarStandardSeries} from "../bar-series";
 
-export type BarChartUserArgs = Omit<CartesianChartUserArgs, 'series'> & {
+export interface BarChartUserArgs extends Omit<CartesianChartUserArgs, 'series'> {
   series: BarSeriesUserArgs
 }
 
-export type BarChartArgs = BarChartUserArgs & {
+export interface BarChartArgs extends BarChartUserArgs {
   renderer: CartesianRenderer
 }
 
-export type BarChartData = Omit<CartesianChartData, 'series'> & {
+export interface BarChartData extends Omit<CartesianChartData, 'series'> {
   series: BarSeries
 }
 
