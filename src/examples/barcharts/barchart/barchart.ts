@@ -72,24 +72,19 @@ export async function createBarCart(selector: string) {
     }
   }
 
-  //Example for custom chart with no highlight and tooltips
+  // //Example for custom chart with no highlight and tooltips
   // class BarChartCustom extends BarChart {
   //   renderContent() {
   //     this.renderSeriesChartComponents()
-  //     const series = this.chartS.datum().series.cloneFiltered().cloneZoomed() as BarSeries
-  //     const seriesS = renderBarSeries(this.drawAreaS, [series])
-  //     const barS = seriesS.selectAll<SVGRectElement, Bar>('.bar:not(.exiting):not(.exit-done)')
+  //     const series = this.chartS.datum().series.cloneToRenderData().applyZoom().applyFilter()
+  //     const {seriesS, barS} = renderBarSeries(this.drawAreaS, [series])
   //     const bars = barS.data()
   //
-  //     // this.addAllSeriesFeatures(seriesS)
-  //     seriesS
-  //       // .call(addSeriesHighlighting)
-  //       // .call(addSeriesConfigTooltipsEvents)
-  //       .call((s) => this.addSeriesLabels(s))
+  //     seriesS.call((s) => this.addSeriesLabels(s))
   //     this.drawAreaS.selectAll('.series-label')
   //       .attr( 'layout-strategy', bars[0]?.labelData?.positionStrategy ?? null)
   //
-  //     this.addCartesianFeatures()
+  //     this.renderCartesianComponents()
   //     this.addFilterListener()
   //   }
   // }

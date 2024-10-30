@@ -4,23 +4,20 @@ import {
   rectFromString,
   renderAxisLayout,
   renderToolbar,
+  Selection,
   validateWindow,
   Window
 } from "../../../../../packages";
-import {Selection} from "d3";
 import {AxisChartUserArgs, AxisChartValid, validateAxisChart} from "./validate-axis-chart";
 
 type WindowSelection = Selection<HTMLDivElement, Window & AxisChartValid>
 type ChartSelection = Selection<SVGSVGElement, Window & AxisChartValid>
 
-export interface AxisChart {}
 export class AxisChart extends Chart {
-  constructor(s: Selection<HTMLDivElement>, args: AxisChartUserArgs ) {
+  constructor(windowSelection: Selection<HTMLDivElement>, args: AxisChartUserArgs ) {
     super()
-    this._windowS = s as WindowSelection
-    const initialWindowData = validateWindow({...args, type: 'cartesian', renderer: this})
-    const chartData = validateAxisChart({...args, renderer: this})
-    this.windowS.datum({...initialWindowData, ...chartData})
+    this._windowS = windowSelection as WindowSelection
+    this.revalidate(args)
   }
   _windowS: WindowSelection
   get windowS(): WindowSelection { return this._windowS }
@@ -52,5 +49,11 @@ export class AxisChart extends Chart {
         .call(s => renderAxisLayout(s, orientation))
     })
     renderToolbar(this._windowS, {renderer: this, getAxes: () => axes, getSeries: () => [series]})
+  }
+
+  revalidate(args: AxisChartUserArgs) {
+    const initialWindowData = validateWindow({...args, type: 'cartesian', renderer: this})
+    const chartData = validateAxisChart({...args, renderer: this})
+    this.windowS.datum({...initialWindowData, ...chartData})
   }
 }

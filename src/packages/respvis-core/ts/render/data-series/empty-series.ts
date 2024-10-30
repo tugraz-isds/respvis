@@ -1,11 +1,7 @@
-import {
-  DataSeries,
-  DataSeriesArgs,
-  DataSeriesData,
-  Renderer,
-  ResponsiveState,
-  validateDataSeriesArgs
-} from "respvis-core";
+import {DataSeries} from "./data-series";
+import {DataSeriesArgs, DataSeriesData, validateDataSeriesArgs} from "./validate-data-series";
+import {Renderer} from "../chart/renderer";
+import {ResponsiveState} from "./responsive-state";
 
 const placeholder = 'empty-series'
 
@@ -16,7 +12,7 @@ export class EmptySeries implements DataSeries {
   responsiveState: ResponsiveState;
 
   constructor(args: DataSeriesArgs) {
-    this.originalData = validateDataSeriesArgs(args)
+    this.originalData = validateDataSeriesArgs(args, this)
     this.renderData = this.originalData
     this.renderer = args.renderer
     this.responsiveState = new ResponsiveState({
@@ -25,10 +21,21 @@ export class EmptySeries implements DataSeries {
     })
   }
 
-  cloneToRenderData() { return this };
-  applyFilter() { return this };
-  applyZoom() { return this };
-  applyInversion() { return this };
+  cloneToRenderData() {
+    return this
+  };
+
+  applyFilter() {
+    return this
+  };
+
+  applyZoom() {
+    return this
+  };
+
+  applyInversion() {
+    return this
+  };
 
   getScaledValuesAtScreenPosition() {
     return {horizontalName: placeholder, horizontal: placeholder, vertical: placeholder, verticalName: placeholder};

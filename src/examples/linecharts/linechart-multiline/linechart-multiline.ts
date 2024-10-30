@@ -18,7 +18,8 @@ export const renderMultiLineChart = (selector: string) => {
         title: 'Continents'
       },
       markerTooltipGenerator: (_, point) =>
-        `Year: ${(point.xValue as Date).getFullYear()}<br/>Pow. Consumption: ${point.yValue}kWh`,
+        `Year: ${(point.xValue as Date).getFullYear()}
+        <br/>Pow. Consumption: ${point.yValue}kWh`,
       zoom: {
         in: 20,
         out: 1

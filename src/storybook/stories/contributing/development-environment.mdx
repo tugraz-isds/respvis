@@ -83,10 +83,12 @@ npx gulp serve --dev
 npx gulp serve --prod
 ```
 
-- The `genSVGDataURI` task converts svg files which are
-  meant to be used as icons automatically to data URIs that can be
-  conveniently copied and pasted into style sheets. This is especially
-  helpful when creating styles for cursor icons:
+- The `genSVGDataURI` task converts SVG files for icons into data URIs which
+  are placed in a text file svg-uri-mapping.txt inside a newly generated folder gulp-util-generated/.
+  They can then be conveniently copied into a style sheet to define cursor shapes. The task has to be
+  run manually by the developer; it is not run automatically by the build process.
+
+
 
 ```
 npx gulp genSVGDataURI

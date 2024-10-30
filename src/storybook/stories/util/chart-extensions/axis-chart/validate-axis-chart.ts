@@ -4,6 +4,7 @@ import {
   ChartData,
   ChartDataArgs,
   ChartDataUserArgs,
+  EmptySeries,
   Orientation,
   Orientations,
   ResponsiveValueUserArgs,
@@ -13,7 +14,6 @@ import {
   validateChart,
   validateScaledValuesSpatial
 } from "../../../../../packages";
-import {EmptySeries} from "../empty-series";
 
 export type AxisChartAxisUserArgs = BaseAxisUserArgs & {
   vals: ScaledValuesSpatialUserArgs<ScaledValuesSpatialDomain>
