@@ -133,8 +133,8 @@ function renderAxisLinearControls(menuToolsItemsS: Selection, axis: Axis, values
   const doubleRangeSliderS = fieldSetS.selectAll('.double-range-slider')
     .data((d) => [d]).join('div')
     .classed('double-range-slider', true)
-    .style('--range-start', (minFilter / maxDomain) + '')
-    .style('--range-end', (maxFilter / maxDomain) + '')
+    .style('--range-start', (Math.abs(minDomain - minFilter) / Math.abs(maxDomain - minDomain)) + '')
+    .style('--range-end', ((maxFilter - minDomain) / (maxDomain - minDomain)) + '')
 
   doubleRangeSliderS.selectAll('.double-range-slider__track')
     .data([null]).join('div')

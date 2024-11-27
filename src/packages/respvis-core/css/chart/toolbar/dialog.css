@@ -97,6 +97,7 @@
       min-width: 1.2em;
       height: auto;
       transition: rotate 600ms ease-in-out, transform 80ms ease-in-out;
+      stroke: black;
     }
     &:has(+ .expanded) svg {
       rotate: 180deg;

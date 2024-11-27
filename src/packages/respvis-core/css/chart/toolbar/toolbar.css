@@ -1,16 +1,24 @@
 /*TODO: Replace window-rv wrapper with @scope once it is supported*/
 .window-rv {
+  color: black;
   .toolbar {
     position: absolute;
     align-items: start;
     right: 0;
     top: 0;
     width: 100%;
+    color: black;
+    fieldset, input {
+      color: black;
+    }
+    svg {
+      stroke: currentColor;
+    }
 
     &[transition="enter"] {
       .toolbar__content { translate: 0; }
       & .toolbar__opener {
-        & > svg { rotate: 90deg; }
+        & > svg { rotate: 180deg; }
       }
       &[transition-state="enter-done"] {
         .toolbar__content-wrapper { overflow-x: unset; }
@@ -31,28 +39,31 @@
       background-color: var(--control-elements-color);
       height: 2.5rem;
       padding: 0.5rem;
-      transition: filter 100ms ease-in-out, scale 150ms ease-in-out;
+      transition: background-color 100ms ease-in-out, scale 150ms ease-in-out;
       cursor: pointer;
       svg {
         height: 100%;
         width: auto;
-        transition: rotate 500ms;
+        stroke: black;
+        transition: rotate 700ms;
       }
-      &:active, &[transition='enter'] { filter: brightness(80%); }
+      &:active, &[transition='enter'] { background-color: var(--white-darken-15); }
     }
 
     .toolbar__btn {
       display: flex;
+      position: relative;
       align-items: center;
       height: 2.5rem;
       padding: 0.5rem;
       background-color: var(--control-elements-color);
-      transition: filter 100ms ease-in-out, scale 150ms ease-in-out;
+      transition: background-color 100ms ease-in-out, scale 150ms ease-in-out;
       svg {
         height: 100%;
         width: auto;
+        stroke: black;
       }
-      &:active, &[transition='enter'] { filter: brightness(80%); }
+      &:active, &[transition='enter'] { background-color: var(--white-darken-15); }
       &:active { scale: 0.75 }
     }
   }
@@ -98,10 +109,10 @@
   .window-rv {
     .toolbar {
       .toolbar__opener {
-        &:hover { filter: brightness(80%); }
+        &:hover { background-color: var(--white-darken-15); }
       }
       .toolbar__btn {
-        &:hover { filter: brightness(80%); }
+        &:hover { background-color: var(--white-darken-15); }
       }
     }
 

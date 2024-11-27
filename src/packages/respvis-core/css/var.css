@@ -38,12 +38,22 @@
   --color-categorical-9: #a665e4;
   --highlight-brightness: 130%;
 
-  --control-elements-color: rgb(239, 239, 239);
+  --white: rgb(255, 255, 255);
+  --white-darken-05: color-mix(in srgb, var(--white), black 5%);
+  --white-darken-10: color-mix(in srgb, var(--white), black 10%);
+  --white-darken-15: color-mix(in srgb, var(--white), black 15%);
+  --control-elements-color-2: color-mix(in srgb, var(--white) 90%, black);
+  --control-elements-color: hsl(0, 0%, 94%);
   --control-elements-chart-color1: rgb(248, 229, 121);
   --control-elements-chart-color1-opacity-20: 0.2;
   --control-elements-chart-color1-opacity-40: 0.4;
   --control-elements-chart-color2: rgb(255, 255, 255);
   --control-elements-chart-color3: var(--color-axes-line);
+  --control-elements-chart-color4: color-mix(in srgb, var(--control-elements-chart-color3) 70%, black);
+  --checkbox-color: var(--control-elements-chart-color3);
+  --radio-color: color-mix(in srgb, var(--control-elements-chart-color3) 70%, white);
+/*rgb(224, 224, 224)*/
+  --control-input-color: rgb(0, 117, 255);
 
 
   /*spacings and lengths*/

@@ -3,7 +3,7 @@ import {DataSeriesChartData} from "../chart/series-chart/series-chart";
 import {renderDownloadTool} from "./download-tool";
 import {renderFilterTool} from "./filter-tool/render-filter-tool";
 import {renderCrossTool} from "./cross-tool/render-cross-tool";
-import ChevronsDown from "../../../../../assets/svg/tablericons/chevrons-down.svg"
+import ChevronsRight from "../../../../../assets/svg/tablericons/chevrons-right.svg"
 import {DialogData} from "./tool/render/render-dialog";
 import {clickSAddEnterExitAttributes} from "./tool/animation/animtation";
 import {renderChartTool} from "./chart-tool/render-chart-tool";
@@ -40,6 +40,7 @@ export function renderToolbar(windowS: Selection, args: Toolbar) {
     .join('div')
     .classed('toolbar__opener', true)
   clickSAddEnterExitAttributes(toolbarOpenerS, toolbarS, 600)
+  renderSVGSeries(toolbarOpenerS, [ChevronsRight])
 
   toolbarS
     .selectAll<HTMLDivElement, any>('.toolbar__dialog-container')
@@ -47,7 +48,6 @@ export function renderToolbar(windowS: Selection, args: Toolbar) {
     .join('div')
     .classed('toolbar__dialog-container', true)
 
-  renderSVGSeries(toolbarOpenerS, [ChevronsDown])
 
   renderFilterTool(toolbarS, args)
   renderDownloadTool(toolbarS, args.renderer)
