@@ -51,11 +51,11 @@ breakPoints: {
   }
 },`} language={"typescript"}/>
 
-Due to the nature of CSS variables, which are inherited, the active layout
-width is accessible for all nested child elements of the chart. RespVis' layout
-breakpoints may not only be defined for the whole chart, but can also be
-specified for axes. If breakpoints are defined for an axis, the breakpoints of
-the chart will get overridden for all nested child elements of the axis.
+
+Since CSS variables are inherited, the current layout width is available to all
+nested child elements of a chart. It is possible to set separate breakpoints for
+an Axis component within a chart, overriding any chart breakpoints which otherwise
+apply to nested child elements like an Axis.
 
 For a live demonstration of how certain arguments can make use of
 breakpoints, take a look at
@@ -64,9 +64,9 @@ breakpoints, take a look at
 
 ## Using Defined Breakpoints in CSS
 
-The way breakpoints are defined in RespVis avoids the need to specify them
-a second time in CSS. Instead, one can make use of style container queries,
-which allow to apply styles based on the current state of CSS variables:
+For browsers which support style container
+queries, the --layout-width variable can be used inside a style container query to adapt
+the layout for various widths, as shown in the code snippet below.
 
 <Source code={`
 .window-rv {
@@ -81,10 +81,11 @@ which allow to apply styles based on the current state of CSS variables:
   }
 }`} language={"css"}/>
 
-This way of writing container queries reduces bugs, as breakpoints
-have a shared source of definition. On the contrary, style container
-queries are a recent feature and still in the process of coming to
-the web (Firefox and Safari do not support them yet).
+This approach helps avoid bugs, since breakpoints are only defined once. At the time
+of writing, Firefox does not yet support style container queries, so best practice to
+support all modern web browsers currently involves hard-coding the breakpoint values within
+a size container query, as shown in Listing 5.11. This approach introduces duplication of
+breakpoint values and hence is more error-prone when changes are made.
 
 
 ## Controlling Layout Widths with CSS Variables

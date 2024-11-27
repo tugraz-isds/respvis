@@ -56,6 +56,8 @@ export function layoutContainerCompute(layoutContainerS: Selection<HTMLDivElemen
     layouterS.selectAll<HTMLDivElement, SVGElement>('.layout').each(function () {
       const layoutS = select<HTMLDivElement, SVGTwinInformation>(this);
       if (layoutS.datum().ignoreBounds) return
+
+      //TODO: synchronization phase! has also detection of bounds in it
       const boundsChanged = layoutNodeBounds(layoutS);
       anyBoundsChanged = anyBoundsChanged || boundsChanged;
     });
