@@ -12,24 +12,35 @@ export abstract class CartesianSeries implements DataSeries {
   abstract renderer: CartesianRenderer
 
   getScaledValuesAtScreenPosition(x: number, y: number) {
-    function getAxisData(axisS: Selection<SVGHTMLElementLegacy, CartesianAxis>) {
+    const getAxisData = (axisS: Selection<SVGHTMLElementLegacy, CartesianAxis>, position: number) => {
       const axis = axisS.datum()
       const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (h => h)
+      const appliedFormat = axis.d3Axis?.tickFormat() ?? scaleFormat
+      const screenValue = this.renderer.horizontalAxisS.datum().scaledValues.atScreenPosition(position)
+      const nearestRealValue = this.renderer.horizontalAxisS.datum().scaledValues.getNearestValue(screenValue as never)
       return {
-        format: axis.d3Axis?.tickFormat() ?? scaleFormat,
+        appliedFormat,
+        formattedValue: appliedFormat(screenValue, 0),
         title: getCurrentResponsiveValue(axis.title, {
           self: axisS,
           chart: axis.renderer.chartS
-        })
+        }),
+        screenValue, nearestRealValue
       }
     }
 
-    const horizontal = getAxisData(this.renderer.horizontalAxisS)
-    const vertical = getAxisData(this.renderer.verticalAxisS)
+    const horizontal = getAxisData(this.renderer.horizontalAxisS, x)
+    const vertical = getAxisData(this.renderer.verticalAxisS, y)
+
     return {
-      horizontal: horizontal.format(this.renderer.horizontalAxisS.datum().scaledValues.atScreenPosition(x), 0),
-      vertical: vertical.format(this.renderer.verticalAxisS.datum().scaledValues.atScreenPosition(y), 0),
-      horizontalName: horizontal.title, verticalName: vertical.title
+      horizontal: horizontal.formattedValue,
+      horizontalName: horizontal.title,
+      horizontalNearestRealValue: horizontal.nearestRealValue,
+      horizontalScreenValue: horizontal.screenValue,
+      vertical: vertical.formattedValue,
+      verticalName: vertical.title,
+      verticalNearestRealValue: vertical.nearestRealValue,
+      verticalScreenValue: vertical.screenValue,
     }
   }
 

@@ -36,14 +36,16 @@ export function renderMovableCrossTooltip(series: DataSeries) {
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
 
-    const { horizontal, horizontalName,
-      vertical, verticalName} = series.getScaledValuesAtScreenPosition(x, y)
+    const screenData  = series.getScaledValuesAtScreenPosition(x, y)
+    const { horizontal, horizontalName, vertical, verticalName} = screenData
 
     const firstText = crossStateTextS.filter((d, i) => i === 0 )
     const secondText = crossStateTextS.filter((d, i) => i === 1)
 
     if (firstText.size() > 0) firstText.text(horizontal ? `${horizontalName}: ${horizontal}` : firstText.text())
     if (secondText.size() > 0) secondText.text(vertical ? `${verticalName}: ${vertical}` : secondText.text())
+
+    tooltip.onInspectMove(screenData)
   }
 
   const onDrawAreaLeave = (active: boolean) => {

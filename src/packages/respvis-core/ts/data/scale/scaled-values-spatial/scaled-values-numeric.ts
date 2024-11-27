@@ -52,6 +52,15 @@ export class ScaledValuesNumeric extends ScaledValuesSpatialBase<number> {
     return this.scale.invert(value)
   }
 
+  getNearestValue(estimate: number) {
+    let nearest = this.values[0]
+    for (let i = 1; i < this.values.length; i++) {
+      const current = this.values[i]
+      if ( Math.abs(current - estimate) < Math.abs(nearest - estimate) ) nearest = current
+    }
+    return nearest
+  }
+
   clone(): ScaledValuesNumeric {
     return new ScaledValuesNumeric({...this, scale: this.scale.copy()})
   }

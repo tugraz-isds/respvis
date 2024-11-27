@@ -1,5 +1,4 @@
-import {select, timeFormat, timeYear} from './libs/d3-7.6.0/d3.js'
-import {LineChart, LineChartUserArgs} from './libs/respvis/respvis.js';
+import {LineChart, LineChartUserArgs, select, selectAll, timeFormat, timeYear} from './libs/respvis/respvis.js';
 import {mapPowerConsumptionData} from './data/electric-power-consumption.js'
 
 export const renderMultiLineChart = (selector: string) => {
@@ -53,7 +52,7 @@ export const renderMultiLineChart = (selector: string) => {
         axis.ticks(timeYear.every(2))
         axis.tickFormat(timeFormat('%Y'))
       },
-      gridLineFactor: 1
+      gridLineFactor: undefined
     },
     y: {
       title: 'Consumption',
@@ -69,6 +68,15 @@ export const renderMultiLineChart = (selector: string) => {
         breakpointValues: {0: 90, 2: 0},
       },
       gridLineFactor: 2
+    },
+    tooltip: {
+      onInspectMove: (info) => {
+        const pointS = selectAll('.point.element')
+        const nearestPointS = pointS.filter((d) => d.xValue === info.horizontalNearestRealValue)
+        nearestPointS.classed('inspect-nearest', true)
+        const otherPointS = pointS.filter((d) => d.xValue !== info.horizontalNearestRealValue)
+        otherPointS.classed('inspect-nearest', false)
+      }
     }
   }
 

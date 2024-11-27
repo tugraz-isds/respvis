@@ -1,5 +1,5 @@
 export {
-  select,
+  select, selectAll,
   format, timeFormat, timeYear,
   scalePow, scaleLinear, scaleBand, scalePoint, scaleSequential, scaleOrdinal
 } from "d3"

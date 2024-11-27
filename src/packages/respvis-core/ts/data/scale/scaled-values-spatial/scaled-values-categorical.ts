@@ -118,6 +118,8 @@ export class ScaledValuesCategorical extends ScaledValuesSpatialBase<string> {
     }) ?? ''
   }
 
+  getNearestValue(value: string) { return value }
+
   clone(): ScaledValuesCategorical {
     return new ScaledValuesCategorical({...this, scale: this.scale.copy()})
   }

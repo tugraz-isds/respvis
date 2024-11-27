@@ -38,6 +38,15 @@ export class EmptySeries implements DataSeries {
   };
 
   getScaledValuesAtScreenPosition() {
-    return {horizontalName: placeholder, horizontal: placeholder, vertical: placeholder, verticalName: placeholder};
+    return {
+      horizontal: placeholder,
+      horizontalName: placeholder,
+      horizontalNearestRealValue: placeholder,
+      horizontalScreenValue: placeholder,
+      vertical: placeholder,
+      verticalName: placeholder,
+      verticalNearestRealValue: placeholder,
+      verticalScreenValue: placeholder
+    };
   }
 }

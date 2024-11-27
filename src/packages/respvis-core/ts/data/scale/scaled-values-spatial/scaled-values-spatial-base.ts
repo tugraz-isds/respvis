@@ -63,6 +63,8 @@ export abstract class ScaledValuesSpatialBase<T extends ScaledValuesSpatialDomai
 
   abstract atScreenPosition(value: number): T
 
+  abstract getNearestValue(value: T): T
+
   isKeyActiveByKey(key: string) {
     return true
   }

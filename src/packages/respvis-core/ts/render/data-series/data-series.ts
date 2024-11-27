@@ -11,14 +11,20 @@ export interface DataSeries extends RenderArgs {
 
   renderTool?: (toolbarS: Selection<HTMLDivElement>) => void
   renderLegendInfo?: (legendS: LegendSelection) => void
-  getScaledValuesAtScreenPosition: (horizontal: number, vertical: number) => {
-    horizontal: string,
-    horizontalName: string
-    vertical: string,
-    verticalName: string
-  }
+  getScaledValuesAtScreenPosition: (horizontal: number, vertical: number) => ScreenPositionInfo
   cloneToRenderData: () => DataSeries
   applyFilter: () => DataSeries
   applyZoom: () => DataSeries
   applyInversion: () => DataSeries
+}
+
+export type ScreenPositionInfo = {
+  horizontal: string,
+  horizontalName: string
+  horizontalNearestRealValue: any,
+  horizontalScreenValue: any,
+  vertical: string,
+  verticalName: string
+  verticalNearestRealValue: any,
+  verticalScreenValue: any,
 }

@@ -54,6 +54,15 @@ export class ScaledValuesTemporal extends ScaledValuesSpatialBase<Date> {
     return this.scale.invert(value)
   }
 
+  getNearestValue(estimate: Date): Date {
+    let nearest = this.values[0]
+    for (let i = 1; i < this.values.length; i++) {
+      const current = this.values[i]
+      if ( Math.abs(current.valueOf() - estimate.valueOf()) < Math.abs(nearest.valueOf() - estimate.valueOf()) ) nearest = current
+    }
+    return nearest
+  }
+
   clone(): ScaledValuesTemporal {
     return new ScaledValuesTemporal({...this, scale: this.scale.copy()})
   }

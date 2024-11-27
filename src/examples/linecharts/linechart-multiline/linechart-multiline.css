@@ -12,7 +12,7 @@
     .items { gap: 1rem; }
   }
 
-  .point, .axis-x .tick { display: none; }
+  .point:not(.inspect-nearest), .axis-x .tick { display: none; }
 
   @container (width >= 30rem) {
     .point-category {

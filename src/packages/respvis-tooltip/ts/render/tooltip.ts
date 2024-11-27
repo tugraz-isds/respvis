@@ -1,5 +1,5 @@
 import {select, Selection} from 'd3';
-import {Position, Size} from 'respvis-core';
+import {Position, ScreenPositionInfo, Size} from 'respvis-core';
 
 const toolTipId = 'tooltip-rv'
 export const tooltipSelector = `#${toolTipId}`
@@ -10,15 +10,17 @@ export type TooltipUserArgs = {
   active?: boolean
   positionStrategySeries?: TooltipPositionStrategy
   positionStrategyInspect?: TooltipPositionStrategy
+  onInspectMove?: (info: ScreenPositionInfo) => void
   autoOffset?: number
 }
 export type TooltipArgs = TooltipUserArgs
 type TooltipData = Required<TooltipArgs>
 
 export class Tooltip implements TooltipData {
-  positionStrategySeries: TooltipPositionStrategy;
-  positionStrategyInspect: TooltipPositionStrategy;
-  autoOffset: number;
+  positionStrategySeries: TooltipPositionStrategy
+  positionStrategyInspect: TooltipPositionStrategy
+  onInspectMove: (info: ScreenPositionInfo) => void;
+  autoOffset: number
   active = true
   seriesTooltipVisible = false
   movableCrossTooltipVisible = false
@@ -27,10 +29,13 @@ export class Tooltip implements TooltipData {
     this.positionStrategyInspect = args?.positionStrategyInspect ?? 'sticky'
     this.autoOffset = args?.autoOffset ?? 8
     this.active = args?.active ?? true
+    this.onInspectMove = args?.onInspectMove ?? (() => {})
   }
+
   isVisible() {
     return this.seriesTooltipVisible || this.movableCrossTooltipVisible
   }
+
   applyPositionStrategy(e: PointerEvent, positionStrategy: TooltipPositionStrategy) {
     const tooltipS = select<HTMLDivElement, any>(tooltipSelector)
     const mousePosition = { x: e.clientX, y: e.clientY }

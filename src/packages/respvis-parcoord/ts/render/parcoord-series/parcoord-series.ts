@@ -56,12 +56,17 @@ export class ParcoordSeries implements DataSeries {
     const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (val => val)
     const format = axis.d3Axis?.tickFormat() ?? scaleFormat
     const axisName = getCurrentResponsiveValue(axis.title, {chart: chartS})
-    const dimensionValue = format(axis.scaledValues.atScreenPosition(dimensionPosition), 0)
+    const dimensionValue = axis.scaledValues.atScreenPosition(dimensionPosition)
+    const dimensionValueFormatted = format(dimensionValue, 0)
     return {
-      horizontal: flipped ? dimensionValue : axisName,
-      vertical: flipped ? axisName : dimensionValue,
+      horizontal: flipped ? dimensionValueFormatted : axisName,
       horizontalName: flipped ? axisName : 'Dimension',
-      verticalName: flipped ? 'Dimension' : axisName
+      horizontalNearestRealValue: flipped ? axis.scaledValues.getNearestValue(dimensionValue as never) : axisName,
+      horizontalScreenValue: flipped ? dimensionValue : axisName,
+      vertical: flipped ? axisName : dimensionValueFormatted,
+      verticalName: flipped ? 'Dimension' : axisName,
+      verticalNearestRealValue: flipped ? axisName : axis.scaledValues.getNearestValue(dimensionValue as never),
+      verticalScreenValue: flipped ? axisName : dimensionValue,
     }
   }
 
