@@ -24,14 +24,14 @@ export function renderMarginOptions(selection: Selection, renderer: Renderer) {
 
   const onInputNumber = (e, d: NumberLabel) => {
     const value = d.valueAsInt(e)
-    if (isNaN(value)) e.target.value = currentSettings[d.data.type]
+    if (isNaN(value)) e.target.value = currentSettings.state[d.data.type]
   }
   const onChangeNumber = (e, d: NumberLabel) => {
     const value = d.valueAsInt(e)
-    if (isNaN(value) || d.inMinMaxRange(value)) {
-      e.target.value = currentSettings[d.data.type]
+    if (isNaN(value) || !d.inMinMaxRange(value)) {
+      e.target.value = currentSettings.state[d.data.type]
     }
-    currentSettings[d.data.type] = (e.target as HTMLInputElement).value
+    currentSettings.state[d.data.type] = (e.target as HTMLInputElement).value
   }
 
   const data = [{

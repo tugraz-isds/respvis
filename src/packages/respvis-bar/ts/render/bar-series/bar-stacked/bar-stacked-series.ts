@@ -72,7 +72,8 @@ export class BarStackedSeries extends BarBaseSeries {
   }
 
   applyZoom(): BarStackedSeries {
-    super.applyZoom()
+    // TODO: make zooming work for stacked bar chart
+    // super.applyZoom()
     return this
   }
 

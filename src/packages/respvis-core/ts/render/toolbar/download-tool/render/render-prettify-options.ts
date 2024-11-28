@@ -18,7 +18,7 @@ export function renderPrettifyOptions(selection: Selection, renderer: Renderer) 
   }
   const onChangeNumber = (e, d: NumberLabel) => {
     const value = d.valueAsInt(e)
-    if (isNaN(value) || d.inMinMaxRange(value)) {
+    if (isNaN(value) || !d.inMinMaxRange(value)) {
       e.target.value = currentSettings[d.data.type]
     }
     currentSettings[d.data.type] = (e.target as HTMLInputElement).value

@@ -18,7 +18,13 @@ export function renderGrid<T extends CartesianChartSelection>(chartS: T) {
   function cartesianGridHorizontalLinesRender() {
     const gridLineFactor = verticalAxisS.datum().gridLineFactor
     const ticks = verticalAxisS.selectAll<SVGLineElement, any>(".tick line").filter(function () {
-      return this.checkVisibility()
+      const visibilityCheck = (element: Element) => {
+        const computedStyle = getComputedStyle(element)
+        const isVisibleFallback = !(computedStyle.display === 'none' || computedStyle.visibility === 'hidden')
+        return element.checkVisibility() && isVisibleFallback
+      }
+      //Parent Check necessary because of chrome
+      return visibilityCheck(this) && !!this.parentElement && visibilityCheck(this.parentElement)
     })
 
     const tickPositions: number[] = []
@@ -49,7 +55,13 @@ export function renderGrid<T extends CartesianChartSelection>(chartS: T) {
   function cartesianGridVerticalLinesRender() {
     const gridLineFactor = horizontalAxisS.datum().gridLineFactor
     const ticks = horizontalAxisS.selectAll<SVGLineElement, any>(".tick line").filter(function () {
-      return this.checkVisibility()
+      const visibilityCheck = (element: Element) => {
+        const computedStyle = getComputedStyle(element)
+        const isVisibleFallback = !(computedStyle.display === 'none' || computedStyle.visibility === 'hidden')
+        return element.checkVisibility() && isVisibleFallback
+      }
+      //Parent Check necessary because of chrome
+      return visibilityCheck(this) && !!this.parentElement && visibilityCheck(this.parentElement)
     })
 
     const tickPositions: number[] = [0]

@@ -44,6 +44,6 @@ export class NumberLabel implements InputLabel {
   }
 
   inMinMaxRange(value: number) {
-    return (this.data.min && value < this.data.min) || (this.data.max && value > this.data.max)
+    return (this.data.min && value >= this.data.min) || (this.data.max && value <= this.data.max)
   }
 }

@@ -16,8 +16,8 @@ export abstract class CartesianSeries implements DataSeries {
       const axis = axisS.datum()
       const scaleFormat = axis.scaledValues.tag !== 'categorical' ? axis.scaledValues.scale.tickFormat() : (h => h)
       const appliedFormat = axis.d3Axis?.tickFormat() ?? scaleFormat
-      const screenValue = this.renderer.horizontalAxisS.datum().scaledValues.atScreenPosition(position)
-      const nearestRealValue = this.renderer.horizontalAxisS.datum().scaledValues.getNearestValue(screenValue as never)
+      const screenValue = axis.scaledValues.atScreenPosition(position)
+      const nearestRealValue = axis.scaledValues.getNearestValue(screenValue as never)
       return {
         appliedFormat,
         formattedValue: appliedFormat(screenValue, 0),

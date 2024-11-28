@@ -52,7 +52,7 @@ export const renderMultiLineChart = (selector: string) => {
         axis.ticks(timeYear.every(2))
         axis.tickFormat(timeFormat('%Y'))
       },
-      gridLineFactor: undefined
+      gridLineFactor: 1
     },
     y: {
       title: 'Consumption',

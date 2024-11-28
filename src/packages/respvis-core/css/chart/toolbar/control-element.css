@@ -68,7 +68,9 @@
     input[type="checkbox"] {
       appearance: none; /* Remove default styling */
       width: 0.8125rem;
+      min-width: 0.8125rem;
       height: 0.8125rem;
+      min-height: 0.8125rem;
       border: 1px solid var(--checkbox-color);
       border-radius: 2px;
       position: relative;
