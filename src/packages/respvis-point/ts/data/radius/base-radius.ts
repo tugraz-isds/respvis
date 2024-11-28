@@ -3,7 +3,7 @@ import {
   BreakpointPropertyUserArgs,
   isBreakpointPropertyUserArgsResponsive,
   validateBreakpointProperty
-} from "respvis-core/data/responsive-property/breakpoint-property";
+} from "respvis-core";
 
 export type BaseRadiusUserArgs = BreakpointPropertyUserArgs<number>
 export type BaseRadius = BreakpointProperty<number> | number

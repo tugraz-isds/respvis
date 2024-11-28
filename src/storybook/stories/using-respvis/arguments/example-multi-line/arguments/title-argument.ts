@@ -1,4 +1,4 @@
-import {ResponsiveValueUserArgs} from "respvis-core/data/responsive-property/responsive-value";
+import {ResponsiveValueUserArgs} from "respvis-core";
 
 export const title: ResponsiveValueUserArgs<string> = {
   dependentOn: 'width',

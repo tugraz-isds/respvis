@@ -1,6 +1,9 @@
 import {
   BaseAxis,
   BaseAxisUserArgs,
+  BreakpointProperty,
+  BreakpointPropertyOptional,
+  BreakpointPropertyUserArgs,
   DataSeries,
   ErrorMessages,
   Renderer,
@@ -8,14 +11,9 @@ import {
   ScaledValuesNumericUserArgs,
   ScaleNumeric,
   validateBaseAxis,
+  validateBreakpointProperty,
   validateScaledValuesSpatial
 } from "respvis-core";
-import {
-  BreakpointProperty,
-  BreakpointPropertyOptional,
-  BreakpointPropertyUserArgs,
-  validateBreakpointProperty
-} from "respvis-core/data/responsive-property";
 import {Extrema, isExtrema} from "./extrema";
 import {scaleLinear} from "d3";
 
