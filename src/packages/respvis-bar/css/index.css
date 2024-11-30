@@ -1,18 +1,22 @@
-.chart-bar {
-  &[data-flipped="true"] {
-    .series-label[layout-strategy="positive"] text { text-anchor: start; }
-    .series-label[layout-strategy="negative"] text { text-anchor: end; }
+.window-rv, #tooltip-rv {
+  .chart-bar {
+    &[data-flipped="true"] {
+      .series-label[layout-strategy="positive"] text { text-anchor: start; }
+      .series-label[layout-strategy="negative"] text { text-anchor: end; }
 
-    .series-label[layout-strategy="dynamic"] text[data-polarity="positive"] { text-anchor: start; }
-    .series-label[layout-strategy="dynamic"] text[data-polarity="negative"] { text-anchor: end; }
-  }
-  &[data-flipped="false"] {
-    .series-label[layout-strategy="positive"] text { dominant-baseline: auto; }
-    .series-label[layout-strategy="negative"][data-inverted] text { dominant-baseline: auto; }
-    .series-label[layout-strategy="negative"] text { dominant-baseline: hanging; }
-    .series-label[layout-strategy="positive"][data-inverted] text { dominant-baseline: hanging; }
+      .series-label[layout-strategy="center"] text { text-anchor: middle; }
+      .series-label[layout-strategy="dynamic"] text[data-polarity="positive"] { text-anchor: start; }
+      .series-label[layout-strategy="dynamic"] text[data-polarity="negative"] { text-anchor: end; }
+    }
+    &[data-flipped="false"] {
+      .series-label text { text-anchor: middle; }
+      .series-label[layout-strategy="positive"] text { dominant-baseline: auto; }
+      .series-label[layout-strategy="negative"][data-inverted] text { dominant-baseline: auto; }
+      .series-label[layout-strategy="negative"] text { dominant-baseline: hanging; }
+      .series-label[layout-strategy="positive"][data-inverted] text { dominant-baseline: hanging; }
 
-    .series-label[layout-strategy="dynamic"] text[data-polarity="positive"] { dominant-baseline: auto; }
-    .series-label[layout-strategy="dynamic"] text[data-polarity="negative"] { dominant-baseline: hanging; }
+      .series-label[layout-strategy="dynamic"] text[data-polarity="positive"] { dominant-baseline: auto; }
+      .series-label[layout-strategy="dynamic"] text[data-polarity="negative"] { dominant-baseline: hanging; }
+    }
   }
 }

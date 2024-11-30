@@ -2,7 +2,7 @@ import {Selection} from "d3";
 import {InputLabel, InputLabelDataBase} from "./input-label";
 
 type NumberLabelData = InputLabelDataBase & {
-  value: string,
+  initialValue: string,
   min?: number
   max?: number
   step?: number
@@ -13,23 +13,38 @@ type NumberLabelData = InputLabelDataBase & {
 export class NumberLabel implements InputLabel {
   constructor(public readonly data: NumberLabelData) {}
   render(labelS: Selection<HTMLLabelElement, NumberLabelData>) {
-    const {value, onChange, onInput,
+    const {initialValue, onChange, onInput,
       label, min, max,
       step} = this.data
-    labelS.selectAll('input[type="number"]')
+
+    labelS.selectAll('.label')
+      .data([null])
+      .join('span')
+      .classed('label', true)
+      .text(label)
+
+    const inputWrapperS = labelS.selectAll('.input-wrapper')
+      .data([null])
+      .join('div')
+      .classed('input-wrapper', true)
+
+    const inputS = inputWrapperS.selectAll('input[type="number"]')
       .data([null])
       .join('input')
       .attr('type', 'number')
-      .attr('value', value)
       .attr('min', min ?? null)
       .attr('max', max ?? null)
       .attr('step', step ?? null)
       .on('change', (e) => onChange?.(e, this))
       .on('input', (e) => onInput?.(e, this))
-    labelS.selectAll('span')
+    if (inputS.attr('value') === undefined || inputS.attr('value') === null || inputS.attr('value') === '') {
+      inputS.attr('value', initialValue)
+    }
+
+    inputWrapperS.selectAll('.error-message')
       .data([null])
       .join('span')
-      .text(label)
+      .classed('error-message', true)
     return labelS
   }
 

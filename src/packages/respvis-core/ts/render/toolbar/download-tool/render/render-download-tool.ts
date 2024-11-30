@@ -43,8 +43,12 @@ function downloadButtonRender(selection: Selection<HTMLDialogElement, DialogData
     .join('button')
     .classed('button--icon button--download', true)
     .on('click', function () {
-      select(this.closest('.window-rv'))
-        .selectAll<SVGSVGElement, unknown>('.layouter > svg.chart')
+        if (!selection.selectAll('label.error').empty()) {
+          alert('Please fix invalid inputs before download.')
+          return
+        }
+
+      select(this.closest('.window-rv')).selectAll<SVGSVGElement, unknown>('.layouter > svg.chart')
         .call((s) => downloadChart(s, 'chart.svg', renderer));
       select<HTMLDialogElement, DialogData>(this.closest('dialog')!).datum()?.triggerExit()
     });

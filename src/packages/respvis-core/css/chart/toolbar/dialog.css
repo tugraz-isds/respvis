@@ -75,10 +75,36 @@
         gap: 0.5em;
         input { margin: 0; }
       }
-      input[type='number'] {
-        /*flex-basis: 4ch;*/
-        padding: 0.25em;
+
+      label:has(input[type="number"]) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+        input[type='number'] {
+          /*flex-basis: 4ch;*/
+          padding: 0.25em;
+        }
+        .input-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        &.error {
+          input {
+            border-color: red;
+          }
+          .error-message {
+            display: block;
+            color: red;
+          }
+        }
+        .error-message {
+          display: none;
+        }
       }
+
+
       input[type='range'] {
         width: 4rem;
       }

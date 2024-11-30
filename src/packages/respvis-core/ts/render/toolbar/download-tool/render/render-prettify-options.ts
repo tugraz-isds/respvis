@@ -4,6 +4,7 @@ import {CheckBoxLabel} from "../../tool/input-label/checkbox-label";
 import {windowSettingsKeys} from "../../../window/window-settings";
 import {renderFieldset} from "../../tool/render/render-fieldset";
 import {NumberLabel} from "../../tool/input-label/number-label";
+import {validateNumberLabel} from "../../../../utilities/dom/validateInputs";
 
 export function renderPrettifyOptions(selection: Selection, renderer: Renderer) {
   const currentSettings = renderer.windowS.datum().settings.state
@@ -12,16 +13,11 @@ export function renderPrettifyOptions(selection: Selection, renderer: Renderer) 
     renderer.windowS.dispatch('resize')
   }
 
-  const onInputNumber = (e, d: NumberLabel) => {
-    const value = d.valueAsInt(e)
-    if (isNaN(value)) e.target.value = currentSettings[d.data.type]
-  }
   const onChangeNumber = (e, d: NumberLabel) => {
-    const value = d.valueAsInt(e)
-    if (isNaN(value) || !d.inMinMaxRange(value)) {
-      e.target.value = currentSettings[d.data.type]
-    }
-    currentSettings[d.data.type] = (e.target as HTMLInputElement).value
+    const value = validateNumberLabel(e.target, d)
+    if (value === null) return
+    currentSettings[d.data.type] = value
+    e.target.value = value
   }
 
   const data = [{
@@ -34,9 +30,8 @@ export function renderPrettifyOptions(selection: Selection, renderer: Renderer) 
     }), new NumberLabel({
       label: 'Indentation spaces',
       type: windowSettingsKeys.downloadPrettifyIndentionSpaces,
-      value: currentSettings.downloadPrettifyIndentionSpaces,
+      initialValue: currentSettings.downloadPrettifyIndentionSpaces,
       min: 1, max: 20, step: 1, size: 2,
-      onInput: onInputNumber,
       onChange: onChangeNumber,
       activeClasses: !currentSettings.downloadPrettifyActive ? ['disabled'] : [],
       inactiveClasses: currentSettings.downloadPrettifyActive ? ['disabled'] : [],

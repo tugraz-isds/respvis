@@ -4,6 +4,7 @@ import {NumberLabel} from "../../tool/input-label/number-label";
 import {CheckBoxLabel} from "../../tool/input-label/checkbox-label";
 import {windowSettingsKeys} from "../../../window/window-settings";
 import {renderFieldset} from "../../tool/render/render-fieldset";
+import {validateNumberLabel} from "../../../../utilities/dom/validateInputs";
 
 export function renderDecimalNumberOptions(selection: Selection, renderer: Renderer) {
   const currentSettings = renderer.windowS.datum().settings.state
@@ -12,16 +13,11 @@ export function renderDecimalNumberOptions(selection: Selection, renderer: Rende
     renderer.windowS.dispatch('resize')
   }
 
-  const onInputNumber = (e, d: NumberLabel) => {
-    const value = d.valueAsInt(e)
-    if (isNaN(value)) e.target.value = currentSettings[d.data.type]
-  }
   const onChangeNumber = (e, d: NumberLabel) => {
-    const value = d.valueAsInt(e)
-    if (isNaN(value) || !d.inMinMaxRange(value)) {
-      e.target.value = currentSettings[d.data.type]
-    }
-    currentSettings[d.data.type] = (e.target as HTMLInputElement).value
+    const value = validateNumberLabel(e.target, d)
+    if (value === null) return
+    currentSettings[d.data.type] = value
+    e.target.value = value
   }
 
   const data = [{
@@ -34,9 +30,8 @@ export function renderDecimalNumberOptions(selection: Selection, renderer: Rende
     }), new NumberLabel({
       label: '',
       type: windowSettingsKeys.downloadAttributeMaxDecimals,
-      value: currentSettings.downloadAttributeMaxDecimals,
+      initialValue: currentSettings.downloadAttributeMaxDecimals,
       min: 1, max: 20, step: 1, size: 2,
-      onInput: onInputNumber,
       onChange: onChangeNumber,
       activeClasses: !currentSettings.downloadAttributeMaxDecimalsActive ? ['disabled'] : [],
       inactiveClasses: currentSettings.downloadAttributeMaxDecimalsActive ? ['disabled'] : [],
