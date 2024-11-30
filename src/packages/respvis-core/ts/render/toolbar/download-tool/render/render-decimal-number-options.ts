@@ -25,9 +25,9 @@ export function renderDecimalNumberOptions(selection: Selection, renderer: Rende
   }
 
   const data = [{
-    legend: 'Number of Decimal Points',
+    legend: 'Number of Decimal Places',
     labelData: [new CheckBoxLabel({
-      label: 'Limit Decimal Points',
+      label: 'Limit Decimal Places',
       type: windowSettingsKeys.downloadAttributeMaxDecimalsActive,
       defaultVal: currentSettings.downloadAttributeMaxDecimalsActive,
       onChange: onChangeActive,

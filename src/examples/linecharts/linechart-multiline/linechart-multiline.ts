@@ -67,7 +67,7 @@ export const renderMultiLineChart = (selector: string) => {
         scope: 'self',
         breakpointValues: {0: 90, 2: 0},
       },
-      gridLineFactor: 2
+      gridLineFactor: undefined
     },
     tooltip: {
       onInspectMove: (info) => {

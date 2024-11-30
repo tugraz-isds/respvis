@@ -77,6 +77,7 @@
       }
       input[type='number'] {
         /*flex-basis: 4ch;*/
+        padding: 0.25em;
       }
       input[type='range'] {
         width: 4rem;

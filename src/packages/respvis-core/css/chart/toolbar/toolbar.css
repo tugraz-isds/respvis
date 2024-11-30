@@ -11,6 +11,9 @@
     fieldset, input {
       color: black;
     }
+    input {
+      border: 1px solid var(--white-darken-15);
+    }
     svg {
       stroke: currentColor;
     }
@@ -18,7 +21,7 @@
     &[transition="enter"] {
       .toolbar__content { translate: 0; }
       & .toolbar__opener {
-        & > svg { rotate: 180deg; }
+        & > svg { rotate: 0deg; }
       }
       &[transition-state="enter-done"] {
         .toolbar__content-wrapper { overflow-x: unset; }
@@ -45,6 +48,7 @@
         height: 100%;
         width: auto;
         stroke: black;
+        rotate: 180deg;
         transition: rotate 700ms;
       }
       &:active, &[transition='enter'] { background-color: var(--white-darken-15); }
