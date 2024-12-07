@@ -4,23 +4,30 @@
   min-height: 25rem;
   container-type: inline-size;
 
+  /* increase transition time of record lines */
   .window-rv { --transition-time-ms: 750;}
 
   .chart-parcoord {
+    /* increase size of padding containers for axis titles to fit */
     --chart-padding-left: 4rem;
     --chart-padding-right: 4rem;
     --chart-padding-top: 4rem;
     --chart-padding-bottom: 0.8rem;
 
+    /* prevent flicker on highlighting with certain category color */
     path.line.animated.highlight[data-key~="s-0-c-0"] {
-      filter: unset; /*due to highlight flickering for many elements*/
+      filter: unset;
     }
   }
 
+  /* for average to narrow screen widths */
   @container (width < 50rem) {
     .chart-parcoord {
+      /* adapt size of padding containers for flipped chart */
       --chart-padding-right: 2rem;
       --chart-padding-bottom: 3rem;
+
+      /* move legend below chart */
       grid-template: auto 1fr auto / 1fr;
       grid-template-areas: 'header' 'padding-wrapper' 'legend';
     }
@@ -43,7 +50,10 @@
     }
   }
 
+  /* for narrow screen widths */
   @container (width < 40rem) {
+    /* thin out axis ticks of axes a-0 ('Horsepower') and a-1 ('Price')
+   (since axes are flipped for narrow widths) */
     .axis.axis-sequence {
       &[data-key="a-0"] .tick, &[data-key="a-1"] .tick {
         &:nth-of-type(2n) {

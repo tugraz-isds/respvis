@@ -2,9 +2,15 @@ import {formatWithDecimalZero, ParcoordChart, ParcoordChartUserArgs} from './lib
 import * as d3 from './libs/d3-7.6.0/d3.js'
 import {getTopMakesData} from "./data/sold-cars-germany.js";
 
+/**
+ * Render Function of a Parallel Coordinates Chart
+ * @param selector The selector for querying the wrapper of the Parallel Coordinates Chart
+ */
 export function renderParcoord(selector: string) {
+  const sampleSize = 500
   const {horsePower, prices, mileages, makes, fuel} = getTopMakesData(5)
 
+  // tick formatting for different chart widths of 'Mileage' and 'Price' axes
   const sharedAxisConfig = {
     dependentOn: 'width',
     scope: 'chart',
@@ -15,13 +21,14 @@ export function renderParcoord(selector: string) {
     }
   } as const
 
+  // tick label orientation of all axes, if axes are flipped
+  // rotation is interpolated between 0° (wide) and 90° (narrow)
   const sharedTickOrientationFlipped = {
     dependentOn: 'width',
     breakpointValues: {0: 90, 2: 0}
   } as const
 
-  const sampleSize = 500
-
+  // using ParcoordChartUserArgs provides type support
   const data: ParcoordChartUserArgs = {
     title: 'Car data',
     breakpoints: {
@@ -30,26 +37,37 @@ export function renderParcoord(selector: string) {
         unit: 'rem'
       }
     },
+
     series: {
       dimensions: [
+        // 'Horsepower' axis
         {
+          // array of numbers for 'Horsepower' axis
           scaledValues: {values: horsePower.slice(0, sampleSize)},
+
+          // maximum scale factors for zooming in and out
           zoom: {
             in: 10,
             out: 1
           },
+
           axis: {
             title: "Horsepower",
             subTitle: "[PS]",
             tickOrientationFlipped: sharedTickOrientationFlipped
           }
         },
+
+        // 'Price' axis
         {
+          // array of numbers for 'Price' axis
           scaledValues: {values: prices.slice(0, sampleSize)},
+
           zoom: {
             in: 20,
             out: 1
           },
+
           axis: {
             title: "Price",
             subTitle: "[EU]",
@@ -57,12 +75,17 @@ export function renderParcoord(selector: string) {
             tickOrientationFlipped: sharedTickOrientationFlipped
           }
         },
+
+        // 'Mileage' axis
         {
+          // array of numbers for 'Mileage' axis
           scaledValues: {values: mileages.slice(0, sampleSize)},
+
           zoom: {
             in: 20,
             out: 1
           },
+
           axis: {
             title: "Mileage",
             subTitle: "[km]",
@@ -70,18 +93,25 @@ export function renderParcoord(selector: string) {
             tickOrientationFlipped: sharedTickOrientationFlipped
           }
         },
+
+        // 'Fuel' axis
         {
+          // array of strings for 'Fuel' axis
           scaledValues: {values: fuel.slice(0, sampleSize)},
+
           axis: {
             title: "Fuel",
             tickOrientationFlipped: sharedTickOrientationFlipped
           }
         },
       ],
+
       categories: {
-        values: makes.slice(0, sampleSize),
-        title: 'Makes'
+        title: 'Makes',                          // used to label the category
+        values: makes.slice(0, sampleSize)       // array of strings for categories
       },
+
+      // at which layout widths parallel coordinates chart is flipped
       flipped: {
         mapping: {0: true, 3: false},
         dependentOn: 'width'
@@ -89,6 +119,7 @@ export function renderParcoord(selector: string) {
     },
   }
 
+  // append empty div for chart window and create new chart instance
   const chartWindow = d3.select(selector).append('div')
   const renderer = new ParcoordChart(chartWindow, data)
   renderer.buildChart()

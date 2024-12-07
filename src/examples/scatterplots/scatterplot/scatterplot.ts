@@ -2,24 +2,43 @@ import {formatWithDecimalZero, Point, ScatterPlot, ScatterPlotUserArgs} from './
 import * as d3 from './libs/d3-7.6.0/d3.js'
 import {getTopMakesData} from "./data/sold-cars-germany.js";
 
+/**
+ * Render Function of a Scatter Plot
+ * @param selector The selector for querying the wrapper of the Scatter Plot
+ */
 export function createScatterplot(selector: string) {
   const {mileages, horsePower, prices, makes} = getTopMakesData(5)
 
+  // using ScatterPlotUserArgs provides type support
   const data: ScatterPlotUserArgs = {
+    breakpoints: {
+      width: {
+        values: [40, 60, 90],        // chart breakpoints
+        unit: 'rem'
+      }
+    },
+
+    title: {
+      dependentOn: 'width',
+      mapping: {0: 'Car Characteristics',
+        2: 'Car Characteristics from AutoScout24 in Germany'}
+    },
+
     series: {
       x: {
-        values: horsePower,
+        values: horsePower,          // array of numbers for x values
       },
       y: {
-        values: prices,
+        values: prices,              // array of numbers for y values
       },
       categories: {
-        values: makes,
-        title: 'Makes'
+        title: 'Makes',             // used to label the category
+        values: makes               // array of strings for categories
       },
+
       radii: {
-        values: mileages,
-        axis: {
+        values: mileages,           // array of numbers for radii
+        axis: {                     // radii axis in legend
           title: 'Mileage',
           horizontalLayout: 'bottom',
           configureAxis: (axis => {
@@ -27,7 +46,8 @@ export function createScatterplot(selector: string) {
             axis.tickFormat(d3.format('.2s'))
           })
         },
-        extrema: {
+
+        extrema: {                  // radii sizes are interpolated
           dependentOn: 'width',
           breakpointValues: {
             0: {minimum: 3, maximum: 12},
@@ -36,39 +56,38 @@ export function createScatterplot(selector: string) {
           },
         },
       },
+
+      // callback function returning tooltip when point hovered
       markerTooltipGenerator: ((e, d: Point) => {
         return `Car Price: ${d.yValue}€<br/>
                 Horse Power: ${d.xValue}PS<br/>
                 Make: ${d.categoryFormatted ?? ''}<br/>
                 Mileage: ${d.radiusValue}km<br/>`
       }),
+
+      // maximum scale factors for zooming in and out
       zoom: {
         in: 20,
         out: 1
       },
     },
-    breakpoints: {
-      width: {
-        values: [40, 60, 90],
-        unit: 'rem'
-      }
-    },
-    title: {
-      dependentOn: 'width',
-      mapping: {0: 'Car Characteristics', 2: 'Car Characteristics from AutoScout24 in Germany'}
-    },
+
     x: {
       title: {
         dependentOn: 'width',
         scope: 'self',
         mapping: {0: 'HP in [PS]', 1: 'Horse P. [PS]', 2: 'Horse Power in [PS]'}
       },
+
       breakpoints: {
         width: {
           values: [10, 30, 50],
           unit: 'rem'
         }
       },
+
+      // tick formatting for different axis widths
+      // number of ticks is reduced via D3 ticks function
       configureAxis: {
         dependentOn: 'width',
         scope: 'self',
@@ -83,8 +102,11 @@ export function createScatterplot(selector: string) {
         }
       }
     },
+
     y: {
       title: 'Car Price [EU]',
+
+      // tick formatting for different chart widths
       configureAxis: {
         dependentOn: 'width',
         scope: 'chart',
@@ -94,6 +116,7 @@ export function createScatterplot(selector: string) {
         }
       }
     },
+
     legend: {
       title: {
         dependentOn: 'width',
@@ -103,6 +126,7 @@ export function createScatterplot(selector: string) {
     }
   }
 
+  // append empty div for chart window and create new chart instance
   const chartWindow = d3.select(selector).append('div')
   const renderer = new ScatterPlot(chartWindow, data)
   renderer.buildChart()
