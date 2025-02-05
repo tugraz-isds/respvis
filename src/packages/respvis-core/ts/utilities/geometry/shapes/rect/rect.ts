@@ -94,7 +94,7 @@ export function rectToViewBox(selectionOrTransition: SelectionOrTransition, rect
     .call((s: SelectionOrTransition) => {
       const {x, y} = positionRound(rect)
       const {width, height} = sizeRound(rect)
-      s.attr('viewbox', `${x}, ${y}, ${width}, ${height}`)
+      s.attr('viewBox', `${x} ${y} ${width} ${height}`)
     })
 }
 

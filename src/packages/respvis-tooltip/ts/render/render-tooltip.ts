@@ -13,15 +13,16 @@ export function renderTooltip(): Selection<HTMLDivElement> {
     .attr('id', 'tooltip-rv')
 
   drawAreaS.on('pointermove.tooltipVisibility', function() {
-    const window = windowS.data().find(window => window.tooltip.isVisible())
-    setTooltipVisibility(!!window ? 'visible' : 'hidden')
+    const windowRV = windowS.data().find(windowRV => windowRV?.tooltip.isVisible())
+    setTooltipVisibility(!!windowRV ? 'visible' : 'hidden')
   }).on('pointerout.tooltipVisibility', function() {
     setTooltipVisibility('hidden')
   })
 
   select(window).on('pointermove.tooltipVisibility', function(e) {
-    const windowHovered = windowS.data().find(window => {
-      const rect = elementFromSelection(window.renderer.drawAreaBgS).getBoundingClientRect()
+    const windowHovered = windowS.data().find(windowRV => {
+      if (!windowRV) return false;
+      const rect = elementFromSelection(windowRV.renderer.drawAreaBgS).getBoundingClientRect()
       return (!(e.clientX < rect.x || e.clientX > rect.x + rect.width ||
         e.clientY < rect.y || e.clientY > rect.y + rect.height))
     })

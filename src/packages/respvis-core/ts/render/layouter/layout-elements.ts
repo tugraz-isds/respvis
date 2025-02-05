@@ -1,6 +1,12 @@
 import {select, Selection} from 'd3';
 import {positionToTransformAttr} from '../../utilities/geometry/position/position';
-import {rectEquals, rectFromString, rectToAttrs, rectToString,} from '../../utilities/geometry/shapes/rect/rect';
+import {
+  rectEquals,
+  rectFromString,
+  rectToAttrs,
+  rectToString,
+  rectToViewBox,
+} from '../../utilities/geometry/shapes/rect/rect';
 import {circleInsideRect, circleToAttrs} from '../../utilities/geometry/shapes/circle';
 import {cssVars} from "../../constants/cssVars";
 import {ellipseInsideRect, ellipseToAttrs} from "../../utilities/geometry/shapes/ellipse";
@@ -113,6 +119,9 @@ export function layoutNodeBounds(selection: Selection<HTMLDivElement, SVGTwinInf
       svgS.attr('bounds', rectToString(bounds));
       switch (svgE.tagName) {
         case 'svg':
+          svgS.call((s) => rectToAttrs(s, bounds));
+          svgS.call((s) => rectToViewBox(s, bounds));
+          break;
         case 'rect':
           svgS.call((s) => rectToAttrs(s, bounds));
           break;

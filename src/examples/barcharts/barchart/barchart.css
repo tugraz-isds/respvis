@@ -4,6 +4,10 @@
   min-height: 25rem;
   container-type: inline-size;
 
+  /*.window-rv {*/
+  /*  --font-size-base: clamp(1rem, 1rem + 0.5vw, 1.5rem);*/
+  /*}*/
+
   @container (width < 25rem) {
     .toolbar {
       position: static;
