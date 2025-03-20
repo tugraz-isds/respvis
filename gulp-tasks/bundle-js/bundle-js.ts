@@ -12,6 +12,7 @@ import typescript from "typescript";
 import {bundleDeclarations} from "../bundle-declarations";
 import {absolutePaths} from "../paths/absolute-paths";
 import {modulesMap} from "../constants/modules";
+import PackageJSON from '../../package.json'
 
 const {rootDir} = absolutePaths
 
@@ -152,7 +153,7 @@ function writeBundle(bundle, writeConfigurations) {
     const formatString = c.format === 'iife' ? 'IIFE' :
       c.format === 'esm' ? 'ESM' :
         c.format === 'cjs' ? 'CommonJS' : ''
-    const dataWithHeaderLine = `// RespVis version 2.0 ${formatString}\n` + fileData
+    const dataWithHeaderLine = `// RespVis version ${PackageJSON.version} ${formatString}\n` + fileData
     fs.writeFileSync(`${c.location}/${c.module}.${c.extension}`, dataWithHeaderLine, 'utf8');
   }))
 }
